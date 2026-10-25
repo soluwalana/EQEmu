@@ -5,7 +5,10 @@ import struct
 from eqclient.crc import crc32
 from eqclient.crypto import decrypt_block, encrypt_block
 from eqclient.packets import (
+    CHAR_CREATE_SIZE,
     channel_message_text,
+    char_create,
+    character_select_names,
     parse_login_accept,
     parse_server_list,
     special_message_text,
@@ -29,6 +32,15 @@ def test_login_des_round_trip():
     cipher = encrypt_block(plain)
     assert len(cipher) % 8 == 0
     assert decrypt_block(cipher).startswith(plain)
+
+
+def test_character_select_names_and_create_packet():
+    payload = bytearray(1704)
+    payload[1024:1031] = b"Mockone"
+    assert character_select_names(bytes(payload)) == ["Mockone"]
+    created = char_create(1, 1, 0, 396, 1, (110, 85, 80, 75, 75, 75, 75))
+    assert len(created) == CHAR_CREATE_SIZE
+    assert created[:8] == struct.pack("<II", 1, 0)
 
 
 def test_login_accept_layout():

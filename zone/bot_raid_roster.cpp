@@ -23,11 +23,11 @@
 namespace {
 
 enum RaidRole : uint8 {
-	RoleAuto = 0,
-	RoleTank = 1,
-	RoleHeal = 2,
-	RoleSupport = 3,
-	RoleDps = 4
+	RaidRoleAuto = 0,
+	RaidRoleTank = 1,
+	RaidRoleHeal = 2,
+	RaidRoleSupport = 3,
+	RaidRoleDps = 4
 };
 
 struct RezClaim {
@@ -122,23 +122,23 @@ bool IsDpsClass(uint8 class_id)
 
 uint8 ResolveRole(uint8 class_id, uint8 roster_role)
 {
-	if (roster_role >= RoleTank && roster_role <= RoleDps) {
+	if (roster_role >= RaidRoleTank && roster_role <= RaidRoleDps) {
 		return roster_role;
 	}
 
 	if (IsTankClass(class_id)) {
-		return RoleTank;
+		return RaidRoleTank;
 	}
 
 	if (IsHealClass(class_id)) {
-		return RoleHeal;
+		return RaidRoleHeal;
 	}
 
 	if (IsSupportClass(class_id)) {
-		return RoleSupport;
+		return RaidRoleSupport;
 	}
 
-	return RoleDps;
+	return RaidRoleDps;
 }
 
 std::vector<Bot*> SpawnedOwned(Client* owner)
@@ -206,22 +206,22 @@ uint8 RoleFromToken(std::string token)
 	}
 
 	if (token == "tank") {
-		return RoleTank;
+		return RaidRoleTank;
 	}
 
 	if (token == "healer" || token == "heal") {
-		return RoleHeal;
+		return RaidRoleHeal;
 	}
 
 	if (token == "support") {
-		return RoleSupport;
+		return RaidRoleSupport;
 	}
 
 	if (token == "dp") {
-		return RoleDps;
+		return RaidRoleDps;
 	}
 
-	return RoleAuto;
+	return RaidRoleAuto;
 }
 
 void ForgetCorpse(OwnerState& state, uint16 corpse_id)
@@ -503,8 +503,8 @@ struct Candidate {
 	uint32 bot_id = 0;
 	std::string name;
 	uint8 class_id = 0;
-	uint8 roster_role = RoleAuto;
-	uint8 role = RoleDps;
+	uint8 roster_role = RaidRoleAuto;
+	uint8 role = RaidRoleDps;
 	uint8 saved_group = 255;
 	uint8 group = 255;
 	bool in_raid = false;
@@ -522,7 +522,7 @@ bool TakeSlot(Candidate& candidate, int group, int* slots, bool* has_tank, bool*
 	candidate.place = true;
 	slots[group]--;
 
-	if (candidate.role == RoleTank) {
+	if (candidate.role == RaidRoleTank) {
 		has_tank[group] = true;
 	}
 
@@ -537,7 +537,7 @@ bool TakeSlot(Candidate& candidate, int group, int* slots, bool* has_tank, bool*
 void PlaceUnassignedTanks(std::vector<Candidate>& candidates, int* slots, bool* has_tank, bool* has_leader)
 {
 	for (auto& candidate : candidates) {
-		if (candidate.in_raid || candidate.place || candidate.role != RoleTank) {
+		if (candidate.in_raid || candidate.place || candidate.role != RaidRoleTank) {
 			continue;
 		}
 
@@ -795,7 +795,7 @@ void Form(Client* owner, bool reset, bool quiet)
 			slots[member.group_number]--;
 		}
 
-		if (ResolveRole(member._class, RoleAuto) == RoleTank) {
+		if (ResolveRole(member._class, RaidRoleAuto) == RaidRoleTank) {
 			has_tank[member.group_number] = true;
 		}
 
@@ -809,7 +809,7 @@ void Form(Client* owner, bool reset, bool quiet)
 	}
 
 	for (auto& candidate : candidates) {
-		if (candidate.in_raid || candidate.role != RoleTank || candidate.saved_group >= MAX_RAID_GROUPS) {
+		if (candidate.in_raid || candidate.role != RaidRoleTank || candidate.saved_group >= MAX_RAID_GROUPS) {
 			continue;
 		}
 
@@ -826,9 +826,9 @@ void Form(Client* owner, bool reset, bool quiet)
 		TakeSlot(candidate, candidate.saved_group, slots, has_tank, has_leader);
 	}
 
-	PlaceRoundRobin(candidates, RoleHeal, slots, has_tank, has_leader);
-	PlaceRoundRobin(candidates, RoleSupport, slots, has_tank, has_leader);
-	PlaceRoundRobin(candidates, RoleDps, slots, has_tank, has_leader);
+	PlaceRoundRobin(candidates, RaidRoleHeal, slots, has_tank, has_leader);
+	PlaceRoundRobin(candidates, RaidRoleSupport, slots, has_tank, has_leader);
+	PlaceRoundRobin(candidates, RaidRoleDps, slots, has_tank, has_leader);
 
 	bool limit_hit = false;
 	int added = 0;
@@ -935,7 +935,7 @@ void Save(Client* owner)
 		record.bot_id = owned->second.bot_id;
 		record.raid_group = member.group_number < MAX_RAID_GROUPS ? static_cast<uint8>(member.group_number) : 255;
 		auto role = previous_role.find(record.bot_id);
-		record.role = role == previous_role.end() ? RoleAuto : role->second;
+		record.role = role == previous_role.end() ? RaidRoleAuto : role->second;
 		record.active = 1;
 		records.push_back(record);
 	}
@@ -989,7 +989,7 @@ void ReplaceWithAll(Client* owner)
 		BotRaidRosterRecord record;
 		record.bot_id = bot.bot_id;
 		record.raid_group = 255;
-		record.role = RoleAuto;
+		record.role = RaidRoleAuto;
 		record.active = 1;
 		records.push_back(record);
 	}
@@ -1080,7 +1080,7 @@ void Stand(Client* owner, const std::string& who, bool clear)
 	}
 
 	int group_number = -1;
-	uint8 role = RoleAuto;
+	uint8 role = RaidRoleAuto;
 	uint8 class_id = Class::None;
 
 	if (Strings::BeginsWith(token, "group ")) {
@@ -1092,11 +1092,11 @@ void Stand(Client* owner, const std::string& who, bool clear)
 	}
 	else {
 		role = RoleFromToken(token);
-		if (role == RoleAuto) {
+		if (role == RaidRoleAuto) {
 			class_id = ClassFromToken(token);
 		}
 
-		if (role == RoleAuto && !class_id) {
+		if (role == RaidRoleAuto && !class_id) {
 			owner->Message(Chat::White, "Name a raid group, role, or class. Example: ^stand group 1");
 			return;
 		}
@@ -1114,7 +1114,7 @@ void Stand(Client* owner, const std::string& who, bool clear)
 			continue;
 		}
 
-		if (role != RoleAuto && ResolveRole(bot->GetClass(), RoleAuto) != role) {
+		if (role != RaidRoleAuto && ResolveRole(bot->GetClass(), RaidRoleAuto) != role) {
 			continue;
 		}
 
@@ -1703,7 +1703,6 @@ void ApplyOfftank(Bot* bot)
 	if (bot->GetTarget() != target) {
 		bot->AddToHateList(target, 5000);
 		bot->SetTarget(target);
-		bot->SetAttackingFlag(true);
 	}
 }
 

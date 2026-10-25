@@ -6945,7 +6945,9 @@ ALTER TABLE `items_evolving_details`
 )",
 		.content_schema_update = true
 	},
-	// this one got missed being added to PEQ dumps so adding it again so it gets added when folks take a new release
+	// 9293 creates this table. Both checks run before either migration, so a database
+	// missing the table schedules both. This statement has to be a no-op when 9293
+	// already created it in the same update pass.
 	ManifestEntry{
 		.version = 9309,
 		.description = "2025_03_1_create_pet_names_table_if_not_exist.sql",
@@ -6953,7 +6955,7 @@ ALTER TABLE `items_evolving_details`
 		.condition = "empty",
 		.match = "",
 		.sql = R"(
-CREATE TABLE `character_pet_name` (
+CREATE TABLE IF NOT EXISTS `character_pet_name` (
     `character_id` INT(11) NOT NULL PRIMARY KEY,
     `name` VARCHAR(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

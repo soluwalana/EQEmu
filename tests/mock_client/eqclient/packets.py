@@ -10,11 +10,17 @@ SAY_CHANNEL = 8
 LOGIN_BASE_SIZE = 10  # int32, bool, int8, int32, packed
 LOGIN_REPLY_ACCOUNT_OFFSET = 8
 LOGIN_REPLY_KEY_OFFSET = 12
-LOGIN_INFO_SIZE = 488
+# Titanium::structs::LoginInfo_Struct. The header comment says 488, but the
+# packed fields are 64 + 124 + 1 + 275 = 464, which is what world identifies.
+LOGIN_INFO_SIZE = 464
 ENTER_WORLD_SIZE = 72
 ZONE_ENTRY_SIZE = 68
 ZONE_SERVER_INFO_SIZE = 130
 CHANNEL_MESSAGE_SIZE = 148
+NAME_APPROVAL_SIZE = 72  # char name[64], uint32 race, uint32 class
+CHAR_CREATE_SIZE = 80  # 20 little-endian uint32 fields
+CHAR_SELECT_NAME_OFFSET = 1024
+CHAR_SELECT_NAME_SLOTS = 10
 
 
 def cstring(data: bytes, offset: int) -> tuple[str, int]:
@@ -71,6 +77,62 @@ def login_info(account_id: int, key: str) -> bytes:
     creds = f"{account_id}\x00{key}".encode("latin1")
     packet[: min(len(creds), 64)] = creds[:64]
     return bytes(packet)
+
+
+def name_approval(name: str, race: int, class_id: int) -> bytes:
+    packet = bytearray(NAME_APPROVAL_SIZE)
+    encoded = name.encode("latin1")[:63]
+    packet[: len(encoded)] = encoded
+    struct.pack_into("<II", packet, 64, race, class_id)
+    return bytes(packet)
+
+
+def char_create(
+    class_id: int,
+    race: int,
+    gender: int,
+    deity: int,
+    start_zone: int,
+    stats: tuple[int, int, int, int, int, int, int],
+) -> bytes:
+    """Titanium CharCreate_Struct. stats are STR, STA, AGI, DEX, WIS, INT, CHA."""
+    strength, stamina, agility, dexterity, wisdom, intelligence, charisma = stats
+    return struct.pack(
+        "<20I",
+        class_id,
+        0,  # haircolor
+        0,  # beardcolor
+        0,  # beard
+        gender,
+        race,
+        start_zone,
+        0,  # hairstyle
+        deity,
+        strength,
+        stamina,
+        agility,
+        dexterity,
+        wisdom,
+        intelligence,
+        charisma,
+        0,  # face
+        0,  # eyecolor1
+        0,  # eyecolor2
+        0,  # tutorial
+    )
+
+
+def character_select_names(payload: bytes) -> list[str]:
+    names: list[str] = []
+    base = CHAR_SELECT_NAME_OFFSET
+    for slot in range(CHAR_SELECT_NAME_SLOTS):
+        start = base + slot * 64
+        if start + 64 > len(payload):
+            break
+        name = payload[start : start + 64].split(b"\x00", 1)[0].decode("latin1")
+        if name:
+            names.append(name)
+    return names
 
 
 def enter_world(name: str) -> bytes:
