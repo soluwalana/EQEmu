@@ -2375,6 +2375,57 @@ void Corpse::CastRezz(uint16 spell_id, Mob *caster)
 	safe_delete(outapp);
 }
 
+void Corpse::SetBotCorpse(uint32 bot_id, uint32 owner_id, uint32 decay_ms)
+{
+	m_bot_id = bot_id;
+	m_bot_owner_id = owner_id;
+	m_is_rezzable = false;
+	m_rez = false;
+	m_is_player_corpse = false;
+	m_corpse_db_id = 0;
+	m_corpse_rezzable_timer.Disable();
+
+	if (decay_ms < 1000) {
+		decay_ms = 1000;
+	}
+
+	m_corpse_decay_timer.SetTimer(decay_ms);
+}
+
+bool Corpse::TryClaimRez(uint16 caster_id, uint32 duration_ms)
+{
+	const uint32 now = Timer::GetCurrentTime();
+
+	if (m_rez_claim_entity_id && m_rez_claim_entity_id != caster_id && now < m_rez_claim_expire) {
+		return false;
+	}
+
+	m_rez_claim_entity_id = caster_id;
+	m_rez_claim_expire = now + duration_ms;
+	return true;
+}
+
+void Corpse::ForceClaimRez(uint16 caster_id, uint32 duration_ms)
+{
+	m_rez_claim_entity_id = caster_id;
+	m_rez_claim_expire = Timer::GetCurrentTime() + duration_ms;
+}
+
+void Corpse::ClearRezClaim()
+{
+	m_rez_claim_entity_id = 0;
+	m_rez_claim_expire = 0;
+}
+
+bool Corpse::IsRezClaimedByOther(uint16 caster_id) const
+{
+	if (!m_rez_claim_entity_id || m_rez_claim_entity_id == caster_id) {
+		return false;
+	}
+
+	return Timer::GetCurrentTime() < m_rez_claim_expire;
+}
+
 Corpse *Corpse::LoadCharacterCorpse(
 	const CharacterCorpsesRepository::CharacterCorpses &cc,
 	const glm::vec4 &position

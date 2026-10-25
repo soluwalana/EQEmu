@@ -403,6 +403,7 @@ namespace DatabaseSchema {
 			"bot_pet_buffs",
 			"bot_pet_inventories",
 			"bot_pets",
+			"bot_raid_roster",
 			"bot_settings",
 			"bot_spell_casting_chances",
 			"bot_spell_settings",

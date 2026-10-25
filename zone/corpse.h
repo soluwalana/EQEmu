@@ -207,6 +207,15 @@ public:
 	void IsRezzed(bool in_rez) { m_rez = in_rez; }
 	void CastRezz(uint16 spell_id, Mob *caster);
 	void CompleteResurrection(bool timer_expired = false);
+	bool IsBotCorpse() const { return m_bot_id != 0; }
+	uint32 GetBotCorpseID() const { return m_bot_id; }
+	uint32 GetBotCorpseOwnerID() const { return m_bot_owner_id; }
+	void SetBotCorpse(uint32 bot_id, uint32 owner_id, uint32 decay_ms);
+	bool TryClaimRez(uint16 caster_id, uint32 duration_ms);
+	void ForceClaimRez(uint16 caster_id, uint32 duration_ms);
+	void ClearRezClaim();
+	uint16 RezClaimEntity() const { return m_rez_claim_entity_id; }
+	bool IsRezClaimedByOther(uint16 caster_id) const;
 	bool IsRezzable() { return m_is_rezzable; }
 	void SetRezTimer(bool initial_timer = false);
 
@@ -304,4 +313,8 @@ private:
 	std::vector<std::string> m_consented_player_names;
 	LootRequestType          m_loot_request_type;
 	uint32                   m_account_id;
+	uint32                   m_bot_id = 0;
+	uint32                   m_bot_owner_id = 0;
+	uint16                   m_rez_claim_entity_id = 0;
+	uint32                   m_rez_claim_expire = 0;
 };

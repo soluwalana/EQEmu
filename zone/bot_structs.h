@@ -21,6 +21,13 @@
 #include "common/timer.h"
 #include "zone/mob.h"
 
+struct BotRaidRosterRecord {
+	uint32 bot_id = 0;
+	uint8  raid_group = 255;
+	uint8  role = 0;
+	uint8  active = 1;
+};
+
 struct BotsAvailableList {
 	uint32 bot_id;
 	char   bot_name[64];

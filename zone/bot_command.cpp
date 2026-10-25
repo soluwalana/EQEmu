@@ -167,7 +167,12 @@ int bot_command_init(void)
 		bot_command_add("pickpocket", "Orders a capable bot to pickpocket a NPC", AccountStatus::Player, bot_command_pickpocket) ||
 		bot_command_add("precombat", "Sets flag used to determine pre-combat behavior", AccountStatus::Player, bot_command_precombat) ||
 		bot_command_add("pull", "Orders a designated bot to 'pull' an enemy", AccountStatus::Player, bot_command_pull) ||
+		bot_command_add("raidform", "Forms a raid from the saved bot roster", AccountStatus::Player, bot_command_raidform) ||
 		bot_command_add("release", "Releases a suspended bot's AI processing (with hate list wipe)", AccountStatus::Player, bot_command_release) ||
+		bot_command_add("rez", "Turns bot rezzing on or off, or rezzes you or the raid", AccountStatus::Player, bot_command_rez) ||
+		bot_command_add("scatter", "Sends bots to a ring around you", AccountStatus::Player, bot_command_scatter) ||
+		bot_command_add("stack", "Clears bot guard points so they follow you", AccountStatus::Player, bot_command_stack) ||
+		bot_command_add("stand", "Sends a raid group, role, or class to your spot", AccountStatus::Player, bot_command_stand) ||
 		bot_command_add("setassistee", "Sets your target to be the person your bots assist. Bots will always assist you before others", AccountStatus::Player, bot_command_set_assistee) ||
 		bot_command_add("sithppercent", "HP threshold for a bot to start sitting in combat if allowed", AccountStatus::Player, bot_command_sit_hp_percent) ||
 		bot_command_add("sitincombat", "Toggles whether or a not a bot will attempt to med or sit to heal in combat", AccountStatus::Player, bot_command_sit_in_combat) ||

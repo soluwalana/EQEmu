@@ -26,6 +26,7 @@
 #include "common/rulesys.h"
 #include "common/spdat.h"
 #include "zone/bot.h"
+#include "zone/bot_raid_roster.h"
 #include "zone/lua_parser.h"
 #include "zone/quest_parser_collection.h"
 #include "zone/string_ids.h"
@@ -1712,6 +1713,11 @@ bool Mob::SpellEffect(Mob* caster, uint16 spell_id, float partial, int level_ove
 #ifdef SPELL_EFFECT_SPAM
 				snprintf(effect_desc, _EDLEN, "Revive");	// heh the corpse won't see this
 #endif
+				if (IsCorpse() && CastToCorpse()->IsBotCorpse()) {
+					BotRaidRoster::CompleteBotCorpseRez(CastToCorpse(), caster);
+					break;
+				}
+
 				if (IsCorpse() && CastToCorpse()->IsPlayerCorpse()) {
 
 					if(caster)

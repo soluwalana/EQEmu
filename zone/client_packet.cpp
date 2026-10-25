@@ -37,6 +37,7 @@
 #include "common/rulesys.h"
 #include "common/shared_tasks.h"
 #include "zone/bot.h"
+#include "zone/bot_raid_roster.h"
 #include "zone/dialogue_window.h"
 #include "zone/dynamic_zone.h"
 #include "zone/event_codes.h"
@@ -637,6 +638,10 @@ void Client::CompleteConnect()
 		group = GetGroup();
 		if (group)
 			group->SendHPManaEndPacketsTo(this);
+
+		if (RuleB(Bots, Enabled)) {
+			BotRaidRoster::FormOnConnect(this);
+		}
 	}
 
 

@@ -13,6 +13,7 @@ set(zone_sources
     bot.cpp
     bot_database.cpp
     bot_raid.cpp
+    bot_raid_roster.cpp
     botspellsai.cpp
     cheat_manager.cpp
     cli/cli_benchmark_databuckets.cpp
@@ -340,6 +341,7 @@ set(gm_command_sources
     bot_commands/bot_pickpocket.cpp
     bot_commands/bot_precombat.cpp
     bot_commands/bot_pull.cpp
+    bot_commands/bot_raidform.cpp
     bot_commands/bot_release.cpp
     bot_commands/bot_set_assistee.cpp
     bot_commands/bot_sit_hp_percent.cpp

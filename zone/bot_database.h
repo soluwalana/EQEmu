@@ -48,6 +48,10 @@ public:
 	bool QueryNameAvailability(const std::string& bot_name);
 	bool QueryBotCount(const uint32 owner_id, int class_id, uint32& bot_count, uint32& bot_class_count);
 	bool LoadBotsList(const uint32 owner_id, std::list<BotsAvailableList>& bots_list, bool by_account = false);
+	bool LoadRaidRoster(uint32 owner_id, std::vector<BotRaidRosterRecord>& records);
+	bool ReplaceRaidRoster(uint32 owner_id, const std::vector<BotRaidRosterRecord>& records);
+	bool SaveRaidRosterEntry(uint32 owner_id, const BotRaidRosterRecord& record);
+	bool SetRaidRosterActive(uint32 owner_id, uint8 active);
 
 	uint32 GetOwnerID(const uint32 bot_id);
 	bool LoadBotID(const std::string& bot_name, uint32& bot_id, uint8& bot_class_id);

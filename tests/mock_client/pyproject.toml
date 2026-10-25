@@ -1,0 +1,13 @@
+[project]
+name = "eqclient"
+version = "0.1.0"
+description = "Titanium EQEmu client for integration tests"
+requires-python = ">=3.9"
+dependencies = ["pycryptodome"]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

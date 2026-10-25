@@ -592,6 +592,25 @@ LOCK TABLES `bot_timers` WRITE;
 /*!40000 ALTER TABLE `bot_timers` ENABLE KEYS */;
 UNLOCK TABLES;
 
+--
+-- Table structure for table `bot_raid_roster`
+--
+
+DROP TABLE IF EXISTS `bot_raid_roster`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bot_raid_roster` (
+  `owner_id` int(11) unsigned NOT NULL,
+  `bot_id` int(11) unsigned NOT NULL,
+  `raid_group` tinyint(3) unsigned NOT NULL DEFAULT '255',
+  `role` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `active` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`bot_id`),
+  KEY `owner_id` (`owner_id`),
+  CONSTRAINT `FK_bot_raid_roster_1` FOREIGN KEY (`bot_id`) REFERENCES `bot_data` (`bot_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 -- Dump completed on 2023-04-06 18:35:53
 
 SET FOREIGN_KEY_CHECKS = 1;

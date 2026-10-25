@@ -2174,6 +2174,25 @@ FROM bot_settings
 WHERE `setting_id` = 0
 AND `setting_type` = 0;
 )"
+		},
+	ManifestEntry{
+		.version = 9056,
+		.description = "2026_10_24_bot_raid_roster.sql",
+		.check = "SHOW TABLES LIKE 'bot_raid_roster'",
+		.condition = "empty",
+		.match = "",
+		.sql = R"(
+CREATE TABLE `bot_raid_roster` (
+  `owner_id` int(11) unsigned NOT NULL,
+  `bot_id` int(11) unsigned NOT NULL,
+  `raid_group` tinyint(3) unsigned NOT NULL DEFAULT '255',
+  `role` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `active` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`bot_id`),
+  KEY `owner_id` (`owner_id`),
+  CONSTRAINT `FK_bot_raid_roster_1` FOREIGN KEY (`bot_id`) REFERENCES `bot_data` (`bot_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+)"
 		}
 // -- template; copy/paste this when you need to create a new entry
 //	ManifestEntry{

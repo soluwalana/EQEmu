@@ -2774,3 +2774,97 @@ void BotDatabase::MapCommandedSpellTypeMinLevels() {
 		}
 	}
 }
+
+bool BotDatabase::LoadRaidRoster(uint32 owner_id, std::vector<BotRaidRosterRecord>& records)
+{
+	records.clear();
+
+	if (!owner_id) {
+		return false;
+	}
+
+	auto results = database.QueryDatabase(
+		fmt::format(
+			"SELECT `bot_id`, `raid_group`, `role`, `active` "
+			"FROM `bot_raid_roster` WHERE `owner_id` = {}",
+			owner_id
+		)
+	);
+
+	if (!results.Success()) {
+		return false;
+	}
+
+	for (auto row = results.begin(); row != results.end(); ++row) {
+		BotRaidRosterRecord record;
+		record.bot_id     = Strings::ToUnsignedInt(row[0]);
+		record.raid_group = static_cast<uint8>(Strings::ToUnsignedInt(row[1], 255));
+		record.role       = static_cast<uint8>(Strings::ToUnsignedInt(row[2]));
+		record.active     = static_cast<uint8>(Strings::ToUnsignedInt(row[3], 1));
+		records.push_back(record);
+	}
+
+	return true;
+}
+
+bool BotDatabase::ReplaceRaidRoster(uint32 owner_id, const std::vector<BotRaidRosterRecord>& records)
+{
+	if (!owner_id) {
+		return false;
+	}
+
+	auto deleted = database.QueryDatabase(
+		fmt::format("DELETE FROM `bot_raid_roster` WHERE `owner_id` = {}", owner_id)
+	);
+
+	if (!deleted.Success()) {
+		return false;
+	}
+
+	for (const auto& record : records) {
+		if (!SaveRaidRosterEntry(owner_id, record)) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool BotDatabase::SaveRaidRosterEntry(uint32 owner_id, const BotRaidRosterRecord& record)
+{
+	if (!owner_id || !record.bot_id) {
+		return false;
+	}
+
+	auto results = database.QueryDatabase(
+		fmt::format(
+			"REPLACE INTO `bot_raid_roster` "
+			"(`owner_id`, `bot_id`, `raid_group`, `role`, `active`) "
+			"VALUES ({}, {}, {}, {}, {})",
+			owner_id,
+			record.bot_id,
+			record.raid_group,
+			record.role,
+			record.active ? 1 : 0
+		)
+	);
+
+	return results.Success();
+}
+
+bool BotDatabase::SetRaidRosterActive(uint32 owner_id, uint8 active)
+{
+	if (!owner_id) {
+		return false;
+	}
+
+	auto results = database.QueryDatabase(
+		fmt::format(
+			"UPDATE `bot_raid_roster` SET `active` = {} WHERE `owner_id` = {}",
+			active ? 1 : 0,
+			owner_id
+		)
+	);
+
+	return results.Success();
+}

@@ -16,6 +16,7 @@
 	along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 #include "client.h"
+#include "bot_raid_roster.h"
 
 #include "common/data_bucket.h"
 #include "common/data_verification.h"
@@ -1357,6 +1358,10 @@ void Client::ChannelMessageReceived(uint8 chan_num, uint8 language, uint8 lang_s
 		break;
 	}
 	case ChatChannel_Group: { /* Group Chat */
+		if (RuleB(Bots, Enabled)) {
+			BotRaidRoster::HandlePhrase(this, message);
+		}
+
 		Raid* raid = entity_list.GetRaidByClient(this);
 		if(raid) {
 			raid->RaidGroupSay((const char*) message, this, language, lang_skill);
@@ -1370,6 +1375,10 @@ void Client::ChannelMessageReceived(uint8 chan_num, uint8 language, uint8 lang_s
 		break;
 	}
 	case ChatChannel_Raid: { /* Raid Say */
+		if (RuleB(Bots, Enabled)) {
+			BotRaidRoster::HandlePhrase(this, message);
+		}
+
 		Raid* raid = entity_list.GetRaidByClient(this);
 		if(raid){
 			raid->RaidSay((const char*) message, this, language, lang_skill);
@@ -1586,6 +1595,10 @@ void Client::ChannelMessageReceived(uint8 chan_num, uint8 language, uint8 lang_s
 				Message(Chat::Red, "Bots are disabled on this server.");
 			}
 			break;
+		}
+
+		if (RuleB(Bots, Enabled)) {
+			BotRaidRoster::HandlePhrase(this, message);
 		}
 
 		if (EQ::ProfanityManager::IsCensorshipActive()) {

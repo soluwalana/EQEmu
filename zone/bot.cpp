@@ -28,6 +28,8 @@
 #include "zone/object.h"
 #include "zone/quest_parser_collection.h"
 #include "zone/raids.h"
+#include "bot_raid_roster.h"
+#include "corpse.h"
 
 /*
 TODO bot rewrite:
@@ -2131,6 +2133,8 @@ void Bot::AI_Process()
 		return;
 	}
 
+	BotRaidRoster::Tick(bot_owner);
+
 	Raid* raid = entity_list.GetRaidByBot(this);
 	SetStoredRaid(raid);
 	uint32 r_group = RAID_GROUPLESS;
@@ -2199,6 +2203,10 @@ void Bot::AI_Process()
 		return;
 	}
 
+	if (BotRaidRoster::TryPriorityHeal(this)) {
+		return;
+	}
+
 	_spell_target_list.clear();
 	_group_spell_target_list.clear();
 	SetTempSpellType(UINT16_MAX);
@@ -2206,7 +2214,9 @@ void Bot::AI_Process()
 // HEAL ROTATION CASTING CHECKS
 	HealRotationChecks();
 
-	if (GetAttackFlag()) { // Push owner's target onto our hate list
+	BotRaidRoster::ApplyOfftank(this);
+
+	if (GetAttackFlag() && !BotRaidRoster::IsOfftank(this)) { // Push owner's target onto our hate list
 		SetOwnerTarget(bot_owner);
 	}
 	else if (GetPullFlag()) { // Push owner's target onto our hate list and set flags so other bots do not aggro
@@ -3614,7 +3624,7 @@ void Bot::Depop() {
 	NPC::Depop(false);
 }
 
-bool Bot::Spawn(Client* botCharacterOwner) {
+bool Bot::Spawn(Client* botCharacterOwner, bool silent, const glm::vec4* at) {
 	if (
 		GetBotID() &&
 		_botOwnerCharacterID &&
@@ -3632,14 +3642,16 @@ bool Bot::Spawn(Client* botCharacterOwner) {
 		texture = 0; //0xFF;
 
 		if (Save()) {
-			GetBotOwner()->CastToClient()->Message(
-				Chat::White,
-				fmt::format(
-					"{} saved.",
-					GetCleanName()
-				).c_str()
-			);
-		} else {
+			if (!silent && GetBotOwner() && GetBotOwner()->IsClient()) {
+				GetBotOwner()->CastToClient()->Message(
+					Chat::White,
+					fmt::format(
+						"{} saved.",
+						GetCleanName()
+					).c_str()
+				);
+			}
+		} else if (!silent && GetBotOwner() && GetBotOwner()->IsClient()) {
 			GetBotOwner()->CastToClient()->Message(
 				Chat::White,
 				fmt::format(
@@ -3649,10 +3661,14 @@ bool Bot::Spawn(Client* botCharacterOwner) {
 			);
 		}
 
-		// Spawn the bot at the bot owner's loc
-		m_Position.x = botCharacterOwner->GetX();
-		m_Position.y = botCharacterOwner->GetY();
-		m_Position.z = botCharacterOwner->GetZ();
+		if (at) {
+			m_Position = *at;
+		}
+		else {
+			m_Position.x = botCharacterOwner->GetX();
+			m_Position.y = botCharacterOwner->GetY();
+			m_Position.z = botCharacterOwner->GetZ();
+		}
 
 		// Make the bot look at the bot owner
 		FaceTarget(botCharacterOwner);
@@ -4961,6 +4977,14 @@ bool Bot::Death(Mob *killer_mob, int64 damage, uint16 spell_id, EQ::skills::Skil
 
 	if (c) {
 		c->Depop();
+	}
+
+	if (NPCTypedata) {
+		const uint32 decay_ms = static_cast<uint32>(RuleI(NPC, MajorNPCCorpseDecayTime));
+		auto* bot_corpse = new Corpse(this, nullptr, GetNPCTypeID(), &NPCTypedata, decay_ms);
+		bot_corpse->SetBotCorpse(GetBotID(), GetBotOwnerCharacterID(), decay_ms);
+		entity_list.AddCorpse(bot_corpse, 0xFFFFFFFF);
+		BotRaidRoster::RegisterBotCorpse(GetBotOwnerCharacterID(), static_cast<uint16>(bot_corpse->GetID()));
 	}
 
 	LeaveHealRotationMemberPool();
@@ -7261,6 +7285,7 @@ void Bot::RemoveBotFromRaid(Bot* bot) {
 // Handles all client zone change event
 void Bot::ProcessClientZoneChange(Client* botOwner) {
 	if (botOwner) {
+		BotRaidRoster::Forget(botOwner->CharacterID());
 		std::vector<Bot*> BotList = entity_list.GetBotsByBotOwnerCharacterID(botOwner->CharacterID());
 
 		for (std::vector<Bot*>::iterator itr = BotList.begin(); itr != BotList.end(); ++itr) {
@@ -10322,6 +10347,10 @@ bool Bot::IsMobEngagedByAnyone(Mob* tar) {
 }
 
 bool Bot::IsValidMezTarget(Mob* owner, Mob* npc, uint16 spell_id) {
+	if (!npc || !BotRaidRoster::AllowMezTarget(this, npc)) {
+		return false;
+	}
+
 	if (npc->GetSpecialAbility(SpecialAbility::MesmerizeImmunity)) {
 		return false;
 	}

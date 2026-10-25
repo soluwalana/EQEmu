@@ -292,7 +292,7 @@ public:
 	static bool IsValidRaceClassCombo(uint16 r, uint8 c);
 	bool IsValidName();
 	static bool IsValidName(std::string& name);
-	bool Spawn(Client* botCharacterOwner);
+	bool Spawn(Client* botCharacterOwner, bool silent = false, const glm::vec4* at = nullptr);
 	void SetLevel(uint8 in_level, bool command = false) override;
 	void FillSpawnStruct(NewSpawn_Struct* ns, Mob* ForWho) override;
 	bool Process() override;
@@ -349,6 +349,13 @@ public:
 
 	bool GetGuardFlag() const { return m_guard_flag; }
 	void SetGuardFlag(bool flag = true) { m_guard_flag = flag; }
+	void GuardAt(const glm::vec4& pos) {
+		m_GuardPoint = pos;
+		if (m_GuardPoint.w == 0.0f) {
+			m_GuardPoint.w = 0.0001f;
+		}
+		SetGuardFlag(true);
+	}
 	bool GetHoldFlag() const { return m_hold_flag; }
 	void SetHoldFlag(bool flag = true) { m_hold_flag = flag; }
 	bool GetAttackFlag() const { return m_attack_flag; }
