@@ -2147,12 +2147,15 @@ WHERE bot_spells_entries.spell_id = spells_new.id);
 	ManifestEntry{
 		.version = 9055,
 		.description = "2026_02_8_move_expansion_bitmask.sql",
-		.check = "SHOW COLUMNS FROM `bot_data` LIKE 'expansion_bitmask'",
+		// 9046 drops this column. Both checks run before either migration, so a
+		// fresh database still has the column and used to skip 9055. The comment
+		// is only present after this migration, so it stays pending until it runs.
+		.check = "SELECT COLUMN_COMMENT FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'bot_data' AND COLUMN_NAME = 'expansion_bitmask' AND COLUMN_COMMENT = 'bot expansion bitmask'",
 		.condition = "empty",
 		.match = "",
 		.sql = R"(
 ALTER TABLE `bot_data`
-	ADD COLUMN `expansion_bitmask` INT(11) NOT NULL DEFAULT '0' AFTER `corruption`;
+	ADD COLUMN IF NOT EXISTS `expansion_bitmask` INT(11) NOT NULL DEFAULT '0' AFTER `corruption`;
 
 UPDATE bot_data bd
 SET bd.expansion_bitmask = COALESCE(
@@ -2173,6 +2176,9 @@ DELETE
 FROM bot_settings
 WHERE `setting_id` = 0
 AND `setting_type` = 0;
+
+ALTER TABLE `bot_data`
+	MODIFY `expansion_bitmask` INT(11) NOT NULL DEFAULT '0' COMMENT 'bot expansion bitmask';
 )"
 		},
 	ManifestEntry{
