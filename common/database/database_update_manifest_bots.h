@@ -25,12 +25,276 @@ std::vector<ManifestEntry> bot_manifest_entries = {
 	ManifestEntry{
 		.version = 9035,
 		.description = "2022_12_04_bot_archery.sql",
+		// A fresh database has no bot_data. Checks run before any migration, so this step has to create the base tables and then add the column.
 		.check = "SHOW COLUMNS FROM `bot_data` LIKE 'archery_setting'",
 		.condition = "empty",
 		.match = "",
 		.sql = R"(
+SET FOREIGN_KEY_CHECKS = 0;
+CREATE TABLE IF NOT EXISTS `bot_data` (
+  `bot_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `owner_id` int(11) unsigned NOT NULL,
+  `spells_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(64) NOT NULL DEFAULT '',
+  `last_name` varchar(64) NOT NULL DEFAULT '',
+  `title` varchar(32) NOT NULL DEFAULT '',
+  `suffix` varchar(32) NOT NULL DEFAULT '',
+  `zone_id` smallint(6) NOT NULL DEFAULT '0',
+  `gender` tinyint(2) NOT NULL DEFAULT '0',
+  `race` smallint(5) NOT NULL DEFAULT '0',
+  `class` tinyint(2) NOT NULL DEFAULT '0',
+  `level` tinyint(2) unsigned NOT NULL DEFAULT '0',
+  `deity` int(11) unsigned NOT NULL DEFAULT '0',
+  `creation_day` int(11) unsigned NOT NULL DEFAULT '0',
+  `last_spawn` int(11) unsigned NOT NULL DEFAULT '0',
+  `time_spawned` int(11) unsigned NOT NULL DEFAULT '0',
+  `size` float NOT NULL DEFAULT '0',
+  `face` int(10) NOT NULL DEFAULT '1',
+  `hair_color` int(10) NOT NULL DEFAULT '1',
+  `hair_style` int(10) NOT NULL DEFAULT '1',
+  `beard` int(10) NOT NULL DEFAULT '0',
+  `beard_color` int(10) NOT NULL DEFAULT '1',
+  `eye_color_1` int(10) NOT NULL DEFAULT '1',
+  `eye_color_2` int(10) NOT NULL DEFAULT '1',
+  `drakkin_heritage` int(10) NOT NULL DEFAULT '0',
+  `drakkin_tattoo` int(10) NOT NULL DEFAULT '0',
+  `drakkin_details` int(10) NOT NULL DEFAULT '0',
+  `ac` smallint(5) NOT NULL DEFAULT '0',
+  `atk` mediumint(9) NOT NULL DEFAULT '0',
+  `hp` int(11) NOT NULL DEFAULT '0',
+  `mana` int(11) NOT NULL DEFAULT '0',
+  `str` mediumint(8) NOT NULL DEFAULT '75',
+  `sta` mediumint(8) NOT NULL DEFAULT '75',
+  `cha` mediumint(8) NOT NULL DEFAULT '75',
+  `dex` mediumint(8) NOT NULL DEFAULT '75',
+  `int` mediumint(8) NOT NULL DEFAULT '75',
+  `agi` mediumint(8) NOT NULL DEFAULT '75',
+  `wis` mediumint(8) NOT NULL DEFAULT '75',
+  `fire` smallint(5) NOT NULL DEFAULT '0',
+  `cold` smallint(5) NOT NULL DEFAULT '0',
+  `magic` smallint(5) NOT NULL DEFAULT '0',
+  `poison` smallint(5) NOT NULL DEFAULT '0',
+  `disease` smallint(5) NOT NULL DEFAULT '0',
+  `corruption` smallint(5) NOT NULL DEFAULT '0',
+  `show_helm` int(11) unsigned NOT NULL DEFAULT '0',
+  `follow_distance` int(11) unsigned NOT NULL DEFAULT '200',
+  `stop_melee_level` tinyint(3) unsigned NOT NULL DEFAULT '255',
+  `expansion_bitmask` int(11) NOT NULL DEFAULT '-1',
+  `enforce_spell_settings` tinyint(2) unsigned NOT NULL DEFAULT '0',
+  `archery_setting` tinyint(2) unsigned NOT NULL DEFAULT '0',
+  `caster_range` int(11) unsigned NOT NULL DEFAULT '300',
+  PRIMARY KEY (`bot_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `bot_heal_rotations` (
+  `heal_rotation_index` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `bot_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `interval` int(11) unsigned NOT NULL DEFAULT '0',
+  `fast_heals` int(3) unsigned NOT NULL DEFAULT '0',
+  `adaptive_targeting` int(3) unsigned NOT NULL DEFAULT '0',
+  `casting_override` int(3) unsigned NOT NULL DEFAULT '0',
+  `safe_hp_base` float unsigned NOT NULL DEFAULT '0',
+  `safe_hp_cloth` float unsigned NOT NULL DEFAULT '0',
+  `safe_hp_leather` float unsigned NOT NULL DEFAULT '0',
+  `safe_hp_chain` float unsigned NOT NULL DEFAULT '0',
+  `safe_hp_plate` float unsigned NOT NULL DEFAULT '0',
+  `critical_hp_base` float unsigned NOT NULL DEFAULT '0',
+  `critical_hp_cloth` float unsigned NOT NULL DEFAULT '0',
+  `critical_hp_leather` float unsigned NOT NULL DEFAULT '0',
+  `critical_hp_chain` float unsigned NOT NULL DEFAULT '0',
+  `critical_hp_plate` float unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`heal_rotation_index`),
+  KEY `FK_bot_heal_rotations` (`bot_id`),
+  CONSTRAINT `FK_bot_heal_rotations` FOREIGN KEY (`bot_id`) REFERENCES `bot_data` (`bot_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `bot_buffs` (
+  `buffs_index` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `bot_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `spell_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `caster_level` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `duration_formula` int(10) unsigned NOT NULL DEFAULT '0',
+  `tics_remaining` int(11) unsigned NOT NULL DEFAULT '0',
+  `poison_counters` int(11) unsigned NOT NULL DEFAULT '0',
+  `disease_counters` int(11) unsigned NOT NULL DEFAULT '0',
+  `curse_counters` int(11) unsigned NOT NULL DEFAULT '0',
+  `corruption_counters` int(11) unsigned NOT NULL DEFAULT '0',
+  `numhits` int(10) unsigned NOT NULL DEFAULT '0',
+  `melee_rune` int(10) unsigned NOT NULL DEFAULT '0',
+  `magic_rune` int(10) unsigned NOT NULL DEFAULT '0',
+  `dot_rune` int(10) unsigned NOT NULL DEFAULT '0',
+  `persistent` tinyint(1) NOT NULL DEFAULT '0',
+  `caston_x` int(10) NOT NULL DEFAULT '0',
+  `caston_y` int(10) NOT NULL DEFAULT '0',
+  `caston_z` int(10) NOT NULL DEFAULT '0',
+  `extra_di_chance` int(10) unsigned NOT NULL DEFAULT '0',
+  `instrument_mod` int(10) NOT NULL DEFAULT '10',
+  PRIMARY KEY (`buffs_index`),
+  KEY `FK_bot_buffs_1` (`bot_id`),
+  CONSTRAINT `FK_bot_buffs_1` FOREIGN KEY (`bot_id`) REFERENCES `bot_data` (`bot_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `bot_command_settings` (
+  `bot_command` varchar(128) NOT NULL DEFAULT '',
+  `access` int(11) NOT NULL DEFAULT '0',
+  `aliases` varchar(256) NOT NULL DEFAULT '',
+  PRIMARY KEY (`bot_command`),
+  UNIQUE KEY `UK_bot_command_settings_1` (`bot_command`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `bot_create_combinations` (
+  `race` int(10) unsigned NOT NULL DEFAULT '0',
+  `classes` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`race`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+CREATE TABLE IF NOT EXISTS `bot_heal_rotation_members` (
+  `member_index` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `heal_rotation_index` int(11) unsigned NOT NULL DEFAULT '0',
+  `bot_id` int(11) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`member_index`),
+  KEY `FK_bot_heal_rotation_members_1` (`heal_rotation_index`),
+  KEY `FK_bot_heal_rotation_members_2` (`bot_id`),
+  CONSTRAINT `FK_bot_heal_rotation_members_1` FOREIGN KEY (`heal_rotation_index`) REFERENCES `bot_heal_rotations` (`heal_rotation_index`),
+  CONSTRAINT `FK_bot_heal_rotation_members_2` FOREIGN KEY (`bot_id`) REFERENCES `bot_data` (`bot_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `bot_heal_rotation_targets` (
+  `target_index` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `heal_rotation_index` int(11) unsigned NOT NULL DEFAULT '0',
+  `target_name` varchar(64) NOT NULL DEFAULT '',
+  PRIMARY KEY (`target_index`),
+  KEY `FK_bot_heal_rotation_targets` (`heal_rotation_index`),
+  CONSTRAINT `FK_bot_heal_rotation_targets` FOREIGN KEY (`heal_rotation_index`) REFERENCES `bot_heal_rotations` (`heal_rotation_index`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `bot_inspect_messages` (
+  `bot_id` int(11) unsigned NOT NULL,
+  `inspect_message` varchar(256) NOT NULL DEFAULT '',
+  PRIMARY KEY (`bot_id`),
+  KEY `bot_id` (`bot_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `bot_inventories` (
+  `inventories_index` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `bot_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `slot_id` mediumint(7) unsigned NOT NULL DEFAULT '0',
+  `item_id` int(11) unsigned DEFAULT '0',
+  `inst_charges` smallint(3) unsigned DEFAULT '0',
+  `inst_color` int(11) unsigned NOT NULL DEFAULT '0',
+  `inst_no_drop` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `inst_custom_data` text,
+  `ornament_icon` int(11) unsigned NOT NULL DEFAULT '0',
+  `ornament_id_file` int(11) unsigned NOT NULL DEFAULT '0',
+  `ornament_hero_model` int(11) NOT NULL DEFAULT '0',
+  `augment_1` mediumint(7) unsigned NOT NULL DEFAULT '0',
+  `augment_2` mediumint(7) unsigned NOT NULL DEFAULT '0',
+  `augment_3` mediumint(7) unsigned NOT NULL DEFAULT '0',
+  `augment_4` mediumint(7) unsigned NOT NULL DEFAULT '0',
+  `augment_5` mediumint(7) unsigned NOT NULL DEFAULT '0',
+  `augment_6` mediumint(7) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`inventories_index`),
+  KEY `FK_bot_inventories_1` (`bot_id`),
+  CONSTRAINT `FK_bot_inventories_1` FOREIGN KEY (`bot_id`) REFERENCES `bot_data` (`bot_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `bot_owner_options` (
+  `owner_id` int(11) unsigned NOT NULL,
+  `option_type` smallint(3) unsigned NOT NULL,
+  `option_value` smallint(3) unsigned DEFAULT '0',
+  PRIMARY KEY (`owner_id`,`option_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `bot_pet_buffs` (
+  `pet_buffs_index` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `pets_index` int(10) unsigned NOT NULL DEFAULT '0',
+  `spell_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `caster_level` int(10) unsigned NOT NULL DEFAULT '0',
+  `duration` int(11) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`pet_buffs_index`),
+  KEY `FK_bot_pet_buffs_1` (`pets_index`),
+  CONSTRAINT `FK_bot_pet_buffs_1` FOREIGN KEY (`pets_index`) REFERENCES `bot_pets` (`pets_index`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `bot_pet_inventories` (
+  `pet_inventories_index` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `pets_index` int(10) unsigned NOT NULL DEFAULT '0',
+  `item_id` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`pet_inventories_index`),
+  KEY `FK_bot_pet_inventories_1` (`pets_index`),
+  CONSTRAINT `FK_bot_pet_inventories_1` FOREIGN KEY (`pets_index`) REFERENCES `bot_pets` (`pets_index`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `bot_pets` (
+  `pets_index` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `spell_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `bot_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(64) DEFAULT NULL,
+  `mana` int(11) NOT NULL DEFAULT '0',
+  `hp` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`pets_index`),
+  UNIQUE KEY `U_bot_pets_1` (`bot_id`),
+  KEY `FK_bot_pets_1` (`bot_id`),
+  CONSTRAINT `FK_bot_pets_1` FOREIGN KEY (`bot_id`) REFERENCES `bot_data` (`bot_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `bot_spell_casting_chances` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `spell_type_index` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `class_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `stance_index` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `nHSND_value` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `pH_value` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `pS_value` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `pHS_value` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `pN_value` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `pHN_value` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `pSN_value` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `pHSN_value` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `pD_value` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `pHD_value` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `pSD_value` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `pHSD_value` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `pND_value` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `pHND_value` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `pSND_value` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `pHSND_value` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `spelltype_class_stance` (`spell_type_index`,`class_id`,`stance_index`)
+) ENGINE=InnoDB AUTO_INCREMENT=2466 DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `bot_spell_settings` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `bot_id` int(11) NOT NULL DEFAULT '0',
+  `spell_id` smallint(5) NOT NULL DEFAULT '0',
+  `priority` smallint(5) NOT NULL DEFAULT '0',
+  `min_hp` smallint(5) NOT NULL DEFAULT '0',
+  `max_hp` smallint(5) NOT NULL DEFAULT '0',
+  `is_enabled` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE IF NOT EXISTS `bot_spells_entries` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `npc_spells_id` int(11) NOT NULL DEFAULT '0',
+  `spellid` smallint(5) NOT NULL DEFAULT '0',
+  `type` int(10) unsigned NOT NULL DEFAULT '0',
+  `minlevel` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `maxlevel` tinyint(3) unsigned NOT NULL DEFAULT '255',
+  `manacost` smallint(5) NOT NULL DEFAULT '-1',
+  `recast_delay` int(11) NOT NULL DEFAULT '-1',
+  `priority` smallint(5) NOT NULL DEFAULT '0',
+  `resist_adjust` int(11) NOT NULL DEFAULT '0',
+  `min_hp` smallint(5) NOT NULL DEFAULT '0',
+  `max_hp` smallint(5) NOT NULL DEFAULT '0',
+  `bucket_name` varchar(100) NOT NULL DEFAULT '',
+  `bucket_value` varchar(100) NOT NULL DEFAULT '',
+  `bucket_comparison` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2180 DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `bot_stances` (
+  `bot_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `stance_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`bot_id`),
+  CONSTRAINT `FK_bot_stances_1` FOREIGN KEY (`bot_id`) REFERENCES `bot_data` (`bot_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+CREATE TABLE IF NOT EXISTS `bot_timers` (
+  `bot_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `timer_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `timer_value` int(11) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`bot_id`),
+  CONSTRAINT `FK_bot_timers_1` FOREIGN KEY (`bot_id`) REFERENCES `bot_data` (`bot_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT IGNORE INTO `bot_command_settings` VALUES ('actionable',0,''),('aggressive',0,'agg'),('attack',0,'atk'),('bindaffinity',0,'bind'),('bot',0,'b'),('botappearance',0,'app|appearance'),('botbeardcolor',0,'bc|beardcolor'),('botbeardstyle',0,'bs|beardstyle'),('botcamp',0,'camp'),('botclone',200,'clone'),('botcreate',0,'create'),('botdelete',0,'delete'),('botdetails',0,'details'),('botdyearmor',0,'dyearmor'),('boteyes',0,'eyes'),('botface',0,'face'),('botfollowdistance',0,'followd'),('botgroup',0,'bg'),('botgroupaddmember',0,'bgadd'),('botgroupcreate',0,'bgcreate'),('botgroupdelete',0,'bgdelete'),('botgrouplist',0,'bglist'),('botgroupload',0,'bgload'),('botgroupremovemember',0,'bgremove'),('bothaircolor',0,'hc|haircolor'),('bothairstyle',0,'hs|hairstyle'),('botheritage',0,'her|heritage'),('botinspectmessage',0,'inspect'),('botlist',0,'list'),('botoutofcombat',0,'ooc|outofcombat'),('botreport',0,'report|health|mana'),('botspawn',0,'spawn'),('botstance',0,'stance'),('botstopmeleelevel',0,'sml'),('botsummon',0,'summon'),('bottattoo',0,'tattoo'),('bottogglearcher',0,'archer|togglearcher'),('bottogglehelm',0,'helm|togglehelm'),('botupdate',0,'update'),('botwoad',0,'woad'),('charm',0,''),('circle',0,'cir'),('cure',0,''),('defensive',0,'def'),('depart',0,'dep'),('escape',0,'evac|succor'),('findaliases',0,'alias'),('follow',0,''),('guard',0,''),('healrotation',0,'hr'),('healrotationadaptivetargeting',0,'hradapt'),('healrotationaddmember',0,'hraddm'),('healrotationaddtarget',0,'hraddt'),('healrotationadjustcritical',0,'hrcrit'),('healrotationadjustsafe',0,'hrsafe'),('healrotationcastingoverride',0,'hroverride'),('healrotationchangeinterval',0,'hrinterval'),('healrotationclearhot',0,'hrclearhot'),('healrotationcleartargets',0,'hrclear'),('healrotationcreate',0,'hrcreate'),('healrotationdelete',0,'hrdelete'),('healrotationfastheals',0,'hrfastheals'),('healrotationlist',0,'hrlist'),('healrotationremovemember',0,'hrremm'),('healrotationremovetarget',0,'hrremt'),('healrotationresetlimits',0,'hrreset'),('healrotationsave',0,'hrsave'),('healrotationsethot',0,'hrsethot'),('healrotationstart',0,'hrstart'),('healrotationstop',0,'hrstop'),('help',0,'?'),('hold',0,''),('identify',0,'lore'),('inventory',0,'inv'),('inventorygive',0,'invgive'),('inventorylist',0,'invlist'),('inventoryremove',0,'invremove'),('inventorywindow',0,'invwindow'),('invisibility',0,'invis'),('levitation',0,'lev'),('lull',0,'calm|pacify'),('mesmerize',0,'mez'),('movementspeed',0,'sow'),('owneroption',0,'oo'),('pet',0,'p'),('petgetlost',0,'pgl'),('petremove',0,'prem'),('petsettype',0,'pset'),('picklock',0,'pl'),('portal',0,'port'),('pull',0,''),('release',0,''),('resistance',0,'resist'),('resurrect',0,'revive'),('rune',0,''),('sendhome',0,'gate'),('size',0,''),('summoncorpse',0,'scorpse'),('taunt',0,''),('track',0,''),('waterbreathing',0,'wb|eb');
+INSERT IGNORE INTO `bot_create_combinations` VALUES (1,15871),(2,49921),(3,15382),(4,425),(5,14342),(6,15635),(7,429),(8,33031),(9,49681),(10,49681),(11,303),(12,15639),(128,18001),(130,50049),(330,3863),(522,15871);
 ALTER TABLE `bot_data`
-ADD COLUMN `archery_setting` TINYINT(2) UNSIGNED NOT NULL DEFAULT '0' AFTER `enforce_spell_settings`;
+ADD COLUMN IF NOT EXISTS `archery_setting` TINYINT(2) UNSIGNED NOT NULL DEFAULT '0' AFTER `enforce_spell_settings`;
+SET FOREIGN_KEY_CHECKS = 1;
 )",
 	},
 	ManifestEntry{
