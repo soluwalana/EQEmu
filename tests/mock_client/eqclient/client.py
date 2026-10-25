@@ -95,12 +95,11 @@ class Client:
         drain(self._session, self._on_app, timeout)
 
     def _on_app(self, opcode: int, payload: bytes) -> None:
+        text = ""
         if opcode == self._special:
             text = special_message_text(payload)
         elif opcode == self._channel:
             text = channel_message_text(payload)
-        else:
-            return
         if text:
             self.messages.append(text)
         for handler in self._listeners:
