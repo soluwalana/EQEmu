@@ -743,7 +743,7 @@ public:
 	static BotSpell GetFirstBotSpellBySpellType(Bot* caster, uint16 spell_type);
 	BotSpell GetSpellByHealType(uint16 spell_type, Mob* tar);
 	static BotSpell GetBestBotSpellForVeryFastHeal(Bot* caster, Mob* tar, uint16 spell_type = BotSpellTypes::RegularHeal);
-	static BotSpell GetBestBotSpellForFastHeal(Bot* caster, Mob* tar, uint16 spell_type = BotSpellTypes::RegularHeal);
+	static BotSpell GetBestBotSpellForFastHeal(Bot* caster, Mob* tar, uint16 spell_type = BotSpellTypes::FastHeals);
 	static BotSpell GetBestBotSpellForHealOverTime(Bot* caster, Mob* tar, uint16 spell_type = BotSpellTypes::RegularHeal);
 	static BotSpell GetBestBotSpellForPercentageHeal(Bot* caster, Mob* tar, uint16 spell_type = BotSpellTypes::RegularHeal);
 	static BotSpell GetBestBotSpellForRegularSingleTargetHeal(Bot* caster, Mob* tar, uint16 spell_type = BotSpellTypes::RegularHeal);

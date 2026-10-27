@@ -8642,29 +8642,22 @@ bool Mob::IsInGroupOrRaid(Mob* other, bool same_raid_group) {
 
 	Raid* raid = IsBot() ? CastToBot()->GetStoredRaid() : (IsRaidGrouped() ? GetRaid() : nullptr);
 
-	if (raid) {
-		if (!other->IsRaidGrouped()) {
-			return false;
-		}
-
+	if (raid && other->IsRaidGrouped()) {
 		Raid* other_raid = other->IsBot() ? other->CastToBot()->GetStoredRaid() : other->GetRaid();
 
-		if (!other_raid) {
-			return false;
+		if (other_raid && other_raid == raid) {
+			auto raid_group = raid->GetGroup(GetCleanName());
+			auto other_raid_group = other_raid->GetGroup(other->GetCleanName());
+
+			if (
+				raid_group != RAID_GROUPLESS &&
+				other_raid_group != RAID_GROUPLESS &&
+				(!same_raid_group || raid_group == other_raid_group)
+			) {
+				return true;
+			}
 		}
-
-		auto raid_group = raid->GetGroup(GetCleanName());
-		auto other_raid_group = other_raid->GetGroup(other->GetCleanName());
-
-		if (
-			raid_group == RAID_GROUPLESS ||
-			other_raid_group == RAID_GROUPLESS ||
-			(same_raid_group && raid_group != other_raid_group)
-		) {
-			return false;
-		}
-
-		return true;
+		// Fall through — bot may still share a classic group with the other member.
 	}
 
 	Group* group = GetGroup();

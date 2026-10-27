@@ -1468,9 +1468,11 @@ bool IsFastHealSpell(uint16 spell_id) {
 	}
 
 	if (IsValidSpell(spell_id)) {
+		// Strict < MAX_FAST so cast_time == 2000ms (Light Healing, etc.) stays RegularHeal —
+		// matching bot_spells_entries type RegularHeal and IsRegularSingleTargetHealSpell.
 		if (
 			spell_id != SPELL_MINOR_HEALING &&
-			(spells[spell_id].cast_time > MAX_VERY_FAST_HEAL_CASTING_TIME && spells[spell_id].cast_time <= MAX_FAST_HEAL_CASTING_TIME) &&
+			(spells[spell_id].cast_time > MAX_VERY_FAST_HEAL_CASTING_TIME && spells[spell_id].cast_time < MAX_FAST_HEAL_CASTING_TIME) &&
 			spells[spell_id].good_effect &&
 			!IsGroupSpell(spell_id)
 		) {
@@ -1553,7 +1555,7 @@ bool IsRegularSingleTargetHealSpell(uint16 spell_id)
 		}
 
 		if (
-			spells[spell_id].cast_time > MAX_FAST_HEAL_CASTING_TIME &&
+			spells[spell_id].cast_time >= MAX_FAST_HEAL_CASTING_TIME &&
 			spells[spell_id].target_type == ST_Target &&
 			!IsCompleteHealSpell(spell_id) &&
 			!IsHealOverTimeSpell(spell_id) &&

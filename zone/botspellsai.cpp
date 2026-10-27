@@ -2721,13 +2721,13 @@ bool Bot::HasBotSpellEntry(uint16 spell_id) {
 }
 
 bool Bot::CanUseBotSpell(uint16 spell_id) {
-	if (AIBot_spells.empty()) {
+	if (!IsValidSpell(spell_id)) {
 		return false;
 	}
 
 	for (const auto& s : AIBot_spells) {
 		if (!IsValidSpell(s.spellid)) {
-			return false;
+			continue;
 		}
 
 		if (s.spellid != spell_id) {
@@ -2739,6 +2739,18 @@ bool Bot::CanUseBotSpell(uint16 spell_id) {
 		}
 
 		return true;
+	}
+
+	// Forced ^cast spellid and empty/settings-filtered AI lists: honor bot_spells_entries.
+	auto* spell_list = content_db.GetBotSpells(GetBotSpellID());
+	if (!spell_list) {
+		return false;
+	}
+
+	for (const auto& e : spell_list->entries) {
+		if (e.spellid == spell_id && EQ::ValueWithin(GetLevel(), e.minlevel, e.maxlevel)) {
+			return true;
+		}
 	}
 
 	return false;

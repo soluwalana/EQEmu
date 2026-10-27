@@ -121,11 +121,12 @@ void bot_command_spell_settings_add(Client *c, const Seperator *sep)
 	auto min_hp = static_cast<int8>(EQ::Clamp(Strings::ToInt(sep->arg[3]), -1, 99));
 	auto max_hp = static_cast<int8>(EQ::Clamp(Strings::ToInt(sep->arg[4]), -1, 100));
 
-	BotSpellSetting bs;
+	BotSpellSetting bs{};
 
 	bs.priority = priority;
 	bs.min_hp = min_hp;
 	bs.max_hp = max_hp;
+	bs.is_enabled = true;
 
 	if (!my_bot->AddBotSpellSetting(spell_id, &bs)) {
 		c->Message(
@@ -435,11 +436,14 @@ void bot_command_spell_settings_update(Client *c, const Seperator *sep)
 	auto min_hp = static_cast<int8>(EQ::Clamp(Strings::ToInt(sep->arg[3]), -1, 99));
 	auto max_hp = static_cast<int8>(EQ::Clamp(Strings::ToInt(sep->arg[4]), -1, 100));
 
-	BotSpellSetting bs;
+	BotSpellSetting bs{};
 
 	bs.priority = priority;
 	bs.min_hp = min_hp;
 	bs.max_hp = max_hp;
+	// Preserve enable state — leaving this uninitialized was disabling heals on update.
+	auto obs = my_bot->GetBotSpellSetting(spell_id);
+	bs.is_enabled = obs ? obs->is_enabled : true;
 
 	if (!my_bot->UpdateBotSpellSetting(spell_id, &bs)) {
 		c->Message(
