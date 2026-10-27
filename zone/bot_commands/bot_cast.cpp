@@ -238,6 +238,24 @@ void bot_command_cast(Client* c, const Seperator* sep)
 
 				return;
 			}
+
+			// Bare ^cast N is a spell *type* (e.g. 17 = Hate Reduction), not spells_new id
+			// (17 = Light Healing). spellsettingsadd uses spells_new ids — use ^cast spellid N.
+			if (IsValidSpell(spell_type)) {
+				c->Message(
+					Chat::Yellow,
+					fmt::format(
+						"Note: {} {} is spell type [{}]. To cast spells_new #{} ({}), use {} spellid {}.",
+						sep->arg[0],
+						spell_type,
+						Bot::GetSpellTypeNameByID(spell_type),
+						spell_type,
+						spells[spell_type].name,
+						sep->arg[0],
+						spell_type
+					).c_str()
+				);
+			}
 		}
 		else {
 			if (Bot::GetSpellTypeIDByShortName(arg1) != UINT16_MAX) {
@@ -495,6 +513,15 @@ void bot_command_cast(Client* c, const Seperator* sep)
 
 	for (auto bot_iter : sbl) {
 		if (!bot_iter->ValidStateCheck(c)) {
+			if (by_spell_id) {
+				c->Message(
+					Chat::Yellow,
+					fmt::format(
+						"{} cannot cast right now (passive, hold, dead, crowd-controlled, or not with you).",
+						bot_iter->GetCleanName()
+					).c_str()
+				);
+			}
 			continue;
 		}
 
@@ -556,6 +583,16 @@ void bot_command_cast(Client* c, const Seperator* sep)
 		}
 		else if (by_spell_id) {
 			if (!bot_iter->CanUseBotSpell(chosen_spell_id)) {
+				c->Message(
+					Chat::Yellow,
+					fmt::format(
+						"{} does not have [{}] (#{}) available at level {}.",
+						bot_iter->GetCleanName(),
+						spells[chosen_spell_id].name,
+						chosen_spell_id,
+						bot_iter->GetLevel()
+					).c_str()
+				);
 				continue;
 			}
 
@@ -566,6 +603,7 @@ void bot_command_cast(Client* c, const Seperator* sep)
 			bool los_required = bot_iter != tar && !IsAnyHealSpell(chosen_spell_id) && !IsPBAESpell(chosen_spell_id);
 			bot_iter->SetHasLoS(los_required ? bot_iter->DoLosChecks(new_tar) : true);
 
+			bot_iter->SetCommandedSpell(true);
 			if (bot_iter->AttemptForcedCastSpell(tar, chosen_spell_id)) {
 				if (!first_found) {
 					first_found = bot_iter;
@@ -574,6 +612,7 @@ void bot_command_cast(Client* c, const Seperator* sep)
 				is_success = true;
 				++success_count;
 			}
+			bot_iter->SetCommandedSpell(false);
 
 			continue;
 		}

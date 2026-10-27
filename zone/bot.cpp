@@ -9791,7 +9791,7 @@ bool Bot::CastChecks(uint16 spell_id, Mob* tar, uint16 spell_type, bool precheck
 		return false;
 	}
 
-	if (tar->CastToBot()->IsImmuneToBotSpell(spell_id, this)) {
+	if (tar->IsBot() && tar->CastToBot()->IsImmuneToBotSpell(spell_id, this)) {
 		LogBotSpellChecksDetail("{} says, 'Cancelling cast of {} on {} due to IsImmuneToBotSpell.'", GetCleanName(), GetSpellName(spell_id), tar->GetCleanName());
 		return false;
 	}
@@ -11530,15 +11530,40 @@ bool Bot::AttemptForcedCastSpell(Mob* tar, uint16 spell_id, bool is_disc) {
 	}
 
 	if (!is_disc && !CheckSpellRecastTimer(spell_id)) {
+		GetBotOwner()->Message(
+			Chat::Yellow,
+			fmt::format("{} says, 'Spell [{}] is still recovering.'", GetCleanName(), spell.name).c_str()
+		);
 		return false;
 	}
 
-	if (!IsInGroupOrRaid(tar, true) &&
+	// Owner / self are always valid for commanded casts — bots can share a classic
+	// group while GetStoredRaid() still points at a leftover raid seat and the
+	// same_raid_group check then falsely rejects healing the owner.
+	const bool with_target =
+		tar == this ||
+		tar == GetBotOwner() ||
+		IsInGroupOrRaid(tar, true) ||
+		(GetBotOwner() && GetBotOwner()->IsInGroupOrRaid(tar, true));
+
+	if (!with_target &&
 		(!RuleB(Bots, EnableBotTGB) || (IsGroupSpell(spell_id) && !IsTGBCompatibleSpell(spell_id)))) {
+		GetBotOwner()->Message(
+			Chat::Yellow,
+			fmt::format(
+				"{} says, 'I am not grouped or raided with [{}].'",
+				GetCleanName(),
+				tar->GetCleanName()
+			).c_str()
+		);
 		return false;
 	}
 
 	if (!HasLoS() && !DoLosChecks(tar)) {
+		GetBotOwner()->Message(
+			Chat::Yellow,
+			fmt::format("{} says, 'I cannot see [{}].'", GetCleanName(), tar->GetCleanName()).c_str()
+		);
 		return false;
 	}
 
@@ -12521,13 +12546,17 @@ bool Bot::ValidStateCheck(Mob* other, bool same_raid_group) {
 		IsFeared() ||
 		IsSilenced() ||
 		IsAmnesiad() ||
-		GetHP() < 0 ||
-		!IsInGroupOrRaid(other, same_raid_group)
+		GetHP() < 0
 	) {
 		return false;
 	}
 
-	return true;
+	// Owner is always actionable for their own bots (commanded ^cast / attack).
+	if (other && (other == this || other == GetBotOwner())) {
+		return true;
+	}
+
+	return IsInGroupOrRaid(other, same_raid_group);
 }
 
 bool Bot::IsValidSpellTypeSubType(uint16 spell_type, uint16 sub_type, uint16 spell_id) {

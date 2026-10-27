@@ -2735,7 +2735,8 @@ bool Bot::CanUseBotSpell(uint16 spell_id) {
 		}
 
 		if (s.minlevel > GetLevel()) {
-			return false;
+			// Stale AI row — still allow bot_spells_entries below.
+			break;
 		}
 
 		return true;
