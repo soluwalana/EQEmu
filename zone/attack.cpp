@@ -2859,10 +2859,22 @@ bool NPC::Death(Mob* killer_mob, int64 damage, uint16 spell, EQ::skills::SkillTy
 		SetID(0);
 		ApplyIllusionToCorpse(illusion_spell_id, corpse);
 
+		// Resolve bot killers to their owner so the client (and group) can loot.
+		Client* loot_client = nullptr;
 		if (killer && killer->IsClient()) {
-			corpse->AllowPlayerLoot(killer, 0);
-			if (killer->IsGrouped()) {
-				Group* g = entity_list.GetGroupByClient(killer->CastToClient());
+			loot_client = killer->CastToClient();
+		} else if (killer && killer->IsBot() && killer->CastToBot()->GetBotOwner() &&
+				   killer->CastToBot()->GetBotOwner()->IsClient()) {
+			loot_client = killer->CastToBot()->GetBotOwner()->CastToClient();
+		} else if (killer_mob && killer_mob->IsBot() && killer_mob->CastToBot()->GetBotOwner() &&
+				   killer_mob->CastToBot()->GetBotOwner()->IsClient()) {
+			loot_client = killer_mob->CastToBot()->GetBotOwner()->CastToClient();
+		}
+
+		if (loot_client) {
+			corpse->AllowPlayerLoot(loot_client, 0);
+			if (loot_client->IsGrouped()) {
+				Group* g = entity_list.GetGroupByClient(loot_client);
 				if (g) {
 					uint8 slot_id = 0;
 
@@ -2874,8 +2886,8 @@ bool NPC::Death(Mob* killer_mob, int64 damage, uint16 spell, EQ::skills::SkillTy
 						slot_id++;
 					}
 				}
-			} else if (killer->IsRaidGrouped()) {
-				Raid* r = entity_list.GetRaidByClient(killer->CastToClient());
+			} else if (loot_client->IsRaidGrouped()) {
+				Raid* r = entity_list.GetRaidByClient(loot_client);
 				if (r) {
 					uint8 slot_id = 0;
 

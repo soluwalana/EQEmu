@@ -1132,6 +1132,18 @@ void Group::SplitExp(ExpSource exp_source, const uint64 exp, Mob* other) {
 		return;
 	}
 
+	// Bots count toward the group-size XP bonus but do not receive XP; only
+	// clients share the pool so a solo owner with bots keeps 100% of the cut.
+	uint8 client_count = 0;
+	for (const auto& m : members) {
+		if (m && m->IsClient()) {
+			client_count++;
+		}
+	}
+	if (!client_count) {
+		return;
+	}
+
 	auto       group_experience = exp;
 	const auto highest_level    = GetHighestLevel();
 
@@ -1175,7 +1187,7 @@ void Group::SplitExp(ExpSource exp_source, const uint64 exp, Mob* other) {
 
 			if (diff >= max_diff) {
 				const uint64 tmp  = (m->GetLevel() + 3) * (m->GetLevel() + 3) * 75 * 35 / 10;
-				const uint64 tmp2 = group_experience / member_count;
+				const uint64 tmp2 = group_experience / client_count;
 				m->CastToClient()->AddEXP(exp_source, tmp < tmp2 ? tmp : tmp2, consider_level, false, other->CastToNPC());
 			}
 		}

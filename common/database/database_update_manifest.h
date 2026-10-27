@@ -6945,9 +6945,6 @@ ALTER TABLE `items_evolving_details`
 )",
 		.content_schema_update = true
 	},
-	// 9293 creates this table. Both checks run before either migration, so a database
-	// missing the table schedules both. This statement has to be a no-op when 9293
-	// already created it in the same update pass.
 	ManifestEntry{
 		.version = 9309,
 		.description = "2025_03_1_create_pet_names_table_if_not_exist.sql",
