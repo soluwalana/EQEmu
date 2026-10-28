@@ -122,6 +122,7 @@ class Session:
         self.closed = False
         self._streams = [_Stream() for _ in range(4)]
         self._inbox: list[bytes] = []
+        self._cursor = 0
         self._last_send = 0.0
         self._last_recv = 0.0
 
@@ -162,20 +163,24 @@ class Session:
             raise SessionError("session is not connected")
         body = b"\x00" + packet if packet and packet[0] == 0 else packet
         self._send_reliable(0, body)
-        self._recv_once(0)
+        self._drain_ready()
 
     def pump(self, timeout: float) -> list[bytes]:
         """Read for up to timeout seconds. Returns newly arrived app packets."""
-        deadline = time.monotonic() + timeout
-        start = len(self._inbox)
-        while time.monotonic() < deadline:
+        if self._cursor:
+            del self._inbox[: self._cursor]
+            self._cursor = 0
+        deadline = time.monotonic() + max(0.0, timeout)
+        while True:
             self._resend()
             self._keepalive()
+            self._drain_ready()
             remaining = deadline - time.monotonic()
             if remaining <= 0:
                 break
             self._recv_once(min(0.05, remaining))
-        fresh = self._inbox[start:]
+        fresh = self._inbox[self._cursor :]
+        self._cursor = len(self._inbox)
         return fresh
 
     def _session_request(self) -> bytes:
@@ -190,6 +195,7 @@ class Session:
 
     def _send_reliable(self, stream_id: int, payload: bytes) -> None:
         stream = self._streams[stream_id]
+        self._wait_for_ack_room(stream)
         header = struct.pack(">BBH", 0, OP_PACKET + stream_id, stream.sequence_out & 0xFFFF)
         packet = header + payload
         stream.sent[stream.sequence_out & 0xFFFF] = _Sent(packet, time.monotonic())
@@ -199,6 +205,22 @@ class Session:
     def _send_ack(self, opcode: int, sequence: int) -> None:
         packet = struct.pack(">BBH", 0, opcode, sequence & 0xFFFF)
         self._send_bytes(packet, crc=True)
+
+    def _wait_for_ack_room(self, stream: _Stream) -> None:
+        """Stay inside the server's receive window. Packets read here stay queued."""
+        deadline = time.monotonic() + 2.0
+        while len(stream.sent) > 30 and time.monotonic() < deadline and self.connected:
+            self._resend()
+            self._keepalive()
+            self._drain_ready()
+            self._recv_once(0.02)
+
+    def _drain_ready(self) -> None:
+        while self.connected or self._peer is not None:
+            readable, _, _ = select.select([self._sock], [], [], 0)
+            if not readable:
+                return
+            self._recv_once(0)
 
     def _keepalive(self) -> None:
         if not self.connected:
@@ -393,16 +415,28 @@ class Session:
         if order == SEQ_PAST:
             self._send_ack(OP_ACK + stream_id, (stream.sequence_in - 1) & 0xFFFF)
             return
-        stream.queue.pop(sequence, None)
-        self._send_ack(OP_ACK + stream_id, stream.sequence_in)
-        stream.sequence_in = (stream.sequence_in + 1) & 0xFFFF
-        if fragment:
-            self._consume_fragment(stream, data)
-        else:
-            self._process_decoded(data[4:])
-        queued = stream.queue.pop(stream.sequence_in, None)
-        if queued is not None:
-            self._process_decoded(queued)
+        # Deliver in-order frames iteratively — a long catch-up queue must not recurse.
+        frame = data
+        is_frag = fragment
+        while frame is not None and len(frame) >= 4:
+            seq = struct.unpack_from(">H", frame, 2)[0]
+            stream.queue.pop(seq, None)
+            self._send_ack(OP_ACK + stream_id, stream.sequence_in)
+            stream.sequence_in = (stream.sequence_in + 1) & 0xFFFF
+            if is_frag:
+                self._consume_fragment(stream, frame)
+            else:
+                self._process_decoded(frame[4:])
+            frame = stream.queue.pop(stream.sequence_in, None)
+            if frame is None or len(frame) < 2 or frame[0] != 0:
+                break
+            op = frame[1]
+            if OP_FRAGMENT <= op <= OP_FRAGMENT + 3:
+                is_frag = True
+            elif OP_PACKET <= op <= OP_PACKET + 3:
+                is_frag = False
+            else:
+                break
 
     def _consume_fragment(self, stream: _Stream, data: bytes) -> None:
         if stream.fragment_total == 0:

@@ -20,8 +20,18 @@ def test_a_door_on_the_step_is_opened_and_the_exit_is_not():
 def test_a_wall_blocks_the_shot_and_open_air_does_not():
     wall = ((0.0, 0.0, 0.0), (0.0, 10.0, 0.0), (0.0, 0.0, 10.0))
     zone = ZoneMap([wall])
-    assert not zone.clear((-5.0, 5.0, 0.0), (5.0, 5.0, 0.0))
-    assert zone.clear((-5.0, 5.0, 0.0), (-1.0, 5.0, 0.0))
+    assert not zone.clear((-5.0, 5.0, 0.0), (5.0, 5.0, 0.0), headings=1)
+    assert zone.clear((-5.0, 5.0, 0.0), (-1.0, 5.0, 0.0), headings=1)
+
+
+def test_eight_headings_peek_around_a_thin_blocker():
+    """A post on the direct line; peeks at ±45° still see the target."""
+    # Thin vertical strip on the x=0 line at the midpoint between eyes.
+    post = ((0.0, 4.9, 0.0), (0.0, 5.1, 0.0), (0.0, 5.0, 10.0))
+    zone = ZoneMap([post])
+    start, end = (-5.0, 5.0, 0.0), (5.0, 5.0, 0.0)
+    assert not zone.clear(start, end, headings=1)
+    assert zone.clear(start, end, headings=8)
 
 
 def test_account_and_name_load_the_server_character():

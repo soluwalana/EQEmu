@@ -13,10 +13,12 @@ from eqclient.packets import (
     SAY_CHANNEL,
     channel_message,
     channel_message_text,
-    special_message_text,
+    channel_sender,
+    saylink_plain,
+    special_message,
 )
 from eqclient.session import Session, SessionError
-from eqclient.world import enter
+from eqclient.world import enter, rezone
 from eqclient.zone import drain, send, zone_in
 
 
@@ -54,8 +56,15 @@ class Client:
             raise SessionError("client is not in a zone")
         send(self._session, require(self._opcodes, opcode_name), payload)
 
-    def say(self, text: str) -> None:
-        self._chat(text, SAY_CHANNEL)
+    def say(self, text: str, *, language: int = 0, lang_skill: int = 100) -> None:
+        self._chat(text, SAY_CHANNEL, language=language, lang_skill=lang_skill)
+
+    def group_say(self, text: str, *, language: int = 0, lang_skill: int = 100) -> None:
+        """Group channel (2) — server language skill-ups land on group speech."""
+        self._chat(text, 2, language=language, lang_skill=lang_skill)
+
+    def tell(self, name: str, text: str) -> None:
+        self._chat(text, 7, name)
 
     def command(self, text: str) -> None:
         if not text.startswith("^"):
@@ -80,10 +89,53 @@ class Client:
         self._session = None
         self._world = None
 
-    def _chat(self, text: str, channel: int) -> None:
+    def transfer_zone(self) -> None:
+        """After OP_ZoneChange success to another zone: drop sessions and zone in again."""
+        if self._session is not None:
+            self._session.close()
+            self._session = None
+        if self._world is not None:
+            self._world.close()
+            self._world = None
+        world_session, zone_host, zone_port = rezone(
+            self._host,
+            self._world_port,
+            self.account_id,
+            self.key,
+            self._character,
+            timeout=self._timeout,
+        )
+        self._world = world_session
+        self.zone_host = zone_host
+        self.zone_port = zone_port
+        session = Session()
+        try:
+            session.connect(zone_host, zone_port, timeout=min(self._timeout, 5.0))
+            self._session = session
+            zone_in(session, self._opcodes, self._character, self._on_app, timeout=self._timeout)
+        except Exception:
+            self.close()
+            raise
+
+    def _chat(
+        self,
+        text: str,
+        channel: int,
+        target: str = "",
+        *,
+        language: int = 0,
+        lang_skill: int = 100,
+    ) -> None:
         if self._session is None:
             raise SessionError("client is not in a zone")
-        payload = channel_message(self._character, text, channel)
+        payload = channel_message(
+            self._character,
+            text,
+            channel,
+            target,
+            language=language,
+            lang_skill=lang_skill,
+        )
         send(self._session, self._channel, payload)
         self._pump(0.05)
 
@@ -96,12 +148,19 @@ class Client:
 
     def _on_app(self, opcode: int, payload: bytes) -> None:
         text = ""
+        who = ""
         if opcode == self._special:
-            text = special_message_text(payload)
+            who, text = special_message(payload)
         elif opcode == self._channel:
             text = channel_message_text(payload)
+            who = channel_sender(payload)
         if text:
+            text = saylink_plain(text)
             self.messages.append(text)
+            # Agent emits a compact `faction …` line for standing adjusts; skip the chat echo.
+            if "faction standing" not in text.lower():
+                shown = f"{who}: {text}" if who else text
+                print(f"chat {shown}", flush=True)
         for handler in self._listeners:
             handler(opcode, payload)
 

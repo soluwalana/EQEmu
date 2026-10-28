@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 import struct
 import zlib
 from dataclasses import dataclass
@@ -10,13 +11,44 @@ from eqclient.navmesh import maps_root
 
 _EYE = 2.7  # (default size 6 / 2) * 0.9, where this character looks from
 _SEE = 1.5  # (default size 6 / 2) * 0.5, where the other character is seen
+_PEEK = 1.5  # yards offset when sampling alternate headings
+_LOS_HEADINGS = 8  # compass peeks around watcher and target
 
 
 @dataclass
 class ZoneMap:
     triangles: list[tuple[tuple[float, float, float], tuple[float, float, float], tuple[float, float, float]]]
 
-    def clear(self, start: tuple[float, float, float], end: tuple[float, float, float]) -> bool:
+    def clear(
+        self,
+        start: tuple[float, float, float],
+        end: tuple[float, float, float],
+        *,
+        headings: int = _LOS_HEADINGS,
+        peek: float = _PEEK,
+    ) -> bool:
+        """True when any sampled eye-to-target ray is unblocked.
+
+        Direct center-to-center first; if that clips geometry, try evenly spaced
+        heading offsets around the watcher and around the target so a thin wall
+        or corner does not hide an otherwise visible NPC.
+        """
+        if self._ray_clear(start, end):
+            return True
+        n = max(1, int(headings))
+        if n <= 1 or peek <= 0:
+            return False
+        for i in range(n):
+            angle = (2.0 * math.pi * i) / n
+            dx = math.cos(angle) * peek
+            dy = math.sin(angle) * peek
+            if self._ray_clear((start[0] + dx, start[1] + dy, start[2]), end):
+                return True
+            if self._ray_clear(start, (end[0] + dx, end[1] + dy, end[2])):
+                return True
+        return False
+
+    def _ray_clear(self, start: tuple[float, float, float], end: tuple[float, float, float]) -> bool:
         """True when no collidable triangle sits between the two eye points."""
         origin = (start[0], start[1], start[2] + _EYE)
         target = (end[0], end[1], end[2] + _SEE)

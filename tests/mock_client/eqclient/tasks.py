@@ -6,6 +6,7 @@ import struct
 from dataclasses import dataclass, field
 
 from eqclient.packets import cstring
+from eqclient.zones import remember, zone_id_of
 
 DELIVER = 1
 KILL = 2
@@ -50,10 +51,14 @@ class TaskBook:
         self.pending: list[int] = []
         self.offer: Offer | None = None
         self.here: str = ""
+        self.here_id: int = 0
         self.task_zone: dict[int, str] = {}
 
-    def set_here(self, zone: str) -> None:
+    def set_here(self, zone: str, zone_id: int = 0) -> None:
         self.here = zone
+        self.here_id = zone_id or zone_id_of(zone)
+        if zone and self.here_id:
+            remember(zone, self.here_id)
 
     def add(self, activity: Activity) -> None:
         self._touch(activity.task_id)
@@ -63,23 +68,65 @@ class TaskBook:
             if current.task_id == activity.task_id and current.activity_id == activity.activity_id:
                 activity.done = max(activity.done, current.done)
                 self.activities[index] = activity
+                if not activity.optional and activity.done < activity.goal:
+                    self.completed.discard(activity.task_id)
                 return
         self.activities.append(activity)
+        if not activity.optional and activity.done < activity.goal:
+            self.completed.discard(activity.task_id)
 
     def in_zone(self, task_id: int) -> bool:
-        """A task belongs to the zone where its activities arrived. Other zones leave it alone."""
+        """A task with no zone on its steps belongs where its activities arrived."""
         home = self.task_zone.get(task_id, "")
         return not home or not self.here or home == self.here
 
+    def _step_local(self, activity: Activity) -> bool:
+        """A step that names a zone is local only in that zone. The packet's arrival is the fallback."""
+        if activity.zone_id and self.here_id:
+            return activity.zone_id == self.here_id
+        return self.in_zone(activity.task_id)
+
+    def _ordered_ids(self) -> list[int]:
+        ordered = [task_id for task_id in TUTORIAL_TASKS if task_id in self.order]
+        ordered.extend(task_id for task_id in self.order if task_id not in ordered)
+        return ordered
+
+    def away_zone_id(self) -> int:
+        """The zone of the next required step that is not local. Zero when every open step is here."""
+        for task_id in self._ordered_ids():
+            if task_id in self.completed:
+                continue
+            steps = [
+                activity
+                for activity in self.activities
+                if activity.task_id == task_id and not activity.optional and not activity.finished and not self._step_local(activity)
+            ]
+            if not steps:
+                continue
+            chosen = min(steps, key=lambda activity: (activity.step, activity.activity_id))
+            if chosen.zone_id:
+                return chosen.zone_id
+            return zone_id_of(self.task_zone.get(task_id, ""))
+        return 0
+
+    def has_open_work(self) -> bool:
+        return any(
+            not activity.optional and not activity.finished and activity.task_id not in self.completed
+            for activity in self.activities
+        )
+
     def current(self) -> list[Activity]:
-        """Unfinished required activities on the earliest open task in this zone, at its lowest step."""
-        for task_id in self.order:
-            if task_id in self.completed or not self.in_zone(task_id):
+        """Unfinished required activities of the tutorial task, then any other open task."""
+        for task_id in self._ordered_ids():
+            if task_id in self.completed:
                 continue
             open_steps = [
                 activity
                 for activity in self.activities
-                if activity.task_id == task_id and not activity.optional and not activity.finished
+                if activity.task_id == task_id
+                and not activity.optional
+                and not activity.finished
+                and self._step_local(activity)
             ]
             if not open_steps:
                 continue
@@ -128,8 +175,27 @@ class TaskBook:
         return self.offer
 
     def on_activity(self, payload: bytes) -> None:
-        """Long OP_TaskActivity. A 25-byte short form is the locked placeholder."""
+        """Long OP_TaskActivity. A 25-byte short form is still locked, so it stays open."""
         if len(payload) <= 25:
+            if len(payload) < 25:
+                return
+            task_id, activity_id = struct.unpack_from("<II", payload, 8)
+            optional = bool(payload[24])
+            # A later locked packet must not erase a step we already parsed.
+            for current in self.activities:
+                if current.task_id == task_id and current.activity_id == activity_id and current.target_name:
+                    return
+            self.add(
+                Activity(
+                    task_id=task_id,
+                    activity_id=activity_id,
+                    step=99,
+                    kind=0,
+                    target_name="",
+                    done=0,
+                    optional=optional,
+                )
+            )
             return
         reader = _Reader(payload)
         try:
@@ -152,11 +218,13 @@ class TaskBook:
             done = reader.i32()
         except (struct.error, ValueError, IndexError):
             return
+        if not target:
+            target = _named_in(_description)
         self.add(
             Activity(
                 task_id=task_id,
                 activity_id=activity_id,
-                step=activity_id,
+                step=1,
                 kind=kind,
                 target_name=target,
                 item_list=item_list,
@@ -190,6 +258,14 @@ class TaskBook:
     def _touch(self, task_id: int) -> None:
         if task_id not in self.order:
             self.order.append(task_id)
+
+
+def _named_in(description: str) -> str:
+    """'Kill 5 Gloomingdeep Grunts' carries the target when the mob field is blank."""
+    parts = description.strip().split(None, 2)
+    if len(parts) == 3 and parts[0].lower() == "kill" and parts[1].isdigit():
+        return parts[2]
+    return description.strip()
 
 
 class _Reader:

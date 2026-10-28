@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import struct
 from dataclasses import dataclass
 
@@ -73,10 +74,13 @@ def parse_server_list(payload: bytes) -> list[int]:
     return servers
 
 
-def login_info(account_id: int, key: str) -> bytes:
+def login_info(account_id: int, key: str, *, zoning: bool = False) -> bytes:
     packet = bytearray(LOGIN_INFO_SIZE)
     creds = f"{account_id}\x00{key}".encode("latin1")
     packet[: min(len(creds), 64)] = creds[:64]
+    # LoginInfo.zoning at 188 — world skips char select and Clearance(1)s into the saved zone.
+    if zoning:
+        packet[188] = 1
     return bytes(packet)
 
 
@@ -144,6 +148,12 @@ class Played:
     wisdom: int = 0
     intelligence: int = 0
     charisma: int = 0
+    home_zone_id: int = 0
+    platinum: int = 0
+    gold: int = 0
+    silver: int = 0
+    copper: int = 0
+    coin_known: bool = False
 
 
 def character_by_name(payload: bytes, name: str) -> Played | None:
@@ -176,6 +186,7 @@ def player_profile(payload: bytes) -> Played | None:
     if len(payload) < 2264:
         return None
     gender, race, class_id = struct.unpack_from("<III", payload, 4)
+    home_zone_id = struct.unpack_from("<I", payload, 24)[0]
     level = payload[20]
     deity = struct.unpack_from("<I", payload, 124)[0]
     points, mana, hp = struct.unpack_from("<III", payload, 2224)
@@ -183,6 +194,13 @@ def player_profile(payload: bytes) -> Played | None:
     name = ""
     if len(payload) >= 13004:
         name = payload[12940:13004].split(b"\x00", 1)[0].decode("latin1")
+    # Header comment puts platinum at 4720. This client's spell book is 272 bytes earlier
+    # (2584 → 2312), so the purse is at 4448.
+    platinum = gold = silver = copper = 0
+    coin_known = False
+    if len(payload) >= 4464:
+        platinum, gold, silver, copper = struct.unpack_from("<IIII", payload, 4448)
+        coin_known = True
     return Played(
         name,
         race,
@@ -201,6 +219,12 @@ def player_profile(payload: bytes) -> Played | None:
         wisdom,
         intelligence,
         charisma,
+        home_zone_id,
+        platinum,
+        gold,
+        silver,
+        copper,
+        coin_known,
     )
 
 
@@ -239,12 +263,39 @@ def zone_server_info(payload: bytes) -> tuple[str, int]:
     return host, port
 
 
-def channel_message(sender: str, text: str, channel: int = SAY_CHANNEL) -> bytes:
+def channel_message(
+    sender: str,
+    text: str,
+    channel: int = SAY_CHANNEL,
+    target: str = "",
+    *,
+    language: int = 0,
+    lang_skill: int = 100,
+) -> bytes:
+    """ChannelMessage_Struct. language 0 is Common; group chat (2) trains foreign tongues."""
     packet = bytearray(CHANNEL_MESSAGE_SIZE)
+    encoded_target = target.encode("latin1")[:63]
+    packet[: len(encoded_target)] = encoded_target
     encoded_sender = sender.encode("latin1")[:63]
     packet[64 : 64 + len(encoded_sender)] = encoded_sender
-    struct.pack_into("<III", packet, 128, 0, channel, 0)
+    struct.pack_into(
+        "<IIIII",
+        packet,
+        128,
+        language & 0xFF,
+        channel & 0xFFFFFFFF,
+        0,
+        0,
+        max(0, min(100, int(lang_skill))),
+    )
     return bytes(packet) + text.encode("latin1") + b"\x00"
+
+
+def channel_number(payload: bytes) -> int:
+    """Tell is 7 and group is 2. Say, which we already send, is 8."""
+    if len(payload) < 136:
+        return 0
+    return struct.unpack_from("<I", payload, 132)[0]
 
 
 def channel_message_text(payload: bytes) -> str:
@@ -253,17 +304,115 @@ def channel_message_text(payload: bytes) -> str:
     return payload[CHANNEL_MESSAGE_SIZE:].split(b"\x00", 1)[0].decode("latin1", errors="replace")
 
 
-def special_message_text(payload: bytes) -> str:
-    """Client::Message layout after the Titanium OP_SpecialMesg encode."""
-    if len(payload) < 11:
+_SAYLINK = re.compile(r"\x12.{45}([^\x12]+?)\x12")
+
+
+def consume_packet(slot: int, kind: int) -> bytes:
+    """kind 1 is food and 2 is water. The auto field is the right-click value."""
+    return struct.pack("<II4sB3s", slot, 0xFFFFFFFF, b"\x00" * 4, kind, b"\x00" * 3)
+
+
+def memorize_packet(slot: int, spell_id: int, scribing: int) -> bytes:
+    """scribing 0 writes the book, 1 memorizes a gem, 2 forgets it."""
+    return struct.pack("<IIII", slot, spell_id, scribing, 0)
+
+
+def cast_packet(slot: int, spell_id: int, target_id: int) -> bytes:
+    """Titanium CastSpell. Inventory slot 0xFFFF is a gem, not a clicky."""
+    return struct.pack("<IIII4s", slot, spell_id, 0xFFFF, target_id, b"\x00" * 4)
+
+
+def group_invite(invitee: str, inviter: str) -> bytes:
+    return _two_names(invitee, inviter)
+
+
+def group_follow(member: str, leader: str) -> bytes:
+    return _two_names(member, leader)
+
+
+def _two_names(first: str, second: str) -> bytes:
+    packet = bytearray(128)
+    packet[: len(first.encode("latin1")[:63])] = first.encode("latin1")[:63]
+    packet[64 : 64 + len(second.encode("latin1")[:63])] = second.encode("latin1")[:63]
+    return bytes(packet)
+
+
+def who_request(name: str) -> bytes:
+    packet = bytearray(152)
+    packet[: len(name.encode("latin1")[:63])] = name.encode("latin1")[:63]
+    struct.pack_into("<6I", packet, 64, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0, 0)
+    return bytes(packet)
+
+
+def popup_message(payload: bytes) -> tuple[str, str, int]:
+    """Titanium OP_OnLevelMessage: title, text, and the id the OK button sends back."""
+    if len(payload) < 128:
+        return "", "", 0
+    title = payload[:128].split(b"\x00", 1)[0].decode("latin1", errors="replace")
+    text = payload[128:128 + 4096].split(b"\x00", 1)[0].decode("latin1", errors="replace")
+    popup_id = struct.unpack_from("<I", payload, 4232)[0] if len(payload) >= 4236 else 0
+    return title, popup_plain(text), popup_id
+
+
+def popup_plain(text: str) -> str:
+    text = re.sub(r"<br\s*/?>", " ", text, flags=re.IGNORECASE)
+    text = re.sub(r"<[^>]+>", "", text)
+    return " ".join(text.split())
+
+
+def popup_response(popup_id: int) -> bytes:
+    """OK on that window. The server reads the popup id from the second field."""
+    return struct.pack("<II", 0, popup_id)
+
+
+def saylink_words(text: str) -> list[str]:
+    """The visible words inside Titanium saylinks. Those are what you say back."""
+    words: list[str] = []
+    for match in _SAYLINK.finditer(text):
+        word = match.group(1).strip()
+        if word and word.lower() not in {item.lower() for item in words}:
+            words.append(word)
+    return words
+
+
+def saylink_plain(text: str) -> str:
+    """Replace \x12 item-link blobs with their visible names for chat logs."""
+    if "\x12" not in text:
+        return text
+    return _SAYLINK.sub(lambda m: m.group(1), text)
+
+
+def channel_sender(payload: bytes) -> str:
+    if len(payload) < 128:
         return ""
+    return payload[64:128].split(b"\x00", 1)[0].decode("latin1", errors="replace")
+
+
+def movement_history(x: float, y: float, z: float, timestamp: int) -> bytes:
+    """One OP_FloatListThing entry. The zone wants this before position updates.
+
+    The packed struct is Y, X, Z, then a type byte and a timestamp. Type 0 is a
+    normal sample; a teleport type is what the warp check looks for.
+    """
+    return struct.pack("<fffBI", y, x, z, 0, timestamp & 0xFFFFFFFF)
+
+
+def special_message(payload: bytes) -> tuple[str, str]:
+    """Speaker and text from the Titanium OP_SpecialMesg encode."""
+    if len(payload) < 11:
+        return "", ""
     offset = 3 + 4 + 4
-    _name, offset = cstring(payload, offset)
+    name, offset = cstring(payload, offset)
     offset += 12
     if offset >= len(payload):
-        return ""
+        return name, ""
     message, _end = cstring(payload, offset)
-    return message
+    return name, message
+
+
+def special_message_text(payload: bytes) -> str:
+    """Client::Message layout after the Titanium OP_SpecialMesg encode."""
+    return special_message(payload)[1]
 
 
 def sign_extend(value: int, bits: int) -> int:
@@ -306,6 +455,13 @@ def spawn_position(blob: bytes) -> tuple[float, float, float]:
     return eq19(word_x, 10), eq19(word_y, 0), eq19(word_z, 0)
 
 
+def new_zone_id(payload: bytes) -> int:
+    """Zone id at the end of OP_NewZone. Short packets from tests have none."""
+    if len(payload) < 686:
+        return 0
+    return struct.unpack_from("<H", payload, 684)[0]
+
+
 def new_zone(payload: bytes) -> tuple[str, float, float, float]:
     """Short name at 64. Safe point is y, x, z starting at 492."""
     if len(payload) < 504:
@@ -326,10 +482,21 @@ def request_zone_change(payload: bytes) -> tuple[int, float, float, float]:
 
 def zone_change_position(payload: bytes) -> tuple[float, float, float]:
     """OP_ZoneChange floats are y, x, z at 68."""
-    if len(payload) < 80:
+    return zone_change(payload)[2:5]
+
+
+def zone_change(payload: bytes) -> tuple[int, int, float, float, float, int]:
+    """OP_ZoneChange: zone_id, instance_id, x, y, z, success.
+
+    success==1 with a different zone_id means disconnect and re-enter through world.
+    success==1 with the same zone_id is cancel / in-zone MovePC.
+    """
+    if len(payload) < 88:
         raise ValueError(f"OP_ZoneChange is {len(payload)} bytes")
+    zone_id, instance_id = struct.unpack_from("<HH", payload, 64)
     y, x, z = struct.unpack_from("<fff", payload, 68)
-    return x, y, z
+    success = struct.unpack_from("<i", payload, 84)[0]
+    return zone_id, instance_id, x, y, z, success
 
 
 def _fixed_string(blob: bytes, offset: int, size: int) -> str:
@@ -370,19 +537,138 @@ def parse_ground(blob: bytes) -> tuple[int, str, float, float, float]:
     return drop_id, name, x, y, z
 
 
-def client_position(spawn_id: int, sequence: int, x: float, y: float, z: float) -> bytes:
-    """PlayerPositionUpdateClient_Struct, 36 bytes. The decoder reads the float x/y/z."""
-    return struct.pack("<HH4fI2fH2s", spawn_id, sequence & 0xFFFF, y, 0.0, 0.0, 0.0, 0, x, z, 0, b"\x00\x00")
+def find_person_request(entity_id: int, x: float, y: float, z: float) -> bytes:
+    """FindPersonRequest_Struct. The point is stored y, x, z, and the id is the spawn."""
+    return struct.pack("<Ifff", entity_id, y, x, z)
+
+
+def find_destination(payload: bytes) -> tuple[float, float, float] | None:
+    """NPC position from FindPersonResult_Struct.dest (y, x, z floats)."""
+    if len(payload) < 12:
+        return None
+    py, px, pz = struct.unpack_from("<fff", payload, 0)
+    return (px, py, pz)
+
+
+def find_path(payload: bytes) -> list[tuple[float, float, float]]:
+    """Points from OP_FindPersonReply.
+
+    The first 12 bytes are the destination. The path follows, each point y, x, z,
+    and the server repeats the destination at the end.
+    """
+    if len(payload) < 24:
+        return []
+    points: list[tuple[float, float, float]] = []
+    offset = 12
+    while offset + 12 <= len(payload):
+        py, px, pz = struct.unpack_from("<fff", payload, offset)
+        points.append((px, py, pz))
+        offset += 12
+    if len(points) >= 2 and _same_point(points[-1], points[-2]):
+        points.pop()
+    return points
+
+
+def guide_from(
+    points: list[tuple[float, float, float]],
+    here: tuple[float, float, float],
+) -> list[tuple[float, float, float]]:
+    """The glowing line continues after the point he is already standing on."""
+    if not points:
+        return []
+    nearest = min(range(len(points)), key=lambda index: _span(points[index], here))
+    route = [point for point in points[nearest + 1 :] if _span(point, here) > 1.0]
+    if route:
+        return route
+    if _span(points[-1], here) > 1.0:
+        return [points[-1]]
+    return []
+
+
+def _same_point(a: tuple[float, float, float], b: tuple[float, float, float]) -> bool:
+    return _span(a, b) <= 0.1
+
+
+def _span(a: tuple[float, float, float], b: tuple[float, float, float]) -> float:
+    return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
+
+
+def eq_heading(x1: float, y1: float, x2: float, y2: float) -> int:
+    """0-512 heading, the same quadrants the server uses for IsFacingMob."""
+    import math
+
+    x_diff = abs(x1 - x2)
+    y_diff = abs(y1 - y2) or 1e-9
+    angle = math.atan2(x_diff, y_diff) * 180.0 * 0.3183099014828645
+    if y1 >= y2:
+        degrees = (90.0 - angle + 90.0) if x2 >= x1 else (angle + 180.0)
+    elif y1 > y2 or x2 > x1:
+        degrees = angle
+    else:
+        degrees = 90.0 - angle + 270.0
+    return int(degrees * 511.5 * 0.0027777778) & 0xFFF
+
+
+def client_position(
+    spawn_id: int,
+    sequence: int,
+    x: float,
+    y: float,
+    z: float,
+    ox: float | None = None,
+    oy: float | None = None,
+    oz: float | None = None,
+    heading: int = 0,
+    animation: int = 0,
+) -> bytes:
+    """PlayerPositionUpdateClient_Struct, 36 bytes.
+
+    Spawn id 0 is this client. A nonzero id that is not the player's is handled
+    as a boat and the player's position stays put. Horizontal deltas are the
+    step. Vertical delta stays 0 so a watcher does not play a jump.
+
+    `animation` is SpeedRun (server TODO comment), not a 1=walk/2=run enum:
+    0 stand, ~12 walk, ~28 default run (client runspeed 0.7 → base_runspeed 28).
+    """
+    dx = 0.0 if ox is None else x - ox
+    dy = 0.0 if oy is None else y - oy
+    dz = 0.0
+    # Titanium: animation:10 | delta_heading:10 | padding:12 (padding mostly 1).
+    anim_word = (animation & 0x3FF) | (1 << 20)
+    return struct.pack(
+        "<HH4fI2fH2s",
+        spawn_id & 0xFFFF,
+        sequence & 0xFFFF,
+        y,
+        dz,
+        dx,
+        dy,
+        anim_word,
+        x,
+        z,
+        (heading * 4) & 0xFFF,
+        b"\x00\x00",
+    )
 
 
 def consider_faction(payload: bytes) -> int:
     if len(payload) < 12:
         raise ValueError(f"consider is {len(payload)} bytes")
-    return struct.unpack_from("<I", payload, 8)[0]
+    raw = struct.unpack_from("<I", payload, 8)[0]
+    # Titanium swaps 6↔9 and 7↔8 before send; undo so stored values match server truth.
+    if raw == 6:
+        return 9
+    if raw == 7:
+        return 8
+    if raw == 9:
+        return 6
+    if raw == 8:
+        return 7
+    return raw
 
 
 def is_enemy_faction(faction: int) -> bool:
-    """Faction 8 threatens and 9 scowls."""
+    """Threatening (8) and scowling (9)."""
     return faction in (8, 9)
 
 
@@ -402,7 +688,34 @@ def _pipe_int(fields: list[str], index: int) -> int:
     return int(text)
 
 
-def parse_item_packet(payload: bytes) -> tuple[int, int, str, str, int, int, int, int, int, int, int, int, int, int, int] | None:
+def parse_inventory(payload: bytes) -> list[tuple[int, int, str, str, int, int, int, int, int, int, int, int, int, int, int]]:
+    """OP_CharInventory is the login list: null-terminated items, with no type prefix."""
+    found = []
+    for blob in payload.split(b"\x00"):
+        if b'"' not in blob:
+            continue
+        parsed = parse_item_packet(struct.pack("<I", ITEM_INVENTORY) + blob)
+        if parsed is not None:
+            found.append(parsed)
+    return found
+
+
+def profile_spells(payload: bytes) -> tuple[dict[int, int], dict[int, int]]:
+    """Spell book at 2312, four hundred ids. Gems at 4360. 0 and 0xffffffff are empty."""
+    book: dict[int, int] = {}
+    gems: dict[int, int] = {}
+    if len(payload) >= 2312 + 400 * 4:
+        for index, spell in enumerate(struct.unpack_from("<400I", payload, 2312)):
+            if spell not in (0, 0xFFFFFFFF):
+                book[index] = spell
+    if len(payload) >= 4360 + 12 * 4:
+        for index, spell in enumerate(struct.unpack_from("<12I", payload, 4360)):
+            if spell not in (0, 0xFFFFFFFF):
+                gems[index] = spell
+    return book, gems
+
+
+def parse_item_packet(payload: bytes) -> tuple[int, int, str, str, int, int, int, int, int, int, int, int, int, int, int, int, int] | None:
     """Type, slot, name, IDFile, id, stack, slot bits, classes, races, AC, damage, req level, size, bag slots, bag size."""
     if len(payload) < 5:
         return None
@@ -421,7 +734,8 @@ def parse_item_packet(payload: bytes) -> tuple[int, int, str, str, int, int, int
         stack = 1
     # SerializeItem order after the quote: class, name, lore, IDFile, id, size at 8, slots at 9,
     # AC at 30, required level at 40, damage at 50, classes at 52, races at 53,
-    # bag type at 96, bag slots at 97, bag size at 98.
+    # item type at 56, bag type at 96, bag slots at 97, bag size at 98,
+    # scroll effect at 154. That effect is the spell id a scroll scribes.
     return (
         kind,
         slot,
@@ -438,4 +752,6 @@ def parse_item_packet(payload: bytes) -> tuple[int, int, str, str, int, int, int
         _pipe_int(static, 8),
         _pipe_int(static, 97),
         _pipe_int(static, 98),
+        _pipe_int(static, 56),
+        _pipe_int(static, 154),
     )

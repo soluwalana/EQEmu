@@ -20,6 +20,10 @@ from eqclient.session import Session, SessionError
 from eqclient.sheet import Character, build
 
 
+def _horiz_xy(x1: float, y1: float, x2: float, y2: float) -> float:
+    return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
+
+
 def _split(packet: bytes) -> tuple[int, bytes]:
     if len(packet) < 2:
         return 0, b""
@@ -32,7 +36,7 @@ def doors_along(doors, start, end, skip: set[int], reach: float = 15.0):
     for door in doors:
         if door.door_id in skip or door.opened:
             continue
-        if door.tried and door.opentype == 5:
+        if door.tried:
             continue
         if abs(door.z - start[2]) > 20.0:
             continue
@@ -49,6 +53,21 @@ def _segment_distance(point, start, end) -> float:
     t = max(0.0, min(1.0, ((point[0] - start[0]) * dx + (point[1] - start[1]) * dy) / length))
     nearest = (start[0] + t * dx, start[1] + t * dy)
     return ((point[0] - nearest[0]) ** 2 + (point[1] - nearest[1]) ** 2) ** 0.5
+
+
+def blocks_step(point, start, end, radius: float = 2.0) -> bool:
+    """True when point sits on the step, ahead of his feet, close enough to stop him."""
+    dx, dy = end[0] - start[0], end[1] - start[1]
+    length = dx * dx + dy * dy
+    if length <= 1e-6:
+        return False
+    t = ((point[0] - start[0]) * dx + (point[1] - start[1]) * dy) / length
+    if t <= 0.0 or t > 1.0:
+        return False
+    if (t * t * length) ** 0.5 < 1.0:
+        return False
+    nearest = (start[0] + t * dx, start[1] + t * dy)
+    return ((point[0] - nearest[0]) ** 2 + (point[1] - nearest[1]) ** 2) ** 0.5 <= radius
 
 
 def enter(
@@ -84,6 +103,52 @@ def enter(
         if zone_port == 0:
             raise SessionError("world returned zone port 0")
         return session, zone_host, zone_port, played
+    except Exception:
+        session.close()
+        raise
+
+
+def rezone(
+    host: str,
+    port: int,
+    account_id: int,
+    key: str,
+    character: str,
+    timeout: float = 15.0,
+) -> tuple[Session, str, int]:
+    """World reconnect after a successful cross-zone OP_ZoneChange.
+
+    LoginInfo.zoning=1 skips character select; world Clearance(1)s into the zone
+    already saved by DoZoneSuccess / SetZone.
+    """
+    opcodes = titanium_opcodes()
+    session = Session()
+    try:
+        session.connect(host, port, timeout=min(timeout, 5.0))
+        deadline = time.monotonic() + timeout
+        info = login_info(account_id, key, zoning=True)
+        session.send_app(struct.pack("<H", require(opcodes, "OP_SendLoginInfo")) + info)
+        enter_op = require(opcodes, "OP_EnterWorld")
+        zsi_op = require(opcodes, "OP_ZoneServerInfo")
+        # World may push OP_EnterWorld with the live name; wait briefly then answer.
+        prompt_deadline = min(deadline, time.monotonic() + 2.0)
+        while time.monotonic() < prompt_deadline:
+            for packet in session.pump(0.2):
+                got, _payload = _split(packet)
+                if got == enter_op:
+                    prompt_deadline = time.monotonic()
+                    break
+            else:
+                continue
+            break
+        session.send_app(struct.pack("<H", enter_op) + enter_world(character))
+        zone = _wait_opcode(session, zsi_op, deadline)
+        zone_host, zone_port = zone_server_info(zone)
+        if not zone_host or zone_host == "0.0.0.0":
+            zone_host = host
+        if zone_port == 0:
+            raise SessionError("world returned zone port 0 after transfer")
+        return session, zone_host, zone_port
     except Exception:
         session.close()
         raise
@@ -184,14 +249,26 @@ class ZoneModel:
     moved_by_server: bool = False
     safe: tuple[float, float, float] = (0.0, 0.0, 0.0)
     sequence: int = 0
+    step_origin: tuple[float, float, float] | None = None
+    step_asked: tuple[float, float, float] | None = None
+    step_sent_at: float = 0.0
+    step_state: str = ""
     level: int = 0
+    exp_bar: int = 0  # OP_ExpUpdate: 0–330 through the current level
     class_id: int = 1
     race_id: int = 1
     points: int = 0
     gender: int = 0
     deity: int = 0
     zone_id: int = 0
+    home_zone_id: int = 0
     hp: int = 0
+    max_hp: int = 0
+    food: int = 127
+    water: int = 127
+    coin: int = 0  # carried copper (plat * 1000 + gold * 100 + silver * 10 + copper)
+    coin_known: bool = False
+    air: int = 60  # seconds of breath; refill on the surface
     mana: int = 0
     strength: int = 0
     stamina: int = 0
@@ -212,23 +289,116 @@ class ZoneModel:
         return (self.x, self.y, self.z)
 
     def predict(self, x: float, y: float, z: float) -> None:
-        """Where we asked to stand. The next server update for us overwrites this."""
+        """Where we asked to stand. A later server update may confirm or refuse it."""
         self.x, self.y, self.z = x, y, z
         self.have_position = True
         self.server_position = False
         self._mirror_self()
 
+    def clear_step(self) -> None:
+        """Drop any in-flight ClientUpdate so a zone snap is not treated as a late echo."""
+        self.step_origin = None
+        self.step_asked = None
+        self.step_sent_at = 0.0
+        self.step_state = ""
+
+    def reset_position(self, x: float, y: float, z: float) -> None:
+        """Hard snap after zoning — no predict/step carryover from the previous zone."""
+        self.clear_step()
+        self.x, self.y, self.z = x, y, z
+        self.have_position = True
+        self.server_position = True
+        self.moved_by_server = True
+        self._mirror_self()
+
+    def arm_step(self, origin: tuple[float, float, float], asked: tuple[float, float, float]) -> None:
+        """One step is in flight. The next one waits until this one is settled."""
+        self.step_origin = origin
+        self.step_asked = asked
+        self.step_sent_at = time.monotonic()
+        self.step_state = "wait"
+
+    def step_ready(self) -> bool:
+        return self.step_state != "wait"
+
+    def commit_step(self) -> None:
+        """The server never answered. The point we asked for stands."""
+        if self.step_state == "wait":
+            self.step_state = "committed"
+
+    def step_timed_out(self) -> bool:
+        # ~one TICK — waiting 200ms capped us well under NPC chase speed outdoors.
+        return self.step_state == "wait" and time.monotonic() - self.step_sent_at >= 0.1
+
     def apply_server_position(self, x: float, y: float, z: float) -> None:
-        """The server's coordinates for this character."""
+        """The server's coordinates for this character.
+
+        A packet from before this step, still sitting behind it, is not a
+        correction. Accepting it is what walks him back to where he just was.
+        """
+        # Right after a zone hop, ignore origin junk (ZoneChange success zeros / bad spawn).
+        ignore_until = float(getattr(self, "_ignore_origin_until", 0.0) or 0.0)
+        if ignore_until and time.monotonic() < ignore_until:
+            safe = self.safe
+            if abs(x) + abs(y) < 1.0 and abs(safe[0]) + abs(safe[1]) > 50.0:
+                return
+        if self._drop_late_echo(x, y):
+            return
+        kind = self._echo_kind(x, y)
+        if kind == "confirmed" and self.step_asked is not None and abs(z - self.step_asked[2]) > 6.0:
+            z = self.step_asked[2]
         changed = self.have_position and (
             abs(self.x - x) > 0.5 or abs(self.y - y) > 0.5 or abs(self.z - z) > 0.5
         )
         self.x, self.y, self.z = x, y, z
         self.have_position = True
         self.server_position = True
-        if changed:
+        if kind == "refused":
+            self.step_state = "refused"
+            self.moved_by_server = True
+        elif kind == "confirmed":
+            self.step_state = "confirmed"
+        elif changed:
             self.moved_by_server = True
         self._mirror_self()
+
+    def _drop_late_echo(self, x: float, y: float) -> bool:
+        origin, asked = self.step_origin, self.step_asked
+        if origin is None or asked is None or not self.step_state:
+            return False
+        if _horiz_xy(self.x, self.y, x, y) > 40.0:
+            return False
+        if _horiz_xy(x, y, asked[0], asked[1]) <= 1.25:
+            return False
+        if _horiz_xy(x, y, origin[0], origin[1]) <= 0.8:
+            age = time.monotonic() - self.step_sent_at
+            return not (self.step_state == "wait" and age >= 0.12)
+        return True
+
+    def _echo_kind(self, x: float, y: float) -> str:
+        origin, asked = self.step_origin, self.step_asked
+        if self.step_state != "wait" or origin is None or asked is None:
+            return ""
+        if _horiz_xy(x, y, origin[0], origin[1]) <= 0.8:
+            return "refused"
+        if _horiz_xy(x, y, asked[0], asked[1]) <= 1.25:
+            return "confirmed"
+        return ""
+
+    def _on_step(self, x: float, y: float) -> bool:
+        origin, asked = self.step_origin, self.step_asked
+        if origin is None or asked is None:
+            return False
+        dx, dy = asked[0] - origin[0], asked[1] - origin[1]
+        length = dx * dx + dy * dy
+        if length <= 1e-6:
+            return False
+        t = ((x - origin[0]) * dx + (y - origin[1]) * dy) / length
+        if t <= 0.05 or t > 1.0:
+            return False
+        nearest_x = origin[0] + t * dx
+        nearest_y = origin[1] + t * dy
+        return _horiz_xy(x, y, nearest_x, nearest_y) <= 1.5
 
     def consume_server_move(self) -> bool:
         """True when a server packet moved us off the position we were using."""
@@ -241,26 +411,44 @@ class ZoneModel:
         return self.sequence
 
     def on_new_zone(self, payload: bytes) -> None:
-        from eqclient.packets import new_zone
+        from eqclient.packets import new_zone, new_zone_id
+        from eqclient.zones import remember, zone_id_of
 
         short, x, y, z = new_zone(payload)
-        if self.zone and short.lower() != self.zone.lower():
+        found = new_zone_id(payload) or zone_id_of(short)
+        if found:
+            self.zone_id = found
+            remember(short, found)
+        kept_corpse = (
+            self.needs_corpse,
+            self.own_corpse_id,
+            self.own_corpse_at,
+            self.own_corpse_zone,
+            self.own_corpse_count,
+            self.own_corpse_missing,
+        )
+        zone_changed = bool(self.zone) and short.lower() != self.zone.lower()
+        if zone_changed:
             self.changed_zone = True
             self.spawns.clear()
             self.doors.clear()
             self.ground.clear()
             self.self_id = 0
-            self.have_position = False
-            self.needs_corpse = False
-            self.own_corpse_id = 0
-            self.own_corpse_at = None
-            self.own_corpse_count = 0
-            self.own_corpse_missing = 0
+        # Always restore corpse run across NewZone (same-zone death respawn included).
+        if kept_corpse[0]:
+            (
+                self.needs_corpse,
+                self.own_corpse_id,
+                self.own_corpse_at,
+                self.own_corpse_zone,
+                self.own_corpse_count,
+                self.own_corpse_missing,
+            ) = kept_corpse
         self.zone = short
         self.safe = (x, y, z)
-        if not self.have_position:
-            self.x, self.y, self.z = x, y, z
-            self.have_position = True
+        # Always snap on NewZone — keeping the previous zone's predict causes MQWarp.
+        if zone_changed or not self.have_position:
+            self.reset_position(x, y, z)
 
     def on_spawns(self, payload: bytes) -> None:
         from eqclient.packets import SPAWN_SIZE, parse_spawn
@@ -274,9 +462,18 @@ class ZoneModel:
             )
             self.spawns[spawn_id] = Spawn(spawn_id, name, npc, level, body, x, y, z, class_id, race_id)
             self.last_seen[name.lower()] = (self.zone, x, y, z)
-            if name.lower() == self.character.lower() and npc == 2:
+            namel = name.lower()
+            me = (self.character or "").lower()
+            own_husk = me and (
+                namel == me
+                or namel.startswith(f"{me}'s corpse")
+                or (me in namel and "corpse" in namel)
+            )
+            # Bind id/coords only while a corpse run is already active — do not
+            # start a new run from every leftover husk in the zone.
+            if own_husk and npc in (2, 3) and self.needs_corpse:
                 self._note_own_corpse(spawn_id, x, y, z)
-            elif name.lower() == self.character.lower():
+            elif namel == me and npc not in (2, 3):
                 self.self_id = spawn_id
                 self.class_id = class_id or self.class_id
                 self.race_id = race_id or self.race_id
@@ -346,14 +543,51 @@ class ZoneModel:
     def on_request_zone_change(self, payload: bytes) -> None:
         from eqclient.packets import request_zone_change
 
-        _zone_id, x, y, z = request_zone_change(payload)
+        from eqclient.zones import zone_name_of
+
+        zone_id, x, y, z = request_zone_change(payload)
+        if zone_id and zone_id != self.zone_id:
+            self.changed_zone = True
+            self.zone_id = zone_id
+            known = zone_name_of(zone_id)
+            # Same wipe as OP_NewZone — otherwise we keep the old zone's doors/spawns
+            # and never reload water/nav until the next full login.
+            if known and known.lower() != (self.zone or "").lower():
+                self.spawns.clear()
+                self.doors.clear()
+                self.ground.clear()
+                self.self_id = 0
+                self.zone = known
+                self.reset_position(x, y, z)
+                return
+        self.clear_step()
         self.apply_server_position(x, y, z)
 
-    def on_zone_change(self, payload: bytes) -> None:
-        from eqclient.packets import zone_change_position
+    def on_zone_change(self, payload: bytes) -> bool:
+        """Apply an in-zone cancel / MovePC. Returns True when the client must rezone."""
+        from eqclient.packets import zone_change
+        from eqclient.zones import zone_name_of
 
-        x, y, z = zone_change_position(payload)
-        self.apply_server_position(x, y, z)
+        zone_id, _instance_id, x, y, z, success = zone_change(payload)
+        if success == 1 and zone_id and zone_id != self.zone_id:
+            known = zone_name_of(zone_id) or str(zone_id)
+            print(
+                f"OP_ZoneChange success → {known} "
+                f"from={self.zone or self.zone_id} pos=({x:.0f},{y:.0f},{z:.0f})",
+                flush=True,
+            )
+            # Keep self.zone as the egress short name until OP_NewZone wipes spawns.
+            # Do NOT snap to packet xyz — Titanium ZTZ success leaves x/y/z as 0,0,0
+            # and applying that poisons the next zone (walk from origin, z=0 forever).
+            self.zone_id = zone_id
+            self.changed_zone = True
+            self.clear_step()
+            return True
+        if success != 1:
+            print(f"OP_ZoneChange rejected success={success} zone={zone_id}", flush=True)
+        # Cancel / same-zone success — snap where the server put us.
+        self.reset_position(x, y, z)
+        return False
 
     def on_become_corpse(self, payload: bytes) -> None:
         """OP_BecomeCorpse. Floats are y, x, z. That spawn is now a corpse at the server's spot."""
@@ -395,6 +629,30 @@ class ZoneModel:
         if level > self.level:
             self.level = level
 
+    def set_coin(self, platinum: int, gold: int, silver: int, copper: int) -> None:
+        """Carried coin, in copper. One platinum is 1000."""
+        self.coin = platinum * 1000 + gold * 100 + silver * 10 + copper
+        self.coin_known = True
+
+    def add_coin(self, platinum: int, gold: int, silver: int, copper: int) -> int:
+        """Add corpse cash (already granted by the server). Returns copper gained."""
+        gained = platinum * 1000 + gold * 100 + silver * 10 + copper
+        if gained <= 0:
+            return 0
+        self.coin = (self.coin if self.coin_known else 0) + gained
+        self.coin_known = True
+        return gained
+
+    def coin_line(self) -> str:
+        """Human purse line from tracked copper (empty until first profile/update)."""
+        if not self.coin_known:
+            return "coin unknown"
+        total = max(0, int(self.coin))
+        plat, rem = divmod(total, 1000)
+        gold, rem = divmod(rem, 100)
+        silver, copper = divmod(rem, 10)
+        return f"coin {plat}p {gold}g {silver}s {copper}c ({total})"
+
     def _note_own_corpse(self, spawn_id: int, x: float, y: float, z: float) -> None:
         self.needs_corpse = True
         self.own_corpse_id = spawn_id
@@ -418,6 +676,10 @@ class ZoneModel:
         self.gender = played.gender
         self.deity = played.deity
         self.zone_id = played.zone_id or self.zone_id
+        if played.home_zone_id:
+            self.home_zone_id = played.home_zone_id
+        if getattr(played, "coin_known", False):
+            self.set_coin(played.platinum, played.gold, played.silver, played.copper)
         if played.points:
             self.points = played.points
         if played.hp:
@@ -433,9 +695,24 @@ class ZoneModel:
             self.intelligence = played.intelligence
             self.charisma = played.charisma
 
+    def needs_rest(self, sitting: bool) -> bool:
+        """Sit at healrotation critical (50%); stay down until nearly full.
+
+        Zero HP means the bar is unknown or he is dead — do not sit for that.
+        """
+        if self.max_hp <= 0 or self.hp <= 0:
+            return False
+        ratio = self.hp / self.max_hp
+        if sitting:
+            return ratio < 0.9
+        return ratio <= 0.50
+
     def corpse_reclaimed(self) -> None:
         self.needs_corpse = False
         self.own_corpse_id = 0
+        self.own_corpse_at = None
+        self.own_corpse_zone = ""
+        self.own_corpse_count = 0
         self.own_corpse_missing = 0
 
     def on_consider(self, payload: bytes) -> None:

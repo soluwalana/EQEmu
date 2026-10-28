@@ -10,6 +10,7 @@ import zlib
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from eqclient.explore import cell_of
 from eqclient.opcodes import repo_root
 
 _HEADER = 100
@@ -53,7 +54,12 @@ class NavMesh:
             return None
         return min(self.polys, key=lambda poly: _horiz(poly.center, point) + abs(poly.center[2] - point[2]) * 0.01)
 
-    def path(self, start: tuple[float, float, float], goal: tuple[float, float, float]) -> list[tuple[float, float, float]]:
+    def path(
+        self,
+        start: tuple[float, float, float],
+        goal: tuple[float, float, float],
+        avoid: set[tuple[int, int]] | None = None,
+    ) -> list[tuple[float, float, float]]:
         begin = self.nearest(start)
         end = self.nearest(goal)
         if begin is None or end is None:
@@ -61,20 +67,65 @@ class NavMesh:
         self.visited.add((begin.tile, begin.index))
         if (begin.tile, begin.index) == (end.tile, end.index):
             return [start, goal]
-        chain = _astar(self.polys, begin, end)
-        if len(chain) < 2:
+        chain = _astar(self.polys, begin, end, avoid) if avoid else []
+        if not _reaches(chain, end):
+            chain = _astar(self.polys, begin, end)
+        if not _reaches(chain, end):
             return [start, goal]
         return [poly.center for poly in chain]
 
-    def unvisited(self, start: tuple[float, float, float]) -> tuple[float, float, float] | None:
+    def unvisited(
+        self,
+        start: tuple[float, float, float],
+        avoid: set[tuple[int, int]] | None = None,
+    ) -> tuple[float, float, float] | None:
         begin = self.nearest(start)
         if begin is None:
             return None
         self.visited.add((begin.tile, begin.index))
-        fresh = [poly for poly in self.polys if (poly.tile, poly.index) not in self.visited]
+        avoid = avoid or set()
+        fresh = [
+            poly
+            for poly in self.polys
+            if (poly.tile, poly.index) not in self.visited and cell_of(poly.center[0], poly.center[1]) not in avoid
+        ]
+        if not fresh:
+            fresh = [poly for poly in self.polys if (poly.tile, poly.index) not in self.visited]
         if not fresh:
             return None
-        return min(fresh, key=lambda poly: _horiz(poly.center, start)).center
+        farther = [poly for poly in fresh if _horiz(poly.center, start) > 2.0]
+        pool = farther or fresh
+        return min(pool, key=lambda poly: _horiz(poly.center, start)).center
+
+    def locate(self, point: tuple[float, float, float]) -> tuple[int, int] | None:
+        poly = self.nearest(point)
+        if poly is None or not poly.verts:
+            return None
+        return (poly.tile, poly.index)
+
+    def center(self, poly_id: tuple[int, int]) -> tuple[float, float, float] | None:
+        poly = self._index().get(poly_id)
+        if poly is None or not poly.verts:
+            return None
+        return poly.center
+
+    def links(self, poly_id: tuple[int, int]) -> list[tuple[tuple[int, int], tuple[float, float, float]]]:
+        poly = self._index().get(poly_id)
+        if poly is None:
+            return []
+        found = []
+        for neighbor in poly.neighbors:
+            other = self._index().get(neighbor)
+            if other is not None and other.verts:
+                found.append((neighbor, other.center))
+        return found
+
+    def _index(self) -> dict[tuple[int, int], _Poly]:
+        cached = getattr(self, "_by_id", None)
+        if cached is None:
+            cached = {(poly.tile, poly.index): poly for poly in self.polys}
+            self._by_id = cached
+        return cached
 
 
 def load_nav(zone: str, root: Path | None = None) -> NavMesh | None:
@@ -201,10 +252,20 @@ def _link_portals(polys: list[_Poly], portals: list[tuple[tuple[int, int], tuple
                     poly.neighbors.append(right)
 
 
-def _astar(polys: list[_Poly], start: _Poly, goal: _Poly) -> list[_Poly]:
+def _reaches(chain: list[_Poly], goal: _Poly) -> bool:
+    return len(chain) >= 2 and chain[-1].tile == goal.tile and chain[-1].index == goal.index
+
+
+def _astar(
+    polys: list[_Poly],
+    start: _Poly,
+    goal: _Poly,
+    avoid: set[tuple[int, int]] | None = None,
+) -> list[_Poly]:
     lookup = {(poly.tile, poly.index): poly for poly in polys}
     goal_id = (goal.tile, goal.index)
     start_id = (start.tile, start.index)
+    blocked = avoid or set()
     open_heap = [(0.0, start_id)]
     came: dict[tuple[int, int], tuple[int, int] | None] = {start_id: None}
     cost = {start_id: 0.0}
@@ -221,6 +282,8 @@ def _astar(polys: list[_Poly], start: _Poly, goal: _Poly) -> list[_Poly]:
         for neighbor in poly.neighbors:
             other = lookup.get(neighbor)
             if other is None:
+                continue
+            if neighbor != goal_id and cell_of(other.center[0], other.center[1]) in blocked:
                 continue
             step = cost[current] + _horiz(poly.center, other.center)
             if step < cost.get(neighbor, 1e18):
