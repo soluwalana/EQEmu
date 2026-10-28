@@ -2186,10 +2186,25 @@ uint8 Bot::GetChanceToCastBySpellType(uint16 spell_type)
 
 bool Bot::AI_AddBotSpells(uint32 bot_spell_id) {
 	// ok, this function should load the list, and the parent list then shove them into the struct and sort
-	npc_spells_id = bot_spell_id;
 	AIBot_spells.clear();
 	AIBot_spells_enforced.clear();
 	AIBot_spells_by_type.clear();
+
+	// Repair missing/zero spells_id from class defaults (bot_data may store 0).
+	if (!bot_spell_id) {
+		// Mirrors Bot::GenerateBaseStats class → npc_spells_id mapping (3001+).
+		static constexpr uint32 k_bot_spell_ids_by_class[Class::PLAYER_CLASS_COUNT + 1] = {
+			0, 3001, 3002, 3003, 3004, 3005, 3006, 3007, 3008,
+			3009, 3010, 3011, 3012, 3013, 3014, 3015, 3016
+		};
+		const uint8 bot_class = GetClass();
+		if (bot_class >= Class::Warrior && bot_class <= Class::Berserker) {
+			bot_spell_id = k_bot_spell_ids_by_class[bot_class];
+			SetBotSpellID(bot_spell_id);
+		}
+	}
+
+	npc_spells_id = bot_spell_id;
 
 	if (!bot_spell_id) {
 		AIautocastspell_timer->Disable();
@@ -2199,6 +2214,16 @@ bool Bot::AI_AddBotSpells(uint32 bot_spell_id) {
 	auto* spell_list = content_db.GetBotSpells(bot_spell_id);
 	if (!spell_list) {
 		AIautocastspell_timer->Disable();
+		if (GetBotOwner() && GetBotOwner()->IsClient()) {
+			GetBotOwner()->CastToClient()->Message(
+				Chat::White,
+				fmt::format(
+					"{}: no bot spell list found for spells_id {}.",
+					GetCleanName(),
+					bot_spell_id
+				).c_str()
+			);
+		}
 		return false;
 	}
 
@@ -2479,6 +2504,19 @@ bool Bot::AI_AddBotSpells(uint32 bot_spell_id) {
 
 	if (AIBot_spells.empty()) {
 		AIautocastspell_timer->Disable();
+		if (GetBotOwner() && GetBotOwner()->IsClient()) {
+			GetBotOwner()->CastToClient()->Message(
+				Chat::White,
+				fmt::format(
+					"{}: loaded 0 AI spells (spells_id={}, db entries={}, level={}, enforce={}).",
+					GetCleanName(),
+					bot_spell_id,
+					spell_list->entries.size(),
+					GetLevel(),
+					GetBotEnforceSpellSetting() ? "on" : "off"
+				).c_str()
+			);
+		}
 	} else {
 		AIautocastspell_timer->Trigger();
 		AssignBotSpellsToTypes(AIBot_spells, AIBot_spells_by_type); // Assign AIBot_spells to AIBot_spells_by_type with an index
@@ -2509,16 +2547,18 @@ DBbotspells_Struct* ZoneDatabase::GetBotSpells(uint32 bot_spell_id)
 		return &c->second;
 	}
 
-	if (!bot_spells_loadtried.count(bot_spell_id)) { // no reason to ask the DB again if we have failed once already
-		bot_spells_loadtried.insert(bot_spell_id);
+	if (bot_spells_loadtried.count(bot_spell_id)) {
+		return nullptr;
+	}
 
-		auto n = NpcSpellsRepository::FindOne(content_db, bot_spell_id);
-		if (!n.id) {
-			return nullptr;
-		}
+	bot_spells_loadtried.insert(bot_spell_id);
 
-		DBbotspells_Struct spell_set;
+	DBbotspells_Struct spell_set{};
 
+	// Bot lists live as npc_spells ids (3001+). Entries are required; the
+	// npc_spells row is optional metadata (procs / cast chances / parent).
+	auto n = NpcSpellsRepository::FindOne(content_db, bot_spell_id);
+	if (n.id) {
 		spell_set.parent_list = n.parent_list;
 		spell_set.attack_proc = n.attack_proc;
 		spell_set.proc_chance = n.proc_chance;
@@ -2538,54 +2578,62 @@ DBbotspells_Struct* ZoneDatabase::GetBotSpells(uint32 bot_spell_id)
 		spell_set.idle_no_sp_recast_min = n.idle_no_sp_recast_min;
 		spell_set.idle_no_sp_recast_max = n.idle_no_sp_recast_max;
 		spell_set.idle_beneficial_chance = n.idle_b_chance;
-
-		auto bse = BotSpellsEntriesRepository::GetWhere(
-			content_db,
-			fmt::format(
-				"npc_spells_id = {}",
-				bot_spell_id
-			)
-		);
-
-		if (!bse.empty()) {
-			for (const auto& e : bse) {
-				DBbotspells_entries_Struct entry;
-
-				entry.spellid           = e.spell_id;
-				entry.type              = e.type;
-				entry.minlevel          = e.minlevel;
-				entry.maxlevel          = e.maxlevel;
-				entry.manacost          = e.manacost;
-				entry.recast_delay      = e.recast_delay;
-				entry.priority          = e.priority;
-				entry.min_hp            = e.min_hp;
-				entry.max_hp            = e.max_hp;
-				entry.resist_adjust     = e.resist_adjust;
-				entry.bucket_name       = e.bucket_name;
-				entry.bucket_value      = e.bucket_value;
-				entry.bucket_comparison = e.bucket_comparison;
-
-				// some spell types don't make much since to be priority 0, so fix that
-				if (!IsBotSpellTypeInnate(entry.type) && entry.priority == 0) {
-					entry.priority = 1;
-				}
-
-				if (e.resist_adjust) {
-					entry.resist_adjust = e.resist_adjust;
-				} else if (IsValidSpell(e.spell_id)) {
-					entry.resist_adjust = spells[e.spell_id].resist_difficulty;
-				}
-
-				spell_set.entries.push_back(entry);
-			}
-		}
-
-		bot_spells_cache.emplace(std::make_pair(bot_spell_id, spell_set));
-
-		return &bot_spells_cache[bot_spell_id];
 	}
 
-	return nullptr;
+	auto bse = BotSpellsEntriesRepository::GetWhere(
+		content_db,
+		fmt::format(
+			"npc_spells_id = {}",
+			bot_spell_id
+		)
+	);
+
+	for (const auto& e : bse) {
+		DBbotspells_entries_Struct entry;
+
+		entry.spellid           = e.spell_id;
+		entry.type              = e.type;
+		entry.minlevel          = e.minlevel;
+		entry.maxlevel          = e.maxlevel;
+		entry.manacost          = e.manacost;
+		entry.recast_delay      = e.recast_delay;
+		entry.priority          = e.priority;
+		entry.min_hp            = e.min_hp;
+		entry.max_hp            = e.max_hp;
+		entry.resist_adjust     = e.resist_adjust;
+		entry.bucket_name       = e.bucket_name;
+		entry.bucket_value      = e.bucket_value;
+		entry.bucket_comparison = e.bucket_comparison;
+
+		// some spell types don't make much since to be priority 0, so fix that
+		if (!IsBotSpellTypeInnate(entry.type) && entry.priority == 0) {
+			entry.priority = 1;
+		}
+
+		if (e.resist_adjust) {
+			entry.resist_adjust = e.resist_adjust;
+		} else if (IsValidSpell(e.spell_id)) {
+			entry.resist_adjust = spells[e.spell_id].resist_difficulty;
+		}
+
+		spell_set.entries.push_back(entry);
+	}
+
+	if (spell_set.entries.empty()) {
+		LogError(
+			"GetBotSpells: no bot_spells_entries for npc_spells_id={} (AI list will be empty)",
+			bot_spell_id
+		);
+	}
+
+	// No npc_spells row and no entries — nothing to load for this id.
+	if (!n.id && spell_set.entries.empty()) {
+		return nullptr;
+	}
+
+	bot_spells_cache.emplace(std::make_pair(bot_spell_id, spell_set));
+
+	return &bot_spells_cache[bot_spell_id];
 }
 
 // adds a spell to the list, taking into account priority and resorting list as needed.

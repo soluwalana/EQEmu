@@ -8400,8 +8400,9 @@ void Bot::ListBotSpells(uint8 min_level)
 		bot_owner->Message(
 			Chat::White,
 			fmt::format(
-				"{} has no AI Spells.",
-				GetCleanName()
+				"{} has no AI Spells (spells_id={}).",
+				GetCleanName(),
+				GetBotSpellID()
 			).c_str()
 		);
 		return;
@@ -8410,36 +8411,88 @@ void Bot::ListBotSpells(uint8 min_level)
 	auto spell_count = 0;
 	auto spell_number = 1;
 
-	for (const auto& s : (GetBotEnforceSpellSetting()) ? AIBot_spells_enforced : AIBot_spells) {
-		auto b = bot_spell_settings.find(s.spellid);
-		if (b == bot_spell_settings.end() && s.minlevel >= min_level) {
+	// Always list the spells the AI will actually cast.
+	for (const auto& s : AIBot_spells) {
+		if (s.minlevel < min_level) {
+			continue;
+		}
+
+		const bool has_setting = bot_spell_settings.find(s.spellid) != bot_spell_settings.end();
+		bot_owner->Message(
+			Chat::White,
+			fmt::format(
+				"Spell {} | Spell: {} (ID: {}) | Type: {} | {}{}",
+				spell_number,
+				Saylink::Silent(
+					fmt::format("^spellinfo {}", s.spellid),
+					spells[s.spellid].name
+				),
+				s.spellid,
+				s.type,
+				has_setting ? "Setting: yes" : "Add Spell: ",
+				has_setting
+					? ""
+					: Saylink::Silent(
+						fmt::format(
+							"^spellsettingsadd {} {} {} {}",
+							s.spellid,
+							s.priority,
+							s.min_hp,
+							s.max_hp
+						),
+						"Add"
+					)
+			).c_str()
+		);
+
+		spell_count++;
+		spell_number++;
+	}
+
+	// With enforce on, also list candidates that still need a setting.
+	if (GetBotEnforceSpellSetting() && !AIBot_spells_enforced.empty()) {
+		bot_owner->Message(Chat::White, "--- Enforce candidates (not cast until added) ---");
+		for (const auto& s : AIBot_spells_enforced) {
+			if (s.minlevel < min_level) {
+				continue;
+			}
+			if (bot_spell_settings.find(s.spellid) != bot_spell_settings.end()) {
+				continue;
+			}
+
 			bot_owner->Message(
 				Chat::White,
 				fmt::format(
-					"Spell {} | Spell: {} (ID: {}) | Add Spell: {}",
-					spell_number,
+					"Candidate | Spell: {} (ID: {}) | Add Spell: {}",
 					Saylink::Silent(
 						fmt::format("^spellinfo {}", s.spellid),
 						spells[s.spellid].name
 					),
 					s.spellid,
 					Saylink::Silent(
-						fmt::format("^spellsettingsadd {} {} {} {}", s.spellid, s.priority, s.min_hp, s.max_hp), "Add")
+						fmt::format(
+							"^spellsettingsadd {} {} {} {}",
+							s.spellid,
+							s.priority,
+							s.min_hp,
+							s.max_hp
+						),
+						"Add"
+					)
 				).c_str()
 			);
-
-			spell_count++;
-			spell_number++;
 		}
 	}
 
 	bot_owner->Message(
 		Chat::White,
 		fmt::format(
-			"{} has {} AI Spell{}.",
+			"{} has {} AI Spell{} (spells_id={}, enforce={}).",
 			GetCleanName(),
 			spell_count,
-			spell_count != 1 ? "s" :""
+			spell_count != 1 ? "s" : "",
+			GetBotSpellID(),
+			GetBotEnforceSpellSetting() ? "on" : "off"
 		).c_str()
 	);
 }
