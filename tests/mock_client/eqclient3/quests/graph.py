@@ -1620,7 +1620,7 @@ class QuestGraph:
         self._indexed = True
 
     def to_item(self, item_id: int) -> tuple:
-        token = f"item:{int(item_id)}"
+        token = f"item:{item_id}"
         if self._indexed:
             return self.edges_to.get(token, ())
         return tuple(edge for edge in self.edges if str(edge.get("to") or "") == token)
@@ -2036,19 +2036,18 @@ def load_graph(path: str | os.PathLike | None = None) -> QuestGraph:
 
 def split_npc(origin: str) -> tuple[str, str]:
     """'zone/npc#step' is the zone and the npc name."""
-    zone, _, rest = str(origin or "").partition("/")
+    zone, _, rest = origin.partition("/")
     npc = rest.split("#", 1)[0].strip()
     return zone.strip(), npc
 
 
 def _item_id(token: str) -> int:
-    text = str(token or "")
-    if not text.startswith("item:"):
+    if not token.startswith("item:"):
         return 0
     try:
-        return int(text.split(":", 1)[1])
+        return int(token.split(":", 1)[1])
     except ValueError:
-        log.error("item token failed to parse: %s", text, exc_info=True)
+        log.error("item token failed to parse: %s", token, exc_info=True)
         return 0
 
 

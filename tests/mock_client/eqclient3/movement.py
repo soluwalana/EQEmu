@@ -43,6 +43,7 @@ from dataclasses import dataclass
 from eqclient3.log import log
 from eqclient3.struct_helpers import eq_heading
 from eqclient3.structs import EQStruct, OP_ClickDoor, OP_ClientUpdate, OP_Consider, OP_FindPersonReply, OP_FloatListThing, OP_MobUpdate, OP_MoveDoor, OP_NewZone, OPERATIONS
+from eqclient3.nav.maps import load_map
 from eqclient3.nav.navmesh import load_nav
 from eqclient3.nav.path import NEARBY_YARDS, STRIDE, Path, along, cut_to_step, doors_on_stride, find as path_find, is_nearby, iter_mobs, mob_id, mob_point, route, track as path_track, trim_points, water_of
 
@@ -343,33 +344,32 @@ class Movement:
     def _on_floor(self, here: tuple[float, float, float], step: tuple[float, float, float]) -> tuple[float, float, float]:
         """Keep the step on the floor. A stride climbs a ramp; it does not teleport in Z."""
         target_z = step[2]
-        ground = self._ground(step[0], step[1], here[2])
+        ground = self._ground((step[0], step[1], here[2]))
         if ground is not None:
             target_z = ground
         else:
             mesh = self._mesh()
-            if mesh is not None:
+            if mesh:
                 poly = mesh.nearest((step[0], step[1], here[2]))
-                if poly is not None and _horiz((step[0], step[1], 0.0), (poly.center[0], poly.center[1], 0.0)) <= 18.0:
+                if poly and _horiz((step[0], step[1], 0.0), (poly.center[0], poly.center[1], 0.0)) <= 18.0:
                     target_z = poly.center[2]
         gap = target_z - here[2]
         travel = max(_horiz(here, step), 0.5)
         budget = min(10.0, max(2.0, travel * 1.5))
         if abs(gap) > budget:
             target_z = here[2] + (budget if gap > 0 else -budget)
-        return (float(step[0]), float(step[1]), float(target_z))
+        return (step[0], step[1], target_z)
 
-    def _ground(self, x: float, y: float, z: float) -> float | None:
+    def _ground(self, point: tuple[float, float, float]) -> float | None:
         """Collision floor at this step. None when the zone has no map."""
         world = self.world
-        zone = world.zone or '' if world is not None else ''
+        zone = world.zone if world else ""
         if not zone:
             return None
-        from eqclient3.nav.maps import load_map
         zone_map = load_map(zone)
-        if zone_map is None:
+        if not zone_map:
             return None
-        return zone_map.ground(x, y, z)
+        return zone_map.ground(point)
 
     def _mesh(self):
         world = self.world

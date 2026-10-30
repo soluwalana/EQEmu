@@ -342,7 +342,7 @@ def ensure_factions(
     file = Path(path)
     stamp = file.stat().st_mtime_ns if file.is_file() else 0
     key = (str(file), 0 if rebuild else stamp)
-    if _book is not None and _book_key == key and not rebuild:
+    if _book and _book_key == key and not rebuild:
         return _book
     if file.is_file() and not rebuild:
         book = read_factions(str(file))

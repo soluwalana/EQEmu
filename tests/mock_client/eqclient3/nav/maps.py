@@ -5,7 +5,7 @@ from __future__ import annotations
 import math
 import struct
 import zlib
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from eqclient3.nav.navmesh import maps_root
 
@@ -16,12 +16,15 @@ _LOS_HEADINGS = 8  # compass peeks around watcher and target
 
 
 _CELL = 32.0
+Triangle = tuple[tuple[float, float, float], tuple[float, float, float], tuple[float, float, float]]
+Point = tuple[float, float, float]
 
 @dataclass
 class ZoneMap:
-    triangles: list[tuple[tuple[float, float, float], tuple[float, float, float], tuple[float, float, float]]]
-    _grid: dict[tuple[int, int], list[int]] | None = None
-    _wide: list[int] | None = None
+    triangles: list[Triangle]
+    _grid: dict[tuple[int, int], list[int]] = field(default_factory=dict)
+    _wide: list[int] = field(default_factory=list)
+    _indexed: bool = False
 
     def clear(
         self,
@@ -52,7 +55,7 @@ class ZoneMap:
                 return True
         return False
 
-    def ground(self, x: float, y: float, z: float) -> float | None:
+    def ground(self, point: Point) -> float | None:
         """Walkable surface at this XY.
 
         The highest face at or just above ``z``. A point under the floor takes
@@ -60,9 +63,9 @@ class ZoneMap:
         """
         below = None
         above = None
-        limit = z + 2.0
-        for triangle in self._candidates(x, y):
-            height = _surface_z(triangle, x, y)
+        limit = point[2] + 2.0
+        for triangle in self._candidates(point):
+            height = _surface_z(triangle, point)
             if height is None:
                 continue
             if height <= limit:
@@ -80,10 +83,10 @@ class ZoneMap:
         target = (end[0], end[1], end[2] + _SEE)
         self._ensure_grid()
         seen: set[int] = set()
-        for index in self._wide or []:
+        for index in self._wide:
             if _hits(origin, target, self.triangles[index]):
                 return False
-        for key in _cells_crossed(origin[0], origin[1], target[0], target[1], _CELL):
+        for key in _cells_crossed(origin, target):
             for index in self._grid.get(key, ()):
                 if index in seen:
                     continue
@@ -92,11 +95,11 @@ class ZoneMap:
                     return False
         return True
 
-    def _candidates(self, x: float, y: float) -> list:
+    def _candidates(self, point: Point) -> list[Triangle]:
         self._ensure_grid()
-        cx = math.floor(x / _CELL)
-        cy = math.floor(y / _CELL)
-        found = [self.triangles[index] for index in self._wide]
+        cx = math.floor(point[0] / _CELL)
+        cy = math.floor(point[1] / _CELL)
+        found: list[Triangle] = [self.triangles[index] for index in self._wide]
         for ix in (cx - 1, cx, cx + 1):
             for iy in (cy - 1, cy, cy + 1):
                 for index in self._grid.get((ix, iy), ()):
@@ -104,7 +107,7 @@ class ZoneMap:
         return found
 
     def _ensure_grid(self) -> None:
-        if self._grid is not None:
+        if self._indexed:
             return
         grid: dict[tuple[int, int], list[int]] = {}
         wide: list[int] = []
@@ -126,6 +129,7 @@ class ZoneMap:
                     grid.setdefault((ix, iy), []).append(index)
         self._grid = grid
         self._wide = wide
+        self._indexed = True
 
 
 _LOADED: dict[str, ZoneMap | None] = {}
@@ -158,7 +162,7 @@ def _read_map(zone: str) -> ZoneMap | None:
     return ZoneMap(_triangles(inflated))
 
 
-def _triangles(buf: bytes) -> list[object]:
+def _triangles(buf: bytes) -> list[Triangle]:
     counts = struct.unpack_from("<9I", buf)
     vert_count, ind_count = counts[0], counts[1]
     offset = 36 + 4  # nine uint32 counts and the units-per-vertex float
@@ -170,7 +174,7 @@ def _triangles(buf: bytes) -> list[object]:
     for _ in range(ind_count):
         indices.append(struct.unpack_from("<I", buf, offset)[0])
         offset += 4
-    triangles = []
+    triangles: list[Triangle] = []
     for index in range(0, len(indices) - 2, 3):
         a, b, c = indices[index], indices[index + 1], indices[index + 2]
         if a >= len(verts) or b >= len(verts) or c >= len(verts):
@@ -179,8 +183,11 @@ def _triangles(buf: bytes) -> list[object]:
     return triangles
 
 
-def _cells_crossed(x0: float, y0: float, x1: float, y1: float, cell: float) -> list[tuple[int, int]]:
+def _cells_crossed(start: Point, end: Point) -> list[tuple[int, int]]:
     """Grid cells the segment passes through."""
+    x0, y0 = start[0], start[1]
+    x1, y1 = end[0], end[1]
+    cell = _CELL
     cx = math.floor(x0 / cell)
     cy = math.floor(y0 / cell)
     ex = math.floor(x1 / cell)
@@ -219,7 +226,7 @@ def _cells_crossed(x0: float, y0: float, x1: float, y1: float, cell: float) -> l
     return cells
 
 
-def _hits(start: tuple[float, float, float], end: tuple[float, float, float], triangle: tuple[tuple[float, float, float], tuple[float, float, float], tuple[float, float, float]]) -> bool:
+def _hits(start: Point, end: Point, triangle: Triangle) -> bool:
     """Möller–Trumbore. A hit between the eyes blocks the shot."""
     (ax, ay, az), (bx, by, bz), (cx, cy, cz) = triangle
     edge1 = (bx - ax, by - ay, bz - az)
@@ -242,8 +249,9 @@ def _hits(start: tuple[float, float, float], end: tuple[float, float, float], tr
     return 0.02 < t < 0.98
 
 
-def _surface_z(triangle: tuple[tuple[float, float, float], tuple[float, float, float], tuple[float, float, float]], x: float, y: float) -> float | None:
+def _surface_z(triangle: Triangle, point: Point) -> float | None:
     """Height of the face at this XY, or None when the point is outside it."""
+    x, y = point[0], point[1]
     (ax, ay, az), (bx, by, bz), (cx, cy, cz) = triangle
     den = (by - cy) * (ax - cx) + (cx - bx) * (ay - cy)
     if abs(den) < 1e-8:
@@ -256,11 +264,11 @@ def _surface_z(triangle: tuple[tuple[float, float, float], tuple[float, float, f
     return w1 * az + w2 * bz + w3 * cz
 
 
-def _dot(a: tuple[float, float, float], b: tuple[float, float, float]) -> float:
+def _dot(a: Point, b: Point) -> float:
     return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]
 
 
-def _cross(a: tuple[float, float, float], b: tuple[float, float, float]) -> tuple[float, float, float]:
+def _cross(a: Point, b: Point) -> Point:
     return (
         a[1] * b[2] - a[2] * b[1],
         a[2] * b[0] - a[0] * b[2],

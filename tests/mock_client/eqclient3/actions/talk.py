@@ -139,7 +139,7 @@ class Talk(Action):
             self.mark = _book(world)
             self.expect_reply = True
             self.quiet = 0
-            self._say(loop)
+            self._say(loop, world)
             self.sent = True
             self.wait('HAIL')
             self.suspended = False
@@ -181,8 +181,8 @@ class Talk(Action):
             self.stride = 'walk'
             self.active_path = None
 
-    def _say(self, loop: Loop) -> None:
-        send_command(loop, self.line)
+    def _say(self, loop: Loop, world: World) -> None:
+        send_command(loop, hail_line(self.line, self._npc_name(world)))
 
     def _ensure_chain(self) -> None:
         """A talk restored from an older journal has none of the chain fields."""
@@ -408,6 +408,16 @@ def _brace_block(text: str, start: int) -> str:
             depth -= 1
         index += 1
     return text[start:index]
+
+def hail_line(line: str, name: str) -> str:
+    """A bare hail is the default script. The target's name selects his own."""
+    text = (line or '').strip()
+    if text.lower() != 'hail':
+        return line
+    spoken = ' '.join((name or '').replace('_', ' ').split())
+    if not spoken:
+        return line
+    return f'hail {spoken}'
 
 def hail_name(text: str) -> str:
     match = _HAIL_NAME.search(str(text or '').strip())
