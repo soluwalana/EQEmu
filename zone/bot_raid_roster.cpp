@@ -1723,16 +1723,32 @@ bool TryPriorityHeal(Bot* bot)
 	}
 
 	auto& state = State(owner->CharacterID());
+	auto needs_heal = [](Mob* mob) {
+		return mob && mob->GetHP() > 0 && !mob->IsCorpse() && mob->GetHPRatio() <= 90.0f;
+	};
+
 	Mob* focus = nullptr;
-
 	if (!state.heal_focus_name.empty() && class_id == Class::Cleric) {
-		focus = ResolveNamedMob(owner, state.heal_focus_name);
-	}
-	else if (state.heal_tanks) {
-		focus = LowestTank(owner);
+		Mob* named = ResolveNamedMob(owner, state.heal_focus_name);
+		if (needs_heal(named)) {
+			focus = named;
+		}
 	}
 
-	if (!focus || focus->GetHP() <= 0 || focus->GetHPRatio() > 90.0f) {
+	// The named cleric (or whoever the rotation was focused on) is dead or
+	// already safe. That must not stop the remaining clerics. Tanks first,
+	// then the owner — the agent is the one who dies when this falls through.
+	if (!focus && state.heal_tanks) {
+		Mob* tank = LowestTank(owner);
+		if (needs_heal(tank)) {
+			focus = tank;
+		}
+	}
+	if (!focus && needs_heal(owner)) {
+		focus = owner;
+	}
+
+	if (!focus) {
 		return false;
 	}
 

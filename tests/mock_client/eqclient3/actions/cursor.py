@@ -1,0 +1,87 @@
+"""Band 350. The swap token is already outstanding. The real item or a delete finishes it."""
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from eqclient3.action import Message
+    from eqclient3.loop import Loop
+    from eqclient3.world import World
+
+from eqclient3.action import Action
+from eqclient3.structs import OP_MoveItem
+from eqclient3.actions.support import CURSOR_SLOT, TOKEN, delete_slot, item_of
+
+class Cursor(Action):
+
+    def __init__(self, slot: int) -> None:
+        super().__init__()
+        self.priority = 350
+        self.durable = True
+        self.slot = int(slot)
+        self.outstanding = True
+        self.limit = 10
+
+    def opcodes(self) -> tuple[str, ...]:
+        return ('OP_ItemPacket', 'OP_DeleteItem')
+
+    def suspend(self) -> None:
+        self.suspended = True
+
+    def step(self, loop: Loop, world: World) -> None:
+        message = self.consume('OP_ItemPacket') or self.consume('OP_DeleteItem')
+        if self.waiting_for('CURSOR') and message is None:
+            self.waited += 1
+            if self.limit is None or self.waited < self.limit:
+                return
+            self.waited = 0
+            self._retry(loop, world)
+            return
+        if message is not None and self._finishes(message):
+            self._write(world, message)
+            self.unwait('CURSOR')
+            self.waited = 0
+            self.outstanding = False
+            self.complete = True
+            return
+        self.wait('CURSOR')
+        self.suspended = False
+
+    def _finishes(self, message: Message) -> bool:
+        if message.opcode == 'OP_DeleteItem':
+            return delete_slot(message) == self.slot
+        item = item_of(message)
+        if item is None:
+            return False
+        slot = int(item.slot)
+        item_id = int(item.item_id or 0)
+        if item_id == TOKEN:
+            return False
+        return slot == self.slot
+
+    def _write(self, world: World, message: Message) -> None:
+        bags = world.bags
+        if message.opcode == 'OP_DeleteItem':
+            bags.pop(self.slot, None)
+            if world.cursor == TOKEN:
+                world.cursor = None
+            return
+        item = item_of(message)
+        item_id = int(item.item_id or 0)
+        if item_id and item_id != TOKEN:
+            bags[self.slot] = item_id
+        if world.cursor == TOKEN:
+            world.cursor = None
+
+    def _retry(self, loop: Loop, world: World) -> None:
+        move = world.cursor_move
+        if not move:
+            return
+        src, dest = (int(move[0]), int(move[1]))
+        loop.send('OP_MoveItem', OP_MoveItem(int(src), int(dest)).serialize())
+        self.outstanding = True
+        self.wait('CURSOR')
+        self.suspended = False
+
+def cursor_slot() -> int:
+    return CURSOR_SLOT

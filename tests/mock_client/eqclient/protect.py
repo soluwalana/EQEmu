@@ -57,6 +57,27 @@ def protected_ids(graph=None, campaign=None, zone_quests=None) -> set[int]:
     return found
 
 
+def components_of(graph, item_id: int) -> set[int]:
+    """Pieces the working reward needs, consumes, or requires."""
+    found: set[int] = set()
+    if graph is None or item_id <= 0:
+        return found
+    token = f"item:{int(item_id)}"
+    for edge in getattr(graph, "edges", ()) or ():
+        if edge.get("rel") not in {"needs", "requires", "consumes"}:
+            continue
+        if str(edge.get("to") or "") != token:
+            continue
+        origin = str(edge.get("from") or "")
+        if not origin.startswith("item:"):
+            continue
+        try:
+            found.add(int(origin.split(":", 1)[1]))
+        except ValueError:
+            continue
+    return found
+
+
 def is_protected(item_id: int, graph=None, campaign=None, zone_quests=None) -> bool:
     if item_id <= 0:
         return False

@@ -232,7 +232,7 @@ def test_corpse_is_done_only_when_every_listed_item_is_back():
     assert not world.needs_corpse
 
 
-def test_bags_hold_items_and_a_full_pack_yields_the_corpse_turn():
+def test_bags_hold_items_and_a_full_pack_still_reclaims():
     assert content_slot(22, 0) == 251
     assert content_slot(23, 1) == 262
     bag = Inventory()
@@ -258,7 +258,9 @@ def test_bags_hold_items_and_a_full_pack_yields_the_corpse_turn():
     world.own_corpse_zone = "tutorialb"
     intent = choose(world, TaskBook(), ZoneQuests("tutorialb"), bag, True)
     assert intent is not None
-    assert intent.kind != "reclaim"
+    # Coin on the body is taken even when nothing else will fit.
+    assert intent.kind == "reclaim"
+    assert intent.where == (80.0, -40.0, 5.0)
 
 
 def test_bags_short_and_trash_slots_for_sell():
@@ -266,12 +268,14 @@ def test_bags_short_and_trash_slots_for_sell():
     assert bags_short(bag) == 8
     bag.slots[22] = Held(BACKPACK_ITEM, 22, 1, "Backpack", "", bag_slots=8, bag_size=4)
     bag.slots[23] = Held(13068, 23, 1, "Rat Whiskers", "")
-    bag.slots[251] = Held(13069, 251, 1, "Snake Scales", "")
+    bag.slots[24] = Held(13070, 24, 1, "Bread", "")
+    bag.slots[251] = Held(13069, 251, 1, "Gnoll Fur", "")
     assert bags_short(bag) == 7
     assert has_loot_room(bag)  # empty general slots remain
     junk = trash_slots(bag, protect=set())
     assert 23 in junk and 251 in junk
     assert 22 not in junk  # backpack stays
+    assert 24 not in junk  # a food word in the name is kept
     # Fill every pocket and general — no loot room, sell trash.
     for slot in range(24, 30):
         bag.slots[slot] = Held(slot, slot, 1, "fill", "")
@@ -293,8 +297,9 @@ def test_exhausted_headings_use_a_shorter_step():
     assert long is not None and short is not None
     assert abs(long[0] - here[0]) <= 4.01
     assert abs(short[0] - here[0]) <= 1.01
-    assert long[2] == here[2]
-    assert short[2] == here[2]
+    # A one-yard drop fits the stride budget, so the step takes the ramp.
+    assert long[2] == 19.0
+    assert short[2] == 19.0
     assert refused(here, (4.0, -146.0, 20.0), here)
     assert blocks_step((6.0, -146.0), here, (10.0, -146.0, 20.0))
     assert not blocks_step((2.2, -146.0), here, (10.0, -146.0, 20.0))
@@ -476,9 +481,11 @@ def test_a_refused_heading_tries_a_different_step():
     goal = (-5.0, -142.0, 14.0)
     direct = other_step(here, goal, set())
     assert direct is not None
-    assert direct[2] == here[2]
+    # Six yards down equals the stride budget, so this step lands on the goal height.
+    assert direct[2] == 14.0
     sunk = other_step((-326.0, -391.0, 20.0), (-326.0, -400.0, -38.0), set(), 4.0)
-    assert sunk is not None and sunk[2] == 20.0
+    # Fifty-eight yards down. A 4-yard stride may drop 6, not the whole cliff.
+    assert sunk is not None and sunk[2] == 14.0
     used = {bearing(here, direct)}
     nxt = other_step(here, goal, used)
     assert nxt is not None
@@ -650,18 +657,20 @@ def test_low_health_finishes_the_fight_before_sitting():
 
 def test_low_health_sits_until_he_is_nearly_full():
     world = ZoneModel("Mocktwo")
-    # Trigger matches healrotation critical (25%).
+    # Sit at half the bar. Stay down until 90%.
     world.hp = 1
     world.max_hp = 40
     assert world.needs_rest(sitting=False)
-    world.hp = 10  # 25%
+    world.hp = 20  # 50%
     assert world.needs_rest(sitting=False)
-    world.hp = 11  # above critical — keep fighting; cleric covers 25–60%
+    world.hp = 21  # above half — keep fighting
     assert not world.needs_rest(sitting=False)
     world.hp = 22
     assert not world.needs_rest(sitting=False)
     assert world.needs_rest(sitting=True)
-    world.hp = 36
+    world.hp = 35  # still under 90%
+    assert world.needs_rest(sitting=True)
+    world.hp = 36  # 90% stands
     assert not world.needs_rest(sitting=True)
     world.hp = 0
     assert not world.needs_rest(sitting=False)

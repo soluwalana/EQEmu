@@ -20,7 +20,7 @@ from eqclient.tasks import TaskBook
 from eqclient.tactics import fight_tactic, may_melee
 from eqclient.world import Door, Ground, Spawn, ZoneModel
 
-from tests.test_progress import _world
+from test_progress import _world
 
 
 def test_a_city_with_nothing_open_walks_to_a_named_npc_then_sits():
@@ -417,8 +417,12 @@ def test_a_drop_farm_asks_for_the_count_still_missing():
     waiting.faction[8] = 8
     idle = Campaign(1)
     idle.set_goal(10524)
+    # A grey con is not a filler. The named drop is still the search.
     clear = guide(waiting, TaskBook(), ZoneQuests("unrest"), Inventory(), True, graph=graph, campaign=idle, drops=book)
-    assert clear is not None and clear.kind == "fight" and clear.name == "a gnoll" and clear.text == "respawn"
+    assert clear is not None and clear.kind == "explore" and clear.name == "a kor" and clear.text == "loot"
+    waiting.spawns[8] = Spawn(8, "a gnoll", 1, 70, 1, 30.0, -140.0, 0.0, 1, 1)
+    filler = guide(waiting, TaskBook(), ZoneQuests("unrest"), Inventory(), True, graph=graph, campaign=idle, drops=book)
+    assert filler is not None and filler.kind == "fight" and filler.target == 8 and filler.name == "a gnoll" and filler.text == "respawn"
     waiting.spawns[7] = Spawn(7, "a kor", 2, 1, 1, 12.0, -140.0, 0.0, 1, 1)
     first = guide(waiting, TaskBook(), ZoneQuests("unrest"), Inventory(), True, graph=graph, campaign=idle, drops=book)
     assert first is not None and first.kind == "loot" and first.target == 7
@@ -1530,8 +1534,15 @@ def test_a_level_gate_fights_at_the_camp():
     world.level = 1
     world.spawns[7] = Spawn(7, "a rat", 1, 1, 1, 4.0, -140.0, 19.0, 1, 1)
     world.faction[7] = 8
+    # Unrest is an 11+ camp. Level 1 leaves the mines for the level-1 camp first.
     intent = guide(world, TaskBook(), ZoneQuests("tutorialb"), Inventory(), True, graph=graph, campaign=camp)
-    assert intent is not None and intent.kind == "fight" and intent.target == 7
+    assert intent is not None and intent.kind == "explore" and intent.name == "qeynos"
+    assert intent.item_id == 50 and intent.text == "grind to L11 item=50"
+    world.zone = "qeynos"
+    world.spawns[7] = Spawn(7, "a gnoll", 1, 1, 1, 4.0, -140.0, 19.0, 1, 1)
+    at_camp = guide(world, TaskBook(), ZoneQuests("qeynos"), Inventory(), True, graph=graph, campaign=camp)
+    assert at_camp is not None and at_camp.kind == "fight" and at_camp.target == 7
+    assert at_camp.text == "grind to L11 item=50"
 
 
 def test_a_hand_in_lists_every_item_and_a_hail_keeps_its_word():

@@ -354,6 +354,7 @@ class Agent:
         self._fish_facing = False
         self._answered: set[tuple[str, tuple]] = set()
         self.lesson: Lesson | None = None
+        self._recent_fetches: list[int] = []
         self._listed_tasks = False
         self._focus = 0
         self._pursuit = 0
@@ -1994,6 +1995,7 @@ class Agent:
             self._drag_corpse_if_close(intention.target)
             self._loot(intention.target)
         elif kind in ("fetch", "search"):
+            self._note_fetch(intention.item_id)
             self._pickup(intention.target)
         elif kind == "hand_in":
             self._keyword(intention)
@@ -4436,7 +4438,27 @@ class Agent:
             self.client.send("OP_WhoAllRequest", who_request(name))
 
     def _protected_items(self) -> set[int]:
-        return protected_ids(self.graph, self.campaign, self.quests)
+        from eqclient.protect import components_of
+
+        found = protected_ids(self.graph, self.campaign, self.quests)
+        recent = [int(item_id) for item_id in self._recent_fetches if int(item_id) > 0]
+        found.update(recent)
+        seeds = {int(item_id) for item_id in (getattr(self.campaign, "stack", ()) or ())}
+        seeds.update(recent)
+        for item_id in seeds:
+            found.update(components_of(self.graph, item_id))
+        return found
+
+    def _note_fetch(self, item_id: int) -> None:
+        """Remember the need. The newest 20 stay out of the vendor trash."""
+        item_id = int(item_id or 0)
+        if item_id <= 0:
+            return
+        recent = self._recent_fetches
+        if item_id in recent:
+            recent.remove(item_id)
+        recent.append(item_id)
+        del recent[:-20]
 
     def _tidy(self) -> None:
         """Destroy one unprotected trash piece once bags are full and nothing will vendor."""

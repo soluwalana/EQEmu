@@ -246,13 +246,31 @@ bool HealRotation::Stop()
 	return true;
 }
 
+static bool rotation_member_down(Mob* mob)
+{
+	// A dead named cleric must not stay the current caster. Living members
+	// never become CastingMember() while that corpse is still at the front.
+	return !mob || mob->GetHP() <= 0;
+}
+
 Bot* HealRotation::CastingMember()
 {
 	if (!m_is_active && !m_hot_active)
 		return nullptr;
 
+	auto skip_downed = [this]() {
+		while (!m_cycle_pool.empty() && rotation_member_down(m_cycle_pool.front())) {
+			Bot* down = m_cycle_pool.front();
+			m_cycle_pool.pop_front();
+			m_member_is_casting.erase(down);
+			m_member_pool.remove(down);
+		}
+	};
+
+	skip_downed();
 	if (m_cycle_pool.empty()) {
 		cycle_refresh();
+		skip_downed();
 
 		if (m_cycle_pool.empty())
 			return nullptr;
@@ -559,7 +577,9 @@ void HealRotation::ResetArmorTypeHPLimits()
 bool HealRotation::valid_state()
 {
 	m_member_pool.remove(nullptr);
-	m_member_pool.remove_if([](Mob* l) {return (!IsHealRotationMemberClass(l->GetClass())); });
+	m_member_pool.remove_if([](Mob* l) {
+		return !IsHealRotationMemberClass(l->GetClass()) || rotation_member_down(l);
+	});
 
 	cycle_refresh();
 

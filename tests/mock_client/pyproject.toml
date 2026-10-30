@@ -10,4 +10,4 @@ test = ["pytest"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["."]
+pythonpath = [".", "tests/eqclient1", "tests/eqclient3"]
