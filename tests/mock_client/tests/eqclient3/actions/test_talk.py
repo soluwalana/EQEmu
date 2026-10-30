@@ -62,8 +62,69 @@ class TalkTest(unittest.TestCase):
         action.step(client, sheet)
         self.assertEqual(action.target_id, 8)
         self.assertEqual(commands(client), ["hail"])
+        self.assertFalse(action.complete)
+        for _ in range(3):
+            action.step(client, sheet)
+        self.assertTrue(action.complete)
+        self.assertEqual(commands(client), ["hail"])
+
+    def test_a_hail_says_the_link_then_reads_the_next_reply(self):
+        client, sheet = fresh("tutorialb")
+        mob(sheet, 4, distance=5, name="Rytan", targeted=True)
+        action = Talk(4, "hail", "Hail Rytan and Learn About Spells.")
+        action.step(client, sheet)
+        self.assertEqual(commands(client), ["hail"])
+        inbox(action, "OP_SpecialMesg", {"sender": "Rytan", "text": f"Would you like to be {_saylink('blessed')}?"})
+        action.step(client, sheet)
+        self.assertEqual(commands(client), ["hail", "blessed"])
+        self.assertFalse(action.complete)
+        inbox(action, "OP_SpecialMesg", {"sender": "Rytan", "text": "There you go."})
+        action.step(client, sheet)
+        self.assertEqual(commands(client), ["hail", "blessed"])
+        self.assertTrue(action.complete)
+
+    def test_the_next_link_is_said_when_the_step_stays_open(self):
+        client, sheet = fresh("tutorialb")
+        mob(sheet, 4, distance=5, name="Guide", targeted=True)
+        action = Talk(4, "hail", "Hail Guide and Learn About Spells.")
+        action.step(client, sheet)
+        inbox(action, "OP_SpecialMesg", {"sender": "Guide", "text": f"Be {_saylink('blessed')} or {_saylink('review')}."})
+        action.step(client, sheet)
+        self.assertEqual(commands(client), ["hail", "blessed"])
+        inbox(action, "OP_SpecialMesg", {"sender": "Guide", "text": "Again."})
+        action.step(client, sheet)
+        self.assertEqual(commands(client), ["hail", "blessed", "review"])
+        self.assertFalse(action.complete)
+        inbox(action, "OP_SpecialMesg", {"sender": "Guide", "text": "Done."})
         action.step(client, sheet)
         self.assertTrue(action.complete)
+        self.assertEqual(commands(client), ["hail", "blessed", "review"])
+
+    def test_a_finished_step_drops_the_other_link(self):
+        from types import SimpleNamespace
+        from eqclient3.handlers.tasks import Activity
+
+        client, sheet = fresh("tutorialb")
+        mob(sheet, 4, distance=5, name="Rytan", targeted=True)
+        step = Activity(1448, 5, 4, "Rytan", "", "Hail Rytan and Learn About Spells.", 1)
+        sheet.tasks = SimpleNamespace(activities=[step])
+        action = Talk(4, "hail", "Hail Rytan and Learn About Spells.")
+        action.step(client, sheet)
+        inbox(action, "OP_SpecialMesg", {"sender": "Rytan", "text": f"Be {_saylink('blessed')} or {_saylink('review')}?"})
+        action.step(client, sheet)
+        self.assertEqual(commands(client), ["hail", "blessed"])
+        step.done = 1
+        inbox(action, "OP_SpecialMesg", {"sender": "Rytan", "text": "There you go."})
+        action.step(client, sheet)
+        self.assertEqual(commands(client), ["hail", "blessed"])
+        self.assertTrue(action.complete)
+
+    def test_the_word_that_finishes_the_open_step_is_said_first(self):
+        from eqclient3.actions.talk import reply_order
+
+        ordered = reply_order(["review", "blessed"], {"blessed": {(1448, 5)}}, {(1448, 5)}, set())
+        self.assertEqual(ordered, ["blessed", "review"])
+        self.assertEqual(reply_order(["wish"], {}, set(), {"wish"}), [])
 
     def test_reply_is_read_while_a_target_wait_is_open(self):
         client, sheet = fresh()
@@ -94,6 +155,11 @@ class TalkTest(unittest.TestCase):
         action.step(client, sheet)
         self.assertEqual(action.stride, "walk")
         self.assertEqual(movement().advances[-1].mode, "walk")
+
+
+def _saylink(word):
+    body = "0FFFFF000080000000000000000000000000000000000"
+    return f"\x12{body}{word}\x12"
 
 
 if __name__ == "__main__":

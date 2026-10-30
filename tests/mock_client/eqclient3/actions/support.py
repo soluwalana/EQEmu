@@ -10,6 +10,7 @@ if TYPE_CHECKING:
     from eqclient3.world import Mob
 
 from dataclasses import dataclass
+from eqclient3.log import log
 from eqclient3.nav.travel import first_leg
 from eqclient3.nav.zones import zone_id_of
 from eqclient3.structs import (
@@ -418,6 +419,7 @@ def zone_id(name: str) -> int:
     try:
         return int(zone_id_of(name) or 0)
     except Exception:
+        log.error("zone id lookup failed for %s", name, exc_info=True)
         return 0
 
 def empty_slots(world: World) -> int:
@@ -564,6 +566,7 @@ def at_water(world: World) -> bool:
     try:
         return bool(contains(world.x, world.y, world.z))
     except Exception:
+        log.error("water check failed", exc_info=True)
         return False
 
 def fetch_plan(world: World, item_id: int) -> FetchPlan:

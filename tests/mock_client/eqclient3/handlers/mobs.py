@@ -12,6 +12,7 @@ from eqclient3.actions.hold import Hold
 from eqclient3.actions.rest import Rest
 from eqclient3.handlers.common import FOLLOW_YARDS, HEAL_LINE, MANA_SIT, SIT_LINE, SPELL_DAMAGE, attack_for, bot_names, character_name, deliver, find_mob, has_cleric, has_open, is_ours, mark_fight, mobs_map, our_side, place, primary_faction, enqueue_once, source_open
 from eqclient3.handlers.death import claim_pending
+from eqclient3.inventory.assign import release_cursor
 from eqclient3.structs import EQStruct, OP_Assist, OP_BecomeCorpse, OP_ClientUpdate, OP_Damage, OP_DeleteSpawn, OP_HPUpdate, OP_MobHealth, OP_MobUpdate, OP_NewSpawn, OP_Track, OP_ZoneSpawns
 from eqclient3.world import Mob
 from eqclient3.handler import Handler
@@ -25,6 +26,8 @@ class MobsHandler(Handler):
         elif isinstance(payload, OP_DeleteSpawn):
             self.delete(payload)
         elif isinstance(payload, (OP_ClientUpdate, OP_MobUpdate)):
+            if opcode == 'OP_ClientUpdate':
+                release_cursor(self.loop, self.world)
             self.position(payload)
         elif isinstance(payload, OP_HPUpdate):
             self.hp(payload)

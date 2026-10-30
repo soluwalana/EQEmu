@@ -10,6 +10,7 @@ if TYPE_CHECKING:
 
 
 from eqclient3.action import Action
+from eqclient3.log import log
 from eqclient3.structs import OP_RezzAnswer, OP_RezzRequest
 from eqclient3.actions.support import spawn_of
 
@@ -57,6 +58,7 @@ class Rez(Action):
                 request.unknown00,
             )
         except (ValueError, AttributeError):
+            log.error("rez answer failed to build", exc_info=True)
             answer = OP_RezzAnswer()
             answer.action = 1
         loop.send("OP_RezzAnswer", answer.serialize())
@@ -71,5 +73,6 @@ def _request(payload: OP_RezzRequest | bytes | None) -> OP_RezzRequest:
         try:
             return OP_RezzRequest.deserialize(bytes(payload))
         except ValueError:
+            log.error("rez request failed to parse", exc_info=True)
             return OP_RezzRequest()
     return OP_RezzRequest()

@@ -8,6 +8,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from eqclient3.log import log
 from eqclient3.nav.navmesh import maps_root
 
 # Matches zone/water_map.h WaterRegionType.
@@ -416,6 +417,7 @@ def water_map(state: object) -> Any:
     try:
         state.water_map = load_water(zone) if zone else None
     except (OSError, ValueError):
+        log.error("water map for %s failed to load", zone, exc_info=True)
         state.water_map = None
     return state.water_map
 

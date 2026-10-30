@@ -156,16 +156,7 @@ class TasksHandler(Handler):
         book = self.world.tasks
         if book:
             return book
-        try:
-            # quests.book is not in this tree.
-            from eqclient3.quests.book import TaskBook
-        except ImportError:
-            book = Book()
-        else:
-            try:
-                book = TaskBook()
-            except TypeError:
-                book = Book()
+        book = Book()
         self.world.tasks = book
         return book
 

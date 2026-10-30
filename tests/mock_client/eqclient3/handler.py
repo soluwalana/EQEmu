@@ -12,6 +12,7 @@ if TYPE_CHECKING:
     from eqclient3.loop import Loop
     from eqclient3.world import World
 
+from eqclient3.log import log
 from eqclient3.handlers import MODULES
 from eqclient3.handlers.common import active_action, deliver, queue_of
 from eqclient3.net.decode import body
@@ -65,6 +66,7 @@ class Handler:
             try:
                 listed = action.opcodes()
             except AttributeError:
+                log.error("queued action has no opcodes", exc_info=True)
                 continue
             if opcode not in listed:
                 continue

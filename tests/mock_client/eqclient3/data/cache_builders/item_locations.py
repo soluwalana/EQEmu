@@ -7,6 +7,7 @@ import os
 from collections import defaultdict
 from pathlib import Path
 
+from eqclient3.log import log
 from eqclient3.data.cache_builders.common import peq_path
 from eqclient3.data.catalog import _tuple
 from eqclient3.data.drops import _lines, drops_from_lines
@@ -21,6 +22,7 @@ def spawn_xyz(fields: list[str]) -> tuple[str, float, float, float] | None:
     try:
         return fields[2].lower(), float(fields[4]), float(fields[5]), float(fields[6])
     except ValueError:
+        log.error("spawn coordinates failed to parse", exc_info=True)
         return None
 
 

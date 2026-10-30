@@ -12,9 +12,11 @@ def test_open_rows_follow_priority_then_key():
     low.source = "sell:1"
     low.priority = 0
     low.zone = "qeynos"
+    low.durable = True
     death = Death()
     death.source = "death:qeynos"
     death.zone = "qeynos"
+    death.durable = True
     journal.open_action("Hero", low)
     journal.open_action("Hero", death)
     journal.resolve_action("Hero", death)

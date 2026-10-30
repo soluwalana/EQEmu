@@ -19,6 +19,7 @@ if TYPE_CHECKING:
     from eqclient3.loop import Loop
     from eqclient3.world import World
 
+from eqclient3.log import log
 from eqclient3.actions.fetch import Fetch
 from eqclient3.actions.kill import Kill
 from eqclient3.camps import camp_for_level
@@ -236,5 +237,6 @@ def _cached_graph() -> QuestGraph | None:
         try:
             _graph = load_graph()
         except OSError:
+            log.error("quest graph failed to load", exc_info=True)
             return None
     return _graph

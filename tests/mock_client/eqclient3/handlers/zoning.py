@@ -1,6 +1,7 @@
 """Zone entry, an open ZoneChange, a closed session, and a reliable-stream hole."""
 from __future__ import annotations
 
+from eqclient3.log import log
 from eqclient3.actions.bots.form import Form
 from eqclient3.actions.read_tasks import ReadTasks
 from eqclient3.actions.zone import Zone
@@ -60,6 +61,7 @@ class ZoningHandler(Handler):
         try:
             journal.set_flag(who, name, 1)
         except AttributeError:
+            log.error("progress flag %s was not saved", name, exc_info=True)
             return
 
     def drop_npc_corpses(self) -> None:

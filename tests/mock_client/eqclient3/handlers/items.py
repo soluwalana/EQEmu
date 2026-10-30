@@ -9,6 +9,7 @@ if TYPE_CHECKING:
 from eqclient3.actions.cursor import Cursor
 from eqclient3.actions.support import CURSOR_SLOT, TOKEN
 from eqclient3.handlers.common import enqueue_once, queue_of, run_assign
+from eqclient3.inventory.assign import release_cursor
 from eqclient3.structs import EQStruct, ITEM_LOOT, ITEM_MERCHANT, Item, OP_CharInventory, OP_DeleteItem, OP_ItemPacket, OP_ShopDelItem
 from eqclient3.handler import Handler
 
@@ -42,6 +43,8 @@ class ItemsHandler(Handler):
             self.shop_del(payload)
         if wrote_bags:
             run_assign(self.loop, self.world)
+        if isinstance(payload, OP_CharInventory):
+            release_cursor(self.loop, self.world)
 
     def item(self, row: OP_ItemPacket) -> bool:
         item = row.item

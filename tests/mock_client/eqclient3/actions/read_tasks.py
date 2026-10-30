@@ -1,7 +1,8 @@
 """Band 0, durable. Read the stored task book in tutorialb and append the open steps.
 
-A channel or simple line that names work is heard here, while this action is
-waiting in the mine.
+A channel, special, or simple line that names work is heard here, while this
+action is waiting in the mine. A saylink in that line is a reply for Talk, not
+a new step.
 """
 from __future__ import annotations
 
@@ -24,7 +25,7 @@ from eqclient3.actions.support import DELIVER, KILL, LOOT, SPEAK, line_of, mark_
 from eqclient3.quests.produce import produce
 from eqclient3.handlers.common import mob_named, tutorial_done
 from eqclient3.handlers.tasks import Activity
-from eqclient3.struct_helpers import saylink_plain, saylink_words
+from eqclient3.struct_helpers import saylink_plain
 
 _KINDS = (
     (re.compile(r'\bkill\s+(?:the\s+)?(.+)', re.IGNORECASE), 'kill'),
@@ -45,7 +46,7 @@ class ReadTasks(Action):
         self.seen = []
 
     def opcodes(self) -> tuple[str, ...]:
-        return ('OP_NewZone', 'OP_ChannelMessage', 'OP_SimpleMessage')
+        return ('OP_NewZone', 'OP_ChannelMessage', 'OP_SpecialMesg', 'OP_SimpleMessage')
 
     def suspend(self) -> None:
         self.suspended = True
@@ -71,8 +72,8 @@ class ReadTasks(Action):
                 continue
             if activity.done >= (activity.goal or 1):
                 continue
-            key = activity.activity_id or id(activity)
-            source = f'task:{key}'
+            key = (int(activity.task_id), int(activity.activity_id))
+            source = f'task:{key[0]}:{key[1]}'
             if key in self.seen or any((action.source == source for action in loop.queue)):
                 continue
             action = _action_for(activity)
@@ -86,11 +87,11 @@ class ReadTasks(Action):
 
     def _hear(self, loop: Loop, world: World) -> None:
         if str(world.zone or '').lower() != 'tutorialb' or tutorial_done(loop, world):
-            while self.consume('OP_ChannelMessage') or self.consume('OP_SimpleMessage'):
+            while self.consume('OP_ChannelMessage') or self.consume('OP_SpecialMesg') or self.consume('OP_SimpleMessage'):
                 pass
             return
         while True:
-            message = self.consume('OP_ChannelMessage') or self.consume('OP_SimpleMessage')
+            message = self.consume('OP_ChannelMessage') or self.consume('OP_SpecialMesg') or self.consume('OP_SimpleMessage')
             if not message:
                 return
             text, speaker = _line(message)
@@ -119,11 +120,6 @@ def _named(text: str) -> list[tuple[str, str]]:
     plain = saylink_plain(text or '')
     found: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
-    for word in saylink_words(text or ''):
-        key = ('talk', word.lower())
-        if key not in seen:
-            seen.add(key)
-            found.append(key)
     for pattern, kind in _KINDS:
         match = pattern.search(plain)
         if match is None:

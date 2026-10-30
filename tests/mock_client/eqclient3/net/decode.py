@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import struct
 
+from eqclient3.log import log
 from eqclient3.structs import EQStruct, OPERATIONS
 
 
@@ -17,4 +18,5 @@ def body(name: str, payload: object) -> EQStruct | None:
     try:
         return cls.deserialize(bytes(payload))
     except (ValueError, struct.error):
+        log.error("decode %s failed", name, exc_info=True)
         return None

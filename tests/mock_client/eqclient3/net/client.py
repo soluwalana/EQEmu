@@ -14,12 +14,12 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from eqclient3.loop import ScriptedSession
 
-import logging
 import os
 import struct
 import time
 from collections.abc import Callable
 from dataclasses import dataclass
+from eqclient3.log import log
 from eqclient3.movement import OPCODES as movement_opcodes
 from eqclient3.net.login import login
 from eqclient3.net.opcodes import require, titanium_opcodes
@@ -38,7 +38,6 @@ from eqclient3.structs import (
 from eqclient3.net.session import Session, SessionError
 from eqclient3.net.sheet import Character, build
 from eqclient3.net.zone_in import drain, send, zone_in
-log = logging.getLogger('eqclient3.net')
 
 @dataclass
 class Login:
@@ -76,6 +75,7 @@ def _create_character(session: Session, opcodes: dict[str, int], name: str, dead
     try:
         approved = OP_ApproveName.deserialize(reply).approved
     except ValueError:
+        log.error("approve-name reply failed to parse", exc_info=True)
         approved = False
     if not approved:
         raise SessionError(f'world rejected the name {name!r}')
@@ -241,6 +241,7 @@ class Client:
                 who = message.sender
                 bucket = channel_bucket(message.channel)
         except ValueError:
+            log.error("application packet %s failed to parse", opcode, exc_info=True)
             text = ''
         if text:
             text = saylink_plain(text)

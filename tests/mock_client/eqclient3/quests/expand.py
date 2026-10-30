@@ -8,6 +8,7 @@ again. These are v3 actions. This module does not import the loop.
 
 from __future__ import annotations
 
+from eqclient3.log import log
 from eqclient3.actions.deliver import Deliver
 from eqclient3.actions.fetch import Fetch
 from eqclient3.actions.talk import Talk
@@ -136,6 +137,7 @@ def _token_item(token: str) -> int:
     try:
         return int(text.split(":", 1)[1])
     except ValueError:
+        log.error("item token failed to parse: %s", text, exc_info=True)
         return 0
 
 

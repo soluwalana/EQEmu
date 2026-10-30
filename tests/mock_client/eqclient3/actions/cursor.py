@@ -1,4 +1,4 @@
-"""Band 350. The swap token is already outstanding. The real item or a delete finishes it."""
+"""Band 350. A fresh move is sent once. The token, the real item, or a delete finishes it."""
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -14,11 +14,13 @@ from eqclient3.actions.support import CURSOR_SLOT, TOKEN, delete_slot, item_of
 
 class Cursor(Action):
 
-    def __init__(self, slot: int) -> None:
+    def __init__(self, slot: int, move: tuple[int, int] | None = None) -> None:
         super().__init__()
         self.priority = 350
         self.durable = True
         self.slot = int(slot)
+        self.move = move
+        self.sent = False
         self.outstanding = True
         self.limit = 10
 
@@ -29,6 +31,14 @@ class Cursor(Action):
         self.suspended = True
 
     def step(self, loop: Loop, world: World) -> None:
+        if self.move and not self.sent:
+            world.cursor_move = self.move
+            loop.send('OP_MoveItem', OP_MoveItem(self.move[0], self.move[1]).serialize())
+            self.sent = True
+            self.outstanding = True
+            self.wait('CURSOR')
+            self.suspended = False
+            return
         message = self.consume('OP_ItemPacket') or self.consume('OP_DeleteItem')
         if self.waiting_for('CURSOR') and message is None:
             self.waited += 1

@@ -20,6 +20,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from eqclient3.log import log
 from eqclient3.data.cache_builders.common import peq_path
 from eqclient3.data.catalog import _table, _tuple
 from eqclient3.data.mapped import (
@@ -400,6 +401,7 @@ def _float(raw: str) -> float:
     try:
         return float(raw)
     except ValueError:
+        log.error("drop chance failed to parse: %s", raw, exc_info=True)
         return 0.0
 
 
@@ -536,7 +538,7 @@ def read_drops(path: str) -> MappedDrops | DropBook:
         try:
             return MappedDrops(mapped)
         except ValueError:
-            pass
+            log.error("drop cache %s failed to open", mapped, exc_info=True)
     book = _read_drops_json(source)
     if not source.is_file():
         return book
@@ -634,6 +636,7 @@ def _version_ok(path: str) -> bool:
     try:
         row = json.loads(first)
     except json.JSONDecodeError:
+        log.error("drop cache %s failed to parse", path, exc_info=True)
         return False
     return row.get("kind") == "meta" and int(row.get("version") or 0) >= _VERSION
 

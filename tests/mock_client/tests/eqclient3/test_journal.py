@@ -87,24 +87,28 @@ def test_create_and_reload_open_row(tmp_path):
     assert path != DEFAULT_PATH
 
 
-def test_a_string_wait_reloads_as_a_list(tmp_path):
-    journal = Journal(tmp_path / "journal-v3.sqlite")
+def test_an_action_that_is_not_durable_is_not_reloaded(tmp_path):
+    path = tmp_path / "journal-v3.sqlite"
+    journal = Journal(path)
     try:
         action = Action()
-        action.source = "fetch:12"
-        action.zone = "gfaydark"
-        action.waiting = ["HAIL"]
+        action.source = "hail:absor"
+        action.zone = "tutorialb"
         assert journal.open_action("Hero", action) is True
-        journal._db.execute(
-            "UPDATE actions SET payload = ? WHERE character = ? AND source = ?",
-            ('{"waiting": "HAIL", "target_id": 12}', "Hero", "fetch:12"),
-        )
-        journal._db.commit()
-        restored = journal.load_actions("Hero")[0]
-        assert restored.waiting == ["HAIL"]
-        assert restored.target_id == 12
+        assert journal.load_actions("Hero") == []
+        assert journal.is_open("Hero", "hail:absor") is False
+        journal.resolve_action("Hero", action)
+        assert journal.is_resolved("Hero", "hail:absor") is True
+        assert journal.load_actions("Hero") == []
     finally:
         journal.close()
+
+    again = Journal(path)
+    try:
+        assert again.load_actions("Hero") == []
+        assert again.is_resolved("Hero", "hail:absor") is True
+    finally:
+        again.close()
 
 
 def test_resolved_source_is_not_reloaded_or_appended(tmp_path):
@@ -113,6 +117,7 @@ def test_resolved_source_is_not_reloaded_or_appended(tmp_path):
         done = Action()
         done.source = "task:1"
         done.zone = "qeynos"
+        done.durable = True
         journal.resolve_action("Hero", done)
 
         assert journal.load_actions("Hero") == []
@@ -136,6 +141,7 @@ def test_clear_source_is_neither_open_nor_resolved(tmp_path):
         action = Action()
         action.source = "form:qeynos"
         action.zone = "qeynos"
+        action.durable = True
         assert journal.open_action("Hero", action) is True
         journal.clear_source("Hero", "form:qeynos")
 
@@ -147,6 +153,7 @@ def test_clear_source_is_neither_open_nor_resolved(tmp_path):
         fresh = Action()
         fresh.source = "form:qeynos"
         fresh.zone = "qeynos"
+        fresh.durable = True
         assert journal.open_action("Hero", fresh) is True
         assert [row.source for row in journal.load_actions("Hero")] == ["form:qeynos"]
     finally:

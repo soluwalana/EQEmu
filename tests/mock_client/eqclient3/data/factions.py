@@ -109,7 +109,11 @@ class FactionBook:
 
 
 def factions_from_lines(lines) -> FactionBook:
-    """Positive kill hits and NPC primary factions from a peq dump."""
+    """Build the dictionaries once from a peq dump.
+
+    Spawn lookup does not call this. It reads ``primary_of`` and ``primary_at``
+    on the book ``ensure_factions`` keeps for the process.
+    """
     mode = ""
     # npc_faction_id → [(faction_id, value), ...]
     entries: dict[int, list[tuple[int, int]]] = defaultdict(list)
@@ -314,21 +318,43 @@ def read_factions(path: str) -> FactionBook:
     return book
 
 
+# One book for the process. primary_of and primary_at are the lookup dictionaries.
+_book: FactionBook | None = None
+_book_key: tuple[str, int] | None = None
+
+
 def ensure_factions(
     path: str | None = None,
     peq: str | Path | None = None,
     *,
     rebuild: bool = False,
 ) -> FactionBook:
-    """Load faction_hits.jsonl, or build once from the peq dump."""
+    """The faction dictionaries, loaded once.
+
+    ``faction_hits.jsonl`` is about 5 MB. A spawn asks for one name, so the
+    parsed ``primary_of`` / ``primary_at`` dictionaries stay in memory. The peq
+    dump is scanned only when that file is missing, and only on that first load.
+    A rewritten file is read again. This is not memory-mapped: item locations
+    are hundreds of megabytes looked up by id, and this file is a name table.
+    """
+    global _book, _book_key
     path = path or os.environ.get("EQEMU_FACTIONS", DEFAULT_FACTIONS)
     file = Path(path)
+    stamp = file.stat().st_mtime_ns if file.is_file() else 0
+    key = (str(file), 0 if rebuild else stamp)
+    if _book is not None and _book_key == key and not rebuild:
+        return _book
     if file.is_file() and not rebuild:
-        return read_factions(path)
-    dump = peq_path(peq)
-    book = build_factions(dump) if dump.is_file() else FactionBook()
-    if book.by_faction or book.primary_of:
-        write_factions(book, path)
+        book = read_factions(str(file))
+    else:
+        dump = peq_path(peq)
+        book = build_factions(dump) if dump.is_file() else FactionBook()
+        if book.by_faction or book.primary_of:
+            write_factions(book, str(file))
+            stamp = file.stat().st_mtime_ns if file.is_file() else 0
+            key = (str(file), stamp)
+    _book = book
+    _book_key = key
     return book
 
 

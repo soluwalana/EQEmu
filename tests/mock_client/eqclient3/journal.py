@@ -4,15 +4,13 @@ Open action rows reload onto the queue. A resolved source is not appended again.
 Death clears a removed source so it is neither open nor resolved.
 """
 from __future__ import annotations
-import base64
-import importlib
-import json
 import os
+import pickle
 import sqlite3
 from pathlib import Path
 from .action import Action
+from .log import log
 DEFAULT_PATH = str(Path.home() / '.eqclient' / 'journal-v3.sqlite')
-_SKIP = {'messages', 'active_path', 'yielding', 'suspended', 'complete', 'insert', 'source', 'zone', 'priority', 'durable'}
 _SCHEMA = "\nCREATE TABLE IF NOT EXISTS says (\n    character TEXT NOT NULL, zone TEXT NOT NULL, npc TEXT NOT NULL, text TEXT NOT NULL,\n    PRIMARY KEY (character, zone, npc, text)\n);\nCREATE TABLE IF NOT EXISTS handins (\n    character TEXT NOT NULL, zone TEXT NOT NULL, npc TEXT NOT NULL,\n    item_id INTEGER NOT NULL, count INTEGER NOT NULL,\n    PRIMARY KEY (character, zone, npc, item_id)\n);\nCREATE TABLE IF NOT EXISTS flags (\n    character TEXT NOT NULL, name TEXT NOT NULL, value INTEGER NOT NULL,\n    PRIMARY KEY (character, name)\n);\nCREATE TABLE IF NOT EXISTS soulbind (\n    character TEXT PRIMARY KEY, zone TEXT NOT NULL\n);\nCREATE TABLE IF NOT EXISTS tutorial (\n    character TEXT PRIMARY KEY\n);\nCREATE TABLE IF NOT EXISTS corpses (\n    character TEXT NOT NULL, corpse_id INTEGER NOT NULL,\n    zone TEXT NOT NULL, x REAL NOT NULL, y REAL NOT NULL, z REAL NOT NULL,\n    collected INTEGER NOT NULL DEFAULT 0,\n    PRIMARY KEY (character, corpse_id)\n);\nCREATE TABLE IF NOT EXISTS goals (\n    character TEXT NOT NULL, position INTEGER NOT NULL,\n    item_id INTEGER NOT NULL, count INTEGER NOT NULL,\n    PRIMARY KEY (character, position)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    character TEXT NOT NULL, position INTEGER NOT NULL,\n    kind TEXT NOT NULL, source TEXT NOT NULL,\n    zone TEXT NOT NULL, priority INTEGER NOT NULL DEFAULT 0,\n    durable INTEGER NOT NULL DEFAULT 0, payload TEXT NOT NULL DEFAULT '{}',\n    resolved INTEGER NOT NULL DEFAULT 0,\n    PRIMARY KEY (character, position)\n);\nCREATE TABLE IF NOT EXISTS bot_worn (\n    character TEXT NOT NULL, bot_name TEXT NOT NULL, slot INTEGER NOT NULL, item_id INTEGER NOT NULL,\n    PRIMARY KEY (character, bot_name, slot)\n);\nCREATE TABLE IF NOT EXISTS bot_settings (\n    character TEXT NOT NULL, bot_name TEXT NOT NULL, kind TEXT NOT NULL, value TEXT NOT NULL,\n    PRIMARY KEY (character, bot_name, kind)\n);\nCREATE TABLE IF NOT EXISTS bots (\n    character TEXT NOT NULL, bot_name TEXT NOT NULL, class_id INTEGER NOT NULL DEFAULT 0,\n    PRIMARY KEY (character, bot_name)\n);\nCREATE TABLE IF NOT EXISTS sell_marks (\n    character TEXT NOT NULL, item_id INTEGER NOT NULL,\n    PRIMARY KEY (character, item_id)\n);\n"
 
 class Journal:
@@ -30,6 +28,7 @@ class Journal:
             self._db.execute('PRAGMA journal_mode=WAL')
         self._db.executescript(_SCHEMA)
         self._db.commit()
+        self._drop_ephemeral()
 
     def close(self) -> None:
         self._db.close()
@@ -124,25 +123,54 @@ class Journal:
         self.save_goals(character, goals)
         return top
 
+    def _drop_ephemeral(self) -> None:
+        """Drop open actions that are not durable, and rows whose pickle will not open.
+
+        A resolved source stays, so it is not appended again.
+        """
+        self._db.execute('DELETE FROM actions WHERE durable = 0 AND resolved = 0')
+        rows = list(self._db.execute('SELECT character, position, payload FROM actions'))
+        for character, position, payload in rows:
+            if _thaw(payload) is None:
+                self._db.execute('DELETE FROM actions WHERE character = ? AND position = ?', (character, position))
+        self._db.commit()
+
     def open_action(self, character: str, action: Action) -> bool:
-        """Insert one open row. A resolved or already-open source is not written again."""
+        """Insert one open durable row. A resolved or already-open source is not written again.
+
+        An action that is not durable is left off the journal. The caller may still run it.
+        """
         source = str(action.source or '')
         if not source:
             return False
+        if not action.durable:
+            return True
         if self.is_resolved(character, source) or self.is_open(character, source):
             return False
         self._insert(character, action, resolved=0)
         return True
 
     def load_actions(self, character: str) -> list[Action]:
-        """Open rows only, in journal order. A resolved source is not reloaded."""
-        rows = self._db.execute('SELECT kind, source, zone, priority, durable, payload FROM actions WHERE character = ? AND resolved = 0 ORDER BY position', (character,))
-        return [_rehydrate(*row) for row in rows]
+        """Open durable rows, in journal order. A resolved source is not reloaded."""
+        rows = self._db.execute('SELECT position, source, zone, priority, durable, payload FROM actions WHERE character = ? AND resolved = 0 AND durable = 1 ORDER BY position', (character,))
+        found: list[Action] = []
+        for position, source, zone, priority, durable, payload in rows:
+            action = _thaw(payload)
+            if action is None:
+                self._db.execute('DELETE FROM actions WHERE character = ? AND position = ?', (character, position))
+                self._db.commit()
+                continue
+            action.source = str(source or '')
+            action.zone = str(zone or '')
+            action.priority = int(priority)
+            action.durable = bool(durable)
+            found.append(action)
+        return found
 
     def is_open(self, character: str, source: str) -> bool:
         if not source:
             return False
-        row = self._db.execute('SELECT 1 FROM actions WHERE character = ? AND source = ? AND resolved = 0 LIMIT 1', (character, source)).fetchone()
+        row = self._db.execute('SELECT 1 FROM actions WHERE character = ? AND source = ? AND resolved = 0 AND durable = 1 LIMIT 1', (character, source)).fetchone()
         return row is not None
 
     def resolved(self, character: str, source: str) -> bool:
@@ -222,15 +250,14 @@ class Journal:
 
     def recent_fetch_ids(self, character: str, limit: int = 20) -> list[int]:
         """Newest fetch item ids, including ones already resolved."""
-        rows = self._db.execute("SELECT payload FROM actions WHERE character = ? AND kind LIKE '%:Fetch' ORDER BY position DESC", (character,))
+        rows = self._db.execute("SELECT payload FROM actions WHERE character = ? AND kind LIKE '%:Fetch' AND durable = 1 ORDER BY position DESC", (character,))
         found: list[int] = []
         seen: set[int] = set()
         for (payload,) in rows:
-            try:
-                data = json.loads(payload or '{}')
-            except json.JSONDecodeError:
+            action = _thaw(payload)
+            if action is None:
                 continue
-            item_id = int((data or {}).get('item_id') or 0) if isinstance(data, dict) else 0
+            item_id = int(getattr(action, 'item_id', 0) or 0)
             if item_id <= 0 or item_id in seen:
                 continue
             seen.add(item_id)
@@ -241,169 +268,41 @@ class Journal:
 
     def _insert(self, character: str, action: Action, *, resolved: int) -> None:
         position = self._db.execute('SELECT COALESCE(MAX(position), -1) + 1 FROM actions WHERE character = ?', (character,)).fetchone()
-        self._db.execute('INSERT INTO actions (character, position, kind, source, zone, priority, durable, payload, resolved) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', (character, int(position[0]), _kind(action), str(action.source), str(action.zone or ''), int(action.priority), 1 if action.durable else 0, _payload(action), int(resolved)))
+        self._db.execute('INSERT INTO actions (character, position, kind, source, zone, priority, durable, payload, resolved) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', (character, int(position[0]), _kind(action), str(action.source), str(action.zone or ''), int(action.priority), 1 if action.durable else 0, _dump(action), int(resolved)))
         self._db.commit()
 
 def _kind(action: Action) -> str:
     cls = type(action)
     return f'{cls.__module__}:{cls.__qualname__}'
 
-def _payload(action: Action) -> str:
-    """Every field on the action, except the columns and the live mailbox."""
-    raw: dict[str, object] = {}
-    seen: set[int] = set()
-    for key, value in action.__dict__.items():
-        if key in _SKIP or key.startswith('_'):
-            continue
-        try:
-            raw[key] = _encode(value, seen)
-        except TypeError as error:
-            raise TypeError(f'cannot store {type(action).__name__}.{key}: {error}') from error
-    return json.dumps(raw)
+_HELD = ('messages', 'active_path', '_world')
 
-def _encode(value: object, seen: set[int]) -> object:
-    """JSON, plus tags for tuple, bytes, a non-string map, a set, and a plain object."""
-    if value is None or isinstance(value, (str, int, float, bool)):
-        return value
-    mark = id(value)
-    if mark in seen:
-        raise TypeError('cycle')
-    seen.add(mark)
+def _dump(action: Action) -> bytes:
+    """Pickle the action. The live mailbox, path, and world stay on the running object."""
+    held: dict[str, object] = {}
+    for key in _HELD:
+        if key in action.__dict__:
+            held[key] = action.__dict__.pop(key)
     try:
-        if isinstance(value, (bytes, bytearray)):
-            return {'$': 'bytes', 'v': base64.b64encode(bytes(value)).decode('ascii')}
-        if isinstance(value, tuple):
-            return {'$': 'tuple', 'v': [_encode(item, seen) for item in value]}
-        if isinstance(value, list):
-            return [_encode(item, seen) for item in value]
-        if isinstance(value, set):
-            return {'$': 'set', 'v': [_encode(item, seen) for item in value]}
-        if isinstance(value, dict):
-            if all(isinstance(key, str) and (not str(key).startswith('$')) for key in value):
-                return {key: _encode(item, seen) for key, item in value.items()}
-            return {'$': 'map', 'v': [[_encode(key, seen), _encode(item, seen)] for key, item in value.items()]}
-        return _encode_object(value, seen)
+        return pickle.dumps(action, protocol=pickle.HIGHEST_PROTOCOL)
     finally:
-        seen.discard(mark)
+        action.__dict__.update(held)
 
-def _encode_object(value: object, seen: set[int]) -> dict[str, object]:
-    cls = type(value)
-    if isinstance(value, Action):
-        raise TypeError('nested action')
-    if cls.__module__.startswith(('eqclient3.world', 'eqclient3.loop', 'eqclient3.net', 'eqclient3.nav', 'eqclient3.schedule', 'eqclient3.journal', 'eqclient3.bus')):
-        raise TypeError(f'{cls.__module__}.{cls.__qualname__}')
+def _thaw(payload: object) -> Action | None:
+    if isinstance(payload, memoryview):
+        payload = payload.tobytes()
+    if not isinstance(payload, (bytes, bytearray)) or not payload:
+        return None
     try:
-        state = value.__dict__
-    except AttributeError:
-        raise TypeError(f'{cls.__module__}.{cls.__qualname__}') from None
-    fields: dict[str, object] = {}
-    for key, item in state.items():
-        if key.startswith('_'):
-            continue
-        fields[key] = _encode(item, seen)
-    return {'$': 'obj', 't': f'{cls.__module__}:{cls.__qualname__}', 'v': fields}
-
-def _load_class(kind: str) -> type:
-    module_name, _, qual = kind.partition(':')
-    if not qual:
-        module_name, _, qual = kind.rpartition('.')
-    if not module_name or not qual:
-        raise ValueError(kind)
-    obj: object = importlib.import_module(module_name)
-    for part in qual.split('.'):
-        if not part:
-            raise ValueError(kind)
-        obj = obj.__dict__[part]
-    if not isinstance(obj, type):
-        raise TypeError(kind)
-    return obj
-
-def _kind_class(kind: str) -> type[Action]:
-    try:
-        cls = _load_class(kind)
-    except (ImportError, AttributeError, ValueError, KeyError, TypeError):
-        return Action
-    if not issubclass(cls, Action):
-        return Action
-    return cls
-
-def _decode(value: object) -> object:
-    if isinstance(value, list):
-        return [_decode(item) for item in value]
-    if not isinstance(value, dict):
-        return value
-    tag = value.get('$')
-    if tag == 'tuple':
-        inner = value['v']
-        if not isinstance(inner, list):
-            raise TypeError('tuple payload is not a list')
-        return tuple(_decode(item) for item in inner)
-    if tag == 'bytes':
-        return base64.b64decode(str(value['v']))
-    if tag == 'set':
-        inner = value['v']
-        if not isinstance(inner, list):
-            raise TypeError('set payload is not a list')
-        return {_decode(item) for item in inner}
-    if tag == 'map':
-        inner = value['v']
-        if not isinstance(inner, list):
-            raise TypeError('map payload is not a list')
-        found: dict[object, object] = {}
-        for pair in inner:
-            if not isinstance(pair, list) or len(pair) != 2:
-                raise TypeError('map entry is not a pair')
-            found[_decode(pair[0])] = _decode(pair[1])
-        return found
-    if tag == 'obj':
-        return _decode_object(value)
-    return {str(key): _decode(item) for key, item in value.items()}
-
-def _decode_object(value: dict) -> object:
-    kind = str(value.get('t') or '')
-    cls = _load_class(kind)
-    try:
-        obj = cls.__new__(cls)
-    except TypeError:
-        obj = object.__new__(cls)
-    fields = value.get('v') or {}
-    if not isinstance(fields, dict):
-        raise TypeError(f'{kind} fields are not an object')
-    try:
-        state = obj.__dict__
-    except AttributeError:
-        raise TypeError(f'{kind} has no fields') from None
-    state.update({str(key): _decode(item) for key, item in fields.items()})
-    return obj
-
-def _decode_into(action: Action, data: dict) -> None:
-    for key, value in data.items():
-        if key in _SKIP or str(key).startswith('_'):
-            continue
-        action.__dict__[key] = _decode(value)
-
-def _wait_list(value: object) -> list[str]:
-    """A stored wait used to be one string. Open rows still carry that shape."""
-    if isinstance(value, list):
-        return [str(item) for item in value if item]
-    if isinstance(value, str) and value:
-        return [value]
-    return []
-
-def _rehydrate(kind: str, source: str, zone: str, priority: int, durable: int, payload: str) -> Action:
-    cls = _kind_class(kind)
-    action = object.__new__(cls)
-    Action.__init__(action)
-    data = json.loads(payload or '{}')
-    if isinstance(data, dict):
-        _decode_into(action, data)
-    action.source = str(source or '')
-    action.zone = str(zone or '')
-    action.priority = int(priority)
-    action.durable = bool(durable)
+        action = pickle.loads(bytes(payload))
+    except (pickle.UnpicklingError, EOFError, AttributeError, ImportError, ModuleNotFoundError, TypeError, ValueError):
+        log.error("saved action failed to load", exc_info=True)
+        return None
+    if not isinstance(action, Action):
+        return None
     action.messages = []
     action.active_path = None
-    action.waiting = _wait_list(action.waiting)
+    action._world = None
     action.suspended = True
     action.yielding = False
     action.complete = False

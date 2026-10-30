@@ -5,7 +5,6 @@ step itself is stepped once in that same pulse. send queues until after the step
 """
 from __future__ import annotations
 
-import logging
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -17,6 +16,7 @@ if TYPE_CHECKING:
     from eqclient3.schedule import Schedule
 
 from .journal import Journal
+from .log import log
 from .trace import note_opcode
 from .world import World
 from . import net
@@ -24,8 +24,7 @@ from .net.client import Client
 from .net.session import Session, SessionError
 from eqclient3.trace import note_opcode
 PULSE = 0.1
-log = logging.getLogger('eqclient3.loop')
-_HEARD = ("OP_ChannelMessage", "OP_SimpleMessage")
+_HEARD = ("OP_ChannelMessage", "OP_SpecialMesg", "OP_SimpleMessage")
 
 
 def _hear_waiting(queue: Schedule, loop: Loop, world: World) -> None:

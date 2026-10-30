@@ -64,7 +64,9 @@ def test_a_hail_with_no_follow_up_completes():
     loop.character = "Hero"
     talk = Talk(1, "Hail", "")
     talk.step(loop, world)
-    talk.step(loop, world)
+    assert talk.complete is False
+    for _ in range(3):
+        talk.step(loop, world)
     assert talk.complete is True
     assert talk.finishes_tutorial is False
 

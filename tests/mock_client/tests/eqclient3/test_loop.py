@@ -62,7 +62,7 @@ def test_waiting_action_is_stepped_every_pulse():
 
 
 def test_active_action_is_logged_when_it_changes(caplog):
-    caplog.set_level(logging.INFO, logger="eqclient3.loop")
+    caplog.set_level(logging.INFO, logger="eqclient3")
     world = World()
     queue = Schedule()
     session = Session()
@@ -162,6 +162,12 @@ def test_higher_band_appended_without_yield_runs_in_the_same_pulse():
     assert [type(action) for action in queue] == [Low]
 
 
+class _Ping(Action):
+    def step(self, loop, world):
+        loop.send("OP_Ping", 1)
+        self.complete = True
+
+
 def test_completed_action_is_dropped_and_resolved(tmp_path):
     world = World()
     journal = Journal(tmp_path / "journal-v3.sqlite")
@@ -171,13 +177,8 @@ def test_completed_action_is_dropped_and_resolved(tmp_path):
     loop.journal = journal
     loop.character = "Hero"
 
-    class Done(Action):
-        def step(self, loop, world):
-            loop.send("OP_Ping", 1)
-            self.complete = True
-
     try:
-        done = Done()
+        done = _Ping()
         done.source = "ping:1"
         queue.append(done, world)
         assert loop.run_once(session, world, queue, Bus(queue)) is done
@@ -385,10 +386,12 @@ def test_start_reloads_open_actions_and_skips_a_resolved_source(tmp_path):
         open_row.source = "fetch:9"
         open_row.zone = "gfaydark"
         open_row.priority = 0
+        open_row.durable = True
         journal.open_action("Hero", open_row)
         done = Action()
         done.source = "task:done"
         done.zone = "qeynos"
+        done.durable = True
         journal.resolve_action("Hero", done)
 
         loop = Loop()

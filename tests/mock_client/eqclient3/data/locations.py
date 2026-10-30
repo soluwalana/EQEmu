@@ -14,6 +14,7 @@ from array import array
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from eqclient3.log import log
 from eqclient3.data.mapped import (
     IdIndex,
     StringTable,
@@ -117,7 +118,7 @@ def read_locations(path: str | None = None) -> MappedLocations | LocationBook:
         try:
             return MappedLocations(mapped)
         except ValueError:
-            pass
+            log.error("location cache %s failed to open", mapped, exc_info=True)
     if not source.is_file():
         return LocationBook()
     _compile_locations(source, mapped)

@@ -11,6 +11,7 @@ import sys
 from datetime import datetime
 
 from eqclient3.journal import Journal
+from eqclient3.log import log
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -74,6 +75,7 @@ def _order_key(action) -> tuple:
         detail = tuple(type(action).key(action))
         failed = 0
     except Exception as error:
+        log.error("action key failed", exc_info=True)
         detail = (str(error),)
         failed = 1
     return (-int(action.priority or 0), failed, detail)

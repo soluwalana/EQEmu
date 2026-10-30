@@ -15,6 +15,7 @@ BotSpellTypes sequential ids (Nuke=0, RegularHeal=1, …). We remap on load.
 
 from __future__ import annotations
 
+from eqclient3.log import log
 from eqclient3.data.cache_builders.common import peq_path
 from eqclient3.data.catalog import _tuple
 
@@ -309,6 +310,7 @@ def _take_entry(book: BotSpellBook, chunk: str) -> None:
         max_l = int(fields[5])
         priority = int(fields[8]) if fields[8].lstrip("-").isdigit() else 0
     except ValueError:
+        log.error("bot spell row failed to parse", exc_info=True)
         return
     if npc_id <= 0 or spell_id <= 0:
         return
@@ -503,6 +505,7 @@ def ensure_bot_spells(
         dump = peq_path(peq)
         peq_arg: str | Path | None = dump if dump.is_file() else None
     except Exception:
+        log.error("bot spell dump path failed", exc_info=True)
         peq_arg = peq
     book = build_bot_spells(peq_arg, bootstrap)
     if book.rows:

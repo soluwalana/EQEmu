@@ -11,12 +11,16 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
+from eqclient3.log import log
+
 
 class Catalog:
     def __init__(self) -> None:
         self.names: dict[str, list[int]] = {}
         self.labels: dict[int, str] = {}
         self.zones: dict[int, tuple[str, ...]] = {}
+        self.item_classes: dict[int, tuple[int, ...]] = {}
+        self.item_races: dict[int, tuple[int, ...]] = {}
         # recipe id -> components (item, count), the container it is made in, and the result.
         self.recipes: dict[int, dict] = {}
         # npc type id -> items on its loot table, including quest-spawned npcs with no spawn2 row.
@@ -215,6 +219,7 @@ def _trap_npc_zones(quests_root: str | Path | None = None) -> dict[int, tuple[st
         try:
             rel = path.relative_to(root)
         except ValueError:
+            log.error("quest path %s is outside %s", path, root, exc_info=True)
             continue
         if len(rel.parts) < 2:
             continue
@@ -224,6 +229,7 @@ def _trap_npc_zones(quests_root: str | Path | None = None) -> dict[int, tuple[st
         try:
             text = path.read_text(encoding="latin1", errors="replace")
         except OSError:
+            log.error("quest file %s failed to read", path, exc_info=True)
             continue
         low = text.lower()
         name = path.name

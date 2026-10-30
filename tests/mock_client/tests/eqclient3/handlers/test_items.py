@@ -4,7 +4,9 @@ import struct
 
 from eqclient3.actions.loot_mob import LootMob
 from eqclient3.actions.trade import Trade
-from eqclient3.handlers import items
+from eqclient3.handlers import items, mobs
+from eqclient3.inventory import assign as assign_mod
+from eqclient3.structs import OP_ClientUpdate
 from support import Loop, World, item_blob, names
 
 
@@ -35,3 +37,39 @@ def test_opcodes():
     items.ItemsHandler().handle("OP_ItemPacket", item_blob(0x66, 2, 77, name="Coin"), world, loop)
     assert opened.slots == []
     assert 77 not in world.bags.values()
+
+
+def test_inventory_and_client_update_queue_an_occupied_cursor():
+    saved = assign_mod._ITEMS
+    assign_mod._ITEMS = {67104: {"slots": 128, "classes": 65535, "races": 65535, "ac": 8, "item": 67104}}
+    try:
+        world = World()
+        loop = Loop()
+        world.class_id = 1
+        items.ItemsHandler().handle("OP_CharInventory", item_blob(None, 30, 67104, name="Vambraces"), world, loop)
+        assert world.cursor == 67104
+        assert names(loop) == ["Cursor"]
+        assert loop.queue[0].move == (30, 7)
+        loop.queue[0].step(loop, world)
+        src, dest, _count = struct.unpack("<III", loop.sent[0][1])
+        assert (src, dest) == (30, 7)
+
+        held = World()
+        held.cursor = 67104
+        held.class_id = 1
+        quiet = Loop()
+        mobs.MobsHandler().handle("OP_ClientUpdate", OP_ClientUpdate(0, 1.0, 2.0, 3.0), held, quiet)
+        assert names(quiet) == ["Cursor"]
+        assert quiet.queue[0].move == (30, 7)
+        mobs.MobsHandler().handle("OP_ClientUpdate", OP_ClientUpdate(0, 1.0, 2.0, 3.0), held, quiet)
+        assert names(quiet) == ["Cursor"]
+
+        hail = World()
+        hail.class_id = 1
+        packet = Loop()
+        items.ItemsHandler().handle("OP_ItemPacket", item_blob(0x6A, 30, 67104, name="Vambraces"), hail, packet)
+        assert hail.cursor == 67104
+        assert names(packet) == ["Cursor"]
+        assert packet.queue[0].move == (30, 7)
+    finally:
+        assign_mod._ITEMS = saved

@@ -6,6 +6,7 @@ import json
 import re
 from pathlib import Path
 
+from eqclient3.log import log
 from eqclient3.data.cache_builders.common import cache_path, lines, peq_path
 
 DEFAULT_FACTION_LIST = str(cache_path("faction_list.jsonl"))
@@ -62,11 +63,13 @@ def read_faction_list(path: str | Path | None = None) -> dict[str, int]:
         try:
             row = json.loads(line)
         except json.JSONDecodeError:
+            log.error("faction row failed to parse", exc_info=True)
             continue
         name = str(row.get("name") or "").lower()
         try:
             fac_id = int(row.get("id") or 0)
         except (TypeError, ValueError):
+            log.error("faction id failed to parse", exc_info=True)
             continue
         if name and fac_id:
             found[name] = fac_id

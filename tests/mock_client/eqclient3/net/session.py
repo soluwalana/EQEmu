@@ -17,6 +17,7 @@ import time
 import zlib
 from dataclasses import dataclass, field
 
+from eqclient3.log import log
 from eqclient3.net.crc import crc32
 from eqclient3.structs import (
     OP_ACK as Ack,
@@ -308,6 +309,7 @@ class Session:
                     else:
                         self._send_reliable(0, item)
             except (SessionError, OSError):
+                log.error("session writer failed", exc_info=True)
                 self.connected = False
                 self.closed = True
                 self.needs_rezone = True
@@ -319,12 +321,16 @@ class Session:
             try:
                 readable, _, _ = select.select([self._sock], [], [], 0.05)
             except (OSError, ValueError):
+                log.error("session reader failed", exc_info=True)
                 return
             if not readable:
                 continue
             try:
                 data, addr = self._sock.recvfrom(65535)
-            except (BlockingIOError, OSError):
+            except BlockingIOError:
+                continue
+            except OSError:
+                log.error("session read failed", exc_info=True)
                 continue
             with self._lock:
                 if self._peer is None:
@@ -446,6 +452,7 @@ class Session:
         try:
             return self._apply_decode(data)
         except zlib.error:
+            log.error("session decode failed", exc_info=True)
             self._note_decode_failure()
             return None
 
@@ -516,6 +523,7 @@ class Session:
             try:
                 OutOfSession.deserialize(data)
             except ValueError:
+                log.error("out-of-session packet failed to parse", exc_info=True)
                 return
             self.closed = True
             self.connected = False
@@ -529,6 +537,7 @@ class Session:
         try:
             reply = SessionResponse.deserialize(data)
         except ValueError:
+            log.error("session response failed to parse", exc_info=True)
             return
         if reply.connect_code != self._connect_code:
             return
@@ -550,6 +559,7 @@ class Session:
         try:
             header = Fragment.deserialize(data) if fragment else ReliablePacket.deserialize(data)
         except ValueError:
+            log.error("reliable packet failed to parse", exc_info=True)
             return
         sequence = header.sequence
         stream = self._streams[stream_id]
@@ -571,6 +581,7 @@ class Session:
             try:
                 seq = (Fragment if is_frag else ReliablePacket).deserialize(frame).sequence
             except ValueError:
+                log.error("queued reliable packet failed to parse", exc_info=True)
                 break
             stream.queue.pop(seq, None)
             self._send_ack(OP_ACK + stream_id, stream.sequence_in)
@@ -605,6 +616,7 @@ class Session:
         try:
             frag = Fragment.deserialize(data)
         except ValueError:
+            log.error("fragment failed to parse", exc_info=True)
             return
         if stream.fragment_total == 0:
             if len(frag.data) < 4:
@@ -623,6 +635,7 @@ class Session:
         try:
             sequence = (OutOfOrderAck if single else Ack).deserialize(data).sequence
         except ValueError:
+            log.error("ack failed to parse", exc_info=True)
             return
         stream = self._streams[stream_id]
         if single:
@@ -638,6 +651,7 @@ class Session:
         try:
             request = SessionStatRequest.deserialize(data)
         except ValueError:
+            log.error("session stat request failed to parse", exc_info=True)
             return
         raw = SessionStatResponse(
             request.timestamp,

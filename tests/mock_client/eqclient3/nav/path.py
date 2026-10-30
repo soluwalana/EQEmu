@@ -22,6 +22,7 @@ if TYPE_CHECKING:
 import math
 from dataclasses import dataclass, field
 from pathlib import Path as GraphFile
+from eqclient3.log import log
 from eqclient3.nav.navmesh import load_nav
 from eqclient3.structs import OP_FindPersonReply, OP_FindPersonRequest, OP_Track, OP_TrackTarget
 from eqclient3.nav.travel import DEFAULT_ZONE_GRAPH, first_leg, read_zone_graph
@@ -69,6 +70,29 @@ def route(origin: tuple[float, float, float], destination: tuple[float, float, f
     wet = _in_liquid(water, nxt) or _in_liquid(water, goal)
     return Path(distance=_length(origin, points, goal), points=points, door=door, in_water=wet, mode=mode, destination=goal, next_point=nxt, origin=origin, stride_length=float(length), fallback=fallback)
 
+def trim_points(points: list[tuple[float, float, float]], here: tuple[float, float, float], reach: float=1.0) -> list[tuple[float, float, float]]:
+    """Drop a center already reached, and one that sits behind the next center.
+
+    Walking the whole list from the current spot steps back onto the polygon
+    just left. The next stride steps off it, and the two spots trade places.
+    """
+    kept = [_xyz(point) for point in points]
+    while kept and _horiz(here, kept[0]) <= reach:
+        kept.pop(0)
+    while len(kept) > 1 and _behind(here, kept[0], kept[1]):
+        kept.pop(0)
+    return kept
+
+def cut_to_step(points: list[tuple[float, float, float]], step: tuple[float, float, float]) -> list[tuple[float, float, float]]:
+    """Drop the prefix this stride already passed, so the next one does not walk it again."""
+    route = [_xyz(point) for point in points]
+    if len(route) < 2:
+        return route
+    nearest = min(range(len(route)), key=lambda index: _horiz(step, route[index]))
+    if nearest == 0:
+        return route
+    return route[nearest:]
+
 def along(origin: tuple[float, float, float], points: list[tuple[float, float, float]], length: float) -> tuple[float, float, float]:
     """Walk up to ``length`` horizontal yards along ``points``."""
     origin = _xyz(origin)
@@ -102,6 +126,7 @@ def doors_on_stride(origin: tuple[float, float, float], end: tuple[float, float,
         try:
             dz = abs(float(door.z) - origin[2])
         except (TypeError, ValueError):
+            log.error("door height failed to read", exc_info=True)
             continue
         if dz > 20.0:
             continue
@@ -152,6 +177,7 @@ def mesh_reaches(zone: str, origin: tuple[float, float, float], goal: tuple[floa
     try:
         mesh = load_nav(zone)
     except (OSError, ValueError):
+        log.error("nav mesh for %s failed to load", zone, exc_info=True)
         return False
     if mesh is None:
         return False
@@ -182,6 +208,7 @@ def mob_point(mob: Mob) -> tuple[float, float, float] | None:
     try:
         pos = mob.position
     except AttributeError:
+        log.error("mob position unavailable", exc_info=True)
         pos = None
     if isinstance(pos, (tuple, list)) and len(pos) >= 3:
         return _xyz(pos)
@@ -226,6 +253,7 @@ def _polyline(origin: tuple[float, float, float], goal: tuple[float, float, floa
         try:
             mesh = load_nav(zone)
         except (OSError, ValueError):
+            log.error("nav mesh for %s failed to load", zone, exc_info=True)
             mesh = None
     if mesh is None:
         return (_trim(origin, [origin, goal], goal), False)
@@ -295,6 +323,7 @@ def _graph() -> ZoneGraph | None:
         if file.is_file():
             _GRAPH = read_zone_graph(str(file))
     except (OSError, ValueError, ImportError):
+        log.error("zone graph failed to load", exc_info=True)
         _GRAPH = None
     return _GRAPH
 
@@ -312,6 +341,7 @@ def _range_of(origin: tuple[float, float, float], mob: Mob) -> float:
     try:
         return float(raw)
     except (TypeError, ValueError):
+        log.error("mob distance failed to read", exc_info=True)
         return 1e+18
 
 def _in_liquid(water: WaterMap, point: tuple[float, float, float]) -> bool:
@@ -320,6 +350,7 @@ def _in_liquid(water: WaterMap, point: tuple[float, float, float]) -> bool:
     try:
         return bool(water.in_liquid(point[0], point[1], point[2]))
     except (TypeError, ValueError):
+        log.error("liquid check failed", exc_info=True)
         return False
 
 def _door_xyz(door: Door) -> tuple[float, float, float]:
@@ -367,4 +398,5 @@ def water_of(world: World, zone: str='') -> WaterMap | None:
     try:
         return load_water(zone)
     except (OSError, ValueError):
+        log.error("water map for %s failed to load", zone, exc_info=True)
         return None

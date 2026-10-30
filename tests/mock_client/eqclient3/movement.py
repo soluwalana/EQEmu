@@ -27,7 +27,6 @@ point it asked for.
 """
 from __future__ import annotations
 
-import logging
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -41,12 +40,12 @@ import math
 import struct
 import time
 from dataclasses import dataclass
+from eqclient3.log import log
 from eqclient3.struct_helpers import eq_heading
 from eqclient3.structs import EQStruct, OP_ClickDoor, OP_ClientUpdate, OP_Consider, OP_FindPersonReply, OP_FloatListThing, OP_MobUpdate, OP_MoveDoor, OP_NewZone, OPERATIONS
 from eqclient3.nav.navmesh import load_nav
-from eqclient3.nav.path import NEARBY_YARDS, STRIDE, Path, along, doors_on_stride, find as path_find, is_nearby, iter_mobs, mob_id, mob_point, route, track as path_track, water_of
-log = logging.getLogger('eqclient3.movement')
-LOG_PACKETS = False
+from eqclient3.nav.path import NEARBY_YARDS, STRIDE, Path, along, cut_to_step, doors_on_stride, find as path_find, is_nearby, iter_mobs, mob_id, mob_point, route, track as path_track, trim_points, water_of
+
 STRIDE_TIMEOUT = 3
 STRIDE_MOB_RADIUS = 2.0
 _COMMIT_TOLERANCE = 0.35
@@ -139,6 +138,7 @@ class Movement:
             try:
                 row = kind.deserialize(bytes(payload))
             except (ValueError, struct.error):
+                log.error("movement packet %s failed to parse", opcode, exc_info=True)
                 return
         if not isinstance(row, EQStruct):
             return
@@ -224,6 +224,8 @@ class Movement:
                 nxt = self._on_floor(here, spot)
             else:
                 return
+        log.debug(f"start stride here {here} nxt {nxt} anim {path.anim} tick {tick}")
+        log.debug(f"path.points {path.points} - destination {path.destination}")
         self._start_stride(loop, world, here, nxt, int(path.anim or 0), tick)
 
     def hold_if_idle(self, loop: Loop, world: World | None = None) -> None:
@@ -333,7 +335,9 @@ class Movement:
         if path.z_only:
             target = path.swim_z if path.swim_z is not None else path.destination[2]
             return _z_step(here, target, path.stride_length)
-        nxt = along(here, path.points, path.stride_length)
+        points = trim_points(path.points, here)
+        nxt = along(here, points or [path.destination], path.stride_length)
+        path.points = cut_to_step(points, nxt) if points else points
         return self._on_floor(here, nxt)
 
     def _on_floor(self, here: tuple[float, float, float], step: tuple[float, float, float]) -> tuple[float, float, float]:
@@ -377,6 +381,7 @@ class Movement:
         try:
             mesh = load_nav(zone)
         except (OSError, ValueError):
+            log.error("nav mesh for %s failed to load", zone, exc_info=True)
             mesh = None
         self._nav = mesh
         self._nav_zone = zone
@@ -398,19 +403,19 @@ class Movement:
         # 0 is this client. A nonzero id that is not GetID() updates a boat and the player stays put.
         spawn = 0
         stamp = int(time.time() * 1000) & 4294967295
-        if LOG_PACKETS:
-            log.info(
-                'move %s OP_FloatListThing OP_ClientUpdate (%.1f, %.1f, %.1f) -> (%.1f, %.1f, %.1f) seq=%s anim=%s',
-                label,
-                here[0],
-                here[1],
-                here[2],
-                point[0],
-                point[1],
-                point[2],
-                self.sequence,
-                anim,
-            )
+        
+        log.debug(
+            'move %s OP_FloatListThing OP_ClientUpdate (%.1f, %.1f, %.1f) -> (%.1f, %.1f, %.1f) seq=%s anim=%s',
+            label,
+            here[0],
+            here[1],
+            here[2],
+            point[0],
+            point[1],
+            point[2],
+            self.sequence,
+            anim,
+        )
         loop.send('OP_FloatListThing', OP_FloatListThing(here[0], here[1], here[2], stamp).serialize())
         loop.send(
             'OP_ClientUpdate',
@@ -541,6 +546,7 @@ def _surface_z(here: tuple[float, float, float], destination: tuple[float, float
         try:
             surf = water.surface_z(here[0], here[1])
         except (TypeError, ValueError):
+            log.error("water surface lookup failed", exc_info=True)
             surf = None
         if surf is not None:
             return float(surf)
@@ -552,6 +558,7 @@ def _liquid(water: WaterMap, point: tuple[float, float, float]) -> bool:
     try:
         return bool(water.in_liquid(point[0], point[1], point[2]))
     except (TypeError, ValueError):
+        log.error("liquid check failed", exc_info=True)
         return False
 
 def _door_on(here: tuple[float, float, float], nxt: tuple[float, float, float], door: Door) -> bool:

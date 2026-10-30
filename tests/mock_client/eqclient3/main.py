@@ -7,14 +7,15 @@ From the mock_client directory, or with it on PYTHONPATH:
 EQEMU_HOST defaults to 127.0.0.1. EQEMU_LOGIN_PORT defaults to 5998 and
 EQEMU_WORLD_PORT to 9000. A name the server does not have yet is created
 from EQEMU_RACE, EQEMU_CLASS, EQEMU_GENDER, EQEMU_DEITY, and EQEMU_START_ZONE.
+LOG_LEVEL defaults to INFO. DEBUG also prints movement packets.
 """
 from __future__ import annotations
 
-import logging
 import os
 from dataclasses import replace
 
 from eqclient3.bus import Bus
+from eqclient3.log import log
 from eqclient3.loop import Loop
 from eqclient3.nav.maps import load_map
 from eqclient3.nav.navmesh import load_nav
@@ -27,11 +28,8 @@ from eqclient3.quests.produce import _cached_graph
 from eqclient3.schedule import Schedule
 from eqclient3.world import World
 
-log = logging.getLogger("eqclient3")
-
 
 def main() -> None:
-    logging.basicConfig(level=logging.INFO, format="%(message)s")
     name = os.environ.get("EQEMU_CHAR", "").strip()
     user = os.environ.get("EQEMU_USER", "").strip()
     password = os.environ.get("EQEMU_PASS", "")
@@ -102,6 +100,7 @@ def _inbox_zone(client: Client) -> str:
         try:
             short = OP_NewZone.deserialize(payload).short_name
         except ValueError:
+            log.error("new zone packet failed to parse", exc_info=True)
             continue
         if short:
             return short
@@ -111,6 +110,7 @@ def _quiet(load, zone: str):
     try:
         return load(zone)
     except (OSError, ValueError):
+        log.error("%s failed to load for %s", getattr(load, "__name__", "map"), zone, exc_info=True)
         return None
 
 def play(loop: Loop, client: Client, world: World, queue: Schedule) -> None:

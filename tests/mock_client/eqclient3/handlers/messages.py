@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from eqclient3.action import Action
 
 import re
+from eqclient3.log import log
 from eqclient3.actions.fetch_faction import FetchFaction
 from eqclient3.data.factions import ensure_factions
 from eqclient3.actions.support import line_of
@@ -159,6 +160,7 @@ class MessagesHandler(Handler):
         try:
             book = ensure_factions()
         except Exception:
+            log.error("faction book failed to load", exc_info=True)
             book = None
         if book:
             table = book.by_name or book.names

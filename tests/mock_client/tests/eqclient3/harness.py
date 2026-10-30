@@ -231,7 +231,10 @@ def _mailbox(opcode, payload):
                 texts = (str(payload["text"]),)
             return OP_SimpleMessage(int(payload.get("string_id") or 0), texts=tuple(texts))
         if opcode == "OP_SpecialMesg":
-            return OP_SpecialMesg(message=str(payload.get("text") or payload.get("message") or ""))
+            return OP_SpecialMesg(
+                speaker=str(payload.get("sender") or payload.get("speaker") or ""),
+                message=str(payload.get("text") or payload.get("message") or ""),
+            )
         if opcode == "OP_Buff":
             return OP_Buff(0, SpellBuff(counters=int(payload.get("counters") or 0)), fade=int(payload.get("fade") or 0))
         if opcode == "OP_MobUpdate":

@@ -87,6 +87,38 @@ class ReadTasksTest(unittest.TestCase):
         self.assertEqual(talks[0].source, "chat:talk:guard")
         self.assertFalse(action.complete)
 
+    def test_activity_zero_keeps_its_task_id(self):
+        client, sheet = fresh("tutorialb")
+        hail = Activity(1448, 0, 4, "Arias", "", "Hail Arias and Learn About the Find Path.", 1)
+        hail.npc = 3
+        sheet.task_book = SimpleNamespace(activities=[hail])
+        action = ReadTasks()
+        place(client, action, "tutorialb", "read_tasks:tutorialb")
+        action.step(client, sheet)
+        talks = [item for item in client.queue if type(item).__name__ == "Talk"]
+        self.assertEqual(len(talks), 1)
+        self.assertEqual(talks[0].source, "task:1448:0")
+
+    def test_a_special_line_appends_while_waiting_in_the_mine(self):
+        client, sheet = fresh("tutorialb")
+        action = ReadTasks()
+        place(client, action, "tutorialb", "read_tasks:tutorialb")
+        inbox(action, "OP_SpecialMesg", {"text": "kill the bat"})
+        action.step(client, sheet)
+        kills = [item for item in client.queue if type(item).__name__ == "Kill"]
+        self.assertEqual(len(kills), 1)
+        self.assertEqual(kills[0].camp, "bat")
+        self.assertEqual(kills[0].source, "chat:kill:bat")
+
+    def test_a_saylink_is_not_a_new_step(self):
+        client, sheet = fresh("tutorialb")
+        action = ReadTasks()
+        place(client, action, "tutorialb", "read_tasks:tutorialb")
+        body = "0FFFFF000080000000000000000000000000000000000"
+        inbox(action, "OP_SpecialMesg", {"text": f"Would you like to be \x12{body}blessed\x12?"})
+        action.step(client, sheet)
+        self.assertNotIn("Talk", kinds(client))
+
     def test_a_named_line_outside_the_mine_appends_nothing(self):
         client, sheet = fresh("qeynos")
         action = ReadTasks()

@@ -1,10 +1,12 @@
 """One pass over loose gear. The player upgrades first, then each bot.
 
-An upgrade for a bot appends Distribute with the worn piece emptied first. A
-fill appends Distribute as a give. A leftover no bot can wear, that loses every
-slot, appends Sell unless it is a quest id, no-drop, or still on the obtain
-stack. Call this when loot completes or an inventory packet has been applied.
-An empty pulse passes applied=False and appends nothing.
+An upgrade for the player queues Cursor, which sends OP_MoveItem. An upgrade
+for a bot appends Distribute with the worn piece emptied first. A fill appends
+Distribute as a give. A leftover no bot can wear, that loses every slot, appends
+Sell unless it is a quest id, no-drop, or still on the obtain stack. A cursor
+that is still holding an item is queued the same way. Call this when loot
+completes or an inventory packet has been applied. An empty pulse passes
+applied=False and appends nothing.
 """
 from __future__ import annotations
 
@@ -19,8 +21,11 @@ if TYPE_CHECKING:
 
 import json
 from pathlib import Path
+from eqclient3.log import log
+from eqclient3.actions.cursor import Cursor
 from eqclient3.actions.distribute import Distribute
 from eqclient3.actions.sell import Sell
+from eqclient3.actions.support import CURSOR_SLOT, TOKEN
 PRIMARY = 13
 SECONDARY = 14
 WORN = range(22)
@@ -49,6 +54,7 @@ class _Piece:
         self.hp = int(raw.get('hp') or 0)
         self.mana = int(raw.get('mana') or 0)
         self.nodrop = int(raw.get('nodrop') if raw.get('nodrop') is not None else 255)
+        self.slot = int(raw.get('slot') or 0)
 
 def assign(loop: Loop, world: World, journal: Journal | None = None, *, applied: bool=True, graph: QuestGraph | None = None) -> None:
     """Player upgrades, then bot Distribute, then Sell. applied=False does nothing."""
@@ -64,6 +70,7 @@ def assign(loop: Loop, world: World, journal: Journal | None = None, *, applied:
     worn = _worn_map(world, journal, character)
     player_worn = worn.setdefault('player', {})
     remaining = list(loose)
+    moved = _cursor_busy(loop)
     for held in list(remaining):
         if held.item_id in protected or held.item_id in stack:
             continue
@@ -71,6 +78,9 @@ def assign(loop: Loop, world: World, journal: Journal | None = None, *, applied:
             continue
         for slot in _legal_slots(held):
             if _gain(held, player_worn.get(slot)) > 0:
+                if not moved:
+                    _start_move(loop, world, journal, held.slot, slot)
+                    moved = True
                 remaining.remove(held)
                 player_worn[slot] = held
                 break
@@ -105,7 +115,10 @@ def assign(loop: Loop, world: World, journal: Journal | None = None, *, applied:
         worn.setdefault(bot_name, {})[slot] = held
         remaining.remove(held)
     sell_ids: list[int] = []
+    cursor_id = world.cursor or 0
     for held in remaining:
+        if cursor_id and held.item_id == cursor_id:
+            continue
         if held.item_id in protected or held.item_id in stack or held.nodrop == 0:
             continue
         anyone = False
@@ -121,6 +134,7 @@ def assign(loop: Loop, world: World, journal: Journal | None = None, *, applied:
             sell_ids.append(held.item_id)
     if sell_ids:
         _append_sell(loop, world, journal, character, sell_ids)
+    release_cursor(loop, world, journal)
 
 def _loose(world: World) -> list[_Piece]:
     bags = world.bags or {}
@@ -129,14 +143,66 @@ def _loose(world: World) -> list[_Piece]:
         if int(slot) < 22:
             continue
         piece = _piece(item)
+        piece.slot = slot
         if piece.item_id:
             found.append(piece)
     cursor = world.cursor
     if cursor:
         piece = _piece(cursor)
+        piece.slot = CURSOR_SLOT
         if piece.item_id:
             found.append(piece)
     return found
+
+def release_cursor(loop: Loop, world: World, journal: Journal | None = None) -> None:
+    """The cursor is holding an item. One move goes on the queue."""
+    item_id = world.cursor or 0
+    if not item_id or item_id == TOKEN:
+        return
+    if _cursor_busy(loop):
+        return
+    if journal is None:
+        journal = loop.journal
+    dest = _cursor_dest(world, _piece(item_id))
+    if dest is None:
+        return
+    _start_move(loop, world, journal, CURSOR_SLOT, dest)
+
+def _cursor_dest(world: World, piece: _Piece) -> int | None:
+    player = (world.class_id or 1, world.race or 1, world.level or 1)
+    worn: dict[int, _Piece] = {}
+    for slot, item in (world.bags or {}).items():
+        if slot <= 21 and item:
+            worn[slot] = _piece(item)
+    if _fits(piece, player[0], player[1], player[2]):
+        for slot in _legal_slots(piece):
+            if _gain(piece, worn.get(slot)) > 0:
+                return slot
+    bags = world.bags or {}
+    for slot in range(22, 30):
+        if not bags.get(slot):
+            return slot
+    return None
+
+def _start_move(loop: Loop, world: World, journal: Journal | None, src: int, dest: int) -> None:
+    if _cursor_busy(loop):
+        return
+    move = (src, dest)
+    action = Cursor(dest, move)
+    _put(loop, world, journal, action)
+    if not _cursor_busy(loop):
+        return
+    action.source = f'cursor:{src}:{dest}'
+    world.cursor_move = move
+
+def _cursor_busy(loop: Loop) -> bool:
+    queue = loop.queue
+    if queue is None:
+        return False
+    for action in list(queue):
+        if type(action).__name__ == 'Cursor' and not action.complete:
+            return True
+    return False
 
 def _worn_map(world: World, journal: Journal, character: str) -> dict[str, dict[int, _Piece]]:
     worn: dict[str, dict[int, _Piece]] = {'player': {}}
@@ -239,6 +305,7 @@ def _protected(loop: Loop, world: World, journal: Journal, character: str, graph
             try:
                 found.add(int(token.split(':', 1)[1]))
             except ValueError:
+                log.error("quest item token failed to parse: %s", token, exc_info=True)
                 continue
     for item_id in working:
         found.update(graph.components(int(item_id)))
@@ -306,9 +373,13 @@ def _put(loop: Loop, world: World, journal: Journal, action: Action) -> None:
     if queue is None:
         return
     character = _character(loop, world)
+    if isinstance(queue, list):
+        queue.append(action)
+        return
     try:
         queue.append(action, world, journal, character)
     except TypeError:
+        log.error("queue append failed", exc_info=True)
         queue.append(action, world)
 
 def _character(loop: Loop, world: World) -> str:

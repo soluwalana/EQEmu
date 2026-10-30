@@ -11,6 +11,7 @@ def test_reset_clears_the_queue_and_the_started_flags():
     action = Action()
     action.source = "reclaim:278"
     action.zone = "tutorialb"
+    action.durable = True
     journal.open_action("Mockvthree", action)
     journal.push_goal("Mockvthree", 60329, 1)
     journal.mark_tutorial_done("Mockvthree")

@@ -20,6 +20,7 @@ import re
 from collections import defaultdict, deque
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
+from eqclient3.log import log
 from eqclient3.data.cache_builders.common import peq_path as builder_peq_path
 from eqclient3.nav.zones import remember, zone_id_of, zone_name_of
 
@@ -391,6 +392,7 @@ def _parse_zones(text: str) -> tuple[dict[str, int], dict[str, int]]:
             try:
                 zone_id = int(parts[13])
             except ValueError:
+                log.error("zone row failed to parse", exc_info=True)
                 continue
             if name and zone_id > 0:
                 found[name] = zone_id
@@ -428,6 +430,7 @@ def _parse_doors(text: str, zones: dict[str, int], flagged: dict[str, int] | Non
             try:
                 door_id = int(parts[1])
             except ValueError:
+                log.error("door row failed to parse", exc_info=True)
                 continue
             zone = _unquote(parts[2]).lower()
             dest_zone = _unquote(parts[19]).lower()
@@ -442,6 +445,7 @@ def _parse_doors(text: str, zones: dict[str, int], flagged: dict[str, int] | Non
                 dest_x, dest_y, dest_z = (float(parts[21]), float(parts[22]), float(parts[23]))
                 dest_heading = float(parts[24])
             except ValueError:
+                log.error("door coordinates failed to parse", exc_info=True)
                 continue
             min_exp = max_exp = -1
             flags = flags_off = ''
@@ -450,7 +454,7 @@ def _parse_doors(text: str, zones: dict[str, int], flagged: dict[str, int] | Non
                     min_exp = int(parts[32])
                     max_exp = int(parts[33])
                 except ValueError:
-                    pass
+                    log.error("door expansion flags failed to parse", exc_info=True)
             if len(parts) > 35:
                 flags = _unquote(parts[34]) if parts[34].upper() != 'NULL' else ''
                 flags_off = _unquote(parts[35]) if parts[35].upper() != 'NULL' else ''
@@ -485,6 +489,7 @@ def _parse_zone_points(text: str, zones: dict[str, int], flagged: dict[str, int]
                 dest_heading = float(parts[11])
                 dest_id = int(parts[13])
             except ValueError:
+                log.error("zone point failed to parse", exc_info=True)
                 continue
             if not zone or dest_id <= 0:
                 continue
@@ -498,7 +503,7 @@ def _parse_zone_points(text: str, zones: dict[str, int], flagged: dict[str, int]
                     min_exp = int(parts[18])
                     max_exp = int(parts[19])
                 except ValueError:
-                    pass
+                    log.error("zone point expansion flags failed to parse", exc_info=True)
                 if len(parts) > 21:
                     flags = _unquote(parts[20]) if parts[20].upper() != 'NULL' else ''
                     flags_off = _unquote(parts[21]) if parts[21].upper() != 'NULL' else ''

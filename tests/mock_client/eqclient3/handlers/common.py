@@ -7,7 +7,7 @@ if TYPE_CHECKING:
     from eqclient3.loop import Loop
     from eqclient3.world import Bot, Mob, World
 
-import eqclient3.log as log
+from eqclient3.log import log, write
 from eqclient3.action import Action, Message
 from eqclient3.actions.support import character_name, session_open
 from eqclient3.bots.form import form_commands as build_form_commands
@@ -134,6 +134,7 @@ def primary_faction(zone: str, name: str) -> int:
     try:
         book = ensure_factions()
     except Exception:
+        log.error("primary faction lookup failed", exc_info=True)
         return 0
     primary = book.primary
     if not callable(primary):
@@ -147,12 +148,13 @@ def zone_name(world: World, zone_id: int) -> str:
     return str(zone_name_of(zone_id) or zone_id or '')
 
 def write_log(line: str) -> None:
-    log.write(line)
+    write(line)
 
 def run_assign(loop: Loop, world: World) -> None:
     try:
         run_inventory_assign(loop, world)
     except TypeError:
+        log.error("inventory assign failed", exc_info=True)
         return
 
 def form_commands(world: World, loop: Loop) -> list[str]:
@@ -165,6 +167,7 @@ def form_commands(world: World, loop: Loop) -> list[str]:
         except TypeError:
             settings = journal.bot_settings() or {}
         except AttributeError:
+            log.error("bot settings unavailable", exc_info=True)
             settings = {}
     return list(build_form_commands(bots, settings) or [])
 

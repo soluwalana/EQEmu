@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from typing import Literal
 
 from eqclient3.struct_helpers import eq_heading
+from .log import log
 
 from .nav.maps import load_map as _load_zone_map
 
@@ -673,6 +674,7 @@ def _zone_mesh(zone: str) -> object | None:
     try:
         mesh = _load_zone_map(zone)
     except (OSError, ValueError):
+        log.error("zone mesh for %s failed to load", zone, exc_info=True)
         mesh = None
     _loaded[zone] = mesh
     return mesh
