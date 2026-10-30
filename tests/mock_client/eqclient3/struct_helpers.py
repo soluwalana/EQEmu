@@ -7,7 +7,7 @@ import re
 
 from eqclient3.structs import SAY_CHANNEL
 
-_SAYLINK = re.compile(r"\x12.{45}([^\x12]+?)\x12")
+_SAYLINK = re.compile(r"\x12.{56}([^\x12]+?)\x12")
 
 
 def channel_bucket(channel: int) -> str:
@@ -31,7 +31,7 @@ def special_bucket(msg_type: int) -> str:
 
 
 def saylink_words(text: str) -> list[str]:
-    """The visible words inside Titanium saylinks. Those are what you say back."""
+    """The visible words inside RoF2 saylinks. Those are what you say back."""
     words: list[str] = []
     for match in _SAYLINK.finditer(text):
         word = match.group(1).strip()

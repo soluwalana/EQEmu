@@ -25,6 +25,7 @@ not the player's is a boat update and the player stays put. The zone does not
 echo our own update, so a stride that times out with no refusal takes the
 point it asked for.
 """
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -34,32 +35,70 @@ if TYPE_CHECKING:
     from eqclient3.action import Action
     from eqclient3.loop import Loop
     from eqclient3.nav.water import WaterMap
-    from eqclient3.world import Door, Mob, World
+    from eqclient3.world import Consider, Mob, World
 
 import math
 import struct
 import time
 from dataclasses import dataclass
+
 from eqclient3.log import log
+from eqclient3.world import Door
 from eqclient3.struct_helpers import eq_heading
-from eqclient3.structs import EQStruct, OP_ClickDoor, OP_ClientUpdate, OP_Consider, OP_FindPersonReply, OP_FloatListThing, OP_MobUpdate, OP_MoveDoor, OP_NewZone, OPERATIONS
+from eqclient3.structs import (
+    EQStruct,
+    OP_ClickDoor,
+    OP_ClientUpdate,
+    OP_Consider,
+    OP_FindPersonReply,
+    OP_FloatListThing,
+    OP_MobUpdate,
+    OP_MoveDoor,
+    OP_NewZone,
+    OPERATIONS,
+)
 from eqclient3.nav.maps import load_map
-from eqclient3.nav.navmesh import load_nav
-from eqclient3.nav.path import NEARBY_YARDS, STRIDE, Path, along, cut_to_step, doors_on_stride, find as path_find, is_nearby, iter_mobs, mob_id, mob_point, route, track as path_track, trim_points, water_of
+from eqclient3.nav.navmesh import NavMesh, load_nav
+from eqclient3.nav.path import (
+    NEARBY_YARDS,
+    STRIDE,
+    Path,
+    along,
+    cut_to_step,
+    doors_on_stride,
+    find as path_find,
+    is_nearby,
+    iter_mobs,
+    mob_id,
+    mob_point,
+    route,
+    track as path_track,
+    trim_points,
+    water_of,
+)
 
 STRIDE_TIMEOUT = 3
 STRIDE_MOB_RADIUS = 2.0
 _COMMIT_TOLERANCE = 0.35
-OPCODES = ('OP_ClientUpdate', 'OP_MobUpdate', 'OP_NewZone', 'OP_MoveDoor', 'OP_FindPersonReply')
+OPCODES = (
+    "OP_ClientUpdate",
+    "OP_MobUpdate",
+    "OP_NewZone",
+    "OP_MoveDoor",
+    "OP_FindPersonReply",
+)
+
 
 @dataclass
 class MovementAnnotatedMob:
     """A mob already on the current stride. Values are copied off the Mob."""
-    mob: object
-    distance: object = None
-    direction: object = None
-    consider: object = None
+
+    mob: Mob
+    distance: float | None = None
+    direction: float | None = None
+    consider: Consider | None = None
     targeted: bool = False
+
 
 class Movement:
     """Position, the stride in flight, and the packets that move us."""
@@ -74,14 +113,14 @@ class Movement:
         self.committed: bool = True
         self.refused: bool = False
         self.sequence: int = 0
-        self.caller_mode: str = 'run'
+        self.caller_mode: str = "run"
         self.advanced: bool = False
         self.path: Path | None = None
         self.clicked: set = set()
         self.open_ids: set = set()
         self.find_mob: Mob | None = None
-        self._nav = None
-        self._nav_zone = None
+        self._nav: NavMesh | None = None
+        self._nav_zone: str | None = None
 
     @property
     def stride_committed(self) -> bool:
@@ -95,7 +134,7 @@ class Movement:
         """Remember the sheet plan() reads for doors, water, mobs, and the zone."""
         self.world = world
 
-    def reset(self, origin: tuple[float, float, float]=(0.0, 0.0, 0.0)) -> None:
+    def reset(self, origin: tuple[float, float, float] = (0.0, 0.0, 0.0)) -> None:
         """Clear stride state. A new session calls this. OP_NewZone clears a zone entry."""
         point = (float(origin[0]), float(origin[1]), float(origin[2]))
         self.position = point
@@ -106,7 +145,7 @@ class Movement:
         self.committed = True
         self.refused = False
         self.sequence = 0
-        self.caller_mode = 'run'
+        self.caller_mode = "run"
         self.advanced = False
         self.path = None
         self.clicked = set()
@@ -130,7 +169,10 @@ class Movement:
         """Bus entry. Our position, a zone entry, an opened door, or find waypoints."""
         if world is not None:
             self.bind(world)
-        world = world if world is not None else self.world
+        bound = world if world is not None else self.world
+        if bound is None:
+            return
+        world = bound
         row = payload
         if isinstance(payload, (bytes, bytearray)):
             kind = OPERATIONS.get(opcode)
@@ -152,7 +194,13 @@ class Movement:
         elif isinstance(row, OP_FindPersonReply):
             self._on_find_reply(row)
 
-    def plan(self, destination: tuple[float, float, float] | str | Mob, mode: str | None = None, world: World | None = None, loop: Loop | None = None) -> Path:
+    def plan(
+        self,
+        destination: tuple[float, float, float] | str | Mob,
+        mode: str | None = None,
+        world: World | None = None,
+        loop: Loop | None = None,
+    ) -> Path:
         """Return a Path. Does not send OP_Consider and does not write a position.
 
         ``loop`` is accepted and ignored so a distance read cannot send.
@@ -163,23 +211,32 @@ class Movement:
         if world is not None:
             self.bind(world)
         world = self.world
-        mode = mode or 'run'
-        if mode not in STRIDE and mode != 'swim':
-            mode = 'run'
-        base = self.caller_mode if mode == 'swim' else mode
+        mode = mode or "run"
+        if mode not in STRIDE and mode != "swim":
+            mode = "run"
+        base = self.caller_mode if mode == "swim" else mode
         if base not in STRIDE:
-            base = 'run'
+            base = "run"
         length, anim = STRIDE[base]
-        if mode != 'swim':
+        if mode != "swim":
             self.caller_mode = mode
         origin = self.position
-        zone = world.zone or '' if world is not None else ''
-        water = water_of(world, zone)
-        built = route(origin, destination, zone=zone, doors=world.doors if world is not None else None, water=water, length=length, mode=mode)
+        sheet = world if world is not None else self.world
+        zone = sheet.zone if sheet is not None else ""
+        water = water_of(sheet, zone) if sheet is not None else None
+        built = route(
+            origin,
+            destination,
+            zone=zone,
+            doors=sheet.doors if sheet is not None else None,
+            water=water,
+            length=length,
+            mode=mode,
+        )
         built.stride_length = length
         built.anim = anim
         built.mode = mode
-        if mode == 'swim':
+        if mode == "swim":
             target_z = _surface_z(origin, built.destination, water)
             built.z_only = True
             built.swim_z = target_z
@@ -199,12 +256,10 @@ class Movement:
         is clicked once. The stride that would pass that door waits for OP_MoveDoor.
         """
         self.advanced = True
-        if world is not None:
-            self.bind(world)
-        world = world if world is not None else self.world
+        self.bind(world)
         self.path = path
         self._drop_find(world, path)
-        
+
         self._send_considers(loop, world, sender)
         here = self.position
         tick = _loop_tick(loop)
@@ -212,7 +267,7 @@ class Movement:
         if self.asked is not None and (not self.committed):
             if tick - self.asked_tick < STRIDE_TIMEOUT:
                 self._click_if_needed(loop, self._blocking(here, self.asked, doors))
-                self._emit(loop, world, self.asked, self.anim, 'stride')
+                self._emit(loop, world, self.asked, self.anim, "stride")
                 return
             self._settle_timeout(world)
             here = self.position
@@ -233,24 +288,29 @@ class Movement:
         """One hold update when this pulse did not call advance."""
         if world is not None:
             self.bind(world)
-        world = self.world
+        bound = world if world is not None else self.world
+        if bound is None:
+            self.advanced = False
+            return
         if self.advanced:
             self.advanced = False
             return
-        self._emit(loop, world, self.position, 0, 'hold')
+        self._emit(loop, bound, self.position, 0, "hold")
 
     def visible_mobs(self, world: World | None = None, loop: Loop | None = None) -> list[Mob]:
         """Mobs in line of sight from the committed position. Does not send OP_Consider."""
         del loop
         if world is not None:
             self.bind(world)
-        world = world if world is not None else self.world
+        sheet = world if world is not None else self.world
+        if sheet is None:
+            return []
         origin = self.position
         seen = []
-        for mob in iter_mobs(world):
-            if _is_self(world, mob):
+        for mob in iter_mobs(sheet):
+            if _is_self(sheet, mob):
                 continue
-            if _can_see(world, origin, mob):
+            if _can_see(sheet, origin, mob):
                 seen.append(mob)
         return seen
 
@@ -273,7 +333,15 @@ class Movement:
         for mob in mobs:
             if not _mob_on_stride(here, end, mob):
                 continue
-            found.append(MovementAnnotatedMob(mob=mob, distance=mob.distance, direction=mob.direction, consider=mob.consider, targeted=bool(mob.targeted)))
+            found.append(
+                MovementAnnotatedMob(
+                    mob=mob,
+                    distance=mob.distance,
+                    direction=mob.direction,
+                    consider=mob.consider,
+                    targeted=bool(mob.targeted),
+                )
+            )
         return found or None
 
     def find(self, loop: Loop, world: World, mob: Mob) -> bool:
@@ -323,8 +391,16 @@ class Movement:
         if not (is_nearby(world, mob, origin) or _can_see(world, origin, mob)):
             return
         path.find_waypoints = False
-        zone = world.zone or '' if world is not None else ''
-        fresh = route(origin, path.destination, zone=zone, doors=world.doors if world is not None else None, water=water_of(world, zone), length=path.stride_length, mode=path.mode)
+        zone = world.zone or "" if world is not None else ""
+        fresh = route(
+            origin,
+            path.destination,
+            zone=zone,
+            doors=world.doors if world is not None else None,
+            water=water_of(world, zone),
+            length=path.stride_length,
+            mode=path.mode,
+        )
         path.points = fresh.points
         path.door = fresh.door
         path.in_water = fresh.in_water
@@ -341,7 +417,9 @@ class Movement:
         path.points = cut_to_step(points, nxt) if points else points
         return self._on_floor(here, nxt)
 
-    def _on_floor(self, here: tuple[float, float, float], step: tuple[float, float, float]) -> tuple[float, float, float]:
+    def _on_floor(
+        self, here: tuple[float, float, float], step: tuple[float, float, float]
+    ) -> tuple[float, float, float]:
         """Keep the step on the floor. A stride climbs a ramp; it does not teleport in Z."""
         target_z = step[2]
         ground = self._ground((step[0], step[1], here[2]))
@@ -371,9 +449,9 @@ class Movement:
             return None
         return zone_map.ground(point)
 
-    def _mesh(self):
+    def _mesh(self) -> NavMesh | None:
         world = self.world
-        zone = world.zone or '' if world is not None else ''
+        zone = world.zone if world is not None else ""
         if not zone:
             return None
         if self._nav is not None and self._nav_zone == zone:
@@ -387,8 +465,16 @@ class Movement:
         self._nav_zone = zone
         return mesh
 
-    def _start_stride(self, loop: Loop, world: World, here: tuple[float, float, float], nxt: tuple[float, float, float], anim: int, tick: int) -> None:
-        self._emit(loop, world, nxt, anim, 'stride')
+    def _start_stride(
+        self,
+        loop: Loop,
+        world: World,
+        here: tuple[float, float, float],
+        nxt: tuple[float, float, float],
+        anim: int,
+        tick: int,
+    ) -> None:
+        self._emit(loop, world, nxt, anim, "stride")
         self.asked = nxt
         self.asked_tick = tick
         self.anim = anim
@@ -397,15 +483,22 @@ class Movement:
         if _horiz(here, nxt) > 0.05 or abs(nxt[2] - here[2]) > 0.05:
             self.heading = eq_heading(here[0], here[1], nxt[0], nxt[1])
 
-    def _emit(self, loop: Loop, world: World, point: tuple[float, float, float], anim: int, label: str) -> None:
+    def _emit(
+        self,
+        loop: Loop,
+        world: World,
+        point: tuple[float, float, float],
+        anim: int,
+        label: str,
+    ) -> None:
         self.sequence = (self.sequence + 1) & 65535
         here = self.position
         # 0 is this client. A nonzero id that is not GetID() updates a boat and the player stays put.
         spawn = 0
         stamp = int(time.time() * 1000) & 4294967295
-        
+
         log.debug(
-            'move %s OP_FloatListThing OP_ClientUpdate (%.1f, %.1f, %.1f) -> (%.1f, %.1f, %.1f) seq=%s anim=%s',
+            "move %s OP_FloatListThing OP_ClientUpdate (%.1f, %.1f, %.1f) -> (%.1f, %.1f, %.1f) seq=%s anim=%s",
             label,
             here[0],
             here[1],
@@ -416,9 +509,12 @@ class Movement:
             self.sequence,
             anim,
         )
-        loop.send('OP_FloatListThing', OP_FloatListThing(here[0], here[1], here[2], stamp).serialize())
         loop.send(
-            'OP_ClientUpdate',
+            "OP_FloatListThing",
+            OP_FloatListThing(here[0], here[1], here[2], stamp).serialize(),
+        )
+        loop.send(
+            "OP_ClientUpdate",
             OP_ClientUpdate(
                 spawn,
                 point[0],
@@ -432,7 +528,7 @@ class Movement:
             ).serialize(),
         )
 
-    def _click_if_needed(self, loop: Loop, door: Door) -> None:
+    def _click_if_needed(self, loop: Loop, door: Door | None) -> None:
         if not door:
             return
         ident = door.id
@@ -441,23 +537,29 @@ class Movement:
         if door.opened:
             return
         self.clicked.add(ident)
-        loop.send('OP_ClickDoor', OP_ClickDoor(ident).serialize())
+        loop.send("OP_ClickDoor", OP_ClickDoor(ident).serialize())
 
     def _click_doors(self, world: World, path: Path) -> list[Door]:
-        doors = list(_iter_doors(world.doors if world is not None else None))
+        doors = list(_iter_doors(world.doors))
         extra = path.door
-        if extra is not None:
+        if isinstance(extra, Door):
             doors.append(extra)
         return doors
 
-    def _blocking(self, here: tuple[float, float, float], nxt: tuple[float, float, float], doors: dict[int, Door] | list[Door]) -> Door | None:
+    def _blocking(
+        self,
+        here: tuple[float, float, float],
+        nxt: tuple[float, float, float],
+        doors: dict[int, Door] | list[Door],
+    ) -> Door | None:
         for door in doors_on_stride(here, nxt, doors):
             if door.id in self.open_ids:
                 continue
             if door.opened:
                 continue
             return door
-        for door in doors:
+        roster = doors.values() if isinstance(doors, dict) else doors
+        for door in roster:
             if door.opened:
                 continue
             if door.id in self.open_ids:
@@ -477,7 +579,7 @@ class Movement:
             if not _needs_consider(mob, world):
                 continue
             spawn = int(world.self_id or 0)
-            loop.send('OP_Consider', OP_Consider(spawn, mob_id(mob)).serialize())
+            loop.send("OP_Consider", OP_Consider(spawn, mob_id(mob)).serialize())
             _remember_consider(mob, world)
 
     def _on_position(self, row: OP_ClientUpdate | OP_MobUpdate, world: World) -> None:
@@ -491,7 +593,9 @@ class Movement:
             if _same(point, self.asked, tol=_COMMIT_TOLERANCE):
                 self.committed = True
                 self.refused = False
-            elif _horiz(point, self.position) <= 0.8 and (_horiz(self.position, self.asked) > 0.4 or abs(self.position[2] - self.asked[2]) > 0.4):
+            elif _horiz(point, self.position) <= 0.8 and (
+                _horiz(self.position, self.asked) > 0.4 or abs(self.position[2] - self.asked[2]) > 0.4
+            ):
                 self.refused = True
         self.position = point
         if heading is not None:
@@ -500,7 +604,7 @@ class Movement:
 
     def _on_new_zone(self, row: OP_NewZone, world: World) -> None:
         _short = row.short_name
-        safe = (float(row.x), float(row.y), float(row.z))
+        safe = (row.x, row.y, row.z)
         self.asked = None
         self.asked_tick = 0
         self.anim = 0
@@ -526,12 +630,13 @@ class Movement:
     def _on_find_reply(self, row: OP_FindPersonReply) -> None:
         points = list(row.points)
         path = self.path
-        if path is None or not points:
+        if not path or not points:
             return
         path.points = points
         path.find_waypoints = True
         path.next_point = points[0]
         path.fallback = False
+
 
 def _z_step(here: tuple[float, float, float], target_z: float, length: float) -> tuple[float, float, float]:
     gap = float(target_z) - here[2]
@@ -541,99 +646,75 @@ def _z_step(here: tuple[float, float, float], target_z: float, length: float) ->
         nz = here[2] + (length if gap > 0.0 else -length)
     return (here[0], here[1], nz)
 
-def _surface_z(here: tuple[float, float, float], destination: tuple[float, float, float] | str | Mob, water: WaterMap) -> float:
-    if water is not None:
+
+def _surface_z(
+    here: tuple[float, float, float],
+    destination: tuple[float, float, float],
+    water: WaterMap | None,
+) -> float:
+    if water:
         try:
             surf = water.surface_z(here[0], here[1])
         except (TypeError, ValueError):
             log.error("water surface lookup failed", exc_info=True)
             surf = None
-        if surf is not None:
+        if surf:
             return float(surf)
     return float(destination[2])
 
-def _liquid(water: WaterMap, point: tuple[float, float, float]) -> bool:
-    if water is None or point is None:
+
+def _liquid(water: WaterMap | None, point: tuple[float, float, float]) -> bool:
+    if not water or not point:
         return False
     try:
-        return bool(water.in_liquid(point[0], point[1], point[2]))
+        return water.in_liquid(point[0], point[1], point[2])
     except (TypeError, ValueError):
         log.error("liquid check failed", exc_info=True)
         return False
 
+
 def _door_on(here: tuple[float, float, float], nxt: tuple[float, float, float], door: Door) -> bool:
     return bool(doors_on_stride(here, nxt, [door]))
 
-def _is_reclaim(loop: Loop, sender: Action) -> bool:
+
+def _is_reclaim(loop: Loop, sender: Action | None) -> bool:
     current = loop.active if loop is not None else None
     for obj in (sender, current):
-        if obj is not None and type(obj).__name__ == 'Reclaim':
+        if obj is not None and type(obj).__name__ == "Reclaim":
             return True
     return False
 
-def _consider_mobs(world: World, origin: tuple[float, float, float]) -> list[object]:
+
+def _consider_mobs(world: World, origin: tuple[float, float, float]) -> list[Mob]:
     del origin
-    if not world:
-        return []
     return [mob for mob in world.nearby(NEARBY_YARDS) if not _is_self(world, mob)]
+
 
 def _needs_consider(mob: Mob, world: World) -> bool:
     amount, maxed, changed = _faction(world, mob.faction_id)
     sent = mob._consider_sent or mob.faction_last_considered is not None
     if not sent:
         return True
-    if maxed in ('positive', 'negative'):
+    if maxed:
         return False
-    if changed and (not mob._consider_change_sent):
+    if changed and not mob._consider_change_sent:
         return True
     return amount != mob.faction_last_considered
 
+
 def _remember_consider(mob: Mob, world: World) -> None:
-    amount, _maxed, changed = _faction(world, int(mob.faction_id or 0))
+    amount, _maxed, changed = _faction(world, mob.faction_id)
     mob.faction_last_considered = amount
     mob._consider_sent = True
-    mob._consider_change_sent = bool(changed)
+    mob._consider_change_sent = changed
 
-def _faction(world: World, faction_id: int) -> tuple[object, ...]:
-    raw = None
-    factions = world.factions
-    if isinstance(factions, dict):
-        raw = factions.get(faction_id)
-    amount = None
-    maxed = None
-    changed = False
-    if raw is None:
-        return (amount, maxed, changed)
-    if isinstance(raw, bool):
-        return (amount, None, raw)
-    if isinstance(raw, (int, float)) and (not isinstance(raw, bool)):
-        return (int(raw), None, False)
-    if isinstance(raw, str):
-        text = raw.lower()
-        if 'positive' in text:
-            return (None, 'positive', False)
-        if 'negative' in text:
-            return (None, 'negative', False)
-        if text == 'changed':
-            return (None, None, True)
-        return (None, None, False)
-    if isinstance(raw, dict):
-        amount = raw.get('amount')
-        maxed = raw.get('maxed')
-        changed = bool(raw.get('changed'))
-    else:
-        amount = raw.amount
-        maxed = raw.maxed
-        changed = bool(raw.changed)
-    if isinstance(maxed, bool):
-        maxed = 'positive' if maxed else None
-    if isinstance(maxed, str):
-        maxed = maxed.lower()
-        if maxed in ('maxed_positive', 'best', '+'):
-            maxed = 'positive'
-        elif maxed in ('maxed_negative', 'worst', '-'):
-            maxed = 'negative'
-    return (amount, maxed, changed)
+
+def _faction(world: World, faction_id: int) -> tuple[int | None, int, bool]:
+    row = world.factions.get(faction_id)
+    if row is None:
+        return (None, 0, False)
+    return (row.amount, row.maxed, row.changed)
+
 
 def _can_see(world: World, origin: tuple[float, float, float], mob: Mob) -> bool:
     del origin
@@ -641,15 +722,17 @@ def _can_see(world: World, origin: tuple[float, float, float], mob: Mob) -> bool
         return False
     return world.line_of_sight(mob)
 
+
 def _is_self(world: World, mob: Mob) -> bool:
     self_id = world.self_id if world else 0
     if not self_id:
         return False
     return mob_id(mob) == self_id
 
+
 def _mob_on_stride(here: tuple[float, float, float], end: tuple[float, float, float], mob: Mob) -> bool:
     point = mob_point(mob)
-    if point is None:
+    if not point:
         return False
     if abs(point[2] - here[2]) > 20.0 and abs(point[2] - end[2]) > 20.0:
         return False
@@ -666,6 +749,7 @@ def _mob_on_stride(here: tuple[float, float, float], end: tuple[float, float, fl
     nearest = (here[0] + tee * dx, here[1] + tee * dy)
     return math.hypot(point[0] - nearest[0], point[1] - nearest[1]) <= STRIDE_MOB_RADIUS
 
+
 def _is_our_spawn(world: World, spawn_id: int) -> bool:
     spawn_id = int(spawn_id)
     self_id = world.self_id if world else 0
@@ -673,17 +757,20 @@ def _is_our_spawn(world: World, spawn_id: int) -> bool:
         return True
     return bool(self_id) and spawn_id == self_id
 
+
 def _write_world(world: World, point: tuple[float, float, float]) -> None:
     if world is None:
         return
     world.position = (float(point[0]), float(point[1]), float(point[2]))
+
 
 def _loop_tick(loop: Loop) -> int:
     if loop is None:
         return 0
     return int(loop.tick)
 
-def _iter_doors(doors: dict[int, Door] | list[Door]) -> Iterator[object]:
+
+def _iter_doors(doors: dict[int, Door] | list[Door] | None) -> Iterator[Door]:
     if not doors:
         return
     if isinstance(doors, dict):
@@ -691,14 +778,17 @@ def _iter_doors(doors: dict[int, Door] | list[Door]) -> Iterator[object]:
         return
     yield from doors
 
+
 def _horiz(a: tuple[float, float, float], b: tuple[float, float, float]) -> float:
     return math.hypot(a[0] - b[0], a[1] - b[1])
 
-def _same(a: tuple[float, float, float], b: tuple[float, float, float], tol: float=0.05) -> bool:
+
+def _same(a: tuple[float, float, float], b: tuple[float, float, float], tol: float = 0.05) -> bool:
     if a is None or b is None:
         return False
     return abs(a[0] - b[0]) <= tol and abs(a[1] - b[1]) <= tol and (abs(a[2] - b[2]) <= tol)
 
+
 def pack_server_position(spawn_id: int, x: float, y: float, z: float) -> bytes:
-    """Titanium server position, so a test can commit a stride."""
-    return OP_MobUpdate(int(spawn_id), float(x), float(y), float(z)).serialize()
+    """RoF2 server position, so a test can commit a stride."""
+    return OP_MobUpdate(spawn_id, x, y, z).serialize()

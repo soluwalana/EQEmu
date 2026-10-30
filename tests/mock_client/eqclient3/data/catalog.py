@@ -9,6 +9,7 @@ from __future__ import annotations
 import os
 import re
 from collections import defaultdict
+from collections.abc import Iterable
 from pathlib import Path
 
 from eqclient3.log import log
@@ -82,7 +83,7 @@ def load_catalog(path: str, quests_root: str | None = None) -> Catalog:
         return catalog_from_lines(handle, catalog, quests_root=quests_root)
 
 
-def catalog_from_lines(lines, catalog: Catalog | None = None, quests_root: str | None = None) -> Catalog:
+def catalog_from_lines(lines: Iterable[str], catalog: Catalog | None = None, quests_root: str | None = None) -> Catalog:
     """One pass over INSERT lines. Item names, then where those items are found."""
     catalog = catalog or Catalog()
     mode = ""
@@ -166,7 +167,17 @@ def catalog_from_lines(lines, catalog: Catalog | None = None, quests_root: str |
     catalog.forage_zone_ids = set(zone_id for zones in forage.values() for zone_id in zones)
     catalog.fishing_zone_ids = set(zone_id for zones in fishing.values() for zone_id in zones)
     catalog.zones = _zones(
-        drops, tables, npc_loot, npc_merchant, merchant_items, npc_groups, group_zones, ground, zone_names, forage, fishing
+        drops,
+        tables,
+        npc_loot,
+        npc_merchant,
+        merchant_items,
+        npc_groups,
+        group_zones,
+        ground,
+        zone_names,
+        forage,
+        fishing,
     )
     _apply_recipe_skill(recipes, recipe_skill)
     catalog.recipes = recipes
@@ -205,7 +216,9 @@ _TRAP_SCRIPT = re.compile(r"(?i)(?:^|#|_)trap|a_creature")
 _SKIP_QUEST_DIRS = frozenset({"plugins", "lua_modules"})
 
 
-def _trap_npc_zones(quests_root: str | Path | None = None) -> dict[int, tuple[str, ...]]:
+def _trap_npc_zones(
+    quests_root: str | Path | None = None,
+) -> dict[int, tuple[str, ...]]:
     """npc id → zones for proximity / EVENT_ENTER trap scripts (no spawn2 row in the dump)."""
     root = Path(quests_root if quests_root is not None else os.environ.get("EQEMU_QUESTS", "") or "")
     if not root.is_dir():
@@ -233,12 +246,7 @@ def _trap_npc_zones(quests_root: str | Path | None = None) -> dict[int, tuple[st
             continue
         low = text.lower()
         name = path.name
-        if not (
-            "set_proximity" in low
-            or "setproximity" in low
-            or "event_enter" in low
-            or _TRAP_SCRIPT.search(name)
-        ):
+        if not ("set_proximity" in low or "setproximity" in low or "event_enter" in low or _TRAP_SCRIPT.search(name)):
             continue
         for match in _SPAWN2_IDS.finditer(text):
             blob = match.group(1) or match.group(2) or ""
@@ -274,7 +282,17 @@ def _apply_historical_loot(catalog: Catalog) -> None:
 
 
 def _zones(
-    drops, tables, npc_loot, npc_merchant, merchant_items, npc_groups, group_zones, ground, zone_names, forage, fishing
+    drops: dict[int, set[int]],
+    tables: dict[int, set[int]],
+    npc_loot: dict[int, int],
+    npc_merchant: dict[int, int],
+    merchant_items: dict[int, set[int]],
+    npc_groups: dict[int, set[int]],
+    group_zones: dict[int, set[str]],
+    ground: dict[int, set[int]],
+    zone_names: dict[int, str],
+    forage: dict[int, set[int]],
+    fishing: dict[int, set[int]],
 ) -> dict[int, tuple[str, ...]]:
     drop_tables: dict[int, set[int]] = defaultdict(set)
     for table, drop_ids in tables.items():
@@ -392,16 +410,16 @@ def audit_zones(catalog: Catalog, quest_dirs: set[str]) -> dict[str, list]:
 
 
 def _sources(
-    forage,
-    fishing,
-    spells,
-    zone_names,
-    ground=None,
-    npc_drops=None,
-    npc_names=None,
-    npc_groups=None,
-    group_zones=None,
-    trap_zones=None,
+    forage: dict[int, set[int]],
+    fishing: dict[int, set[int]],
+    spells: dict[int, set[str]],
+    zone_names: dict[int, str],
+    ground: dict[int, set[int]] | None = None,
+    npc_drops: dict[int, tuple[int, ...]] | None = None,
+    npc_names: dict[int, str] | None = None,
+    npc_groups: dict[int, set[int]] | None = None,
+    group_zones: dict[int, set[str]] | None = None,
+    trap_zones: dict[int, tuple[str, ...]] | None = None,
 ) -> dict[int, tuple[str, ...]]:
     """How an item is obtained outside a quest script: spell, forage, fishing, ground, or a rare NPC drop."""
     found: dict[int, set[str]] = defaultdict(set)
@@ -409,14 +427,14 @@ def _sources(
     def place(zone_id: int) -> str:
         return zone_names.get(zone_id) or f"zone {zone_id}"
 
-    for item_id, zones in forage.items():
-        for zone_id in zones:
+    for item_id, zone_ids in forage.items():
+        for zone_id in zone_ids:
             found[item_id].add("forage:" + place(zone_id))
-    for item_id, zones in fishing.items():
-        for zone_id in zones:
+    for item_id, zone_ids in fishing.items():
+        for zone_id in zone_ids:
             found[item_id].add("fishing:" + place(zone_id))
-    for item_id, names in spells.items():
-        for name in names:
+    for item_id, spell_names in spells.items():
+        for name in spell_names:
             found[item_id].add("spell:" + name)
     for item_id, zone_ids in (ground or {}).items():
         for zone_id in zone_ids:
@@ -448,7 +466,9 @@ def _sources(
     return {item_id: tuple(sorted(rows)) for item_id, rows in found.items()}
 
 
-def _npc_drops(drops, tables, npc_loot) -> dict[int, tuple[int, ...]]:
+def _npc_drops(
+    drops: dict[int, set[int]], tables: dict[int, set[int]], npc_loot: dict[int, int]
+) -> dict[int, tuple[int, ...]]:
     """Items an NPC type can drop. A quest spawn never has a spawn2 row, so the zone join misses it."""
     found: dict[int, set[int]] = defaultdict(set)
     for npc, table in npc_loot.items():
@@ -471,7 +491,9 @@ def _take_object(line: str, placed: dict[int, set[int]], titles: dict[int, set[s
         titles[kind].add(fields[25])
 
 
-def _world_containers(placed, titles, zone_names) -> dict[int, dict]:
+def _world_containers(
+    placed: dict[int, set[int]], titles: dict[int, set[str]], zone_names: dict[int, str]
+) -> dict[int, dict]:
     """Stations you combine in. The name is the bag type; the zones are where one is placed."""
     found: dict[int, dict] = {}
     for kind, zone_ids in placed.items():
@@ -673,7 +695,34 @@ _SKILLS = {
 _WORDS = re.compile(r"[A-Za-z][A-Za-z'`-]*")
 _LEAD = {"a", "an", "the"}
 _SKIP = {
-    "you", "your", "must", "bring", "from", "with", "and", "then", "will", "this", "that",
-    "have", "for", "are", "our", "not", "yet", "into", "they", "them", "their", "hello",
-    "there", "need", "something", "accept", "thanks", "reward", "quested", "well",
+    "you",
+    "your",
+    "must",
+    "bring",
+    "from",
+    "with",
+    "and",
+    "then",
+    "will",
+    "this",
+    "that",
+    "have",
+    "for",
+    "are",
+    "our",
+    "not",
+    "yet",
+    "into",
+    "they",
+    "them",
+    "their",
+    "hello",
+    "there",
+    "need",
+    "something",
+    "accept",
+    "thanks",
+    "reward",
+    "quested",
+    "well",
 }

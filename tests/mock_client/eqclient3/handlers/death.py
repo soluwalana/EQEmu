@@ -3,6 +3,7 @@
 A death that arrives before we know our spawn id is stashed. It is queued once
 a spawn or an HP update names us and the id matches. Someone else's death is ignored.
 """
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -19,7 +20,7 @@ from eqclient3.world import World
 
 
 class DeathHandler(Handler):
-    opcodes = ('OP_Death',)
+    opcodes = ("OP_Death",)
 
     def on(self, opcode: str, payload: EQStruct) -> None:
         del opcode
@@ -54,6 +55,6 @@ def claim_pending(loop: Loop, world: World) -> None:
 
 
 def queue_death(loop: Loop, world: World, corpse_id: int, where: tuple[float, float, float]) -> None:
-    zone = str(world.zone or '')
-    enqueue_once(loop, world, Death(), f'death:{zone}')
-    enqueue_once(loop, world, Reclaim(corpse_id, where), f'reclaim:{corpse_id}')
+    zone = str(world.zone or "")
+    enqueue_once(loop, world, Death(), f"death:{zone}")
+    enqueue_once(loop, world, Reclaim(corpse_id, where), f"reclaim:{corpse_id}")

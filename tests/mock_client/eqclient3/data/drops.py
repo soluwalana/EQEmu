@@ -17,6 +17,8 @@ import mmap
 import os
 import struct
 from collections import defaultdict
+from collections.abc import Iterable, Iterator, Mapping, Sequence
+from typing import Any
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -112,7 +114,13 @@ class DropBook:
 
         def rank(killer: Dropper) -> tuple:
             local = 0 if killer.zone == here else 1
-            return (-killer.chance, local, killer.level or 10**9, killer.zone_id or 10**9, killer.npc_id)
+            return (
+                -killer.chance,
+                local,
+                killer.level or 10**9,
+                killer.zone_id or 10**9,
+                killer.npc_id,
+            )
 
         killers.sort(key=rank)
         return killers[0]
@@ -131,7 +139,7 @@ class DropBook:
         )
 
 
-def drops_from_lines(lines) -> DropBook:
+def drops_from_lines(lines: Iterable[str]) -> DropBook:
     """Drop chances from a peq dump. No live query."""
     mode = ""
     lists: dict[int, list[tuple]] = defaultdict(list)
@@ -172,7 +180,7 @@ def drops_from_lines(lines) -> DropBook:
         if not zones:
             continue
         zone_id, where = _pick_zone(zones, zone_ids)
-        items = [[item_id, chances[item_id]] for item_id in sorted(chances)]
+        items = [(item_id, chances[item_id]) for item_id in sorted(chances)]
         book.by_npc[npc_id] = {
             "zone": zone_id,
             "where": where,
@@ -188,7 +196,11 @@ def drops_from_lines(lines) -> DropBook:
     return book
 
 
-def _npc_chances(rows, lists, npc_level: int) -> dict[int, float]:
+def _npc_chances(
+    rows: Sequence[tuple[Any, ...]],
+    lists: Mapping[int, Sequence[tuple[Any, ...]]],
+    npc_level: int,
+) -> dict[int, float]:
     parts: dict[int, list[float]] = defaultdict(list)
     for lootdrop_id, mult, drop_limit, min_drop, probability in rows:
         opened = _open_chance(probability)
@@ -204,7 +216,9 @@ def _npc_chances(rows, lists, npc_level: int) -> dict[int, float]:
     return found
 
 
-def _list_chances(entries, npc_level: int, drop_limit: int, min_drop: int) -> dict[int, float]:
+def _list_chances(
+    entries: Sequence[tuple[Any, ...]], npc_level: int, drop_limit: int, min_drop: int
+) -> dict[int, float]:
     """Chance of each item once this lootdrop has been opened."""
     eligible = [row for row in entries if row[1] > 0 and _fits(npc_level, row[3], row[4])]
     if not eligible:
@@ -214,7 +228,7 @@ def _list_chances(entries, npc_level: int, drop_limit: int, min_drop: int) -> di
     return _weighted(eligible, drop_limit, min_drop)
 
 
-def _independent(entries) -> dict[int, float]:
+def _independent(entries: Sequence[tuple[Any, ...]]) -> dict[int, float]:
     miss: dict[int, float] = defaultdict(lambda: 1.0)
     seen: set[int] = set()
     for item_id, chance, mult, _npc_min, _npc_max in entries:
@@ -226,7 +240,7 @@ def _independent(entries) -> dict[int, float]:
     return {item_id: 1.0 - miss[item_id] for item_id in seen if miss[item_id] < 1.0}
 
 
-def _weighted(entries, drop_limit: int, min_drop: int) -> dict[int, float]:
+def _weighted(entries: Sequence[tuple[Any, ...]], drop_limit: int, min_drop: int) -> dict[int, float]:
     limit = drop_limit
     if len(entries) > 100 and limit == 0:
         limit = 10
@@ -294,7 +308,7 @@ def _at_least(chance: float, times: int) -> float:
     return 1.0 - (1.0 - chance) ** times
 
 
-def _merge(chances) -> float:
+def _merge(chances: Iterable[float]) -> float:
     miss = 1.0
     for chance in chances:
         miss *= 1.0 - min(1.0, max(0.0, chance))
@@ -345,7 +359,12 @@ def _take_table(fields: list[str], tables: dict[int, list[tuple]]) -> None:
     )
 
 
-def _take_npc(fields: list[str], names: dict[int, str], levels: dict[int, int], loot_of: dict[int, int]) -> None:
+def _take_npc(
+    fields: list[str],
+    names: dict[int, str],
+    levels: dict[int, int],
+    loot_of: dict[int, int],
+) -> None:
     if len(fields) <= _LOOTTABLE or not fields[0].isdigit():
         return
     loottable_id = int(fields[_LOOTTABLE]) if fields[_LOOTTABLE].lstrip("-").isdigit() else 0
@@ -405,14 +424,15 @@ def _float(raw: str) -> float:
         return 0.0
 
 
-def _pairs(raw) -> list[tuple[int, float]]:
+def _pairs(raw: Iterable[object] | None) -> list[tuple[int, float]]:
     found: list[tuple[int, float]] = []
     for entry in raw or ():
-        if isinstance(entry, (list, tuple)) and entry:
-            pct = float(entry[1]) if len(entry) > 1 else 100.0
-            found.append((int(entry[0]), pct))
-        else:
-            found.append((int(entry), 100.0))
+        if isinstance(entry, (list, tuple)) and entry and isinstance(entry[0], int):
+            second = entry[1] if len(entry) > 1 else 100.0
+            pct = float(second) if isinstance(second, (int, float)) else 100.0
+            found.append((entry[0], pct))
+        elif isinstance(entry, int):
+            found.append((entry, 100.0))
     return found
 
 
@@ -476,7 +496,16 @@ class MappedDrops:
         except Exception:
             self._fh.close()
             raise
-        n_npcs, n_items, _n_pairs, self._strings, _strings_len, self._npcs, index_off, self._pairs = slots
+        (
+            n_npcs,
+            n_items,
+            _n_pairs,
+            self._strings,
+            _strings_len,
+            self._npcs,
+            index_off,
+            self._pairs,
+        ) = slots
         self._n_npcs = n_npcs
         self.by_npc = _Count(n_npcs)
         self.by_item = IdIndex(self._mm, index_off, n_items)
@@ -516,7 +545,14 @@ class MappedDrops:
                 continue
             _id, zone_id, name_off, where_off, level, _pad = _NPC.unpack_from(self._mm, at)
             killers.append(
-                Dropper(int(npc_id), int(zone_id), self._text(where_off), self._text(name_off), int(level), float(pct))
+                Dropper(
+                    int(npc_id),
+                    int(zone_id),
+                    self._text(where_off),
+                    self._text(name_off),
+                    int(level),
+                    float(pct),
+                )
             )
         if not killers:
             return None
@@ -524,7 +560,13 @@ class MappedDrops:
 
         def rank(killer: Dropper) -> tuple:
             local = 0 if killer.zone == here else 1
-            return (-killer.chance, local, killer.level or 10**9, killer.zone_id or 10**9, killer.npc_id)
+            return (
+                -killer.chance,
+                local,
+                killer.level or 10**9,
+                killer.zone_id or 10**9,
+                killer.npc_id,
+            )
 
         killers.sort(key=rank)
         return killers[0]
@@ -573,7 +615,10 @@ def _read_drops_json(path: Path) -> DropBook:
 
 
 def _write_drops_eqm(book: DropBook, dest: Path) -> None:
-    print(f"caches: building {dest.name} from {dest.with_suffix('.jsonl').name}", flush=True)
+    print(
+        f"caches: building {dest.name} from {dest.with_suffix('.jsonl').name}",
+        flush=True,
+    )
     strings = StringTable()
     npc_blob = bytearray()
     pairs: dict[int, list[tuple[int, float]]] = defaultdict(list)
@@ -619,7 +664,10 @@ def _write_drops_eqm(book: DropBook, dest: Path) -> None:
         ),
         [strings.buf, npc_blob, index, pair_blob],
     )
-    print(f"caches: {dest.name} {len(book.by_npc)} npcs, {len(index) // 12} items", flush=True)
+    print(
+        f"caches: {dest.name} {len(book.by_npc)} npcs, {len(index) // 12} items",
+        flush=True,
+    )
 
 
 def _version_ok(path: str) -> bool:
@@ -646,7 +694,7 @@ def ensure_drops(
     peq: str | Path | None = None,
     *,
     rebuild: bool = False,
-) -> DropBook:
+) -> MappedDrops | DropBook:
     """Load drops.jsonl, or build once from the peq dump."""
     path = path or os.environ.get("EQEMU_DROPS", DEFAULT_DROPS)
     file = Path(path)
@@ -662,6 +710,6 @@ def ensure_drops(
     return book
 
 
-def _lines(path: str):
+def _lines(path: str) -> Iterator[str]:
     with open(path, encoding="latin1", errors="replace") as handle:
         yield from handle

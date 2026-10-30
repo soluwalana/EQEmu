@@ -5,6 +5,7 @@ A wait that returns while its mailbox is empty deadlocks when the reply opcode
 is missing from that list. The handler that owns the opcode is the reply.
 A session packet with no handler still arrives, and the pair names the bus.
 """
+
 from __future__ import annotations
 
 import ast
@@ -38,12 +39,21 @@ def _consumes(node: ast.AST) -> set[str]:
 def _tokens(node: ast.AST) -> set[str]:
     found: set[str] = set()
     for child in ast.walk(node):
-        if isinstance(child, ast.Call) and isinstance(child.func, ast.Attribute) and child.func.attr in ("wait", "unwait", "waiting_for"):
+        if (
+            isinstance(child, ast.Call)
+            and isinstance(child.func, ast.Attribute)
+            and child.func.attr in ("wait", "unwait", "waiting_for")
+        ):
             if child.args and isinstance(child.args[0], ast.Constant) and isinstance(child.args[0].value, str):
                 found.add(child.args[0].value)
         if isinstance(child, ast.Assign):
             for target in child.targets:
-                if isinstance(target, ast.Attribute) and target.attr == "waiting" and isinstance(child.value, ast.Constant) and isinstance(child.value.value, str):
+                if (
+                    isinstance(target, ast.Attribute)
+                    and target.attr == "waiting"
+                    and isinstance(child.value, ast.Constant)
+                    and isinstance(child.value.value, str)
+                ):
                     found.add(child.value.value)
         if isinstance(child, ast.Compare):
             sides = [child.left, *child.comparators]
@@ -63,7 +73,12 @@ def _self_calls(node: ast.AST) -> set[str]:
         owner = child.func.value
         if isinstance(owner, ast.Name) and owner.id == "self":
             found.add(child.func.attr)
-        if isinstance(owner, ast.Call) and isinstance(owner.func, ast.Name) and owner.func.id == "super" and child.func.attr == "step":
+        if (
+            isinstance(owner, ast.Call)
+            and isinstance(owner.func, ast.Name)
+            and owner.func.id == "super"
+            and child.func.attr == "step"
+        ):
             found.add("super.step")
     return found
 
@@ -72,9 +87,15 @@ def _reads_text(node: ast.AST) -> bool:
     for child in ast.walk(node):
         if isinstance(child, ast.Attribute) and child.attr in ("messages", "text"):
             return True
-        if isinstance(child, ast.Name) and child.id in ("message_text", "task_text_satisfied"):
+        if isinstance(child, ast.Name) and child.id in (
+            "message_text",
+            "task_text_satisfied",
+        ):
             return True
-        if isinstance(child, ast.Attribute) and child.attr in ("message_text", "task_text_satisfied"):
+        if isinstance(child, ast.Attribute) and child.attr in (
+            "message_text",
+            "task_text_satisfied",
+        ):
             return True
     return False
 
@@ -171,7 +192,10 @@ def action_waits() -> list[tuple[str, str, set[str], set[str]]]:
                     continue
                 for token in _tokens(method):
                     mentioned.setdefault(token, set()).add(method_name)
-            if "super.step" in {call for method in methods.values() for call in _self_calls(method)} or "TARGET" in mentioned:
+            if (
+                "super.step" in {call for method in methods.values() for call in _self_calls(method)}
+                or "TARGET" in mentioned
+            ):
                 mentioned.setdefault("TARGET", set()).add("step")
             for token, starters in sorted(mentioned.items()):
                 body: list[ast.FunctionDef] = []
@@ -246,8 +270,21 @@ def gaps() -> list[str]:
             if opcode not in listed:
                 problems.append(f"{name} waits on {token} for {opcode} and does not list it")
     required = {
-        "TARGET", "CURSOR", "HAIL", "CAST", "HEAL", "CURE", "SCRIBE", "TRAIN",
-        "TRADE", "LOOT", "ZONE", "CRAFT", "SUMMON", "BOT", "DOOR",
+        "TARGET",
+        "CURSOR",
+        "HAIL",
+        "CAST",
+        "HEAL",
+        "CURE",
+        "SCRIBE",
+        "TRAIN",
+        "TRADE",
+        "LOOT",
+        "ZONE",
+        "CRAFT",
+        "SUMMON",
+        "BOT",
+        "DOOR",
     }
     have = {token for _name, token in seen}
     for token in sorted(required - have):

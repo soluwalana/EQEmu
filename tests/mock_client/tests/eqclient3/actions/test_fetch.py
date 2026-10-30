@@ -33,7 +33,15 @@ class FetchTest(unittest.TestCase):
 
     def test_drop_above_level_appends_the_camp(self):
         self.sheet.plans = {
-            7: SimpleNamespace(drop=SimpleNamespace(zone="qeynos", above_level=True, camp=(1, 2, 3), level=20, spawns=[3]))
+            7: SimpleNamespace(
+                drop=SimpleNamespace(
+                    zone="qeynos",
+                    above_level=True,
+                    camp=(1, 2, 3),
+                    level=20,
+                    spawns=[3],
+                )
+            )
         }
         Fetch(7, 1, "drop").step(self.client, self.sheet)
         kills = [row for row in self.client.queue if type(row).__name__ == "Kill"]

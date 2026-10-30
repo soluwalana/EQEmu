@@ -19,7 +19,7 @@ class TalkSteps(unittest.TestCase):
         body.position = (5.0, 0.0, 0.0)
         action.active_path = None
         action.step(client, sheet)
-        self.assertEqual(commands(client), ["hail orc"])
+        self.assertEqual(commands(client), ["Hail, orc"])
         action.step(client, sheet)
         self.assertFalse(action.complete)
         self.assertNotIn("Fetch", kinds(client))

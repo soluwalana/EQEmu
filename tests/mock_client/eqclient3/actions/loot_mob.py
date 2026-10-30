@@ -1,4 +1,5 @@
 """Band 270. An NPC corpse. Picks what queued fetches still need, then closes."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -9,10 +10,20 @@ if TYPE_CHECKING:
     from eqclient3.world import World
 
 from eqclient3.action import Action
-from eqclient3.structs import OP_EndLootRequest, OP_LootRequest
-from eqclient3.actions.support import LOOT_RANGE, corpse_here, empty_slots, ingest_corpse_mail, loot_packet, walk, yards
+from eqclient3.structs import Item, OP_EndLootRequest, OP_LootRequest
+from eqclient3.actions.support import (
+    LOOT_RANGE,
+    corpse_here,
+    empty_slots,
+    ingest_corpse_mail,
+    loot_packet,
+    walk,
+    yards,
+)
 from eqclient3.inventory.assign import assign as run_assign
+
 EQUIP_BUFFER = 2
+
 
 class LootMob(Action):
 
@@ -27,32 +38,37 @@ class LootMob(Action):
         self.active_path = None
         self.requested = False
         self.opened = False
-        self.slots = []
-        self.picks = []
+        self.slots: list[Item] = []
+        self.picks: list[Item] = []
         self.built = False
 
     def opcodes(self) -> tuple[str, ...]:
-        return ('OP_Consider', 'OP_ItemPacket', 'OP_MoneyOnCorpse')
+        return ("OP_Consider", "OP_ItemPacket", "OP_MoneyOnCorpse")
 
     @staticmethod
     def key(action: Action) -> tuple[float, ...]:
-        return (action.distance,)
+        if isinstance(action, LootMob):
+            return (action.distance,)
+        return (0.0,)
 
     @property
     def distance(self) -> float:
         world = self._world
-        if not world:
+        where = self.where
+        if world is None or where is None:
             return 0.0
-        return world.movement.plan(self.where).distance
+        return world.movement.plan(where).distance
 
     def suspend(self) -> None:
         self.active_path = None
         self.suspended = True
 
-    def needs(self, queue: Schedule, world: World) -> list[tuple[int, int, int, int]]:
+    def needs(self, queue: Schedule | None, world: World) -> list[tuple[int, int, int, int]]:
+        if queue is None:
+            return []
         rows = []
         for action in queue:
-            if type(action).__name__ != 'Fetch':
+            if type(action).__name__ != "Fetch":
                 continue
             short = int(action.count) - int(world.held(action.item_id))
             if short > 0:
@@ -64,20 +80,25 @@ class LootMob(Action):
         self._world = world
         super().step(loop, world)
         self._inbox()
-        if not corpse_here(world, self.corpse_id):
+        corpse_id = self.corpse_id
+        where = self.where
+        if corpse_id is None or where is None:
             self.complete = True
             return
-        if self.waiting_for('TARGET'):
+        if not corpse_here(world, corpse_id):
+            self.complete = True
             return
-        if self.waiting_for('LOOT'):
+        if self.waiting_for("TARGET"):
             return
-        if yards(world, self.where) > LOOT_RANGE:
-            walk(self, loop, world, self.where, 'run')
+        if self.waiting_for("LOOT"):
+            return
+        if yards(world, where) > LOOT_RANGE:
+            walk(self, loop, world, where, "run")
             return
         if not self.requested:
-            loop.send('OP_LootRequest', OP_LootRequest(int(self.corpse_id)).serialize())
+            loop.send("OP_LootRequest", OP_LootRequest(corpse_id).serialize())
             self.requested = True
-            self.wait('LOOT')
+            self.wait("LOOT")
             self.suspended = False
             return
         if not self.opened:
@@ -88,9 +109,9 @@ class LootMob(Action):
         self.suspended = False
         if self.picks:
             slot = self.picks.pop(0)
-            loop.send('OP_LootItem', loot_packet(self.corpse_id, world.self_id, slot.slot))
+            loop.send("OP_LootItem", loot_packet(corpse_id, world.self_id, slot.slot))
             return
-        loop.send('OP_EndLootRequest', OP_EndLootRequest(self.corpse_id).serialize())
+        loop.send("OP_EndLootRequest", OP_EndLootRequest(corpse_id).serialize())
         run_assign(loop, world)
         self.complete = True
 
@@ -100,7 +121,7 @@ class LootMob(Action):
     def _choose(self, loop: Loop, world: World) -> None:
         """Fetch needs fill free slots. Coin is taken even when nothing else fits."""
         room = empty_slots(world) - EQUIP_BUFFER
-        gained = {}
+        gained: dict[int, int] = {}
         for slot in self.slots:
             if _is_coin(slot):
                 self.picks.append(slot)
@@ -118,7 +139,7 @@ class LootMob(Action):
                 room -= 1
 
 
-def _is_coin(slot: object) -> bool:
+def _is_coin(slot: Item) -> bool:
     """A pile the server turns into money. It does not need a free bag slot."""
-    name = str(slot.name or "").lower()
+    name = slot.name.lower()
     return any(tip in name for tip in ("coin", "platinum", "gold piece", "silver", "copper"))

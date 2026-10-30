@@ -8,7 +8,14 @@ from typing import Callable
 
 from eqclient3.net.opcodes import require
 from eqclient3.net.session import Session, SessionError
-from eqclient3.structs import OP_ClientReady, OP_ReqClientSpawn, OP_ReqNewZone, OP_SendExpZonein, OP_ZoneComplete, OP_ZoneEntry
+from eqclient3.structs import (
+    OP_ClientReady,
+    OP_ReqClientSpawn,
+    OP_ReqNewZone,
+    OP_SendExpZonein,
+    OP_ZoneComplete,
+    OP_ZoneEntry,
+)
 
 AppHandler = Callable[[int, bytes], None]
 
@@ -35,11 +42,11 @@ def zone_in(
 
     send(session, require(opcodes, "OP_SendExpZonein"), OP_SendExpZonein().serialize())
     send(session, require(opcodes, "OP_ReqClientSpawn"), OP_ReqClientSpawn().serialize())
-    # Titanium leaves OP_ZoneServerReady at 0x0000. The same handler sends OP_SendAAStats
+    # RoF2 leaves OP_ZoneServerReady at 0x0000. The same handler sends OP_SendAAStats
     # immediately before that empty opcode, so that is the packet this client can see.
     ready = opcodes.get("OP_ZoneServerReady") or opcodes.get("OP_SendAAStats")
     if not ready:
-        raise SessionError("no Titanium opcode to mark the end of OP_ReqClientSpawn")
+        raise SessionError("no RoF2 opcode to mark the end of OP_ReqClientSpawn")
     _wait_opcode(session, on_app, ready, "spawn contents", deadline)
 
     complete = opcodes.get("OP_ZoneComplete") or 0

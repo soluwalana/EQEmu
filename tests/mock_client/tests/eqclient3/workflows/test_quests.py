@@ -5,7 +5,7 @@ from __future__ import annotations
 from types import SimpleNamespace
 
 from eqclient3.inventory.assign import assign
-from eqclient3.quests.expand import expand
+from eqclient3.quests.expand import expand, produced
 from eqclient3.quests.graph import QuestGraph
 from eqclient3.quests.produce import produce
 from eqclient3.schedule import Schedule
@@ -86,6 +86,67 @@ def test_expand_a_hand_in_only_component_is_the_giver_chain():
     assert actions[1].priority == 280
     assert actions[2].item == 7
     assert actions[4].item == 8
+
+
+def test_expand_a_produced_item_fetches_then_zones_then_crafts():
+    graph = QuestGraph()
+    graph.world[17] = {"name": "Forge", "zones": ["freportw"]}
+    graph.edges = [
+        {
+            "rel": "produces",
+            "from": "recipe:9",
+            "to": "item:8",
+            "count": 1,
+            "skill": 60,
+            "trivial": 15,
+            "skill_name": "Blacksmithing",
+        },
+        {"rel": "consumes", "from": "recipe:9", "to": "item:7", "count": 2},
+        {"rel": "container", "from": "recipe:9", "to": "world:17"},
+        {"rel": "loots", "from": "qeynos/a rat", "to": "item:7", "zone": "qeynos"},
+        {"rel": "produces", "from": "recipe:2", "to": "item:8"},
+        {"rel": "consumes", "from": "recipe:2", "to": "item:8", "count": 1},
+    ]
+    graph.index()
+    edge = produced(graph, 8)
+    assert edge is not None
+    assert edge["from"] == "recipe:9"
+    actions = expand(edge, here="qeynos", graph=graph)
+    names = [type(action).__name__ for action in actions]
+    assert names == ["Fetch", "Zone", "Craft"]
+    fetch, zone, made = actions
+    assert fetch.item_id == 7
+    assert fetch.count == 2
+    assert zone.destination == "freportw"
+    assert made.recipe.id == 9
+    assert made.recipe.result == 8
+    assert made.recipe.components == ((7, 2),)
+    assert made.recipe.container == 17
+    assert made.recipe.skill == 60
+    assert made.recipe.name == "Blacksmithing"
+    assert made.source == "recipe:9#craft:9"
+
+
+def test_produce_appends_a_craft_for_a_recipe_goal():
+    graph = QuestGraph()
+    graph.edges = [
+        {"rel": "produces", "from": "recipe:9", "to": "item:8", "count": 1},
+        {"rel": "consumes", "from": "recipe:9", "to": "item:7", "count": 1},
+        {"rel": "loots", "from": "qeynos/a rat", "to": "item:7", "zone": "qeynos"},
+    ]
+    graph.index()
+    world = SimpleNamespace(zone="qeynos", class_id=1, race=1, level=1, bags={}, name="Mockone")
+    queue = Schedule()
+    loop = SimpleNamespace(queue=queue, character="Mockone", current=None)
+    produce(loop, world, item_id=8, graph=graph)
+    actions = list(queue)
+    names = [type(action).__name__ for action in actions]
+    assert names == ["Fetch", "Craft"]
+    assert actions[0].item_id == 7
+    made = actions[-1]
+    assert made.recipe.id == 9
+    assert made.recipe.components == ((7, 1),)
+    assert made.source == "goal:item=8#craft:9"
 
 
 def test_produce_waits_while_tutorial_readtasks_is_open():

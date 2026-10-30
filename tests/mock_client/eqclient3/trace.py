@@ -3,13 +3,15 @@
 The live client appends to ~/.eqclient/bus-v3.log. EQEMU_BUS_LOG overrides the
 path. EQEMU_BUS_LOG=off leaves the file alone.
 """
+
 from __future__ import annotations
 
 import os
 from datetime import datetime
 from pathlib import Path
+from typing import TextIO
 
-_handle = None
+_handle: TextIO | None = None
 _opened: str | None = None
 
 
@@ -24,7 +26,7 @@ def _destination() -> str | None:
     return str(Path.home() / ".eqclient" / "bus-v3.log")
 
 
-def _file():
+def _file() -> TextIO | None:
     global _handle, _opened
     path = _destination()
     if path is None:

@@ -20,7 +20,7 @@ class Form(Action):
         self.zone = zone
         self.commands = list(commands)
 
-    def opcodes(self) -> tuple[object, ...]:
+    def opcodes(self) -> tuple[str, ...]:
         return ()
 
     def suspend(self) -> None:

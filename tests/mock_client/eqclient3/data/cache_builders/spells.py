@@ -6,7 +6,13 @@ import os
 from pathlib import Path
 
 from eqclient3.data.cache_builders.common import peq_path
-from eqclient3.data.spells import DEFAULT_SPELLS, SpellBook, build_spells, read_spells, write_spells
+from eqclient3.data.spells import (
+    DEFAULT_SPELLS,
+    SpellBook,
+    build_spells,
+    read_spells,
+    write_spells,
+)
 
 
 def ensure_spells(

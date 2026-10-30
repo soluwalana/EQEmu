@@ -1,4 +1,5 @@
 """Band 260. One heal cast. The bar coming back, or string 251 on our corpse, finishes it."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -8,7 +9,15 @@ if TYPE_CHECKING:
     from eqclient3.world import World
 
 from eqclient3.action import Action
-from eqclient3.actions.support import bar_ratio, cast_spell, memorized, ready_gem, reclaim_if_ours, send_command
+from eqclient3.actions.support import (
+    bar_ratio,
+    cast_spell,
+    memorized,
+    ready_gem,
+    reclaim_if_ours,
+    send_command,
+)
+
 
 class Heal(Action):
 
@@ -18,19 +27,19 @@ class Heal(Action):
         self.who = who
         self.cast = False
         self.cast_target = 0
-        self._gem_recast = {}
+        self._gem_recast: dict[int, int] = {}
 
-    def opcodes(self) -> tuple[object, ...]:
-        return ('OP_HPUpdate', 'OP_MobHealth', 'OP_SimpleMessage')
+    def opcodes(self) -> tuple[str, ...]:
+        return ("OP_HPUpdate", "OP_MobHealth", "OP_SimpleMessage")
 
     def suspend(self) -> None:
         self.suspended = True
 
     def step(self, loop: Loop, world: World) -> None:
-        if self.waiting_for('HEAL') and (not self.messages):
+        if self.waiting_for("HEAL") and (not self.messages):
             return
         if self._bar_up():
-            self.unwait('HEAL')
+            self.unwait("HEAL")
             self.complete = True
             return
         if self._corpse(loop, world):
@@ -43,13 +52,13 @@ class Heal(Action):
         if gem is not None and ready_gem(world, gem):
             cast_spell(loop, gem, target)
         else:
-            send_command(loop, f'^cast heal {self.who}')
+            send_command(loop, f"^cast heal {self.who}")
         self.cast_target = int(target)
         self.cast = True
-        self.wait('HEAL')
+        self.wait("HEAL")
 
     def _bar_up(self) -> bool:
-        message = self.consume('OP_HPUpdate') or self.consume('OP_MobHealth')
+        message = self.consume("OP_HPUpdate") or self.consume("OP_MobHealth")
         if message is None:
             return False
         fraction = bar_ratio(message)

@@ -21,7 +21,7 @@ class Seat(Action):
         self.name = name
         self.commands = list(commands)
 
-    def opcodes(self) -> tuple[object, ...]:
+    def opcodes(self) -> tuple[str, ...]:
         return ()
 
     def suspend(self) -> None:

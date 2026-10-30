@@ -11,8 +11,7 @@ from eqclient3.world import Mob
 
 
 def slot_of(payload):
-    _corpse, _player, slot, _pad, _auto = struct.unpack("<IIH2sI", payload)
-    return slot
+    return struct.unpack_from("<H", payload, 8)[0]
 
 
 class LootMobTest(unittest.TestCase):
@@ -87,8 +86,16 @@ class LootMobTest(unittest.TestCase):
         action = LootMob(9, (0.0, 0.0, 0.0))
         action.step(client, sheet)
         self.assertEqual(opcodes(client)[-1], "OP_LootRequest")
-        inbox(action, "OP_ItemPacket", {"slot": 1, "item_id": 21, "stack": 1, "name": "Gnoll Fur"})
-        inbox(action, "OP_ItemPacket", {"slot": 4, "item_id": 500, "stack": 1, "name": "Platinum"})
+        inbox(
+            action,
+            "OP_ItemPacket",
+            {"slot": 1, "item_id": 21, "stack": 1, "name": "Gnoll Fur"},
+        )
+        inbox(
+            action,
+            "OP_ItemPacket",
+            {"slot": 4, "item_id": 500, "stack": 1, "name": "Platinum"},
+        )
         inbox(action, "OP_MoneyOnCorpse", bytes([1]))
         action.step(client, sheet)
         sent = [slot_of(payload) for opcode, payload in client.outbound if opcode == "OP_LootItem"]

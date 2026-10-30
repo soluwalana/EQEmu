@@ -6,7 +6,18 @@ import struct
 
 from eqclient3.actions.attack import Attack
 from eqclient3.handlers import mobs
-from support import Loop, World, become_corpse, damage, hp, names, position, sources, spawn
+from eqclient3.structs import OP_Track
+from support import (
+    Loop,
+    World,
+    become_corpse,
+    damage,
+    hp,
+    names,
+    position,
+    sources,
+    spawn,
+)
 
 
 def test_opcodes():
@@ -64,7 +75,7 @@ def test_opcodes():
 
     tracked = World()
     mobs.MobsHandler().handle("OP_NewSpawn", spawn(3, "a bear"), tracked, Loop())
-    mobs.MobsHandler().handle("OP_Track", struct.pack("<IfIf", 3, 12.5, 99, 1.0), tracked, Loop())
+    mobs.MobsHandler().handle("OP_Track", OP_Track([(3, 12.5), (99, 1.0)]).serialize(), tracked, Loop())
     assert tracked.mobs[3].distance == 12.5
     assert 99 not in tracked.mobs
 

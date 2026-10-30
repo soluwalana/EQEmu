@@ -1,33 +1,29 @@
 """Doors and ground spawns. Pickup is Fetch's step. OP_ClickDoor is movement's send."""
+
 from __future__ import annotations
 
-from eqclient3.structs import EQStruct, OP_ClickObject, OP_DoorSpawn, OP_Doors, OP_GroundSpawn, OP_MoveDoor, OP_SpawnDoor
+from eqclient3.structs import (
+    EQStruct,
+    OP_ClickObject,
+    OP_DoorSpawn,
+    OP_Doors,
+    OP_GroundSpawn,
+    OP_MoveDoor,
+    OP_SpawnDoor,
+)
 from eqclient3.handler import Handler
+from eqclient3.world import Door, GroundSpawn
 
-class Door:
-
-    def __init__(self, id: int, name: str, x: float, y: float, z: float, open_type: int) -> None:
-        self.id = id
-        self.name = name
-        self.x = x
-        self.y = y
-        self.z = z
-        self.open_type = open_type
-        self.opened = False
-
-class Ground:
-
-    def __init__(self, id: int, name: str, x: float, y: float, z: float) -> None:
-        self.id = id
-        self.name = name
-        self.x = x
-        self.y = y
-        self.z = z
-        self.position = (self.x, self.y, self.z)
-        self.used = False
 
 class DoorsHandler(Handler):
-    opcodes = ('OP_SpawnDoor', 'OP_DoorSpawn', 'OP_Doors', 'OP_GroundSpawn', 'OP_MoveDoor', 'OP_ClickObject')
+    opcodes = (
+        "OP_SpawnDoor",
+        "OP_DoorSpawn",
+        "OP_Doors",
+        "OP_GroundSpawn",
+        "OP_MoveDoor",
+        "OP_ClickObject",
+    )
 
     def on(self, opcode: str, payload: EQStruct) -> None:
         del opcode
@@ -45,7 +41,14 @@ class DoorsHandler(Handler):
             return
         doors = self.world.doors
         for found in row.doors:
-            door_id, name, x, y, z, open_type = found.door_id, found.name, found.x, found.y, found.z, found.open_type
+            door_id, name, x, y, z, open_type = (
+                found.door_id,
+                found.name,
+                found.x,
+                found.y,
+                found.z,
+                found.open_type,
+            )
             previous = doors.get(door_id)
             door = Door(door_id, name, x, y, z, open_type)
             if previous:
@@ -53,7 +56,7 @@ class DoorsHandler(Handler):
             doors[door_id] = door
 
     def ground(self, row: OP_GroundSpawn) -> None:
-        self.world.ground[row.drop_id] = Ground(row.drop_id, row.name, row.x, row.y, row.z)
+        self.world.ground[row.drop_id] = GroundSpawn(row.drop_id, row.name, row.x, row.y, row.z)
 
     def move(self, row: OP_MoveDoor) -> None:
         door = self.world.doors.get(row.door_id)

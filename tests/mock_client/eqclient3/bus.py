@@ -1,4 +1,5 @@
 """Opcode bus. One opcode can have many handlers. Subscription does not swallow the packet."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -11,13 +12,19 @@ if TYPE_CHECKING:
 from .action import Message
 from .handler import Handler
 from .net.decode import body
-from .structs import EQStruct
+from .structs import EQStruct, ZONE_ENTRY_SIZE
 from .trace import note_handler, note_opcode
 
 
 class Bus:
 
-    def __init__(self, queue: Schedule | None = None, world: World | None = None, loop: Loop | None = None, autoload: bool = True) -> None:
+    def __init__(
+        self,
+        queue: Schedule | None = None,
+        world: World | None = None,
+        loop: Loop | None = None,
+        autoload: bool = True,
+    ) -> None:
         self.queue = queue
         self.world = world
         self.loop = loop
@@ -48,14 +55,18 @@ class Bus:
         if self._autoload:
             self.load()
         note_opcode(opcode, payload)
+        if opcode == "OP_ZoneEntry" and isinstance(payload, (bytes, bytearray)) and len(payload) > ZONE_ENTRY_SIZE:
+            opcode = "OP_NewSpawn"
         parsed = _struct(opcode, payload)
         claimed = False
+        world = self.world
+        loop = self.loop
         for handler in self._handlers:
             if opcode not in handler.opcodes:
                 continue
-            if isinstance(parsed, EQStruct):
+            if isinstance(parsed, EQStruct) and world is not None and loop is not None:
                 note_handler(type(handler).__name__, opcode)
-                handler.handle(opcode, parsed, self.world, self.loop)
+                handler.handle(opcode, parsed, world, loop)
             if opcode in handler.exclusive:
                 claimed = True
         if isinstance(parsed, EQStruct):

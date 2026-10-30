@@ -37,8 +37,18 @@ def test_opcodes():
     assert stranger.queue == []
 
     before = len(loop.queue)
-    loot.LootHandler().handle("OP_MoneyOnCorpse", struct.pack("<BBBBIIII", 1, 0x5A, 0x40, 0, 1, 2, 3, 4), world, loop)
+    loot.LootHandler().handle(
+        "OP_MoneyOnCorpse",
+        struct.pack("<BBBBIIII", 1, 0x5A, 0x40, 0, 1, 2, 3, 4),
+        world,
+        loop,
+    )
     assert world.coin == (1, 2, 3, 4)
     assert len(loop.queue) == before
-    loot.LootHandler().handle("OP_MoneyOnCorpse", struct.pack("<BBBBIIII", 5, 0x5A, 0x40, 0, 9, 0, 0, 0), world, loop)
+    loot.LootHandler().handle(
+        "OP_MoneyOnCorpse",
+        struct.pack("<BBBBIIII", 5, 0x5A, 0x40, 0, 9, 0, 0, 0),
+        world,
+        loop,
+    )
     assert world.coin == (1, 2, 3, 4)

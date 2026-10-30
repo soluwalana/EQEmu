@@ -28,12 +28,12 @@ def load_opcodes(path: Path) -> dict[str, int]:
     return opcodes
 
 
-def titanium_opcodes() -> dict[str, int]:
-    return load_opcodes(repo_root() / "utils" / "patches" / "patch_Titanium.conf")
+def rof2_opcodes() -> dict[str, int]:
+    return load_opcodes(repo_root() / "utils" / "patches" / "patch_RoF2.conf")
 
 
 def login_opcodes() -> dict[str, int]:
-    return load_opcodes(repo_root() / "loginserver" / "login_util" / "login_opcodes.conf")
+    return load_opcodes(repo_root() / "loginserver" / "login_util" / "login_opcodes_sod.conf")
 
 
 def require(opcodes: dict[str, int], name: str) -> int:

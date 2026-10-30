@@ -65,6 +65,7 @@ def gap_needs_rezone(queued_for: float, decode_failures: int) -> bool:
     """A hole that outlived the server resend window, or a run of undecodable datagrams."""
     return queued_for >= RESEND_WINDOW or decode_failures >= DECODE_FAIL_LIMIT
 
+
 _NO_CRC = {OP_SESSION_REQUEST, OP_SESSION_RESPONSE, OP_OUT_OF_SESSION}
 
 
@@ -166,7 +167,10 @@ class Session:
         infos = socket.getaddrinfo(host, port, socket.AF_INET, socket.SOCK_DGRAM)
         if not infos:
             raise SessionError(f"could not resolve {host}")
-        self._peer = (infos[0][4][0], port)
+        address = infos[0][4][0]
+        if not isinstance(address, str):
+            raise SessionError(f"could not resolve {host}")
+        self._peer = (address, port)
         deadline = time.monotonic() + timeout
         next_send = 0.0
         while time.monotonic() < deadline:
@@ -590,7 +594,10 @@ class Session:
                 self._consume_fragment(stream, frame)
             else:
                 self._process_decoded(frame[4:])
-            frame = stream.queue.pop(stream.sequence_in, None)
+            nxt = stream.sequence_in
+            if nxt not in stream.queue:
+                break
+            frame = stream.queue.pop(nxt)
             if frame is None or len(frame) < 2 or frame[0] != 0:
                 break
             op = frame[1]

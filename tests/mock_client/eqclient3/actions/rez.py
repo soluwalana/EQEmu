@@ -24,7 +24,7 @@ class Rez(Action):
         self.payload = _request(payload)
         self.accepted = False
 
-    def opcodes(self) -> tuple[object, ...]:
+    def opcodes(self) -> tuple[str, ...]:
         return ("OP_DeleteSpawn",)
 
     def suspend(self) -> None:

@@ -19,6 +19,7 @@ _CELL = 32.0
 Triangle = tuple[tuple[float, float, float], tuple[float, float, float], tuple[float, float, float]]
 Point = tuple[float, float, float]
 
+
 @dataclass
 class ZoneMap:
     triangles: list[Triangle]
@@ -134,6 +135,7 @@ class ZoneMap:
 
 _LOADED: dict[str, ZoneMap | None] = {}
 
+
 def load_map(zone: str) -> ZoneMap | None:
     key = (zone or "").lower()
     if key in _LOADED:
@@ -141,6 +143,7 @@ def load_map(zone: str) -> ZoneMap | None:
     zone_map = _read_map(key)
     _LOADED[key] = zone_map
     return zone_map
+
 
 def _read_map(zone: str) -> ZoneMap | None:
     root = maps_root()

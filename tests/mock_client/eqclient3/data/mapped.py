@@ -7,9 +7,12 @@ jsonl is newer.
 
 from __future__ import annotations
 
+import mmap
 import os
 import struct
 from pathlib import Path
+
+_View = bytes | bytearray | memoryview | mmap.mmap
 
 MAGIC = b"EQM1"
 VERSION = 1
@@ -37,7 +40,7 @@ def pack_header(kind: bytes, slots: tuple[int, ...]) -> bytes:
     return packed + b"\x00" * (HEADER_SIZE - len(packed))
 
 
-def read_header(buf, kind: bytes) -> tuple[int, ...]:
+def read_header(buf: _View, kind: bytes) -> tuple[int, ...]:
     if len(buf) < HEADER_SIZE or buf[:4] != MAGIC:
         raise ValueError("not an eqm cache")
     _magic, found, version, _flags, *slots = _HEADER.unpack_from(buf, 0)
@@ -67,7 +70,7 @@ class StringTable:
         return off
 
 
-def read_string(buf, strings_off: int, rel: int) -> str:
+def read_string(buf: _View, strings_off: int, rel: int) -> str:
     at = strings_off + rel
     size = struct.unpack_from("<H", buf, at)[0]
     return bytes(buf[at + 2 : at + 2 + size]).decode("utf-8")
@@ -76,7 +79,7 @@ def read_string(buf, strings_off: int, rel: int) -> str:
 class IdIndex:
     """Sorted `(id, start, count)` triples. `in` and `len` do not copy the table."""
 
-    def __init__(self, buf, offset: int, count: int) -> None:
+    def __init__(self, buf: _View, offset: int, count: int) -> None:
         self._buf = buf
         self._offset = offset
         self._count = count
@@ -88,7 +91,9 @@ class IdIndex:
         return self._count > 0
 
     def __contains__(self, key: object) -> bool:
-        return self.span(int(key)) is not None
+        if not isinstance(key, int):
+            return False
+        return self.span(key) is not None
 
     def span(self, key: int) -> tuple[int, int] | None:
         lo, hi = 0, self._count
@@ -104,7 +109,7 @@ class IdIndex:
         return None
 
 
-def find_record(buf, offset: int, count: int, stride: int, key: int) -> int | None:
+def find_record(buf: _View, offset: int, count: int, stride: int, key: int) -> int | None:
     """Byte offset of the fixed record whose first u32 is `key`."""
     lo, hi = 0, count
     while lo < hi:

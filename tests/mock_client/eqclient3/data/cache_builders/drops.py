@@ -6,7 +6,15 @@ import os
 from pathlib import Path
 
 from eqclient3.data.cache_builders.common import peq_path
-from eqclient3.data.drops import DEFAULT_DROPS, DropBook, _version_ok, build_drops, read_drops, write_drops
+from eqclient3.data.drops import (
+    DEFAULT_DROPS,
+    DropBook,
+    MappedDrops,
+    _version_ok,
+    build_drops,
+    read_drops,
+    write_drops,
+)
 
 
 def ensure_drops(
@@ -14,7 +22,7 @@ def ensure_drops(
     peq: str | Path | None = None,
     *,
     rebuild: bool = False,
-) -> DropBook:
+) -> MappedDrops | DropBook:
     """Load drops.jsonl, or build once from the peq dump."""
     path = path or os.environ.get("EQEMU_DROPS", DEFAULT_DROPS)
     file = Path(path)

@@ -1,4 +1,5 @@
 """Band 210. Walk to the leader's last point. Spawn updates refresh it."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -11,6 +12,7 @@ if TYPE_CHECKING:
 from eqclient3.action import Action
 from eqclient3.actions.support import payload_get, walk
 
+
 class Follow(Action):
 
     def __init__(self, leader: str) -> None:
@@ -18,10 +20,10 @@ class Follow(Action):
         self.priority = 210
         self.leader = leader
         self.active_path = None
-        self.point = None
+        self.point: tuple[float, float, float] | None = None
 
     def opcodes(self) -> tuple[str, ...]:
-        return ('OP_ClientUpdate', 'OP_MobUpdate')
+        return ("OP_ClientUpdate", "OP_MobUpdate")
 
     def add_message(self, message: Message) -> None:
         super().add_message(message)
@@ -38,24 +40,27 @@ class Follow(Action):
             self.point = _leader_point(world, self.leader)
         if self.point is None:
             return
-        walk(self, loop, world, self.point, 'run')
+        walk(self, loop, world, self.point, "run")
 
     def _moves_leader(self, message: Message) -> bool:
-        spawn = payload_get(message, 'spawn_id')
-        name = payload_get(message, 'name')
+        spawn = payload_get(message, "spawn_id")
+        name = payload_get(message, "name")
         if isinstance(self.leader, int) and spawn is not None and (int(spawn) == int(self.leader)):
             return True
         if name and str(name).lower() == str(self.leader).lower():
             return True
-        return payload_get(message, 'leader', False) is True
+        return payload_get(message, "leader", False) is True
+
 
 def _point(message: Message) -> tuple[float, float, float] | None:
-    x = payload_get(message, 'x')
-    y = payload_get(message, 'y')
-    if x is None or y is None:
+    x = payload_get(message, "x")
+    y = payload_get(message, "y")
+    if not isinstance(x, (int, float)) or not isinstance(y, (int, float)):
         return None
-    z = payload_get(message, 'z', 0.0)
-    return (float(x), float(y), float(z or 0.0))
+    z = payload_get(message, "z", 0.0)
+    height = z if isinstance(z, (int, float)) else 0.0
+    return (float(x), float(y), float(height))
+
 
 def _leader_point(world: World, leader: str) -> tuple[float, float, float] | None:
     if isinstance(leader, int) and leader in world.mobs:

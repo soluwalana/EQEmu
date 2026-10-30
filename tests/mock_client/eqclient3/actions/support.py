@@ -1,19 +1,27 @@
 """Shared packet shapes and queue pushes. Subclasses keep their own step."""
+
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, Callable, Protocol, runtime_checkable
 
 if TYPE_CHECKING:
     from types import ModuleType
-    from eqclient3.action import Action, Message
+    from eqclient3.action import Message
     from eqclient3.loop import Loop
     from eqclient3.world import Mob
 
 from dataclasses import dataclass
+
+from eqclient3.action import Action
+from eqclient3.camps import Soulbinder, nearest_soulbinder
+from eqclient3.journal import Journal
+from eqclient3.movement import MovementAnnotatedMob
 from eqclient3.log import log
 from eqclient3.nav.travel import first_leg
 from eqclient3.nav.zones import zone_id_of
 from eqclient3.structs import (
+    Item,
     OP_Assist,
     OP_BecomeCorpse,
     OP_Buff,
@@ -45,14 +53,37 @@ from eqclient3.structs import (
 )
 from eqclient3.world import World
 
+
+@dataclass
+class FetchDrop:
+    zone: str = ""
+    above_level: bool = False
+    camp: str | tuple[int, ...] | None = None
+    level: int | None = None
+    spawns: tuple[int, ...] = ()
+
+
+@dataclass
+class FetchMerchant:
+    npc: int = 0
+    zone: str = ""
+
+
+@dataclass
+class FetchGround:
+    drop_id: int = 0
+    zone: str = ""
+    point: tuple[float, float, float] = (0.0, 0.0, 0.0)
+
+
 @dataclass
 class FetchPlan:
     """How to obtain one item. Missing parts stay empty."""
 
-    drop: object | None = None
-    quest: object | None = None
-    merchant: object | None = None
-    ground: object | None = None
+    drop: FetchDrop | None = None
+    quest: list[Action] | tuple[Action, ...] | Action | None = None
+    merchant: FetchMerchant | None = None
+    ground: FetchGround | None = None
     vendor_zone: str = ""
     station_zone: str = ""
     station: tuple[float, float, float] | None = None
@@ -79,23 +110,20 @@ SPEAK, KILL, LOOT, DELIVER = (4, 2, 3, 1)
 
 def character_name(loop: Loop | None, world: World) -> str:
     """Journal key. loop.character wins, then the sheet."""
-    if loop is not None:
-        name = str(getattr(loop, 'character', None) or '')
-        if name:
-            return name
-    who = getattr(world, 'character', None)
-    if isinstance(who, str):
-        return who or str(getattr(world, 'name', None) or '')
-    if who is not None and getattr(who, 'name', None):
-        return str(who.name)
-    return str(getattr(world, 'name', None) or '')
+    if loop is not None and loop.character:
+        return loop.character
+    return world.name
+
 
 def journal_of(loop: Loop) -> Journal | None:
     journal = loop.journal
     if journal is not None:
         return journal
     queue = loop.queue
+    if queue is None:
+        return None
     return queue.journal
+
 
 def session_open(loop: Loop) -> bool:
     session = loop.session
@@ -105,7 +133,8 @@ def session_open(loop: Loop) -> bool:
         return False
     return bool(session.open)
 
-def yield_to(parent: Action, loop: Loop, world: World, new: Action, source: str='') -> bool:
+
+def yield_to(parent: Action, loop: Loop, world: World, new: Action, source: str = "") -> bool:
     """Queue the next piece of work. Same-band handoff waits until the next pulse."""
     if source:
         new.source = source
@@ -114,52 +143,68 @@ def yield_to(parent: Action, loop: Loop, world: World, new: Action, source: str=
         return False
     journal = journal_of(loop)
     who = character_name(loop, world)
+    write: Callable[..., bool | None] = queue.append
     try:
-        ok = queue.append(new, world, journal, who)
+        ok = write(new, world, journal, who)
     except TypeError:
-        queue.append(new)
+        write(new)
         ok = True
     if ok:
         parent.yielding = True
     return bool(ok)
 
+
+def _queue(loop: Loop) -> list[Action]:
+    queue = loop.queue
+    if queue is None:
+        return []
+    return list(queue)
+
+
 def queued(loop: Loop, kind: str, corpse_id: int | None = None, spawn_id: int | None = None) -> bool:
-    for action in loop.queue:
+    for action in _queue(loop):
         if type(action).__name__ != kind:
             continue
-        if corpse_id is not None and int(getattr(action, 'corpse_id', -1) or -1) != int(corpse_id):
+        if corpse_id is not None and int(getattr(action, "corpse_id", -1) or -1) != int(corpse_id):
             continue
-        if spawn_id is not None and int(getattr(action, 'spawn_id', -1) or -1) != int(spawn_id):
+        if spawn_id is not None and int(getattr(action, "spawn_id", -1) or -1) != int(spawn_id):
             continue
         return True
     return False
 
+
 def send_command(loop: Loop, text: str) -> None:
-    who = str(loop.character or '')
-    loop.send('OP_ChannelMessage', OP_ChannelMessage('', who, channel=SAY_CHANNEL, text=text).serialize())
+    who = str(loop.character or "")
+    loop.send(
+        "OP_ChannelMessage",
+        OP_ChannelMessage("", who, channel=SAY_CHANNEL, text=text).serialize(),
+    )
+
 
 def message_text(message: Message) -> str:
     payload = message.payload
     if isinstance(payload, OP_SimpleMessage):
-        return ' '.join(payload.texts)
+        return " ".join(payload.texts)
     if isinstance(payload, OP_ChannelMessage):
-        return str(payload.text or '')
+        return str(payload.text or "")
     if isinstance(payload, OP_SpecialMesg):
-        return str(payload.message or '')
-    text = getattr(payload, 'text', None)
+        return str(payload.message or "")
+    text = getattr(payload, "text", None)
     if isinstance(text, str):
         return text
-    return ''
+    return ""
+
 
 def line_of(payload: object) -> tuple[str, str]:
     """Speaker and text for a channel or special line. A simple line has no speaker."""
     if isinstance(payload, OP_ChannelMessage):
-        return (str(payload.sender or ''), str(payload.text or ''))
+        return (str(payload.sender or ""), str(payload.text or ""))
     if isinstance(payload, OP_SpecialMesg):
-        return (str(payload.speaker or ''), str(payload.message or ''))
+        return (str(payload.speaker or ""), str(payload.message or ""))
     if isinstance(payload, OP_SimpleMessage):
-        return ('', ' '.join(payload.texts))
-    return ('', '')
+        return ("", " ".join(payload.texts))
+    return ("", "")
+
 
 def payload_get(message: Message, name: str, default: object | None = None) -> object:
     payload = message.payload
@@ -168,9 +213,11 @@ def payload_get(message: Message, name: str, default: object | None = None) -> o
         return values[name]
     return default
 
+
 def wont_sell(message: Message) -> bool:
     """Merchant refused the sale. Strings 1154-1165."""
     return 1154 <= simple_id(message) < 1166
+
 
 def take_refusal(action: Action) -> bool:
     """Pop a merchant refusal if one is waiting. Other simple lines stay in the mailbox."""
@@ -179,6 +226,7 @@ def take_refusal(action: Action) -> bool:
             action.messages.pop(index)
             return True
     return False
+
 
 _SPAWN_ROWS = (
     OP_BecomeCorpse,
@@ -196,11 +244,13 @@ _SPAWN_ROWS = (
 )
 _ENTITY_ROWS = (OP_Assist, OP_Buff, OP_FindPersonRequest, OP_TrackTarget)
 
+
 def simple_id(message: Message) -> int:
     payload = message.payload
     if isinstance(payload, OP_SimpleMessage):
         return int(payload.string_id)
     return 0
+
 
 def spawn_of(message: Message) -> int:
     payload = message.payload
@@ -209,6 +259,7 @@ def spawn_of(message: Message) -> int:
     if isinstance(payload, _ENTITY_ROWS):
         return int(payload.entity_id)
     return 0
+
 
 def bar_ratio(message: Message) -> float | None:
     """Fraction on an HP or mob-health packet. None when the packet has no bar."""
@@ -219,7 +270,8 @@ def bar_ratio(message: Message) -> float | None:
         return float(payload.cur_hp) / float(payload.max_hp)
     return None
 
-def item_of(message: Message) -> object | None:
+
+def item_of(message: Message) -> Item | None:
     payload = message.payload
     if isinstance(payload, OP_ItemPacket):
         item = payload.item
@@ -228,17 +280,20 @@ def item_of(message: Message) -> object | None:
         return item
     return None
 
+
 def loot_response(message: Message) -> int:
     payload = message.payload
     if isinstance(payload, OP_MoneyOnCorpse):
         return int(payload.response)
     return 0
 
+
 def delete_slot(message: Message) -> int:
     payload = message.payload
     if isinstance(payload, OP_DeleteItem):
         return int(payload.from_slot)
     return -1
+
 
 def yards(world: World, point: tuple[float, float, float]) -> float:
     if point is None:
@@ -248,28 +303,44 @@ def yards(world: World, point: tuple[float, float, float]) -> float:
     dz = float(point[2]) - float(world.z) if len(point) > 2 else 0.0
     return (dx * dx + dy * dy + dz * dz) ** 0.5
 
+
 def standing_of(mob: Mob | None) -> int:
     if mob is None or mob.consider is None:
         return 0
     return int(mob.consider.standing)
 
-def hostiles_within(items: list[Mob], yards_limit: float) -> list:
-    found = []
+
+def hostiles_within(items: Sequence[Mob | MovementAnnotatedMob] | None, yards_limit: float) -> list[Mob]:
+    found: list[Mob] = []
     for item in items or []:
-        mob = item.mob if hasattr(item, 'mob') else item
-        dist = item.distance
-        if dist is None:
+        if isinstance(item, MovementAnnotatedMob):
+            mob = item.mob
+            dist = item.distance if item.distance is not None else mob.distance
+            consider = item.consider if item.consider is not None else mob.consider
+        else:
+            mob = item
             dist = mob.distance
-        stand = standing_of(item if item.consider is not None else mob)
-        if stand in (8, 9) and dist is not None and (float(dist) <= yards_limit):
+            consider = mob.consider
+        stand = consider.standing if consider is not None else 0
+        if stand in (8, 9) and dist is not None and dist <= yards_limit:
             found.append(mob)
     return found
 
-def walk(action: Action, loop: Loop, world: World, dest: tuple[float, float, float], mode: str) -> None:
-    if not action.active_path:
-        action.active_path = world.movement.plan(dest, mode)
+
+def walk(
+    action: Action,
+    loop: Loop,
+    world: World,
+    dest: tuple[float, float, float],
+    mode: str,
+) -> None:
+    path = action.active_path
+    if path is None:
+        path = world.movement.plan(dest, mode)
+        action.active_path = path
     action.suspended = False
-    world.movement.advance(loop, world, action.active_path)
+    world.movement.advance(loop, world, path)
+
 
 def known(world: World, skill_id: int) -> bool:
     skills = world.character.abilities.skills
@@ -277,13 +348,13 @@ def known(world: World, skill_id: int) -> bool:
         return False
     return int(skills[skill_id]) > 0
 
-def ratio(current: int, maximum: int) -> float | None:
+
+def ratio(current: int | None, maximum: int | None) -> float | None:
     """Bar fraction. None when the maximum has not arrived."""
-    maximum = int(maximum or 0)
-    current = int(current or 0)
-    if maximum <= 0:
+    if maximum is None or maximum <= 0:
         return None
-    return current / maximum
+    return (current or 0) / maximum
+
 
 def lowest_hurt(world: World) -> int | None:
     best = None
@@ -299,6 +370,7 @@ def lowest_hurt(world: World) -> int | None:
             best_ratio = bot_ratio
     return best
 
+
 @dataclass
 class SpellInfo:
     mana: int = 0
@@ -308,26 +380,48 @@ class SpellInfo:
     combat: bool = False
 
 
+def _as_int(value: object) -> int:
+    if isinstance(value, bool) or not isinstance(value, int):
+        return 0
+    return value
+
+
+def _as_float(value: object) -> float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return 0.0
+    return float(value)
+
+
+@runtime_checkable
+class _SpellMeta(Protocol):
+    mana: int
+    recast: float
+    heal: bool
+    cure: str | None
+    combat: bool
+
+
 def _spell_info(meta: object) -> SpellInfo:
     if isinstance(meta, SpellInfo):
         return meta
     if isinstance(meta, dict):
+        cure = meta.get("cure")
         return SpellInfo(
-            mana=int(meta.get("mana") or 0),
-            recast=float(meta.get("recast") or 0),
+            mana=_as_int(meta.get("mana")),
+            recast=_as_float(meta.get("recast")),
             heal=bool(meta.get("heal", False)),
-            cure=meta.get("cure"),
+            cure=cure if isinstance(cure, str) else None,
             combat=bool(meta.get("combat", False)),
         )
-    if not meta:
-        return SpellInfo()
-    return SpellInfo(
-        mana=meta.mana,
-        recast=meta.recast,
-        heal=bool(meta.heal),
-        cure=meta.cure,
-        combat=bool(meta.combat),
-    )
+    if isinstance(meta, _SpellMeta):
+        return SpellInfo(
+            mana=_as_int(meta.mana),
+            recast=_as_float(meta.recast),
+            heal=bool(meta.heal),
+            cure=meta.cure if isinstance(meta.cure, str) else None,
+            combat=bool(meta.combat),
+        )
+    return SpellInfo()
 
 
 class GemView:
@@ -341,6 +435,7 @@ class GemView:
         self.heal = info.heal
         self.cure = info.cure
         self.combat = info.combat
+
 
 def memorized(world: World, action: Action) -> list:
     raw = world.gems or {}
@@ -358,62 +453,77 @@ def memorized(world: World, action: Action) -> list:
         gems.append(GemView(slot, spell_id, _spell_info(meta), recast.get(slot, 0)))
     return gems
 
+
 def arm_recast(action: Action, gem: GemView) -> None:
     ticks = int(float(gem.recast or 0) / 0.1) if gem.recast else 0
     action._gem_recast[gem.slot] = ticks
     gem.recast_ticks = ticks
 
+
 def ready_gem(world: World, gem: GemView) -> bool:
     return gem.recast_ticks <= 0 and world.mana >= gem.mana
 
+
 def cast_spell(loop: Loop, gem: GemView, target: int) -> None:
-    loop.send('OP_CastSpell', OP_CastSpell(gem.slot, gem.spell_id, target & 65535).serialize())
+    loop.send("OP_CastSpell", OP_CastSpell(gem.slot, gem.spell_id, target & 65535).serialize())
+
 
 def own_corpse(loop: Loop, world: World) -> int:
     """The body we would reclaim. A queued Reclaim wins. Otherwise a dead spawn that is ours."""
     last = 0
-    for action in loop.queue:
-        if type(action).__name__ == 'Reclaim':
-            last = int(action.corpse_id)
+    for action in _queue(loop):
+        if type(action).__name__ == "Reclaim" and action.corpse_id is not None:
+            last = action.corpse_id
     if last:
         return last
     # handlers.common imports assign, which imports Sell, which imports support.
     from eqclient3.handlers.common import is_ours
+
     for mob in world.mobs.values():
         if mob.dead and is_ours(world, int(mob.id), mob):
             return int(mob.id)
     return 0
 
+
 def corpse_here(world: World, corpse_id: int) -> bool:
     return corpse_id in world.mobs
+
 
 def corpse_name(world: World, corpse_id: int) -> str:
     mob = world.mobs.get(corpse_id)
     if mob is not None and mob.name:
         return str(mob.name)
-    return str(world.name or 'corpse')
+    return str(world.name or "corpse")
 
-def corpse_where(loop: Loop, world: World, corpse_id: int, fallback: tuple[float, float, float]) -> tuple[float, float, float]:
-    for action in loop.queue:
-        if type(action).__name__ not in ('Reclaim', 'LootMob'):
+
+def corpse_where(
+    loop: Loop, world: World, corpse_id: int, fallback: tuple[float, float, float]
+) -> tuple[float, float, float]:
+    for action in _queue(loop):
+        if type(action).__name__ not in ("Reclaim", "LootMob"):
             continue
-        if int(action.corpse_id) != int(corpse_id):
-            continue
+        found = action.corpse_id
         where = action.where
-        return (float(where[0]), float(where[1]), float(where[2]))
+        if found is None or found != corpse_id or where is None:
+            continue
+        return where
     mob = world.mobs.get(corpse_id)
     if mob is not None:
         return mob.position
     return fallback
 
+
 def corpse_drag(corpse: str, dragger: str) -> bytes:
     return OP_CorpseDrag(corpse, dragger).serialize()
+
 
 def loot_packet(corpse_id: int, player_id: int, slot: int) -> bytes:
     return OP_LootItem(int(corpse_id), int(player_id), int(slot)).serialize()
 
+
 def zone_packet(destination: str, zone_id: int, x: float, y: float, z: float) -> bytes:
-    return OP_ZoneChange(destination or '', int(zone_id), float(x), float(y), float(z)).serialize()
+    return OP_ZoneChange(destination or "", int(zone_id), float(x), float(y), float(z)).serialize()
+
 
 def zone_id(name: str) -> int:
     try:
@@ -422,11 +532,13 @@ def zone_id(name: str) -> int:
         log.error("zone id lookup failed for %s", name, exc_info=True)
         return 0
 
+
 def empty_slots(world: World) -> int:
     explicit = world.empty_slots
     if explicit is not None:
         return int(explicit)
     return max(0, 10 - len(world.bags or {}))
+
 
 def bag_slot(world: World, item_id: int) -> int | None:
     for slot, item in (world.bags or {}).items():
@@ -434,13 +546,19 @@ def bag_slot(world: World, item_id: int) -> int | None:
             return int(slot)
     return None
 
-def merchant_offer(action: Action, item_id: int) -> tuple[object, ...] | None:
+
+class _MerchantWindow(Protocol):
+    slots: dict[int, tuple[int, int]]
+
+
+def merchant_offer(action: _MerchantWindow, item_id: int) -> tuple[int, int] | None:
     """Slot and price for item_id on the open Trade or Sell window."""
     for slot, row in action.slots.items():
         listed, price = row
         if int(listed) == int(item_id):
             return (int(slot), int(price))
     return None
+
 
 def has_soulbind(loop: Loop, world: World) -> bool:
     journal = journal_of(loop)
@@ -449,12 +567,13 @@ def has_soulbind(loop: Loop, world: World) -> bool:
         return bool(journal.soulbind_zone(who))
     return bool(world.soulbound)
 
-def soulbinder(world: World) -> object | None:
+
+def soulbinder(world: World) -> Soulbinder | None:
     binder = world.soulbinder
-    if binder is not None:
+    if isinstance(binder, Soulbinder):
         return binder
-    from eqclient3.camps import nearest_soulbinder
-    return nearest_soulbinder(world.zone or '')
+    return nearest_soulbinder(world.zone)
+
 
 def clear_source(loop: Loop, world: World, source: str) -> None:
     journal = journal_of(loop)
@@ -463,6 +582,7 @@ def clear_source(loop: Loop, world: World, source: str) -> None:
         return
     journal.clear_source(who, source)
 
+
 def mark_tutorial(loop: Loop, world: World) -> None:
     journal = journal_of(loop)
     who = character_name(loop, world)
@@ -470,44 +590,55 @@ def mark_tutorial(loop: Loop, world: World) -> None:
         return
     journal.mark_tutorial_done(who)
 
+
+@runtime_checkable
+class _TaskBook(Protocol):
+    activities: list
+
+
 def task_activities(world: World) -> list:
-    book = world.task_book or world.tasks
-    if book is None:
+    book = world.task_book if world.task_book is not None else world.tasks
+    if not isinstance(book, _TaskBook):
         return []
     return list(book.activities or [])
 
+
 def new_zone_name(message: Message, world: World) -> str:
     if message is None:
-        return str(world.zone or '')
+        return str(world.zone or "")
     payload = message.payload
     if isinstance(payload, OP_NewZone) and payload.short_name:
         return payload.short_name
-    return str(world.zone or '')
+    return str(world.zone or "")
+
 
 def is_silk(action: Action) -> bool:
-    if type(action).__name__ != 'Fetch':
+    if type(action).__name__ != "Fetch":
         return False
-    if int(action.item_id or 0) == SILK:
+    if action.item_id == SILK:
         return True
-    text = f'{action.task_text} {action.name}'.lower()
-    return 'silk' in text
+    text = f"{action.task_text} {action.name}".lower()
+    return "silk" in text
+
 
 def silk_fetch_queued(loop: Loop) -> bool:
-    return any((action.durable and is_silk(action) for action in loop.queue))
+    return any(action.durable and is_silk(action) for action in _queue(loop))
+
 
 def buff_faded(message: Message) -> bool:
     """The buff packet says the effect left, or its counters hit zero."""
-    if payload_get(message, 'gone') or payload_get(message, 'fade'):
+    if payload_get(message, "gone") or payload_get(message, "fade"):
         return True
-    counters = payload_get(message, 'counters')
-    if counters is not None and int(counters) <= 0:
+    counters = payload_get(message, "counters")
+    if isinstance(counters, int) and counters <= 0:
         return True
     payload = message.payload
     if isinstance(payload, OP_Buff) and (payload.fade or payload.buff.counters <= 0):
         return True
     return False
 
-def effect_gone(message: Message, world: World, effect: str) -> bool:
+
+def effect_gone(message: Message, world: World, effect: str | int) -> bool:
     if buff_faded(message):
         return True
     afflictions = world.afflictions
@@ -515,10 +646,17 @@ def effect_gone(message: Message, world: World, effect: str) -> bool:
         return False
     return not any((_afflicted(row, effect) for row in afflictions))
 
-def _afflicted(row: object, effect: str) -> bool:
-    if isinstance(row, tuple) and len(row) >= 2:
-        return str(row[1]) == str(effect)
-    return str(row.effect) == str(effect)
+
+class _NamedEffect(Protocol):
+    effect: str
+
+
+def _afflicted(row: tuple[object, ...] | _NamedEffect, effect: str | int) -> bool:
+    text = str(effect)
+    if isinstance(row, tuple):
+        return len(row) >= 2 and str(row[1]) == text
+    return row.effect == text
+
 
 def afflictions(world: World) -> list:
     rows = world.afflictions
@@ -529,9 +667,10 @@ def afflictions(world: World) -> list:
     rows = book.values() if isinstance(book, dict) else book
     for buff in rows:
         effect = buff.effect
-        if effect in ('disease', 'poison', 'curse'):
+        if effect in ("disease", "poison", "curse"):
             found.append(buff)
     return found
+
 
 def cures(gem: GemView, effect: str) -> bool:
     cure = gem.cure
@@ -541,6 +680,7 @@ def cures(gem: GemView, effect: str) -> bool:
         return effect in cure
     return str(cure) == str(effect)
 
+
 def worn_map(loop: Loop, world: World, bot: str) -> dict:
     journal = journal_of(loop)
     who = character_name(loop, world)
@@ -548,11 +688,13 @@ def worn_map(loop: Loop, world: World, bot: str) -> dict:
         return journal.worn(who, bot)
     return {}
 
+
 def set_worn(loop: Loop, world: World, bot: str, slot: int, item_id: int) -> None:
     journal = journal_of(loop)
     who = character_name(loop, world)
     if journal is not None and who:
         journal.set_worn(who, bot, int(slot), int(item_id))
+
 
 def at_water(world: World) -> bool:
     if world.at_water:
@@ -560,30 +702,133 @@ def at_water(world: World) -> bool:
     water = world.water_map
     if water is None:
         return False
-    contains = water.contains
-    if contains is None:
-        return False
     try:
-        return bool(contains(world.x, world.y, world.z))
+        return water.in_liquid(world.x, world.y, world.z)
     except Exception:
         log.error("water check failed", exc_info=True)
         return False
 
+
+def _fields(value: object) -> dict[str, object]:
+    try:
+        raw = value if isinstance(value, dict) else vars(value)
+    except TypeError:
+        return {}
+    if not isinstance(raw, dict):
+        return {}
+    return {key: item for key, item in raw.items() if isinstance(key, str)}
+
+
+def _point(value: object) -> tuple[float, float, float] | None:
+    if not isinstance(value, tuple) or len(value) != 3:
+        return None
+    parts: list[float] = []
+    for part in value:
+        if isinstance(part, bool) or not isinstance(part, (int, float)):
+            return None
+        parts.append(float(part))
+    return (parts[0], parts[1], parts[2])
+
+
+def _camp(value: object) -> str | tuple[int, ...] | None:
+    if isinstance(value, str):
+        return value
+    if not isinstance(value, tuple):
+        return None
+    parts: list[int] = []
+    for part in value:
+        if isinstance(part, bool) or not isinstance(part, int):
+            return None
+        parts.append(part)
+    return tuple(parts)
+
+
+def _drop_of(value: object) -> FetchDrop | None:
+    if isinstance(value, FetchDrop):
+        return value
+    if value is None:
+        return None
+    fields = _fields(value)
+    if not fields:
+        return None
+    raw_spawns = fields.get("spawns") or ()
+    spawns = (
+        tuple(spawn for spawn in raw_spawns if isinstance(spawn, int) and not isinstance(spawn, bool))
+        if isinstance(raw_spawns, (list, tuple))
+        else ()
+    )
+    zone = fields.get("zone")
+    level = fields.get("level")
+    return FetchDrop(
+        zone=zone if isinstance(zone, str) else "",
+        above_level=fields.get("above_level") is True,
+        camp=_camp(fields.get("camp")),
+        level=level if isinstance(level, int) and not isinstance(level, bool) else None,
+        spawns=spawns,
+    )
+
+
+def _merchant_of(value: object) -> FetchMerchant | None:
+    if isinstance(value, FetchMerchant):
+        return value
+    if value is None:
+        return None
+    fields = _fields(value)
+    npc = fields.get("npc")
+    zone = fields.get("zone")
+    if not isinstance(npc, int) or isinstance(npc, bool):
+        return None
+    return FetchMerchant(npc=npc, zone=zone if isinstance(zone, str) else "")
+
+
+def _ground_of(value: object) -> FetchGround | None:
+    if isinstance(value, FetchGround):
+        return value
+    if value is None:
+        return None
+    fields = _fields(value)
+    drop_id = fields.get("drop_id")
+    point = _point(fields.get("point"))
+    zone = fields.get("zone")
+    if not isinstance(drop_id, int) or isinstance(drop_id, bool) or point is None:
+        return None
+    return FetchGround(drop_id=drop_id, zone=zone if isinstance(zone, str) else "", point=point)
+
+
+def _text(value: object) -> str:
+    return value if isinstance(value, str) else ""
+
+
+def _quest_of(value: object) -> list[Action] | tuple[Action, ...] | Action | None:
+    if isinstance(value, Action):
+        return value
+    if not isinstance(value, (list, tuple)):
+        return None
+    rows: list[Action] = []
+    for row in value:
+        if not isinstance(row, Action):
+            return None
+        rows.append(row)
+    return rows
+
+
 def fetch_plan(world: World, item_id: int) -> FetchPlan:
-    plans = world.plans or {}
-    plan = plans.get(int(item_id))
+    plan = world.plans.get(item_id)
     if isinstance(plan, FetchPlan):
         return plan
-    fields = vars(plan) if plan is not None else {}
+    if plan is None:
+        return FetchPlan()
+    fields = _fields(plan)
     return FetchPlan(
-        drop=fields.get("drop"),
-        quest=fields.get("quest"),
-        merchant=fields.get("merchant"),
-        ground=fields.get("ground"),
-        vendor_zone=str(fields.get("vendor_zone") or ""),
-        station_zone=str(fields.get("station_zone") or ""),
-        station=fields.get("station"),
+        drop=_drop_of(fields.get("drop")),
+        quest=_quest_of(fields.get("quest")),
+        merchant=_merchant_of(fields.get("merchant")),
+        ground=_ground_of(fields.get("ground")),
+        vendor_zone=_text(fields.get("vendor_zone")),
+        station_zone=_text(fields.get("station_zone")),
+        station=_point(fields.get("station")),
     )
+
 
 def next_zoneline(world: World, destination: str) -> tuple[float, float, float] | None:
     point = world.zoneline
@@ -603,43 +848,55 @@ def next_zoneline(world: World, destination: str) -> tuple[float, float, float] 
         return None
     return (float(transit.x), float(transit.y), float(transit.z))
 
+
 def reclaim_if_ours(parent: Action, loop: Loop, world: World, *targets: int) -> bool:
     """Consume string 251 for one of targets and queue Reclaim. True when a match was handled."""
     matched = False
     wanted = {int(target) for target in targets if target}
-    while parent.consume('OP_SimpleMessage', lambda message: simple_id(message) == 251):
+    while parent.consume("OP_SimpleMessage", lambda message: simple_id(message) == 251):
         corpse = own_corpse(loop, world)
         if not corpse or int(corpse) not in wanted:
             continue
-        if not queued(loop, 'Reclaim', corpse_id=corpse):
+        if not queued(loop, "Reclaim", corpse_id=corpse):
             where = corpse_where(loop, world, corpse, (world.x, world.y, world.z))
             from eqclient3.actions.reclaim import Reclaim
-            yield_to(parent, loop, world, Reclaim(corpse, where), f'reclaim:{corpse}')
+
+            yield_to(parent, loop, world, Reclaim(corpse, where), f"reclaim:{corpse}")
         matched = True
     return matched
 
-def ingest_corpse_mail(action: Action, *, default_stack: bool = False) -> None:
+
+class _CorpseWindow(Protocol):
+    slots: list[Item]
+    opened: bool
+    requested: bool
+
+    def consume(self, opcode: str, match: Callable[[Message], bool] | None = None) -> Message | None: ...
+
+    def unwait(self, kind: str) -> None: ...
+
+
+def ingest_corpse_mail(action: _CorpseWindow, *, default_stack: bool = False) -> None:
     """Drain corpse item packets and the money line into action.slots."""
     while True:
-        item = action.consume('OP_ItemPacket')
+        item = action.consume("OP_ItemPacket")
         if item is None:
             break
         parsed = item_of(item)
-        item_id = int(getattr(parsed, 'item_id', 0) or 0) if parsed is not None else 0
-        if parsed is None or item_id == TOKEN:
+        if parsed is None or parsed.item_id == TOKEN:
             continue
-        if default_stack and not getattr(parsed, 'stack', 0):
+        if default_stack and not parsed.stack:
             parsed.stack = 1
         action.slots.append(parsed)
-    money = action.consume('OP_MoneyOnCorpse')
+    money = action.consume("OP_MoneyOnCorpse")
     if money is None:
         return
     response = loot_response(money)
     if response in NORMAL_LOOT:
         action.opened = True
-        action.unwait('LOOT')
+        action.unwait("LOOT")
         return
     if response == TOO_FAR:
         action.requested = False
         action.opened = False
-        action.unwait('LOOT')
+        action.unwait("LOOT")

@@ -2,10 +2,18 @@
 
 from __future__ import annotations
 
+from typing import Protocol
+
 from Crypto.Cipher import DES
 
 
-def _cipher() -> object:
+class _Block(Protocol):
+    def encrypt(self, data: bytes) -> bytes: ...
+
+    def decrypt(self, data: bytes) -> bytes: ...
+
+
+def _cipher() -> _Block:
     return DES.new(b"\x00" * 8, DES.MODE_CBC, iv=b"\x00" * 8)
 
 

@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-from eqclient3.quests.graph import build_graph, read_graph, write_graph
+from eqclient3.quests.graph import QuestGraph, build_graph, read_graph, write_graph
 
 DEFAULT_GRAPH = str(Path.home() / ".eqclient" / "quest_graph.jsonl")
 
@@ -14,7 +14,7 @@ def quests_root(root: str | None = None) -> str:
     return root or os.environ.get("EQEMU_QUESTS", "")
 
 
-def ensure_graph(root: str | None = None, path: str | None = None, *, rebuild: bool = False):
+def ensure_graph(root: str | None = None, path: str | None = None, *, rebuild: bool = False) -> QuestGraph:
     """Load quest_graph.jsonl, or build once from EQEMU_QUESTS."""
     path = path or os.environ.get("EQEMU_GRAPH", DEFAULT_GRAPH)
     file = Path(path)

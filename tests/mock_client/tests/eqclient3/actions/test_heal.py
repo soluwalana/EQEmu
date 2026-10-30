@@ -19,7 +19,7 @@ class HealTest(unittest.TestCase):
         self.assertEqual(action.waiting, ["HEAL"])
         action.step(client, sheet)
         self.assertEqual(commands(client), ["^cast heal Hero"])
-        inbox(action, "OP_HPUpdate", struct.pack("<IiH", 90, 100, 1))
+        inbox(action, "OP_HPUpdate", struct.pack("<HIi", 1, 90, 100))
         action.step(client, sheet)
         self.assertTrue(action.complete)
         self.assertNotIn("OP_CastSpell", opcodes(client))

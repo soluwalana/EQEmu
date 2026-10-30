@@ -3,6 +3,7 @@
 A subclass in eqclient3.handlers lists its opcodes and joins the bus when the
 handlers package is imported. One opcode may belong to more than one handler.
 """
+
 from __future__ import annotations
 
 import importlib
@@ -25,9 +26,8 @@ class Handler:
     exclusive: tuple[str, ...] = ()
     _kinds: list[type[Handler]] = []
 
-    def __init__(self) -> None:
-        self.world: World | None = None
-        self.loop: Loop | None = None
+    world: World
+    loop: Loop
 
     def __init_subclass__(cls, **kwargs: object) -> None:
         super().__init_subclass__(**kwargs)
@@ -39,7 +39,13 @@ class Handler:
             return
         Handler._kinds.append(cls)
 
-    def handle(self, opcode: str, payload: EQStruct | bytes | bytearray, world: World | None, loop: Loop | None) -> None:
+    def handle(
+        self,
+        opcode: str,
+        payload: EQStruct | bytes | bytearray,
+        world: World,
+        loop: Loop,
+    ) -> None:
         """Store the sheet and call on. Bytes for a known opcode are decoded here so a direct call sees the struct."""
         self.world = world
         self.loop = loop
@@ -58,8 +64,6 @@ class Handler:
     def deliver_waiters(self, payload: EQStruct) -> None:
         """The struct goes to every subscriber, and to the active action once."""
         loop = self.loop
-        if loop is None:
-            return
         opcode = type(payload).__name__
         sent: set[int] = set()
         for action in queue_of(loop):

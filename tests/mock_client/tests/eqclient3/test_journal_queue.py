@@ -3,7 +3,7 @@
 from eqclient3.action import Action
 from eqclient3.actions.death import Death
 from eqclient3.journal import Journal
-from eqclient3.journal_queue import report
+from eqclient3.scripts.journal_queue import report
 
 
 def test_open_rows_follow_priority_then_key():

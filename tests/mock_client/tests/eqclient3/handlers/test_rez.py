@@ -16,9 +16,8 @@ def test_opcodes():
     assert loop.queue[0].source == "reclaim:15"
     assert loop.queue[0].where == (4.0, 5.0, 6.0)
 
-    payload = bytearray(220)
-    payload[156:160] = b"Hero"
-    rez.RezHandler().handle("OP_RezzRequest", bytes(payload), world, loop)
+    payload = OP_RezzRequest(corpse_name="Hero").serialize()
+    rez.RezHandler().handle("OP_RezzRequest", payload, world, loop)
     assert names(loop) == ["Reclaim", "Rez"]
     action = loop.queue[1]
     assert action.priority == 230

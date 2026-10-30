@@ -1,14 +1,34 @@
 """Profile, one skill, food and water, coin, mana, and the spell book."""
+
 from __future__ import annotations
+
+from typing import Protocol, runtime_checkable
 
 from eqclient3.actions.field import Field
 from eqclient3.handlers.common import DRINK_TYPE, FOOD_TYPE, FORAGE_SKILL, enqueue_once
-from eqclient3.structs import EQStruct, OP_ManaChange, OP_MemorizeSpell, OP_MoneyUpdate, OP_PlayerProfile, OP_SkillUpdate, OP_Stamina
+from eqclient3.structs import (
+    EQStruct,
+    OP_ManaChange,
+    OP_MemorizeSpell,
+    OP_MoneyUpdate,
+    OP_PlayerProfile,
+    OP_SkillUpdate,
+    OP_Stamina,
+)
 from eqclient3.handler import Handler
+
 HALF = 64
 
+
 class ProfileHandler(Handler):
-    opcodes = ('OP_PlayerProfile', 'OP_SkillUpdate', 'OP_Stamina', 'OP_MoneyUpdate', 'OP_ManaChange', 'OP_MemorizeSpell')
+    opcodes = (
+        "OP_PlayerProfile",
+        "OP_SkillUpdate",
+        "OP_Stamina",
+        "OP_MoneyUpdate",
+        "OP_ManaChange",
+        "OP_MemorizeSpell",
+    )
 
     def on(self, opcode: str, payload: EQStruct) -> None:
         del opcode
@@ -75,11 +95,11 @@ class ProfileHandler(Handler):
         food_slot = self.slot_of_type(FOOD_TYPE)
         drink_slot = self.slot_of_type(DRINK_TYPE)
         if 0 < food < HALF and food_slot is not None:
-            enqueue_once(self.loop, world, Field('eat', food_slot), 'field:eat')
+            enqueue_once(self.loop, world, Field("eat", food_slot), "field:eat")
         elif 0 < water < HALF and drink_slot is not None:
-            enqueue_once(self.loop, world, Field('eat', drink_slot), 'field:eat')
+            enqueue_once(self.loop, world, Field("eat", drink_slot), "field:eat")
         elif _hungry(food) and food_slot is None and self.forage_known():
-            enqueue_once(self.loop, world, Field('forage'), 'field:forage')
+            enqueue_once(self.loop, world, Field("forage"), "field:forage")
 
     def forage_known(self) -> bool:
         skills = self.world.skills
@@ -130,12 +150,20 @@ class ProfileHandler(Handler):
             world.spell_book = book
         book[slot] = spell_id
 
+
 def _hungry(food: int) -> bool:
     return food == 0 or 0 < food < HALF
 
+
+@runtime_checkable
+class _TypedItem(Protocol):
+    item_type: int
+
+
 def _item_type(row: object) -> int:
-    if not row:
-        return -1
     if isinstance(row, dict):
-        return int(row.get('item_type', -1))
-    return row.item_type
+        value = row.get("item_type", -1)
+        return value if isinstance(value, int) else -1
+    if isinstance(row, _TypedItem):
+        return row.item_type
+    return -1

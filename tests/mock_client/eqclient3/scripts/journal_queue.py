@@ -1,27 +1,34 @@
 """Print one character's open queue in the order the scheduler would run it.
 
-From the mock_client directory:
+Each character has their own database. From the mock_client directory:
 
-    python -m eqclient3.journal_queue
-    python -m eqclient3.journal_queue Mockvthree
+    python -m eqclient3.scripts.journal_queue Mockvthree
 """
+
 from __future__ import annotations
 
 import sys
 from datetime import datetime
 
-from eqclient3.journal import Journal
+from eqclient3.action import Action
+from eqclient3.journal import Journal, characters
 from eqclient3.log import log
 
 
 def main(argv: list[str] | None = None) -> None:
     args = list(sys.argv[1:] if argv is None else argv)
-    character = args[0] if args else ""
-    journal = Journal()
-    try:
-        print("\n".join(report(journal, character)))
-    finally:
-        journal.close()
+    names = [args[0]] if args else sorted(characters())
+    if not names:
+        print("no journal actions")
+        return
+    blocks: list[str] = []
+    for name in names:
+        journal = Journal(character=name)
+        try:
+            blocks.append("\n".join(report(journal, name)))
+        finally:
+            journal.close()
+    print("\n\n".join(blocks))
 
 
 def report(journal: Journal, character: str = "") -> list[str]:
@@ -70,7 +77,7 @@ def _ordered(actions: list) -> list:
     return sorted(actions, key=_order_key)
 
 
-def _order_key(action) -> tuple:
+def _order_key(action: Action) -> tuple[object, ...]:
     try:
         detail = tuple(type(action).key(action))
         failed = 0
@@ -81,7 +88,7 @@ def _order_key(action) -> tuple:
     return (-int(action.priority or 0), failed, detail)
 
 
-def _line(rank: int, action) -> str:
+def _line(rank: int, action: Action) -> str:
     started = ""
     if action.started:
         started = datetime.fromtimestamp(float(action.started)).strftime("%H:%M:%S")
@@ -90,11 +97,21 @@ def _line(rank: int, action) -> str:
     return f"{rank:2}  p{int(action.priority):<4}  {type(action).__name__:<12} {action.source:<28} {zone:<12} {started}  {detail}".rstrip()
 
 
-def _detail(action) -> str:
+def _detail(action: Action) -> str:
     skip = {
-        "source", "zone", "priority", "durable", "insert", "started",
-        "complete", "suspended", "yielding", "messages", "active_path",
-        "waited", "limit",
+        "source",
+        "zone",
+        "priority",
+        "durable",
+        "insert",
+        "started",
+        "complete",
+        "suspended",
+        "yielding",
+        "messages",
+        "active_path",
+        "waited",
+        "limit",
     }
     bits: list[str] = []
     if action.waiting:

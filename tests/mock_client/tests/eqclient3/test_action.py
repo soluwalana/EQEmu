@@ -28,7 +28,13 @@ def test_consume_removes_only_that_opcode():
     got = action.consume("OP_Assist")
 
     assert got.payload.entity_id == 1
-    assert [(message.opcode, message.payload.entity_id if message.opcode == "OP_Assist" else message.payload.cur_hp) for message in action.messages] == [
+    assert [
+        (
+            message.opcode,
+            (message.payload.entity_id if message.opcode == "OP_Assist" else message.payload.cur_hp),
+        )
+        for message in action.messages
+    ] == [
         ("OP_HPUpdate", 2),
         ("OP_Assist", 3),
     ]
@@ -130,7 +136,7 @@ def test_out_of_sight_plans_and_does_not_send():
 
 
 def _consider(player, target):
-    return struct.pack("<IIIIIIBBBB", player & 0xFFFFFFFF, target & 0xFFFFFFFF, 0, 0, 0, 0, 0, 0, 0, 0)
+    return OP_Consider(player, target).serialize()
 
 
 def _world(targeted):

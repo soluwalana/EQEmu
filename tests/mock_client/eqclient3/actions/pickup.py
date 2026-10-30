@@ -1,4 +1,5 @@
 """Band 0. Walk to a ground spawn and click it. The bag or a cleared drop finishes it."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -11,6 +12,7 @@ from eqclient3.action import Action
 from eqclient3.structs import OP_ClickObject
 from eqclient3.actions.support import INTERACT, walk, yards
 
+
 class Pickup(Action):
 
     def __init__(self, drop_id: int, point: tuple[float, float, float]) -> None:
@@ -22,7 +24,7 @@ class Pickup(Action):
         self.clicked = False
         self.item_id = 0
 
-    def opcodes(self) -> tuple[object, ...]:
+    def opcodes(self) -> tuple[str, ...]:
         return ()
 
     def suspend(self) -> None:
@@ -38,8 +40,11 @@ class Pickup(Action):
             return
         if yards(world, self.point) > INTERACT or not self.clicked:
             if yards(world, self.point) > INTERACT:
-                walk(self, loop, world, tuple(self.point), 'run')
+                walk(self, loop, world, self.point, "run")
                 return
         if not self.clicked:
-            loop.send('OP_ClickObject', OP_ClickObject(int(self.drop_id), int(world.self_id or 0)).serialize())
+            loop.send(
+                "OP_ClickObject",
+                OP_ClickObject(int(self.drop_id), int(world.self_id or 0)).serialize(),
+            )
             self.clicked = True

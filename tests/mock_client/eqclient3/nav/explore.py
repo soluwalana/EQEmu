@@ -6,10 +6,8 @@ next attempt stands somewhere new, then heads for that same place again.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from collections.abc import Callable
+from collections.abc import Callable, Iterable
+from typing import Protocol
 
 
 import heapq
@@ -22,7 +20,16 @@ def cell_of(x: float, y: float) -> tuple[int, int]:
     return (int(round(x / CELL)), int(round(y / CELL)))
 
 
-def signature_of(activities: list[object]) -> tuple:
+class _Progress(Protocol):
+    task_id: int
+    activity_id: int
+    done: int
+
+
+_Link = Callable[[tuple[int, int]], Iterable[tuple[tuple[int, int], tuple[float, float, float]]]]
+
+
+def signature_of(activities: list[_Progress]) -> tuple[tuple[int, int, int], ...]:
     return tuple(sorted((item.task_id, item.activity_id, item.done) for item in activities))
 
 
@@ -42,7 +49,11 @@ class AreaSearch:
         self.blocked: set[tuple[int, int]] = set()
 
     def reset(self) -> None:
-        self.__init__()
+        self.visited.clear()
+        self.stack.clear()
+        self.aim = None
+        self.goal_poly = None
+        self.blocked.clear()
 
     def block(self, point: tuple[float, float, float]) -> None:
         """The server never granted this point, so the next branch goes around it."""
@@ -53,8 +64,8 @@ class AreaSearch:
         self,
         position: tuple[float, float, float],
         goal: tuple[float, float, float],
-        locate: object,
-        links: dict,
+        locate: Callable[[tuple[float, float, float]], tuple[int, int] | None],
+        links: _Link,
         center_of: Callable[[tuple[int, int]], tuple[float, float, float] | None],
     ) -> tuple[float, float, float]:
         goal_id = locate(goal)
@@ -77,7 +88,7 @@ class AreaSearch:
             return goal
         if not self.stack or self.stack[-1] != here:
             self.stack.append(here)
-        route = _route(here, goal_id, links, self.visited, center_of)
+        route = _route(here, goal_id, links, self.visited, center_of) if goal_id is not None else []
         previous = self.stack[-2] if len(self.stack) >= 2 else None
         if len(route) >= 2 and route[1][0] != previous and not self._held(route[1][1]):
             self.aim = route[1][1]
@@ -103,7 +114,13 @@ class AreaSearch:
         self.aim = goal
         return goal
 
-    def _open(self, poly_id: int, goal: tuple[float, float, float], links: dict, skip: set[tuple[int, int]]) -> tuple[float, float, float] | None:
+    def _open(
+        self,
+        poly_id: tuple[int, int],
+        goal: tuple[float, float, float],
+        links: _Link,
+        skip: tuple[int, int] | None,
+    ) -> tuple[float, float, float] | None:
         choices = []
         for neighbor, center in links(poly_id):
             if neighbor in self.visited or neighbor == skip or self._held(center):
@@ -212,9 +229,15 @@ def refused(
     return _span(actual, origin) <= 0.4 and _span(origin, asked) > 0.4
 
 
-def _route(start: tuple[int, int], goal: tuple[int, int], links: dict, visited: set[tuple[int, int]], center_of: Callable[[tuple[int, int]], tuple[float, float, float] | None]) -> list[tuple[tuple[int, int], tuple[float, float, float]]]:
+def _route(
+    start: tuple[int, int],
+    goal: tuple[int, int],
+    links: _Link,
+    visited: set[tuple[int, int]],
+    center_of: Callable[[tuple[int, int]], tuple[float, float, float] | None],
+) -> list[tuple[tuple[int, int], tuple[float, float, float]]]:
     """A* over polygon ids. Visited polygons are closed, except the ends."""
-    if start is None or goal is None or start == goal:
+    if start == goal:
         return []
     start_at = center_of(start)
     goal_at = center_of(goal)
@@ -227,10 +250,11 @@ def _route(start: tuple[int, int], goal: tuple[int, int], links: dict, visited: 
     while open_heap:
         _score, current = heapq.heappop(open_heap)
         if current == goal:
-            chain = []
-            while current is not None:
-                chain.append((current, centers[current]))
-                current = came[current]
+            chain: list[tuple[tuple[int, int], tuple[float, float, float]]] = []
+            node: tuple[int, int] | None = current
+            while node is not None:
+                chain.append((node, centers[node]))
+                node = came[node]
             chain.reverse()
             return chain
         for neighbor, center in links(current):
@@ -251,7 +275,7 @@ def _span(a: tuple[float, float, float], b: tuple[float, float, float]) -> float
 
 class Survey:
     def __init__(self) -> None:
-        self.signature = None
+        self.signature: str | None = None
         self.samples: list[tuple[int, int]] = []
         self.visited: set[tuple[int, int]] = set()
         self.avoid: set[tuple[int, int]] = set()
@@ -259,7 +283,12 @@ class Survey:
         self.detour: tuple[float, float, float] | None = None
 
     def reset(self) -> None:
-        self.__init__()
+        self.signature = None
+        self.samples.clear()
+        self.visited.clear()
+        self.avoid.clear()
+        self.tried.clear()
+        self.detour = None
 
     def note(self, position: tuple[float, float, float], signature: str) -> None:
         if signature != self.signature:

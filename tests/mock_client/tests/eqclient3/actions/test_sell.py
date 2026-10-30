@@ -1,11 +1,11 @@
 """Sell opens the merchant and sells the bag slot. Another zone appends Zone."""
 
-import struct
 import unittest
 
 from harness import fresh, kinds, opcodes
 
 from eqclient3.actions.sell import Sell
+from eqclient3.structs import OP_ShopPlayerSell
 
 
 class SellTest(unittest.TestCase):
@@ -21,8 +21,8 @@ class SellTest(unittest.TestCase):
         self.assertEqual(opcodes(client), ["OP_ShopRequest"])
         action.step(client, sheet)
         self.assertEqual(opcodes(client)[-1], "OP_ShopPlayerSell")
-        _npc, slot, qty, _price = struct.unpack("<IIII", client.outbound[-1][1])
-        self.assertEqual((slot, qty), (22, 1))
+        sold = OP_ShopPlayerSell.deserialize(client.outbound[-1][1])
+        self.assertEqual((sold.slot, sold.quantity), (22, 1))
         sheet.bags.pop(22)
         action.step(client, sheet)
         self.assertTrue(action.complete)

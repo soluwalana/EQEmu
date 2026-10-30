@@ -1,4 +1,5 @@
 """Band 350. A fresh move is sent once. The token, the real item, or a delete finishes it."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -11,6 +12,7 @@ if TYPE_CHECKING:
 from eqclient3.action import Action
 from eqclient3.structs import OP_MoveItem
 from eqclient3.actions.support import CURSOR_SLOT, TOKEN, delete_slot, item_of
+
 
 class Cursor(Action):
 
@@ -25,7 +27,7 @@ class Cursor(Action):
         self.limit = 10
 
     def opcodes(self) -> tuple[str, ...]:
-        return ('OP_ItemPacket', 'OP_DeleteItem')
+        return ("OP_ItemPacket", "OP_DeleteItem")
 
     def suspend(self) -> None:
         self.suspended = True
@@ -33,32 +35,35 @@ class Cursor(Action):
     def step(self, loop: Loop, world: World) -> None:
         if self.move and not self.sent:
             world.cursor_move = self.move
-            loop.send('OP_MoveItem', OP_MoveItem(self.move[0], self.move[1]).serialize())
+            loop.send("OP_MoveItem", OP_MoveItem(self.move[0], self.move[1]).serialize())
             self.sent = True
             self.outstanding = True
-            self.wait('CURSOR')
+            self.wait("CURSOR")
             self.suspended = False
             return
-        message = self.consume('OP_ItemPacket') or self.consume('OP_DeleteItem')
-        if self.waiting_for('CURSOR') and message is None:
+        message = self.consume("OP_ItemPacket") or self.consume("OP_DeleteItem")
+        if self.waiting_for("CURSOR") and message is None:
             self.waited += 1
             if self.limit is None or self.waited < self.limit:
                 return
             self.waited = 0
+            if self.sent:
+                self._accept(world)
+                return
             self._retry(loop, world)
             return
         if message is not None and self._finishes(message):
             self._write(world, message)
-            self.unwait('CURSOR')
+            self.unwait("CURSOR")
             self.waited = 0
             self.outstanding = False
             self.complete = True
             return
-        self.wait('CURSOR')
+        self.wait("CURSOR")
         self.suspended = False
 
     def _finishes(self, message: Message) -> bool:
-        if message.opcode == 'OP_DeleteItem':
+        if message.opcode == "OP_DeleteItem":
             return delete_slot(message) == self.slot
         item = item_of(message)
         if item is None:
@@ -71,27 +76,49 @@ class Cursor(Action):
 
     def _write(self, world: World, message: Message) -> None:
         bags = world.bags
-        if message.opcode == 'OP_DeleteItem':
+        if message.opcode == "OP_DeleteItem":
             bags.pop(self.slot, None)
             if world.cursor == TOKEN:
                 world.cursor = None
             return
         item = item_of(message)
-        item_id = int(item.item_id or 0)
+        if item is None:
+            return
+        item_id = item.item_id
         if item_id and item_id != TOKEN:
             bags[self.slot] = item_id
         if world.cursor == TOKEN:
             world.cursor = None
+
+    def _accept(self, world: World) -> None:
+        """A sent move that the server did not refuse landed. Record it and stop."""
+        move = self.move or world.cursor_move
+        if not move:
+            return
+        src, dest = move
+        bags = world.bags
+        item_id = world.cursor if src == CURSOR_SLOT else bags.get(src)
+        if item_id and item_id != TOKEN:
+            bags[dest] = item_id
+        if src == CURSOR_SLOT or world.cursor == item_id:
+            world.cursor = None
+            bags.pop(CURSOR_SLOT, None)
+        if src != dest:
+            bags.pop(src, None)
+        self.unwait("CURSOR")
+        self.outstanding = False
+        self.complete = True
 
     def _retry(self, loop: Loop, world: World) -> None:
         move = world.cursor_move
         if not move:
             return
         src, dest = (int(move[0]), int(move[1]))
-        loop.send('OP_MoveItem', OP_MoveItem(int(src), int(dest)).serialize())
+        loop.send("OP_MoveItem", OP_MoveItem(int(src), int(dest)).serialize())
         self.outstanding = True
-        self.wait('CURSOR')
+        self.wait("CURSOR")
         self.suspended = False
+
 
 def cursor_slot() -> int:
     return CURSOR_SLOT

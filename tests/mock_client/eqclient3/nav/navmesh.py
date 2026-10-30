@@ -1,4 +1,5 @@
 """Walk maps/nav/<zone>.nav. Coordinates in the file are Detour (x, z, y); EQ is (x, y, z)."""
+
 from __future__ import annotations
 import heapq
 import math
@@ -8,26 +9,30 @@ import zlib
 from dataclasses import dataclass, field
 from pathlib import Path
 from eqclient3.nav.explore import cell_of
+
 _HEADER = 100
 _POLY = 32
 _SURFACE = 40.0
+
 
 def _repo_root() -> Path:
     """EQEmu checkout. navmesh.py lives in tests/mock_client/eqclient3/nav/."""
     return Path(__file__).resolve().parents[4]
 
+
 def maps_root() -> Path | None:
-    raw = os.environ.get('EQEMU_MAPS', '')
+    raw = os.environ.get("EQEMU_MAPS", "")
     candidates = []
     if raw:
         candidates.append(Path(raw))
     root = _repo_root()
-    candidates.append(root / 'maps')
-    candidates.append(root.parent / 'maps')
+    candidates.append(root / "maps")
+    candidates.append(root.parent / "maps")
     for path in candidates:
         if path.is_dir():
             return path
     return None
+
 
 @dataclass
 class _Poly:
@@ -36,6 +41,7 @@ class _Poly:
     center: tuple[float, float, float]
     verts: list[tuple[float, float, float]]
     neighbors: list[tuple[int, int]] = field(default_factory=list)
+
 
 @dataclass
 class NavMesh:
@@ -53,9 +59,17 @@ class NavMesh:
             return min(inside, key=lambda poly: abs(poly.center[2] - point[2]))
         if not self.polys:
             return None
-        return min(self.polys, key=lambda poly: _horiz(poly.center, point) + abs(poly.center[2] - point[2]) * 0.01)
+        return min(
+            self.polys,
+            key=lambda poly: _horiz(poly.center, point) + abs(poly.center[2] - point[2]) * 0.01,
+        )
 
-    def path(self, start: tuple[float, float, float], goal: tuple[float, float, float], avoid: set[tuple[int, int]] | None = None) -> list[tuple[float, float, float]]:
+    def path(
+        self,
+        start: tuple[float, float, float],
+        goal: tuple[float, float, float],
+        avoid: set[tuple[int, int]] | None = None,
+    ) -> list[tuple[float, float, float]]:
         begin, end = self._ends(start, goal)
         if begin is None or end is None:
             return [start, goal]
@@ -83,7 +97,9 @@ class NavMesh:
             return True
         return _reaches(_astar(self.polys, begin, end), end)
 
-    def _ends(self, start: tuple[float, float, float], goal: tuple[float, float, float]) -> tuple[_Poly | None, _Poly | None]:
+    def _ends(
+        self, start: tuple[float, float, float], goal: tuple[float, float, float]
+    ) -> tuple[_Poly | None, _Poly | None]:
         """Polygons to search. A zone point on a disconnected pocket is walked
         from the nearest polygon on the connected surface, within ``_SURFACE``.
 
@@ -135,7 +151,10 @@ class NavMesh:
 
     def _joined(self, left: _Poly, right: _Poly) -> bool:
         self._parts()
-        return self._owner.get((left.tile, left.index)) is self._owner.get((right.tile, right.index))
+        owner = self._owner
+        if owner is None:
+            return False
+        return owner.get((left.tile, left.index)) is owner.get((right.tile, right.index))
 
     def _surface(self) -> set[tuple[int, int]]:
         parts = self._parts()
@@ -144,7 +163,7 @@ class NavMesh:
     def _closest(self, point: tuple[float, float, float], group: set[tuple[int, int]]) -> _Poly | None:
         lookup = self._index()
         best = None
-        best_d = 1e+18
+        best_d = 1e18
         for pid in group:
             poly = lookup.get(pid)
             if poly is None:
@@ -155,13 +174,21 @@ class NavMesh:
                 best_d = dist
         return best
 
-    def unvisited(self, start: tuple[float, float, float], avoid: set[tuple[int, int]] | None = None) -> tuple[float, float, float] | None:
+    def unvisited(
+        self,
+        start: tuple[float, float, float],
+        avoid: set[tuple[int, int]] | None = None,
+    ) -> tuple[float, float, float] | None:
         begin = self.nearest(start)
         if begin is None:
             return None
         self.visited.add((begin.tile, begin.index))
         avoid = avoid or set()
-        fresh = [poly for poly in self.polys if (poly.tile, poly.index) not in self.visited and cell_of(poly.center[0], poly.center[1]) not in avoid]
+        fresh = [
+            poly
+            for poly in self.polys
+            if (poly.tile, poly.index) not in self.visited and cell_of(poly.center[0], poly.center[1]) not in avoid
+        ]
         if not fresh:
             fresh = [poly for poly in self.polys if (poly.tile, poly.index) not in self.visited]
         if not fresh:
@@ -200,10 +227,12 @@ class NavMesh:
             self._by_id = cached
         return cached
 
+
 _LOADED: dict[str, NavMesh | None] = {}
 
+
 def load_nav(zone: str, root: Path | None = None) -> NavMesh | None:
-    key = (zone or '').lower()
+    key = (zone or "").lower()
     if root is None and key in _LOADED:
         return _LOADED[key]
     mesh = _read_nav(key, root)
@@ -211,50 +240,57 @@ def load_nav(zone: str, root: Path | None = None) -> NavMesh | None:
         _LOADED[key] = mesh
     return mesh
 
+
 def _read_nav(zone: str, root: Path | None) -> NavMesh | None:
     base = root or maps_root()
     if base is None or not zone:
         return None
-    path = base / 'nav' / f'{zone}.nav'
+    path = base / "nav" / f"{zone}.nav"
     if not path.is_file():
         return None
     blob = path.read_bytes()
-    if blob[:9] != b'EQNAVMESH':
-        raise ValueError(f'{path} is not an EQNAVMESH')
-    version = struct.unpack_from('<I', blob, 9)[0]
+    if blob[:9] != b"EQNAVMESH":
+        raise ValueError(f"{path} is not an EQNAVMESH")
+    version = struct.unpack_from("<I", blob, 9)[0]
     if version != 2:
-        raise ValueError(f'{path} nav version {version}')
-    data_size, buffer_size = struct.unpack_from('<II', blob, 13)
-    inflated = zlib.decompress(blob[21:21 + data_size])
+        raise ValueError(f"{path} nav version {version}")
+    data_size, buffer_size = struct.unpack_from("<II", blob, 13)
+    inflated = zlib.decompress(blob[21 : 21 + data_size])
     if len(inflated) != buffer_size and buffer_size:
         inflated = inflated[:buffer_size]
     polys, portals = _tiles(inflated)
     _link_portals(polys, portals)
     return NavMesh(zone, version, polys)
 
-def _tiles(buf: bytes) -> tuple[list[_Poly], list[tuple[tuple[int, int], tuple[float, float, float]]]]:
+
+def _tiles(
+    buf: bytes,
+) -> tuple[list[_Poly], list[tuple[tuple[int, int], tuple[float, float, float]]]]:
     if len(buf) < 32:
         return ([], [])
-    count = struct.unpack_from('<I', buf)[0]
+    count = struct.unpack_from("<I", buf)[0]
     offset = 4 + 28
     polys: list[_Poly] = []
     portals: list[tuple[tuple[int, int], tuple[float, float, float]]] = []
     for tile_index in range(count):
         if offset + 8 > len(buf):
             break
-        _tile_ref, size = struct.unpack_from('<II', buf, offset)
+        _tile_ref, size = struct.unpack_from("<II", buf, offset)
         offset += 8
-        tile = buf[offset:offset + size]
+        tile = buf[offset : offset + size]
         offset += size
         tile_polys, tile_portals = _tile_polys(tile_index, tile)
         polys.extend(tile_polys)
         portals.extend(tile_portals)
     return (polys, portals)
 
-def _tile_polys(tile_index: int, tile: bytes) -> tuple[list[_Poly], list[tuple[tuple[int, int], tuple[float, float, float]]]]:
+
+def _tile_polys(
+    tile_index: int, tile: bytes
+) -> tuple[list[_Poly], list[tuple[tuple[int, int], tuple[float, float, float]]]]:
     if len(tile) < _HEADER:
         return ([], [])
-    magic, version, _x, _y, _layer, _user, poly_count, vert_count = struct.unpack_from('<8i', tile)
+    magic, version, _x, _y, _layer, _user, poly_count, vert_count = struct.unpack_from("<8i", tile)
     if magic != 1145979222 or version != 7 or poly_count <= 0 or (vert_count <= 0):
         return ([], [])
     vert_at = _HEADER
@@ -263,14 +299,14 @@ def _tile_polys(tile_index: int, tile: bytes) -> tuple[list[_Poly], list[tuple[t
         return ([], [])
     verts = []
     for index in range(vert_count):
-        dx, dy, dz = struct.unpack_from('<fff', tile, vert_at + index * 12)
+        dx, dy, dz = struct.unpack_from("<fff", tile, vert_at + index * 12)
         verts.append((dx, dz, dy))
     found: list[_Poly] = []
     raw_neis: list[list[int]] = []
     portals: list[tuple[tuple[int, int], tuple[float, float, float]]] = []
     for index in range(poly_count):
         start = poly_at + index * _POLY
-        values = struct.unpack_from('<I6H6HHBB', tile, start)
+        values = struct.unpack_from("<I6H6HHBB", tile, start)
         indexes = values[1:7]
         neis = values[7:13]
         vert_count = values[14]
@@ -284,7 +320,11 @@ def _tile_polys(tile_index: int, tile: bytes) -> tuple[list[_Poly], list[tuple[t
             raw_neis.append([])
             found.append(_Poly(tile_index, index, (0.0, 0.0, 0.0), []))
             continue
-        center = (sum((point[0] for point in poly_verts)) / len(poly_verts), sum((point[1] for point in poly_verts)) / len(poly_verts), sum((point[2] for point in poly_verts)) / len(poly_verts))
+        center = (
+            sum((point[0] for point in poly_verts)) / len(poly_verts),
+            sum((point[1] for point in poly_verts)) / len(poly_verts),
+            sum((point[2] for point in poly_verts)) / len(poly_verts),
+        )
         found.append(_Poly(tile_index, index, center, poly_verts))
         edge_neis = list(neis[:vert_count])
         raw_neis.append(edge_neis)
@@ -296,8 +336,8 @@ def _tile_polys(tile_index: int, tile: bytes) -> tuple[list[_Poly], list[tuple[t
             mid = ((a[0] + b[0]) * 0.5, (a[1] + b[1]) * 0.5, (a[2] + b[2]) * 0.5)
             portals.append(((tile_index, index), mid))
     by_index = {poly.index: poly for poly in found}
-    for poly, neis in zip(found, raw_neis):
-        for nei in neis:
+    for poly, edge_list in zip(found, raw_neis):
+        for nei in edge_list:
             if not nei or nei & 32768:
                 continue
             other = by_index.get(nei - 1)
@@ -307,7 +347,11 @@ def _tile_polys(tile_index: int, tile: bytes) -> tuple[list[_Poly], list[tuple[t
     kept_ids = {(poly.tile, poly.index) for poly in kept}
     return (kept, [portal for portal in portals if portal[0] in kept_ids])
 
-def _link_portals(polys: list[_Poly], portals: list[tuple[tuple[int, int], tuple[float, float, float]]]) -> None:
+
+def _link_portals(
+    polys: list[_Poly],
+    portals: list[tuple[tuple[int, int], tuple[float, float, float]]],
+) -> None:
     """External edges that share a midpoint connect one tile to the next."""
     buckets: dict[tuple[int, int, int], list[tuple[int, int]]] = {}
     for poly_id, mid in portals:
@@ -324,10 +368,17 @@ def _link_portals(polys: list[_Poly], portals: list[tuple[tuple[int, int], tuple
                 if right != left and right not in poly.neighbors:
                     poly.neighbors.append(right)
 
+
 def _reaches(chain: list[_Poly], goal: _Poly) -> bool:
     return len(chain) >= 2 and chain[-1].tile == goal.tile and (chain[-1].index == goal.index)
 
-def _astar(polys: list[_Poly], start: _Poly, goal: _Poly, avoid: set[tuple[int, int]] | None = None) -> list[_Poly]:
+
+def _astar(
+    polys: list[_Poly],
+    start: _Poly,
+    goal: _Poly,
+    avoid: set[tuple[int, int]] | None = None,
+) -> list[_Poly]:
     lookup = {(poly.tile, poly.index): poly for poly in polys}
     goal_id = (goal.tile, goal.index)
     start_id = (start.tile, start.index)
@@ -339,9 +390,10 @@ def _astar(polys: list[_Poly], start: _Poly, goal: _Poly, avoid: set[tuple[int, 
         _score, current = heapq.heappop(open_heap)
         if current == goal_id:
             chain = []
-            while current is not None:
-                chain.append(lookup[current])
-                current = came[current]
+            node: tuple[int, int] | None = current
+            while node is not None:
+                chain.append(lookup[node])
+                node = came[node]
             chain.reverse()
             return chain
         poly = lookup[current]
@@ -352,11 +404,12 @@ def _astar(polys: list[_Poly], start: _Poly, goal: _Poly, avoid: set[tuple[int, 
             if neighbor != goal_id and cell_of(other.center[0], other.center[1]) in blocked:
                 continue
             step = cost[current] + _horiz(poly.center, other.center)
-            if step < cost.get(neighbor, 1e+18):
+            if step < cost.get(neighbor, 1e18):
                 cost[neighbor] = step
                 came[neighbor] = current
                 heapq.heappush(open_heap, (step + _horiz(other.center, goal.center), neighbor))
     return [start]
+
 
 def _contains(poly: _Poly, x: float, y: float) -> bool:
     inside = False
@@ -370,6 +423,7 @@ def _contains(poly: _Poly, x: float, y: float) -> bool:
             inside = not inside
         j = i
     return inside
+
 
 def _horiz(a: tuple[float, float, float], b: tuple[float, float, float]) -> float:
     return math.hypot(a[0] - b[0], a[1] - b[1])

@@ -110,12 +110,24 @@ class ReadTasksTest(unittest.TestCase):
         self.assertEqual(kills[0].camp, "bat")
         self.assertEqual(kills[0].source, "chat:kill:bat")
 
+    def test_our_own_hail_is_not_a_new_step(self):
+        client, sheet = fresh("tutorialb")
+        action = ReadTasks()
+        place(client, action, "tutorialb", "read_tasks:tutorialb")
+        inbox(action, "OP_ChannelMessage", _channel("Hero", "Hail, Guard Rahtiz"))
+        action.step(client, sheet)
+        self.assertNotIn("Talk", kinds(client))
+
     def test_a_saylink_is_not_a_new_step(self):
         client, sheet = fresh("tutorialb")
         action = ReadTasks()
         place(client, action, "tutorialb", "read_tasks:tutorialb")
-        body = "0FFFFF000080000000000000000000000000000000000"
-        inbox(action, "OP_SpecialMesg", {"text": f"Would you like to be \x12{body}blessed\x12?"})
+        body = "0FFFFF000080000000000000000000000000000000000" + "0" * 11
+        inbox(
+            action,
+            "OP_SpecialMesg",
+            {"text": f"Would you like to be \x12{body}blessed\x12?"},
+        )
         action.step(client, sheet)
         self.assertNotIn("Talk", kinds(client))
 

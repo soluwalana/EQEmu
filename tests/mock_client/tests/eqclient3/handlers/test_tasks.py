@@ -1,7 +1,18 @@
 """Opcode coverage for handlers/tasks.py."""
 
+import struct
+
 from eqclient3.handlers import tasks
-from support import Loop, World, names, sources, task_activity, task_complete, task_window
+from eqclient3.structs import OP_TaskActivity, OP_TaskSelectWindow
+from support import (
+    Loop,
+    World,
+    names,
+    sources,
+    task_activity,
+    task_complete,
+    task_window,
+)
 
 
 def _offer(short=False):
@@ -56,3 +67,59 @@ def test_opcodes():
     tasks.TasksHandler().handle("OP_TaskActivityComplete", task_complete(15, 1), world, loop)
     assert updated.done >= updated.goal
     assert names(loop) == ["Talk", "Kill", "Fetch"]
+    task_type, task_id, master = struct.unpack("<III", loop.sent[0][1])
+    assert (task_type, task_id, master) == (0, 15, 8)
+
+
+def _cstr(text: str) -> bytes:
+    return text.encode("latin1") + b"\x00"
+
+
+def _lenstr(text: str) -> bytes:
+    raw = text.encode("latin1")
+    return struct.pack("<I", len(raw)) + raw
+
+
+def test_rof2_select_window_matches_tasks_writer():
+    """Bytes written by TaskInformation::SerializeSelector, not by our own serialize."""
+    packet = struct.pack("<III", 1, 2, 9)
+    packet += struct.pack("<IfII", 5166, 1.0, 0, 0)
+    packet += _cstr("The Rare Flower") + _cstr("Bring the bloom from gloomingdeep.")
+    packet += struct.pack("<BI", 0, 1)
+    packet += struct.pack("<iii", 0, 4, 0)
+    packet += _cstr("Guard Rahtiz")
+    packet += _lenstr("")
+    packet += struct.pack("<i", 1)
+    packet += _lenstr("-1")
+    packet += _lenstr("0")
+    packet += _cstr("188")
+    packet += _cstr("hail the guard")
+    packet += _cstr("188")
+
+    window = OP_TaskSelectWindow.deserialize(packet)
+    assert window.task_type == 2 and window.giver == 9
+    task = window.tasks[0]
+    assert task.task_id == 5166 and task.title == "The Rare Flower"
+    element = task.elements[0]
+    assert element.activity_id == 0 and element.kind == 4
+    assert element.target == "Guard Rahtiz" and element.goal == 1 and element.zone_id == 188
+    assert element.skill == -1 and element.description == "hail the guard"
+    again = OP_TaskSelectWindow.deserialize(window.serialize())
+    assert again.tasks[0].elements[0].target == "Guard Rahtiz"
+
+    activity = OP_TaskActivity.deserialize(
+        struct.pack("<IIIII", 0, 2, 5166, 0, 0)
+        + struct.pack("<iBi", 4, 0, 0)
+        + _cstr("Guard Rahtiz")
+        + _lenstr("")
+        + struct.pack("<i", 1)
+        + _lenstr("-1")
+        + _lenstr("0")
+        + _cstr("188")
+        + struct.pack("<i", 0)
+        + _cstr("hail the guard")
+        + struct.pack("<iB", 1, 1)
+        + _cstr("188")
+    )
+    assert activity.task_id == 5166 and activity.kind == 4 and activity.done == 1
+    assert activity.target == "Guard Rahtiz" and activity.zone_id == 188

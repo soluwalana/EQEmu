@@ -10,7 +10,12 @@ from support import Loop, World, names, profile as profile_packet
 def test_opcodes():
     world = World()
     loop = Loop()
-    profile.ProfileHandler().handle("OP_PlayerProfile", profile_packet(name="Hero", level=4, skill=(27, 12)), world, loop)
+    profile.ProfileHandler().handle(
+        "OP_PlayerProfile",
+        profile_packet(name="Hero", level=4, skill=(27, 12)),
+        world,
+        loop,
+    )
     assert world.name == "Hero"
     assert world.level == 4
     assert world.skills[27] == 12

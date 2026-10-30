@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import os
 from collections import defaultdict
+from collections.abc import Iterable, Iterator
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -73,7 +74,12 @@ class FactionBook:
             zone_id.setdefault(hit.zone, hit.zone_id or 10**9)
         return max(
             counts,
-            key=lambda zone: (counts[zone], value_sum[zone], -(zone_id.get(zone) or 10**9), zone),
+            key=lambda zone: (
+                counts[zone],
+                value_sum[zone],
+                -(zone_id.get(zone) or 10**9),
+                zone,
+            ),
         )
 
     def farm(self, faction_id: int, here: str = "") -> FactionHit | None:
@@ -108,7 +114,7 @@ class FactionBook:
         return int(self.primary_of.get(who) or 0)
 
 
-def factions_from_lines(lines) -> FactionBook:
+def factions_from_lines(lines: Iterable[str]) -> FactionBook:
     """Build the dictionaries once from a peq dump.
 
     Spawn lookup does not call this. It reads ``primary_of`` and ``primary_at``
@@ -165,17 +171,15 @@ def factions_from_lines(lines) -> FactionBook:
         for faction_id, value in entries.get(nf_id, ()):
             if value <= 0:
                 continue
-            buckets[faction_id].append(
-                FactionHit(faction_id, value, npc_id, name, where, zone_id)
-            )
+            buckets[faction_id].append(FactionHit(faction_id, value, npc_id, name, where, zone_id))
     for faction_id, hits in buckets.items():
         # Dedupe (npc, zone) keeping the largest value.
         best: dict[tuple[int, str], FactionHit] = {}
         for hit in hits:
-            key = (hit.npc_id, hit.zone)
-            prior = best.get(key)
+            pair = (hit.npc_id, hit.zone)
+            prior = best.get(pair)
             if prior is None or hit.value > prior.value:
-                best[key] = hit
+                best[pair] = hit
         book.by_faction[faction_id] = sorted(
             best.values(),
             key=lambda hit: (-hit.value, hit.zone, hit.name),
@@ -255,9 +259,19 @@ def write_factions(book: FactionBook, path: str) -> None:
     destination.parent.mkdir(parents=True, exist_ok=True)
     lines: list[str] = []
     for key, faction_id in sorted(book.primary_of.items()):
-        lines.append(json.dumps({"kind": "primary", "name": key, "faction": faction_id}, ensure_ascii=True))
+        lines.append(
+            json.dumps(
+                {"kind": "primary", "name": key, "faction": faction_id},
+                ensure_ascii=True,
+            )
+        )
     for key, faction_id in sorted(book.primary_at.items()):
-        lines.append(json.dumps({"kind": "primary_at", "at": key, "faction": faction_id}, ensure_ascii=True))
+        lines.append(
+            json.dumps(
+                {"kind": "primary_at", "at": key, "faction": faction_id},
+                ensure_ascii=True,
+            )
+        )
     for faction_id, hits in sorted(book.by_faction.items()):
         for hit in hits:
             lines.append(
@@ -358,6 +372,6 @@ def ensure_factions(
     return book
 
 
-def _lines(path: str):
+def _lines(path: str) -> Iterator[str]:
     with open(path, encoding="latin1", errors="replace") as handle:
         yield from handle

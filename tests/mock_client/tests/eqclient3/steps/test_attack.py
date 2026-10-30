@@ -37,7 +37,13 @@ class AttackSteps(unittest.TestCase):
         sheet.max_hp = 100
         sheet.mana = 80
         sheet.gems[1] = 40
-        sheet.spell_info = {40: type("S", (), {"mana": 10, "recast": 6, "heal": True, "combat": False, "cure": None})()}
+        sheet.spell_info = {
+            40: type(
+                "S",
+                (),
+                {"mana": 10, "recast": 6, "heal": True, "combat": False, "cure": None},
+            )()
+        }
         action = Attack(8)
         action.step(client, sheet)
         self.assertEqual(opcodes(client).count("OP_CastSpell"), 1)
@@ -46,7 +52,7 @@ class AttackSteps(unittest.TestCase):
         action.step(client, sheet)
         self.assertNotIn("OP_CastSpell", opcodes(client))
         self.assertTrue(action.heal_requested)
-        inbox(action, "OP_HPUpdate", struct.pack("<IiH", 80, 100, 1))
+        inbox(action, "OP_HPUpdate", struct.pack("<HIi", 1, 80, 100))
         action.step(client, sheet)
         self.assertFalse(action.heal_requested)
 

@@ -14,7 +14,7 @@ class ZoneTest(unittest.TestCase):
         self.assertNotIn("OP_Assist", action.opcodes())
         action.step(client, sheet)
         self.assertEqual(opcodes(client), ["OP_ZoneChange"])
-        self.assertEqual(len(client.outbound[0][1]), 88)
+        self.assertEqual(len(client.outbound[0][1]), 100)
         self.assertEqual(action.waiting, ["ZONE"])
         self.assertNotIn("Form", kinds(client))
         action.step(client, sheet)

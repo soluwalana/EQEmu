@@ -1,4 +1,4 @@
-"""Death drops ephemeral work that still points at the zone we died in."""
+"""Death drops every ephemeral action, including work tagged for another zone."""
 
 import unittest
 
@@ -25,7 +25,7 @@ from eqclient3.actions.trade import Trade
 
 
 class DeathTest(unittest.TestCase):
-    def test_same_zone_ephemeral_work_is_removed(self):
+    def test_ephemeral_work_is_removed(self):
         client, sheet = fresh("crushbone")
         gone = [
             Attack(1),
@@ -53,7 +53,7 @@ class DeathTest(unittest.TestCase):
             place(client, action, "crushbone", f"gone:{index}")
         for index, action in enumerate(stay[:-1]):
             place(client, action, "crushbone", f"stay:{index}")
-        place(client, stay[-1], "freportw", "stay:other-zone")
+        place(client, stay[-1], "freportw", "gone:other-zone")
         death = Death()
         death.zone = "crushbone"
         death.insert = 900
@@ -66,8 +66,8 @@ class DeathTest(unittest.TestCase):
             self.assertFalse(client.journal.is_open("Hero", f"gone:{index}"))
         for index in range(len(stay) - 1):
             self.assertIn(f"stay:{index}", left)
-        self.assertIn("stay:other-zone", left)
-        self.assertTrue(client.journal.is_open("Hero", "stay:other-zone"))
+        self.assertNotIn("gone:other-zone", left)
+        self.assertFalse(client.journal.is_open("Hero", "gone:other-zone"))
 
 
 if __name__ == "__main__":

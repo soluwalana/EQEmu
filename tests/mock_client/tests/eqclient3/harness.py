@@ -222,9 +222,17 @@ def _mailbox(opcode, payload):
             )
             return OP_ItemPacket(item)
         if opcode == "OP_ChannelMessage":
-            return OP_ChannelMessage(sender=str(payload.get("sender") or ""), text=str(payload.get("text") or ""))
+            return OP_ChannelMessage(
+                sender=str(payload.get("sender") or ""),
+                text=str(payload.get("text") or ""),
+            )
         if opcode == "OP_NewZone":
-            return OP_NewZone(str(payload.get("zone") or payload.get("short_name") or ""), 0.0, 0.0, 0.0)
+            return OP_NewZone(
+                str(payload.get("zone") or payload.get("short_name") or ""),
+                0.0,
+                0.0,
+                0.0,
+            )
         if opcode == "OP_SimpleMessage":
             texts = payload.get("texts") or ()
             if "text" in payload:
@@ -236,11 +244,21 @@ def _mailbox(opcode, payload):
                 message=str(payload.get("text") or payload.get("message") or ""),
             )
         if opcode == "OP_Buff":
-            return OP_Buff(0, SpellBuff(counters=int(payload.get("counters") or 0)), fade=int(payload.get("fade") or 0))
+            return OP_Buff(
+                0,
+                SpellBuff(counters=int(payload.get("counters") or 0)),
+                fade=int(payload.get("fade") or 0),
+            )
         if opcode == "OP_MobUpdate":
             from eqclient3.structs import OP_MobUpdate
+
             point = payload.get("point") or (0.0, 0.0, 0.0)
-            return OP_MobUpdate(int(payload.get("spawn_id") or 0), float(point[0]), float(point[1]), float(point[2]))
+            return OP_MobUpdate(
+                int(payload.get("spawn_id") or 0),
+                float(point[0]),
+                float(point[1]),
+                float(point[2]),
+            )
     raise TypeError(f"{opcode} fixture is {type(payload).__name__}")
 
 

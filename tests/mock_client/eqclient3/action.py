@@ -7,9 +7,11 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from eqclient3.loop import Loop
+    from eqclient3.nav.path import Path
     from eqclient3.world import Mob, World
 
 from eqclient3.structs import EQStruct, OP_Consider, OP_TargetMouse
+
 
 def _consider_packet(player: int, target: int) -> bytes:
     return OP_Consider(player, target).serialize()
@@ -40,7 +42,16 @@ class Action:
         self.source = ""
         self.priority = 0
         self.insert = 0
-        self.started = 0
+        self.level: int | None = None
+        self.started = 0.0
+        self._world: World | None = None
+        self.corpse_id: int | None = None
+        self.where: tuple[float, float, float] | None = None
+        self.partner = 0
+        self.merchant_id = 0
+        self.merchant_zone = ""
+        self.merchant_point: tuple[float, float, float] | None = None
+        self.count = 0
         self.zone = ""
         self.durable = False
         self.complete = False
@@ -49,10 +60,19 @@ class Action:
         self.messages: list[Message] = []
         self.waiting: list[str] = []
         self.target_id = 0
-        self.active_path = None
+        self.item_id = 0
+        self.spawn_id: int | None = None
+        self.task_text = ""
+        self.name = ""
+        self.description = ""
+        self.active_path: Path | None = None
+        self._gem_recast: dict[int, int] = {}
         self.waited = 0
-        self.limit = None
+        self.limit: int | None = None
         self.consider_due = False
+
+    def _hear(self, loop: Loop, world: World) -> None:
+        return
 
     def step(self, loop: Loop, world: World) -> None:
         if not self.target_id:
@@ -68,7 +88,10 @@ class Action:
                 self._send_consider(loop, world, mob)
                 self.consider_due = False
                 return
-            message = self.consume("OP_Consider", lambda message: _consider_id(message) == int(self.target_id))
+            message = self.consume(
+                "OP_Consider",
+                lambda message: _consider_id(message) == int(self.target_id),
+            )
             if message:
                 mob.targeted = True
                 self.unwait("TARGET")
@@ -152,6 +175,6 @@ class Action:
         return ()
 
     @staticmethod
-    def key(action: Action) -> tuple[int, ...]:
+    def key(action: Action) -> tuple[object, ...]:
         # Within one band, smaller runs first. Newest insert is the default.
         return (-action.insert,)

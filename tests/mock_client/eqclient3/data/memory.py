@@ -6,13 +6,15 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 
-from eqclient3.bots.spells import read_bot_spells
+from eqclient3.bots.spells import BotSpellBook, read_bot_spells
 from eqclient3.data.cache_builders.faction_list import read_faction_list
-from eqclient3.data.drops import read_drops
-from eqclient3.data.factions import read_factions
-from eqclient3.data.locations import LocationBook, read_locations
-from eqclient3.data.merchants import read_merchants
-from eqclient3.data.spells import read_spells
+from eqclient3.data.drops import DropBook, MappedDrops, read_drops
+from eqclient3.data.factions import FactionBook, read_factions
+from eqclient3.data.locations import LocationBook, MappedLocations, read_locations
+from eqclient3.data.merchants import MerchantBook, read_merchants
+from eqclient3.data.recipes import RecipeBook, read_recipes
+from eqclient3.data.spells import SpellBook, read_spells
+from eqclient3.inventory.item_stats import ItemBook, read_items
 from eqclient3.nav.travel import ZoneGraph, read_zone_graph
 from eqclient3.quests.graph import QuestGraph, read_graph
 
@@ -22,23 +24,23 @@ class Caches:
     """In-memory indexes. Queries hit these dicts, not the jsonl files."""
 
     items: ItemBook
-    drops: object
-    merchants: object
-    factions: object
+    drops: DropBook | MappedDrops
+    merchants: MerchantBook
+    factions: FactionBook
     faction_names: dict[str, int]
     faction_ids: dict[int, str]
-    spells: object
-    bot_spells: object
+    spells: SpellBook
+    bot_spells: BotSpellBook
     recipes: RecipeBook
     zones: ZoneGraph
     graph: QuestGraph
-    locations: LocationBook
+    locations: LocationBook | MappedLocations
 
     def faction_id(self, name: str) -> int:
-        return int(self.faction_names.get((name or "").lower(), 0))
+        return self.faction_names.get(name.lower(), 0)
 
     def faction_name(self, faction_id: int) -> str:
-        return self.faction_ids.get(int(faction_id), "")
+        return self.faction_ids.get(faction_id, "")
 
 
 def load_caches(root: str | Path | None = None) -> Caches:
@@ -48,23 +50,18 @@ def load_caches(root: str | Path | None = None) -> Caches:
     A missing file becomes an empty index. Drops and item locations map a sibling
     `.eqm` file, and build that file from the jsonl when it is missing or older.
     """
-    # item_stats and conduct are not in this tree; import them when caches load.
-    from eqclient3.inventory.item_stats import read_items
-    from eqclient3.quests.conduct import read_recipes
-
     if root is None:
         directory = Path(os.environ.get("EQEMU_CACHE", Path.home() / ".eqclient"))
-
-        def file(env: str, name: str) -> str:
-            return os.environ.get(env) or str(directory / name)
     else:
         directory = Path(root)
 
-        def file(_env: str, name: str) -> str:
-            return str(directory / name)
+    def file(env: str, name: str) -> str:
+        if root is None:
+            return os.environ.get(env) or str(directory / name)
+        return str(directory / name)
 
     names = read_faction_list(file("EQEMU_FACTION_LIST", "faction_list.jsonl"))
-    ids = {int(faction_id): name for name, faction_id in names.items() if int(faction_id)}
+    ids = {faction_id: name for name, faction_id in names.items() if faction_id}
     caches = Caches(
         items=read_items(file("EQEMU_ITEMS", "items.jsonl")),
         drops=read_drops(file("EQEMU_DROPS", "drops.jsonl")),

@@ -1,4 +1,5 @@
 """Bags, the cursor token, merchant window, and one assign pass."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -7,11 +8,23 @@ if TYPE_CHECKING:
     from eqclient3.action import Action
 
 from eqclient3.actions.cursor import Cursor
+from eqclient3.actions.sell import Sell
+from eqclient3.actions.trade import Trade
 from eqclient3.actions.support import CURSOR_SLOT, TOKEN
 from eqclient3.handlers.common import enqueue_once, queue_of, run_assign
 from eqclient3.inventory.assign import release_cursor
-from eqclient3.structs import EQStruct, ITEM_LOOT, ITEM_MERCHANT, Item, OP_CharInventory, OP_DeleteItem, OP_ItemPacket, OP_ShopDelItem
+from eqclient3.structs import (
+    EQStruct,
+    ITEM_LOOT,
+    ITEM_MERCHANT,
+    Item,
+    OP_CharInventory,
+    OP_DeleteItem,
+    OP_ItemPacket,
+    OP_ShopDelItem,
+)
 from eqclient3.handler import Handler
+
 
 class Held:
 
@@ -21,8 +34,9 @@ class Held:
         self.item_type = item_type
         self.stack = stack
 
+
 class ItemsHandler(Handler):
-    opcodes = ('OP_CharInventory', 'OP_ItemPacket', 'OP_DeleteItem', 'OP_ShopDelItem')
+    opcodes = ("OP_CharInventory", "OP_ItemPacket", "OP_DeleteItem", "OP_ShopDelItem")
 
     def on(self, opcode: str, payload: EQStruct) -> None:
         del opcode
@@ -60,7 +74,7 @@ class ItemsHandler(Handler):
         slot = item.slot
         item_id = item.item_id
         if item_id == TOKEN:
-            enqueue_once(self.loop, self.world, Cursor(slot), f'cursor:{slot}')
+            enqueue_once(self.loop, self.world, Cursor(slot), f"cursor:{slot}")
             return False
         stack = item.stack if item.stack > 0 else 1
         self.items()[item_id] = Held(item_id, item.name, item.item_type, stack)
@@ -70,6 +84,8 @@ class ItemsHandler(Handler):
         return True
 
     def write_bag(self, slot: int, item_id: int) -> None:
+        if slot < 0:
+            return
         world = self.world
         bags = self.bags()
         previous = bags.get(slot)
@@ -99,13 +115,13 @@ class ItemsHandler(Handler):
         for action in self.open_shops():
             action.slots.pop(slot, None)
 
-    def open_shops(self) -> list[Action]:
+    def open_shops(self) -> list[Trade | Sell]:
         """Trade and Sell actions that are still open. An empty list means the window is dropped."""
-        opened = []
+        opened: list[Trade | Sell] = []
         for action in queue_of(self.loop):
             if action.complete:
                 continue
-            if type(action).__name__ in ('Trade', 'Sell'):
+            if isinstance(action, (Trade, Sell)):
                 opened.append(action)
         return opened
 
@@ -122,4 +138,3 @@ class ItemsHandler(Handler):
             items = {}
             self.world.items = items
         return items
-

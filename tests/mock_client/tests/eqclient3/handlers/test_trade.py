@@ -3,6 +3,7 @@
 import struct
 
 from eqclient3.handlers import trade
+from eqclient3.structs import OP_ShopRequest
 from support import Loop, World, names
 
 
@@ -30,6 +31,8 @@ def test_opcodes():
     trade.TradeHandler().handle("OP_TradeRequest", struct.pack("<II", 9, 7), world, open_trade)
     assert open_trade.sent[0][0] == "OP_TradeRequestAck"
     assert open_trade.sent[0][1] == struct.pack("<II", 7, 9)
-    trade.TradeHandler().handle("OP_ShopRequest", struct.pack("<IIIf", 9, 7, 0, 1.0), world, open_trade)
+    request = OP_ShopRequest(9, 7, 0, 1.0).serialize()
+    assert len(request) == 24
+    trade.TradeHandler().handle("OP_ShopRequest", request, world, open_trade)
     assert deal.complete is True
     assert names(open_trade) == ["Trade"]

@@ -1,6 +1,6 @@
 """Character creation from the race and class the agent was asked to play.
 
-Titanium checks the total of the seven stats and rejects a race that cannot be
+RoF2 checks the total of the seven stats and rejects a race that cannot be
 that class. A dark elf paladin never gets as far as the zone. The point pool
 goes on the earliest class stat that shares the highest bonus, which is strength
 for a warrior.
@@ -91,8 +91,8 @@ _CLASS_NAMES = (
     "berserker",
 )
 
-# race id, table index, name, titanium start-city index, deity.
-# Drakkin has no titanium home city; Qeynos is a city the default switch accepts.
+# race id, table index, name, RoF2 start-city index, deity.
+# Drakkin has no RoF2 home city; Qeynos is a city the default switch accepts.
 _RACES = {
     1: (0, "human", 1, 396),
     2: (1, "barbarian", 2, 214),

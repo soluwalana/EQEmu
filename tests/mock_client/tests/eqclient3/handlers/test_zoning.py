@@ -49,7 +49,7 @@ def test_opcodes():
     zoning.ZoningHandler().handle("OP_RequestClientZoneChange", request_zone(45, 10, 20, 30), world, loop)
     assert names(loop) == []
     assert loop.sent[0][0] == "OP_ZoneChange"
-    assert len(loop.sent[0][1]) == 88
+    assert len(loop.sent[0][1]) == 100
 
     here = World(name="Hero", zone="qeynos", zone_id=1)
     stayed = Loop()
@@ -72,6 +72,7 @@ def test_opcodes():
     hole = Loop()
     hole.session = _Session()
     from eqclient3.structs import OP_ReliableHole
+
     zoning.ZoningHandler().handle("OP_ReliableHole", OP_ReliableHole(), world, hole)
     assert hole.queue == [] and hole.sent == []
     assert hole.session.transfers == 1

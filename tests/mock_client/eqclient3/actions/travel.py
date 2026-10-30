@@ -21,7 +21,7 @@ class Travel(Action):
         self.destination = destination
         self.active_path = None
 
-    def opcodes(self) -> tuple[object, ...]:
+    def opcodes(self) -> tuple[str, ...]:
         return ("OP_NewZone",)
 
     def suspend(self) -> None:
@@ -37,7 +37,7 @@ class Travel(Action):
         if point is None:
             return
         if not self.active_path:
-            walk(self, loop, world, tuple(point), "run")
+            walk(self, loop, world, point, "run")
             return
         self.suspended = False
         world.movement.advance(loop, world, self.active_path)

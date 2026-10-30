@@ -12,6 +12,7 @@ import json
 import os
 import re
 from collections import defaultdict
+from collections.abc import Iterable, Iterator
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -93,13 +94,13 @@ class MerchantBook:
         if not row:
             return None
         sellers = [self._seller(npc_id) for npc_id in row.get("npcs") or ()]
-        sellers = [seller for seller in sellers if seller is not None]
+        stocked = [seller for seller in sellers if seller is not None]
         if not sellers:
             return None
         here = (here or "").lower()
         aliases = zone_aliases(here)
-        local = [seller for seller in sellers if seller.zone in aliases or seller.zone == here]
-        pool = local or sellers
+        local = [seller for seller in stocked if seller.zone in aliases or seller.zone == here]
+        pool = local or stocked
         pool.sort(key=lambda seller: (seller.zone_id or 10**9, seller.zone, seller.npc_id))
         return pool[0], int(row.get("cost") or 0)
 
@@ -145,10 +146,15 @@ class MerchantBook:
         row = self.by_npc.get(int(npc_id))
         if not row:
             return None
-        return Seller(int(npc_id), int(row.get("zone") or 0), str(row.get("where") or ""), str(row.get("name") or ""))
+        return Seller(
+            int(npc_id),
+            int(row.get("zone") or 0),
+            str(row.get("where") or ""),
+            str(row.get("name") or ""),
+        )
 
 
-def merchants_from_lines(lines) -> MerchantBook:
+def merchants_from_lines(lines: Iterable[str]) -> MerchantBook:
     """NPC stock and item prices from a peq dump. No live query."""
     mode = ""
     prices: dict[int, int] = {}
@@ -198,7 +204,10 @@ def merchants_from_lines(lines) -> MerchantBook:
         for item_id in item_ids:
             sellers_of[item_id].append(npc_id)
     for item_id, npc_ids in sellers_of.items():
-        book.by_item[item_id] = {"npcs": sorted(set(npc_ids)), "cost": int(prices.get(item_id, 0))}
+        book.by_item[item_id] = {
+            "npcs": sorted(set(npc_ids)),
+            "cost": int(prices.get(item_id, 0)),
+        }
     book.index()
     return book
 
@@ -283,7 +292,12 @@ def write_merchants(book: MerchantBook, path: str) -> None:
     for item_id, row in sorted(book.by_item.items()):
         lines.append(
             json.dumps(
-                {"kind": "item", "item": item_id, "npcs": list(row.get("npcs") or ()), "cost": int(row.get("cost") or 0)},
+                {
+                    "kind": "item",
+                    "item": item_id,
+                    "npcs": list(row.get("npcs") or ()),
+                    "cost": int(row.get("cost") or 0),
+                },
                 ensure_ascii=True,
             )
         )
@@ -338,6 +352,6 @@ def ensure_merchants(
     return book
 
 
-def _lines(path: str):
+def _lines(path: str) -> Iterator[str]:
     with open(path, encoding="latin1", errors="replace") as handle:
         yield from handle

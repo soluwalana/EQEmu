@@ -15,7 +15,7 @@ from eqclient3.actions.talk import Talk
 
 
 class Deliver(Action):
-    def __init__(self, item: int, npc: int) -> None:
+    def __init__(self, item: int, npc: int | str) -> None:
         super().__init__()
         self.priority = 210
         self.durable = True
@@ -23,7 +23,7 @@ class Deliver(Action):
         self.npc = npc
         self.handed = False
 
-    def opcodes(self) -> tuple[object, ...]:
+    def opcodes(self) -> tuple[str, ...]:
         return ()
 
     def suspend(self) -> None:

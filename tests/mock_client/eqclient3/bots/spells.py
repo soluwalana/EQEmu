@@ -15,6 +15,9 @@ BotSpellTypes sequential ids (Nuke=0, RegularHeal=1, …). We remap on load.
 
 from __future__ import annotations
 
+from collections.abc import Iterable, Sequence
+from typing import Protocol
+
 from eqclient3.log import log
 from eqclient3.data.cache_builders.common import peq_path
 from eqclient3.data.catalog import _tuple
@@ -24,7 +27,6 @@ import json
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
-
 
 # Bot::Create / docs: Warrior 3001 … Berserker 3016.
 CLASS_SPELL_LIST = {
@@ -256,7 +258,28 @@ _BOT_ROLES = {
 }
 
 
-def next_spell_line(state: object) -> str:
+class _SpellEntry(Protocol):
+    priority: int
+    spell_id: int
+
+
+class _BotBook(Protocol):
+    def roles_available(self, class_id: int, level: int, roles: set[str]) -> Iterable[_SpellEntry]: ...
+
+
+class _BotWorld(Protocol):
+    level: int
+
+
+class _SpellState(Protocol):
+    bot_spell_left: list[str] | None
+    queue: object
+    bot_spells: _BotBook | None
+    bots: Sequence[tuple[object, ...]]
+    world: _BotWorld
+
+
+def next_spell_line(state: _SpellState) -> str:
     """One bot spell command. Empty once the list for this roster has been sent."""
     left = state.bot_spell_left
     if left is None:
@@ -266,7 +289,7 @@ def next_spell_line(state: object) -> str:
     return left.pop(0)
 
 
-def spell_due(state: object) -> bool:
+def spell_due(state: _SpellState) -> bool:
     if state.queue or state.bot_spells is None or not state.bots:
         return False
     left = state.bot_spell_left
@@ -275,14 +298,16 @@ def spell_due(state: object) -> bool:
     return bool(left)
 
 
-def _spell_lines(state: object) -> list[str]:
+def _spell_lines(state: _SpellState) -> list[str]:
     book = state.bot_spells
     if book is None or not state.bots:
         return []
     level = state.world.level or 1
     lines = ["^spellholds 0 0 spawned"]
     for bot in state.bots:
-        name, class_id = str(bot[0]), int(bot[1])
+        if len(bot) < 2 or not isinstance(bot[0], str) or not isinstance(bot[1], int):
+            continue
+        name, class_id = bot[0], bot[1]
         if class_id in _CASTERS:
             lines.append(f"^botstance 7 byname {name}")
         roles = _BOT_ROLES.get(class_id)

@@ -10,11 +10,16 @@ if TYPE_CHECKING:
 
 
 from eqclient3.action import Action
-from eqclient3.actions.support import effect_gone, own_corpse, reclaim_if_ours, send_command
+from eqclient3.actions.support import (
+    effect_gone,
+    own_corpse,
+    reclaim_if_ours,
+    send_command,
+)
 
 
 class Cure(Action):
-    def __init__(self, entity: str | int, effect: str) -> None:
+    def __init__(self, entity: str | int, effect: str | int) -> None:
         super().__init__()
         self.priority = 250
         self.entity = entity
@@ -22,7 +27,7 @@ class Cure(Action):
         self.cast_target = 0
         self.sent = False
 
-    def opcodes(self) -> tuple[object, ...]:
+    def opcodes(self) -> tuple[str, ...]:
         return ("OP_Buff", "OP_SimpleMessage")
 
     def suspend(self) -> None:

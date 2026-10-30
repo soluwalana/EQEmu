@@ -6,18 +6,7 @@ import os
 from pathlib import Path
 
 from eqclient3.data.cache_builders.common import peq_path
-
-
-def _conduct():
-    # quests.conduct is not in this tree.
-    from eqclient3.quests.conduct import (
-        DEFAULT_RECIPES,
-        RecipeBook,
-        build_recipes,
-        read_recipes,
-        write_recipes,
-    )
-    return DEFAULT_RECIPES, RecipeBook, build_recipes, read_recipes, write_recipes
+from eqclient3.data.recipes import DEFAULT_RECIPES, RecipeBook, build_recipes, read_recipes, write_recipes
 
 
 def ensure_recipes(
@@ -25,9 +14,8 @@ def ensure_recipes(
     peq: str | Path | None = None,
     *,
     rebuild: bool = False,
-):
+) -> RecipeBook:
     """Load recipes.jsonl, or build once from the peq dump."""
-    DEFAULT_RECIPES, RecipeBook, build_recipes, read_recipes, write_recipes = _conduct()
     path = path or os.environ.get("EQEMU_RECIPES", DEFAULT_RECIPES)
     file = Path(path)
     if file.is_file() and not rebuild:
@@ -40,9 +28,8 @@ def ensure_recipes(
 
 
 def main() -> None:
-    default, *_ = _conduct()
     book = ensure_recipes(rebuild=True)
-    print(f"recipes: {len(book.by_id)} → {default}", flush=True)
+    print(f"recipes: {len(book.by_id)} → {DEFAULT_RECIPES}", flush=True)
 
 
 if __name__ == "__main__":

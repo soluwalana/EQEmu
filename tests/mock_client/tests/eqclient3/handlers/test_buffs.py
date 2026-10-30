@@ -1,19 +1,17 @@
 """Opcode coverage for handlers/buffs.py."""
 
-import struct
-
 from eqclient3.actions.attack import Attack
 from eqclient3.handlers import buffs
+from eqclient3.structs import OP_Buff, SpellBuff
 from support import Loop, World, names
 
 
 def _buff(entity, spell_id, counters, fade=0) -> bytes:
-    packet = bytearray(32)
-    struct.pack_into("<I", packet, 0, int(entity))
-    struct.pack_into("<I", packet, 8, int(spell_id))
-    struct.pack_into("<I", packet, 16, int(counters))
-    struct.pack_into("<I", packet, 28, int(fade))
-    return bytes(packet)
+    return OP_Buff(
+        int(entity),
+        SpellBuff(spell_id=int(spell_id), counters=int(counters)),
+        fade=int(fade),
+    ).serialize()
 
 
 def test_opcodes():

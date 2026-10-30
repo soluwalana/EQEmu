@@ -4,14 +4,17 @@ From the mock_client directory, or with it on PYTHONPATH:
 
     EQEMU_USER=... EQEMU_PASS=... EQEMU_CHAR=Hero python -m eqclient3
 
-EQEMU_HOST defaults to 127.0.0.1. EQEMU_LOGIN_PORT defaults to 5998 and
+EQEMU_HOST defaults to 127.0.0.1. EQEMU_LOGIN_PORT defaults to 5999 and
 EQEMU_WORLD_PORT to 9000. A name the server does not have yet is created
 from EQEMU_RACE, EQEMU_CLASS, EQEMU_GENDER, EQEMU_DEITY, and EQEMU_START_ZONE.
 LOG_LEVEL defaults to INFO. DEBUG also prints movement packets.
 """
+
 from __future__ import annotations
 
 import os
+import types
+from collections.abc import Callable
 from dataclasses import replace
 
 from eqclient3.bus import Bus
@@ -35,7 +38,11 @@ def main() -> None:
     password = os.environ.get("EQEMU_PASS", "")
     missing = [
         key
-        for key, value in (("EQEMU_USER", user), ("EQEMU_PASS", password), ("EQEMU_CHAR", name))
+        for key, value in (
+            ("EQEMU_USER", user),
+            ("EQEMU_PASS", password),
+            ("EQEMU_CHAR", name),
+        )
         if not value
     ]
     if missing:
@@ -55,7 +62,7 @@ def main() -> None:
     )
     if not isinstance(client, Client):
         raise SystemExit("login did not open a zone session")
-    
+
     flags = loop.journal.flag_values(name) if loop.journal is not None else {}
     world.tutorial_started = bool(flags.get("tutorial_started"))
     world.quest_started = bool(flags.get("quest_started"))
@@ -90,6 +97,7 @@ def _warm(client: Client, world: World) -> None:
     edges = 0 if graph is None else len(graph.edges)
     log.info("loaded quest graph edges=%s", edges)
 
+
 def _inbox_zone(client: Client) -> str:
     number = client.opcodes.get("OP_NewZone", 0)
     if not number:
@@ -106,12 +114,15 @@ def _inbox_zone(client: Client) -> str:
             return short
     return ""
 
-def _quiet(load, zone: str):
+
+def _quiet[T](load: Callable[[str], T], zone: str) -> T | None:
     try:
         return load(zone)
     except (OSError, ValueError):
-        log.error("%s failed to load for %s", getattr(load, "__name__", "map"), zone, exc_info=True)
+        name = load.__name__ if isinstance(load, types.FunctionType) else "map"
+        log.error("%s failed to load for %s", name, zone, exc_info=True)
         return None
+
 
 def play(loop: Loop, client: Client, world: World, queue: Schedule) -> None:
     """One Loop for the whole session. Each pulse pumps, steps, and flushes."""

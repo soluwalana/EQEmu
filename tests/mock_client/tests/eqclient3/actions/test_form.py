@@ -36,8 +36,20 @@ class FormTest(unittest.TestCase):
         self.assertTrue(any(line.startswith("^healrotationcreate clr") for line in cmds))
         self.assertIn("^spellsettings load byname clr", cmds)
         saved = {
-            "war": {"stance": "5", "sit": "90", "stop_melee": "1", "follow": "10", "spells": "1"},
-            "clr": {"sit": "1", "stop_melee": "1", "follow": "1", "spells": "1", "heal": "1"},
+            "war": {
+                "stance": "5",
+                "sit": "90",
+                "stop_melee": "1",
+                "follow": "10",
+                "spells": "1",
+            },
+            "clr": {
+                "sit": "1",
+                "stop_melee": "1",
+                "follow": "1",
+                "spells": "1",
+                "heal": "1",
+            },
         }
         quiet = form_commands([("war", 1), ("clr", 2)], saved, healer="clr", rotation_saved=False)
         self.assertFalse(any("botstance" in line for line in quiet))

@@ -11,7 +11,7 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from eqclient3.data.catalog import named_items
+from eqclient3.data.catalog import Catalog, named_items
 from eqclient3.log import log
 from eqclient3.nav.travel import ensure_zone_graph
 
@@ -105,9 +105,7 @@ _SPAWN = re.compile(
     r"(?<![\w])(?:unique_spawn|spawn2|spawn)\s*\(\s*\$?(\d+|[A-Za-z_][A-Za-z0-9_]*)",
     re.IGNORECASE,
 )
-_LOCAL = re.compile(
-    r"(?m)^[ \t]*(?:local[ \t]+|my[ \t]+)?\$?([A-Za-z_][A-Za-z0-9_]*)[ \t]*=[ \t]*(\d+)\b"
-)
+_LOCAL = re.compile(r"(?m)^[ \t]*(?:local[ \t]+|my[ \t]+)?\$?([A-Za-z_][A-Za-z0-9_]*)[ \t]*=[ \t]*(\d+)\b")
 _CHOOSE = re.compile(r"ChooseRandom\s*\(([^)]*)\)", re.IGNORECASE)
 _ADDITEM = re.compile(r"AddItem\s*\(\s*(\d+)", re.IGNORECASE)
 _NPC_TYPE_ID = re.compile(r"GetNPCTypeID\s*\(\s*\)\s*==\s*(\d+)", re.IGNORECASE)
@@ -192,7 +190,7 @@ class ZoneQuests:
     chains: dict[str, list["QuestNode"]] = field(default_factory=dict)
 
 
-def npc_name(filename: str, catalog=None) -> str:
+def npc_name(filename: str, catalog: Catalog | None = None) -> str:
     stem = Path(filename).stem
     if stem.startswith("#"):
         stem = stem[1:]
@@ -334,7 +332,7 @@ def _skip_quote(text: str, start: int) -> int:
     return limit
 
 
-def _compute_branches(text: str) -> list[tuple[int, int, int, int]]:
+def _compute_branches(text: str) -> tuple[list[tuple[int, int, int, int]], list[tuple[str, int, int]]]:
     """One span per if, elsif, and elseif: condition start, condition end, body start, body end.
 
     Perl opens the body with a brace. Lua opens it with then and closes a branch at
@@ -438,32 +436,58 @@ def _compute_branches(text: str) -> list[tuple[int, int, int, int]]:
                 continue
             if word in {"elseif", "elsif"}:
                 frame = stack[-1] if stack else None
-                if (
-                    frame
-                    and frame["kind"] == "if"
-                    and frame["body"] >= 0
-                    and frame.get("closer") != "brace"
-                ):
+                if frame and frame["kind"] == "if" and frame["body"] >= 0 and frame.get("closer") != "brace":
                     close_branch(index)
-                stack.append({"kind": "if", "cond": end, "cond_hi": end, "body": -1, "closer": "", "braces": 0})
+                stack.append(
+                    {
+                        "kind": "if",
+                        "cond": end,
+                        "cond_hi": end,
+                        "body": -1,
+                        "closer": "",
+                        "braces": 0,
+                    }
+                )
             elif word == "if":
-                stack.append({"kind": "if", "cond": end, "cond_hi": end, "body": -1, "closer": "", "braces": 0})
+                stack.append(
+                    {
+                        "kind": "if",
+                        "cond": end,
+                        "cond_hi": end,
+                        "body": -1,
+                        "closer": "",
+                        "braces": 0,
+                    }
+                )
             elif word == "then" and paren == 0 and stack and stack[-1]["kind"] == "if" and stack[-1]["body"] < 0:
                 stack[-1]["body"] = end
                 stack[-1]["cond_hi"] = index
                 stack[-1]["closer"] = "end"
             elif word == "else":
                 frame = stack[-1] if stack else None
-                if (
-                    frame
-                    and frame["kind"] == "if"
-                    and frame["body"] >= 0
-                    and frame.get("closer") != "brace"
-                ):
+                if frame and frame["kind"] == "if" and frame["body"] >= 0 and frame.get("closer") != "brace":
                     close_branch(index)
-                    stack.append({"kind": "if", "cond": end, "cond_hi": end, "body": end, "closer": "end", "braces": 0})
+                    stack.append(
+                        {
+                            "kind": "if",
+                            "cond": end,
+                            "cond_hi": end,
+                            "body": end,
+                            "closer": "end",
+                            "braces": 0,
+                        }
+                    )
                 else:
-                    stack.append({"kind": "if", "cond": end, "cond_hi": end, "body": -1, "closer": "", "braces": 0})
+                    stack.append(
+                        {
+                            "kind": "if",
+                            "cond": end,
+                            "cond_hi": end,
+                            "body": -1,
+                            "closer": "",
+                            "braces": 0,
+                        }
+                    )
             elif word == "end":
                 if stack and stack[-1].get("closer") != "brace":
                     frame = stack.pop()
@@ -508,7 +532,16 @@ def _compute_branches(text: str) -> list[tuple[int, int, int, int]]:
                     frame["body"] = end
                     frame["closer"] = "end"
                 else:
-                    stack.append({"kind": "do", "cond": end, "cond_hi": end, "body": end, "closer": "end", "braces": 0})
+                    stack.append(
+                        {
+                            "kind": "do",
+                            "cond": end,
+                            "cond_hi": end,
+                            "body": end,
+                            "closer": "end",
+                            "braces": 0,
+                        }
+                    )
             elif word == "until" and stack and stack[-1]["kind"] == "repeat":
                 stack.pop()
             index = end
@@ -517,19 +550,23 @@ def _compute_branches(text: str) -> list[tuple[int, int, int, int]]:
     return branches, functions
 
 
-def _branch_index(text: str) -> list[tuple[int, int, int, int]]:
-    if _branch_index.source is text:
-        return _branch_index.found
-    found, functions = _compute_branches(text)
-    _branch_index.source = text
-    _branch_index.found = found
-    _branch_index.functions = functions
-    return found
+class _BranchIndex:
+    def __init__(self) -> None:
+        self.source: str | None = None
+        self.found: list[tuple[int, int, int, int]] = []
+        self.functions: list[tuple[str, int, int]] = []
+
+    def __call__(self, text: str) -> list[tuple[int, int, int, int]]:
+        if self.source is text:
+            return self.found
+        found, functions = _compute_branches(text)
+        self.source = text
+        self.found = found
+        self.functions = functions
+        return found
 
 
-_branch_index.source = None
-_branch_index.found = []
-_branch_index.functions = []
+_branch_index = _BranchIndex()
 
 
 def _functions(text: str) -> list[tuple[str, int, int]]:
@@ -675,7 +712,11 @@ def _faction_gains(text: str) -> list[tuple[str, int]]:
 
 
 def _emit_faction_needs(
-    edges: list[dict], source: str, gate: str, group: str = "", script: str | None = None
+    edges: list[dict],
+    source: str,
+    gate: str,
+    group: str = "",
+    script: str | None = None,
 ) -> None:
     for faction_id, at in _faction_needs(gate, script):
         edge = {
@@ -786,33 +827,38 @@ def _numeric_locals(text: str) -> dict[str, int]:
     return {name: next(iter(values)) for name, values in found.items() if len(values) == 1}
 
 
-def _spawn_calls(snippet: str) -> list[tuple[int, str]]:
-    constants: dict[str, int] = _spawn_calls.constants
-    found: list[tuple[int, str]] = []
-    seen: set[int] = set()
-    for match in _SPAWN.finditer(snippet):
-        token = match.group(1)
-        if token.isdigit():
-            npc_type = int(token)
-        else:
-            npc_type = constants.get(token.lower())
-            if not npc_type:
-                continue
-        line_end = snippet.find("\n", match.start())
-        line = snippet[match.start() : line_end if line_end >= 0 else len(snippet)]
-        seen.add(npc_type)
-        found.append((npc_type, _comment_name(line)))
-    if re.search(r"(?<![\w])(?:unique_spawn|spawn2|spawn)\s*\(", snippet, re.IGNORECASE):
-        for group in _CHOOSE.findall(snippet):
-            for npc in re.findall(r"\d{3,}", group):
-                npc_type = int(npc)
-                if npc_type not in seen:
-                    seen.add(npc_type)
-                    found.append((npc_type, ""))
-    return found
+class _SpawnCalls:
+    def __init__(self) -> None:
+        self.constants: dict[str, int] = {}
+
+    def __call__(self, snippet: str) -> list[tuple[int, str]]:
+        constants = self.constants
+        found: list[tuple[int, str]] = []
+        seen: set[int] = set()
+        for match in _SPAWN.finditer(snippet):
+            token = match.group(1)
+            if token.isdigit():
+                npc_type = int(token)
+            else:
+                found_id = constants.get(token.lower())
+                if found_id is None:
+                    continue
+                npc_type = found_id
+            line_end = snippet.find("\n", match.start())
+            line = snippet[match.start() : line_end if line_end >= 0 else len(snippet)]
+            seen.add(npc_type)
+            found.append((npc_type, _comment_name(line)))
+        if re.search(r"(?<![\w])(?:unique_spawn|spawn2|spawn)\s*\(", snippet, re.IGNORECASE):
+            for group in _CHOOSE.findall(snippet):
+                for npc in re.findall(r"\d{3,}", group):
+                    npc_type = int(npc)
+                    if npc_type not in seen:
+                        seen.add(npc_type)
+                        found.append((npc_type, ""))
+        return found
 
 
-_spawn_calls.constants = {}
+_spawn_calls = _SpawnCalls()
 
 
 def _without(text: str, start: int, stop: int, holes: list[tuple[int, int]]) -> str:
@@ -824,26 +870,31 @@ def _without(text: str, start: int, stop: int, holes: list[tuple[int, int]]) -> 
     return "".join(chars)
 
 
-def _timer_spawns(text: str) -> dict[str, list[tuple[int, str]]]:
+class _TimerSpawns:
     """NPCs a named timer creates. The say or hand-in that starts the timer is the step."""
-    if _timer_spawns.source is text:
-        return _timer_spawns.found
-    found: dict[str, list[tuple[int, str]]] = {}
-    for branch in _branch_index(text):
-        names = _TIMER_IS.findall(text[branch[0] : branch[1]])
-        if not names:
-            continue
-        holes = [(child[0], child[3]) for child in _immediate(text, branch)]
-        spawned = _spawn_calls(_without(text, branch[2], branch[3], holes))
-        for name in names:
-            found.setdefault(name, []).extend(spawned)
-    _timer_spawns.source = text
-    _timer_spawns.found = found
-    return found
+
+    def __init__(self) -> None:
+        self.source: str | None = None
+        self.found: dict[str, list[tuple[int, str]]] = {}
+
+    def __call__(self, text: str) -> dict[str, list[tuple[int, str]]]:
+        if self.source is text:
+            return self.found
+        found: dict[str, list[tuple[int, str]]] = {}
+        for branch in _branch_index(text):
+            names = _TIMER_IS.findall(text[branch[0] : branch[1]])
+            if not names:
+                continue
+            holes = [(child[0], child[3]) for child in _immediate(text, branch)]
+            spawned = _spawn_calls(_without(text, branch[2], branch[3], holes))
+            for name in names:
+                found.setdefault(name, []).extend(spawned)
+        self.source = text
+        self.found = found
+        return found
 
 
-_timer_spawns.source = None
-_timer_spawns.found = {}
+_timer_spawns = _TimerSpawns()
 
 
 def _caused_spawns(text: str, block: str) -> list[tuple[int, str]]:
@@ -858,7 +909,13 @@ def _caused_spawns(text: str, block: str) -> list[tuple[int, str]]:
 
 
 def _spawn_edge(source: str, npc_type: int, name: str, group: str = "") -> dict:
-    edge = {"kind": "edge", "rel": "spawns", "from": source, "to": f"npc:{npc_type}", "npc": npc_type}
+    edge = {
+        "kind": "edge",
+        "rel": "spawns",
+        "from": source,
+        "to": f"npc:{npc_type}",
+        "npc": npc_type,
+    }
     if name:
         edge["name"] = name
     if group:
@@ -955,13 +1012,13 @@ def _coin_gates(text: str) -> list[dict]:
     return found
 
 
-def link_script(text: str, filename: str, zone: str, catalog=None) -> list[dict]:
+def link_script(text: str, filename: str, zone: str, catalog: Catalog | None = None) -> list[dict[str, object]]:
     """Edges between a say, the next say, the items the sentence names, and a hand-in."""
     npc = npc_name(filename, catalog)
     home = zone.lower()
     npc_id = f"{home}/{npc.lower()}"
     edges: list[dict] = []
-    _spawn_calls.constants = _numeric_locals(text)  # type: ignore[attr-defined]
+    _spawn_calls.constants = _numeric_locals(text)
     previous = ""
     for match in _SAY.finditer(text):
         word = (match.group(1) or match.group(2) or "").strip()
@@ -973,26 +1030,72 @@ def link_script(text: str, filename: str, zone: str, catalog=None) -> list[dict]
         gate = cond + "\n" + block
         say_id = f"{home}/{npc.lower()}#{word.lower()}"
         if previous:
-            edges.append({"kind": "edge", "rel": "then", "from": f"{home}/{npc.lower()}#{previous}", "to": say_id})
+            edges.append(
+                {
+                    "kind": "edge",
+                    "rel": "then",
+                    "from": f"{home}/{npc.lower()}#{previous}",
+                    "to": say_id,
+                }
+            )
         spoken = _spoken(block)
         if catalog and spoken:
             for item_id in named_items(spoken, catalog):
-                edges.append({"kind": "edge", "rel": "names", "from": say_id, "to": f"item:{item_id}"})
+                edges.append(
+                    {
+                        "kind": "edge",
+                        "rel": "names",
+                        "from": say_id,
+                        "to": f"item:{item_id}",
+                    }
+                )
         span = _chosen_branch(text, match.start())
         if not span:
             for name, at in _flags(gate):
-                edges.append({"kind": "edge", "rel": "needs", "from": say_id, "to": f"flag:{name}", "flag": name, "at": at})
+                edges.append(
+                    {
+                        "kind": "edge",
+                        "rel": "needs",
+                        "from": say_id,
+                        "to": f"flag:{name}",
+                        "flag": name,
+                        "at": at,
+                    }
+                )
             _emit_faction_needs(edges, say_id, gate, say_id, script=text)
             for item_id, op in _item_gates(gate):
-                edge = {"kind": "edge", "rel": "needs", "from": say_id, "to": f"item:{item_id}", "item": item_id}
+                edge = {
+                    "kind": "edge",
+                    "rel": "needs",
+                    "from": say_id,
+                    "to": f"item:{item_id}",
+                    "item": item_id,
+                }
                 if op:
                     edge["op"] = op
                 edges.append(edge)
             for name, value in _all_flag_sets(block):
-                edges.append({"kind": "edge", "rel": "sets", "from": say_id, "to": f"flag:{name}", "flag": name, "value": value})
+                edges.append(
+                    {
+                        "kind": "edge",
+                        "rel": "sets",
+                        "from": say_id,
+                        "to": f"flag:{name}",
+                        "flag": name,
+                        "value": value,
+                    }
+                )
             _emit_faction_gains(edges, say_id, block, say_id)
             for reward in _reward_ids(block):
-                edges.append({"kind": "edge", "rel": "gives", "from": npc_id, "to": f"item:{reward}", "group": say_id})
+                edges.append(
+                    {
+                        "kind": "edge",
+                        "rel": "gives",
+                        "from": npc_id,
+                        "to": f"item:{reward}",
+                        "group": say_id,
+                    }
+                )
         else:
             outer = tuple(
                 branch
@@ -1010,16 +1113,47 @@ def link_script(text: str, filename: str, zone: str, catalog=None) -> list[dict]
             group = f"{npc_id}#hand:" + "+".join(f"{name}:{amount}" for name, amount in coins)
         for item_id, count in turn["items"]:
             edges.append(
-                {"kind": "edge", "rel": "receives", "from": npc_id, "to": f"item:{item_id}", "count": count, "group": group}
+                {
+                    "kind": "edge",
+                    "rel": "receives",
+                    "from": npc_id,
+                    "to": f"item:{item_id}",
+                    "count": count,
+                    "group": group,
+                }
             )
         for name, amount in coins:
             edges.append(
-                {"kind": "edge", "rel": "receives", "from": npc_id, "to": f"coin:{name}", "count": amount, "group": group}
+                {
+                    "kind": "edge",
+                    "rel": "receives",
+                    "from": npc_id,
+                    "to": f"coin:{name}",
+                    "count": amount,
+                    "group": group,
+                }
             )
         for reward in turn["rewards"]:
-            edges.append({"kind": "edge", "rel": "gives", "from": npc_id, "to": f"item:{reward}", "group": group})
+            edges.append(
+                {
+                    "kind": "edge",
+                    "rel": "gives",
+                    "from": npc_id,
+                    "to": f"item:{reward}",
+                    "group": group,
+                }
+            )
         for name, at in turn["needs"]:
-            edges.append({"kind": "edge", "rel": "needs", "from": group, "to": f"flag:{name}", "flag": name, "at": at})
+            edges.append(
+                {
+                    "kind": "edge",
+                    "rel": "needs",
+                    "from": group,
+                    "to": f"flag:{name}",
+                    "flag": name,
+                    "at": at,
+                }
+            )
         for faction_id, at in turn.get("factions", []):
             edges.append(
                 {
@@ -1033,7 +1167,16 @@ def link_script(text: str, filename: str, zone: str, catalog=None) -> list[dict]
                 }
             )
         for name, value in turn["sets"]:
-            edges.append({"kind": "edge", "rel": "sets", "from": group, "to": f"flag:{name}", "flag": name, "value": value})
+            edges.append(
+                {
+                    "kind": "edge",
+                    "rel": "sets",
+                    "from": group,
+                    "to": f"flag:{name}",
+                    "flag": name,
+                    "value": value,
+                }
+            )
         for faction_id, delta in turn.get("faction_gains", []):
             edges.append(
                 {
@@ -1047,7 +1190,13 @@ def link_script(text: str, filename: str, zone: str, catalog=None) -> list[dict]
                 }
             )
         for item_id, op in turn.get("holds", []):
-            edge = {"kind": "edge", "rel": "needs", "from": group, "to": f"item:{item_id}", "item": item_id}
+            edge = {
+                "kind": "edge",
+                "rel": "needs",
+                "from": group,
+                "to": f"item:{item_id}",
+                "item": item_id,
+            }
             if op:
                 edge["op"] = op
             edges.append(edge)
@@ -1069,19 +1218,27 @@ def link_script(text: str, filename: str, zone: str, catalog=None) -> list[dict]
             continue
         source = f"{npc_id}#recipe:{recipe_id}"
         for name, at in _flags(cond):
-            edges.append({"kind": "edge", "rel": "needs", "from": source, "to": f"flag:{name}", "flag": name, "at": at, "group": source})
+            edges.append(
+                {
+                    "kind": "edge",
+                    "rel": "needs",
+                    "from": source,
+                    "to": f"flag:{name}",
+                    "flag": name,
+                    "at": at,
+                    "group": source,
+                }
+            )
         _emit_body(edges, events, source, npc_id)
     _zone_events(edges, text, npc_id)
-    _spawn_calls.constants = {}  # type: ignore[attr-defined]
+    _spawn_calls.constants = {}
     return edges
 
 
 def _children(text: str, span: tuple[int, int, int, int]) -> list[tuple[int, int, int, int]]:
     """Branches nested in this body. A grandchild is included."""
     return [
-        branch
-        for branch in _branch_index(text)
-        if branch != span and span[2] <= branch[0] and branch[3] <= span[3]
+        branch for branch in _branch_index(text) if branch != span and span[2] <= branch[0] and branch[3] <= span[3]
     ]
 
 
@@ -1117,7 +1274,14 @@ def _emit_span(
     if holds:
         group = say_id + "#holds:" + "+".join(str(item_id) for item_id, _op in holds)
     for name, at in flags:
-        edge = {"kind": "edge", "rel": "needs", "from": say_id, "to": f"flag:{name}", "flag": name, "at": at}
+        edge: dict[str, object] = {
+            "kind": "edge",
+            "rel": "needs",
+            "from": say_id,
+            "to": f"flag:{name}",
+            "flag": name,
+            "at": at,
+        }
         if holds or either:
             edge["group"] = group
         if either:
@@ -1135,7 +1299,14 @@ def _emit_span(
         }
         edges.append(edge)
     for item_id, op in holds:
-        edge = {"kind": "edge", "rel": "needs", "from": say_id, "to": f"item:{item_id}", "item": item_id, "group": group}
+        edge = {
+            "kind": "edge",
+            "rel": "needs",
+            "from": say_id,
+            "to": f"item:{item_id}",
+            "item": item_id,
+            "group": group,
+        }
         if op or either:
             edge["op"] = op or "or"
         edges.append(edge)
@@ -1161,9 +1332,10 @@ def _emit_span(
     if sets_here or rewards or grounds:
         seen = {item_id for item_id, _op in holds}
         seen.update(
-            edge.get("item")
+            item
             for edge in edges
-            if edge.get("rel") == "needs" and edge.get("from") == say_id and edge.get("item")
+            if edge.get("rel") == "needs" and edge.get("from") == say_id
+            if isinstance(item := edge.get("item"), int)
         )
         for ancestor in ancestors:
             for item_id, op in _item_gates(text[ancestor[0] : ancestor[1]]):
@@ -1197,12 +1369,28 @@ def _emit_span(
     _emit_faction_gains(edges, say_id, body, group if holds else say_id)
     for match in _SUMMON.finditer(text):
         if span[2] <= match.start() < span[3] and not _in_span(match.start(), holes):
-            edges.append({"kind": "edge", "rel": "gives", "from": npc_id, "to": f"item:{int(match.group(1))}", "group": group})
+            edges.append(
+                {
+                    "kind": "edge",
+                    "rel": "gives",
+                    "from": npc_id,
+                    "to": f"item:{int(match.group(1))}",
+                    "group": group,
+                }
+            )
     for match in _QUEST_REWARD.finditer(text):
         if span[2] <= match.start() < span[3] and not _in_span(match.start(), holes):
             body, _end = _paren(text, match.end() - 1)
             for item_id in _quest_reward_items(body):
-                edges.append({"kind": "edge", "rel": "gives", "from": npc_id, "to": f"item:{item_id}", "group": group})
+                edges.append(
+                    {
+                        "kind": "edge",
+                        "rel": "gives",
+                        "from": npc_id,
+                        "to": f"item:{item_id}",
+                        "group": group,
+                    }
+                )
     for match in grounds:
         edges.append(
             {
@@ -1224,7 +1412,12 @@ def _zone_events(edges: list[dict], text: str, npc_id: str) -> None:
     """A zone enter or a loot that checks an item or a flag. The check is the edge."""
     branches = _branch_index(text)
     for name, start, stop in _functions(text):
-        if name not in {"event_enter_zone", "event_enter", "event_loot", "event_killed_merit"}:
+        if name not in {
+            "event_enter_zone",
+            "event_enter",
+            "event_loot",
+            "event_killed_merit",
+        }:
             continue
         if "loot" in name:
             kind = "loot"
@@ -1257,12 +1450,26 @@ def _zone_events(edges: list[dict], text: str, npc_id: str) -> None:
             if holds:
                 group = source + "#holds:" + "+".join(str(item_id) for item_id, _op in holds)
             for item_id, op in holds:
-                edge = {"kind": "edge", "rel": "needs", "from": source, "to": f"item:{item_id}", "item": item_id, "group": group}
+                edge = {
+                    "kind": "edge",
+                    "rel": "needs",
+                    "from": source,
+                    "to": f"item:{item_id}",
+                    "item": item_id,
+                    "group": group,
+                }
                 if op:
                     edge["op"] = op
                 edges.append(edge)
             for flag, at in flags:
-                edge = {"kind": "edge", "rel": "needs", "from": source, "to": f"flag:{flag}", "flag": flag, "at": at}
+                edge = {
+                    "kind": "edge",
+                    "rel": "needs",
+                    "from": source,
+                    "to": f"flag:{flag}",
+                    "flag": flag,
+                    "at": at,
+                }
                 if holds:
                     edge["group"] = group
                 edges.append(edge)
@@ -1291,14 +1498,26 @@ def _zone_events(edges: list[dict], text: str, npc_id: str) -> None:
                 )
             for name, value in sets:
                 edges.append(
-                    {"kind": "edge", "rel": "sets", "from": source, "to": f"flag:{name}", "flag": name, "value": value, "group": group}
+                    {
+                        "kind": "edge",
+                        "rel": "sets",
+                        "from": source,
+                        "to": f"flag:{name}",
+                        "flag": name,
+                        "value": value,
+                        "group": group,
+                    }
                 )
             for npc_type, spawn_name in spawns:
                 edges.append(_spawn_edge(source, npc_type, spawn_name, group))
     _other_summons(edges, text, npc_id)
 
 
-def _recipe_owner(text: str, span: tuple[int, int, int, int], branches: list[tuple[int, int, int, int]]) -> int:
+def _recipe_owner(
+    text: str,
+    span: tuple[int, int, int, int],
+    branches: list[tuple[int, int, int, int]],
+) -> int:
     """The recipe_id check that wraps this branch, including an if nested inside the combine."""
     owners = [span]
     owners.extend(branch for branch in branches if branch != span and branch[0] <= span[0] and span[3] <= branch[3])
@@ -1319,7 +1538,12 @@ def _body_events(block: str, origin: int) -> list[tuple[int, dict]]:
         for offset, item_id in enumerate(_quest_reward_items(body)):
             found.append((origin + match.start() + offset, {"rel": "gives", "item": item_id}))
     for match in _GLOBAL.finditer(block):
-        found.append((origin + match.start(), {"rel": "sets", "flag": match.group(1), "value": match.group(2)}))
+        found.append(
+            (
+                origin + match.start(),
+                {"rel": "sets", "flag": match.group(1), "value": match.group(2)},
+            )
+        )
     for match in _ZONE_FLAG_SET.finditer(block):
         found.append(
             (
@@ -1342,7 +1566,12 @@ def _body_events(block: str, origin: int) -> list[tuple[int, dict]]:
         spawned.add(npc_type)
         line_end = block.find("\n", match.start())
         line = block[match.start() : line_end if line_end >= 0 else len(block)]
-        found.append((origin + match.start(), {"rel": "spawns", "npc": npc_type, "name": _comment_name(line)}))
+        found.append(
+            (
+                origin + match.start(),
+                {"rel": "spawns", "npc": npc_type, "name": _comment_name(line)},
+            )
+        )
     for npc_type, name in _spawn_calls(block):
         if npc_type in spawned:
             continue
@@ -1399,7 +1628,15 @@ def _emit_body(edges: list[dict], events: list[tuple[int, dict]], source: str, n
 
 def _other_summons(edges: list[dict], text: str, npc_id: str) -> None:
     """A summon, spawn, or flag write outside a say, such as a timer, a death, or a Perl helper."""
-    skip = {"event_say", "event_trade", "event_item", "event_enter_zone", "event_enter", "event_loot", "event_killed_merit"}
+    skip = {
+        "event_say",
+        "event_trade",
+        "event_item",
+        "event_enter_zone",
+        "event_enter",
+        "event_loot",
+        "event_killed_merit",
+    }
     branches = _branch_index(text)
     for name, start, stop in _functions(text):
         if name in skip or start < 0:
@@ -1423,7 +1660,15 @@ def _other_summons(edges: list[dict], text: str, npc_id: str) -> None:
         for lo, hi, holes in spans:
             snippet = _without(text, lo, hi, holes)
             for item_id in _reward_ids(snippet):
-                edges.append({"kind": "edge", "rel": "gives", "from": npc_id, "to": f"item:{item_id}", "group": group})
+                edges.append(
+                    {
+                        "kind": "edge",
+                        "rel": "gives",
+                        "from": npc_id,
+                        "to": f"item:{item_id}",
+                        "group": group,
+                    }
+                )
             for match in _GROUND.finditer(snippet):
                 edges.append(
                     {
@@ -1641,7 +1886,10 @@ class QuestGraph:
         for edge in self.edges:
             if edge.get("rel") != "receives" or edge.get("group") != group:
                 continue
-            item_id = _item_id(edge.get("to"))
+            token = edge.get("to")
+            if not isinstance(token, str):
+                continue
+            item_id = _item_id(token)
             if item_id:
                 found.append((item_id, max(1, int(edge.get("count") or 1))))
         return found
@@ -1701,7 +1949,7 @@ class QuestGraph:
         return sorted(found, key=lambda node: (node.zone, node.npc, node.word, node.item_id))[0]
 
 
-def build_graph(root: str, catalog=None) -> QuestGraph:
+def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
     """Walk every zone folder under projecteqquests. Plugins are not zones."""
     graph = QuestGraph()
     base = Path(root)
@@ -1719,8 +1967,9 @@ def build_graph(root: str, catalog=None) -> QuestGraph:
                 item_ids.update(node.item_id for node in nodes if node.item_id)
             for edge in link_script(text, path.name, zone, catalog):
                 graph.edges.append(edge)
-                if str(edge.get("to", "")).startswith("item:"):
-                    item_ids.add(int(edge["to"].split(":", 1)[1]))
+                token = edge.get("to", "")
+                if isinstance(token, str) and token.startswith("item:"):
+                    item_ids.add(int(token.split(":", 1)[1]))
             for door_id, destinations in door_destinations(text).items():
                 known = graph.doors.setdefault(zone, {}).setdefault(door_id, [])
                 for zone_id in destinations:
@@ -1731,15 +1980,17 @@ def build_graph(root: str, catalog=None) -> QuestGraph:
     ground_zones: dict[int, list[str]] = {}
     spawn_zones: dict[int, list[str]] = {}
     for edge in graph.edges:
-        if not str(edge.get("to", "")).startswith("item:"):
+        token = edge.get("to", "")
+        if not isinstance(token, str) or not token.startswith("item:"):
             continue
-        item_id = int(edge["to"].split(":", 1)[1])
+        item_id = int(token.split(":", 1)[1])
         if edge.get("rel") == "grounds" or edge.get("zone"):
             zone = str(edge.get("zone") or "")
             if zone and zone not in ground_zones.setdefault(item_id, []):
                 ground_zones[item_id].append(zone)
         elif edge.get("rel") == "loots" and edge.get("npc"):
-            zone = str(edge.get("from", "")).split("/", 1)[0]
+            origin = edge.get("from", "")
+            zone = origin.split("/", 1)[0] if isinstance(origin, str) else ""
             if zone and zone not in spawn_zones.setdefault(item_id, []):
                 spawn_zones[item_id].append(zone)
     for item_id in sorted(item_ids):
@@ -1774,7 +2025,7 @@ def build_graph(root: str, catalog=None) -> QuestGraph:
     return graph
 
 
-def _bake_travel(graph: QuestGraph, catalog) -> None:
+def _bake_travel(graph: QuestGraph, catalog: Catalog | None) -> None:
     """Merge the saved zone graph (doors + coords + gates) into the quest graph."""
     try:
         zone_graph = ensure_zone_graph(quest_doors=graph.doors)
@@ -1783,7 +2034,7 @@ def _bake_travel(graph: QuestGraph, catalog) -> None:
     zone_graph.apply_to_quest_graph(graph)
 
 
-def _add_spawn_loot(graph: QuestGraph, catalog, item_ids: set[int]) -> None:
+def _add_spawn_loot(graph: QuestGraph, catalog: Catalog | None, item_ids: set[int]) -> None:
     """A quest-spawned NPC keeps the loot on its npc_types row even though it has no spawn2 row."""
     if not catalog:
         return
@@ -1843,12 +2094,19 @@ def _stamp_recipe(edge: dict, info: dict) -> None:
     """The skill a combine requires. skillneeded blocks the attempt. trivial is where it stops failing."""
     if "skill" not in info and "trivial" not in info:
         return
-    for key in ("skill", "skill_name", "skillneeded", "trivial", "nofail", "must_learn"):
+    for key in (
+        "skill",
+        "skill_name",
+        "skillneeded",
+        "trivial",
+        "nofail",
+        "must_learn",
+    ):
         if key in info:
             edge[key] = info[key]
 
 
-def _add_recipes(graph: QuestGraph, catalog, item_ids: set[int]) -> None:
+def _add_recipes(graph: QuestGraph, catalog: Catalog | None, item_ids: set[int]) -> None:
     """Combines from the dump. A recipe is included when a quest names it or its result."""
     if not catalog or not catalog.recipes:
         return
@@ -1892,23 +2150,45 @@ def _add_recipes(graph: QuestGraph, catalog, item_ids: set[int]) -> None:
             continue
         source = f"recipe:{recipe_id}"
         for item_id, count in info["components"]:
-            edge = {"kind": "edge", "rel": "consumes", "from": source, "to": f"item:{item_id}", "count": count}
+            edge = {
+                "kind": "edge",
+                "rel": "consumes",
+                "from": source,
+                "to": f"item:{item_id}",
+                "count": count,
+            }
             _stamp_recipe(edge, info)
             graph.edges.append(edge)
             known.add(item_id)
         container = info.get("container") or 0
         if container in world:
             graph.world[container] = world[container]
-            edge = {"kind": "edge", "rel": "container", "from": source, "to": f"world:{container}"}
+            edge = {
+                "kind": "edge",
+                "rel": "container",
+                "from": source,
+                "to": f"world:{container}",
+            }
             _stamp_recipe(edge, info)
             graph.edges.append(edge)
         elif container:
-            edge = {"kind": "edge", "rel": "container", "from": source, "to": f"item:{container}"}
+            edge = {
+                "kind": "edge",
+                "rel": "container",
+                "from": source,
+                "to": f"item:{container}",
+            }
             _stamp_recipe(edge, info)
             graph.edges.append(edge)
             known.add(container)
         for item_id, count in _result_pairs(info):
-            edge = {"kind": "edge", "rel": "produces", "from": source, "to": f"item:{item_id}", "count": count}
+            edge = {
+                "kind": "edge",
+                "rel": "produces",
+                "from": source,
+                "to": f"item:{item_id}",
+                "count": count,
+            }
             _stamp_recipe(edge, info)
             graph.edges.append(edge)
             known.add(item_id)
@@ -1944,12 +2224,22 @@ def write_graph(graph: QuestGraph, path: str) -> None:
     for type_id, info in sorted(graph.world.items()):
         lines.append(
             json.dumps(
-                {"kind": "world", "id": type_id, "name": info.get("name", ""), "zones": list(info.get("zones") or [])},
+                {
+                    "kind": "world",
+                    "id": type_id,
+                    "name": info.get("name", ""),
+                    "zones": list(info.get("zones") or []),
+                },
                 ensure_ascii=True,
             )
         )
     for item_id, info in sorted(graph.items.items()):
-        row = {"kind": "item", "item": item_id, "name": info.get("name", ""), "zones": info.get("zones", [])}
+        row = {
+            "kind": "item",
+            "item": item_id,
+            "name": info.get("name", ""),
+            "zones": info.get("zones", []),
+        }
         if info.get("sources"):
             row["sources"] = info["sources"]
         if info.get("classes"):
@@ -1959,7 +2249,12 @@ def write_graph(graph: QuestGraph, path: str) -> None:
         lines.append(json.dumps(row, ensure_ascii=True))
     for zone, doors in sorted(graph.doors.items()):
         for door_id, destinations in sorted(doors.items()):
-            lines.append(json.dumps({"zone": zone, "door": door_id, "to": destinations}, ensure_ascii=True))
+            lines.append(
+                json.dumps(
+                    {"zone": zone, "door": door_id, "to": destinations},
+                    ensure_ascii=True,
+                )
+            )
     destination.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
 
 
@@ -1979,7 +2274,10 @@ def read_graph(path: str | os.PathLike) -> QuestGraph:
             graph.edges.append(row)
             continue
         if kind == "world":
-            graph.world[int(row["id"])] = {"name": row.get("name", ""), "zones": list(row.get("zones") or [])}
+            graph.world[int(row["id"])] = {
+                "name": row.get("name", ""),
+                "zones": list(row.get("zones") or []),
+            }
             continue
         if kind == "item":
             item_id = int(row.get("item") or 0)
@@ -2015,7 +2313,7 @@ def read_graph(path: str | os.PathLike) -> QuestGraph:
     return graph
 
 
-def ensure_graph(root: str | None = None, path: str | None = None, *, rebuild: bool = False):
+def ensure_graph(root: str | None = None, path: str | None = None, *, rebuild: bool = False) -> QuestGraph:
     """Load quest_graph.jsonl, or build once from EQEMU_QUESTS."""
     path = path or os.environ.get("EQEMU_GRAPH", str(Path.home() / ".eqclient" / "quest_graph.jsonl"))
     file = Path(path)

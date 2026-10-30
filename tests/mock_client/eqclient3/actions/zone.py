@@ -21,7 +21,7 @@ class Zone(Action):
         self.destination = destination
         self.asked = False
 
-    def opcodes(self) -> tuple[object, ...]:
+    def opcodes(self) -> tuple[str, ...]:
         return ("OP_NewZone",)
 
     def suspend(self) -> None:
@@ -39,7 +39,13 @@ class Zone(Action):
         point = world.position
         loop.send(
             "OP_ZoneChange",
-            zone_packet(self.destination, zone_id(self.destination), point[0], point[1], point[2]),
+            zone_packet(
+                self.destination,
+                zone_id(self.destination),
+                point[0],
+                point[1],
+                point[2],
+            ),
         )
         self.asked = True
         self.wait("ZONE")

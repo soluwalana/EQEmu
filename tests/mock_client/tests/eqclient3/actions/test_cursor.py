@@ -47,8 +47,9 @@ class CursorTest(unittest.TestCase):
         self.assertNotIn("OP_MoveItem", opcodes(client))
         action.step(client, sheet)
         self.assertEqual(opcodes(client), ["OP_MoveItem"])
-        src, dest, _pad = struct.unpack("<III", client.outbound[0][1])
-        self.assertEqual((src, dest), (22, 30))
+        src = struct.unpack_from("<h", client.outbound[0][1], 4)[0]
+        dest = struct.unpack_from("<h", client.outbound[0][1], 16)[0]
+        self.assertEqual((src, dest), (23, 33))
         self.assertEqual(action.waiting, ["CURSOR"])
 
 

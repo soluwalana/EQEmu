@@ -19,7 +19,7 @@ class Hold(Action):
         self.priority = 100
         self.spawn_id = spawn_id
 
-    def opcodes(self) -> tuple[object, ...]:
+    def opcodes(self) -> tuple[str, ...]:
         return ("OP_BecomeCorpse",)
 
     def suspend(self) -> None:

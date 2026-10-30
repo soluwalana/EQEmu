@@ -1,18 +1,40 @@
 """Zone entry, an open ZoneChange, a closed session, and a reliable-stream hole."""
+
 from __future__ import annotations
 
 from eqclient3.log import log
 from eqclient3.actions.bots.form import Form
 from eqclient3.actions.read_tasks import ReadTasks
 from eqclient3.actions.zone import Zone
-from eqclient3.handlers.common import call_transfer, character_name, form_commands, mobs_map, session_open, tutorial_done, zone_name
+from eqclient3.handlers.common import (
+    call_transfer,
+    character_name,
+    form_commands,
+    mobs_map,
+    session_open,
+    tutorial_done,
+    zone_name,
+)
 from eqclient3.handlers.common import enqueue_once as append_action
-from eqclient3.structs import EQStruct, OP_NewZone, OP_ReliableHole, OP_RequestClientZoneChange, OP_ZoneChange
+from eqclient3.structs import (
+    EQStruct,
+    OP_NewZone,
+    OP_ReliableHole,
+    OP_RequestClientZoneChange,
+    OP_ZoneChange,
+)
 from eqclient3.handler import Handler
-TUTORIAL = 'tutorialb'
+
+TUTORIAL = "tutorialb"
+
 
 class ZoningHandler(Handler):
-    opcodes = ('OP_NewZone', 'OP_ZoneChange', 'OP_RequestClientZoneChange', 'OP_ReliableHole')
+    opcodes = (
+        "OP_NewZone",
+        "OP_ZoneChange",
+        "OP_RequestClientZoneChange",
+        "OP_ReliableHole",
+    )
 
     def on(self, opcode: str, payload: EQStruct) -> None:
         if isinstance(payload, OP_ReliableHole):
@@ -40,19 +62,19 @@ class ZoningHandler(Handler):
         world.ground.clear()
         self.drop_npc_corpses()
         if short.lower() == TUTORIAL:
-            self.mark_started('tutorial_started')
+            self.mark_started("tutorial_started")
             if not tutorial_done(self.loop, world):
-                append_action(self.loop, world, ReadTasks(), 'read_tasks:tutorialb')
+                append_action(self.loop, world, ReadTasks(), "read_tasks:tutorialb")
             return
         action = Form(short, form_commands(world, self.loop))
-        append_action(self.loop, world, action, f'form:{short}')
+        append_action(self.loop, world, action, f"form:{short}")
 
     def mark_started(self, name: str) -> None:
         """Remember on the character, and in the journal, that this progress has started."""
         world = self.world
-        if name == 'tutorial_started':
+        if name == "tutorial_started":
             world.tutorial_started = True
-        elif name == 'quest_started':
+        elif name == "quest_started":
             world.quest_started = True
         journal = self.loop.journal
         who = character_name(self.loop, world)
@@ -67,7 +89,10 @@ class ZoningHandler(Handler):
     def drop_npc_corpses(self) -> None:
         """A zone change drops a dead NPC. A body with a Reclaim on the queue stays."""
         world = self.world
-        own = {action.corpse_id for action in self.loop.queue if type(action).__name__ == 'Reclaim'}
+        queue = self.loop.queue
+        own = (
+            {action.corpse_id for action in queue if type(action).__name__ == "Reclaim"} if queue is not None else set()
+        )
         own.add(world.self_id)
         for spawn_id, mob in list(mobs_map(world).items()):
             if mob.dead and spawn_id not in own:
@@ -85,7 +110,7 @@ class ZoningHandler(Handler):
         if zone_id == world.zone_id and world.zone:
             return
         name = zone_name(world, zone_id)
-        append_action(loop, world, Zone(name), f'zone:{name}')
+        append_action(loop, world, Zone(name), f"zone:{name}")
 
     def request(self, payload: OP_RequestClientZoneChange) -> None:
         """The server asked us to move. A different zone is confirmed with OP_ZoneChange.
@@ -104,4 +129,7 @@ class ZoningHandler(Handler):
         if not session_open(loop):
             call_transfer(loop)
             return
-        loop.send('OP_ZoneChange', OP_ZoneChange(character_name(loop, world), zone_id, x, y, z).serialize())
+        loop.send(
+            "OP_ZoneChange",
+            OP_ZoneChange(character_name(loop, world), zone_id, x, y, z).serialize(),
+        )

@@ -11,8 +11,7 @@ from eqclient3.world import Mob
 
 
 def slot_of(payload):
-    _corpse, _player, slot, _pad, _auto = struct.unpack("<IIH2sI", payload)
-    return slot
+    return struct.unpack_from("<H", payload, 8)[0]
 
 
 class LootMobSteps(unittest.TestCase):

@@ -2,7 +2,7 @@
 
 from eqclient3.action import Action
 from eqclient3.journal import Journal
-from eqclient3.reset_character import reset
+from eqclient3.scripts.reset_character import reset
 from eqclient3.world import World
 
 

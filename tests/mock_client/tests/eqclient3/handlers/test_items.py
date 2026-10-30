@@ -6,7 +6,7 @@ from eqclient3.actions.loot_mob import LootMob
 from eqclient3.actions.trade import Trade
 from eqclient3.handlers import items, mobs
 from eqclient3.inventory import assign as assign_mod
-from eqclient3.structs import OP_ClientUpdate
+from eqclient3.structs import OP_ClientUpdate, OP_ShopDelItem
 from support import Loop, World, item_blob, names
 
 
@@ -29,7 +29,9 @@ def test_opcodes():
     loop.append(shop)
     items.ItemsHandler().handle("OP_ItemPacket", item_blob(0x64, 1, 50, name="Ration", price=12), world, loop)
     assert shop.slots[1] == (50, 12)
-    items.ItemsHandler().handle("OP_ShopDelItem", struct.pack("<III", 0, 0, 1), world, loop)
+    removed = OP_ShopDelItem(0, 0, 1).serialize()
+    assert len(removed) == 16
+    items.ItemsHandler().handle("OP_ShopDelItem", removed, world, loop)
     assert 1 not in shop.slots
 
     opened = LootMob(3, (0.0, 0.0, 0.0))
@@ -46,13 +48,19 @@ def test_inventory_and_client_update_queue_an_occupied_cursor():
         world = World()
         loop = Loop()
         world.class_id = 1
-        items.ItemsHandler().handle("OP_CharInventory", item_blob(None, 30, 67104, name="Vambraces"), world, loop)
+        items.ItemsHandler().handle(
+            "OP_CharInventory",
+            item_blob(None, 30, 67104, name="Vambraces"),
+            world,
+            loop,
+        )
         assert world.cursor == 67104
         assert names(loop) == ["Cursor"]
         assert loop.queue[0].move == (30, 7)
         loop.queue[0].step(loop, world)
-        src, dest, _count = struct.unpack("<III", loop.sent[0][1])
-        assert (src, dest) == (30, 7)
+        src = struct.unpack_from("<h", loop.sent[0][1], 4)[0]
+        dest = struct.unpack_from("<h", loop.sent[0][1], 16)[0]
+        assert (src, dest) == (33, 7)
 
         held = World()
         held.cursor = 67104

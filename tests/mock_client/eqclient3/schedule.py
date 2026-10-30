@@ -3,6 +3,7 @@
 append stamps insert from a monotonic counter, started from the clock, and zone
 from the world. A higher band suspends the loser. Bands are each action's priority.
 """
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
@@ -15,13 +16,14 @@ if TYPE_CHECKING:
 
 import time
 
+
 class Schedule:
 
     def __init__(self) -> None:
         self._next = 0
         self._actions: list = []
-        self.journal = None
-        self.character = ''
+        self.journal: Journal | None = None
+        self.character = ""
 
     def __iter__(self) -> Iterator[Action]:
         return iter(list(self._actions))
@@ -35,14 +37,20 @@ class Schedule:
     def bind(self, journal: Journal, character: str) -> None:
         """Journal and character used when append is not given them."""
         self.journal = journal
-        self.character = character or ''
+        self.character = character or ""
 
     def has_source(self, source: str) -> bool:
         if not source:
             return False
         return any((action.source == source for action in self._actions))
 
-    def append(self, action: Action, world: World, journal: Journal | None = None, character: str | None = None) -> bool:
+    def append(
+        self,
+        action: Action,
+        world: World,
+        journal: Journal | None = None,
+        character: str | None = None,
+    ) -> bool:
         """Stamp insert, started, and zone. A known source is not queued twice.
 
         A source already on this queue, or already resolved in the journal, is
@@ -50,7 +58,7 @@ class Schedule:
         """
         journal = self.journal if journal is None else journal
         who = self.character if character is None else character
-        source = str(action.source or '')
+        source = str(action.source or "")
         if source and self.has_source(source):
             return False
         if source and journal is not None and who and journal.is_resolved(who, source):
@@ -60,7 +68,7 @@ class Schedule:
         self._next += 1
         action.insert = self._next
         action.started = time.time()
-        action.zone = str(world.zone or '')
+        action.zone = str(world.zone or "")
         action._world = world
         if source and journal is not None and who:
             if not journal.open_action(who, action):
@@ -70,7 +78,7 @@ class Schedule:
 
     def restore(self, action: Action) -> bool:
         """Put a journal row back. Keeps zone and started. Stamps insert when it is 0."""
-        source = str(action.source or '')
+        source = str(action.source or "")
         if source and self.has_source(source):
             return False
         if action.insert:
@@ -89,9 +97,12 @@ class Schedule:
     def winner(self) -> Action | None:
         if not self._actions:
             return None
-        return min(self._actions, key=lambda action: (-action.priority, type(action).key(action)))
+        return min(
+            self._actions,
+            key=lambda action: (-action.priority, type(action).key(action)),
+        )
 
-    def suspend_loser(self, winner: Action) -> None:
+    def suspend_loser(self, winner: Action | None) -> None:
         """A higher band suspends the action that was running. The subject stays."""
         if winner is None:
             return

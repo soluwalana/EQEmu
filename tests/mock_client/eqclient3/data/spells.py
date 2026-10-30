@@ -12,20 +12,16 @@ from __future__ import annotations
 
 import json
 import os
+from collections.abc import Iterable, Iterator
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Protocol
 
 from eqclient3.data.builds import build_for
 from eqclient3.data.cache_builders.common import peq_path
 from eqclient3.data.catalog import _table, _tuple
-from eqclient3.net.decode import body
-from eqclient3.structs import OP_MemorizeSpell, OP_MoveItem
-
-CURSOR = 30
 
 ITEM_SPELL = 20
-SCRIBE = 0
-MEMORIZE = 1
 BOOK_SLOTS = 400
 GEM_SLOTS = 8
 EMPTY = {0, 0xFFFFFFFF}
@@ -39,7 +35,7 @@ def is_scroll(name: str, item_type: int, effect: int) -> bool:
     return not lowered.startswith("tome of ") and not lowered.startswith("skill:")
 
 
-def book_from(words) -> dict[int, int]:
+def book_from(words: Iterable[int]) -> dict[int, int]:
     return {index: spell for index, spell in enumerate(words) if spell not in EMPTY}
 
 
@@ -62,13 +58,78 @@ def gem_for(role: str, roles: tuple[str, ...], gems: dict[int, int]) -> int | No
     return None
 
 
-def _role_of(name: str) -> str:
-    # quests.conduct is not in this tree.
-    from eqclient3.quests.conduct import role_of
-    return role_of(name)
+# Classic DD / AE names rarely contain the word "nuke".
+_NUKE_HINTS = (
+    "shock of",
+    "blast of",
+    "burst of",
+    "fire bolt",
+    "frost bolt",
+    "lava bolt",
+    "lightning bolt",
+    "fire flux",
+    "fingers of fire",
+    "chaotic feedback",
+    "chaos flux",
+    "color flux",
+    "shallow breath",
+    "whirl till",
+    "suffocating sphere",
+    "force strike",
+    "flame bolt",
+    "ignite",
+    "scorch",
+    "ice comet",
+    "column of",
+    "rain of",
+)
+_ROLES = (
+    "heal",
+    "root",
+    "snare",
+    "slow",
+    "mez",
+    "stun",
+    "dot",
+    "nuke",
+    "pet",
+    "haste",
+    "rez",
+    "summon",
+    "lifetap",
+    "port",
+    "buff",
+    "shield",
+    "mend",
+)
 
 
-def spell_step(inventory, class_id: int) -> tuple[str, int, str] | None:
+def role_of(name: str) -> str:
+    text = name.lower()
+    for role in _ROLES:
+        if role in text:
+            return role
+    if "complete heal" in text or text.endswith(" heal") or " healing" in text:
+        return "heal"
+    if any(hint in text for hint in _NUKE_HINTS) or text.endswith(" bolt"):
+        return "nuke"
+    return ""
+
+
+class _Scroll(Protocol):
+    scroll_spell: int
+    name: str
+
+
+class _SpellBag(Protocol):
+    scribed: Iterable[int]
+    memorized: dict[int, int]
+    spell_names: dict[int, str]
+
+    def scroll(self) -> _Scroll | None: ...
+
+
+def spell_step(inventory: _SpellBag, class_id: int) -> tuple[str, int, str] | None:
     """Scribe a scroll he is holding. Memorize only after that spell is in the book."""
     scroll = inventory.scroll()
     if scroll is not None:
@@ -80,76 +141,12 @@ def spell_step(inventory, class_id: int) -> tuple[str, int, str] | None:
     for spell_id in inventory.scribed:
         if spell_id in inventory.memorized.values():
             continue
-        role = _role_of(inventory.spell_names.get(spell_id, ""))
+        role = role_of(inventory.spell_names.get(spell_id, ""))
         if role not in roles:
             continue
         if gem_for(role, roles, inventory.memorized) is None:
             continue
         return ("memorize", spell_id, role)
-    return None
-
-
-def scribe_due(state: State) -> bool:
-    return _tick_scroll(state) is not None or _tick_gem(state) is not None
-
-
-def scribe_actions(state: State) -> list:
-    """Move a scroll to the cursor, write the book, then load the gem."""
-    found = _tick_scroll(state)
-    if found is not None:
-        slot, held = found
-        if slot != CURSOR:
-            return [("op", "OP_MoveItem", OP_MoveItem(int(slot), CURSOR).serialize())]
-        book_slot = open_book_slot(state.book)
-        if book_slot is None:
-            return []
-        return [("op", "OP_MemorizeSpell", OP_MemorizeSpell(int(book_slot), int(held.scroll_spell), SCRIBE).serialize())]
-    waiting = _tick_gem(state)
-    if waiting is None:
-        return []
-    slot, spell_id, _role = waiting
-    return [("op", "OP_MemorizeSpell", OP_MemorizeSpell(int(slot), int(spell_id), MEMORIZE).serialize())]
-
-
-def note_memorize(state: State, payload: bytes) -> None:
-    row = body("OP_MemorizeSpell", payload)
-    if row is None:
-        return
-    slot, spell_id, scribing = row.slot, row.spell_id, row.scribing
-    if int(scribing) == SCRIBE:
-        state.book[int(slot)] = int(spell_id)
-        state.scribed.add(int(spell_id))
-    elif int(scribing) == MEMORIZE:
-        state.memorized[int(slot)] = int(spell_id)
-
-
-def _tick_scroll(state: State):
-    for slot, item_id in state.slots.items():
-        held = state.by_id.get(int(item_id))
-        if held is None or held.scroll_spell <= 0 or held.item_type != 20:
-            continue
-        if held.scroll_spell in state.scribed:
-            continue
-        lowered = (held.name or "").lower()
-        if lowered.startswith("tome of ") or lowered.startswith("skill:"):
-            continue
-        return int(slot), held
-    return None
-
-
-def _tick_gem(state: State):
-    build = build_for(state.world.class_id or 1)
-    roles = build.gems if build is not None else ()
-    for spell_id in state.scribed:
-        if spell_id in state.memorized.values():
-            continue
-        role = _role_of(state.spell_names.get(spell_id, ""))
-        if role not in roles:
-            continue
-        slot = gem_for(role, roles, state.memorized)
-        if slot is None:
-            continue
-        return slot, spell_id, role
     return None
 
 
@@ -223,7 +220,7 @@ class SpellBook:
         return found
 
 
-def spells_from_lines(lines) -> SpellBook:
+def spells_from_lines(lines: Iterable[str]) -> SpellBook:
     """Class, level, and name for every spell that has a scroll in the dump."""
     mode = ""
     spells: dict[int, tuple[str, tuple[int, ...]]] = {}
@@ -346,7 +343,41 @@ _SEEK_SOURCE = ("forage:", "fishing:", "ground:", "loot:")
 _SEEK_EDGE = {"gives", "loots", "grounds", "produces", "buys", "sells"}
 
 
-def _graph_can_seek(graph, item_id: int, merchants=None, recipes=None, drops=None) -> bool:
+class _Sellers(Protocol):
+    def sells(self, item_id: int) -> bool: ...
+
+
+class _Crafter(Protocol):
+    def for_item(self, item_id: int) -> object | None: ...
+
+
+class _DropList(Protocol):
+    def drops(self, item_id: int) -> bool: ...
+
+
+class _SeekGraph(Protocol):
+    items: dict[int, dict]
+    edges: list[dict]
+    edges_to: dict[str, tuple]
+    _indexed: bool
+
+
+class _Campaign(Protocol):
+    stack: list[int]
+    counts: dict[int, int]
+
+    def load_stack(self, kept: list[int], counts: dict[int, int]) -> None: ...
+
+    def assign_goal(self, item_id: int, graph: _SeekGraph | None = None) -> bool: ...
+
+
+def _graph_can_seek(
+    graph: _SeekGraph | None,
+    item_id: int,
+    merchants: _Sellers | None = None,
+    recipes: _Crafter | None = None,
+    drops: _DropList | None = None,
+) -> bool:
     """True when the obtain stack has a giver, a recipe, a drop, or a vendor for this scroll."""
     if merchants is not None and merchants.sells(item_id):
         return True
@@ -356,34 +387,35 @@ def _graph_can_seek(graph, item_id: int, merchants=None, recipes=None, drops=Non
         return True
     if graph is None:
         return True
-    info = (getattr(graph, "items", None) or {}).get(item_id) or {}
-    if any(str(source).startswith(_SEEK_SOURCE) for source in info.get("sources") or ()):
+    info = graph.items.get(item_id) or {}
+    sources = info.get("sources") or ()
+    if any(str(source).startswith(_SEEK_SOURCE) for source in sources):
         return True
     token = f"item:{item_id}"
-    if getattr(graph, "_indexed", False):
+    if graph._indexed:
         return any(edge.get("rel") in _SEEK_EDGE for edge in graph.edges_to.get(token, ()))
-    for edge in getattr(graph, "edges", ()) or ():
+    for edge in graph.edges:
         if str(edge.get("to")) == token and edge.get("rel") in _SEEK_EDGE:
             return True
     return False
 
 
-def _lines(path: str):
+def _lines(path: str) -> Iterator[str]:
     with open(path, encoding="latin1", errors="replace") as handle:
         yield from handle
 
 
 def apply_spell_goals(
-    campaign,
+    campaign: _Campaign,
     book: SpellBook,
     class_id: int,
     level: int,
     scribed: set[int],
     held: set[int],
-    graph=None,
-    merchants=None,
-    recipes=None,
-    drops=None,
+    graph: _SeekGraph | None = None,
+    merchants: _Sellers | None = None,
+    recipes: _Crafter | None = None,
+    drops: _DropList | None = None,
 ) -> tuple[int, list[str]] | None:
     """Drop scrolls for spells already in the book, and push one item id per spell still missing.
 

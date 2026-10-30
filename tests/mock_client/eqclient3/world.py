@@ -3,6 +3,7 @@
 Our bodies are Reclaim actions on the queue. NPC bodies are LootMob actions.
 The player stats, inventory, and tutorial and quest started flags live on character.
 """
+
 from __future__ import annotations
 import math
 from dataclasses import dataclass
@@ -11,9 +12,11 @@ from typing import Literal
 from eqclient3.struct_helpers import eq_heading
 from .log import log
 
-from .nav.maps import load_map as _load_zone_map
+from .nav.maps import ZoneMap, load_map as _load_zone_map
+from .nav.water import WaterMap
 
 RosterMode = Literal["party", "raid"]
+
 
 class Faction:
     """One faction. amount stays None until a server message confirms it.
@@ -27,6 +30,7 @@ class Faction:
         self.maxed = maxed
         self.changed = changed
 
+
 @dataclass
 class Door:
     id: int
@@ -37,6 +41,7 @@ class Door:
     open_type: int = 0
     opened: bool = False
 
+
 @dataclass
 class GroundSpawn:
     id: int
@@ -45,6 +50,7 @@ class GroundSpawn:
     y: float
     z: float
     used: bool = False
+
 
 @dataclass
 class Bot:
@@ -63,6 +69,7 @@ class Bot:
 class Consider:
     standing: int = 0
     level_color: int = 0
+    name: str = ""
 
 
 class Abilities:
@@ -132,24 +139,35 @@ class Bots:
         self.roster: list[Bot] = []
         self.rotation: list[str] = []
 
+
 class Mob:
     """One spawn. distance and direction are refreshed from our position."""
 
-    def __init__(self, id: int, name: str='', npc: int=0, level: int=0, position: tuple[float, float, float]=(0.0, 0.0, 0.0), hp: int=0) -> None:
+    def __init__(
+        self,
+        id: int,
+        name: str = "",
+        npc: int = 0,
+        level: int = 0,
+        position: tuple[float, float, float] = (0.0, 0.0, 0.0),
+        hp: int = 0,
+        last_name: str = "",
+    ) -> None:
         self.id = id
         self.name = name
+        self.last_name = last_name or ""
         self.npc = npc
         self.level = level
         self.body = 0
         self.class_id = 0
         self.race = 0
-        self.hp = hp
-        self.max_hp = 0
+        self.hp: int = hp
+        self.max_hp: int = 0
         self.mana: int | None = None
         self.max_mana: int | None = None
         self.consider: Consider | None = None
         self.faction_id = 0
-        self.faction_last_considered = None
+        self.faction_last_considered: int | None = None
         self.targeted = False
         self.dead = False
         self._consider_sent = False
@@ -159,6 +177,16 @@ class Mob:
         self._world: World | None = None
         self._position = (0.0, 0.0, 0.0)
         self.position = position
+
+    def spoken_name(self) -> str:
+        """The name you hail. A trailing 000 is the unique suffix, and the last name is his title."""
+        kept = []
+        for ch in (self.name or "").replace("_", " "):
+            if ch.isalpha() or ch in " '-`":
+                kept.append(ch)
+            else:
+                kept.append(" ")
+        return " ".join("".join(kept).split())
 
     @property
     def spawn_id(self) -> int:
@@ -198,6 +226,7 @@ class Mob:
         if self._world is not None:
             self._world.measure(self)
 
+
 class MobMap(dict[int, Mob]):
     """mobs[id] = Mob. Assigning a mob attaches it and measures distance."""
 
@@ -209,6 +238,7 @@ class MobMap(dict[int, Mob]):
         mob._world = self._world
         super().__setitem__(key, mob)
         self._world.measure(mob)
+
 
 class World:
 
@@ -244,7 +274,7 @@ class World:
         self.mobs = MobMap(self)
         self.doors: dict[int, Door] = {}
         self.ground: dict[int, GroundSpawn] = {} if ground is None else ground
-        self.water_map = None
+        self.water_map: WaterMap | None = None
         self.group = GroupRoster("party")
         self.leader = ""
         self.raid = GroupRoster("raid")
@@ -252,8 +282,8 @@ class World:
         self.spells: dict[int, int] = {}
         self.gems: dict[int, int] = {}
         self.buffs: dict[tuple[int, int], object] = {}
-        self.task_book = None
-        self.tasks = None
+        self.task_book: object | None = None
+        self.tasks: object | None = None
         self.pending_death: int | None = None
         self.pending_corpse: int = 0
         self.pending_where: tuple[float, float, float] | None = None
@@ -279,7 +309,7 @@ class World:
         self.faction_names: dict = {}
         self.faction_quests: list = []
         self.faction_npcs: list = []
-        self.reachable: set = set()
+        self.reachable: set[str] = set()
         self.forage_found = False
         self.leader_point: tuple[float, float, float] | None = None
         self.camps: dict = {}
@@ -288,12 +318,13 @@ class World:
         self.guildmaster = 0
         self.rezz_payload = None
         self.rest_mana = False
-        self.cursor_move = None
+        self.cursor_move: tuple[int, int] | None = None
         self.pending_swap = None
         self.quest_items: set = set()
         self.station = None
-        self.mesh = None
+        self.mesh: ZoneMap | None = None
         from eqclient3.movement import Movement
+
         self.movement = Movement(self)
 
     @property
@@ -643,7 +674,7 @@ class World:
         means the shot is clear.
         """
         start = self.position
-        end = tuple(mob.position)
+        end = mob.position
         mesh = self.mesh if self.mesh is not None else _zone_mesh(self.zone)
         if mesh is None:
             return True
@@ -651,7 +682,7 @@ class World:
 
     def faction(self, faction_id: int) -> Faction:
         found = self.factions.get(faction_id)
-        if found is None:
+        if not found:
             found = Faction()
             self.factions[faction_id] = found
         return found
@@ -663,9 +694,11 @@ class World:
             total += 1
         return total
 
-_loaded: dict[str, object | None] = {}
 
-def _zone_mesh(zone: str) -> object | None:
+_loaded: dict[str, ZoneMap | None] = {}
+
+
+def _zone_mesh(zone: str) -> ZoneMap | None:
     """The zone mesh, or None when the zone file cannot be read. A miss is tried again later."""
     if not zone:
         return None

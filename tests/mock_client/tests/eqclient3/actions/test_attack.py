@@ -35,7 +35,11 @@ class AttackTest(unittest.TestCase):
         self.assertEqual(commands(client), [])
         action.step(client, sheet)
         self.assertEqual(opcodes(client), ["OP_TargetMouse", "OP_Consider"])
-        inbox(action, "OP_Consider", struct.pack("<IIIIIIBBBB", 0, body.id, 0, 0, 0, 0, 0, 0, 0, 0))
+        inbox(
+            action,
+            "OP_Consider",
+            struct.pack("<IIIIIIBBBB", 0, body.id, 0, 0, 0, 0, 0, 0, 0, 0),
+        )
         action.step(client, sheet)
         self.assertEqual(commands(client), ["^attack", "^pet_attack"])
         self.assertIn("OP_AutoAttack", opcodes(client))
@@ -61,7 +65,13 @@ class AttackTest(unittest.TestCase):
         client, sheet = fresh()
         mob(sheet, 8, distance=10, targeted=True)
         sheet.gems[2] = 50
-        sheet.spell_info = {50: type("S", (), {"mana": 10, "recast": 6, "combat": True, "heal": False, "cure": None})()}
+        sheet.spell_info = {
+            50: type(
+                "S",
+                (),
+                {"mana": 10, "recast": 6, "combat": True, "heal": False, "cure": None},
+            )()
+        }
         sheet.mana = 100
         action = Attack(8)
         action.step(client, sheet)
@@ -76,7 +86,13 @@ class AttackTest(unittest.TestCase):
         sheet.max_hp = 100
         sheet.mana = 100
         sheet.gems[1] = 40
-        sheet.spell_info = {40: type("S", (), {"mana": 10, "recast": 6, "heal": True, "combat": False, "cure": None})()}
+        sheet.spell_info = {
+            40: type(
+                "S",
+                (),
+                {"mana": 10, "recast": 6, "heal": True, "combat": False, "cure": None},
+            )()
+        }
         action = Attack(8)
         action.step(client, sheet)
         self.assertEqual(opcodes(client).count("OP_CastSpell"), 1)
@@ -84,7 +100,7 @@ class AttackTest(unittest.TestCase):
         client.outbound.clear()
         action.step(client, sheet)
         self.assertNotIn("OP_CastSpell", opcodes(client))
-        inbox(action, "OP_HPUpdate", struct.pack("<IiH", 80, 100, 1))
+        inbox(action, "OP_HPUpdate", struct.pack("<HIi", 1, 80, 100))
         action.step(client, sheet)
         self.assertFalse(action.heal_requested)
 
@@ -94,7 +110,19 @@ class AttackTest(unittest.TestCase):
         sheet.afflictions = [(1, "poison")]
         sheet.mana = 100
         sheet.gems[3] = 41
-        sheet.spell_info = {41: type("S", (), {"mana": 10, "recast": 6, "heal": False, "combat": False, "cure": "poison"})()}
+        sheet.spell_info = {
+            41: type(
+                "S",
+                (),
+                {
+                    "mana": 10,
+                    "recast": 6,
+                    "heal": False,
+                    "combat": False,
+                    "cure": "poison",
+                },
+            )()
+        }
         action = Attack(8)
         action.step(client, sheet)
         self.assertTrue(action.cure_requested)

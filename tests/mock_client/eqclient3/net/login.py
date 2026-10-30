@@ -1,4 +1,4 @@
-"""Titanium login on UDP 5998."""
+"""RoF2 login on UDP 5999."""
 
 from __future__ import annotations
 
@@ -52,7 +52,9 @@ def login(host: str, port: int, username: str, password: str, timeout: float = 1
         if decoded.account_id <= 0 or not decoded.key:
             raise SessionError(f"login rejected for {username}")
 
-        session.send_app(struct.pack("<H", require(opcodes, "OP_ServerListRequest")) + OP_ServerListRequest(4).serialize())
+        session.send_app(
+            struct.pack("<H", require(opcodes, "OP_ServerListRequest")) + OP_ServerListRequest(4).serialize()
+        )
         listing = _wait_opcode(session, require(opcodes, "OP_ServerListResponse"), deadline)
         servers = OP_ServerListResponse.deserialize(listing).servers
         if not servers:
@@ -60,7 +62,8 @@ def login(host: str, port: int, username: str, password: str, timeout: float = 1
         server_id = servers[0].server_id
 
         session.send_app(
-            struct.pack("<H", require(opcodes, "OP_PlayEverquestRequest")) + OP_PlayEverquestRequest(server_id).serialize()
+            struct.pack("<H", require(opcodes, "OP_PlayEverquestRequest"))
+            + OP_PlayEverquestRequest(server_id).serialize()
         )
         _wait_opcode(session, require(opcodes, "OP_PlayEverquestResponse"), deadline)
         return LoginResult(decoded.account_id, decoded.key, server_id)

@@ -1,4 +1,5 @@
 """The mailbox an action is waiting on actually receives the packet."""
+
 from types import SimpleNamespace
 
 from check_wait_delivery import gaps, pairs

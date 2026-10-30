@@ -1,17 +1,16 @@
 """Journal tables, open-row reload, and a source death can append again."""
 
+import json
 import sqlite3
-from types import SimpleNamespace
-
-import pytest
-
+from pathlib import Path
 from eqclient3.action import Action
 from eqclient3.actions.craft import Craft
+from eqclient3.data.recipes import Recipe
 from eqclient3.actions.reclaim import Reclaim
 from eqclient3.actions.rez import Rez
 from eqclient3.structs import OP_RezzRequest
 from eqclient3.actions.sell import Sell
-from eqclient3.journal import DEFAULT_PATH, Journal
+from eqclient3.journal import Journal
 from eqclient3.schedule import Schedule
 from eqclient3.world import World
 
@@ -31,22 +30,85 @@ TABLES = (
 )
 
 
-def test_default_path_is_v3_and_v2_is_refused(tmp_path):
-    assert DEFAULT_PATH.endswith("/.eqclient/journal-v3.sqlite")
-    blocked = tmp_path / "journal-v2.sqlite"
-    with pytest.raises(ValueError):
-        Journal(blocked)
-    assert not blocked.exists()
+def test_each_character_has_its_own_database(tmp_path, monkeypatch):
+    monkeypatch.setattr("eqclient3.journal.JOURNAL_ROOT", tmp_path)
+    monkeypatch.setattr("eqclient3.journal.catalog", tmp_path / "characters.json")
+    hero = Journal(character="Hero")
+    other = Journal(character="Mage")
+    try:
+        action = Action()
+        action.source = "fetch:12"
+        action.zone = "gfaydark"
+        action.durable = True
+        assert hero.open_action("Hero", action) is True
+        assert Path(hero.db_path) == tmp_path / "Hero" / "journal-v3.sqlite3"
+        assert Path(other.db_path) == tmp_path / "Mage" / "journal-v3.sqlite3"
+        assert hero.db_path != other.db_path
+        assert [row.source for row in hero.load_actions("Hero")] == ["fetch:12"]
+        assert other.load_actions("Hero") == []
+        assert other.load_actions("Mage") == []
+    finally:
+        hero.close()
+        other.close()
+    catalog = json.loads((tmp_path / "characters.json").read_text())
+    assert Path(catalog["Hero"]["database"]) == tmp_path / "Hero" / "journal-v3.sqlite3"
+    assert Path(catalog["Mage"]["database"]) == tmp_path / "Mage" / "journal-v3.sqlite3"
+    hero_db = sqlite3.connect(tmp_path / "Hero" / "journal-v3.sqlite3")
+    mage_db = sqlite3.connect(tmp_path / "Mage" / "journal-v3.sqlite3")
+    try:
+        assert hero_db.execute("SELECT COUNT(*) FROM actions").fetchone()[0] == 1
+        assert mage_db.execute("SELECT COUNT(*) FROM actions").fetchone()[0] == 0
+    finally:
+        hero_db.close()
+        mage_db.close()
+
+
+PRIORITIES = (0, 100, 200, 210, 220, 230, 240, 250, 260, 270, 290, 300, 350, 400, 410)
+
+
+def _run_order(actions) -> list[str]:
+    ranked = sorted(actions, key=lambda action: (-action.priority, type(action).key(action)))
+    return [action.source for action in ranked]
+
+
+def test_recovered_queue_keeps_the_insert_order(tmp_path):
+    world = World()
+    world.zone = "qeynos"
+    path = tmp_path / "journal-v3.sqlite"
+    journal = Journal(path)
+    queue = Schedule()
+    queue.bind(journal, "Hero")
+    try:
+        for priority in PRIORITIES:
+            for index in range(3):
+                action = Action()
+                action.priority = priority
+                action.source = f"band:{priority}:{index}"
+                action.durable = True
+                assert queue.append(action, world) is True
+        before = _run_order(queue)
+        appended = [action.source for action in queue]
+    finally:
+        journal.close()
+
+    again = Journal(path)
+    try:
+        loaded = again.load_actions("Hero")
+        assert _run_order(loaded) == before
+        recovered = Schedule()
+        for action in loaded:
+            assert recovered.restore(action) is True
+        assert [action.source for action in recovered] == appended
+        assert _run_order(recovered) == before
+    finally:
+        again.close()
 
 
 def test_create_and_reload_open_row(tmp_path):
     path = tmp_path / "journal-v3.sqlite"
     journal = Journal(path)
     try:
-        names = {
-            row[0]
-            for row in journal._db.execute("SELECT name FROM sqlite_master WHERE type = 'table'")
-        }
+        names = {row[0] for row in journal._db.execute("SELECT name FROM sqlite_master WHERE type = 'table'")}
         assert set(TABLES) <= names
 
         action = Action()
@@ -84,7 +146,6 @@ def test_create_and_reload_open_row(tmp_path):
     finally:
         seen.close()
     assert count == 1
-    assert path != DEFAULT_PATH
 
 
 def test_an_action_that_is_not_durable_is_not_reloaded(tmp_path):
@@ -172,7 +233,7 @@ def test_reload_restores_each_actions_own_fields(tmp_path):
         shop.slots = {3: (9, 100)}
         shop.merchant_id = 8
         shop.merchant_point = (1.0, 2.0, 3.0)
-        recipe = SimpleNamespace(components=((7, 1),), combine_slot=9, point=(1.0, 2.0, 3.0))
+        recipe = Recipe(id=9, result=8, components=((7, 1),), container=17)
         made = Craft(recipe)
         made.source = "craft:9"
         assert journal.open_action("Hero", body) is True
@@ -193,6 +254,7 @@ def test_reload_restores_each_actions_own_fields(tmp_path):
     assert loaded[2].merchant_id == 8
     assert loaded[2].merchant_point == (1.0, 2.0, 3.0)
     assert loaded[2].window is False
+    assert loaded[3].recipe.id == 9
+    assert loaded[3].recipe.result == 8
     assert loaded[3].recipe.components == ((7, 1),)
-    assert loaded[3].recipe.combine_slot == 9
-    assert loaded[3].recipe.point == (1.0, 2.0, 3.0)
+    assert loaded[3].recipe.container == 17

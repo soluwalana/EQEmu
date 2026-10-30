@@ -2,7 +2,9 @@
 
 from eqclient3.bus import Bus
 from eqclient3.handler import Handler
+from eqclient3.loop import Loop
 from eqclient3.structs import OP_Assist
+from eqclient3.world import World
 
 
 class Ping(Handler):
@@ -16,7 +18,7 @@ class Ping(Handler):
 def test_each_opcode_and_handler_is_one_line(tmp_path, monkeypatch):
     path = tmp_path / "bus.log"
     monkeypatch.setenv("EQEMU_BUS_LOG", str(path))
-    bus = Bus(autoload=False)
+    bus = Bus(world=World(), loop=Loop(), autoload=False)
     handler = Ping()
     bus.register(handler)
     bus.publish("OP_Ping", b"abcd")

@@ -75,7 +75,16 @@ class MappedLocations:
         except Exception:
             self._fh.close()
             raise
-        n_index, _n_records, self._n_zones, self._strings, _strings_len, self._zones, index_off, self._records = slots
+        (
+            n_index,
+            _n_records,
+            self._n_zones,
+            self._strings,
+            _strings_len,
+            self._zones,
+            index_off,
+            self._records,
+        ) = slots
         self.by_item = IdIndex(self._mm, index_off, n_index)
 
     def _text(self, rel: int) -> str:
@@ -187,7 +196,16 @@ def _compile_locations(source: Path, dest: Path) -> None:
     write_eqm(
         dest,
         _KIND,
-        (n_index, seen, len(zone_at), strings_off, len(strings.buf), 64, index_off, records_off),
+        (
+            n_index,
+            seen,
+            len(zone_at),
+            strings_off,
+            len(strings.buf),
+            64,
+            index_off,
+            records_off,
+        ),
         [zone_blob, strings.buf, index, records],
     )
     print(f"caches: {dest.name} {seen} rows, {n_index} items", flush=True)

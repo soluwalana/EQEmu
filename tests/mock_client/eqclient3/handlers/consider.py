@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
+from eqclient3.handler import Handler
 from eqclient3.handlers.common import find_mob
 from eqclient3.structs import EQStruct, OP_Consider
-from eqclient3.handler import Handler
+from eqclient3.world import Consider
 
-
-# Server standing after the Titanium 6↔9 / 7↔8 swap is undone.
+# Server standing after the RoF2 6↔9 / 7↔8 swap is undone.
 STANDING = {
     1: "ally",
     2: "warmly",
@@ -21,15 +21,6 @@ STANDING = {
 }
 
 
-class Consider:
-    """Standing and level color. The standing is not a faction id."""
-
-    def __init__(self, standing: int, level_color: int) -> None:
-        self.standing = standing
-        self.level_color = level_color
-        self.name = STANDING.get(self.standing, "")
-
-
 class ConsiderHandler(Handler):
     opcodes = ("OP_Consider",)
 
@@ -40,4 +31,6 @@ class ConsiderHandler(Handler):
         mob = find_mob(self.world, payload.target_id)
         if not mob:
             return
-        mob.consider = Consider(payload.faction, payload.level)
+        row = Consider(payload.faction, payload.level)
+        row.name = STANDING.get(row.standing, "")
+        mob.consider = row

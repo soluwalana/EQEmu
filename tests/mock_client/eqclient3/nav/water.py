@@ -6,7 +6,7 @@ import math
 import struct
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Protocol
 
 from eqclient3.log import log
 from eqclient3.nav.navmesh import maps_root
@@ -54,9 +54,7 @@ class WaterMap:
     regions: list[_ObbRegion] = field(default_factory=list)
     _surface: dict[tuple[int, int], float | None] = field(default_factory=dict)
     # Cached zoneline sample clouds keyed by rounded anchor + reach/step.
-    _zoneline_samples: dict[tuple[int, int, int, int], list[tuple[float, float, float]]] = field(
-        default_factory=dict
-    )
+    _zoneline_samples: dict[tuple[int, int, int, int], list[tuple[float, float, float]]] = field(default_factory=dict)
 
     def region(self, x: float, y: float, z: float) -> int:
         """Region type at EQ (x, y, z). Internally maps query as (y, x, z) like the zone server."""
@@ -218,7 +216,12 @@ class WaterMap:
         self._surface[key] = low
         return low
 
-    def crosses(self, a: tuple[float, float, float], b: tuple[float, float, float], samples: int = 6) -> bool:
+    def crosses(
+        self,
+        a: tuple[float, float, float],
+        b: tuple[float, float, float],
+        samples: int = 6,
+    ) -> bool:
         """True when the straight XY run crosses a water column (shore-to-shore lakes)."""
         if math.hypot(b[0] - a[0], b[1] - a[1]) < 8.0:
             return self.in_liquid(*a) or self.in_liquid(*b)
@@ -273,6 +276,7 @@ class WaterMap:
 
 _LOADED: dict[str, WaterMap | None] = {}
 
+
 def load_water(zone: str, root: Path | None = None) -> WaterMap | None:
     key = (zone or "").lower()
     if root is None and key in _LOADED:
@@ -281,6 +285,7 @@ def load_water(zone: str, root: Path | None = None) -> WaterMap | None:
     if root is None:
         _LOADED[key] = water
     return water
+
 
 def _read_water(zone: str, root: Path | None) -> WaterMap | None:
     base = root or maps_root()
@@ -373,7 +378,9 @@ def _obb_matrix(
     )
 
 
-def _invert4(m: tuple[tuple[float, float, float, float], ...]) -> tuple[tuple[float, float, float, float], ...] | None:
+def _invert4(
+    m: tuple[tuple[float, float, float, float], ...],
+) -> tuple[tuple[float, float, float, float], ...] | None:
     """Invert a 4x4 affine matrix. None when singular."""
     a = [list(row) for row in m]
     inv = [[1.0 if i == j else 0.0 for j in range(4)] for i in range(4)]
@@ -392,7 +399,10 @@ def _invert4(m: tuple[tuple[float, float, float, float], ...]) -> tuple[tuple[fl
             factor = a[row][col]
             a[row] = [a[row][c] - factor * a[col][c] for c in range(4)]
             inv[row] = [inv[row][c] - factor * inv[col][c] for c in range(4)]
-    return tuple(tuple(row) for row in inv)
+    inverted: list[tuple[float, float, float, float]] = []
+    for vector in inv:
+        inverted.append((vector[0], vector[1], vector[2], vector[3]))
+    return tuple(inverted)
 
 
 def _transform_point(
@@ -405,7 +415,19 @@ def _transform_point(
     )
 
 
-def water_map(state: object) -> Any:
+class _SwimWorld(Protocol):
+    zone: str
+    z: float
+
+
+class _WaterState(Protocol):
+    water: WaterMap | None
+    world: _SwimWorld
+    water_zone: str
+    water_map: WaterMap | None
+
+
+def water_map(state: _WaterState) -> WaterMap | None:
     """The zone water map, or a map the test already placed on the tick."""
     forced = state.water
     if forced is not None:
@@ -422,7 +444,7 @@ def water_map(state: object) -> Any:
     return state.water_map
 
 
-def float_step(state: object, step: tuple[float, float, float]) -> tuple[float, float, float]:
+def float_step(state: _WaterState, step: tuple[float, float, float]) -> tuple[float, float, float]:
     """Lift a ground step onto the surface when that column is liquid."""
     water = water_map(state)
     if water is None or not water.in_liquid(step[0], step[1], step[2]):

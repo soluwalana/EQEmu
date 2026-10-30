@@ -20,7 +20,10 @@ class ReconstituteTest(unittest.TestCase):
         inbox(
             action,
             "OP_ChannelMessage",
-            {"text": "Cleric is a Level 1 Cleric and is dead", "bots": [{"name": "Cleric", "alive": False}]},
+            {
+                "text": "Cleric is a Level 1 Cleric and is dead",
+                "bots": [{"name": "Cleric", "alive": False}],
+            },
         )
         action.step(client, sheet)
         self.assertEqual(sheet.bots.roster[0].name, "Cleric")

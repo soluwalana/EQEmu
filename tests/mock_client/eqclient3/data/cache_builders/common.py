@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from collections.abc import Iterator
 from pathlib import Path
 
 CACHE_DIR = Path.home() / ".eqclient"
@@ -21,6 +22,6 @@ def cache_path(name: str, override: str | None = None) -> Path:
     return CACHE_DIR / name
 
 
-def lines(path: str | Path):
+def lines(path: str | Path) -> Iterator[str]:
     with open(path, encoding="latin1", errors="replace") as handle:
         yield from handle

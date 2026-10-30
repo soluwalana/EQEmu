@@ -6,6 +6,7 @@ import unittest
 from harness import fresh, inbox, opcodes
 
 from eqclient3.actions.trade import Trade
+from eqclient3.structs import OP_ShopPlayerBuy
 
 
 class TradeTest(unittest.TestCase):
@@ -18,8 +19,9 @@ class TradeTest(unittest.TestCase):
         self.assertEqual(opcodes(client), ["OP_TradeRequest"])
         action.step(client, sheet)
         self.assertEqual(opcodes(client)[-1], "OP_MoveItem")
-        src, dest, _pad = struct.unpack("<III", client.outbound[-1][1])
-        self.assertEqual((src, dest), (22, 30))
+        src = struct.unpack_from("<h", client.outbound[-1][1], 4)[0]
+        dest = struct.unpack_from("<h", client.outbound[-1][1], 16)[0]
+        self.assertEqual((src, dest), (23, 33))
         sheet.cursor = 9
         action.step(client, sheet)
         self.assertEqual(opcodes(client)[-1], "OP_TradeAcceptClick")
@@ -38,9 +40,9 @@ class TradeTest(unittest.TestCase):
         action.step(client, sheet)
         self.assertEqual(opcodes(client), ["OP_ShopRequest"])
         action.step(client, sheet)
-        _npc, _player, slot, _zero, qty, price = struct.unpack("<IIIIII", client.outbound[-1][1])
         self.assertEqual(opcodes(client)[-1], "OP_ShopPlayerBuy")
-        self.assertEqual((slot, qty, price), (4, 1, 12))
+        bought = OP_ShopPlayerBuy.deserialize(client.outbound[-1][1])
+        self.assertEqual((bought.slot, bought.quantity, bought.price), (4, 1, 12))
 
 
 if __name__ == "__main__":

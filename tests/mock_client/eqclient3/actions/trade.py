@@ -13,8 +13,19 @@ if TYPE_CHECKING:
 
 
 from eqclient3.action import Action
-from eqclient3.structs import OP_MoveItem, OP_ShopPlayerBuy, OP_ShopRequest, OP_TradeAcceptClick, OP_TradeRequest
-from eqclient3.actions.support import CURSOR_SLOT, bag_slot, merchant_offer, take_refusal
+from eqclient3.structs import (
+    OP_MoveItem,
+    OP_ShopPlayerBuy,
+    OP_ShopRequest,
+    OP_TradeAcceptClick,
+    OP_TradeRequest,
+)
+from eqclient3.actions.support import (
+    CURSOR_SLOT,
+    bag_slot,
+    merchant_offer,
+    take_refusal,
+)
 
 
 class Trade(Action):
@@ -31,7 +42,7 @@ class Trade(Action):
         self.merchant_zone = ""
         self.merchant_point: tuple[float, float, float] | None = None
 
-    def opcodes(self) -> tuple[object, ...]:
+    def opcodes(self) -> tuple[str, ...]:
         return ("OP_TradeRequest", "OP_FinishTrade", "OP_SimpleMessage")
 
     def suspend(self) -> None:
@@ -53,18 +64,30 @@ class Trade(Action):
         if offer is not None:
             slot, price = offer
             if not self.requested:
-                loop.send("OP_ShopRequest", OP_ShopRequest(int(self.partner), int(world.self_id or 0), 1).serialize())
+                loop.send(
+                    "OP_ShopRequest",
+                    OP_ShopRequest(int(self.partner), int(world.self_id or 0), 1).serialize(),
+                )
                 self.requested = True
                 return
             loop.send(
                 "OP_ShopPlayerBuy",
-                OP_ShopPlayerBuy(int(self.partner), int(world.self_id or 0), int(slot), quantity=1, price=int(price)).serialize(),
+                OP_ShopPlayerBuy(
+                    int(self.partner),
+                    int(world.self_id or 0),
+                    int(slot),
+                    quantity=1,
+                    price=int(price),
+                ).serialize(),
             )
             self.accepted = True
             self.wait("TRADE")
             return
         if not self.requested:
-            loop.send("OP_TradeRequest", OP_TradeRequest(int(self.partner), int(world.self_id or 0)).serialize())
+            loop.send(
+                "OP_TradeRequest",
+                OP_TradeRequest(int(self.partner), int(world.self_id or 0)).serialize(),
+            )
             self.requested = True
             return
         if world.cursor != int(self.item):

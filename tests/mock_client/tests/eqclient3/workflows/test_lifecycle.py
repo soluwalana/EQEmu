@@ -59,31 +59,18 @@ class _Roster(list):
 
 
 def _new_zone(name: str) -> bytes:
-    packet = bytearray(504)
-    raw = name.encode("latin1")[:31]
-    packet[64 : 64 + len(raw)] = raw
-    struct.pack_into("<fff", packet, 492, 2.0, 1.0, 3.0)
-    return bytes(packet)
+    from eqclient3.structs import OP_NewZone
+
+    return OP_NewZone(name, 1.0, 2.0, 3.0).serialize()
 
 
 def _task_window() -> bytes:
-    """One speak activity. In tutorialb the handler stores it and appends nothing."""
+    """One kill activity. In tutorialb the handler stores it and appends nothing."""
+    from eqclient3.structs import OP_TaskSelectWindow, TaskChoice, TaskElement
 
-    def cstr(text: str) -> bytes:
-        return text.encode("latin1") + b"\x00"
-
-    payload = bytearray()
-    payload += struct.pack("<III", 1, 0, 0)
-    payload += struct.pack("<III", 7, 0, 0)
-    payload += cstr("Mine")
-    payload += cstr("kill the trainee")
-    payload += struct.pack("<I", 1)
-    payload += struct.pack("<iii", 1, 2, 0)
-    payload += cstr("a trainee")
-    payload += cstr("")
-    payload += struct.pack("<iiii", 1, 0, 0, 0)
-    payload += cstr("kill the trainee")
-    return bytes(payload)
+    element = TaskElement(1, 2, 0, "a trainee", "", 1, 0, 0, 0, "kill the trainee")
+    choice = TaskChoice(7, 0, 0, "Mine", "kill the trainee", [element])
+    return OP_TaskSelectWindow(0, 0, [choice]).serialize()
 
 
 def _kinds(queue) -> list[str]:
@@ -119,7 +106,10 @@ def test_empty_journal_holds_position(tmp_path):
         charinfo = net.require(world_ops, "OP_SendCharInfo")
         enter_op = net.require(world_ops, "OP_EnterWorld")
         info = net.require(world_ops, "OP_ZoneServerInfo")
-        world.once(net.require(world_ops, "OP_SendLoginInfo"), lambda peer, _payload: peer.reply(charinfo, net._char_select(NAME)))
+        world.once(
+            net.require(world_ops, "OP_SendLoginInfo"),
+            lambda peer, _payload: peer.reply(charinfo, net._char_select(NAME)),
+        )
         world.once(enter_op, lambda peer, _payload: peer.reply(info, net._zone_info(zone.port)))
         journal = Journal.Journal(tmp_path / "journal-v3.sqlite")
         queue = Schedule.Schedule()
@@ -129,10 +119,7 @@ def test_empty_journal_holds_position(tmp_path):
         assert client is not None
         assert list(queue) == []
         assert journal.load_actions(NAME) == []
-        tables = {
-            row[0]
-            for row in journal._db.execute("SELECT name FROM sqlite_master WHERE type = 'table'")
-        }
+        tables = {row[0] for row in journal._db.execute("SELECT name FROM sqlite_master WHERE type = 'table'")}
         assert "actions" in tables
         loop.run_once(client, World.World(), queue, Bus.Bus(autoload=False))
         assert any(opcode == "OP_ClientUpdate" for opcode, _payload in loop.flushed)
@@ -240,7 +227,7 @@ def test_in_combat_heal_is_one_command():
     assert attack.heal_requested
 
     world.hp = 90
-    tape.inbox.append(("OP_HPUpdate", struct.pack("<IiH", 90, 100, 1)))
+    tape.inbox.append(("OP_HPUpdate", struct.pack("<HIi", 1, 90, 100)))
     loop.run_once(tape, world, queue, bus)
     assert attack.heal_requested is False
 
@@ -274,7 +261,10 @@ def test_reliable_hole_calls_transfer_zone_without_a_zone_request():
             peer.reply(charinfo, net._char_select(NAME))
 
         world_peer.always(login_info, on_login)
-        world_peer.always(enter_op, lambda peer, _payload: peer.reply(info_op, net._zone_info(zone.port)))
+        world_peer.always(
+            enter_op,
+            lambda peer, _payload: peer.reply(info_op, net._zone_info(zone.port)),
+        )
         sheet = net.build(1, 1, 0)
         client = net.connect(net._connection(login, world_peer), sheet)
         net.enter(client, sheet)
@@ -292,7 +282,14 @@ def test_reliable_hole_calls_transfer_zone_without_a_zone_request():
         assert loop.flushed == []
         assert change not in {opcode for opcode, _payload in zone.apps}
         fresh = world_peer.apps[before:]
-        sent = net._names(fresh, world_ops, "OP_SendLoginInfo", "OP_EnterWorld", "OP_ApproveName", "OP_CharacterCreate")
+        sent = net._names(
+            fresh,
+            world_ops,
+            "OP_SendLoginInfo",
+            "OP_EnterWorld",
+            "OP_ApproveName",
+            "OP_CharacterCreate",
+        )
         assert sent == ["OP_SendLoginInfo", "OP_EnterWorld"]
         info = next(payload for opcode, payload in fresh if opcode == login_info)
         assert info[188] == 1
@@ -314,6 +311,7 @@ def test_tutorial_zone_in_reads_tasks_and_an_empty_queue_does_not_finish(tmp_pat
         "eqclient3.journal",
     )
     from eqclient3.structs import OP_ChannelMessage
+
     world = World.World()
     world.name = NAME
     world.zone = "tutorialb"
@@ -336,7 +334,12 @@ def test_tutorial_zone_in_reads_tasks_and_an_empty_queue_does_not_finish(tmp_pat
     assert not any(type(action).__name__ == "Talk" for action in queue)
     assert any(type(action).__name__ == "Kill" and str(action.source).startswith("task:") for action in queue)
 
-    tape.inbox.append(("OP_ChannelMessage", OP_ChannelMessage("", "a trainer", text="kill the rat").serialize()))
+    tape.inbox.append(
+        (
+            "OP_ChannelMessage",
+            OP_ChannelMessage("", "a trainer", text="kill the rat").serialize(),
+        )
+    )
     loop.run_once(tape, world, queue, bus)
     assert any(getattr(action, "source", "") == "chat:kill:rat" for action in queue)
 

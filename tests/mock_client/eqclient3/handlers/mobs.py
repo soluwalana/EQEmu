@@ -2,6 +2,7 @@
 
 Our OP_ClientUpdate is movement's packet. This handler does not write it.
 """
+
 from __future__ import annotations
 
 from eqclient3.actions.attack import Attack
@@ -10,15 +11,63 @@ from eqclient3.actions.follow import Follow
 from eqclient3.actions.heal import Heal
 from eqclient3.actions.hold import Hold
 from eqclient3.actions.rest import Rest
-from eqclient3.handlers.common import FOLLOW_YARDS, HEAL_LINE, MANA_SIT, SIT_LINE, SPELL_DAMAGE, attack_for, bot_names, character_name, deliver, find_mob, has_cleric, has_open, is_ours, mark_fight, mobs_map, our_side, place, primary_faction, enqueue_once, source_open
+from eqclient3.handlers.common import (
+    FOLLOW_YARDS,
+    HEAL_LINE,
+    MANA_SIT,
+    SIT_LINE,
+    SPELL_DAMAGE,
+    attack_for,
+    bot_names,
+    character_name,
+    deliver,
+    find_mob,
+    has_cleric,
+    has_open,
+    is_ours,
+    mark_fight,
+    mobs_map,
+    our_side,
+    place,
+    primary_faction,
+    enqueue_once,
+    source_open,
+)
 from eqclient3.handlers.death import claim_pending
 from eqclient3.inventory.assign import release_cursor
-from eqclient3.structs import EQStruct, OP_Assist, OP_BecomeCorpse, OP_ClientUpdate, OP_Damage, OP_DeleteSpawn, OP_HPUpdate, OP_MobHealth, OP_MobUpdate, OP_NewSpawn, OP_Track, OP_ZoneSpawns
+from eqclient3.structs import (
+    EQStruct,
+    OP_Assist,
+    OP_BecomeCorpse,
+    OP_ClientUpdate,
+    OP_Damage,
+    OP_DeleteSpawn,
+    OP_HPUpdate,
+    OP_MobHealth,
+    OP_MobUpdate,
+    OP_NewSpawn,
+    OP_Track,
+    OP_ZoneSpawns,
+)
 from eqclient3.world import Mob
 from eqclient3.handler import Handler
 
+
 class MobsHandler(Handler):
-    opcodes = ('OP_NewSpawn', 'OP_ZoneSpawns', 'OP_DeleteSpawn', 'OP_ClientUpdate', 'OP_MobUpdate', 'OP_HPUpdate', 'OP_MobHealth', 'OP_Damage', 'OP_BecomeCorpse', 'OP_FindPersonReply', 'OP_Track', 'OP_Assist')
+    opcodes = (
+        "OP_NewSpawn",
+        "OP_ZoneSpawns",
+        "OP_DeleteSpawn",
+        "OP_ClientUpdate",
+        "OP_MobUpdate",
+        "OP_HPUpdate",
+        "OP_MobHealth",
+        "OP_Damage",
+        "OP_BecomeCorpse",
+        "OP_FindPersonReply",
+        "OP_Track",
+        "OP_Assist",
+    )
 
     def on(self, opcode: str, payload: EQStruct) -> None:
         if isinstance(payload, (OP_NewSpawn, OP_ZoneSpawns)):
@@ -26,7 +75,7 @@ class MobsHandler(Handler):
         elif isinstance(payload, OP_DeleteSpawn):
             self.delete(payload)
         elif isinstance(payload, (OP_ClientUpdate, OP_MobUpdate)):
-            if opcode == 'OP_ClientUpdate':
+            if opcode == "OP_ClientUpdate":
                 release_cursor(self.loop, self.world)
             self.position(payload)
         elif isinstance(payload, OP_HPUpdate):
@@ -51,13 +100,29 @@ class MobsHandler(Handler):
         me = character_name(self.loop, world).lower()
         for spawn in found:
             spawn_id, name, npc, level, body_type, x, y, z, class_id, race = (
-                spawn.spawn_id, spawn.name, spawn.npc, spawn.level, spawn.body, spawn.x, spawn.y, spawn.z, spawn.class_id, spawn.race,
+                spawn.spawn_id,
+                spawn.name,
+                spawn.npc,
+                spawn.level,
+                spawn.body,
+                spawn.x,
+                spawn.y,
+                spawn.z,
+                spawn.class_id,
+                spawn.race,
             )
-            mob = Mob(spawn_id, name, npc=npc, level=level, position=(x, y, z))
+            mob = Mob(
+                spawn_id,
+                name,
+                npc=npc,
+                level=level,
+                position=(x, y, z),
+                last_name=spawn.last_name,
+            )
             mob.body = body_type
             mob.class_id = class_id
             mob.race = race
-            mob.faction_id = primary_faction(world.zone or '', name)
+            mob.faction_id = primary_faction(world.zone or "", name)
             previous = mobs.get(spawn_id)
             if previous:
                 mob.consider = previous.consider
@@ -89,17 +154,17 @@ class MobsHandler(Handler):
     def follow(self, mob: Mob) -> None:
         world = self.world
         group = world.group
-        leader = str(group.leader or '')
-        if not leader or (mob.name or '').lower() != leader.lower():
+        leader = str(group.leader or "")
+        if not leader or (mob.name or "").lower() != leader.lower():
             return
         if mob.distance <= FOLLOW_YARDS:
             return
         loop = self.loop
-        if source_open(loop, f'follow:{leader}'):
+        if source_open(loop, f"follow:{leader}"):
             return
         action = Follow(leader)
         action.point = mob.position
-        enqueue_once(loop, world, action, f'follow:{leader}')
+        enqueue_once(loop, world, action, f"follow:{leader}")
 
     def hp(self, row: OP_HPUpdate) -> None:
         spawn_id, cur, max_hp = row.spawn_id, row.cur_hp, row.max_hp
@@ -108,8 +173,9 @@ class MobsHandler(Handler):
             return
         mob = find_mob(world, spawn_id)
         if mob:
-            mob.hp = cur
-            if max_hp:
+            if isinstance(cur, int):
+                mob.hp = cur
+            if isinstance(max_hp, int) and max_hp:
                 mob.max_hp = max_hp
         if world.self_id == 0 and self.hp_names_us(spawn_id, mob):
             world.self_id = spawn_id
@@ -128,7 +194,7 @@ class MobsHandler(Handler):
         if not mob:
             return True
         me = character_name(self.loop, self.world).lower()
-        return bool(me) and (mob.name or '').lower() == me
+        return bool(me) and (mob.name or "").lower() == me
 
     def claim_death(self) -> None:
         claim_pending(self.loop, self.world)
@@ -162,30 +228,36 @@ class MobsHandler(Handler):
         if not current:
             return
         loop = self.loop
-        fighting = has_open(loop, Attack, 'Attack')
+        fighting = has_open(loop, Attack, "Attack")
         if current < HEAL_LINE and (not fighting):
-            enqueue_once(loop, world, Heal('self'), 'heal:self')
-        if current < SIT_LINE and (not fighting) and (not source_open(loop, 'heal:self')):
-            enqueue_once(loop, world, Rest('self'), 'rest:self')
+            enqueue_once(loop, world, Heal("self"), "heal:self")
+        if current < SIT_LINE and (not fighting) and (not source_open(loop, "heal:self")):
+            enqueue_once(loop, world, Rest("self"), "rest:self")
 
     def other_bars(self, mob: Mob | None) -> None:
         if not mob:
             return
         world = self.world
-        name = mob.name or ''
+        name = mob.name or ""
         if name.lower() not in bot_names(world):
             return
         loop = self.loop
-        fighting = has_open(loop, Attack, 'Attack')
+        fighting = has_open(loop, Attack, "Attack")
         current = ratio(mob.hp, mob.max_hp)
         if current and current < HEAL_LINE and has_cleric(world) and (not fighting):
-            enqueue_once(loop, world, Heal(name), f'heal:{name}')
+            enqueue_once(loop, world, Heal(name), f"heal:{name}")
         mana = ratio(mob.mana, mob.max_mana)
         if mana and mana < MANA_SIT:
-            enqueue_once(loop, world, Rest(name), f'rest:{name}')
+            enqueue_once(loop, world, Rest(name), f"rest:{name}")
 
     def damage(self, opcode: str, row: OP_Damage) -> None:
-        target, source, dmg_type, spell_id, amount = row.target, row.source, row.type, row.spell_id, row.amount
+        target, source, dmg_type, spell_id, amount = (
+            row.target,
+            row.source,
+            row.type,
+            row.spell_id,
+            row.amount,
+        )
         world = self.world
         loop = self.loop
         if amount <= 0 or our_side(world, source):
@@ -194,8 +266,7 @@ class MobsHandler(Handler):
             return
         mob = find_mob(world, source)
         spell_tick = dmg_type == SPELL_DAMAGE and spell_id not in (0, 65535)
-        corpse = not mob or mob.dead or mob.npc in (2, 3)
-        if corpse:
+        if mob is None or mob.dead or mob.npc in (2, 3):
             return
         if mob.npc != 1:
             return
@@ -203,10 +274,10 @@ class MobsHandler(Handler):
         existing = attack_for(loop, Attack, mob.id)
         if spell_tick:
             if not existing:
-                enqueue_once(loop, world, Hold(mob.id), f'hold:{mob.id}')
+                enqueue_once(loop, world, Hold(mob.id), f"hold:{mob.id}")
             return
         if not existing:
-            existing = enqueue_once(loop, world, Attack(mob.id), f'aggro:{mob.id}')
+            existing = enqueue_once(loop, world, Attack(mob.id), f"aggro:{mob.id}")
         if existing:
             deliver(existing, row)
 
@@ -214,7 +285,7 @@ class MobsHandler(Handler):
         mob = find_mob(self.world, spawn_id)
         if not mob:
             return False
-        return (mob.name or '').lower() in bot_names(self.world)
+        return (mob.name or "").lower() in bot_names(self.world)
 
     def corpse(self, row: OP_BecomeCorpse) -> None:
         world = self.world

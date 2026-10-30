@@ -1,4 +1,4 @@
-"""Band 410. One step drops ephemeral work that still points at the zone we died in."""
+"""Band 410. One step drops every ephemeral action, including work tagged for another zone."""
 
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ class Death(Action):
         super().__init__()
         self.priority = 410
 
-    def opcodes(self) -> tuple[object, ...]:
+    def opcodes(self) -> tuple[str, ...]:
         return ()
 
     def suspend(self) -> None:
@@ -26,10 +26,13 @@ class Death(Action):
 
     def step(self, loop: Loop, world: World) -> None:
         self.suspended = False
-        for action in list(loop.queue):
+        queue = loop.queue
+        if queue is None:
+            self.complete = True
+            return
+        for action in list(queue):
             if action.insert == self.insert or action.durable:
                 continue
-            if action.zone == self.zone:
-                loop.queue.remove(action.insert)
-                clear_source(loop, world, action.source)
+            queue.remove(action.insert)
+            clear_source(loop, world, action.source)
         self.complete = True

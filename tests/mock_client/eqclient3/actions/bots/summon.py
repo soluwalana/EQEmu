@@ -20,7 +20,7 @@ class Summon(Action):
         self.sent = False
         self.limit = 10
 
-    def opcodes(self) -> tuple[object, ...]:
+    def opcodes(self) -> tuple[str, ...]:
         return ("OP_ChannelMessage",)
 
     def suspend(self) -> None:
@@ -35,7 +35,8 @@ class Summon(Action):
                 self.complete = True
                 return
             self.waited += 1
-            if self.waited < self.limit:
+            limit = self.limit
+            if limit is None or self.waited < limit:
                 return
             self.waited = 0
             self.sent = False

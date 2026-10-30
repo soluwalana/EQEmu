@@ -6,8 +6,8 @@ import struct
 
 from eqclient3.net.client import connect, enter, transfer_zone
 from eqclient3.net.crypto import encrypt_block
-from eqclient3.net.opcodes import login_opcodes, require, titanium_opcodes
-from eqclient3.structs import LoginBase
+from eqclient3.net.opcodes import login_opcodes, require, rof2_opcodes
+from eqclient3.structs import LoginBase, OP_SendCharInfo, CharacterSlot
 from eqclient3.net.sheet import build
 from net.peer import Peer
 
@@ -17,20 +17,14 @@ KEY = "abcdefghij"
 
 
 def _opcodes():
-    world = titanium_opcodes()
+    world = rof2_opcodes()
     login = login_opcodes()
     return world, login
 
 
 def _char_select(name: str) -> bytes:
-    payload = bytearray(1704)
-    if name:
-        raw = name.encode("latin1")[:63]
-        payload[1024 : 1024 + len(raw)] = raw
-        payload[1004] = 1
-        payload[1694] = 1
-        struct.pack_into("<I", payload, 0, 1)
-    return bytes(payload)
+    slots = [CharacterSlot(name, class_id=1, level=1)] if name else []
+    return OP_SendCharInfo(slots).serialize()
 
 
 def _zone_info(port: int) -> bytes:
@@ -89,8 +83,14 @@ def _zone_script(peer: Peer, world_ops: dict[str, int]) -> None:
 
 
 def _login_script(peer: Peer, login_ops: dict[str, int]) -> None:
-    peer.once(require(login_ops, "OP_SessionReady"), lambda p, _payload: p.reply(require(login_ops, "OP_ChatMessage"), b"\x00"))
-    peer.once(require(login_ops, "OP_Login"), lambda p, _payload: p.reply(require(login_ops, "OP_LoginAccepted"), _login_accept()))
+    peer.once(
+        require(login_ops, "OP_SessionReady"),
+        lambda p, _payload: p.reply(require(login_ops, "OP_ChatMessage"), b"\x00"),
+    )
+    peer.once(
+        require(login_ops, "OP_Login"),
+        lambda p, _payload: p.reply(require(login_ops, "OP_LoginAccepted"), _login_accept()),
+    )
     peer.once(
         require(login_ops, "OP_ServerListRequest"),
         lambda p, _payload: p.reply(require(login_ops, "OP_ServerListResponse"), _server_list()),
@@ -135,7 +135,10 @@ def test_listed_name_enters_without_character_create():
         charinfo = require(world_ops, "OP_SendCharInfo")
         enter_op = require(world_ops, "OP_EnterWorld")
         info = require(world_ops, "OP_ZoneServerInfo")
-        world.once(require(world_ops, "OP_SendLoginInfo"), lambda peer, _payload: peer.reply(charinfo, _char_select(NAME)))
+        world.once(
+            require(world_ops, "OP_SendLoginInfo"),
+            lambda peer, _payload: peer.reply(charinfo, _char_select(NAME)),
+        )
         world.once(enter_op, lambda peer, _payload: peer.reply(info, _zone_info(zone.port)))
         sheet = build(1, 1, 0)
         client = connect(_connection(login, world), sheet)
@@ -198,7 +201,12 @@ def test_missing_name_approves_then_creates_and_waits_for_the_name():
             "OP_CharacterCreate",
             "OP_EnterWorld",
         )
-        assert sent == ["OP_SendLoginInfo", "OP_ApproveName", "OP_CharacterCreate", "OP_EnterWorld"]
+        assert sent == [
+            "OP_SendLoginInfo",
+            "OP_ApproveName",
+            "OP_CharacterCreate",
+            "OP_EnterWorld",
+        ]
         assert selects["n"] == 2
     finally:
         if client is not None:
@@ -244,7 +252,14 @@ def test_transfer_zone_rezones_without_touching_the_dead_socket():
         assert old_zone.closed
         assert old_world.closed
         fresh = world.apps[before:]
-        sent = _names(fresh, world_ops, "OP_SendLoginInfo", "OP_EnterWorld", "OP_ApproveName", "OP_CharacterCreate")
+        sent = _names(
+            fresh,
+            world_ops,
+            "OP_SendLoginInfo",
+            "OP_EnterWorld",
+            "OP_ApproveName",
+            "OP_CharacterCreate",
+        )
         assert sent == ["OP_SendLoginInfo", "OP_EnterWorld"]
         info = next(payload for opcode, payload in fresh if opcode == login_info)
         assert info[188] == 1
