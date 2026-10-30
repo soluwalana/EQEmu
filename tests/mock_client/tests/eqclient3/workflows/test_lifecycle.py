@@ -330,7 +330,8 @@ def test_tutorial_zone_in_reads_tasks_and_an_empty_queue_does_not_finish(tmp_pat
     tape.inbox.append(("OP_TaskSelectWindow", _task_window()))
     loop.run_once(tape, world, queue, bus)
     assert "ReadTasks" in _kinds(queue)
-    assert "Form" not in _kinds(queue)
+    assert journal.is_resolved(NAME, "form:tutorialb")
+    loop.run_once(tape, world, queue, bus)
     assert not any(type(action).__name__ == "Talk" for action in queue)
     assert any(type(action).__name__ == "Kill" and str(action.source).startswith("task:") for action in queue)
 

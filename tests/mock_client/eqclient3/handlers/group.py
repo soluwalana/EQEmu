@@ -23,6 +23,7 @@ DISBAND = 6
 UPDATE = 7
 MAKE_LEADER = 8
 INVITE = 9
+NO_RAID = 10
 
 
 class GroupHandler(Handler):
@@ -58,6 +59,10 @@ class GroupHandler(Handler):
             self.roster(payload, self.world.group)
 
     def roster(self, row: OP_GroupUpdate | OP_RaidUpdate | OP_RaidJoin, sheet: GroupRoster) -> None:
+        if isinstance(row, OP_RaidUpdate) and row.action == NO_RAID:
+            sheet.members = []
+            sheet.leader = ""
+            return
         if isinstance(row, OP_GroupUpdate) and row.full:
             action = row.action
             your = row.your_name

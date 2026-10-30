@@ -134,12 +134,21 @@ class OP_RaidUpdate(EQStruct):
     def serialize(self) -> bytes:
         your_name = (self.your_name or "").encode("latin1", errors="replace")[:63]
         leader = (self.leader or "").encode("latin1", errors="replace")[:63]
+        if self.action == 10:
+            # zone/client.cpp:860. rof2.cpp:3323 case raidNoRaid queues this buffer unchanged.
+            # common/patches/rof2_structs.h:3838 ZoneInSendName_Struct
+            return struct.pack("<I64s64sI", self.action & 0xFFFFFFFF, your_name, leader, 0)
         # common/patches/rof2_structs.h:4370 RaidGeneral_Struct
         return struct.pack("<I64sI64sI", self.action & 0xFFFFFFFF, your_name, 0, leader, 0)
 
     @classmethod
     def deserialize(cls, data: bytes) -> OP_RaidUpdate:
-        # Add, note, motd, and leadership updates are this header plus a tail.
+        # common/patches/rof2_structs.h:3838 ZoneInSendName_Struct is 136 bytes.
+        # zone/client.cpp:860 sends it with action raidNoRaid (10). rof2.cpp:3323 does not widen it.
+        if len(data) == 136:
+            return cls(int(_read_u32(data)), _fixed(data, 4, 64), _fixed(data, 68, 64))
+        # Add, note, motd, and leadership updates are RaidGeneral_Struct plus a tail.
+        # common/patches/rof2_structs.h:4370 RaidGeneral_Struct
         _need(data, 140, "OP_RaidUpdate")
         return cls(int(_read_u32(data)), _fixed(data, 4, 64), _fixed(data, 72, 64))
 

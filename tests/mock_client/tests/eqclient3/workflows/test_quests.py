@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from types import SimpleNamespace
 
+from eqclient3.actions.quest_talk import Hand, Say
 from eqclient3.inventory.assign import assign
-from eqclient3.quests.expand import expand, produced
+from eqclient3.quests.expand import conversation, expand, produced
 from eqclient3.quests.graph import QuestGraph
 from eqclient3.quests.produce import produce
 from eqclient3.schedule import Schedule
@@ -46,17 +47,16 @@ def _graph() -> QuestGraph:
     return graph
 
 
-def test_expand_zones_then_hails_then_delivers_and_a_drop_is_a_fetch():
+def test_expand_zones_then_fetches_then_hands_the_item():
     actions = expand(_graph().gives(100), here="freportw", graph=_graph())
     names = [type(action).__name__ for action in actions]
-    assert names == ["Travel", "Fetch", "Zone", "Talk", "Deliver"]
-    travel, fetch, zone, talk, deliver = actions
+    assert names == ["Travel", "Fetch", "Zone", "QuestTalk"]
+    travel, fetch, zone, talk = actions
     assert travel.destination == "qeynos"
     assert fetch.item_id == 9
     assert zone.destination == "erudnext"
-    assert talk.line == "hail"
-    assert talk.priority == 280
-    assert deliver.item == 9
+    assert talk.steps == (Hand(9),)
+    assert talk.expect == 100
 
 
 def test_expand_a_hand_in_only_component_is_the_giver_chain():
@@ -81,11 +81,60 @@ def test_expand_a_hand_in_only_component_is_the_giver_chain():
     graph.index()
     actions = expand(graph.gives(200), here="erudnext", graph=graph)
     names = [type(action).__name__ for action in actions]
-    assert names == ["Zone", "Talk", "Deliver", "Talk", "Deliver"]
+    assert names == ["Zone", "QuestTalk", "QuestTalk"]
     assert actions[0].destination == "qeynos"
-    assert actions[1].priority == 280
-    assert actions[2].item == 7
-    assert actions[4].item == 8
+    assert actions[1].steps == (Hand(7),)
+    assert actions[1].expect == 8
+    assert actions[2].steps == (Hand(8),)
+    assert actions[2].expect == 200
+
+
+def test_expand_a_say_word_is_a_quest_talk():
+    graph = QuestGraph()
+    graph.edges = [
+        {
+            "rel": "gives",
+            "from": "freeporteast/kargek redblade",
+            "to": "item:20673",
+            "group": "freeporteast/kargek redblade#favor",
+        }
+    ]
+    graph.index()
+    actions = expand(graph.gives(20673), here="qeynos", graph=graph)
+    names = [type(action).__name__ for action in actions]
+    assert names == ["Zone", "QuestTalk"]
+    talk = actions[1]
+    assert talk.npc == "kargek redblade"
+    assert talk.steps == (Say("favor"),)
+    assert talk.expect == 20673
+    assert talk.priority == 280
+    assert talk.source == "quest:freeporteast/kargek redblade#say:kargek redblade:favor"
+
+
+def test_conversation_follows_then_until_the_flag_gate():
+    graph = QuestGraph()
+    home = "draniksscar/korbuk brimblade"
+    graph.edges = [
+        {"rel": "sets", "from": f"{home}#work", "to": "flag:warrior_pre", "flag": "warrior_pre", "value": "1"},
+        {"rel": "then", "from": f"{home}#work", "to": f"{home}#errands"},
+        {"rel": "needs", "from": f"{home}#errands", "to": "flag:warrior_pre", "flag": "warrior_pre", "at": "==1"},
+        {"rel": "then", "from": f"{home}#errands", "to": f"{home}#plans"},
+        {"rel": "needs", "from": f"{home}#plans", "to": "flag:warrior_pre", "flag": "warrior_pre", "at": "==1"},
+        {"rel": "then", "from": f"{home}#plans", "to": f"{home}#shank"},
+        {"rel": "needs", "from": f"{home}#shank", "to": "flag:warrior_pre", "flag": "warrior_pre", "at": "==2"},
+    ]
+    assert conversation(graph, f"{home}#work", 0) == (Say("work"), Say("errands"), Say("plans"))
+
+
+def test_conversation_stops_when_the_say_gives_the_item():
+    graph = QuestGraph()
+    home = "freeporteast/kargek redblade"
+    graph.edges = [
+        {"rel": "gives", "from": home, "to": "item:20673", "group": f"{home}#favor"},
+        {"rel": "then", "from": f"{home}#favor", "to": f"{home}#sent me to help"},
+        {"rel": "then", "from": f"{home}#sent me to help", "to": f"{home}#sword"},
+    ]
+    assert conversation(graph, f"{home}#favor", 20673) == (Say("favor"),)
 
 
 def test_expand_a_produced_item_fetches_then_zones_then_crafts():

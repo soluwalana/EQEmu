@@ -44,7 +44,7 @@ def _pack_spawn(spawn: Spawn) -> bytes:
     # common/patches/rof2.cpp:4771
     out += struct.pack("<BI", 1, spawn.body & 0xFFFFFFFF)
     out += b"\x00" * 23
-    # common/patches/rof2.cpp:4794
+    # common/patches/rof2.cpp:4795 size, face, walkspeed, runspeed, race
     out += struct.pack("<fBffI", 0.0, 0, 0.0, 0.0, spawn.race & 0xFFFFFFFF)
     # common/patches/rof2.cpp:4802
     out += struct.pack("<BI", 0, 0)
@@ -52,7 +52,7 @@ def _pack_spawn(spawn: Spawn) -> bytes:
     out += struct.pack("<II", 0xFFFFFFFF, 0) if spawn.npc else struct.pack("<II", 0, 0)
     out += bytes((spawn.class_id & 0xFF, 0, 0, 0, 0))
     out += _put_cstr(spawn.last_name)
-    # common/patches/rof2.cpp:4836 aatitle
+    # common/patches/rof2.cpp:4835 aatitle
     out += struct.pack("<IBBIB", 0, 0, 0, 0, 0)
     out += b"\x00" * 16
     # common/patches/rof2.cpp:4846 WeaponEquip
@@ -320,12 +320,12 @@ class OP_HPUpdate(EQStruct):
 
     def serialize(self) -> bytes:
         # common/patches/rof2_structs.h:1679
-        return struct.pack("<HIi", self.spawn_id & 0xFFFF, self.cur_hp & 0xFFFFFFFF, _i32(self.max_hp))
+        return struct.pack("<hIi", _i16(self.spawn_id), self.cur_hp & 0xFFFFFFFF, _i32(self.max_hp))
 
     @classmethod
     def deserialize(cls, data: bytes) -> OP_HPUpdate:
         _need(data, 10, "OP_HPUpdate")
-        spawn_id, cur_hp, max_hp = struct.unpack_from("<HIi", data)
+        spawn_id, cur_hp, max_hp = struct.unpack_from("<hIi", data)
         return cls(int(cur_hp), int(max_hp), int(spawn_id))
 
 

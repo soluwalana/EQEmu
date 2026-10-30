@@ -98,32 +98,33 @@ class OP_PlayerProfile(EQStruct):
         for index, spell in self.spell_book.items():
             if 0 <= int(index) < 720:
                 book[int(index)] = int(spell) & 0xFFFFFFFF
-        # common/patches/rof2.cpp:2721 PlayerProfile spell_book
-        struct.pack_into("<720I", packet, 6900, *book)
-        gems = [0xFFFFFFFF] * 16
+        # common/patches/rof2_structs.h:1173 spell_book
+        struct.pack_into("<720I", packet, 6500, *book)
+        gems = [-1] * 16
         for index, spell in self.gems.items():
             if 0 <= int(index) < 16:
-                gems[int(index)] = int(spell) & 0xFFFFFFFF
-        # common/patches/rof2.cpp:2743 PlayerProfile mem_spells
-        struct.pack_into("<16I", packet, 9784, *gems)
+                gems[int(index)] = _i32(spell)
+        # common/patches/rof2_structs.h:1175 mem_spells. Empty gems are -1.
+        struct.pack_into("<16i", packet, 9384, *gems)
         if self.coin_known:
-            # common/patches/rof2.cpp:2806 PlayerProfile platinum
+            # common/patches/rof2_structs.h:1181 platinum
             struct.pack_into(
                 "<IIII",
                 packet,
-                13269,
+                12869,
                 self.platinum & 0xFFFFFFFF,
                 self.gold & 0xFFFFFFFF,
                 self.silver & 0xFFFFFFFF,
                 self.copper & 0xFFFFFFFF,
             )
-        # common/patches/rof2.cpp:2839 PlayerProfile bandoliers
-        struct.pack_into("<I", packet, 13355, 20)
-        # common/patches/rof2.cpp:2866 PlayerProfile potion belt
-        struct.pack_into("<I", packet, 14099, 5)
-        # common/patches/rof2.cpp:2916 PlayerProfile name length
-        struct.pack_into("<I", packet, 14244, 64)
-        _put_fixed(packet, 14248, self.name, 64)
+        # common/patches/rof2_structs.h:1203 bandolier_count
+        struct.pack_into("<I", packet, 12955, 20)
+        # common/patches/rof2_structs.h:1205 potionbelt_count
+        struct.pack_into("<I", packet, 13699, 5)
+        # common/patches/rof2_structs.h:1222 name_str_len
+        struct.pack_into("<I", packet, 13844, 64)
+        # common/patches/rof2_structs.h:1223 name
+        _put_fixed(packet, 13848, self.name, 64)
         return bytes(packet)
 
     @classmethod
@@ -144,8 +145,8 @@ class OP_PlayerProfile(EQStruct):
             )
         platinum = gold = silver = copper = 0
         coin_known = False
-        if len(data) >= 13285:
-            platinum, gold, silver, copper = struct.unpack_from("<IIII", data, 13269)
+        if len(data) >= 12885:
+            platinum, gold, silver, copper = struct.unpack_from("<IIII", data, 12869)
             coin_known = True
         skills: dict[int, int] | None = None
         if len(data) >= 4616 + 400:
@@ -153,13 +154,13 @@ class OP_PlayerProfile(EQStruct):
             skills = {index: int(value) for index, value in enumerate(raw)}
         book: dict[int, int] = {}
         gems: dict[int, int] = {}
-        if len(data) >= 6900 + 720 * 4:
-            for index, spell in enumerate(struct.unpack_from("<720I", data, 6900)):
+        if len(data) >= 6500 + 720 * 4:
+            for index, spell in enumerate(struct.unpack_from("<720I", data, 6500)):
                 if spell not in (0, 0xFFFFFFFF):
                     book[index] = int(spell)
-        if len(data) >= 9784 + 16 * 4:
-            for index, spell in enumerate(struct.unpack_from("<16I", data, 9784)):
-                if spell not in (0, 0xFFFFFFFF):
+        if len(data) >= 9384 + 16 * 4:
+            for index, spell in enumerate(struct.unpack_from("<16i", data, 9384)):
+                if spell not in (0, -1):
                     gems[index] = int(spell)
         name = _profile_name(data)
         return cls(
@@ -193,7 +194,7 @@ class OP_PlayerProfile(EQStruct):
 
 def _profile_name(data: bytes) -> str:
     """Name sits after the bandolier and potion strings, which vary in length."""
-    offset = 13355
+    offset = 12955
     if len(data) < offset + 4:
         return ""
     try:
@@ -347,8 +348,9 @@ class OP_Buff(EQStruct):
         packet[4] = self.buff.effect_type & 0xFF
         packet[5] = self.buff.level & 0xFF
         # common/patches/rof2_structs.h:762 SpellBuff_Struct
+        # bard_modifier through y. The buff starts 4 bytes after entity id.
         struct.pack_into(
-            "<fIIIII",
+            "<fIIIIf",
             packet,
             8,
             1.0,
@@ -356,7 +358,7 @@ class OP_Buff(EQStruct):
             self.buff.duration & 0xFFFFFFFF,
             self.buff.caster_id & 0xFFFFFFFF,
             self.buff.counters & 0xFFFFFFFF,
-            0,
+            0.0,
         )
         # common/patches/rof2_structs.h:778 SpellBuffPacket_Struct
         struct.pack_into("<II", packet, 92, self.slot_id & 0xFFFFFFFF, 1 if self.fade else 2)

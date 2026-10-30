@@ -65,7 +65,6 @@ class ZoningHandler(Handler):
             self.mark_started("tutorial_started")
             if not tutorial_done(self.loop, world):
                 append_action(self.loop, world, ReadTasks(), "read_tasks:tutorialb")
-            return
         action = Form(short, form_commands(world, self.loop))
         append_action(self.loop, world, action, f"form:{short}")
 

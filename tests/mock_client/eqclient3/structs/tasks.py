@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from eqclient3.structs.wire import (
     EQStruct,
     _cstring,
+    _i8,
     _i32,
     _lenstr,
     _need,
@@ -202,11 +203,11 @@ class OP_TaskActivity(EQStruct):
             self.activity_id & 0xFFFFFFFF,
             self.list_group & 0xFFFFFFFF,
         )
-        # common/tasks.h:152 SerializeObjective
-        out += struct.pack("<iBi", _i32(self.kind), self.optional & 0xFF, _i32(self.request))
+        # common/tasks.h:152 SerializeObjective. RoF writes the optional flag as int8.
+        out += struct.pack("<ibi", _i32(self.kind), _i8(self.optional), _i32(self.request))
         out += _put_cstr(self.target)
         out += _put_lenstr(self.item_list)
-        # common/tasks.h:166 SerializeObjective
+        # common/tasks.h:166 SerializeObjective real_goal_count
         out += struct.pack("<i", _i32(self.goal))
         out += _put_lenstr(str(int(self.skill)))
         out += _put_lenstr(str(int(self.spell)))
@@ -214,8 +215,8 @@ class OP_TaskActivity(EQStruct):
         # common/tasks.h:180 SerializeObjective
         out += struct.pack("<i", _i32(self.dynamic_zone))
         out += _put_cstr(self.description)
-        # common/tasks.h:182 SerializeObjective
-        out += struct.pack("<iB", _i32(self.done), 1)
+        # common/tasks.h:182 SerializeObjective done_count, then int8 1
+        out += struct.pack("<ib", _i32(self.done), 1)
         out += _put_cstr(zones)
         return out
 

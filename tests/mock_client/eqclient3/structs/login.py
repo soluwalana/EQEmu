@@ -471,13 +471,13 @@ class OP_SendCharInfo(EQStruct):
             out += _put_cstr(slot.name)
             rest = bytearray(CHAR_SELECT_ENTRY - 1)
             rest[0] = slot.class_id & 0xFF
-            # common/patches/rof2_structs.h:237 CharacterSelectEntry_Struct
+            # common/patches/rof2_structs.h:241 CharacterSelectEntry_Struct Race. rest starts after Name[1].
             struct.pack_into("<I", rest, 1, slot.race & 0xFFFFFFFF)
             rest[5] = slot.level & 0xFF
-            # common/patches/rof2_structs.h:237 CharacterSelectEntry_Struct
+            # common/patches/rof2_structs.h:245 CharacterSelectEntry_Struct Zone
             struct.pack_into("<H", rest, 11, slot.zone_id & 0xFFFF)
             rest[15] = slot.gender & 0xFF
-            # common/patches/rof2_structs.h:237 CharacterSelectEntry_Struct
+            # common/patches/rof2_structs.h:254 CharacterSelectEntry_Struct Deity
             struct.pack_into("<I", rest, 243, slot.deity & 0xFFFFFFFF)
             out += rest
         return bytes(out)

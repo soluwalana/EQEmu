@@ -1,5 +1,7 @@
 """Opcode coverage for handlers/group.py."""
 
+import struct
+
 from eqclient3.handlers import group
 from eqclient3.structs import OP_GroupInvite
 from support import Loop, World, group_update, names
@@ -25,3 +27,11 @@ def test_opcodes():
     group.GroupHandler().handle("OP_GroupInvite2", OP_GroupInvite("Hero", "Guard").serialize(), world, accepted)
     assert accepted.queue[0].name == "Guard"
     assert any(command.startswith("follow ") for command in accepted.queue[0].commands)
+
+    world.raid.members = ["Hero"]
+    world.raid.leader = "Hero"
+    # zone/client.cpp:860 ZoneInSendName_Struct, action raidNoRaid.
+    zone_in = struct.pack("<I64s64sI", 10, b"Hero", b"Hero", 0)
+    group.GroupHandler().handle("OP_RaidUpdate", zone_in, world, Loop())
+    assert world.raid.members == []
+    assert world.raid.leader == ""

@@ -33,14 +33,14 @@ def _pack_item_body(item: Item) -> bytes:
     wire = _to_rof2_slot(item.slot) if item.kind != ITEM_MERCHANT else item.slot
     # common/patches/rof2_structs.h:4733 ItemSerializationHeader
     header = struct.pack(
-        "<17sIIBhhhIIIIIIIIIIIB",
+        "<17sIIBHHHIIIIIIIIIIIB",
         b"\x00" * 17,
         max(1, int(item.stack)) & 0xFFFFFFFF,
         0,
         9 if item.kind == ITEM_MERCHANT else 0,
-        _i16(wire),
-        _i16(0xFFFF),
-        _i16(0xFFFF),
+        int(wire) & 0xFFFF,
+        0xFFFF,
+        0xFFFF,
         item.price & 0xFFFFFFFF,
         1,
         0,
@@ -308,12 +308,12 @@ class OP_LootItem(EQStruct):
     def serialize(self) -> bytes:
         # common/patches/rof2_structs.h:2058 LootingItem_Struct
         return struct.pack(
-            "<IIH2sII",
+            "<IIHHiI",
             self.corpse_id & 0xFFFFFFFF,
             self.player_id & 0xFFFFFFFF,
             self.slot & 0xFFFF,
-            b"\x00\x00",
-            self.auto_loot & 0xFFFFFFFF,
+            0,
+            _i32(self.auto_loot),
             0,
         )
 

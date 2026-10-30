@@ -25,6 +25,9 @@ class _Journal:
     def resolved(self, character, source):
         return False
 
+    def bot_settings(self, character):
+        return {}
+
 
 def test_a_live_client_confirms_the_zone_request():
     from eqclient3.handlers.common import session_open
@@ -94,11 +97,12 @@ def test_opcodes():
     reading = Loop()
     reading.journal = _Journal(done=False)
     zoning.ZoningHandler().handle("OP_NewZone", new_zone("tutorialb", 1, 2, 3), tutorial, reading)
-    assert names(reading) == ["ReadTasks"]
+    assert names(reading) == ["ReadTasks", "Form"]
     assert reading.queue[0].source == "read_tasks:tutorialb"
-    assert "Form" not in names(reading)
+    assert reading.queue[1].source == "form:tutorialb"
 
     skipped = Loop()
     skipped.journal = _Journal(done=True)
     zoning.ZoningHandler().handle("OP_NewZone", new_zone("tutorialb", 1, 2, 3), World(name="Hero"), skipped)
-    assert skipped.queue == []
+    assert names(skipped) == ["Form"]
+    assert skipped.queue[0].source == "form:tutorialb"

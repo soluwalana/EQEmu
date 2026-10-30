@@ -1,10 +1,12 @@
-"""One graph edge becomes Zone, Talk, Deliver, Fetch, Travel, and Craft.
+"""One graph edge becomes Zone, QuestTalk, Fetch, Travel, and Craft.
 
-A giver in another zone is a Zone, then a Talk hail, then one Deliver for every
-item in that hand-in. A component that drops is a Fetch, with a Travel when the
-drop is in another zone. A component that is only a hand-in is the giver chain
-again. A produced item is that recipe's components, then a Craft. These are v3
-actions. This module does not import the loop.
+A giver in another zone is a Zone, then one QuestTalk for that conversation.
+The talk follows then-links while the flag those links need was set on the way,
+and stops at the say or hand that gives the item. A component that drops is a
+Fetch, with a Travel when the drop is in another zone. A component that is
+only a hand-in is the giver chain again. A produced item is that recipe's
+components, then a Craft. These are v3 actions. This module does not import
+the loop.
 """
 
 from __future__ import annotations
@@ -16,9 +18,8 @@ if TYPE_CHECKING:
 
 from eqclient3.log import log
 from eqclient3.actions.craft import Craft
-from eqclient3.actions.deliver import Deliver
 from eqclient3.actions.fetch import Fetch
-from eqclient3.actions.talk import Talk
+from eqclient3.actions.quest_talk import Hand, QuestTalk, Receive, Say, Turn
 from eqclient3.actions.travel import Travel
 from eqclient3.actions.zone import Zone
 from eqclient3.data.recipes import Recipe, _WORLD_CONTAINER
@@ -64,7 +65,7 @@ def _expand(edge: dict, *, here: str, graph: QuestGraph | None, source: str, see
             )
     for item_id, count in hand:
         actions.extend(_obtain(item_id, count, here=here, graph=graph, source=label, seen=seen, npc=npc))
-    actions.extend(_giver(zone, npc, hand, here=here, source=label))
+    actions.extend(_giver(zone, npc, hand, here=here, source=label, graph=graph, edge=edge))
     return actions
 
 
@@ -138,22 +139,227 @@ def _drop(edge: dict, *, here: str, source: str, item_id: int = 0, count: int = 
     return actions
 
 
-def _giver(zone: str, npc: str, hand: list[tuple[int, int]], *, here: str, source: str) -> list:
+def conversation(graph: QuestGraph, origin: str, expect: int) -> tuple[Turn, ...]:
+    """The say, hand, and receive steps from this node through the then-links that belong to it.
+
+    A later say is part of this conversation when the flag it needs was set on the way.
+    The say or hand that gives expect ends the chain. The item itself is the terminal, not a step.
+    """
+    node = _bare(origin)
+    if "#" not in node:
+        return ()
+    index = _by_origin(graph)
+    turns: list[Turn] = []
+    sets: dict[str, str] = {}
+    seen: set[str] = set()
+    while node and node not in seen:
+        seen.add(node)
+        tail = _tail(node)
+        word = _word(tail)
+        if word:
+            turns.append(Say(word))
+        for item_id in _hand_ids(tail):
+            turns.append(Hand(item_id))
+        gave = _gives(index, node)
+        for item_id in gave:
+            if item_id != expect:
+                turns.append(Receive(item_id))
+        sets.update(_flag_sets(index, node))
+        if expect and expect in gave:
+            break
+        nxt = _then_next(index, node)
+        if not nxt or not _gate_open(index, nxt, sets, _received(turns)):
+            break
+        node = _bare(nxt)
+    return tuple(turns)
+
+
+def _giver(
+    zone: str,
+    npc: str,
+    hand: list[tuple[int, int]],
+    *,
+    here: str,
+    source: str,
+    graph: QuestGraph | None,
+    edge: dict,
+) -> list:
     actions: list[Action] = []
     if zone and here and zone.lower() != here.lower():
         zone_action = Zone(zone)
         zone_action.source = f"{source}#zone:{zone}"
         actions.append(zone_action)
-    text = "+".join(str(item_id) for item_id, _count in hand)
-    talk = Talk(npc, "hail", text, 280)
-    talk.priority = 280
-    talk.source = f"{source}#hail:{npc}"
+    expect = _reward(graph, edge)
+    origin = str(edge.get("group") or edge.get("from") or "")
+    steps = conversation(graph, origin, expect) if graph is not None else ()
+    if not steps:
+        steps = _fallback(origin, hand)
+    if not steps:
+        return actions
+    talk = QuestTalk(npc, steps, expect=expect)
+    talk.source = _talk_source(source, npc, steps)
     actions.append(talk)
-    for item_id, _count in hand:
-        deliver = Deliver(item_id, npc)
-        deliver.source = f"{source}#deliver:{item_id}"
-        actions.append(deliver)
     return actions
+
+
+def _fallback(origin: str, hand: list[tuple[int, int]]) -> tuple[Turn, ...]:
+    turns: list[Turn] = []
+    word = _word(_tail(origin))
+    if word:
+        turns.append(Say(word))
+    if turns:
+        return tuple(turns)
+    for item_id, _count in hand:
+        turns.append(Hand(item_id))
+    return tuple(turns)
+
+
+def _talk_source(source: str, npc: str, steps: tuple[Turn, ...]) -> str:
+    said = [turn.word for turn in steps if isinstance(turn, Say)]
+    if said:
+        return f"{source}#say:{npc}:{said[0]}"
+    handed = [str(turn.item) for turn in steps if isinstance(turn, Hand)]
+    if handed:
+        return f"{source}#hand:{npc}:{'+'.join(handed)}"
+    return f"{source}#talk:{npc}"
+
+
+def _by_origin(graph: QuestGraph) -> dict[str, list[dict]]:
+    found: dict[str, list[dict]] = {}
+    for edge in graph.edges:
+        origin = edge.get("from")
+        if isinstance(origin, str) and origin:
+            found.setdefault(origin, []).append(edge)
+        group = edge.get("group")
+        if isinstance(group, str) and group:
+            found.setdefault(group, []).append(edge)
+            bare = _bare(group)
+            if bare != group:
+                found.setdefault(bare, []).append(edge)
+    return found
+
+
+def _bare(origin: str) -> str:
+    if "#holds:" in origin:
+        return origin.split("#holds:", 1)[0]
+    return origin
+
+
+def _tail(origin: str) -> str:
+    if "#" not in origin:
+        return ""
+    return origin.split("#", 1)[1]
+
+
+def _word(tail: str) -> str:
+    """The script match. A hand-in, a recipe, and an event have none."""
+    if not tail or tail.startswith(("hand:", "recipe:", "event_")) or tail in {"enter", "loot", "kill"}:
+        return ""
+    return tail
+
+
+def _hand_ids(tail: str) -> list[int]:
+    if not tail.startswith("hand:"):
+        return []
+    found: list[int] = []
+    for bit in tail[5:].split("+"):
+        if bit.isdigit():
+            found.append(int(bit))
+    return found
+
+
+def _gives(index: dict[str, list[dict]], node: str) -> list[int]:
+    found: list[int] = []
+    for edge in index.get(node, []):
+        if edge.get("rel") != "gives":
+            continue
+        item_id = _token_item(edge.get("to"))
+        if item_id and item_id not in found:
+            found.append(item_id)
+    return found
+
+
+def _flag_sets(index: dict[str, list[dict]], node: str) -> dict[str, str]:
+    found: dict[str, str] = {}
+    for edge in index.get(node, []):
+        if edge.get("rel") != "sets" or edge.get("from") != node:
+            continue
+        flag = edge.get("flag")
+        value = edge.get("value")
+        if isinstance(flag, str) and isinstance(value, str):
+            found[flag] = value
+    return found
+
+
+def _then_next(index: dict[str, list[dict]], node: str) -> str:
+    for edge in index.get(node, []):
+        if edge.get("rel") != "then" or edge.get("from") != node:
+            continue
+        dest = edge.get("to")
+        if isinstance(dest, str) and dest:
+            return dest
+    return ""
+
+
+def _gate_open(index: dict[str, list[dict]], node: str, sets: dict[str, str], received: set[int]) -> bool:
+    """True when this say's flag and item gates were met by the lines already included."""
+    for edge in index.get(node, []):
+        if edge.get("rel") != "needs" or edge.get("from") != node:
+            continue
+        item = edge.get("item")
+        if isinstance(item, int) and not isinstance(item, bool):
+            if item not in received:
+                return False
+            continue
+        flag = edge.get("flag")
+        at = edge.get("at")
+        if isinstance(flag, str) and isinstance(at, str) and not _flag_met(sets.get(flag), at):
+            return False
+    return True
+
+
+def _flag_met(have: str | None, at: str) -> bool:
+    if at == "unset":
+        return have is None
+    if have is None:
+        return False
+    op = ""
+    raw = at
+    for token in ("==", ">=", "<=", ">", "<"):
+        if at.startswith(token):
+            op = token
+            raw = at[len(token) :]
+            break
+    if not op or not have.lstrip("-").isdigit() or not raw.lstrip("-").isdigit():
+        return False
+    got = int(have)
+    want = int(raw)
+    if op == "==":
+        return got == want
+    if op == ">=":
+        return got >= want
+    if op == "<=":
+        return got <= want
+    if op == ">":
+        return got > want
+    return got < want
+
+
+def _received(turns: list[Turn]) -> set[int]:
+    return {turn.item for turn in turns if isinstance(turn, Receive)}
+
+
+def _reward(graph: QuestGraph | None, edge: dict) -> int:
+    """The item this giver summons. A hand-in edge points at the same group as its gives edge."""
+    if edge.get("rel") == "gives":
+        return _token_item(edge.get("to"))
+    group = str(edge.get("group") or "")
+    if graph is None or not group:
+        return 0
+    for row in graph.edges:
+        if row.get("rel") == "gives" and row.get("group") == group:
+            return _token_item(row.get("to"))
+    return 0
 
 
 def produced(graph: QuestGraph, item_id: int) -> dict | None:

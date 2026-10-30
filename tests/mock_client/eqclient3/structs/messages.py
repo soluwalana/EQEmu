@@ -8,6 +8,7 @@ from eqclient3.structs.wire import (
     EQStruct,
     _cstring,
     _fixed,
+    _i32,
     _need,
     _put_cstr,
     _put_fixed,
@@ -60,8 +61,8 @@ class OP_SpecialMesg(EQStruct):
     def serialize(self) -> bytes:
         head = (self.header + b"\x00\x00\x00")[:3]
         gap = (self.unknown + b"\x00" * 12)[:12]
-        # common/patches/rof2.cpp:3806 OP_SpecialMesg
-        fields = struct.pack("<II", self.msg_type & 0xFFFFFFFF, self.target_spawn_id & 0xFFFFFFFF)
+        # common/patches/rof2.cpp:3805 OP_SpecialMesg message type
+        fields = struct.pack("<ii", _i32(self.msg_type), _i32(self.target_spawn_id))
         return head + fields + _put_cstr(self.speaker) + gap + _put_cstr(self.message)
 
     @classmethod
@@ -69,7 +70,7 @@ class OP_SpecialMesg(EQStruct):
         if len(data) < 11:
             return cls()
         header = data[:3]
-        msg_type, target = struct.unpack_from("<II", data, 3)
+        msg_type, target = struct.unpack_from("<ii", data, 3)
         try:
             speaker, offset = _cstring(data, 11)
         except ValueError:
