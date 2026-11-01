@@ -385,6 +385,21 @@ def zone_recommended_level(zone: str) -> int:
     return int(ZONE_LEVEL.get((zone or "").lower(), 0) or 0)
 
 
+def grind_zones(level: int) -> list[str]:
+    """XP camps this level can walk into. The current band, or any open camp when the band is gated."""
+    current = max(int(level or 1), 1)
+    band: list[str] = []
+    open_camps: list[str] = []
+    for camp in XP_CAMPS:
+        need = zone_recommended_level(camp.zone)
+        if need and current < need:
+            continue
+        open_camps.append(camp.zone)
+        if camp.min_level <= current <= camp.max_level:
+            band.append(camp.zone)
+    return band or open_camps
+
+
 def zone_needs_swim(zone: str) -> bool:
     return (zone or "").lower() in SWIM_ZONES
 

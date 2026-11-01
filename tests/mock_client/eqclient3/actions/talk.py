@@ -65,6 +65,8 @@ class Talk(Action):
         self.heard: set[int] = set()
         self.depth = 0
         self.replied = False
+        self.sought = False
+        self.heard_text = ""
         self.mark: tuple | None = None
 
     def opcodes(self) -> tuple[str, ...]:
@@ -119,6 +121,8 @@ class Talk(Action):
             word = self._next_word(loop, world)
             if word:
                 self._speak_link(loop, world, word)
+                return
+            if self._offer_find(loop, world):
                 return
             if not self.task_text_satisfied():
                 return
@@ -214,6 +218,10 @@ class Talk(Action):
         """A talk restored from an older journal has none of the chain fields."""
         if not hasattr(self, "replied"):
             self.replied = False
+        if not hasattr(self, "sought"):
+            self.sought = False
+        if not hasattr(self, "heard_text"):
+            self.heard_text = ""
         if isinstance(getattr(self, "pending", None), list) and isinstance(getattr(self, "heard", None), set):
             return
         self.said = set()
@@ -240,9 +248,14 @@ class Talk(Action):
         if self.expect_reply and self.mark is not None and _book(world) != self.mark:
             self.pending.clear()
         offered: list[str] = []
+        lines: list[str] = []
         for message in unseen:
             _speaker, text = _reply(message) or ("", "")
+            if text:
+                lines.append(text)
             offered.extend(saylink_words(text))
+        if lines:
+            self.heard_text = " ".join(lines)
         ordered = reply_order(
             offered,
             _advances(str(world.zone or ""), self._npc_name(world)),
@@ -271,6 +284,29 @@ class Talk(Action):
                 continue
             found.append(message)
         return found
+
+    def _offer_find(self, loop: Loop, world: World) -> bool:
+        """A reply that says find. An item is a fetch. A person is a walk, then a hail."""
+        if self.sought:
+            return False
+        name = find_name(self.heard_text)
+        if not name:
+            return False
+        self.sought = True
+        item = _item_named(name)
+        if item:
+            from eqclient3.actions.fetch import Fetch
+
+            count = _SILK_COUNT if item == _SILK_ITEM else 1
+            fetch = Fetch(item, count, self.heard_text or name)
+            return yield_to(self, loop, world, fetch, f"find:{name.lower()}")
+        mob = mob_named(world, name)
+        if mob is None and not _proper_name(name):
+            return False
+        npc = int(mob.id) if mob is not None else 0
+        talk = Talk(npc, "hail", name)
+        talk.bind_name = name
+        return yield_to(self, loop, world, talk, f"find:{name.lower()}")
 
     def _next_word(self, loop: Loop, world: World) -> str:
         if self.depth >= _DEPTH:
@@ -347,6 +383,10 @@ class Talk(Action):
 
 _DIALOGUE = ("OP_ChannelMessage", "OP_SpecialMesg")
 _SAYS = 1032
+_SILK_ITEM = 54234
+_SILK_COUNT = 20
+_FIND = re.compile(r"\bfind\s+(?:any\s+|the\s+)?([A-Za-z][A-Za-z' ]*[A-Za-z])", re.IGNORECASE)
+_ITEM_BOOK = None
 _QUIET = 3
 _DEPTH = 8
 _SAY = re.compile(r"""\$text\s*=~\s*/([^/]+)/i|findi\(\s*["']([^"']+)["']\s*\)""", re.IGNORECASE)
@@ -375,6 +415,44 @@ def reply_order(
         return (0 if hits & open_steps else 1, pending.index(word))
 
     return sorted(pending, key=rank)
+
+
+def find_name(text: str) -> str:
+    """The thing or person after find. The rest of the sentence stays out."""
+    match = _FIND.search(text or "")
+    if match is None:
+        return ""
+    kept = []
+    for word in match.group(1).split():
+        if word.lower() in {"and", "then", "bring", "to", "so"}:
+            break
+        kept.append(word)
+    return " ".join(kept)
+
+
+def _item_named(name: str) -> int:
+    """Item id for a find. Gloomingdeep silk is the tutorial ask when the cache has no row."""
+    key = " ".join((name or "").lower().split())
+    if key in {"gloomingdeep silk", "gloomingdeep spider silk", "spiderling silk"}:
+        return _SILK_ITEM
+    book = _item_book()
+    if book is None:
+        return 0
+    return int(book.id_named(name) or 0)
+
+
+def _item_book():
+    global _ITEM_BOOK
+    if _ITEM_BOOK is not None:
+        return _ITEM_BOOK or None
+    path = os.environ.get("EQEMU_ITEMS") or str(Path.home() / ".eqclient" / "items.jsonl")
+    if not os.path.isfile(path):
+        _ITEM_BOOK = False
+        return None
+    from eqclient3.inventory.item_stats import read_items
+
+    _ITEM_BOOK = read_items(path)
+    return _ITEM_BOOK
 
 
 def _reply(message: Message) -> tuple[str, str] | None:

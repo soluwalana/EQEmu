@@ -37,7 +37,7 @@ class DeathTest(unittest.TestCase):
             Rest("Hero"),
             Kill(spawn_id=5),
             Field("forage"),
-            Form("crushbone", ["^botspawn a"]),
+            Form("crushbone"),
             Summon(271),
         ]
         stay = [

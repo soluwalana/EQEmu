@@ -22,6 +22,7 @@ from eqclient3.log import log
 from eqclient3.loop import Loop
 from eqclient3.nav.maps import load_map
 from eqclient3.nav.navmesh import load_nav
+from eqclient3.nav.travel import ensure_zone_graph
 from eqclient3.nav.water import load_water
 from eqclient3.nav.zones import zone_name_of
 from eqclient3.net.client import Client, Login
@@ -93,9 +94,18 @@ def _warm(client: Client, world: World) -> None:
             water is not None,
             zone_map is not None,
         )
+    world.zone_graph = ensure_zone_graph()
     graph = _cached_graph()
+    if graph is not None:
+        world.exit_doors = graph.doors
     edges = 0 if graph is None else len(graph.edges)
-    log.info("loaded quest graph edges=%s", edges)
+    log.info(
+        "loaded quest graph edges=%s zones=%s transits=%s exits=%s",
+        edges,
+        len(world.zone_graph.zones),
+        len(world.zone_graph.transits),
+        len(world.exit_doors),
+    )
 
 
 def _inbox_zone(client: Client) -> str:

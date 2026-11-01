@@ -4,7 +4,17 @@ from __future__ import annotations
 
 from types import SimpleNamespace
 
-from eqclient3.actions.quest_talk import Hand, Say
+from eqclient3.actions.quest_talk import (
+    ExpectFaction,
+    ExpectItem,
+    ExpectMoney,
+    Faction,
+    Hand,
+    Money,
+    Need,
+    Receive,
+    Say,
+)
 from eqclient3.inventory.assign import assign
 from eqclient3.quests.expand import conversation, expand, produced
 from eqclient3.quests.graph import QuestGraph
@@ -55,8 +65,8 @@ def test_expand_zones_then_fetches_then_hands_the_item():
     assert travel.destination == "qeynos"
     assert fetch.item_id == 9
     assert zone.destination == "erudnext"
-    assert talk.steps == (Hand(9),)
-    assert talk.expect == 100
+    assert talk.steps == (Need(9), Hand(9), Receive(100))
+    assert talk.expect == ExpectItem(100)
 
 
 def test_expand_a_hand_in_only_component_is_the_giver_chain():
@@ -83,10 +93,10 @@ def test_expand_a_hand_in_only_component_is_the_giver_chain():
     names = [type(action).__name__ for action in actions]
     assert names == ["Zone", "QuestTalk", "QuestTalk"]
     assert actions[0].destination == "qeynos"
-    assert actions[1].steps == (Hand(7),)
-    assert actions[1].expect == 8
-    assert actions[2].steps == (Hand(8),)
-    assert actions[2].expect == 200
+    assert actions[1].steps == (Need(7), Hand(7), Receive(8))
+    assert actions[1].expect == ExpectItem(8)
+    assert actions[2].steps == (Need(8), Hand(8), Receive(200))
+    assert actions[2].expect == ExpectItem(200)
 
 
 def test_expand_a_say_word_is_a_quest_talk():
@@ -105,8 +115,8 @@ def test_expand_a_say_word_is_a_quest_talk():
     assert names == ["Zone", "QuestTalk"]
     talk = actions[1]
     assert talk.npc == "kargek redblade"
-    assert talk.steps == (Say("favor"),)
-    assert talk.expect == 20673
+    assert talk.steps == (Say("favor"), Receive(20673))
+    assert talk.expect == ExpectItem(20673)
     assert talk.priority == 280
     assert talk.source == "quest:freeporteast/kargek redblade#say:kargek redblade:favor"
 
@@ -123,7 +133,9 @@ def test_conversation_follows_then_until_the_flag_gate():
         {"rel": "then", "from": f"{home}#plans", "to": f"{home}#shank"},
         {"rel": "needs", "from": f"{home}#shank", "to": "flag:warrior_pre", "flag": "warrior_pre", "at": "==2"},
     ]
-    assert conversation(graph, f"{home}#work", 0) == (Say("work"), Say("errands"), Say("plans"))
+    steps, done = conversation(graph, f"{home}#work", 0)
+    assert steps == (Say("work"), Say("errands"), Say("plans"))
+    assert done is None
 
 
 def test_conversation_stops_when_the_say_gives_the_item():
@@ -134,7 +146,32 @@ def test_conversation_stops_when_the_say_gives_the_item():
         {"rel": "then", "from": f"{home}#favor", "to": f"{home}#sent me to help"},
         {"rel": "then", "from": f"{home}#sent me to help", "to": f"{home}#sword"},
     ]
-    assert conversation(graph, f"{home}#favor", 20673) == (Say("favor"),)
+    steps, done = conversation(graph, f"{home}#favor", 20673)
+    assert steps == (Say("favor"), Receive(20673))
+    assert done == ExpectItem(20673)
+
+
+def test_conversation_with_no_item_expects_the_faction_it_raises():
+    graph = QuestGraph()
+    home = "abysmal/pandula bubundu#hand:52179"
+    graph.edges = [
+        {"rel": "sets", "from": home, "to": "faction:1770", "faction": "1770", "value": 10, "group": home},
+        {"rel": "sets", "from": home, "to": "faction:1771", "faction": "1771", "value": -10, "group": home},
+    ]
+    steps, done = conversation(graph, home, 0)
+    assert steps == (Need(52179), Hand(52179), Faction(1770, 10), Faction(1771, -10))
+    assert done == ExpectFaction(1770, 10)
+
+
+def test_conversation_expects_the_coin_it_pays():
+    graph = QuestGraph()
+    home = "qeynos/a guard#hail"
+    graph.edges = [
+        {"rel": "gives", "from": "qeynos/a guard", "to": "coin:platinum", "count": 5, "group": home},
+    ]
+    steps, done = conversation(graph, home, 0)
+    assert steps == (Say("hail"), Money(5))
+    assert done == ExpectMoney(5)
 
 
 def test_expand_a_produced_item_fetches_then_zones_then_crafts():

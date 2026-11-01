@@ -19,6 +19,7 @@ from eqclient3.action import Action
 from eqclient3.actions.deliver import Deliver
 from eqclient3.actions.fetch import Fetch
 from eqclient3.actions.kill import Kill
+from eqclient3.actions.level_up import queue_level_gear
 from eqclient3.actions.pickup import Pickup
 from eqclient3.actions.talk import Talk
 from eqclient3.actions.zone import Zone
@@ -69,11 +70,13 @@ class ReadTasks(Action):
         zone = new_zone_name(message, world) if message else world.zone
         if message and zone and zone != "tutorialb":
             mark_tutorial(loop, world)
+            queue_level_gear(loop, world)
             produce(loop, world)
             self.complete = True
             return
         if world.zone and world.zone != "tutorialb":
             mark_tutorial(loop, world)
+            queue_level_gear(loop, world)
             produce(loop, world)
             self.complete = True
             return

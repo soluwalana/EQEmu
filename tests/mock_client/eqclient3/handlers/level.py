@@ -33,6 +33,7 @@ class LevelHandler(Handler):
             world.points = world.points + 5 * (level - old)
         if level > world.level:
             world.level = level
+            enqueue_once(self.loop, world, LevelUp(level), f"level:{level}")
         world.exp = exp
 
     def popup(self, row: OP_OnLevelMessage) -> None:

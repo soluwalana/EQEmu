@@ -11,7 +11,6 @@ if TYPE_CHECKING:
 from eqclient3.log import log, write
 from eqclient3.action import Action, Message
 from eqclient3.actions.support import character_name, session_open
-from eqclient3.bots.form import form_commands as build_form_commands
 from eqclient3.data.factions import ensure_factions
 from eqclient3.inventory.assign import assign as run_inventory_assign
 from eqclient3.nav.zones import zone_name_of
@@ -153,15 +152,6 @@ def run_assign(loop: Loop, world: World) -> None:
     except TypeError:
         log.error("inventory assign failed", exc_info=True)
         return
-
-
-def form_commands(world: World, loop: Loop) -> list[str]:
-    bots = [(str(bot.name), bot.class_id) for bot in world.bots.roster]
-    settings: dict[str, dict[str, str]] = {}
-    journal = loop.journal
-    if journal is not None:
-        settings = journal.bot_settings(character_name(loop, world))
-    return list(build_form_commands(bots, settings) or [])
 
 
 def tutorial_done(loop: Loop, world: World) -> bool:

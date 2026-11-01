@@ -9,10 +9,11 @@ if TYPE_CHECKING:
     from eqclient3.world import World
 
 from eqclient3.action import Action
-from eqclient3.actions.fetch import Fetch
+from eqclient3.actions.fetch import Fetch, item_cost
 from eqclient3.actions.scribe import ScribeSpell
-from eqclient3.actions.support import yield_to
+from eqclient3.actions.support import character_name, in_tutorial, journal_of, yield_to
 from eqclient3.actions.train import Train
+from eqclient3.quests.produce import _kit_for
 
 
 class LevelUp(Action):
@@ -50,17 +51,29 @@ class LevelUp(Action):
         master = _guildmaster(world)
         if master:
             yield_to(self, loop, world, Train(master), f"train:{master}")
-        for item_id in _gear(world, level):
-            if world.held(item_id) > 0:
-                continue
-            yield_to(
-                self,
-                loop,
-                world,
-                Fetch(item_id, 1, f"gear {item_id}"),
-                f"fetch:{item_id}",
-            )
+        if not in_tutorial(world):
+            queue_level_gear(loop, world, level)
         self.complete = True
+
+
+def queue_level_gear(loop: Loop, world: World, level: int | None = None) -> None:
+    """Buy the kit for this level. The mines have no camp that pays for it, so this waits."""
+    if in_tutorial(world):
+        return
+    reached = level if level is not None else (world.level or 1)
+    if reached < 1:
+        return
+    queue = loop.queue
+    if queue is None:
+        return
+    who = character_name(loop, world)
+    journal = journal_of(loop)
+    for item_id in _tier(world, reached):
+        if world.held(item_id) > 0:
+            continue
+        fetch = Fetch(item_id, 1, f"gear {item_id}", gold=item_cost(item_id))
+        fetch.source = f"fetch:{item_id}"
+        queue.append(fetch, world, journal, who)
 
 
 @runtime_checkable
@@ -97,6 +110,29 @@ def _spells(world: World, level: int) -> list[dict[str, object] | _Spell]:
                 found.append(row)
         elif isinstance(row, _Spell) and row.level <= level:
             found.append(row)
+    return found
+
+
+def _tier(world: World, level: int) -> list[int]:
+    """Catalog gear at this level, then the kit tier for the player and each companion class."""
+    found = _gear(world, level)
+    seen = set(found)
+    for class_id in _classes(world):
+        for item_id in _kit_for(class_id, level):
+            if item_id not in seen:
+                seen.add(item_id)
+                found.append(item_id)
+    return found
+
+
+def _classes(world: World) -> list[int]:
+    found: list[int] = []
+    if world.class_id:
+        found.append(int(world.class_id))
+    for bot in world.bots.roster:
+        class_id = int(bot.class_id or 0)
+        if class_id and class_id not in found:
+            found.append(class_id)
     return found
 
 

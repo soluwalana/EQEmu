@@ -5,6 +5,7 @@ import sqlite3
 from pathlib import Path
 from eqclient3.action import Action
 from eqclient3.actions.craft import Craft
+from eqclient3.actions.zone import Zone
 from eqclient3.data.recipes import Recipe
 from eqclient3.actions.reclaim import Reclaim
 from eqclient3.actions.rez import Rez
@@ -146,6 +147,26 @@ def test_create_and_reload_open_row(tmp_path):
     finally:
         seen.close()
     assert count == 1
+
+
+def test_an_open_zone_is_dropped_because_disconnect_wipes_it(tmp_path):
+    path = tmp_path / "journal-v3.sqlite"
+    journal = Journal(path)
+    try:
+        zone = Zone("qeynos2")
+        zone.source = "zone:qeynos2"
+        zone.durable = True
+        assert journal.open_action("Hero", zone) is True
+        assert journal.load_actions("Hero")
+    finally:
+        journal.close()
+
+    again = Journal(path)
+    try:
+        assert again.load_actions("Hero") == []
+        assert again.is_resolved("Hero", "zone:qeynos2") is False
+    finally:
+        again.close()
 
 
 def test_an_action_that_is_not_durable_is_not_reloaded(tmp_path):

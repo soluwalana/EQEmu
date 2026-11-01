@@ -8,6 +8,9 @@ from eqclient3.actions.zone import Zone
 
 
 class ZoneTest(unittest.TestCase):
+    def test_a_zone_request_is_not_durable(self):
+        self.assertFalse(Zone("freportw").durable)
+
     def test_one_request_then_new_zone(self):
         client, sheet = fresh()
         action = Zone("freportw")
@@ -32,6 +35,16 @@ class ZoneTest(unittest.TestCase):
         self.assertEqual(client.outbound, [])
         self.assertFalse(action.complete)
         self.assertEqual(commands(client), [])
+
+    def test_below_the_zone_floor_grinds_first(self):
+        client, sheet = fresh()
+        sheet.level = 10
+        action = Zone("unrest")
+        action.step(client, sheet)
+        self.assertEqual(opcodes(client), [])
+        self.assertEqual(kinds(client), ["Grind"])
+        self.assertEqual(client.queue[0].level, 11)
+        self.assertFalse(action.complete)
 
 
 if __name__ == "__main__":

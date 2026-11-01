@@ -3,17 +3,14 @@
 from __future__ import annotations
 
 from eqclient3.log import log
-from eqclient3.actions.bots.form import Form
+from eqclient3.actions.bots.form import Form, party_members
 from eqclient3.actions.read_tasks import ReadTasks
-from eqclient3.actions.zone import Zone
 from eqclient3.handlers.common import (
     call_transfer,
     character_name,
-    form_commands,
     mobs_map,
     session_open,
     tutorial_done,
-    zone_name,
 )
 from eqclient3.handlers.common import enqueue_once as append_action
 from eqclient3.structs import (
@@ -65,8 +62,17 @@ class ZoningHandler(Handler):
             self.mark_started("tutorial_started")
             if not tutorial_done(self.loop, world):
                 append_action(self.loop, world, ReadTasks(), "read_tasks:tutorialb")
-        action = Form(short, form_commands(world, self.loop))
-        append_action(self.loop, world, action, f"form:{short}")
+        source = f"form:{short}"
+        self.reopen_form(source)
+        append_action(self.loop, world, Form(short, party_members()), source)
+
+    def reopen_form(self, source: str) -> None:
+        """A finished Form is forgotten so the next login queues one."""
+        journal = self.loop.journal
+        who = character_name(self.loop, self.world)
+        if not journal or not who:
+            return
+        journal.clear_source(who, source)
 
     def mark_started(self, name: str) -> None:
         """Remember on the character, and in the journal, that this progress has started."""
@@ -98,18 +104,23 @@ class ZoningHandler(Handler):
                 mobs_map(world).pop(spawn_id, None)
 
     def zone_change(self, row: OP_ZoneChange) -> None:
+        """Cross-zone success reconnects. Sending another OP_ZoneChange cancels it.
+
+        The packet's coordinates are a cancel or a same-zone move. A successful
+        cross-zone packet leaves them at zero, and applying that walks the next
+        zone from the origin.
+        """
         zone_id, success = row.zone_id, row.success
         loop = self.loop
+        world = self.world
         if not session_open(loop):
             call_transfer(loop)
             return
-        world = self.world
-        if success != 1 or not zone_id:
+        if success == 1 and zone_id and zone_id != world.zone_id:
+            world.zone_id = zone_id
+            call_transfer(loop)
             return
-        if zone_id == world.zone_id and world.zone:
-            return
-        name = zone_name(world, zone_id)
-        append_action(loop, world, Zone(name), f"zone:{name}")
+        world.movement.snap(world, (row.x, row.y, row.z))
 
     def request(self, payload: OP_RequestClientZoneChange) -> None:
         """The server asked us to move. A different zone is confirmed with OP_ZoneChange.

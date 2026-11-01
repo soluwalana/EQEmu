@@ -113,6 +113,78 @@ class TalkTest(unittest.TestCase):
             _print_say(payload, "Mockvthree")
         self.assertEqual(caught.getvalue(), "> Mockvthree: Hail, Guard Rahtiz\n")
 
+    def test_find_an_item_queues_a_fetch(self):
+        client, sheet = fresh()
+        mob(sheet, 9, distance=5, name="Vahlara", targeted=True)
+        action = Talk(9, "hail", "Hail Vahlara and Learn About Armor.")
+        action.step(client, sheet)
+        inbox(
+            action,
+            "OP_SimpleMessage",
+            {
+                "string_id": 1032,
+                "texts": (
+                    "Vahlara",
+                    "If you can find any gloomingdeep silk, bring it to me and I can make more bandages.",
+                ),
+            },
+        )
+        action.step(client, sheet)
+        fetches = [row for row in client.queue if type(row).__name__ == "Fetch"]
+        self.assertEqual(len(fetches), 1)
+        self.assertEqual(fetches[0].item_id, 54234)
+        self.assertEqual(fetches[0].count, 20)
+        self.assertEqual(fetches[0].source, "find:gloomingdeep silk")
+        self.assertEqual(commands(client), ["Hail, Vahlara"])
+
+    def test_find_a_person_queues_a_hail(self):
+        client, sheet = fresh()
+        mob(sheet, 4, distance=5, name="Vahlara", targeted=True)
+        mob(sheet, 8, distance=5, name="Xenaida", targeted=True)
+        action = Talk(4, "hail", "Hail Vahlara and Learn About Armor.")
+        action.step(client, sheet)
+        inbox(
+            action,
+            "OP_SimpleMessage",
+            {"string_id": 1032, "texts": ("Vahlara", "Find Xenaida and learn about maps.")},
+        )
+        action.step(client, sheet)
+        talks = [row for row in client.queue if type(row).__name__ == "Talk"]
+        self.assertEqual(len(talks), 1)
+        self.assertEqual(talks[0].bind_name, "Xenaida")
+        self.assertEqual(talks[0].target_id, 8)
+        self.assertEqual(talks[0].source, "find:xenaida")
+        talks[0].step(client, sheet)
+        self.assertEqual(commands(client), ["Hail, Vahlara", "Hail, Xenaida"])
+        inbox(
+            talks[0],
+            "OP_SimpleMessage",
+            {"string_id": 1032, "texts": ("Xenaida", f"Let me show you the {_saylink('maps')}.")},
+        )
+        talks[0].step(client, sheet)
+        self.assertEqual(commands(client), ["Hail, Vahlara", "Hail, Xenaida", "maps"])
+        self.assertFalse(talks[0].complete)
+
+    def test_an_item_link_is_not_a_quest_link(self):
+        client, sheet = fresh()
+        mob(sheet, 9, distance=5, name="Vahlara", targeted=True)
+        action = Talk(9, "hail", "Hail Vahlara and Learn About Armor.")
+        action.step(client, sheet)
+        inbox(
+            action,
+            "OP_SimpleMessage",
+            {
+                "string_id": 1032,
+                "texts": (
+                    "Vahlara",
+                    f"Take these {_item_link('Gloomingdeep Kobold Plate Vambraces')}. "
+                    f"There are many {_saylink('others')} who were not as lucky.",
+                ),
+            },
+        )
+        action.step(client, sheet)
+        self.assertEqual(commands(client), ["Hail, Vahlara", "others"])
+
     def test_his_message_answers_the_hail(self):
         client, sheet = fresh()
         mob(sheet, 9, distance=5, name="Guard_Rahtiz000", targeted=True)
@@ -263,6 +335,11 @@ class TalkTest(unittest.TestCase):
 def _saylink(word):
     body = "0FFFFF000080000000000000000000000000000000000" + "0" * 11
     return f"\x12{body}{word}\x12"
+
+
+def _item_link(name):
+    body = "010620" + "0" * 50
+    return f"\x12{body}{name}\x12"
 
 
 if __name__ == "__main__":

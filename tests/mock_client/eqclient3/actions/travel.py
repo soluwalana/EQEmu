@@ -10,7 +10,8 @@ if TYPE_CHECKING:
 
 
 from eqclient3.action import Action
-from eqclient3.actions.support import next_zoneline, walk
+from eqclient3.actions.level_gate import hold_for_level
+from eqclient3.actions.support import forget, in_tutorial, next_zoneline, walk
 
 
 class Travel(Action):
@@ -29,8 +30,13 @@ class Travel(Action):
         self.suspended = True
 
     def step(self, loop: Loop, world: World) -> None:
+        if in_tutorial(world) and "#gold:" in (self.source or ""):
+            forget(loop, world, self)
+            return
         if world.zone == self.destination:
             self.complete = True
+            return
+        if hold_for_level(self, loop, world, self.destination):
             return
         self.suspended = False
         point = next_zoneline(world, self.destination)

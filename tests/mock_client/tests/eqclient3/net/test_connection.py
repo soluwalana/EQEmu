@@ -7,7 +7,7 @@ import struct
 from eqclient3.net.client import connect, enter, transfer_zone
 from eqclient3.net.crypto import encrypt_block
 from eqclient3.net.opcodes import login_opcodes, require, rof2_opcodes
-from eqclient3.structs import LoginBase, OP_SendCharInfo, CharacterSlot
+from eqclient3.structs import LoginBase, OP_CharacterCreate, OP_SendCharInfo, CharacterSlot
 from eqclient3.net.sheet import build
 from net.peer import Peer
 
@@ -207,6 +207,8 @@ def test_missing_name_approves_then_creates_and_waits_for_the_name():
             "OP_CharacterCreate",
             "OP_EnterWorld",
         ]
+        created = next(payload for op, payload in world.apps if op == create)
+        assert OP_CharacterCreate.deserialize(created).tutorial == 1
         assert selects["n"] == 2
     finally:
         if client is not None:

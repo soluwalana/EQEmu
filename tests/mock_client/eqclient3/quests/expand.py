@@ -19,7 +19,20 @@ if TYPE_CHECKING:
 from eqclient3.log import log
 from eqclient3.actions.craft import Craft
 from eqclient3.actions.fetch import Fetch
-from eqclient3.actions.quest_talk import Hand, QuestTalk, Receive, Say, Turn
+from eqclient3.actions.quest_talk import (
+    Expect,
+    ExpectFaction,
+    ExpectItem,
+    ExpectMoney,
+    Faction,
+    Hand,
+    Money,
+    Need,
+    QuestTalk,
+    Receive,
+    Say,
+    Turn,
+)
 from eqclient3.actions.travel import Travel
 from eqclient3.actions.zone import Zone
 from eqclient3.data.recipes import Recipe, _WORLD_CONTAINER
@@ -139,39 +152,51 @@ def _drop(edge: dict, *, here: str, source: str, item_id: int = 0, count: int = 
     return actions
 
 
-def conversation(graph: QuestGraph, origin: str, expect: int) -> tuple[Turn, ...]:
+def conversation(graph: QuestGraph, origin: str, expect: int) -> tuple[tuple[Turn, ...], Expect | None]:
     """The say, hand, and receive steps from this node through the then-links that belong to it.
 
     A later say is part of this conversation when the flag it needs was set on the way.
-    The say or hand that gives expect ends the chain. The item itself is the terminal, not a step.
+    The say or hand that gives expect ends the chain. The second value is what ends the
+    talk: that item, or the money or faction this conversation pays when it gives no item.
     """
     node = _bare(origin)
     if "#" not in node:
-        return ()
+        return (), None
     index = _by_origin(graph)
     turns: list[Turn] = []
     sets: dict[str, str] = {}
     seen: set[str] = set()
+    held: set[int] = set()
+    done: Expect | None = ExpectItem(expect) if expect else None
     while node and node not in seen:
         seen.add(node)
         tail = _tail(node)
+        hands = _hand_ids(tail)
+        for item_id in _item_needs(index, node):
+            if item_id not in hands and item_id not in held:
+                turns.append(Need(item_id))
         word = _word(tail)
         if word:
             turns.append(Say(word))
-        for item_id in _hand_ids(tail):
+        for item_id in hands:
+            if item_id not in held:
+                turns.append(Need(item_id))
             turns.append(Hand(item_id))
         gave = _gives(index, node)
         for item_id in gave:
-            if item_id != expect:
-                turns.append(Receive(item_id))
+            turns.append(Receive(item_id))
+            held.add(item_id)
+        turns.extend(_pay_steps(index, node))
         sets.update(_flag_sets(index, node))
+        if done is None:
+            done = _paid(index, node)
         if expect and expect in gave:
             break
         nxt = _then_next(index, node)
         if not nxt or not _gate_open(index, nxt, sets, _received(turns)):
             break
         node = _bare(nxt)
-    return tuple(turns)
+    return tuple(turns), done
 
 
 def _giver(
@@ -189,14 +214,19 @@ def _giver(
         zone_action = Zone(zone)
         zone_action.source = f"{source}#zone:{zone}"
         actions.append(zone_action)
-    expect = _reward(graph, edge)
+    item = _reward(graph, edge)
     origin = str(edge.get("group") or edge.get("from") or "")
-    steps = conversation(graph, origin, expect) if graph is not None else ()
+    steps: tuple[Turn, ...] = ()
+    done: Expect | None = ExpectItem(item) if item else None
+    if graph is not None:
+        steps, done = conversation(graph, origin, item)
+        if item:
+            done = ExpectItem(item)
     if not steps:
         steps = _fallback(origin, hand)
     if not steps:
         return actions
-    talk = QuestTalk(npc, steps, expect=expect)
+    talk = QuestTalk(npc, steps, expect=done)
     talk.source = _talk_source(source, npc, steps)
     actions.append(talk)
     return actions
@@ -231,7 +261,7 @@ def _by_origin(graph: QuestGraph) -> dict[str, list[dict]]:
         if isinstance(origin, str) and origin:
             found.setdefault(origin, []).append(edge)
         group = edge.get("group")
-        if isinstance(group, str) and group:
+        if isinstance(group, str) and group and group != origin:
             found.setdefault(group, []).append(edge)
             bare = _bare(group)
             if bare != group:
@@ -277,6 +307,90 @@ def _gives(index: dict[str, list[dict]], node: str) -> list[int]:
         if item_id and item_id not in found:
             found.append(item_id)
     return found
+
+
+def _item_needs(index: dict[str, list[dict]], node: str) -> list[int]:
+    """Items this line requires him to already hold. The hand-in items are fetched with the hand."""
+    found: list[int] = []
+    for edge in index.get(node, []):
+        if edge.get("rel") != "needs" or edge.get("from") != node:
+            continue
+        item_id = _whole(edge.get("item"))
+        if item_id is not None and item_id > 0 and item_id not in found:
+            found.append(item_id)
+    return found
+
+
+def _pay_steps(index: dict[str, list[dict]], node: str) -> list[Turn]:
+    """Coin and faction changes this line waits for before the conversation goes on."""
+    steps: list[Turn] = []
+    paid = _money_pay(index, node)
+    if paid is not None:
+        steps.append(Money(paid.platinum, paid.gold, paid.silver, paid.copper))
+    for edge in index.get(node, []):
+        if edge.get("rel") != "sets" or edge.get("from") != node:
+            continue
+        faction_id = _whole(edge.get("faction"))
+        delta = _whole(edge.get("value"))
+        if faction_id is None or delta is None or faction_id <= 0:
+            continue
+        steps.append(Faction(faction_id, delta))
+    return steps
+
+
+def _paid(index: dict[str, list[dict]], node: str) -> Expect | None:
+    """Faction standing or coin this line pays, when it summons no item."""
+    faction = _faction_pay(index, node)
+    if faction is not None:
+        return faction
+    return _money_pay(index, node)
+
+
+def _faction_pay(index: dict[str, list[dict]], node: str) -> ExpectFaction | None:
+    chosen: ExpectFaction | None = None
+    for edge in index.get(node, []):
+        if edge.get("rel") != "sets" or edge.get("from") != node:
+            continue
+        faction_id = _whole(edge.get("faction"))
+        delta = _whole(edge.get("value"))
+        if faction_id is None or delta is None or faction_id <= 0:
+            continue
+        pay = ExpectFaction(faction_id, delta)
+        if chosen is None or (chosen.delta < 0 < delta):
+            chosen = pay
+    return chosen
+
+
+def _money_pay(index: dict[str, list[dict]], node: str) -> ExpectMoney | None:
+    amounts = [0, 0, 0, 0]
+    found = False
+    slots = {"platinum": 0, "gold": 1, "silver": 2, "copper": 3}
+    for edge in index.get(node, []):
+        if edge.get("rel") != "gives":
+            continue
+        token = edge.get("to")
+        if not isinstance(token, str) or not token.startswith("coin:"):
+            continue
+        slot = slots.get(token.split(":", 1)[1])
+        if slot is None:
+            continue
+        count = _whole(edge.get("count"))
+        if count is not None and count > 0:
+            amounts[slot] += count
+        found = True
+    if not found:
+        return None
+    return ExpectMoney(amounts[0], amounts[1], amounts[2], amounts[3])
+
+
+def _whole(value: object) -> int | None:
+    if isinstance(value, bool) or value is None:
+        return None
+    if isinstance(value, int):
+        return value
+    if isinstance(value, str) and value.lstrip("-").isdigit():
+        return int(value)
+    return None
 
 
 def _flag_sets(index: dict[str, list[dict]], node: str) -> dict[str, str]:

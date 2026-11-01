@@ -80,7 +80,11 @@ def _create_character(
     deadline: float,
     sheet: Character,
 ) -> bytes:
-    """Approve the name, then send this race and class. World replies with a fresh char select."""
+    """Approve the name, then send this race and class. World replies with a fresh char select.
+
+    tutorial=1 is the RoF2 Enter Tutorial button. The server leaves it off for
+    this client version, and a zero sends the new character to the start city.
+    """
     approve = require(opcodes, "OP_ApproveName")
     session.send_app(struct.pack("<H", approve) + OP_ApproveName(name, sheet.race, sheet.class_id).serialize())
     reply = _wait_opcode(session, approve, deadline)
@@ -105,6 +109,7 @@ def _create_character(
         wisdom,
         intelligence,
         charisma,
+        tutorial=1,
     ).serialize()
     session.send_app(struct.pack("<H", require(opcodes, "OP_CharacterCreate")) + created)
     select = _wait_opcode(session, require(opcodes, "OP_SendCharInfo"), deadline)

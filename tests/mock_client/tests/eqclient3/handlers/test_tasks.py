@@ -51,7 +51,9 @@ def test_opcodes():
     tasks.TasksHandler().handle("OP_TaskSelectWindow", _offer(), tutorial, stored)
     assert tutorial.tasks.title == "A Lesson"
     assert len(tutorial.tasks.activities) == 3
-    assert stored.queue == [] and stored.sent == []
+    assert names(stored) == ["Talk", "Kill", "Fetch"]
+    assert sources(stored) == ["task:15:0", "task:15:1", "task:15:2"]
+    assert [opcode for opcode, _payload in stored.sent] == ["OP_AcceptNewTask"]
 
     tasks.TasksHandler().handle(
         "OP_TaskActivity",
@@ -69,6 +71,31 @@ def test_opcodes():
     assert names(loop) == ["Talk", "Kill", "Fetch"]
     task_type, task_id, master = struct.unpack("<III", loop.sent[0][1])
     assert (task_type, task_id, master) == (0, 15, 8)
+
+
+def test_every_offer_on_the_window_is_queued():
+    first = [
+        (0, 4, "Guard Rahtiz", "", 1, "hail the guard"),
+    ]
+    second = [
+        (0, 2, "a spider", "", 4, "kill the spiders"),
+    ]
+    window = task_window(
+        9,
+        [
+            (5032, 0, "Arachnida", "Clear the spiders.", first),
+            (5091, 0, "Vermin", "Clear the nests.", second),
+        ],
+    )
+    world = World(zone="tutorialb")
+    loop = Loop()
+    tasks.TasksHandler().handle("OP_TaskSelectWindow", window, world, loop)
+    assert [opcode for opcode, _payload in loop.sent] == ["OP_AcceptNewTask", "OP_AcceptNewTask"]
+    taken = [struct.unpack("<III", payload) for _opcode, payload in loop.sent]
+    assert taken == [(0, 5032, 9), (0, 5091, 9)]
+    assert names(loop) == ["Talk", "Kill"]
+    assert sources(loop) == ["task:5032:0", "task:5091:0"]
+    assert [row.task_id for row in world.tasks.activities] == [5032, 5091]
 
 
 def _cstr(text: str) -> bytes:

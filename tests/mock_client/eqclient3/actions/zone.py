@@ -1,4 +1,8 @@
-"""Band 400. One zone request, then wait for OP_NewZone. A closed session sends nothing."""
+"""Band 400. One zone request, then wait for OP_NewZone. A closed session sends nothing.
+
+The request is not durable. A disconnect wipes it, and the server's success
+packet is the reconnect, not a second OP_ZoneChange.
+"""
 
 from __future__ import annotations
 
@@ -10,14 +14,15 @@ if TYPE_CHECKING:
 
 
 from eqclient3.action import Action
-from eqclient3.actions.support import session_open, zone_id, zone_packet
+from eqclient3.actions.level_gate import hold_for_level
+from eqclient3.actions.support import forget, gear_vendor_trip, session_open, zone_id, zone_packet
 
 
 class Zone(Action):
     def __init__(self, destination: str) -> None:
         super().__init__()
         self.priority = 400
-        self.durable = True
+        self.durable = False
         self.destination = destination
         self.asked = False
 
@@ -28,6 +33,9 @@ class Zone(Action):
         self.suspended = True
 
     def step(self, loop: Loop, world: World) -> None:
+        if gear_vendor_trip(loop, world, self.destination, self.source or ""):
+            forget(loop, world, self)
+            return
         if self.waiting_for("ZONE"):
             if self.consume("OP_NewZone"):
                 self.waited = 0
@@ -35,6 +43,8 @@ class Zone(Action):
                 self.complete = True
             return
         if not session_open(loop):
+            return
+        if hold_for_level(self, loop, world, self.destination):
             return
         point = world.position
         loop.send(

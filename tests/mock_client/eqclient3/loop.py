@@ -6,6 +6,7 @@ step itself is stepped once in that same pulse. send queues until after the step
 
 from __future__ import annotations
 
+import re
 from typing import TYPE_CHECKING, Protocol, runtime_checkable
 
 if TYPE_CHECKING:
@@ -15,6 +16,7 @@ if TYPE_CHECKING:
     from eqclient3.schedule import Schedule
 
 from .actions.support import character_name
+from .inventory.item_stats import ItemBook, ensure_items
 from .net.sheet import Character as Creation
 from .journal import Journal
 from .log import log
@@ -26,6 +28,8 @@ from .net.session import Session, SessionError
 
 PULSE = 0.1
 _HEARD = ("OP_ChannelMessage", "OP_SpecialMesg", "OP_SimpleMessage")
+_FETCH_ID = re.compile(r"fetch:(\d+)")
+_book: ItemBook | None = None
 
 
 def _hear_waiting(queue: Schedule, loop: Loop, world: World) -> None:
@@ -328,7 +332,43 @@ def _action_name(action: Action | None) -> str:
         return "idle"
     kind = type(action).__name__
     source = action.source
-    return kind if not source else f"{kind} {source}"
+    base = kind if not source else f"{kind} {source}"
+    named = _item_suffix(action)
+    return base if not named else f"{base} {named}"
+
+
+def _item_suffix(action: Action) -> str:
+    """Cache name and item number for each item this action is working on."""
+    parts: list[str] = []
+    book: ItemBook | None = None
+    for item_id in _item_ids(action):
+        if book is None:
+            book = _item_book()
+        row = book.get(item_id)
+        name = row.name if row else ""
+        if name:
+            parts.append(f"{name} ({item_id})")
+        elif f":{item_id}" not in (action.source or ""):
+            parts.append(f"({item_id})")
+    return " ".join(parts)
+
+
+def _item_ids(action: Action) -> list[int]:
+    found: list[int] = []
+    if action.item_id:
+        found.append(action.item_id)
+    for match in _FETCH_ID.finditer(action.source or ""):
+        item_id = int(match.group(1))
+        if item_id not in found:
+            found.append(item_id)
+    return found
+
+
+def _item_book() -> ItemBook:
+    global _book
+    if _book is None:
+        _book = ensure_items()
+    return _book
 
 
 def _action_label(action: Action | None) -> str:

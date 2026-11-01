@@ -25,6 +25,9 @@ class _Journal:
     def resolved(self, character, source):
         return False
 
+    def clear_source(self, character, source):
+        return None
+
     def bot_settings(self, character):
         return {}
 
@@ -60,11 +63,29 @@ def test_opcodes():
     assert stayed.sent == []
     assert here.position == (10.0, 20.0, 30.0)
 
-    zoning.ZoningHandler().handle("OP_ZoneChange", zone_change(45, 10, 20, 30, success=1), world, loop)
-    assert names(loop) == ["Zone"]
-    assert loop.queue[0].priority == 400
-    assert loop.queue[0].destination == "45"
-    assert loop.queue[0].source == "zone:45"
+    world.position = (12.0, 34.0, 56.0)
+    zoning.ZoningHandler().handle("OP_ZoneChange", zone_change(45, 0, 0, 0, success=1), world, loop)
+    assert names(loop) == []
+    assert len(loop.sent) == 1
+    assert loop._transferred is True
+    assert world.zone_id == 45
+    assert world.position == (12.0, 34.0, 56.0)
+
+    rejected = World(name="Hero", zone="qeynos", zone_id=1)
+    stayed = Loop()
+    zoning.ZoningHandler().handle("OP_ZoneChange", zone_change(45, 8, 9, 10, success=0), rejected, stayed)
+    assert names(stayed) == []
+    assert stayed.sent == []
+    assert getattr(stayed, "_transferred", False) is False
+    assert rejected.zone_id == 1
+    assert rejected.position == (8.0, 9.0, 10.0)
+
+    same = World(name="Hero", zone="qeynos", zone_id=1)
+    parked = Loop()
+    zoning.ZoningHandler().handle("OP_ZoneChange", zone_change(1, 4, 5, 6, success=1), same, parked)
+    assert names(parked) == []
+    assert getattr(parked, "_transferred", False) is False
+    assert same.position == (4.0, 5.0, 6.0)
 
     closed = Loop()
     closed.session = _Session(open=False)
@@ -106,3 +127,31 @@ def test_opcodes():
     zoning.ZoningHandler().handle("OP_NewZone", new_zone("tutorialb", 1, 2, 3), World(name="Hero"), skipped)
     assert names(skipped) == ["Form"]
     assert skipped.queue[0].source == "form:tutorialb"
+
+
+def test_a_finished_form_is_queued_again_on_the_next_login(tmp_path):
+    from eqclient3.actions.bots.form import Form
+    from eqclient3.journal import Journal
+    from eqclient3.loop import Loop as PlayLoop
+    from eqclient3.schedule import Schedule
+    from eqclient3.world import World as Sheet
+
+    journal = Journal(tmp_path / "journal-v3.sqlite", character="Hero")
+    try:
+        done = Form("tutorialb")
+        done.source = "form:tutorialb"
+        done.complete = True
+        journal.resolve_action("Hero", done)
+        world = Sheet(name="Hero")
+        queue = Schedule()
+        loop = PlayLoop()
+        loop.character = "Hero"
+        loop.journal = journal
+        loop.queue = queue
+        loop.world = world
+        queue.bind(journal, "Hero")
+        zoning.ZoningHandler().handle("OP_NewZone", new_zone("tutorialb", 1, 2, 3), world, loop)
+        assert [action.source for action in queue if type(action).__name__ == "Form"] == ["form:tutorialb"]
+        assert journal.is_resolved("Hero", "form:tutorialb") is False
+    finally:
+        journal.close()

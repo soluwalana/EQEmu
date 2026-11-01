@@ -6,6 +6,9 @@ from types import SimpleNamespace
 from harness import fresh, kinds
 
 from eqclient3.actions.fetch import Fetch
+from eqclient3.actions.support import FetchPlan, gear_vendor_trip
+from eqclient3.actions.travel import Travel
+from eqclient3.actions.zone import Zone
 
 
 class FetchTest(unittest.TestCase):
@@ -70,6 +73,64 @@ class FetchTest(unittest.TestCase):
         Fetch(7, 1, "vendor").step(self.client, self.sheet)
         self.assertIn("Zone", kinds(self.client))
         self.assertNotIn("Travel", kinds(self.client))
+
+    def test_gold_fetch_kills_at_an_open_camp_until_the_coin_is_held(self):
+        self.sheet.zone = "freportw"
+        self.sheet.level = 2
+        action = Fetch(0, 1, "gold", gold=500)
+        action.step(self.client, self.sheet)
+        self.assertFalse(action.complete)
+        kills = [row for row in self.client.queue if type(row).__name__ == "Kill"]
+        self.assertEqual(len(kills), 1)
+        self.assertEqual(kills[0].camp, "freportw")
+        self.assertEqual(kills[0].level, 3)
+        self.sheet.set_coin(1, 0, 0, 0)
+        action.step(self.client, self.sheet)
+        self.assertTrue(action.complete)
+
+    def test_gear_short_on_coin_earns_before_it_buys(self):
+        self.sheet.zone = "qeynos"
+        self.sheet.level = 2
+        self.sheet.plans = {50: SimpleNamespace(merchant=SimpleNamespace(npc=8, zone="qeynos"))}
+        action = Fetch(50, 1, "gear 50", gold=500)
+        action.step(self.client, self.sheet)
+        self.assertNotIn("Trade", kinds(self.client))
+        self.assertIn("Kill", kinds(self.client))
+        self.sheet.set_coin(1, 0, 0, 0)
+        action.step(self.client, self.sheet)
+        self.assertIn("Trade", kinds(self.client))
+
+    def test_the_mines_do_not_grind_for_gear_coin(self):
+        self.sheet.zone = "tutorialb"
+        self.sheet.level = 1
+        self.sheet.plans = {2010: FetchPlan(vendor_zone="poknowledge")}
+        gear = Fetch(2010, 1, "gear 2010", gold=1800)
+        gear.source = "fetch:2010"
+        self.client.queue.append(gear, self.sheet, self.client.journal, "Hero")
+        exit_zone = Zone("poknowledge")
+        exit_zone.source = "task:1448:9"
+        self.assertFalse(gear_vendor_trip(self.client, self.sheet, "poknowledge", exit_zone.source))
+        gear.step(self.client, self.sheet)
+        self.assertNotIn(gear, list(self.client.queue))
+        self.assertFalse(self.client.journal.is_resolved("Hero", gear.source))
+        self.assertNotIn("Kill", kinds(self.client))
+        self.assertNotIn("Travel", kinds(self.client))
+
+        travel = Travel("qeynos")
+        travel.source = "fetch:2010#gold:travel:qeynos"
+        self.client.queue.append(travel, self.sheet, self.client.journal, "Hero")
+        travel.step(self.client, self.sheet)
+        self.assertNotIn(travel, list(self.client.queue))
+        self.assertFalse(self.client.journal.is_resolved("Hero", travel.source))
+
+        self.client.queue.append(gear, self.sheet, self.client.journal, "Hero")
+        zone = Zone("poknowledge")
+        zone.source = "zone:poknowledge"
+        self.client.queue.append(zone, self.sheet, self.client.journal, "Hero")
+        zone.step(self.client, self.sheet)
+        self.assertNotIn(zone, list(self.client.queue))
+        self.assertFalse(self.client.journal.is_resolved("Hero", zone.source))
+        self.assertEqual(self.client.outbound, [])
 
 
 if __name__ == "__main__":

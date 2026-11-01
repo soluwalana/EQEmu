@@ -19,7 +19,7 @@ from eqclient3.actions.craft import Craft
 from eqclient3.actions.deliver import Deliver
 from eqclient3.actions.fetch import Fetch
 from eqclient3.actions.kill import Kill
-from eqclient3.actions.quest_talk import Hand, QuestTalk, Say
+from eqclient3.actions.quest_talk import ExpectItem, Hand, Need, QuestTalk, Say
 from eqclient3.actions.talk import Talk
 from eqclient3.data.recipes import Recipe, _WORLD_CONTAINER
 from eqclient3.loop import Loop
@@ -542,6 +542,8 @@ def _from_action(action: Action) -> list[Step]:
                 rows.append(("talk", npc, turn.word.lower()))
             elif isinstance(turn, Hand):
                 rows.append(("deliver", npc, str(turn.item)))
+            elif isinstance(turn, Need):
+                rows.append(("fetch", str(turn.item)))
         return rows
     if isinstance(action, Talk):
         return [("talk", _npc(action.npc), action.line.lower())]
@@ -557,9 +559,7 @@ def _from_action(action: Action) -> list[Step]:
     return []
 
 
-def _append_step(
-    queue: Schedule, world: World, edge: Edge, indexed: dict[str, list[Edge]], graph: QuestGraph
-) -> None:
+def _append_step(queue: Schedule, world: World, edge: Edge, indexed: dict[str, list[Edge]], graph: QuestGraph) -> None:
     source = str(edge.get("from") or "")
     npc = _npc(split_npc(source)[1])
     flag = str(edge.get("flag") or "")
@@ -575,8 +575,8 @@ def _append_step(
         queue.append(made, world)
         return
     outputs = _outputs(edge, indexed)
-    expect = outputs[0] if outputs else 0
-    steps = conversation(graph, source, expect)
+    item = outputs[0] if outputs else 0
+    steps, done = conversation(graph, source, item)
     if not steps:
         tail = source.split("#", 1)[1] if "#" in source else ""
         if "#holds:" in tail:
@@ -585,9 +585,10 @@ def _append_step(
             steps = tuple(Hand(int(bit)) for bit in tail[5:].split("+") if bit.isdigit())
         else:
             steps = (Say(tail or "hail"),)
+        done = ExpectItem(item) if item else None
     if not steps:
         return
-    talk = QuestTalk(npc, steps, expect=expect)
+    talk = QuestTalk(npc, steps, expect=done)
     said = [turn.word for turn in steps if isinstance(turn, Say)]
     talk.source = f"{label}#say:{npc}:{said[0]}" if said else f"{label}#hand:{npc}"
     queue.append(talk, world)

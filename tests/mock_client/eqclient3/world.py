@@ -13,6 +13,7 @@ from eqclient3.struct_helpers import eq_heading
 from .log import log
 
 from .nav.maps import ZoneMap, load_map as _load_zone_map
+from .nav.travel import ZoneGraph
 from .nav.water import WaterMap
 
 RosterMode = Literal["party", "raid"]
@@ -299,8 +300,9 @@ class World:
         self.soulbound = ""
         self.afflictions: list = []
         self.at_water = False
-        self.zoneline = None
-        self.zone_graph = None
+        self.zoneline: tuple[float, float, float] | None = None
+        self.zone_graph: ZoneGraph | None = None
+        self.exit_doors: dict[str, dict[int, list[int]]] = {}
         self.follow_up = None
         self.trainer_point: tuple[float, float, float] | None = None
         self.train_skill = 0

@@ -7,7 +7,8 @@ import re
 
 from eqclient3.structs import SAY_CHANNEL
 
-_SAYLINK = re.compile(r"\x12.{56}([^\x12]+?)\x12")
+_SAYLINK = re.compile(r"\x12(.{56})([^\x12]+?)\x12")
+_QUEST_ITEM = "FFFFF"
 
 
 def channel_bucket(channel: int) -> str:
@@ -31,10 +32,12 @@ def special_bucket(msg_type: int) -> str:
 
 
 def saylink_words(text: str) -> list[str]:
-    """The visible words inside RoF2 saylinks. Those are what you say back."""
+    """Quest saylinks. An item link uses the same brackets and is not something to say."""
     words: list[str] = []
-    for match in _SAYLINK.finditer(text):
-        word = match.group(1).strip()
+    for match in _SAYLINK.finditer(text or ""):
+        body, word = match.group(1), match.group(2).strip()
+        if len(body) < 6 or body[1:6].upper() != _QUEST_ITEM:
+            continue
         if word and word.lower() not in {item.lower() for item in words}:
             words.append(word)
     return words
@@ -44,7 +47,7 @@ def saylink_plain(text: str) -> str:
     """Replace item-link blobs with their visible names for chat logs."""
     if "\x12" not in text:
         return text
-    return _SAYLINK.sub(lambda m: m.group(1), text)
+    return _SAYLINK.sub(lambda m: m.group(2), text)
 
 
 def eq_heading(x1: float, y1: float, x2: float, y2: float) -> int:

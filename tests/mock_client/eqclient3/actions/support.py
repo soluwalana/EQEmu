@@ -18,7 +18,7 @@ from eqclient3.camps import Soulbinder, nearest_soulbinder
 from eqclient3.journal import Journal
 from eqclient3.movement import MovementAnnotatedMob
 from eqclient3.log import log
-from eqclient3.nav.travel import first_leg
+from eqclient3.nav.travel import ZoneGraph, ensure_zone_graph, first_leg
 from eqclient3.nav.zones import zone_id_of
 from eqclient3.structs import (
     Item,
@@ -113,6 +113,43 @@ def character_name(loop: Loop | None, world: World) -> str:
     if loop is not None and loop.character:
         return loop.character
     return world.name
+
+
+def in_tutorial(world: World) -> bool:
+    """Still in the Gloomingdeep mines. Gold grinds and level-up vendors wait outside."""
+    return str(world.zone or "").lower() == "tutorialb"
+
+
+def forget(loop: Loop, world: World, action: Action) -> None:
+    """Drop an open action without resolving it, so a later step can queue it again."""
+    queue = loop.queue
+    if queue is not None and action.insert:
+        queue.remove(action.insert)
+    journal = journal_of(loop)
+    who = character_name(loop, world)
+    if journal is not None and who and action.source:
+        journal.clear_source(who, action.source)
+
+
+def gear_vendor_trip(loop: Loop, world: World, destination: str, source: str) -> bool:
+    """A zone change that only exists to buy level-up gear. A quest exit uses another source."""
+    if not in_tutorial(world) or not destination:
+        return False
+    if "#zone:" in source or "#gold:" in source:
+        return True
+    if source != f"zone:{destination}":
+        return False
+    queue = loop.queue
+    if queue is None:
+        return False
+    for queued in queue:
+        if not queued.task_text.startswith("gear "):
+            continue
+        plan = fetch_plan(world, queued.item_id)
+        vendor = plan.vendor_zone or plan.station_zone
+        if vendor == destination:
+            return True
+    return False
 
 
 def journal_of(loop: Loop) -> Journal | None:
@@ -831,22 +868,69 @@ def fetch_plan(world: World, item_id: int) -> FetchPlan:
 
 
 def next_zoneline(world: World, destination: str) -> tuple[float, float, float] | None:
+    """Where to walk to leave this zone toward `destination`.
+
+    A saved zoneline wins. Otherwise the zone graph's next transit. A zone
+    with no graph hop, such as tutorialb, walks to the one scripted exit door.
+    """
     point = world.zoneline
     if point is not None:
         return point
     graph = world.zone_graph
-    if graph is None:
+    if not graph:
+        graph = ensure_zone_graph()
+        world.zone_graph = graph
+    here = (world.zone or "").lower()
+    dest = (destination or "").lower()
+    leg = first_leg(graph, here, dest)
+    if leg is not None:
+        spot = _transit_point(world, graph, leg.zone, leg.door_id)
+        if spot is not None:
+            return spot
+    return _script_exit(world, here, dest)
+
+
+def _transit_point(world: World, graph: ZoneGraph, zone: str, door_id: int) -> tuple[float, float, float] | None:
+    transit = graph.transit_at(zone, door_id)
+    if transit is not None and (transit.x or transit.y or transit.z):
+        return (transit.x, transit.y, transit.z)
+    return _door_point(world, door_id)
+
+
+def _script_exit(world: World, here: str, destination: str) -> tuple[float, float, float] | None:
+    """The live door a quest script uses to leave, when the zone graph has no hop."""
+    exits = world.exit_doors.get(here, {})
+    if not exits:
         return None
-    leg = first_leg(graph, world.zone, destination)
-    if leg is None:
+    dest_id = 0
+    graph = world.zone_graph
+    if graph is not None:
+        dest_id = graph.zones.get(destination, 0)
+    if not dest_id:
+        dest_id = zone_id_of(destination)
+    chosen = 0
+    if dest_id:
+        for door_id, targets in exits.items():
+            if dest_id in targets:
+                chosen = door_id
+                break
+    if not chosen and len(exits) == 1:
+        chosen = next(iter(exits))
+    if not chosen:
         return None
-    transit = None
-    at = graph.transit_at
-    if callable(at):
-        transit = at(leg.zone, leg.door_id)
-    if transit is None:
+    return _door_point(world, chosen)
+
+
+def _door_point(world: World, door_id: int) -> tuple[float, float, float] | None:
+    door = world.doors.get(door_id)
+    if door is None and door_id < 256:
+        for live in world.doors.values():
+            if live.id % 256 == door_id:
+                door = live
+                break
+    if door is None:
         return None
-    return (float(transit.x), float(transit.y), float(transit.z))
+    return (door.x, door.y, door.z)
 
 
 def reclaim_if_ours(parent: Action, loop: Loop, world: World, *targets: int) -> bool:

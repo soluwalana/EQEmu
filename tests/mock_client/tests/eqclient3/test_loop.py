@@ -98,6 +98,24 @@ def test_active_action_is_logged_when_it_changes(caplog):
     assert "action Hail talk:guard -> Attack kill:rat" in caplog.text
 
 
+def test_an_action_log_includes_the_cache_name_and_item_number():
+    from eqclient3 import loop as pulse
+    from eqclient3.inventory.item_stats import ItemBook, ItemStats
+
+    saved = pulse._book
+    pulse._book = ItemBook(by_id={2010: ItemStats(2010, "Leather Gloves")})
+    try:
+        travel = Action()
+        travel.source = "fetch:2010#gold:travel:qeynos"
+        assert pulse._action_name(travel) == "Action fetch:2010#gold:travel:qeynos Leather Gloves (2010)"
+        held = Action()
+        held.item_id = 2010
+        held.source = "fetch:2010"
+        assert pulse._action_name(held) == "Action fetch:2010 Leather Gloves (2010)"
+    finally:
+        pulse._book = saved
+
+
 def test_yielding_ends_the_pulse_and_the_next_runs_the_new_insert():
     world = World()
     queue = Schedule()

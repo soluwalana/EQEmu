@@ -98,33 +98,34 @@ class OP_PlayerProfile(EQStruct):
         for index, spell in self.spell_book.items():
             if 0 <= int(index) < 720:
                 book[int(index)] = int(spell) & 0xFFFFFFFF
-        # common/patches/rof2_structs.h:1173 spell_book
-        struct.pack_into("<720I", packet, 6500, *book)
+        # common/patches/rof2.cpp:2719 spell book. The encoder writes 300 discipline slots,
+        # so this is 400 bytes past the 200-slot note in the struct.
+        struct.pack_into("<720I", packet, 6900, *book)
         gems = [-1] * 16
         for index, spell in self.gems.items():
             if 0 <= int(index) < 16:
                 gems[int(index)] = _i32(spell)
-        # common/patches/rof2_structs.h:1175 mem_spells. Empty gems are -1.
-        struct.pack_into("<16i", packet, 9384, *gems)
+        # common/patches/rof2.cpp:2741 mem spells. Empty gems are -1, the same bits as 0xFFFFFFFF.
+        struct.pack_into("<16i", packet, 9784, *gems)
         if self.coin_known:
-            # common/patches/rof2_structs.h:1181 platinum
+            # common/patches/rof2.cpp:2806 platinum
             struct.pack_into(
                 "<IIII",
                 packet,
-                12869,
+                13269,
                 self.platinum & 0xFFFFFFFF,
                 self.gold & 0xFFFFFFFF,
                 self.silver & 0xFFFFFFFF,
                 self.copper & 0xFFFFFFFF,
             )
-        # common/patches/rof2_structs.h:1203 bandolier_count
-        struct.pack_into("<I", packet, 12955, 20)
-        # common/patches/rof2_structs.h:1205 potionbelt_count
-        struct.pack_into("<I", packet, 13699, 5)
-        # common/patches/rof2_structs.h:1222 name_str_len
-        struct.pack_into("<I", packet, 13844, 64)
-        # common/patches/rof2_structs.h:1223 name
-        _put_fixed(packet, 13848, self.name, 64)
+        # common/patches/rof2.cpp:2839 bandolier count
+        struct.pack_into("<I", packet, 13355, 20)
+        # common/patches/rof2.cpp:2866 potion belt count. Twenty empty bandoliers are 740 bytes.
+        struct.pack_into("<I", packet, 14099, 5)
+        # common/patches/rof2.cpp:2916 name length
+        struct.pack_into("<I", packet, 14244, 64)
+        # common/patches/rof2.cpp:2920 name. WriteString is then forced out to 64 bytes.
+        _put_fixed(packet, 14248, self.name, 64)
         return bytes(packet)
 
     @classmethod
@@ -145,8 +146,8 @@ class OP_PlayerProfile(EQStruct):
             )
         platinum = gold = silver = copper = 0
         coin_known = False
-        if len(data) >= 12885:
-            platinum, gold, silver, copper = struct.unpack_from("<IIII", data, 12869)
+        if len(data) >= 13285:
+            platinum, gold, silver, copper = struct.unpack_from("<IIII", data, 13269)
             coin_known = True
         skills: dict[int, int] | None = None
         if len(data) >= 4616 + 400:
@@ -154,12 +155,12 @@ class OP_PlayerProfile(EQStruct):
             skills = {index: int(value) for index, value in enumerate(raw)}
         book: dict[int, int] = {}
         gems: dict[int, int] = {}
-        if len(data) >= 6500 + 720 * 4:
-            for index, spell in enumerate(struct.unpack_from("<720I", data, 6500)):
+        if len(data) >= 6900 + 720 * 4:
+            for index, spell in enumerate(struct.unpack_from("<720I", data, 6900)):
                 if spell not in (0, 0xFFFFFFFF):
                     book[index] = int(spell)
-        if len(data) >= 9384 + 16 * 4:
-            for index, spell in enumerate(struct.unpack_from("<16i", data, 9384)):
+        if len(data) >= 9784 + 16 * 4:
+            for index, spell in enumerate(struct.unpack_from("<16i", data, 9784)):
                 if spell not in (0, -1):
                     gems[index] = int(spell)
         name = _profile_name(data)
@@ -193,8 +194,12 @@ class OP_PlayerProfile(EQStruct):
 
 
 def _profile_name(data: bytes) -> str:
-    """Name sits after the bandolier and potion strings, which vary in length."""
-    offset = 12955
+    """Name sits after the bandolier and potion strings, which vary in length.
+
+    The bandolier count is at byte 13355. The struct comment says 12955 because it
+    sizes disciplines at 200; the encoder writes 300, and everything after that moves.
+    """
+    offset = 13355
     if len(data) < offset + 4:
         return ""
     try:

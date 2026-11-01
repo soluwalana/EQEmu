@@ -15,6 +15,9 @@ def test_opcodes():
     assert world.level == 3
     assert world.points == 10
     assert world.exp == 80
+    assert names(loop) == ["LevelUp"]
+    assert loop.queue[0].level == 3
+    assert loop.queue[0].source == "level:3"
     level.LevelHandler().handle("OP_OnLevelMessage", level_popup(77), world, loop)
     assert names(loop) == ["LevelUp"]
     assert loop.queue[0].level == 3

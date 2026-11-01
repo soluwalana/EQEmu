@@ -182,9 +182,11 @@ class Journal:
     def _drop_ephemeral(self) -> None:
         """Drop open actions that are not durable, and rows whose pickle will not open.
 
-        A resolved source stays, so it is not appended again.
+        A resolved source stays, so it is not appended again. An open Zone is
+        dropped too: the server wipes a zone request on disconnect.
         """
         self._db.execute("DELETE FROM actions WHERE durable = 0 AND resolved = 0")
+        self._db.execute("DELETE FROM actions WHERE resolved = 0 AND kind = 'eqclient3.actions.zone:Zone'")
         rows = list(self._db.execute("SELECT character, position, payload FROM actions"))
         for character, position, payload in rows:
             if _thaw(payload) is None:

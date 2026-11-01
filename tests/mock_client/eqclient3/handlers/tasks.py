@@ -1,4 +1,7 @@
-"""Task windows. Outside tutorialb the steps are appended. Inside, the book is only stored."""
+"""Task windows. Every offer on the window is accepted and its steps are queued.
+
+A short offer stays in the book and is not taken.
+"""
 
 from __future__ import annotations
 
@@ -17,7 +20,6 @@ from eqclient3.structs import (
 )
 from eqclient3.handler import Handler
 
-TUTORIAL = "tutorialb"
 SPEAK = 4
 KILL = 2
 LOOT = 3
@@ -87,7 +89,8 @@ class TasksHandler(Handler):
     def window(self, row: OP_TaskSelectWindow) -> None:
         book = self.book()
         stored = []
-        giver = row.giver
+        accepted: set[int] = set()
+        giver = int(row.giver or 0)
         for task in row.tasks:
             if task.title and not book.title:
                 book.title = task.title
@@ -107,18 +110,16 @@ class TasksHandler(Handler):
                 )
                 activity.zone_id = element.zone_id
                 _put(book, activity)
-                stored.append((activity, giver))
-        if self.tutorial():
-            return
-        accepted = set()
-        loop = self.loop
-        for activity, master in stored:
-            if activity.task_id not in accepted:
-                loop.send(
-                    "OP_AcceptNewTask",
-                    OP_AcceptNewTask(activity.task_id, master, row.task_type).serialize(),
-                )
-                accepted.add(activity.task_id)
+                if not locked:
+                    stored.append((activity, giver))
+            if locked or int(task.task_id) in accepted:
+                continue
+            self.loop.send(
+                "OP_AcceptNewTask",
+                OP_AcceptNewTask(int(task.task_id), giver, row.task_type).serialize(),
+            )
+            accepted.add(int(task.task_id))
+        for activity, _master in stored:
             if not _is_step(activity):
                 continue
             self.append_step(activity)
@@ -193,9 +194,6 @@ class TasksHandler(Handler):
         action.description = description
         action.task_text = description
         enqueue_once(self.loop, world, action, source)
-
-    def tutorial(self) -> bool:
-        return str(self.world.zone or "").lower() == TUTORIAL
 
     def book(self) -> Book:
         current = self.world.tasks
