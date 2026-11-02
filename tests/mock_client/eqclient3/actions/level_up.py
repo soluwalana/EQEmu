@@ -11,9 +11,9 @@ if TYPE_CHECKING:
 from eqclient3.action import Action
 from eqclient3.actions.fetch import GEAR_BAND, Fetch, item_cost
 from eqclient3.actions.scribe import ScribeSpell
-from eqclient3.actions.support import character_name, in_tutorial, journal_of, yield_to
+from eqclient3.actions.support import character_name, journal_of, yield_to
 from eqclient3.actions.train import Train
-from eqclient3.quests.produce import _kit_for
+from eqclient3.quests.produce import _cached_graph, _is_reward, kit_for, produce
 
 
 class LevelUp(Action):
@@ -51,15 +51,12 @@ class LevelUp(Action):
         master = _guildmaster(world)
         if master:
             yield_to(self, loop, world, Train(master), f"train:{master}")
-        if not in_tutorial(world):
-            queue_level_gear(loop, world, level)
+        queue_level_gear(loop, world, level)
         self.complete = True
 
 
 def queue_level_gear(loop: Loop, world: World, level: int | None = None) -> None:
-    """Buy the kit for this level. The mines have no camp that pays for it, so this waits."""
-    if in_tutorial(world):
-        return
+    """Produce a graph reward. Anything else is a vendor fetch."""
     reached = level if level is not None else (world.level or 1)
     if reached < 1:
         return
@@ -71,10 +68,17 @@ def queue_level_gear(loop: Loop, world: World, level: int | None = None) -> None
     for item_id in _tier(world, reached):
         if world.held(item_id) > 0:
             continue
+        if _rewarded(item_id):
+            produce(loop, world, journal, item_id=item_id)
+            continue
         fetch = Fetch(item_id, 1, f"gear {item_id}", copper=item_cost(item_id))
         fetch.priority = GEAR_BAND
         fetch.source = f"fetch:{item_id}"
         queue.append(fetch, world, journal, who)
+
+
+def _rewarded(item_id: int) -> bool:
+    return _is_reward(_cached_graph(), item_id)
 
 
 @runtime_checkable
@@ -119,7 +123,7 @@ def _tier(world: World, level: int) -> list[int]:
     found = _gear(world, level)
     seen = set(found)
     for class_id in _classes(world):
-        for item_id in _kit_for(class_id, level):
+        for item_id in kit_for(class_id, level):
             if item_id not in seen:
                 seen.add(item_id)
                 found.append(item_id)

@@ -39,7 +39,6 @@ from eqclient3.actions.support import (
 )
 from eqclient3.handlers.common import attack_for, character_name, mark_fight, mob_named
 from eqclient3.structs import OP_TargetMouse
-from eqclient3.inventory.item_stats import ItemBook, read_items
 from eqclient3.struct_helpers import saylink_words
 
 _HAIL_NAME = re.compile(r"hail\s+(?:the\s+)?([A-Za-z][A-Za-z\']*)", re.IGNORECASE)
@@ -235,6 +234,10 @@ class Talk(Action):
 
     def _after_reply(self, loop: Loop, world: World) -> None:
         self.suspended = False
+        # A task hail stays open until the server book marks that activity done.
+        if str(self.source or "").startswith("task:") and _open_step(world, str(self.source)):
+            self.sent = False
+            return
         if self.followed:
             self.complete = True
             return
@@ -394,19 +397,16 @@ class Talk(Action):
         self.yielding = True
 
     def _offer_find(self, loop: Loop, world: World) -> bool:
-        """A reply that says find. An item is a fetch. A person is a walk, then a hail."""
+        """A reply that says find a person. That person is a walk, then a hail.
+
+        An item named in the line is a produce fetch, already queued with the gear.
+        """
         if self.sought:
             if _find_open(loop):
                 self._stand_aside()
                 return True
-            # The hunt has the turn while it is open. Once it leaves, this talk
-            # is the hand-in and has to win its band again.
+            # The find had the turn. This talk takes its band again once that find leaves.
             self.priority = 0
-            if world.held(_SILK_ITEM) >= _SILK_COUNT and self.target_id:
-                from eqclient3.actions.trade import Trade
-
-                trade = Trade(int(self.target_id), _SILK_ITEM)
-                return yield_to(self, loop, world, trade, f"hand:{_SILK_ITEM}")
             return False
         name = find_name(self.heard_text)
         if not name:
@@ -417,28 +417,6 @@ class Talk(Action):
             self._stand_aside()
             return True
         self.sought = True
-        item = _item_named(name)
-        if item == _SILK_ITEM and world.held(item) >= _SILK_COUNT:
-            # The spiders already paid. Vahlara's line is the hand-in.
-            from eqclient3.actions.trade import Trade
-
-            trade = Trade(int(self.target_id or 0), item)
-            return yield_to(self, loop, world, trade, f"hand:{item}")
-        if item == _SILK_ITEM:
-            # Vahlara takes one silk. Gloom spiders drop it; the line does not name them.
-            from eqclient3.actions.kill import Kill
-
-            hunt = Kill(camp="Gloom Spiders")
-            hunt.until_item = _SILK_ITEM
-            hunt.until_count = _SILK_COUNT
-            hunt.durable = True
-            hunt.priority = -1
-            return yield_to(self, loop, world, hunt, source)
-        if item:
-            from eqclient3.actions.fetch import Fetch
-
-            fetch = Fetch(item, 1, self.heard_text or name)
-            return yield_to(self, loop, world, fetch, source)
         mob = mob_named(world, name)
         if mob is None and not _proper_name(name):
             return False
@@ -528,11 +506,7 @@ class Talk(Action):
 
 _DIALOGUE = ("OP_ChannelMessage", "OP_SpecialMesg")
 _SAYS = 1032
-_SILK_ITEM = 54234
-_SILK_COUNT = 1
 _FIND = re.compile(r"\bfind\s+(?:any\s+|the\s+)?([A-Za-z][A-Za-z' ]*[A-Za-z])", re.IGNORECASE)
-_ITEM_BOOK: ItemBook | None = None
-_ITEM_BOOK_TRIED = False
 _QUIET = 3
 _STALL = 50
 _DEPTH = 8
@@ -617,6 +591,16 @@ def _step_done(world: World, source: str) -> bool:
     return False
 
 
+def _open_step(world: World, source: str) -> bool:
+    """True when the book still lists this activity and it is not done."""
+    for activity in task_activities(world):
+        key = f"task:{activity.task_id}:{activity.activity_id}"
+        if key != source:
+            continue
+        return activity.done < activity.goal
+    return False
+
+
 def _beside(world: World, point: tuple[float, float, float]) -> bool:
     """Close enough to speak. A ledge counts when the floor under it is in hail range."""
     if yards(world, point) <= HAIL:
@@ -630,29 +614,6 @@ def _moved(world: World, anchor: tuple[float, float]) -> float:
     dx = float(world.x) - anchor[0]
     dy = float(world.y) - anchor[1]
     return (dx * dx + dy * dy) ** 0.5
-
-
-def _item_named(name: str) -> int:
-    """Item id for a find. Gloomingdeep silk is the tutorial ask when the cache has no row."""
-    key = " ".join((name or "").lower().split())
-    if key in {"gloomingdeep silk", "gloomingdeep spider silk", "spiderling silk"}:
-        return _SILK_ITEM
-    book = _item_book()
-    if book is None:
-        return 0
-    return int(book.id_named(name) or 0)
-
-
-def _item_book() -> ItemBook | None:
-    global _ITEM_BOOK, _ITEM_BOOK_TRIED
-    if _ITEM_BOOK_TRIED:
-        return _ITEM_BOOK
-    _ITEM_BOOK_TRIED = True
-    path = os.environ.get("EQEMU_ITEMS") or str(Path.home() / ".eqclient" / "items.jsonl")
-    if not os.path.isfile(path):
-        return None
-    _ITEM_BOOK = read_items(path)
-    return _ITEM_BOOK
 
 
 def _reply(message: Message) -> tuple[str, str] | None:

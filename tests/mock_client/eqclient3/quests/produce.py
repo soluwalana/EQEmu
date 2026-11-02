@@ -50,6 +50,8 @@ _EPIC = {
 _CLOTH = (1001, 1004, 1008, 1010)
 _LEATHER = (2001, 2004, 2008, 2010)
 _BANDED = (3053, 3056, 3060, 3063)
+# Stitched Burlap, one piece per slot. Sleeves are not in Vahlara's roll.
+_BURLAP = (54217, 54218, 54219, 54220, 54221, 54222, 54223, 54225, 54226, 54227, 54228)
 _WEAPON = {
     1: 5013,
     2: 6011,
@@ -81,10 +83,16 @@ def produce(
     graph: QuestGraph | None = None,
     leaving_tutorial: bool = False,
 ) -> None:
-    """Append the next quest work. An open ReadTasks in tutorialb returns immediately."""
-    if _tutorial_open(loop, world, journal):
-        return
+    """Append the next quest work.
+
+    An open ReadTasks in tutorialb blocks the leave-mine list. One graph reward
+    is still filled, so level-1 pieces can be hunted inside the mine.
+    """
     book = graph if graph is not None else _cached_graph()
+    if _tutorial_open(loop, world, journal):
+        if not leaving_tutorial and item_id is not None and _is_reward(book, int(item_id)):
+            _fill_item(loop, world, journal, book, _character(loop, world), int(item_id))
+        return
     character = _character(loop, world)
     if leaving_tutorial or (item_id is not None and _is_reward(book, int(item_id))):
         _after_tutorial(loop, world, journal, book, character)
@@ -117,6 +125,9 @@ def _after_tutorial(
     held = _held(world)
     for piece in _kit_ids(world, class_id, level):
         if piece in held:
+            continue
+        if _is_reward(graph, piece):
+            _fill_item(loop, world, journal, graph, character, piece)
             continue
         _append_fetch(loop, world, journal, piece, f"gear:{piece}")
     camp = camp_for_level(level, here)
@@ -378,14 +389,17 @@ def _kit_ids(world: World, class_id: int, level: int) -> list[int]:
         if cid in seen or cid <= 0:
             continue
         seen.add(cid)
-        for item_id in _kit_for(cid, level):
+        for item_id in kit_for(cid, level):
             if item_id not in found:
                 found.append(item_id)
     return found
 
 
-def _kit_for(class_id: int, level: int) -> list[int]:
+def kit_for(class_id: int, level: int) -> list[int]:
+    """Weapon and class armor. Through level 10 every class also wears the burlap set."""
     items: list[int] = []
+    if 2 <= level <= 10:
+        items.extend(_BURLAP)
     weapon = _WEAPON.get(class_id, 0)
     if weapon:
         items.append(weapon)

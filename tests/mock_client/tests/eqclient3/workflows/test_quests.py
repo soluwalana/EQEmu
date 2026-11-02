@@ -247,6 +247,28 @@ def test_produce_waits_while_tutorial_readtasks_is_open():
     assert list(loop.queue) == queue
 
 
+def test_produce_fills_a_graph_reward_while_the_tutorial_is_open(monkeypatch):
+    class ReadTasks:
+        source = "read_tasks:tutorialb"
+        complete = False
+
+    filled: list[int] = []
+
+    def fake_fill(loop, world, journal, book, character, item_id, source=None):
+        del loop, world, journal, book, character, source
+        filled.append(int(item_id))
+
+    monkeypatch.setattr("eqclient3.quests.produce._fill_item", fake_fill)
+    graph = QuestGraph()
+    graph.edges.append({"rel": "gives", "to": "item:54226", "from": "tutorialb/vahlara"})
+    queue = [ReadTasks()]
+    loop = SimpleNamespace(queue=queue, character="Entoen", current=None)
+    world = SimpleNamespace(zone="tutorialb", class_id=3, level=1, bags={}, name="Entoen")
+    produce(loop, world, item_id=54226, graph=graph)
+    assert filled == [54226]
+    assert list(loop.queue) == queue
+
+
 def test_produce_appends_kit_kill_and_camp_and_skips_a_resolved_source(tmp_path):
     from eqclient3.journal import Journal
 
@@ -260,6 +282,7 @@ def test_produce_appends_kit_kill_and_camp_and_skips_a_resolved_source(tmp_path)
         cursor=None,
         name="Mockone",
         bots=SimpleNamespace(roster=()),
+        held=lambda _item_id: 0,
     )
     queue = Schedule()
     loop = SimpleNamespace(queue=queue, character="Mockone")

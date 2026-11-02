@@ -1,16 +1,28 @@
 """LevelUp appends a fetch and a scribe per spell, one train, and one gear fetch."""
 
 import unittest
+from unittest.mock import patch
 
 from harness import fresh, kinds
 
 from eqclient3.actions import fetch as fetch_mod
 from eqclient3.actions.level_up import LevelUp
 from eqclient3.data.merchants import MerchantBook
+from eqclient3.quests.produce import _BURLAP
 from eqclient3.world import Bot
 
 
 class LevelUpTest(unittest.TestCase):
+    def setUp(self) -> None:
+        self._burlap = patch("eqclient3.quests.produce._BURLAP", ())
+        self._rewarded = patch("eqclient3.actions.level_up._rewarded", return_value=False)
+        self._burlap.start()
+        self._rewarded.start()
+
+    def tearDown(self) -> None:
+        self._rewarded.stop()
+        self._burlap.stop()
+
     def test_appends_scrolls_scribe_train_and_gear(self):
         client, sheet = fresh()
         sheet.level_spells = [
@@ -38,9 +50,51 @@ class LevelUpTest(unittest.TestCase):
         self.assertTrue(action.complete)
         items = [row.item_id for row in client.queue if type(row).__name__ == "Fetch"]
         self.assertIn(100, items)
-        self.assertNotIn(2010, items)
+        self.assertIn(2010, items)
         self.assertNotIn("Travel", kinds(client))
         self.assertNotIn("Kill", kinds(client))
+
+    def test_level_one_burlap_is_produced_inside_the_mine(self):
+        client, sheet = fresh("tutorialb")
+        sheet.class_id = 3
+        produced: list[int] = []
+
+        def rewarded(item_id: int) -> bool:
+            return item_id in _BURLAP
+
+        def fake_produce(
+            loop: object,
+            world: object,
+            journal: object = None,
+            *,
+            item_id: int | None = None,
+            graph: object = None,
+            leaving_tutorial: bool = False,
+        ) -> None:
+            del loop, world, journal, graph, leaving_tutorial
+            if item_id is not None:
+                produced.append(item_id)
+
+        with (
+            patch("eqclient3.quests.produce._BURLAP", _BURLAP),
+            patch("eqclient3.actions.level_up._rewarded", rewarded),
+            patch("eqclient3.actions.level_up.produce", fake_produce),
+        ):
+            LevelUp(1).step(client, sheet)
+        self.assertEqual(sorted(produced), sorted(_BURLAP))
+        fetches = [row.item_id for row in client.queue if type(row).__name__ == "Fetch"]
+        for item_id in _BURLAP:
+            self.assertNotIn(item_id, fetches)
+
+    def test_burlap_is_the_kit_through_level_ten(self):
+        from eqclient3.quests.produce import kit_for
+
+        with patch("eqclient3.quests.produce._BURLAP", _BURLAP):
+            low = kit_for(3, 10)
+            high = kit_for(3, 11)
+        for item_id in _BURLAP:
+            self.assertIn(item_id, low)
+            self.assertNotIn(item_id, high)
 
     def test_player_and_companion_kits_carry_their_price(self):
         client, sheet = fresh()

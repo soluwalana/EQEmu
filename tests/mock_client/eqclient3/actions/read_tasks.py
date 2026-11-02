@@ -111,10 +111,7 @@ class ReadTasks(Action):
                             queued.priority = 0
                 self.yielding = True
                 return
-            # A step queued before a disconnect is not in the journal. Queue it again.
-            # A step this session already finished stays down until the book catches up.
-            if key in self.seen and _resolved(loop, world, source):
-                continue
+            # A step the book still lists is queued again. A resolved journal row is cleared.
             action = _action_for(activity)
             if not action:
                 continue
@@ -247,14 +244,6 @@ def _open(loop: Loop, source: str) -> bool:
     if queue is None:
         return False
     return any(action.source == source and not action.complete for action in queue)
-
-
-def _resolved(loop: Loop, world: World, source: str) -> bool:
-    journal = loop.journal
-    who = character_name(loop, world)
-    if journal is None or not who or not source:
-        return False
-    return journal.is_resolved(who, source)
 
 
 def _reopen(loop: Loop, world: World, source: str) -> None:

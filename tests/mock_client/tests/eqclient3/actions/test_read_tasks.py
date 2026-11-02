@@ -48,7 +48,9 @@ class ReadTasksTest(unittest.TestCase):
                 client.queue.remove(item.insert)
                 client.journal.resolve_action("Hero", item)
         action.step(client, sheet)
-        self.assertEqual(kinds(client).count("Kill"), 1)
+        self.assertEqual(kinds(client).count("Talk"), 1)
+        self.assertEqual(kinds(client).count("Kill"), 0)
+        self.assertFalse(client.journal.is_resolved("Hero", "task:0:1"))
         self.assertFalse(action.complete)
         self.assertFalse(client.journal.tutorial_done("Hero"))
 
