@@ -1,0 +1,6 @@
+#!/bin/sh
+# Check eqclient3 formatting and types. Does not modify files.
+set -eu
+cd "$(dirname "$0")/.."
+python -m black --check eqclient3 tests/eqclient3
+python -m mypy eqclient3

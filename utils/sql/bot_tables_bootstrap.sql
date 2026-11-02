@@ -2442,3 +2442,7 @@ CREATE TABLE `bot_raid_roster` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+
+UPDATE rule_values SET rule_value='Titanium,RoF2' WHERE ruleset_id=1 AND rule_name='World:SupportedClients';
+UPDATE db_version SET bots_version = 9056;
