@@ -21,6 +21,9 @@
 #include "common/eqemu_logsys.h"
 #include "common/opcodemgr.h"
 #include "common/struct_strategy.h"
+#include "common/eq_packet_trace.h"
+#include "common/eqemu_trace_stream.h"
+#include <cstdlib>
 
 
 EQStreamProxy::EQStreamProxy(std::shared_ptr<EQStreamInterface> &stream, const StructStrategy *structs, OpcodeManager **opcodes)
