@@ -7,10 +7,12 @@ from __future__ import annotations
 
 import re
 from eqclient3.action import Action
+from eqclient3.log import log
 from eqclient3.actions.fetch import Fetch
 from eqclient3.actions.kill import Kill
 from eqclient3.actions.talk import Talk
-from eqclient3.handlers.common import mob_named, enqueue_once
+from eqclient3.handlers.common import mob_named, enqueue_once, queue_of
+from eqclient3.loop import Loop
 from eqclient3.structs import (
     EQStruct,
     OP_AcceptNewTask,
@@ -152,6 +154,15 @@ class TasksHandler(Handler):
         activity.optional = bool(row.optional)
         activity.zone_id = row.zone_id
         _put(book, activity)
+        if activity.finished:
+            log.info(
+                "task %s:%s done optional=%s %s",
+                activity.task_id,
+                activity.activity_id,
+                int(activity.optional),
+                activity.description or activity.target_name,
+            )
+            _release(self.loop, activity.task_id, activity.activity_id)
 
     def complete(self, row: OP_TaskActivityComplete) -> None:
         task_id, activity_id, stage_complete = (
@@ -167,6 +178,7 @@ class TasksHandler(Handler):
             activity = Activity(task_id, activity_id, 0, "", "", "", 1, done=1)
             book.activities.append(activity)
         activity.done = max(activity.done, activity.goal)
+        _release(self.loop, task_id, activity_id)
 
     def append_step(self, activity: Activity) -> None:
         world = self.world
@@ -205,7 +217,7 @@ class TasksHandler(Handler):
 
 
 def _is_step(activity: Activity) -> bool:
-    if activity.locked or activity.optional or activity.finished:
+    if activity.locked or activity.finished:
         return False
     if activity.kind not in (SPEAK, KILL, LOOT, DELIVER, COLLECT):
         return False
@@ -225,6 +237,14 @@ def _put(book: Book, activity: Activity) -> None:
         activity.target_name = current.target_name
     index = book.activities.index(current)
     book.activities[index] = activity
+
+
+def _release(loop: Loop, task_id: int, activity_id: int) -> None:
+    """The step is done. Drop the action that was still hunting or talking."""
+    source = f"task:{int(task_id)}:{int(activity_id)}"
+    for action in queue_of(loop):
+        if action.source == source:
+            action.complete = True
 
 
 def _find(book: Book, task_id: int, activity_id: int) -> Activity | None:

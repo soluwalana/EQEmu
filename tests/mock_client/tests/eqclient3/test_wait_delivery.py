@@ -39,6 +39,7 @@ def test_wait_delivery_holds():
         ("Zone", "ZONE", "OP_NewZone", "ZoningHandler"),
         ("Craft", "CRAFT", "OP_TradeSkillCombine", "bus"),
         ("Summon", "SUMMON", "OP_ChannelMessage", "MessagesHandler"),
+        ("Summon", "SUMMON", "OP_SpecialMesg", "MessagesHandler"),
         ("Reconstitute", "BOT", "OP_ChannelMessage", "MessagesHandler"),
         ("movement", "DOOR", "OP_MoveDoor", "DoorsHandler"),
     )

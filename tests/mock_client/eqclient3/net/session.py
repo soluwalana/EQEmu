@@ -319,6 +319,16 @@ class Session:
                 self.needs_rezone = True
                 return
 
+    def _note_silence(self) -> None:
+        """A zone that stops sending is gone. The next flush reconnects."""
+        heard = self._last_recv
+        if heard <= 0.0 or self.needs_rezone:
+            return
+        if time.monotonic() - heard < 45.0:
+            return
+        log.info("zone socket silent")
+        self.needs_rezone = True
+
     def _reader_loop(self) -> None:
         """Reads the socket and queues app packets. Acks go to the writer."""
         while not self._stop.is_set():
@@ -328,6 +338,7 @@ class Session:
                 log.error("session reader failed", exc_info=True)
                 return
             if not readable:
+                self._note_silence()
                 continue
             try:
                 data, addr = self._sock.recvfrom(65535)

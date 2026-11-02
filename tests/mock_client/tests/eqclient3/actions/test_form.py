@@ -32,8 +32,12 @@ class FormTest(unittest.TestCase):
         ]
         self.assertEqual([(row.invitee, row.inviter) for row in invites], [("Herwar", "Hero")])
         self.assertEqual([bot.name for bot in sheet.bots.roster], ["Herwar"])
+        for _ in range(10):
+            action.step(client, sheet)
+            self.assertNotIn("^follow reset spawned", commands(client))
         action.step(client, sheet)
         self.assertEqual(commands(client)[-1], "^follow reset spawned")
+        inbox(action, "OP_SpecialMesg", {"text": "1 of your bots are following you."})
         action.step(client, sheet)
         self.assertTrue(action.complete)
 
@@ -59,6 +63,32 @@ class FormTest(unittest.TestCase):
             OP_GroupInvite.deserialize(payload) for opcode, payload in client.outbound if opcode == "OP_GroupInvite"
         ]
         self.assertEqual(invites[0].invitee, "Herwar")
+        for _ in range(10):
+            action.step(client, sheet)
+        action.step(client, sheet)
+        self.assertEqual(commands(client)[-1], "^follow reset spawned")
+        inbox(action, "OP_SpecialMesg", {"text": "1 of your bots are following you."})
+        action.step(client, sheet)
+        self.assertTrue(action.complete)
+
+    def test_a_bot_missing_from_the_group_is_invited_again(self):
+        client, sheet = fresh()
+        action = Form("qeynos", 3)
+        action.built = True
+        action.roster = [("Herwar", 1), ("Herclr", 2)]
+        action.spawned = ["Herwar", "Herclr"]
+        action.phase = "invite"
+        action.index = 2
+        sheet.group.members = ["Hero", "Herwar"]
+        for _ in range(10):
+            action.step(client, sheet)
+        action.step(client, sheet)
+        invites = [
+            OP_GroupInvite.deserialize(payload) for opcode, payload in client.outbound if opcode == "OP_GroupInvite"
+        ]
+        self.assertEqual(invites[-1].invitee, "Herclr")
+        self.assertNotIn("^follow reset spawned", commands(client))
+        sheet.group.members.append("Herclr")
         action.step(client, sheet)
         self.assertEqual(commands(client)[-1], "^follow reset spawned")
 

@@ -39,6 +39,15 @@ class SellTest(unittest.TestCase):
         self.assertIn("Zone", kinds(client))
         self.assertNotIn("OP_ShopPlayerSell", opcodes(client))
 
+    def test_a_reserved_count_is_kept_and_the_band_is_above_gear(self):
+        client, sheet = fresh()
+        sheet.bags[22] = 9
+        action = Sell([9], {9: 1})
+        action.step(client, sheet)
+        self.assertTrue(action.complete)
+        self.assertEqual(client.outbound, [])
+        self.assertEqual(action.priority, 60)
+
 
 if __name__ == "__main__":
     unittest.main()

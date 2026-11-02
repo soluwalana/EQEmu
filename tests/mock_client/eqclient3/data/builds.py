@@ -74,7 +74,8 @@ BUILDS = {
         ("stamina", "strength", "wisdom"),
         (DEFENSE, OFFENSE, TAUNT, BASH, S1HS),
         (DODGE, PARRY, RIPOSTE, ABJ, ALT, DIV, MED),
-        weapon=S1HS,
+        ("heal", "stun", "buff", "haste", "nuke", "root"),
+        S1HS,
     ),
     4: _build(
         4,

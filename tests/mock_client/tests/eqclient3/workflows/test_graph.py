@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from pytest import MonkeyPatch
+
 from eqclient3.quests.graph import build_graph, read_graph, write_graph
 
 SCRIPT = """
@@ -15,7 +17,31 @@ sub EVENT_ITEM {
 """
 
 
-def test_build_write_read_gives(tmp_path: Path, monkeypatch) -> None:
+ROLL = """
+sub EVENT_ITEM {
+  if (plugin::check_handin(\\%itemcount, 54234 => 1)) {
+    quest::summonitem(quest::ChooseRandom(54226, 54217, 54226));
+  }
+}
+"""
+
+
+def test_choose_random_gives_each_distinct_item(tmp_path: Path, monkeypatch: MonkeyPatch) -> None:
+    monkeypatch.setenv("EQEMU_ZONE_GRAPH", str(tmp_path / "missing-zone-graph.jsonl"))
+    monkeypatch.setenv("EQEMU_PEQ", str(tmp_path / "missing.sql"))
+    zone = tmp_path / "tutorialb"
+    zone.mkdir()
+    (zone / "Vahlara.pl").write_text(ROLL, encoding="utf-8")
+
+    graph = build_graph(str(tmp_path))
+    given = [edge["to"] for edge in graph.edges if edge.get("rel") == "gives"]
+    assert given == ["item:54226", "item:54217"]
+    gloves = graph.gives(54226)
+    assert gloves is not None
+    assert gloves["from"] == "tutorialb/vahlara"
+
+
+def test_build_write_read_gives(tmp_path: Path, monkeypatch: MonkeyPatch) -> None:
     monkeypatch.setenv("EQEMU_ZONE_GRAPH", str(tmp_path / "missing-zone-graph.jsonl"))
     monkeypatch.setenv("EQEMU_PEQ", str(tmp_path / "missing.sql"))
     zone = tmp_path / "qeynos"

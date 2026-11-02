@@ -117,6 +117,11 @@ class QuestTalk(Action):
         self.suspended = True
 
     def step(self, loop: Loop, world: World) -> None:
+        if mob_named(world, self.npc) is None:
+            # He is in another zone. A travel or zone step has to be able to win.
+            self.priority = -1
+            return
+        self.priority = 280
         if self._met(world):
             self.complete = True
             return

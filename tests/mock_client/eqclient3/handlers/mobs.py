@@ -6,10 +6,14 @@ Our OP_ClientUpdate is movement's packet. This handler does not write it.
 from __future__ import annotations
 
 from eqclient3.actions.attack import Attack
+from eqclient3.actions.kill import Kill
 from eqclient3.actions.support import ratio
 from eqclient3.actions.follow import Follow
 from eqclient3.actions.heal import Heal
 from eqclient3.actions.hold import Hold
+from eqclient3.loop import Loop
+from eqclient3.world import World
+from eqclient3.actions.bots.reconstitute import Reconstitute
 from eqclient3.actions.rest import Rest
 from eqclient3.handlers.common import (
     FOLLOW_YARDS,
@@ -41,6 +45,7 @@ from eqclient3.structs import (
     OP_BecomeCorpse,
     OP_ClientUpdate,
     OP_Damage,
+    OP_Death,
     OP_DeleteSpawn,
     OP_HPUpdate,
     OP_MobHealth,
@@ -63,6 +68,7 @@ class MobsHandler(Handler):
         "OP_HPUpdate",
         "OP_MobHealth",
         "OP_Damage",
+        "OP_Death",
         "OP_BecomeCorpse",
         "OP_FindPersonReply",
         "OP_Track",
@@ -86,6 +92,8 @@ class MobsHandler(Handler):
             self.damage(opcode, payload)
         elif isinstance(payload, OP_BecomeCorpse):
             self.corpse(payload)
+        elif isinstance(payload, OP_Death):
+            self.fallen(payload)
         elif isinstance(payload, OP_Track):
             self.track(payload)
         elif isinstance(payload, OP_Assist):
@@ -232,7 +240,7 @@ class MobsHandler(Handler):
         if current < HEAL_LINE and (not fighting):
             enqueue_once(loop, world, Heal("self"), "heal:self")
         if current < SIT_LINE and (not fighting) and (not source_open(loop, "heal:self")):
-            enqueue_once(loop, world, Rest("self"), "rest:self")
+            _before_rest(loop, world)
 
     def other_bars(self, mob: Mob | None) -> None:
         if not mob:
@@ -247,7 +255,8 @@ class MobsHandler(Handler):
         if current and current < HEAL_LINE and has_cleric(world) and (not fighting):
             enqueue_once(loop, world, Heal(name), f"heal:{name}")
         mana = ratio(mob.mana, mob.max_mana)
-        if mana and mana < MANA_SIT:
+        if mana and mana < MANA_SIT and (not fighting) and (not _hunt_open(loop)):
+            _before_rest(loop, world)
             enqueue_once(loop, world, Rest(name), f"rest:{name}")
 
     def damage(self, opcode: str, row: OP_Damage) -> None:
@@ -287,6 +296,20 @@ class MobsHandler(Handler):
             return False
         return (mob.name or "").lower() in bot_names(self.world)
 
+    def fallen(self, row: OP_Death) -> None:
+        """NPC deaths arrive as OP_Death. BecomeCorpse is only queued to the victim."""
+        spawn_id = int(row.spawn_id or 0)
+        if not spawn_id or spawn_id == self.world.self_id:
+            return
+        mob = find_mob(self.world, spawn_id)
+        if mob is not None:
+            mob.dead = True
+            if not is_ours(self.world, spawn_id, mob, self.loop):
+                mob.npc = 3
+        attack = attack_for(self.loop, Attack, spawn_id)
+        if attack:
+            attack.complete = True
+
     def corpse(self, row: OP_BecomeCorpse) -> None:
         world = self.world
         spawn_id, x, y, z = row.spawn_id, row.x, row.y, row.z
@@ -311,3 +334,46 @@ class MobsHandler(Handler):
         target = row.entity_id
         for mob in mobs_map(self.world).values():
             mob.targeted = mob.id == target
+
+
+def _before_rest(loop: Loop, world: World) -> None:
+    """A low bar sits only after the party is listed, respawned, and the heal rotation is read.
+
+    An open hunt keeps the pulse. Rebuilding the party waits until that fight is over,
+    unless the bots are not in the zone yet. A list from the last few seconds is not asked again.
+    """
+    if _hunt_open(loop) and _party_up(world):
+        return
+    stamp = int(world.bots.reconstituted_at or 0)
+    tick = int(loop.tick or 0)
+    if stamp and 0 <= tick - stamp < 20:
+        return
+    queue = loop.queue
+    if queue is not None and any(
+        not action.complete and str(action.source).startswith("reconstitute:") for action in queue
+    ):
+        return
+    if source_open(loop, "rest:reconstitute"):
+        return
+    who = character_name(loop, world)
+    journal = loop.journal
+    if journal is not None and who:
+        journal.clear_source(who, "reconstitute:rest")
+    enqueue_once(loop, world, Reconstitute(241), "reconstitute:rest")
+
+
+def _hunt_open(loop: Loop) -> bool:
+    return has_open(loop, Kill, "Kill")
+
+
+def _party_up(world: World) -> bool:
+    names = bot_names(world)
+    if not names:
+        return False
+    for mob in world.mobs.values():
+        if mob.dead:
+            continue
+        spoken = mob.spoken_name().lower()
+        if spoken in names or (mob.name or "").lower() in names:
+            return True
+    return False

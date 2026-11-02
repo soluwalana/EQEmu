@@ -10,6 +10,7 @@ if TYPE_CHECKING:
 
 
 from eqclient3.action import Action
+from eqclient3.actions.bots.form import queue_form
 from eqclient3.actions.support import clear_source
 
 
@@ -36,3 +37,6 @@ class Death(Action):
             queue.remove(action.insert)
             clear_source(loop, world, action.source)
         self.complete = True
+        # The sweep drops the party. Login and rezone form on OP_ClientReady.
+        world.formed_for = ""
+        queue_form(loop, world)

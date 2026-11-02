@@ -60,7 +60,8 @@ class LevelUpTest(unittest.TestCase):
         for item_id in (5013, 2001, 2004, 2008, 2010, 6011, 1001, 1004, 1008, 1010):
             self.assertIn(item_id, items)
         priced = [row for row in fetches if row.item_id == 2001]
-        self.assertEqual(priced[0].gold, 400)
+        self.assertEqual(priced[0].copper, 400)
+        self.assertEqual(priced[0].priority, fetch_mod.GEAR_BAND)
 
 
 if __name__ == "__main__":

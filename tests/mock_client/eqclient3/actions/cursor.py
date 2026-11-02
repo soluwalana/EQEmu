@@ -1,4 +1,8 @@
-"""Band 350. A fresh move is sent once. The token, the real item, or a delete finishes it."""
+"""Band 350. A fresh move is sent once. The token, the real item, or a delete finishes it.
+
+A move the server accepts has no reply. Silence lands it. A reply that puts the
+item back on the source, or deletes the destination, refuses that slot.
+"""
 
 from __future__ import annotations
 
@@ -42,6 +46,9 @@ class Cursor(Action):
             self.suspended = False
             return
         message = self.consume("OP_ItemPacket") or self.consume("OP_DeleteItem")
+        if self.sent and message is not None and self._returned(world, message):
+            self._reject(world)
+            return
         if self.waiting_for("CURSOR") and message is None:
             self.waited += 1
             if self.limit is None or self.waited < self.limit:
@@ -89,6 +96,31 @@ class Cursor(Action):
             bags[self.slot] = item_id
         if world.cursor == TOKEN:
             world.cursor = None
+
+    def _returned(self, world: World, message: Message) -> bool:
+        """The server did not take the move. The source still has the item, or the destination was cleared."""
+        move = self.move or world.cursor_move
+        if not move:
+            return False
+        src, dest = int(move[0]), int(move[1])
+        if message.opcode == "OP_DeleteItem":
+            return delete_slot(message) == dest
+        item = item_of(message)
+        if item is None:
+            return False
+        item_id = int(item.item_id or 0)
+        if item_id in (0, TOKEN):
+            return False
+        return int(item.slot) == src
+
+    def _reject(self, world: World) -> None:
+        """The server did not confirm the move. The destination stays empty and is not tried again."""
+        move = self.move or world.cursor_move
+        if move:
+            world.refused_slots.add(int(move[1]))
+        self.unwait("CURSOR")
+        self.outstanding = False
+        self.complete = True
 
     def _accept(self, world: World) -> None:
         """A sent move that the server did not refuse landed. Record it and stop."""

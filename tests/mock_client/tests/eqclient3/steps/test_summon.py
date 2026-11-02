@@ -19,7 +19,7 @@ class SummonSteps(unittest.TestCase):
             self.assertEqual(action.waiting, ["SUMMON"])
         action.step(client, sheet)
         self.assertEqual(commands(client), ["^botsummon spawned", "^botsummon spawned"])
-        inbox(action, "OP_ChannelMessage", {"text": "You have summoned your bots to you."})
+        inbox(action, "OP_SpecialMesg", {"text": "Summoned 5 bots to you."})
         action.step(client, sheet)
         self.assertTrue(action.complete)
 

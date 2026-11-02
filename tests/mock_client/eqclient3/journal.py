@@ -12,6 +12,7 @@ import json
 import os
 import pickle
 import sqlite3
+from dataclasses import dataclass
 from pathlib import Path
 from .action import Action
 from .log import log
@@ -20,6 +21,26 @@ JOURNAL_ROOT = Path.home() / ".eqclient" / "journal"
 JOURNAL_ROOT.mkdir(parents=True, exist_ok=True)
 DB_NAME = "journal-v3.sqlite3"
 catalog = JOURNAL_ROOT / "characters.json"
+
+
+@dataclass(frozen=True)
+class InventorySlot:
+    slot: int
+    item_id: int
+    name: str
+    stack: int
+
+
+_INVENTORY = """
+CREATE TABLE IF NOT EXISTS inventory (
+    character TEXT NOT NULL,
+    slot INTEGER NOT NULL,
+    item_id INTEGER NOT NULL,
+    name TEXT NOT NULL DEFAULT '',
+    stack INTEGER NOT NULL DEFAULT 1,
+    PRIMARY KEY (character, slot)
+);
+"""
 
 
 def characters() -> dict[str, dict[str, str]]:
@@ -53,6 +74,7 @@ class Journal:
         if self.db_path != ":memory:":
             self._db.execute("PRAGMA journal_mode=WAL")
         self._db.executescript(_SCHEMA)
+        self._db.executescript(_INVENTORY)
         self._db.commit()
         self._drop_ephemeral()
 
@@ -289,6 +311,22 @@ class Journal:
             (character, source),
         )
         self._db.commit()
+
+    def replace_inventory(self, character: str, slots: list[InventorySlot]) -> None:
+        """Replace the stored bags. The list is the whole inventory, including an empty one."""
+        self._db.execute("DELETE FROM inventory WHERE character = ?", (character,))
+        self._db.executemany(
+            "INSERT INTO inventory (character, slot, item_id, name, stack) VALUES (?, ?, ?, ?, ?)",
+            [(character, row.slot, row.item_id, row.name, row.stack) for row in slots],
+        )
+        self._db.commit()
+
+    def inventory(self, character: str) -> list[InventorySlot]:
+        rows = self._db.execute(
+            "SELECT slot, item_id, name, stack FROM inventory WHERE character = ? ORDER BY slot",
+            (character,),
+        )
+        return [InventorySlot(int(slot), int(item_id), str(name), int(stack)) for slot, item_id, name, stack in rows]
 
     def set_worn(self, character: str, bot_name: str, slot: int, item_id: int) -> None:
         self._db.execute(

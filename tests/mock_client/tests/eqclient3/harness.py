@@ -33,9 +33,17 @@ class MovementDouble:
     def advance(self, loop, world, path):
         self.advances.append(path)
 
-    def visible_mobs(self):
+    def face(self, loop, world, point):
+        del loop, world
+        self.plans.append(("face", point))
+
+    def visible_mobs(self, world=None, loop=None, *, yards=None):
+        del world, loop
         self.plans.append(("visible", None))
-        return list(self.visible)
+        found = list(self.visible)
+        if yards is None:
+            return found
+        return [mob for mob in found if mob.distance is None or float(mob.distance) <= yards]
 
     def mobs_on_path(self, mobs):
         self.plans.append(("on_path", None))

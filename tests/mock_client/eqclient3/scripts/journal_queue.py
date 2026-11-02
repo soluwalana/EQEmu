@@ -59,11 +59,61 @@ def _character(journal: Journal, character: str) -> list[str]:
         lines.append("  (empty)")
     for rank, action in enumerate(open_rows, start=1):
         lines.append(_line(rank, action))
+    lines.extend(_inventory(journal, character))
     lines.append(f"resolved {len(resolved)}")
     for kind, source, zone, priority in resolved:
         short = str(kind).rsplit(":", 1)[-1]
         lines.append(f"     p{int(priority):<4}  {short:<12} {source:<28} {zone or '-'}")
     return lines
+
+
+_WORN = (
+    "charm",
+    "ear1",
+    "head",
+    "face",
+    "ear2",
+    "neck",
+    "shoulders",
+    "arms",
+    "back",
+    "wrist1",
+    "wrist2",
+    "range",
+    "hands",
+    "primary",
+    "secondary",
+    "finger1",
+    "finger2",
+    "chest",
+    "legs",
+    "feet",
+    "waist",
+    "ammo",
+)
+
+
+def _inventory(journal: Journal, character: str) -> list[str]:
+    slots = journal.inventory(character)
+    lines = [f"inventory {len(slots)}"]
+    if not slots:
+        lines.append("  (empty)")
+        return lines
+    for row in slots:
+        count = f" x{row.stack}" if row.stack > 1 else ""
+        name = row.name or str(row.item_id)
+        lines.append(f"  {_slot_label(row.slot)}: {name}{count} ({row.item_id})")
+    return lines
+
+
+def _slot_label(slot: int) -> str:
+    if 0 <= slot < len(_WORN):
+        return _WORN[slot]
+    if 22 <= slot <= 29:
+        return f"pack {slot - 21}"
+    if slot == 30:
+        return "cursor"
+    return f"slot {slot}"
 
 
 def _ordered(actions: list) -> list:

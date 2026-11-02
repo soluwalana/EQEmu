@@ -42,3 +42,11 @@ def test_opcodes():
     assert names(pending) == ["Death", "Reclaim"]
     assert pending.queue[1].corpse_id == 7
     assert pending.queue[1].where == (8.0, 9.0, 0.0)
+
+    fresh = Loop()
+    sheet = World(name="Hero", zone="qeynos", self_id=7, x=1, y=2, z=3)
+    sheet.formed_for = "qeynos"
+    death.DeathHandler().handle("OP_Death", death_packet(7, 9, 15), sheet, fresh)
+    fallen = next(action for action in fresh.queue if type(action).__name__ == "Death")
+    fallen.step(fresh, sheet)
+    assert any(action.source == "form:qeynos" for action in fresh.queue)

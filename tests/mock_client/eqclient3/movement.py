@@ -57,7 +57,7 @@ from eqclient3.structs import (
     OP_NewZone,
     OPERATIONS,
 )
-from eqclient3.nav.maps import load_map
+from eqclient3.nav.maps import ZoneMap, load_map
 from eqclient3.nav.navmesh import NavMesh, load_nav
 from eqclient3.nav.path import (
     NEARBY_YARDS,
@@ -121,6 +121,7 @@ class Movement:
         self.find_mob: Mob | None = None
         self._nav: NavMesh | None = None
         self._nav_zone: str | None = None
+        self._routes: dict[tuple[str, str], Path] = {}
 
     @property
     def stride_committed(self) -> bool:
@@ -148,6 +149,7 @@ class Movement:
         self.caller_mode = "run"
         self.advanced = False
         self.path = None
+        self._routes = {}
         self.clicked = set()
         self.open_ids = set()
         self.find_mob = None
@@ -162,6 +164,7 @@ class Movement:
         self.committed = True
         self.refused = False
         self.path = None
+        self._routes = {}
         self.position = (float(point[0]), float(point[1]), float(point[2]))
         _write_world(world, self.position)
 
@@ -224,6 +227,10 @@ class Movement:
         sheet = world if world is not None else self.world
         zone = sheet.zone if sheet is not None else ""
         water = water_of(sheet, zone) if sheet is not None else None
+        if mode != "swim":
+            reused = self._reused_route(origin, destination, mode, length, anim, zone, sheet)
+            if reused is not None:
+                return reused
         built = route(
             origin,
             destination,
@@ -243,10 +250,21 @@ class Movement:
             built.next_point = _z_step(origin, target_z, length)
             built.in_water = built.in_water or _liquid(water, built.next_point) or _liquid(water, built.destination)
         kept = self._keep_find_path(built)
-        if kept is not None:
-            return kept
-        self.path = built
-        return built
+        chosen = built if kept is None else kept
+        if kept is None:
+            self.path = built
+        self._remember_route(zone, destination, chosen)
+        return chosen
+
+    def face(self, loop: Loop, world: World, point: tuple[float, float, float]) -> None:
+        """Turn toward a point and tell the server. Melee misses when the heading is wrong."""
+        here = self.position
+        want = eq_heading(here[0], here[1], point[0], point[1])
+        gap = abs(int(self.heading) - want) % 512
+        if min(gap, 512 - gap) < 24:
+            return
+        self.heading = want
+        self._emit(loop, world, here, 0, "face")
 
     def advance(self, loop: Loop, world: World, path: Path, sender: Action | None = None) -> None:
         """One stride. The only builder of OP_ClientUpdate and the only door click.
@@ -297,8 +315,18 @@ class Movement:
             return
         self._emit(loop, bound, self.position, 0, "hold")
 
-    def visible_mobs(self, world: World | None = None, loop: Loop | None = None) -> list[Mob]:
-        """Mobs in line of sight from the committed position. Does not send OP_Consider."""
+    def visible_mobs(
+        self,
+        world: World | None = None,
+        loop: Loop | None = None,
+        *,
+        yards: float | None = None,
+    ) -> list[Mob]:
+        """Mobs in line of sight from the committed position. Does not send OP_Consider.
+
+        ``yards`` skips anyone farther than that before a ray is cast. The sweep
+        uses one ray. Heading peeks stay on a targeted line_of_sight call.
+        """
         del loop
         if world is not None:
             self.bind(world)
@@ -310,7 +338,9 @@ class Movement:
         for mob in iter_mobs(sheet):
             if _is_self(sheet, mob):
                 continue
-            if _can_see(sheet, origin, mob):
+            if yards is not None and mob.distance is not None and float(mob.distance) > yards:
+                continue
+            if _sweep_visible(sheet, origin, mob):
                 seen.append(mob)
         return seen
 
@@ -372,6 +402,80 @@ class Movement:
             return
         self.position = (float(asked[0]), float(asked[1]), float(asked[2]))
         _write_world(world, self.position)
+
+    def _reused_route(
+        self,
+        origin: tuple[float, float, float],
+        destination: tuple[float, float, float] | str | Mob,
+        mode: str,
+        length: float,
+        anim: int,
+        zone: str,
+        sheet: World | None,
+    ) -> Path | None:
+        """The polyline already searched for this goal, measured from where we stand now."""
+        key = _dest_key(destination)
+        if key is None:
+            return None
+        found = self._routes.get((zone, key))
+        if found is None:
+            return None
+        if found.find_waypoints and not _same(found.origin, origin, tol=1.0):
+            self._routes.pop((zone, key), None)
+            return None
+        if not _on_polyline(origin, found):
+            self._routes.pop((zone, key), None)
+            return None
+        followed = self._follow(found, origin, mode, length, anim, sheet)
+        if followed is None:
+            self._routes.pop((zone, key), None)
+            return None
+        return followed
+
+    def _follow(
+        self,
+        found: Path,
+        origin: tuple[float, float, float],
+        mode: str,
+        length: float,
+        anim: int,
+        sheet: World | None,
+    ) -> Path | None:
+        if _same(found.origin, origin, tol=0.5) and found.mode == mode and found.stride_length == length:
+            self.path = found
+            return found
+        ahead = _ahead(origin, found)
+        if ahead is None:
+            return None
+        points, remain = ahead
+        found.points = points
+        found.origin = origin
+        found.mode = mode
+        found.stride_length = length
+        found.anim = anim
+        found.distance = remain
+        goal = found.destination
+        nxt = along(origin, points or [goal], length)
+        doors = sheet.doors if sheet is not None else None
+        live = doors_on_stride(origin, nxt, doors)
+        if live:
+            door = live[0]
+            found.door = door
+            nxt = (float(door.x), float(door.y), float(door.z))
+        found.next_point = nxt
+        self.path = found
+        return found
+
+    def _remember_route(
+        self,
+        zone: str,
+        destination: tuple[float, float, float] | str | Mob,
+        path: Path,
+    ) -> None:
+        key = _dest_key(destination)
+        if key is None:
+            return
+        self._routes[(zone, key)] = path
 
     def _keep_find_path(self, built: Path) -> Path | None:
         current = self.path
@@ -612,6 +716,7 @@ class Movement:
         self.refused = False
         self.position = safe
         self.path = None
+        self._routes = {}
         self.clicked = set()
         self.open_ids = set()
         self.find_mob = None
@@ -723,6 +828,27 @@ def _can_see(world: World, origin: tuple[float, float, float], mob: Mob) -> bool
     return world.line_of_sight(mob)
 
 
+def _sweep_visible(world: World, origin: tuple[float, float, float], mob: Mob) -> bool:
+    """One cached ray. A miss falls back to line_of_sight, which peeks headings."""
+    mapped = _zone_map(world)
+    if mapped is None:
+        return _can_see(world, origin, mob)
+    end = mob_point(mob)
+    if end is None:
+        return False
+    return bool(mapped.clear(origin, end, headings=1))
+
+
+def _zone_map(world: World) -> ZoneMap | None:
+    mesh = world.mesh
+    if mesh is not None:
+        return mesh
+    zone = world.zone or ""
+    if not zone:
+        return None
+    return load_map(zone)
+
+
 def _is_self(world: World, mob: Mob) -> bool:
     self_id = world.self_id if world else 0
     if not self_id:
@@ -781,6 +907,104 @@ def _iter_doors(doors: dict[int, Door] | list[Door] | None) -> Iterator[Door]:
 
 def _horiz(a: tuple[float, float, float], b: tuple[float, float, float]) -> float:
     return math.hypot(a[0] - b[0], a[1] - b[1])
+
+
+def _dest_key(destination: tuple[float, float, float] | str | Mob) -> str | None:
+    if isinstance(destination, str):
+        return None
+    if isinstance(destination, (tuple, list)):
+        if len(destination) < 3:
+            return None
+        return (
+            f"p:{round(float(destination[0]), 1)}:{round(float(destination[1]), 1)}:{round(float(destination[2]), 1)}"
+        )
+    point = mob_point(destination)
+    if point is None:
+        return None
+    return f"m:{mob_id(destination)}:{round(point[0], 1)}:{round(point[1], 1)}:{round(point[2], 1)}"
+
+
+def _ahead(
+    here: tuple[float, float, float], path: Path, limit: float = 12.0
+) -> tuple[list[tuple[float, float, float]], float] | None:
+    """Points still in front of us, and the yards left along them.
+
+    The first corridor segment we are still standing on wins, so a later bend
+    that passes nearby does not skip the walk between.
+    """
+    goal = path.destination
+    chain = [path.origin, *path.points]
+    if not chain or _horiz(chain[-1], goal) > 0.5:
+        chain.append(goal)
+    for index in range(1, len(chain)):
+        gap, tee = _segment_project(here, chain[index - 1], chain[index])
+        if gap > limit:
+            continue
+        start = chain[index - 1]
+        end = chain[index]
+        proj = (
+            start[0] + (end[0] - start[0]) * tee,
+            start[1] + (end[1] - start[1]) * tee,
+            end[2],
+        )
+        rest = chain[index:]
+        return rest, _route_length(proj, rest, goal)
+    return None
+
+
+def _on_polyline(here: tuple[float, float, float], path: Path, limit: float = 18.0) -> bool:
+    goal = path.destination
+    points = [path.origin, *path.points]
+    if not points or _horiz(points[-1], goal) > 0.5:
+        points.append(goal)
+    for index in range(1, len(points)):
+        if _segment_gap(here, points[index - 1], points[index]) <= limit:
+            return True
+    return _horiz(here, goal) <= limit
+
+
+def _segment_project(
+    here: tuple[float, float, float],
+    start: tuple[float, float, float],
+    end: tuple[float, float, float],
+) -> tuple[float, float]:
+    dx = end[0] - start[0]
+    dy = end[1] - start[1]
+    length = dx * dx + dy * dy
+    if length <= 1e-06:
+        return _horiz(here, start), 0.0
+    tee = ((here[0] - start[0]) * dx + (here[1] - start[1]) * dy) / length
+    if tee < 0.0:
+        tee = 0.0
+    elif tee > 1.0:
+        tee = 1.0
+    nearest = (start[0] + tee * dx, start[1] + tee * dy)
+    return math.hypot(here[0] - nearest[0], here[1] - nearest[1]), tee
+
+
+def _segment_gap(
+    here: tuple[float, float, float],
+    start: tuple[float, float, float],
+    end: tuple[float, float, float],
+) -> float:
+    gap, _tee = _segment_project(here, start, end)
+    return gap
+
+
+def _route_length(
+    origin: tuple[float, float, float],
+    points: list[tuple[float, float, float]],
+    goal: tuple[float, float, float],
+) -> float:
+    total = 0.0
+    prev = origin
+    chain = list(points)
+    if not chain or _horiz(chain[-1], goal) > 0.5:
+        chain.append(goal)
+    for point in chain:
+        total += _horiz(prev, point)
+        prev = point
+    return total
 
 
 def _same(a: tuple[float, float, float], b: tuple[float, float, float], tol: float = 0.05) -> bool:

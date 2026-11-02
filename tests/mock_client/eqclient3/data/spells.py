@@ -104,8 +104,60 @@ _ROLES = (
 )
 
 
+# A stem covers every rank of a line. An exact name is a spell whose stem would
+# catch a different spell: Force is the stun, Force of Akera is not.
+_LINE_ROLES = (("yaulp", "haste"),)
+_EXACT_ROLES = {
+    "salve": "heal",
+    "flash of light": "heal",
+    "cease": "stun",
+    "desist": "stun",
+    "force": "stun",
+    "courage": "buff",
+    "center": "buff",
+    "daring": "buff",
+    "valor": "buff",
+    "resolution": "buff",
+    "heroism": "buff",
+    "holy armor": "buff",
+    "spirit armor": "buff",
+    "armor of faith": "buff",
+    "reckless strength": "buff",
+    "hammer of wrath": "nuke",
+    "ward undead": "nuke",
+    "expel undead": "nuke",
+    "dismiss undead": "nuke",
+    "expulse undead": "nuke",
+    "exile undead": "nuke",
+    "banish undead": "nuke",
+    "expunge undead": "nuke",
+    "deny undead": "nuke",
+    "spurn undead": "nuke",
+}
+
+
+_NAMES: dict[int, str] | None = None
+
+
+def spell_name(spell_id: int) -> str:
+    """Name from the spell cache. An unknown id is an empty string."""
+    global _NAMES
+    if _NAMES is None:
+        found: dict[int, str] = {}
+        for row in read_spells(DEFAULT_SPELLS).rows:
+            found.setdefault(row.spell_id, row.name)
+        _NAMES = found
+    return _NAMES.get(spell_id, "")
+
+
 def role_of(name: str) -> str:
     text = name.lower()
+    named = _EXACT_ROLES.get(text)
+    if named:
+        return named
+    for stem, role in _LINE_ROLES:
+        if text == stem or text.startswith(stem + " "):
+            return role
     for role in _ROLES:
         if role in text:
             return role

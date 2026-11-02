@@ -18,7 +18,7 @@ class AttackSteps(unittest.TestCase):
         self.assertEqual(movement().advances[-1].mode, "los")
         body.position = (10.0, 0.0, 0.0)
         action.step(client, sheet)
-        self.assertEqual(commands(client), ["^attack", "^pet_attack"])
+        self.assertEqual(commands(client), ["^attack"])
         self.assertIn("OP_AutoAttack", opcodes(client))
         self.assertIn("OP_CombatAbility", opcodes(client))
         client.outbound.clear()

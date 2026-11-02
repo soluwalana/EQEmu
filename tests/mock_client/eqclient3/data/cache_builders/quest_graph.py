@@ -5,6 +5,8 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
+from eqclient3.data.cache_builders.common import peq_path
+from eqclient3.data.catalog import load_catalog
 from eqclient3.quests.graph import QuestGraph, build_graph, read_graph, write_graph
 
 DEFAULT_GRAPH = str(Path.home() / ".eqclient" / "quest_graph.jsonl")
@@ -23,7 +25,7 @@ def ensure_graph(root: str | None = None, path: str | None = None, *, rebuild: b
     source = quests_root(root)
     if not source:
         raise SystemExit("EQEMU_QUESTS (or --root) is required to build the quest graph")
-    graph = build_graph(source)
+    graph = build_graph(source, load_catalog(str(peq_path()), source))
     write_graph(graph, path)
     return graph
 

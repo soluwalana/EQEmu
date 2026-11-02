@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 from eqclient3.log import log
-from eqclient3.actions.bots.form import Form, party_members
+from eqclient3.actions.bots.form import queue_form
 from eqclient3.actions.read_tasks import ReadTasks
+from eqclient3.quests.produce import produce
 from eqclient3.handlers.common import (
     call_transfer,
     character_name,
@@ -15,6 +16,7 @@ from eqclient3.handlers.common import (
 from eqclient3.handlers.common import enqueue_once as append_action
 from eqclient3.structs import (
     EQStruct,
+    OP_ClientReady,
     OP_NewZone,
     OP_ReliableHole,
     OP_RequestClientZoneChange,
@@ -28,6 +30,7 @@ TUTORIAL = "tutorialb"
 class ZoningHandler(Handler):
     opcodes = (
         "OP_NewZone",
+        "OP_ClientReady",
         "OP_ZoneChange",
         "OP_RequestClientZoneChange",
         "OP_ReliableHole",
@@ -39,6 +42,8 @@ class ZoningHandler(Handler):
             return
         if isinstance(payload, OP_NewZone):
             self.new_zone(payload)
+        elif isinstance(payload, OP_ClientReady):
+            self.form_party()
         elif isinstance(payload, OP_ZoneChange):
             self.zone_change(payload)
         elif isinstance(payload, OP_RequestClientZoneChange):
@@ -51,6 +56,8 @@ class ZoningHandler(Handler):
     def new_zone(self, row: OP_NewZone) -> None:
         short, x, y, z = row.short_name, row.x, row.y, row.z
         world = self.world
+        previous = str(world.zone or "")
+        previous_id = int(world.zone_id or 0)
         zone_id = row.zone_id
         world.zone = short
         if zone_id:
@@ -58,21 +65,24 @@ class ZoningHandler(Handler):
         world.safe = (x, y, z)
         world.ground.clear()
         self.drop_npc_corpses()
+        moved = short.lower() != previous.lower() or (
+            bool(zone_id) and bool(previous_id) and int(zone_id) != previous_id
+        )
+        if moved:
+            world.formed_for = ""
+        # Weather and zone-data edits resend OP_NewZone. Remember the first one.
+        if world.form_return is None:
+            world.form_return = bool(world.tutorial_started)
         if short.lower() == TUTORIAL:
             self.mark_started("tutorial_started")
             if not tutorial_done(self.loop, world):
                 append_action(self.loop, world, ReadTasks(), "read_tasks:tutorialb")
-        source = f"form:{short}"
-        self.reopen_form(source)
-        append_action(self.loop, world, Form(short, party_members()), source)
+        elif tutorial_done(self.loop, world):
+            produce(self.loop, world, leaving_tutorial=True)
 
-    def reopen_form(self, source: str) -> None:
-        """A finished Form is forgotten so the next login queues one."""
-        journal = self.loop.journal
-        who = character_name(self.loop, self.world)
-        if not journal or not who:
-            return
-        journal.clear_source(who, source)
+    def form_party(self) -> None:
+        """Login and rezone. A same-zone OP_ClientReady is the weather refresh."""
+        queue_form(self.loop, self.world)
 
     def mark_started(self, name: str) -> None:
         """Remember on the character, and in the journal, that this progress has started."""
@@ -119,6 +129,9 @@ class ZoningHandler(Handler):
         if success == 1 and zone_id and zone_id != world.zone_id:
             world.zone_id = zone_id
             call_transfer(loop)
+            return
+        # A cross-zone success leaves x, y, z at zero. Snapping that walks the new zone from the origin.
+        if success == 1 and not (row.x or row.y or row.z):
             return
         world.movement.snap(world, (row.x, row.y, row.z))
 

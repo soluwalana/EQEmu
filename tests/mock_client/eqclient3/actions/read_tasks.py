@@ -24,6 +24,7 @@ from eqclient3.actions.pickup import Pickup
 from eqclient3.actions.talk import Talk
 from eqclient3.actions.zone import Zone
 from eqclient3.actions.support import (
+    COLLECT,
     DELIVER,
     KILL,
     LOOT,
@@ -32,12 +33,14 @@ from eqclient3.actions.support import (
     line_of,
     mark_tutorial,
     new_zone_name,
+    next_zoneline,
     task_activities,
     yield_to,
 )
 from eqclient3.quests.produce import produce
 from eqclient3.handlers.common import mob_named, tutorial_done
 from eqclient3.handlers.tasks import Activity
+from eqclient3.inventory.assign import release_cursor
 from eqclient3.struct_helpers import saylink_plain
 
 _KINDS = (
@@ -65,24 +68,28 @@ class ReadTasks(Action):
     def suspend(self) -> None:
         self.suspended = True
 
+    def _hear(self, loop: Loop, world: World) -> None:
+        """A line that names work is taken on the pulse it arrives, even when this step is waiting."""
+        self._listen(loop, world)
+
     def step(self, loop: Loop, world: World) -> None:
         message = self.consume("OP_NewZone")
         zone = new_zone_name(message, world) if message else world.zone
         if message and zone and zone != "tutorialb":
             mark_tutorial(loop, world)
             queue_level_gear(loop, world)
-            produce(loop, world)
+            produce(loop, world, leaving_tutorial=True)
             self.complete = True
             return
         if world.zone and world.zone != "tutorialb":
             mark_tutorial(loop, world)
             queue_level_gear(loop, world)
-            produce(loop, world)
+            produce(loop, world, leaving_tutorial=True)
             self.complete = True
             return
         self.suspended = False
-        self._hear(loop, world)
-        pushed = False
+        if self._listen(loop, world):
+            return
         for activity in task_activities(world):
             if activity.locked:
                 continue
@@ -91,36 +98,80 @@ class ReadTasks(Action):
             key = (int(activity.task_id), int(activity.activity_id))
             source = f"task:{key[0]}:{key[1]}"
             queue = loop.queue
-            if key in self.seen or (queue is not None and any(action.source == source for action in queue)):
+            if queue is not None and any(action.source == source for action in queue):
+                # A find hunt is priority -1. This book and the talk that started
+                # it have to sit under that hunt, then the talk comes back to hand
+                # the item over once the hunt leaves the queue.
+                if _side_hunt(loop):
+                    self.priority = -2
+                else:
+                    self.priority = 0
+                    for queued in queue:
+                        if queued.source == source and queued.priority < 0:
+                            queued.priority = 0
+                self.yielding = True
+                return
+            # A step queued before a disconnect is not in the journal. Queue it again.
+            # A step this session already finished stays down until the book catches up.
+            if key in self.seen and _resolved(loop, world, source):
                 continue
             action = _action_for(activity)
             if not action:
                 continue
+            _reopen(loop, world, source)
             if yield_to(self, loop, world, action, source):
-                self.seen.append(key)
-                pushed = True
-        if pushed:
+                if key not in self.seen:
+                    self.seen.append(key)
+                self.yielding = True
+                return
+        if _side_hunt(loop):
+            self.priority = -1
             self.yielding = True
+            return
+        self.priority = 0
+        self._when_idle(loop, world)
 
-    def _hear(self, loop: Loop, world: World) -> None:
+    def _when_idle(self, loop: Loop, world: World) -> None:
+        """Hobart assigns the battle. With nothing left open, the exit rock leaves the mine."""
+        if not _said(loop, world, "Guard Hobart", "hail"):
+            if _open(loop, "hail:hobart"):
+                self.yielding = True
+                return
+            talk = Talk(0, "hail", "Hail Guard Hobart")
+            talk.bind_name = "Guard Hobart"
+            if yield_to(self, loop, world, talk, "hail:hobart"):
+                return
+        point = next_zoneline(world, "freportw")
+        if point is None:
+            return
+        path = world.movement.plan(point, "run")
+        world.movement.advance(loop, world, path)
+
+    def _listen(self, loop: Loop, world: World) -> bool:
         if str(world.zone or "").lower() != "tutorialb" or tutorial_done(loop, world):
             while (
                 self.consume("OP_ChannelMessage") or self.consume("OP_SpecialMesg") or self.consume("OP_SimpleMessage")
             ):
                 pass
-            return
+            return False
+        heard = False
         while True:
             message = (
                 self.consume("OP_ChannelMessage") or self.consume("OP_SpecialMesg") or self.consume("OP_SimpleMessage")
             )
             if not message:
-                return
+                return heard
             text, speaker = _line(message)
             who = character_name(loop, world).lower()
             if who and speaker and speaker.lower() == who:
                 continue
+            if "on your cursor" in text.lower():
+                release_cursor(loop, world)
+                heard = True
+                continue
             for kind, subject in _named(text):
                 _append(self, loop, world, kind, subject, text, speaker)
+                heard = True
 
 
 def _action_for(activity: Activity) -> Action | None:
@@ -135,7 +186,7 @@ def _action_for(activity: Activity) -> Action | None:
         return talk
     if activity.kind == KILL:
         return Kill(spawn_id=activity.spawn_id or None, camp=activity.target_name or None)
-    if activity.kind in (LOOT, DELIVER):
+    if activity.kind in (LOOT, DELIVER, COLLECT):
         return Fetch(activity.item_id, activity.goal or 1, text)
     return None
 
@@ -145,8 +196,13 @@ def _line(message: Message) -> tuple[str, str]:
     return (text, speaker)
 
 
+# A saylink is a reply for the talk already running. The brackets around it are
+# not part of a "say …" order, so the link is removed before the patterns run.
+_WRAPPED_LINK = re.compile(r"\[?\x12.{56}[^\x12]*?\x12\]?")
+
+
 def _named(text: str) -> list[tuple[str, str]]:
-    plain = saylink_plain(text or "")
+    plain = saylink_plain(_WRAPPED_LINK.sub(" ", text or ""))
     found: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
     for pattern, kind in _KINDS:
@@ -164,6 +220,53 @@ def _named(text: str) -> list[tuple[str, str]]:
     return found
 
 
+def _said(loop: Loop, world: World, npc: str, text: str) -> bool:
+    journal = loop.journal
+    who = character_name(loop, world)
+    zone = str(world.zone or "")
+    if journal is None or not who or not zone:
+        return False
+    want_npc = npc.lower()
+    want_text = text.lower()
+    for name, line in journal.said(who, zone):
+        if str(name).lower() == want_npc and str(line).lower() == want_text:
+            return True
+    return False
+
+
+def _side_hunt(loop: Loop) -> bool:
+    """A find-item hunt is underway. The exit waits until that hunt is done."""
+    queue = loop.queue
+    if queue is None:
+        return False
+    return any(str(action.source).startswith("find:") and not action.complete for action in queue)
+
+
+def _open(loop: Loop, source: str) -> bool:
+    queue = loop.queue
+    if queue is None:
+        return False
+    return any(action.source == source and not action.complete for action in queue)
+
+
+def _resolved(loop: Loop, world: World, source: str) -> bool:
+    journal = loop.journal
+    who = character_name(loop, world)
+    if journal is None or not who or not source:
+        return False
+    return journal.is_resolved(who, source)
+
+
+def _reopen(loop: Loop, world: World, source: str) -> None:
+    """Drop a resolved row so an activity that is still open can be queued again."""
+    journal = loop.journal
+    who = character_name(loop, world)
+    if journal is None or not who or not source:
+        return
+    if journal.is_resolved(who, source):
+        journal.clear_source(who, source)
+
+
 def _append(
     parent: ReadTasks,
     loop: Loop,
@@ -174,6 +277,7 @@ def _append(
     speaker: str,
 ) -> None:
     source = f"chat:{kind}:{subject.lower()}"
+    _reopen(loop, world, source)
     action: Action
     if kind == "talk":
         npc = _npc(world, subject) or _npc(world, speaker)

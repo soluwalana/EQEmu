@@ -98,8 +98,42 @@ def test_active_action_is_logged_when_it_changes(caplog):
     assert "action Hail talk:guard -> Attack kill:rat" in caplog.text
 
 
+def test_a_wait_change_is_logged_on_the_same_action(caplog):
+    caplog.set_level(logging.INFO, logger="eqclient3")
+    world = World()
+    queue = Schedule()
+    session = Session()
+    loop = Loop()
+
+    class Hail(Action):
+        def __init__(self):
+            super().__init__()
+            self.source = "talk:guard"
+            self.waiting = ["TARGET"]
+            self.phase = "TARGET"
+
+        def step(self, loop, world):
+            self.waiting = [self.phase]
+            self.yielding = True
+
+    hail = Hail()
+    queue.append(hail, world)
+    loop.run_once(session, world, queue, Bus(queue))
+    assert "action idle -> Hail talk:guard wait=TARGET" in caplog.text
+
+    hail.phase = "HAIL"
+    caplog.clear()
+    loop.run_once(session, world, queue, Bus(queue))
+    assert "action Hail talk:guard wait=TARGET -> Hail talk:guard wait=HAIL" in caplog.text
+
+    caplog.clear()
+    loop.run_once(session, world, queue, Bus(queue))
+    assert "action " not in caplog.text
+
+
 def test_an_action_log_includes_the_cache_name_and_item_number():
     from eqclient3 import loop as pulse
+    from eqclient3.actions.cursor import Cursor
     from eqclient3.inventory.item_stats import ItemBook, ItemStats
 
     saved = pulse._book
@@ -112,6 +146,27 @@ def test_an_action_log_includes_the_cache_name_and_item_number():
         held.item_id = 2010
         held.source = "fetch:2010"
         assert pulse._action_name(held) == "Action fetch:2010 Leather Gloves (2010)"
+        sell = Action()
+        sell.source = "sell:59973,2009"
+        pulse._book = ItemBook(
+            by_id={
+                2010: ItemStats(2010, "Leather Gloves"),
+                59973: ItemStats(59973, "Tome of Throw Stone"),
+                2009: ItemStats(2009, "Leather Wristbands"),
+                2008: ItemStats(2008, "Leather Sleeves"),
+            }
+        )
+        assert pulse._action_name(sell) == (
+            "Action sell:59973,2009 Tome of Throw Stone (59973) Leather Wristbands (2009)"
+        )
+        world = World()
+        world.cursor = 2009
+        world.bags[7] = 2008
+        cursor = Cursor(7, (30, 7))
+        cursor.source = "cursor:30:7"
+        assert pulse._action_name(cursor, world) == (
+            "Cursor cursor:30:7 slot 30 Leather Wristbands (2009) slot 7 Leather Sleeves (2008)"
+        )
     finally:
         pulse._book = saved
 

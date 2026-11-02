@@ -56,5 +56,11 @@ def claim_pending(loop: Loop, world: World) -> None:
 
 def queue_death(loop: Loop, world: World, corpse_id: int, where: tuple[float, float, float]) -> None:
     zone = str(world.zone or "")
-    enqueue_once(loop, world, Death(), f"death:{zone}")
+    source = f"death:{zone}"
+    # One death in a zone resolves this source. The next death is a new one.
+    journal = loop.journal
+    who = loop.character
+    if journal is not None and who and journal.is_resolved(who, source):
+        journal.clear_source(who, source)
+    enqueue_once(loop, world, Death(), source)
     enqueue_once(loop, world, Reclaim(corpse_id, where), f"reclaim:{corpse_id}")

@@ -2,7 +2,7 @@
 
 import unittest
 
-from harness import commands, fresh, inbox
+from harness import commands, fresh, inbox, kinds
 
 from eqclient3.actions.bots.summon import Summon
 
@@ -26,10 +26,25 @@ class SummonTest(unittest.TestCase):
         client, sheet = fresh()
         action = Summon(271)
         action.step(client, sheet)
-        inbox(action, "OP_ChannelMessage", {"text": "You have summoned your bots to you."})
+        inbox(action, "OP_SpecialMesg", {"text": "Summoned 5 bots to you."})
         action.step(client, sheet)
         self.assertTrue(action.complete)
         self.assertEqual(action.waiting, [])
+
+    def test_no_spawned_bots_forms_the_party(self):
+        client, sheet = fresh("tutorialb")
+        sheet.form_return = True
+        action = Summon(271)
+        action.step(client, sheet)
+        inbox(
+            action,
+            "OP_SpecialMesg",
+            {"text": "You have no spawned bots meeting this criteria - type: 'spawned', name: ''"},
+        )
+        action.step(client, sheet)
+        self.assertTrue(action.complete)
+        self.assertEqual(commands(client), ["^botsummon spawned"])
+        self.assertIn("Form", kinds(client))
 
 
 if __name__ == "__main__":

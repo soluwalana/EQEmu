@@ -6,6 +6,7 @@ import unittest
 from harness import commands, fresh, inbox, kinds, mob, movement, opcodes
 
 from eqclient3.actions.attack import Attack
+from eqclient3.structs import OP_CastSpell, OP_MemorizeSpell
 
 
 class AttackTest(unittest.TestCase):
@@ -41,7 +42,7 @@ class AttackTest(unittest.TestCase):
             struct.pack("<IIIIIIBBBB", 0, body.id, 0, 0, 0, 0, 0, 0, 0, 0),
         )
         action.step(client, sheet)
-        self.assertEqual(commands(client), ["^attack", "^pet_attack"])
+        self.assertEqual(commands(client), ["^attack"])
         self.assertIn("OP_AutoAttack", opcodes(client))
         self.assertEqual(opcodes(client).count("OP_TargetMouse"), 1)
         sent = len(commands(client))
@@ -49,7 +50,7 @@ class AttackTest(unittest.TestCase):
         self.assertEqual(len(commands(client)), sent)
         action.suspend()
         action.step(client, sheet)
-        self.assertEqual(commands(client), ["^attack", "^pet_attack", "^attack", "^pet_attack"])
+        self.assertEqual(commands(client), ["^attack", "^attack"])
 
     def test_casting_empty_inbox_returns(self):
         client, sheet = fresh()
@@ -192,6 +193,91 @@ class AttackTest(unittest.TestCase):
         found = [row for row in client.queue if type(row).__name__ == "Reconstitute"]
         self.assertEqual(len(found), 1)
         self.assertEqual(found[0].priority, 241)
+
+    def test_a_wizard_sits_instead_of_nuking_on_a_low_pool(self):
+        client, sheet = fresh()
+        mob(sheet, 8, distance=10, targeted=True)
+        sheet.class_id = 12
+        sheet.mana = 10
+        sheet.max_mana = 100
+        sheet.gems[0] = 50
+        sheet.spell_info = {50: _spell(mana=20, combat=True)}
+        action = Attack(8)
+        action.step(client, sheet)
+        self.assertTrue(action.resting)
+        self.assertIn("OP_SpawnAppearance", opcodes(client))
+        self.assertNotIn("OP_CastSpell", opcodes(client))
+
+    def test_slow_lands_before_the_nuke(self):
+        client, sheet = fresh()
+        mob(sheet, 8, distance=10, targeted=True)
+        sheet.mana = 100
+        sheet.gems[0] = 1
+        sheet.gems[1] = 2
+        sheet.spell_names = {1: "Ensnaring Slow", 2: "Shock of Fire"}
+        sheet.spell_info = {1: _spell(), 2: _spell(combat=True)}
+        action = Attack(8)
+        action.step(client, sheet)
+        cast = _cast(client)
+        self.assertEqual(cast.spell_id, 1)
+        self.assertIn("slow", action.landed)
+        action.unwait("CAST")
+        action.casting = False
+        client.outbound.clear()
+        action.step(client, sheet)
+        self.assertEqual(_cast(client).spell_id, 2)
+
+    def test_a_nuke_waits_out_its_recast(self):
+        client, sheet = fresh()
+        mob(sheet, 8, distance=10, targeted=True)
+        sheet.mana = 100
+        sheet.gems[2] = 50
+        sheet.spell_info = {50: _spell(mana=10, recast=6, combat=True)}
+        action = Attack(8)
+        action.step(client, sheet)
+        self.assertEqual(action.waiting, ["CAST"])
+        action.unwait("CAST")
+        action.casting = False
+        client.outbound.clear()
+        action.step(client, sheet)
+        self.assertNotIn("OP_CastSpell", opcodes(client))
+        self.assertIn("OP_AutoAttack", opcodes(client))
+
+    def test_a_weaker_heal_is_cleared_for_the_higher_one(self):
+        import eqclient3.actions.casting as casting
+
+        client, sheet = fresh()
+        mob(sheet, 8, distance=10, targeted=True)
+        sheet.class_id = 2
+        sheet.spell_book = {0: 201, 1: 202}
+        sheet.spell_names = {201: "Minor Healing", 202: "Greater Healing"}
+        sheet.spell_info = {201: _spell(mana=10, heal=True), 202: _spell(mana=40, heal=True)}
+        sheet.gems[0] = 201
+        previous = casting._LEVELS
+        casting._LEVELS = {}
+        try:
+            action = Attack(8)
+            action.step(client, sheet)
+            cleared = OP_MemorizeSpell.deserialize(client.outbound[-1][1])
+            self.assertEqual((cleared.slot, cleared.spell_id, cleared.scribing), (0, 201, 2))
+            client.outbound.clear()
+            action.step(client, sheet)
+            loaded = OP_MemorizeSpell.deserialize(client.outbound[-1][1])
+            self.assertEqual((loaded.slot, loaded.spell_id, loaded.scribing), (0, 202, 1))
+            self.assertEqual(sheet.gems[0], 202)
+        finally:
+            casting._LEVELS = previous
+
+
+def _spell(**fields: object):
+    values = {"mana": 10, "recast": 0, "heal": False, "combat": False, "cure": None}
+    values.update(fields)
+    return type("S", (), values)()
+
+
+def _cast(client) -> OP_CastSpell:
+    payload = next(body for opcode, body in reversed(client.outbound) if opcode == "OP_CastSpell")
+    return OP_CastSpell.deserialize(payload)
 
 
 if __name__ == "__main__":

@@ -10,6 +10,28 @@ from eqclient3.structs import OP_ClientUpdate, OP_ShopDelItem
 from support import Loop, World, item_blob, names
 
 
+def test_a_bag_move_names_the_parent_and_the_cursor_stays_in_inventory():
+    from eqclient3.structs import ITEM_INVENTORY, Item, OP_CharInventory, OP_MoveItem
+
+    sent = OP_MoveItem(30, 851).serialize()
+    back = OP_MoveItem.deserialize(sent)
+    assert (back.from_slot, back.to_slot) == (30, 851)
+    assert struct.unpack_from("<hh", sent, 4) == (33, -1)
+    assert struct.unpack_from("<hh", sent, 16) == (26, 0)
+
+    packet = OP_CharInventory(
+        [
+            Item(ITEM_INVENTORY, 13, "Short Sword*", "", 9998),
+            Item(ITEM_INVENTORY, 30, "Skin of Milk", "", 9990, 20),
+        ]
+    ).serialize()
+    parsed = OP_CharInventory.deserialize(packet)
+    assert [(item.slot, item.item_id, item.name) for item in parsed.items] == [
+        (13, 9998, "Short Sword*"),
+        (30, 9990, "Skin of Milk"),
+    ]
+
+
 def test_opcodes():
     world = World()
     loop = Loop()
@@ -81,3 +103,20 @@ def test_inventory_and_client_update_queue_an_occupied_cursor():
         assert packet.queue[0].move == (30, 7)
     finally:
         assign_mod._ITEMS = saved
+
+
+def test_a_bag_write_is_stored_for_the_queue_report(tmp_path):
+    from eqclient3.journal import Journal
+    from eqclient3.scripts.journal_queue import report
+
+    journal = Journal(tmp_path / "journal-v3.sqlite")
+    world = World(name="Hero")
+    loop = Loop()
+    loop.journal = journal
+    loop.character = "Hero"
+    try:
+        items.ItemsHandler().handle("OP_CharInventory", item_blob(None, 13, 501, name="Short Sword"), world, loop)
+        lines = report(journal, "Hero")
+    finally:
+        journal.close()
+    assert "  primary: Short Sword (501)" in lines

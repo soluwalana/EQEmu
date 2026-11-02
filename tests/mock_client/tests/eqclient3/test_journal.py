@@ -28,6 +28,7 @@ TABLES = (
     "bot_settings",
     "bots",
     "sell_marks",
+    "inventory",
 )
 
 
@@ -279,3 +280,25 @@ def test_reload_restores_each_actions_own_fields(tmp_path):
     assert loaded[3].recipe.result == 8
     assert loaded[3].recipe.components == ((7, 1),)
     assert loaded[3].recipe.container == 17
+
+
+def test_inventory_round_trip_prints_on_the_queue(tmp_path):
+    from eqclient3.journal import InventorySlot
+    from eqclient3.scripts.journal_queue import report
+
+    journal = Journal(tmp_path / "journal-v3.sqlite")
+    try:
+        journal.replace_inventory(
+            "Hero",
+            [
+                InventorySlot(13, 501, "Short Sword", 1),
+                InventorySlot(22, 13040, "Bread Cakes", 19),
+            ],
+        )
+        journal.replace_inventory("Hero", [InventorySlot(13, 501, "Short Sword", 1)])
+        lines = report(journal, "Hero")
+    finally:
+        journal.close()
+    assert "inventory 1" in lines
+    assert "  primary: Short Sword (501)" in lines
+    assert "Bread Cakes" not in "\n".join(lines)

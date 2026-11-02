@@ -101,6 +101,8 @@ def test_opcodes():
     assert hole.queue == [] and hole.sent == []
     assert hole.session.transfers == 1
 
+    from eqclient3.structs import OP_ClientReady
+
     entered = World(ground={"drop": 1})
     formed = Loop()
     zoning.ZoningHandler().handle("OP_NewZone", new_zone("qeynos", 3, 4, 5, zone_id=1), entered, formed)
@@ -108,25 +110,65 @@ def test_opcodes():
     assert entered.safe == (3.0, 4.0, 5.0)
     assert entered.zone_id == 1
     assert entered.ground == {}
+    assert names(formed) == []
+    zoning.ZoningHandler().handle("OP_NewZone", new_zone("qeynos", 3, 4, 5, zone_id=1), entered, formed)
+    assert names(formed) == []
+    zoning.ZoningHandler().handle("OP_ClientReady", OP_ClientReady(), entered, formed)
     assert names(formed) == ["Form"]
     assert formed.queue[0].priority == 290
     assert formed.queue[0].source == "form:qeynos"
-    zoning.ZoningHandler().handle("OP_NewZone", new_zone("qeynos", 3, 4, 5, zone_id=1), entered, formed)
+    zoning.ZoningHandler().handle("OP_ClientReady", OP_ClientReady(), entered, formed)
     assert sources(formed) == ["form:qeynos"]
 
     tutorial = World()
     reading = Loop()
     reading.journal = _Journal(done=False)
     zoning.ZoningHandler().handle("OP_NewZone", new_zone("tutorialb", 1, 2, 3), tutorial, reading)
+    assert names(reading) == ["ReadTasks"]
+    zoning.ZoningHandler().handle("OP_ClientReady", OP_ClientReady(), tutorial, reading)
     assert names(reading) == ["ReadTasks", "Form"]
     assert reading.queue[0].source == "read_tasks:tutorialb"
     assert reading.queue[1].source == "form:tutorialb"
+    assert reading.queue[1].priority == -1
+
+    back = World()
+    back.tutorial_started = True
+    returned = Loop()
+    returned.journal = _Journal(done=False)
+    zoning.ZoningHandler().handle("OP_NewZone", new_zone("tutorialb", 1, 2, 3), back, returned)
+    zoning.ZoningHandler().handle("OP_ClientReady", OP_ClientReady(), back, returned)
+    formed = next(action for action in returned.queue if action.source == "form:tutorialb")
+    assert formed.priority == 290
 
     skipped = Loop()
     skipped.journal = _Journal(done=True)
-    zoning.ZoningHandler().handle("OP_NewZone", new_zone("tutorialb", 1, 2, 3), World(name="Hero"), skipped)
+    finished = World(name="Hero")
+    zoning.ZoningHandler().handle("OP_NewZone", new_zone("tutorialb", 1, 2, 3), finished, skipped)
+    zoning.ZoningHandler().handle("OP_ClientReady", OP_ClientReady(), finished, skipped)
     assert names(skipped) == ["Form"]
     assert skipped.queue[0].source == "form:tutorialb"
+
+
+def test_a_same_zone_ready_does_not_form_again_and_a_rezone_does():
+    from eqclient3.actions.death import Death
+    from eqclient3.structs import OP_ClientReady
+
+    world = World(zone="qeynos", zone_id=1)
+    loop = Loop()
+    handler = zoning.ZoningHandler()
+    handler.handle("OP_NewZone", new_zone("qeynos", 3, 4, 5, zone_id=1), world, loop)
+    handler.handle("OP_ClientReady", OP_ClientReady(), world, loop)
+    assert sources(loop) == ["form:qeynos"]
+    loop.queue.clear()
+    handler.handle("OP_NewZone", new_zone("qeynos", 3, 4, 5, zone_id=1), world, loop)
+    handler.handle("OP_ClientReady", OP_ClientReady(), world, loop)
+    assert names(loop) == []
+    Death().step(loop, world)
+    assert sources(loop) == ["form:qeynos"]
+    loop.queue.clear()
+    handler.handle("OP_NewZone", new_zone("freportw", 1, 2, 3, zone_id=9), world, loop)
+    handler.handle("OP_ClientReady", OP_ClientReady(), world, loop)
+    assert sources(loop) == ["form:freportw"]
 
 
 def test_a_finished_form_is_queued_again_on_the_next_login(tmp_path):
@@ -134,6 +176,7 @@ def test_a_finished_form_is_queued_again_on_the_next_login(tmp_path):
     from eqclient3.journal import Journal
     from eqclient3.loop import Loop as PlayLoop
     from eqclient3.schedule import Schedule
+    from eqclient3.structs import OP_ClientReady
     from eqclient3.world import World as Sheet
 
     journal = Journal(tmp_path / "journal-v3.sqlite", character="Hero")
@@ -151,6 +194,7 @@ def test_a_finished_form_is_queued_again_on_the_next_login(tmp_path):
         loop.world = world
         queue.bind(journal, "Hero")
         zoning.ZoningHandler().handle("OP_NewZone", new_zone("tutorialb", 1, 2, 3), world, loop)
+        zoning.ZoningHandler().handle("OP_ClientReady", OP_ClientReady(), world, loop)
         assert [action.source for action in queue if type(action).__name__ == "Form"] == ["form:tutorialb"]
         assert journal.is_resolved("Hero", "form:tutorialb") is False
     finally:

@@ -327,14 +327,15 @@ def test_tutorial_zone_in_reads_tasks_and_an_empty_queue_does_not_finish(tmp_pat
     tape = _Tape()
     bus = Bus.Bus(autoload=True)
     tape.inbox.append(("OP_NewZone", _new_zone("tutorialb")))
+    tape.inbox.append(("OP_ClientReady", b""))
     tape.inbox.append(("OP_TaskSelectWindow", _task_window()))
     loop.run_once(tape, world, queue, bus)
     assert "ReadTasks" in _kinds(queue)
     assert any(type(action).__name__ == "Form" for action in queue)
     assert journal.is_resolved(NAME, "form:tutorialb") is False
     loop.run_once(tape, world, queue, bus)
-    assert not any(type(action).__name__ == "Talk" for action in queue)
     assert any(type(action).__name__ == "Kill" and str(action.source).startswith("task:") for action in queue)
+    assert not any(type(action).__name__ == "Talk" and str(action.source).startswith("task:") for action in queue)
 
     tape.inbox.append(
         (
@@ -354,6 +355,7 @@ def test_tutorial_zone_in_reads_tasks_and_an_empty_queue_does_not_finish(tmp_pat
     assert list(queue) == []
     queue.restore(reading)
     tape.inbox.append(("OP_NewZone", _new_zone("qeynos")))
+    tape.inbox.append(("OP_ClientReady", b""))
     loop.run_once(tape, world, queue, bus)
     assert any(type(action).__name__ == "Form" and action.source == "form:qeynos" for action in queue)
     for action in list(queue):

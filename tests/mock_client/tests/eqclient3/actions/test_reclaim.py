@@ -88,6 +88,19 @@ class ReclaimTest(unittest.TestCase):
         self.assertIn("OP_CorpseDrag", opcodes(client))
         self.assertFalse(action.complete)
 
+    def test_corpse_not_found_completes(self):
+        client, sheet = fresh()
+        movement().distance = 20
+        action = Reclaim(7, (10.0, 0.0, 0.0))
+        action.dragged = True
+        action.requested = True
+        action.waiting = ["LOOT"]
+        inbox(action, "OP_SpecialMesg", {"text": "Error: OP_LootRequest: Corpse not found (ent = 0)"})
+        inbox(action, "OP_MoneyOnCorpse", bytes([2]))
+        action.step(client, sheet)
+        self.assertTrue(action.complete)
+        self.assertNotIn("OP_LootRequest", opcodes(client))
+
     def test_too_far_clears_requested(self):
         client, sheet = fresh()
         movement().distance = 120

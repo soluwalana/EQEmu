@@ -7,7 +7,7 @@ step itself is stepped once in that same pulse. send queues until after the step
 from __future__ import annotations
 
 import re
-from typing import TYPE_CHECKING, Protocol, runtime_checkable
+from typing import TYPE_CHECKING, Literal, Protocol, runtime_checkable
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -15,9 +15,10 @@ if TYPE_CHECKING:
     from eqclient3.bus import Bus
     from eqclient3.schedule import Schedule
 
-from .actions.support import character_name
+from .actions.support import CURSOR_SLOT, character_name
 from .inventory.item_stats import ItemBook, ensure_items
 from .net.sheet import Character as Creation
+from .capture import Capture, open_capture
 from .journal import Journal
 from .log import log
 from .trace import note_opcode
@@ -28,8 +29,25 @@ from .net.session import Session, SessionError
 
 PULSE = 0.1
 _HEARD = ("OP_ChannelMessage", "OP_SpecialMesg", "OP_SimpleMessage")
-_FETCH_ID = re.compile(r"fetch:(\d+)")
+# Item ids live behind these keys. Slot numbers in cursor:30:7 are not item ids.
+_ITEM_KEY = re.compile(r"(?:fetch|trade|sell|camp):(\d+(?:,\d+)*)|item=(\d+)|distribute:[^:#\s]+:(\d+)")
 _book: ItemBook | None = None
+
+
+@runtime_checkable
+class _OneItem(Protocol):
+    item: int
+
+
+@runtime_checkable
+class _ManyItems(Protocol):
+    item_ids: list[int]
+
+
+@runtime_checkable
+class _SlotMove(Protocol):
+    move: tuple[int, int] | None
+    slot: int
 
 
 def _hear_waiting(queue: Schedule, loop: Loop, world: World) -> None:
@@ -81,6 +99,7 @@ class Loop:
         self.world: World | None = None
         self.session: Client | Session | ScriptedSession | None = None
         self.journal: Journal | None = None
+        self.capture: Capture | None = None
         self.character: str = ""
         self.tick: int = 0
         self.sent_count: int = 0
@@ -91,6 +110,7 @@ class Loop:
         self.action: Action | None = None
         self.current: Action | None = None
         self.head: Action | None = None
+        self._status: str = ""
         self.produce: object | None = None
         self.assign: object | None = None
         self._transferred = False
@@ -131,6 +151,7 @@ class Loop:
         bus.world = world
         for opcode, payload in _incoming(session):
             self.recv_count += 1
+            self._capture("recv", opcode, payload)
             bus.publish(opcode, payload)
         _hear_waiting(queue, self, world)
         winner = queue.head()
@@ -140,6 +161,7 @@ class Loop:
             return None
         self._note(winner)
         self._step(winner, world)
+        self._note(winner)
         if winner.yielding:
             if winner.completed:
                 self._drop(winner)
@@ -156,6 +178,7 @@ class Loop:
             winner.suspend()
             self._note(nxt)
             self._step(nxt, world)
+            self._note(nxt)
             if nxt.completed:
                 self._drop(nxt)
             elif nxt.yielding:
@@ -180,6 +203,8 @@ class Loop:
         self.queue = queue
         self.character = _character_name(sheet)
         self.journal = journal or Journal(character=self.character)
+        if self.capture is None:
+            self.capture = open_capture(self.character)
         queue.bind(self.journal, self.character)
         if self.character:
             for action in self.journal.load_actions(self.character):
@@ -204,14 +229,19 @@ class Loop:
         return net.enter(session, creation)
 
     def _note(self, action: Action | None) -> None:
-        """Remember the action this pulse is stepping, and log when it changes."""
-        if action is self.active:
+        """Remember the action this pulse is stepping, and log when it changes.
+
+        A change is a different action, or the same action moving to a new wait.
+        """
+        label = _action_label(action, self.world)
+        if action is self.active and label == self._status:
             return
-        previous = self.active
+        previous = self._status or _action_label(self.active, self.world)
         self.active = action
         self.current = action
         self.head = action
-        log.info("action %s -> %s", _action_label(previous), _action_label(action))
+        self._status = label
+        log.info("action %s -> %s", previous, label)
 
     def _step(self, action: Action, world: World) -> None:
         action.yielding = False
@@ -231,6 +261,21 @@ class Loop:
         self._hold(world)
         self._flush(session)
         self._report(world)
+        if self.capture is not None:
+            self.capture.commit()
+
+    def close_capture(self) -> None:
+        capture = self.capture
+        if capture is None:
+            return
+        capture.close()
+        self.capture = None
+
+    def _capture(self, direction: Literal["send", "recv"], opcode: str, payload: object) -> None:
+        capture = self.capture
+        if capture is None:
+            return
+        capture.record(direction, opcode, payload)
 
     def _hold(self, world: World) -> None:
         """One hold update after the step, unless this pulse already advanced.
@@ -251,6 +296,7 @@ class Loop:
             try:
                 note_opcode(opcode, payload, True)
                 _send(session, opcode, payload)
+                self._capture("send", opcode, payload)
             except SessionError:
                 point = _position(self.world)
                 log.info(
@@ -273,15 +319,16 @@ class Loop:
             return
         point = _position(world)
         log.info(
-            "cycle %s %s waiting=%s pos (%.1f, %.1f, %.1f) sent=%s recv=%s",
+            "cycle %s %s waiting=%s pos (%.1f, %.1f, %.1f) sent=%s recv=%s%s",
             self.tick,
-            _action_name(self.active),
+            _action_name(self.active, world),
             _wait_list(self.active),
             point[0],
             point[1],
             point[2],
             self.sent_count,
             self.recv_count,
+            _target_note(self.active, world),
         )
 
     def _transfer_once(self, session: Client | Session | ScriptedSession) -> None:
@@ -327,41 +374,108 @@ def _wait_list(action: Action | None) -> str:
     return "[" + action.wait_label() + "]"
 
 
-def _action_name(action: Action | None) -> str:
+def _action_name(action: Action | None, world: World | None = None) -> str:
     if action is None:
         return "idle"
     kind = type(action).__name__
     source = action.source
     base = kind if not source else f"{kind} {source}"
-    named = _item_suffix(action)
+    named = _item_suffix(action, world)
     return base if not named else f"{base} {named}"
 
 
-def _item_suffix(action: Action) -> str:
-    """Cache name and item number for each item this action is working on."""
+def _target_note(action: Action | None, world: World) -> str:
+    """Distance and hit points for the spawn an Attack is standing on."""
+    if action is None or type(action).__name__ != "Attack":
+        return ""
+    spawn = int(action.spawn_id or 0)
+    mob = world.mobs.get(spawn)
+    if mob is None:
+        return f" target={spawn} missing"
+    return f" target={mob.spoken_name()} d={mob.distance:.0f} hp={mob.hp}"
+
+
+def _item_suffix(action: Action, world: World | None = None) -> str:
+    """Cache name and item number for each item this action is working on.
+
+    A cursor line also names the item sitting on each slot of the move.
+    """
     parts: list[str] = []
     book: ItemBook | None = None
+    source = action.source or ""
     for item_id in _item_ids(action):
         if book is None:
             book = _item_book()
-        row = book.get(item_id)
-        name = row.name if row else ""
-        if name:
-            parts.append(f"{name} ({item_id})")
-        elif f":{item_id}" not in (action.source or ""):
-            parts.append(f"({item_id})")
-    return " ".join(parts)
+        parts.append(_named_item(book, item_id, source))
+    for slot, item_id in _slot_items(action, world):
+        if book is None:
+            book = _item_book()
+        parts.append(f"slot {slot} {_named_item(book, item_id, '')}")
+    return " ".join(part for part in parts if part)
+
+
+def _named_item(book: ItemBook, item_id: int, source: str) -> str:
+    row = book.get(item_id)
+    name = row.name if row else ""
+    if name:
+        return f"{name} ({item_id})"
+    if f":{item_id}" in source or f"={item_id}" in source:
+        return ""
+    return f"({item_id})"
 
 
 def _item_ids(action: Action) -> list[int]:
     found: list[int] = []
     if action.item_id:
         found.append(action.item_id)
-    for match in _FETCH_ID.finditer(action.source or ""):
-        item_id = int(match.group(1))
-        if item_id not in found:
-            found.append(item_id)
+    if isinstance(action, _OneItem) and action.item and action.item not in found:
+        found.append(action.item)
+    if isinstance(action, _ManyItems):
+        for item_id in action.item_ids:
+            if item_id and item_id not in found:
+                found.append(item_id)
+    for match in _ITEM_KEY.finditer(action.source or ""):
+        raw = match.group(1) or match.group(2) or match.group(3) or ""
+        for part in raw.split(","):
+            if not part.isdigit():
+                continue
+            item_id = int(part)
+            if item_id not in found:
+                found.append(item_id)
     return found
+
+
+def _slot_items(action: Action, world: World | None) -> list[tuple[int, int]]:
+    """(slot, item id) for a cursor move. An empty slot is omitted."""
+    if world is None or not isinstance(action, _SlotMove):
+        return []
+    found: list[tuple[int, int]] = []
+    seen: set[int] = set()
+    for slot in _move_slots(action):
+        if slot in seen:
+            continue
+        seen.add(slot)
+        item_id = _item_at(world, slot)
+        if item_id:
+            found.append((slot, item_id))
+    return found
+
+
+def _move_slots(action: _SlotMove) -> list[int]:
+    move = action.move
+    if move:
+        src = move[0]
+        dest = move[1]
+        if dest == src:
+            return [src]
+        return [src, dest]
+    return [action.slot]
+
+
+def _item_at(world: World, slot: int) -> int:
+    if slot == CURSOR_SLOT:
+        return world.cursor or 0
+    return world.bags.get(slot) or 0
 
 
 def _item_book() -> ItemBook:
@@ -371,8 +485,8 @@ def _item_book() -> ItemBook:
     return _book
 
 
-def _action_label(action: Action | None) -> str:
-    label = _action_name(action)
+def _action_label(action: Action | None, world: World | None = None) -> str:
+    label = _action_name(action, world)
     if action is not None and action.waiting:
         label = f"{label} wait={action.wait_label()}"
     return label

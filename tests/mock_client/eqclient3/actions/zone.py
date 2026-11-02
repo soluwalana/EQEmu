@@ -45,7 +45,10 @@ class Zone(Action):
         if not session_open(loop):
             return
         if hold_for_level(self, loop, world, self.destination):
+            # The grind has to be able to win the band. 400 would step this forever.
+            self.priority = 0
             return
+        self.priority = 400
         point = world.position
         loop.send(
             "OP_ZoneChange",

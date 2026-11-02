@@ -9,6 +9,8 @@ import math
 from dataclasses import dataclass
 from typing import Literal
 
+from eqclient3.actions.shop import ShopOffer
+
 from eqclient3.struct_helpers import eq_heading
 from .log import log
 
@@ -267,6 +269,8 @@ class World:
         self.factions: dict[int, Faction] = {}
         self.zone = zone
         self.zone_id = zone_id
+        self.form_return: bool | None = None
+        self.formed_for: str = ""
         self.home_zone_id = 0
         self.safe: tuple[float, float, float] | None = None
         self._x = float(x)
@@ -289,6 +293,7 @@ class World:
         self.pending_corpse: int = 0
         self.pending_where: tuple[float, float, float] | None = None
         self.fought: set[int] = set()
+        self.unreachable: set[int] = set()
         self.spell_book: dict = {}
         self.spell_info: dict = {}
         self.spell_names: dict = {}
@@ -307,6 +312,7 @@ class World:
         self.trainer_point: tuple[float, float, float] | None = None
         self.train_skill = 0
         self.empty_slots: int | None = None
+        self.later_shops: dict[int, ShopOffer] = {}
         self.zone_names: dict = {}
         self.faction_names: dict = {}
         self.faction_quests: list = []
@@ -321,6 +327,7 @@ class World:
         self.rezz_payload = None
         self.rest_mana = False
         self.cursor_move: tuple[int, int] | None = None
+        self.refused_slots: set[int] = set()
         self.pending_swap = None
         self.quest_items: set = set()
         self.station = None
@@ -651,6 +658,11 @@ class World:
         """This spawn attacked us, or we attacked it. Loot uses the set."""
         if spawn_id:
             self.fought.add(spawn_id)
+
+    def skip_spawn(self, spawn_id: int) -> None:
+        """A path that never closed. Kill and camp hunts leave this spawn alone."""
+        if spawn_id:
+            self.unreachable.add(int(spawn_id))
 
     def measure(self, mob: Mob) -> None:
         """Refresh distance (3D yards) and direction (0-512 heading from us to the mob)."""

@@ -20,12 +20,17 @@ Triangle = tuple[tuple[float, float, float], tuple[float, float, float], tuple[f
 Point = tuple[float, float, float]
 
 
+_RAY_CELL = 8.0
+_RAY_CACHE = 4096
+
+
 @dataclass
 class ZoneMap:
     triangles: list[Triangle]
     _grid: dict[tuple[int, int], list[int]] = field(default_factory=dict)
     _wide: list[int] = field(default_factory=list)
     _indexed: bool = False
+    _rays: dict[tuple[int, int, int, int, int, int], bool] = field(default_factory=dict)
 
     def clear(
         self,
@@ -40,7 +45,12 @@ class ZoneMap:
         Direct center-to-center first; if that clips geometry, try evenly spaced
         heading offsets around the watcher and around the target so a thin wall
         or corner does not hide an otherwise visible NPC.
+
+        A single heading is the sweep used every pulse. That result is cached
+        by cell. The heading peeks stay uncached so a targeted shot is exact.
         """
+        if headings <= 1 or peek <= 0:
+            return self._one_ray(start, end)
         if self._ray_clear(start, end):
             return True
         n = max(1, int(headings))
@@ -77,6 +87,17 @@ class ZoneMap:
         if below is not None:
             return below
         return above
+
+    def _one_ray(self, start: tuple[float, float, float], end: tuple[float, float, float]) -> bool:
+        key = _ray_key(start, end)
+        found = self._rays.get(key)
+        if found is not None:
+            return found
+        result = self._ray_clear(start, end)
+        if len(self._rays) >= _RAY_CACHE:
+            self._rays.clear()
+        self._rays[key] = result
+        return result
 
     def _ray_clear(self, start: tuple[float, float, float], end: tuple[float, float, float]) -> bool:
         """True when no collidable triangle sits between the two eye points."""
@@ -134,6 +155,18 @@ class ZoneMap:
 
 
 _LOADED: dict[str, ZoneMap | None] = {}
+
+
+def _ray_key(start: tuple[float, float, float], end: tuple[float, float, float]) -> tuple[int, int, int, int, int, int]:
+    cell = _RAY_CELL
+    return (
+        int(start[0] // cell),
+        int(start[1] // cell),
+        int(start[2] // cell),
+        int(end[0] // cell),
+        int(end[1] // cell),
+        int(end[2] // cell),
+    )
 
 
 def load_map(zone: str) -> ZoneMap | None:

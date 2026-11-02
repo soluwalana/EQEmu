@@ -6,6 +6,7 @@ members counts the player. The player's group is warrior, cleric, mage, wizard, 
 from __future__ import annotations
 
 import os
+import re
 from enum import Enum
 from typing import TYPE_CHECKING
 
@@ -14,8 +15,9 @@ if TYPE_CHECKING:
     from eqclient3.world import World
 
 from eqclient3.action import Action
+from eqclient3.log import log
 from eqclient3.actions.support import character_name, message_text, send_command
-from eqclient3.handlers.common import mob_named
+from eqclient3.handlers.common import enqueue_once, mob_named
 from eqclient3.structs import OP_GroupInvite, OP_TargetMouse
 from eqclient3.world import Bot
 
@@ -74,6 +76,8 @@ class _Reply(Enum):
     CREATED = 4
     SKIP = 5
     STOP = 6
+    FOLLOWED = 7
+    ABSENT = 8
 
 
 _READY = (
@@ -110,6 +114,15 @@ class Form(Action):
         self.spawned: list[str] = []
         self.pending = ""
         self._retitles: dict[int, int] = {}
+        self.retried: set[str] = set()
+        self.follow_tries = 0
+
+    def __setstate__(self, state: dict[str, object]) -> None:
+        self.__dict__.update(state)
+        if "retried" not in self.__dict__:
+            self.retried = set()
+        if "follow_tries" not in self.__dict__:
+            self.follow_tries = 0
 
     def opcodes(self) -> tuple[str, ...]:
         return ("OP_ChannelMessage", "OP_SpecialMesg", "OP_SimpleMessage")
@@ -124,9 +137,27 @@ class Form(Action):
         if self.pending:
             reply = self._take_reply()
             if not reply:
+                self.waited += 1
+                if self.waited < 80:
+                    return
+                self.waited = 0
+                self.count += 1
+                log.info("bot command unanswered: %s", self.pending)
+                self.pending = ""
+                if self.count < 3:
+                    return
+                self.count = 0
+                self.index += 1
+                self.phase = "spawn"
                 return
+            self.waited = 0
+            self.count = 0
             self._apply(loop, world, reply)
             self.pending = ""
+        if self.phase == "invite" and self.index >= len(self.spawned):
+            if self._hold_for_group(loop, world):
+                return
+            self.phase = "follow"
         command = self._poll()
         if command is None:
             self.complete = True
@@ -135,7 +166,7 @@ class Form(Action):
             self._invite(loop, world, command.split(" ", 1)[1])
             return
         send_command(loop, command)
-        if command.startswith("^botspawn") or command.startswith("^botcreate"):
+        if command.startswith("^botspawn") or command.startswith("^botcreate") or command.startswith("^follow"):
             self.pending = command
 
     def _fill(self, loop: Loop, world: World) -> None:
@@ -163,8 +194,7 @@ class Form(Action):
             return f"^botcreate {name} {class_id} {_race(class_id)} {_MALE}"
         if self.phase == "invite":
             if self.index >= len(self.spawned):
-                self.phase = "follow"
-                return self._poll()
+                return None
             name = self.spawned[self.index]
             self.index += 1
             return f"groupinvite {name}"
@@ -186,6 +216,21 @@ class Form(Action):
 
     def _apply(self, loop: Loop, world: World, reply: str) -> None:
         kind = _reply(self.pending, reply)
+        if kind is _Reply.ABSENT:
+            self.phase = "invite"
+            self.index = len(self.spawned)
+            self.waited = 0
+            return
+        if kind is _Reply.FOLLOWED:
+            count = _follow_count(reply)
+            if count is not None and count < len(self.spawned) and self.follow_tries < 2:
+                self.follow_tries += 1
+                self.phase = "invite"
+                self.index = len(self.spawned)
+                self.waited = 10
+                return
+            self.phase = "done"
+            return
         name = self.roster[self.index][0]
         if kind is _Reply.MISSING:
             self.phase = "create"
@@ -210,6 +255,7 @@ class Form(Action):
         if kind is _Reply.STOP:
             self.phase = "invite"
             self.index = 0
+            return
 
     def _retitle(self, name: str) -> None:
         """The server rejected this name. Pick another and create that one."""
@@ -245,6 +291,25 @@ class Form(Action):
                 return
         world.bots.roster.append(Bot(name, class_id, alive=True))
 
+    def _hold_for_group(self, loop: Loop, world: World) -> bool:
+        """The last invite is still in flight when follow runs. Wait, then invite whoever is still out."""
+        missing = _absent(self.spawned, world.group.members)
+        if world.group.members and not missing:
+            self.waited = 0
+            return False
+        if self.waited < 10:
+            self.waited += 1
+            return True
+        if missing:
+            name = missing[0]
+            if name.lower() not in self.retried:
+                self.retried.add(name.lower())
+                self.waited = 0
+                self._invite(loop, world, name)
+                return True
+        self.waited = 0
+        return False
+
     def _invite(self, loop: Loop, world: World, name: str) -> None:
         who = character_name(loop, world)
         mob = mob_named(world, name)
@@ -271,6 +336,28 @@ def party_members() -> int:
     if size > cap:
         return cap
     return size
+
+
+def queue_form(loop: Loop, world: World) -> None:
+    """Form on login, a real rezone, and death.
+
+    OP_ClientReady also arrives with a same-zone weather refresh. formed_for
+    keeps that refresh from building the party again.
+    """
+    short = str(world.zone or "")
+    key = short.lower()
+    if not key or world.formed_for == key:
+        return
+    world.formed_for = key
+    source = f"form:{short}"
+    journal = loop.journal
+    who = character_name(loop, world)
+    if journal is not None and who:
+        journal.clear_source(who, source)
+    form = Form(short, party_members())
+    if key == "tutorialb" and not world.form_return:
+        form.priority = -1
+    enqueue_once(loop, world, form, source)
 
 
 def _party(character: str, members: int, saved: list[tuple[str, int]]) -> list[tuple[str, int]]:
@@ -407,7 +494,26 @@ def _reply(pending: str, text: str) -> _Reply | None:
         return _Reply.SKIP
     if (spawning or creating) and (_limited(lowered) or _has(lowered, _BAD_SPAWN if spawning else _BAD_CREATE)):
         return _Reply.STOP
+    if pending.startswith("^follow") and "no spawned bots" in lowered:
+        return _Reply.ABSENT
+    if pending.startswith("^follow") and "of your bots are following" in lowered:
+        return _Reply.FOLLOWED
     return None
+
+
+def _absent(spawned: list[str], members: list[str]) -> list[str]:
+    """Spawned bots the group roster does not list. An empty roster has not arrived yet."""
+    seated = {name.lower() for name in members}
+    if not seated:
+        return []
+    return [name for name in spawned if name.lower() not in seated]
+
+
+def _follow_count(text: str) -> int | None:
+    match = re.search(r"(\d+) of your bots are following", text or "", re.IGNORECASE)
+    if match is None:
+        return None
+    return int(match.group(1))
 
 
 def _has(text: str, phrases: tuple[str, ...]) -> bool:

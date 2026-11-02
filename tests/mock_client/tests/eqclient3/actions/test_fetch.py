@@ -77,7 +77,7 @@ class FetchTest(unittest.TestCase):
     def test_gold_fetch_kills_at_an_open_camp_until_the_coin_is_held(self):
         self.sheet.zone = "freportw"
         self.sheet.level = 2
-        action = Fetch(0, 1, "gold", gold=500)
+        action = Fetch(0, 1, "gold", copper=500)
         action.step(self.client, self.sheet)
         self.assertFalse(action.complete)
         kills = [row for row in self.client.queue if type(row).__name__ == "Kill"]
@@ -92,7 +92,7 @@ class FetchTest(unittest.TestCase):
         self.sheet.zone = "qeynos"
         self.sheet.level = 2
         self.sheet.plans = {50: SimpleNamespace(merchant=SimpleNamespace(npc=8, zone="qeynos"))}
-        action = Fetch(50, 1, "gear 50", gold=500)
+        action = Fetch(50, 1, "gear 50", copper=500)
         action.step(self.client, self.sheet)
         self.assertNotIn("Trade", kinds(self.client))
         self.assertIn("Kill", kinds(self.client))
@@ -104,7 +104,7 @@ class FetchTest(unittest.TestCase):
         self.sheet.zone = "tutorialb"
         self.sheet.level = 1
         self.sheet.plans = {2010: FetchPlan(vendor_zone="poknowledge")}
-        gear = Fetch(2010, 1, "gear 2010", gold=1800)
+        gear = Fetch(2010, 1, "gear 2010", copper=1800)
         gear.source = "fetch:2010"
         self.client.queue.append(gear, self.sheet, self.client.journal, "Hero")
         exit_zone = Zone("poknowledge")
@@ -131,6 +131,36 @@ class FetchTest(unittest.TestCase):
         self.assertNotIn(zone, list(self.client.queue))
         self.assertFalse(self.client.journal.is_resolved("Hero", zone.source))
         self.assertEqual(self.client.outbound, [])
+
+    def test_gear_walks_to_its_merchant(self):
+        from harness import mob
+
+        from eqclient3.actions import fetch as fetch_mod
+        from eqclient3.data.merchants import MerchantBook
+
+        book = MerchantBook()
+        book.by_item[50] = {"cost": 500, "npcs": [8]}
+        book.by_npc[8] = {"zone": 1, "where": "qeynos", "name": "Smythe"}
+        book.index()
+        saved = (fetch_mod._book, fetch_mod._loaded)
+        fetch_mod._book = book
+        fetch_mod._loaded = True
+        try:
+            self.sheet.zone = "ecommons"
+            self.sheet.set_coin(1, 0, 0, 0)
+            action = Fetch(50, 1, "gear 50", copper=500)
+            action.source = "fetch:50"
+            action.step(self.client, self.sheet)
+            trips = [row for row in self.client.queue if type(row).__name__ == "Travel"]
+            self.assertEqual([row.destination for row in trips], ["qeynos"])
+            self.assertEqual(action.priority, 0)
+            self.sheet.zone = "qeynos"
+            mob(self.sheet, 12, name="Smythe")
+            action.step(self.client, self.sheet)
+            trades = [row for row in self.client.queue if type(row).__name__ == "Trade"]
+            self.assertEqual([row.partner for row in trades], [12])
+        finally:
+            fetch_mod._book, fetch_mod._loaded = saved
 
 
 if __name__ == "__main__":

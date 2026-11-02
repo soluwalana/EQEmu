@@ -1,7 +1,8 @@
 """One line per bus opcode, and one line per handler that runs for it.
 
-The live client appends to ~/.eqclient/bus-v3.log. EQEMU_BUS_LOG overrides the
-path. EQEMU_BUS_LOG=off leaves the file alone.
+The live client appends to ~/.eqclient/logs/<character>/bus.log. EQEMU_BUS_LOG
+overrides the path. EQEMU_BUS_LOG=off leaves the file alone. With no character
+name the line still goes to ~/.eqclient/bus-v3.log.
 """
 
 from __future__ import annotations
@@ -23,7 +24,10 @@ def _destination() -> str | None:
         return raw
     if os.environ.get("PYTEST_CURRENT_TEST"):
         return None
-    return str(Path.home() / ".eqclient" / "bus-v3.log")
+    name = os.environ.get("EQEMU_CHAR", "").strip()
+    if not name:
+        return str(Path.home() / ".eqclient" / "bus-v3.log")
+    return str(Path.home() / ".eqclient" / "logs" / name / "bus.log")
 
 
 def _file() -> TextIO | None:

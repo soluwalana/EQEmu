@@ -6,12 +6,14 @@ from dataclasses import dataclass, field
 from eqclient3.structs.wire import (
     EQStruct,
     _advance,
+    _client_slot,
     _cstring,
     _from_rof2_slot,
     _i16,
     _i32,
     _need,
     _pack_inventory_slot,
+    _pack_typed_slot,
     _pack_names,
     _put_cstr,
     _read_u32,
@@ -20,6 +22,9 @@ from eqclient3.structs.wire import (
     _u32,
     _unpack_inventory_slot,
 )
+
+# common/patches/rof2_structs.h:4977 ItemQuaternaryBodyStruct, packed.
+_QUATERNARY = 171
 
 ITEM_MERCHANT = 0x64
 ITEM_LOOT = 0x66
@@ -75,7 +80,7 @@ def _pack_item_body(item: Item) -> bytes:
     secondary[69] = item.bag_slots & 0xFF
     secondary[70] = item.bag_size & 0xFF
     effects = b""
-    for index in range(5):
+    for index in range(6):
         effect = item.scroll_effect if index == 4 else 0
         # common/patches/rof2_structs.h:4934 ClickEffectStruct
         effect_bytes = struct.pack("<i", _i32(effect))
@@ -97,11 +102,13 @@ def _pack_item_body(item: Item) -> bytes:
         + _put_cstr("")
         + b"\x00" * 76
         + effects
+        + bytes(_QUATERNARY)
+        + struct.pack("<I", 0)
     )
 
 
-def _read_item(data: bytes, offset: int, kind: int) -> tuple[Item, int]:
-    """One RoF2 serialized item. kind is the OP_ItemPacket type, or inventory."""
+def _read_item(data: bytes, offset: int, kind: int) -> tuple[list[Item], int]:
+    """One RoF2 serialized item and the items packed inside it."""
     offset = _advance(data, offset, 77, "item")
     base = offset - 77
     stack, _unknown, slot_type, main_slot, _sub, _aug, price = struct.unpack_from("<IIBhhhI", data, base + 17)
@@ -133,37 +140,43 @@ def _read_item(data: bytes, offset: int, kind: int) -> tuple[Item, int]:
     _filename, offset = _cstring(data, offset)
     offset = _advance(data, offset, 76, "item")
     scroll = 0
-    for index in range(5):
+    for index in range(6):
         offset = _advance(data, offset, 30, "item")
         if index == 4:
             scroll = struct.unpack_from("<i", data, offset - 30)[0]
         _effect_name, offset = _cstring(data, offset)
         offset = _advance(data, offset, 4, "item")
-    slot = _from_rof2_slot(int(main_slot)) if slot_type == 0 else int(main_slot)
+    offset = _advance(data, offset, _QUATERNARY, "item")
+    nested_count = _read_u32(data, offset)
+    offset += 4
+    nested: list[Item] = []
+    for _index in range(nested_count):
+        offset = _advance(data, offset, 4, "item")
+        children, offset = _read_item(data, offset, kind)
+        nested.extend(children)
+    slot = _client_slot(int(slot_type), int(main_slot), int(_sub))
     count = int(stack) if int(stack) > 0 else 1
-    return (
-        Item(
-            kind,
-            slot,
-            name,
-            id_file,
-            int(item_id),
-            count,
-            int(slots),
-            int(classes),
-            int(races),
-            int(ac),
-            int(damage),
-            int(required),
-            int(size),
-            int(bag_slots),
-            int(bag_size),
-            int(item_type),
-            int(scroll),
-            int(price),
-        ),
-        offset,
+    item = Item(
+        kind,
+        slot,
+        name,
+        id_file,
+        int(item_id),
+        count,
+        int(slots),
+        int(classes),
+        int(races),
+        int(ac),
+        int(damage),
+        int(required),
+        int(size),
+        int(bag_slots),
+        int(bag_size),
+        int(item_type),
+        int(scroll),
+        int(price),
     )
+    return ([item, *nested], offset)
 
 
 @dataclass
@@ -194,8 +207,8 @@ class Item(EQStruct):
     @classmethod
     def deserialize(cls, data: bytes) -> Item:
         _need(data, 4, "item packet")
-        item, _offset = _read_item(data, 4, _read_u32(data))
-        return item
+        found, _offset = _read_item(data, 4, _read_u32(data))
+        return found[0]
 
 
 @dataclass
@@ -217,8 +230,8 @@ class OP_CharInventory(EQStruct):
         offset = 4
         found: list[Item] = []
         for _index in range(count):
-            item, offset = _read_item(data, offset, ITEM_INVENTORY)
-            found.append(item)
+            rows, offset = _read_item(data, offset, ITEM_INVENTORY)
+            found.extend(rows)
         return cls(found)
 
 
@@ -258,11 +271,13 @@ class OP_MoveItem(EQStruct):
     from_slot: int
     to_slot: int
     count: int = 0
+    to_type: int = 0
 
     def serialize(self) -> bytes:
         # common/patches/rof2_structs.h:1826 MoveItem_Struct
         count = struct.pack("<I", self.count & 0xFFFFFFFF)
-        return _pack_inventory_slot(self.from_slot) + _pack_inventory_slot(self.to_slot) + count
+        dest = _pack_typed_slot(self.to_type, self.to_slot) if self.to_type else _pack_inventory_slot(self.to_slot)
+        return _pack_inventory_slot(self.from_slot) + dest + count
 
     @classmethod
     def deserialize(cls, data: bytes) -> OP_MoveItem:

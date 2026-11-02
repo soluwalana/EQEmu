@@ -68,6 +68,45 @@ class TalkTest(unittest.TestCase):
         self.assertTrue(action.complete)
         self.assertEqual(commands(client), ["Hail, Poxan"])
 
+    def test_a_task_hail_stays_open_until_the_book_records_it(self):
+        from eqclient3.handlers.tasks import Activity, Book
+
+        client, sheet = fresh()
+        mob(sheet, 8, distance=5, name="Poxan", targeted=True)
+        book = Book()
+        book.activities.append(Activity(1448, 6, 4, "Poxan", "", "Hail Poxan", 1, done=0))
+        sheet.tasks = book
+        action = Talk(0, "hail", " Hail Poxan and Learn about Swimming")
+        action.source = "task:1448:6"
+        action.step(client, sheet)
+        for _ in range(3):
+            action.step(client, sheet)
+        self.assertFalse(action.complete)
+        book.activities[0].done = 1
+        action.step(client, sheet)
+        self.assertTrue(action.complete)
+
+    def test_an_open_task_says_a_link_that_was_already_said(self):
+        from eqclient3.handlers.tasks import Activity, Book
+
+        client, sheet = fresh()
+        sheet.zone = "tutorialb"
+        sheet.name = "Entoen"
+        mob(sheet, 8, distance=5, name="Vahlara", targeted=True)
+        book = Book()
+        book.activities.append(Activity(1448, 2, 4, "Vahlara", "", "Hail Vahlara", 1, done=0))
+        sheet.tasks = book
+        action = Talk(8, "hail", "Hail Vahlara and Learn About Armor.")
+        action.source = "task:1448:2"
+        action.said.add("others")
+        action.sent = True
+        action.wait("HAIL")
+        link = "\x12" + ("0FFFFF" + "0" * 50) + "others\x12"
+        inbox(action, "OP_ChannelMessage", {"sender": "Vahlara", "text": f"many [{link}]"})
+        action.step(client, sheet)
+        self.assertEqual(commands(client), ["others"])
+        self.assertFalse(action.complete)
+
     def test_a_hail_names_the_target(self):
         from eqclient3.actions.talk import hail_line
 
@@ -113,7 +152,7 @@ class TalkTest(unittest.TestCase):
             _print_say(payload, "Mockvthree")
         self.assertEqual(caught.getvalue(), "> Mockvthree: Hail, Guard Rahtiz\n")
 
-    def test_find_an_item_queues_a_fetch(self):
+    def test_find_silk_hunts_the_spiders(self):
         client, sheet = fresh()
         mob(sheet, 9, distance=5, name="Vahlara", targeted=True)
         action = Talk(9, "hail", "Hail Vahlara and Learn About Armor.")
@@ -130,12 +169,85 @@ class TalkTest(unittest.TestCase):
             },
         )
         action.step(client, sheet)
-        fetches = [row for row in client.queue if type(row).__name__ == "Fetch"]
-        self.assertEqual(len(fetches), 1)
-        self.assertEqual(fetches[0].item_id, 54234)
-        self.assertEqual(fetches[0].count, 20)
-        self.assertEqual(fetches[0].source, "find:gloomingdeep silk")
+        hunts = [row for row in client.queue if type(row).__name__ == "Kill"]
+        self.assertEqual(len(hunts), 1)
+        self.assertEqual(hunts[0].camp, "Gloom Spiders")
+        self.assertEqual(hunts[0].until_item, 54234)
+        self.assertEqual(hunts[0].until_count, 1)
+        self.assertEqual(hunts[0].source, "find:gloomingdeep silk")
+        self.assertEqual(hunts[0].priority, -1)
+        self.assertFalse(any(type(row).__name__ == "Fetch" for row in client.queue))
         self.assertEqual(commands(client), ["Hail, Vahlara"])
+
+    def test_an_open_silk_hunt_is_given_the_turn(self):
+        from eqclient3.actions.kill import Kill
+
+        client, sheet = fresh()
+        mob(sheet, 9, distance=5, name="Vahlara", targeted=True)
+        hunt = Kill(camp="Gloom Spiders")
+        hunt.source = "find:gloomingdeep silk"
+        client.queue.append(hunt, sheet, client.journal, client.character)
+        action = Talk(9, "hail", "Hail Vahlara and Learn About Armor.")
+        action.source = "task:1448:2"
+        action.step(client, sheet)
+        inbox(
+            action,
+            "OP_SimpleMessage",
+            {
+                "string_id": 1032,
+                "texts": (
+                    "Vahlara",
+                    "If you can find any gloomingdeep silk, bring it to me and I can make more bandages.",
+                ),
+            },
+        )
+        action.step(client, sheet)
+        self.assertTrue(action.yielding)
+        self.assertEqual(action.priority, -2)
+        self.assertEqual(
+            [row.source for row in client.queue if type(row).__name__ == "Kill"],
+            ["find:gloomingdeep silk"],
+        )
+
+    def test_silk_already_held_is_handed_to_vahlara(self):
+        client, sheet = fresh()
+        mob(sheet, 9, distance=5, name="Vahlara", targeted=True)
+        sheet.bags[22] = 54234
+        action = Talk(9, "hail", "Hail Vahlara and Learn About Armor.")
+        action.step(client, sheet)
+        inbox(
+            action,
+            "OP_SimpleMessage",
+            {
+                "string_id": 1032,
+                "texts": (
+                    "Vahlara",
+                    "If you can find any gloomingdeep silk, bring it to me and I can make more bandages.",
+                ),
+            },
+        )
+        action.step(client, sheet)
+        hands = [row for row in client.queue if type(row).__name__ == "Trade"]
+        self.assertEqual(len(hands), 1)
+        self.assertEqual(hands[0].item, 54234)
+        self.assertEqual(hands[0].partner, 9)
+        self.assertFalse(any(type(row).__name__ == "Kill" for row in client.queue))
+
+    def test_a_finished_silk_hunt_hands_the_silk(self):
+        client, sheet = fresh()
+        mob(sheet, 9, distance=5, name="Vahlara", targeted=True)
+        action = Talk(9, "hail", "Hail Vahlara and Learn About Armor.")
+        action.source = "task:1448:2"
+        action.step(client, sheet)
+        action.sought = True
+        action.priority = -2
+        action.expect_reply = False
+        sheet.bags[22] = 54234
+        action.step(client, sheet)
+        hands = [row for row in client.queue if type(row).__name__ == "Trade"]
+        self.assertEqual(len(hands), 1)
+        self.assertEqual(hands[0].item, 54234)
+        self.assertEqual(action.priority, 0)
 
     def test_find_a_person_queues_a_hail(self):
         client, sheet = fresh()
@@ -300,6 +412,7 @@ class TalkTest(unittest.TestCase):
         ordered = reply_order(["review", "blessed"], {"blessed": {(1448, 5)}}, {(1448, 5)}, set())
         self.assertEqual(ordered, ["blessed", "review"])
         self.assertEqual(reply_order(["wish"], {}, set(), {"wish"}), [])
+        self.assertEqual(reply_order(["wish"], {}, set(), {"wish"}, repeat=True), ["wish"])
 
     def test_reply_is_read_while_a_target_wait_is_open(self):
         client, sheet = fresh()

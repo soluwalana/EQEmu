@@ -9,7 +9,7 @@ if TYPE_CHECKING:
     from eqclient3.world import World
 
 from eqclient3.action import Action
-from eqclient3.actions.fetch import Fetch, item_cost
+from eqclient3.actions.fetch import GEAR_BAND, Fetch, item_cost
 from eqclient3.actions.scribe import ScribeSpell
 from eqclient3.actions.support import character_name, in_tutorial, journal_of, yield_to
 from eqclient3.actions.train import Train
@@ -71,7 +71,8 @@ def queue_level_gear(loop: Loop, world: World, level: int | None = None) -> None
     for item_id in _tier(world, reached):
         if world.held(item_id) > 0:
             continue
-        fetch = Fetch(item_id, 1, f"gear {item_id}", gold=item_cost(item_id))
+        fetch = Fetch(item_id, 1, f"gear {item_id}", copper=item_cost(item_id))
+        fetch.priority = GEAR_BAND
         fetch.source = f"fetch:{item_id}"
         queue.append(fetch, world, journal, who)
 

@@ -279,11 +279,16 @@ def test_assign_skips_an_empty_pulse_and_sells_a_leftover():
         class_id=1,
         race=1,
         level=1,
-        bags={22: SimpleNamespace(item_id=4242, slots=0, classes=65535, races=65535, nodrop=255)},
+        bags={
+            7: SimpleNamespace(item_id=8, slots=128, classes=65535, races=65535, nodrop=255, ac=20),
+            22: SimpleNamespace(item_id=4242, slots=128, classes=65535, races=65535, nodrop=255, ac=1),
+            23: SimpleNamespace(item_id=59973, slots=0, classes=65535, races=65535, nodrop=255, ac=0),
+        },
         cursor=None,
         name="Mockone",
         bots=SimpleNamespace(roster=()),
         quest_items=(),
+        refused_slots=set(),
     )
     queue = Schedule()
     loop = SimpleNamespace(queue=queue, character="Mockone")
@@ -292,6 +297,7 @@ def test_assign_skips_an_empty_pulse_and_sells_a_leftover():
     assign(loop, world, applied=True)
     assert [type(action).__name__ for action in queue] == ["Sell"]
     assert queue.head().item_ids == [4242]
+    assert 59973 not in queue.head().item_ids
 
 
 def test_assign_keeps_a_quest_item_and_upgrades_the_player_without_a_distribute():
@@ -307,6 +313,7 @@ def test_assign_keeps_a_quest_item_and_upgrades_the_player_without_a_distribute(
         name="Mockone",
         bots=SimpleNamespace(roster=(("helper", 1, 10),)),
         quest_items={77},
+        refused_slots=set(),
     )
     queue = Schedule()
     loop = SimpleNamespace(queue=queue, character="Mockone")

@@ -36,7 +36,7 @@ class Rest(Action):
             return
         who = str(self.who or "")
         mine = str(world.name or "")
-        if who and mine and (who.lower() != mine.lower()) and (who != str(world.self_id)):
+        if who and who.lower() != "self" and mine and (who.lower() != mine.lower()) and (who != str(world.self_id)):
             send_command(loop, f"^sit on byname {who}")
             return
         loop.send(

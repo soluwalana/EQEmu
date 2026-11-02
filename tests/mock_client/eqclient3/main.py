@@ -146,6 +146,7 @@ def play(loop: Loop, client: Client, world: World, queue: Schedule) -> None:
     except KeyboardInterrupt:
         return
     finally:
+        loop.close_capture()
         client.close()
 
 

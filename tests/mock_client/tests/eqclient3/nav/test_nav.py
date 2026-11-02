@@ -79,6 +79,7 @@ class World:
         self.skills = {}
         self.water = None
         self.water_map = None
+        self.mesh = None
         self.active = None
         self.movement = Movement(self)
 

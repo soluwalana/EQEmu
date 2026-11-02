@@ -7,7 +7,7 @@ answer to each of those is read before the hail is finished.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Protocol, runtime_checkable
 
 if TYPE_CHECKING:
     from eqclient3.action import Message
@@ -19,6 +19,8 @@ import os
 import re
 from pathlib import Path
 from eqclient3.action import Action
+from eqclient3.log import log
+from eqclient3.nav.navmesh import load_nav
 from eqclient3.actions.attack import Attack
 from eqclient3.actions.support import (
     HAIL,
@@ -36,9 +38,17 @@ from eqclient3.actions.support import (
     yield_to,
 )
 from eqclient3.handlers.common import attack_for, character_name, mark_fight, mob_named
+from eqclient3.structs import OP_TargetMouse
+from eqclient3.inventory.item_stats import ItemBook, read_items
 from eqclient3.struct_helpers import saylink_words
 
 _HAIL_NAME = re.compile(r"hail\s+(?:the\s+)?([A-Za-z][A-Za-z\']*)", re.IGNORECASE)
+
+# spawn2 65801. The camp sits one floor above the tunnel that paths to it.
+_PADS = {
+    "guard hobart": (-574.0, -518.0, -2.67),
+    "guard rahtiz": (-110.53, -210.0, 13.75),
+}
 
 
 class Talk(Action):
@@ -68,6 +78,10 @@ class Talk(Action):
         self.sought = False
         self.heard_text = ""
         self.mark: tuple | None = None
+        self.where: tuple[float, float, float] | None = None
+        self.anchor: tuple[float, float] | None = None
+        self.still = 0
+        self.roaming = False
 
     def opcodes(self) -> tuple[str, ...]:
         return (
@@ -104,13 +118,25 @@ class Talk(Action):
         return False
 
     def step(self, loop: Loop, world: World) -> None:
-        self._bind_hail_target(world)
+        if not self.sent and self._stuck(world):
+            self.roaming = True
+            self.target_id = 0
+        if not self.roaming:
+            self._bind_hail_target(world)
+        elif self.anchor is not None and _moved(world, self.anchor) > 40:
+            self.roaming = False
+            self._bind_hail_target(world)
         self._shorter_stride()
         super().step(loop, world)
 
         if self.waiting_for("HAIL"):
             self._ensure_chain()
             self._fold(loop, world)
+            if str(self.source).startswith("task:") and _step_done(world, str(self.source)):
+                self.waited = 0
+                self.unwait("HAIL")
+                self._after_reply(loop, world)
+                return
             if self.expect_reply:
                 self.quiet += 1
                 if self.quiet < _QUIET:
@@ -120,29 +146,59 @@ class Talk(Action):
                     self.pending.clear()
             word = self._next_word(loop, world)
             if word:
+                self.waited = 0
                 self._speak_link(loop, world, word)
                 return
             if self._offer_find(loop, world):
                 return
-            if not self.task_text_satisfied():
+            if str(self.source).startswith("task:") and not _step_done(world, str(self.source)):
+                self.waited += 1
+                if self.waited < _STALL:
+                    return
+                self.waited = 0
+                self.sent = False
+                self.unwait("HAIL")
                 return
+            if not self.task_text_satisfied():
+                self.waited += 1
+                if self.waited < _STALL:
+                    return
+            self.waited = 0
             self.unwait("HAIL")
             self._after_reply(loop, world)
             return
 
         if self.waiting_for("TARGET"):
-            return
+            body = world.mobs.get(self.target_id) if self.target_id else None
+            if body is not None and _beside(world, body.position):
+                self.unwait("TARGET")
+            elif self.waited < 15:
+                return
+            else:
+                self.unwait("TARGET")
+                self.target_id = 0
+                self.active_path = None
 
-        if not self.target_id and self.bind_name and self.pad is not None and yards(world, self.pad) > HAIL:
-            walk(self, loop, world, self.pad, self.stride or "run")
-            return
+        if self.target_id and not _same_npc(world, self.target_id, self._search_name()):
+            self.target_id = 0
+            self.active_path = None
 
         if not self.target_id and not self._search_name() and not self.task_text:
             self.complete = True
             return
 
-        if not self.target_id and self._search_name() and (self.pad is None or yards(world, self.pad) > HAIL):
-            return
+        if self.pad is None:
+            spot = _PADS.get(self._search_name().lower())
+            if spot is not None:
+                self.pad = spot
+
+        if not self.target_id and self._search_name():
+            if self.pad is not None and not _beside(world, self.pad):
+                walk(self, loop, world, self.pad, self.stride or "run")
+                return
+            if self.pad is None:
+                self._wander(loop, world)
+                return
 
         mob = world.mobs.get(self.target_id, None)
         if mob and standing_of(mob) in (8, 9):
@@ -155,7 +211,7 @@ class Talk(Action):
             append_soulbind(self, loop, world)
             return
 
-        if mob and float(mob.distance) > HAIL:
+        if mob and not _beside(world, mob.position):
             walk(self, loop, world, mob.position, self.stride or "run")
             return
 
@@ -194,6 +250,50 @@ class Talk(Action):
         self.followed = True
         self.complete = True
 
+    def _stuck(self, world: World) -> bool:
+        """Five seconds on one spot means this route will not reach the npc."""
+        here = (round(world.x, 1), round(world.y, 1))
+        if here == self.anchor:
+            self.still += 1
+        else:
+            self.anchor = here
+            self.still = 0
+        if self.still < 50:
+            return False
+        mob = world.mobs.get(self.target_id) if self.target_id else None
+        if mob is not None and _beside(world, mob.position):
+            self.still = 0
+            return False
+        if self.pad is not None and _beside(world, self.pad):
+            self.still = 0
+            return False
+        mesh = load_nav(str(world.zone or ""))
+        point = self.where
+        if mesh is not None and point is not None:
+            spot = mesh.locate(point)
+            if spot is not None:
+                mesh.visited.add(spot)
+        log.info("talk unstick %s", self._search_name())
+        self.where = None
+        self.active_path = None
+        self.still = 0
+        return True
+
+    def _wander(self, loop: Loop, world: World) -> None:
+        """The named npc is not spawned. Walk the next unvisited patch until they are."""
+        if self.where is not None and yards(world, self.where) > HAIL:
+            walk(self, loop, world, self.where, self.stride or "run")
+            return
+        mesh = load_nav(str(world.zone or ""))
+        point = None if mesh is None else mesh.unvisited(world.position)
+        if point is None:
+            return
+        if self.where is None:
+            log.info("talk search %s", self._search_name())
+        self.where = point
+        self.active_path = None
+        walk(self, loop, world, point, self.stride or "run")
+
     def _bind_hail_target(self, world: World) -> None:
         if self.target_id:
             return
@@ -212,6 +312,8 @@ class Talk(Action):
             self.active_path = None
 
     def _say(self, loop: Loop, world: World) -> None:
+        if self.target_id:
+            loop.send("OP_TargetMouse", OP_TargetMouse(int(self.target_id) & 65535).serialize())
         send_command(loop, hail_line(self.line, self._npc_name(world)))
 
     def _ensure_chain(self) -> None:
@@ -261,6 +363,7 @@ class Talk(Action):
             _advances(str(world.zone or ""), self._npc_name(world)),
             _open_steps(world),
             self._known_said(loop, world),
+            repeat=str(self.source).startswith("task:") and not _step_done(world, str(self.source)),
         )
         self.pending = ordered + self.pending
         self.expect_reply = False
@@ -285,37 +388,77 @@ class Talk(Action):
             found.append(message)
         return found
 
+    def _stand_aside(self) -> None:
+        """The find hunt is priority -1 and newer talks win that band. Drop below it."""
+        self.priority = -2
+        self.yielding = True
+
     def _offer_find(self, loop: Loop, world: World) -> bool:
         """A reply that says find. An item is a fetch. A person is a walk, then a hail."""
         if self.sought:
+            if _find_open(loop):
+                self._stand_aside()
+                return True
+            # The hunt has the turn while it is open. Once it leaves, this talk
+            # is the hand-in and has to win its band again.
+            self.priority = 0
+            if world.held(_SILK_ITEM) >= _SILK_COUNT and self.target_id:
+                from eqclient3.actions.trade import Trade
+
+                trade = Trade(int(self.target_id), _SILK_ITEM)
+                return yield_to(self, loop, world, trade, f"hand:{_SILK_ITEM}")
             return False
         name = find_name(self.heard_text)
         if not name:
             return False
+        source = f"find:{name.lower()}"
+        if _find_open(loop, source):
+            self.sought = True
+            self._stand_aside()
+            return True
         self.sought = True
         item = _item_named(name)
+        if item == _SILK_ITEM and world.held(item) >= _SILK_COUNT:
+            # The spiders already paid. Vahlara's line is the hand-in.
+            from eqclient3.actions.trade import Trade
+
+            trade = Trade(int(self.target_id or 0), item)
+            return yield_to(self, loop, world, trade, f"hand:{item}")
+        if item == _SILK_ITEM:
+            # Vahlara takes one silk. Gloom spiders drop it; the line does not name them.
+            from eqclient3.actions.kill import Kill
+
+            hunt = Kill(camp="Gloom Spiders")
+            hunt.until_item = _SILK_ITEM
+            hunt.until_count = _SILK_COUNT
+            hunt.durable = True
+            hunt.priority = -1
+            return yield_to(self, loop, world, hunt, source)
         if item:
             from eqclient3.actions.fetch import Fetch
 
-            count = _SILK_COUNT if item == _SILK_ITEM else 1
-            fetch = Fetch(item, count, self.heard_text or name)
-            return yield_to(self, loop, world, fetch, f"find:{name.lower()}")
+            fetch = Fetch(item, 1, self.heard_text or name)
+            return yield_to(self, loop, world, fetch, source)
         mob = mob_named(world, name)
         if mob is None and not _proper_name(name):
             return False
         npc = int(mob.id) if mob is not None else 0
         talk = Talk(npc, "hail", name)
         talk.bind_name = name
-        return yield_to(self, loop, world, talk, f"find:{name.lower()}")
+        return yield_to(self, loop, world, talk, source)
 
     def _next_word(self, loop: Loop, world: World) -> str:
         if self.depth >= _DEPTH:
             self.pending.clear()
             return ""
         said = self._known_said(loop, world)
+        # A step still open in the book has to hear the link again. The first say did not finish it.
+        again = str(self.source).startswith("task:") and not _step_done(world, str(self.source))
         while self.pending:
             word = self.pending.pop(0)
-            if word.lower() in said or word.lower() == "hail":
+            if word.lower() == "hail":
+                continue
+            if word.lower() in said and not again:
                 continue
             return word
         return ""
@@ -327,6 +470,8 @@ class Talk(Action):
         self.quiet = 0
         self.depth += 1
         self.suspended = False
+        if self.target_id:
+            loop.send("OP_TargetMouse", OP_TargetMouse(int(self.target_id) & 65535).serialize())
         send_command(loop, word)
 
     def _remember(self, loop: Loop, world: World, text: str) -> None:
@@ -384,10 +529,12 @@ class Talk(Action):
 _DIALOGUE = ("OP_ChannelMessage", "OP_SpecialMesg")
 _SAYS = 1032
 _SILK_ITEM = 54234
-_SILK_COUNT = 20
+_SILK_COUNT = 1
 _FIND = re.compile(r"\bfind\s+(?:any\s+|the\s+)?([A-Za-z][A-Za-z' ]*[A-Za-z])", re.IGNORECASE)
-_ITEM_BOOK = None
+_ITEM_BOOK: ItemBook | None = None
+_ITEM_BOOK_TRIED = False
 _QUIET = 3
+_STALL = 50
 _DEPTH = 8
 _SAY = re.compile(r"""\$text\s*=~\s*/([^/]+)/i|findi\(\s*["']([^"']+)["']\s*\)""", re.IGNORECASE)
 _UPDATE = re.compile(r"update_?task_?activity\s*\(\s*(\d+)\s*,\s*(\d+)", re.IGNORECASE)
@@ -399,13 +546,19 @@ def reply_order(
     advances: dict[str, set[tuple[int, int]]],
     open_steps: set[tuple[int, int]],
     said: set[str],
+    repeat: bool = False,
 ) -> list[str]:
-    """Options from one reply. A word that finishes an open step comes first."""
+    """Options from one reply. A word that finishes an open step comes first.
+
+    repeat says a link again when that earlier say left the task step open.
+    """
     pending: list[str] = []
     seen: set[str] = set()
     for word in offered:
         key = word.lower()
-        if not key or key == "hail" or key in said or key in seen:
+        if not key or key == "hail" or key in seen:
+            continue
+        if key in said and not repeat:
             continue
         seen.add(key)
         pending.append(word)
@@ -430,6 +583,55 @@ def find_name(text: str) -> str:
     return " ".join(kept)
 
 
+def _same_npc(world: World, spawn_id: int, name: str) -> bool:
+    mob = world.mobs.get(spawn_id)
+    if mob is None:
+        return False
+    if not name:
+        return True
+    spoken = " ".join(mob.spoken_name().replace("_", " ").lower().split())
+    want = " ".join(name.replace("_", " ").lower().split())
+    return spoken == want or want in spoken or spoken in want
+
+
+def _find_open(loop: Loop, source: str = "") -> bool:
+    queue = loop.queue
+    if queue is None:
+        return False
+    for action in queue:
+        if action.complete or not str(action.source).startswith("find:"):
+            continue
+        if source and action.source != source:
+            continue
+        return True
+    return False
+
+
+def _step_done(world: World, source: str) -> bool:
+    """A task hail is finished when the server book shows that activity done."""
+    for activity in task_activities(world):
+        key = f"task:{int(activity.task_id)}:{int(activity.activity_id)}"
+        if key != source:
+            continue
+        return int(activity.done or 0) >= int(activity.goal or 1)
+    return False
+
+
+def _beside(world: World, point: tuple[float, float, float]) -> bool:
+    """Close enough to speak. A ledge counts when the floor under it is in hail range."""
+    if yards(world, point) <= HAIL:
+        return True
+    dx = float(point[0]) - float(world.x)
+    dy = float(point[1]) - float(world.y)
+    return (dx * dx + dy * dy) ** 0.5 <= HAIL
+
+
+def _moved(world: World, anchor: tuple[float, float]) -> float:
+    dx = float(world.x) - anchor[0]
+    dy = float(world.y) - anchor[1]
+    return (dx * dx + dy * dy) ** 0.5
+
+
 def _item_named(name: str) -> int:
     """Item id for a find. Gloomingdeep silk is the tutorial ask when the cache has no row."""
     key = " ".join((name or "").lower().split())
@@ -441,16 +643,14 @@ def _item_named(name: str) -> int:
     return int(book.id_named(name) or 0)
 
 
-def _item_book():
-    global _ITEM_BOOK
-    if _ITEM_BOOK is not None:
-        return _ITEM_BOOK or None
+def _item_book() -> ItemBook | None:
+    global _ITEM_BOOK, _ITEM_BOOK_TRIED
+    if _ITEM_BOOK_TRIED:
+        return _ITEM_BOOK
+    _ITEM_BOOK_TRIED = True
     path = os.environ.get("EQEMU_ITEMS") or str(Path.home() / ".eqclient" / "items.jsonl")
     if not os.path.isfile(path):
-        _ITEM_BOOK = False
         return None
-    from eqclient3.inventory.item_stats import read_items
-
     _ITEM_BOOK = read_items(path)
     return _ITEM_BOOK
 
@@ -480,33 +680,32 @@ def _same_voice(speaker: str, npc: str) -> bool:
     return left.split()[0] == right.split()[0]
 
 
-def _book(world: World) -> tuple:
-    rows = []
+@runtime_checkable
+class _Step(Protocol):
+    task_id: int
+    activity_id: int
+    done: int
+    goal: int
+    locked: bool
+
+
+def _book(world: World) -> tuple[tuple[int, int, int], ...]:
+    rows: list[tuple[int, int, int]] = []
     for activity in task_activities(world):
-        rows.append(
-            (
-                int(getattr(activity, "task_id", 0) or 0),
-                int(getattr(activity, "activity_id", 0) or 0),
-                int(getattr(activity, "done", 0) or 0),
-            )
-        )
+        if not isinstance(activity, _Step):
+            continue
+        rows.append((activity.task_id, activity.activity_id, activity.done))
     return tuple(sorted(rows))
 
 
 def _open_steps(world: World) -> set[tuple[int, int]]:
     found: set[tuple[int, int]] = set()
     for activity in task_activities(world):
-        if getattr(activity, "locked", False) or getattr(activity, "optional", False):
+        if not isinstance(activity, _Step):
             continue
-        goal = int(getattr(activity, "goal", 1) or 1)
-        if int(getattr(activity, "done", 0) or 0) >= goal:
+        if activity.locked or activity.done >= (activity.goal or 1):
             continue
-        found.add(
-            (
-                int(getattr(activity, "task_id", 0) or 0),
-                int(getattr(activity, "activity_id", 0) or 0),
-            )
-        )
+        found.add((activity.task_id, activity.activity_id))
     return found
 
 
@@ -586,6 +785,9 @@ def _proper_name(text: str) -> str:
 def hail_line(line: str, name: str) -> str:
     """A bare hail is the default script. The target's name selects his own."""
     text = (line or "").strip()
+    if text.startswith("[") and text.endswith("]") and len(text) > 2:
+        text = text[1:-1].strip()
+        line = text
     if text.lower() != "hail":
         return line
     spoken = " ".join((name or "").replace("_", " ").split())

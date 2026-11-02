@@ -21,7 +21,9 @@ if TYPE_CHECKING:
     from eqclient3.world import World
 
 from eqclient3.log import log
-from eqclient3.actions.fetch import Fetch
+from eqclient3.actions.craft import Craft
+from eqclient3.actions.fetch import Fetch, item_cost
+from eqclient3.data.recipes import DEFAULT_RECIPES, Recipe, read_recipes
 from eqclient3.actions.kill import Kill
 from eqclient3.camps import camp_for_level
 from eqclient3.quests.expand import expand, produced
@@ -94,6 +96,7 @@ def produce(
 def _after_tutorial(
     loop: Loop, world: World, journal: Journal | None, graph: QuestGraph | None, character: str
 ) -> None:
+    _queue_backpacks(loop, world, journal)
     world.quest_started = True
     if journal is not None and character:
         journal.set_flag(character, "quest_started", 1)
@@ -161,6 +164,78 @@ def _fill_item(
         if _skipped(loop, journal, character, action.source):
             continue
         _put(loop, world, journal, action)
+
+
+# One container in each general slot. The handmade pack is crafted. The other two are bought.
+# Counts are 2 + 3 + 3. Normal fetches are 0, so these sit one above them.
+BACKPACK_BAND = 1
+GENERAL_SLOTS = 8
+HANDMADE = 17969
+BACKPACKS = (
+    (HANDMADE, 2),
+    (17005, 3),
+    (17046, 3),
+)
+_HANDMADE: Recipe | None = None
+_HANDMADE_TRIED = False
+
+
+def _queue_backpacks(loop: Loop, world: World, journal: Journal | None) -> None:
+    free = _free_general(world)
+    if free <= 0:
+        return
+    planned: list[tuple[int, int]] = []
+    for item_id, want in BACKPACKS:
+        need = min(free, max(0, want - world.held(item_id)))
+        if need <= 0:
+            continue
+        planned.append((item_id, need))
+        free -= need
+    buys = [(item_id, count) for item_id, count in planned if item_id != HANDMADE]
+    made = [(item_id, count) for item_id, count in planned if item_id == HANDMADE]
+    for item_id, count in buys:
+        _queue_buy(loop, world, journal, item_id, count)
+    for _item_id, count in made:
+        _queue_handmade(loop, world, journal, count)
+
+
+def _queue_buy(loop: Loop, world: World, journal: Journal | None, item_id: int, count: int) -> None:
+    source = f"backpack:{item_id}"
+    if _skipped(loop, journal, _character(loop, world), source):
+        return
+    action = Fetch(item_id, count, f"backpack {item_id}", copper=item_cost(item_id))
+    action.source = source
+    action.priority = BACKPACK_BAND
+    _put(loop, world, journal, action)
+
+
+def _queue_handmade(loop: Loop, world: World, journal: Journal | None, count: int) -> None:
+    source = f"backpack:{HANDMADE}"
+    if _skipped(loop, journal, _character(loop, world), source):
+        return
+    recipe = _handmade_recipe()
+    if recipe is None:
+        _queue_buy(loop, world, journal, HANDMADE, count)
+        return
+    action = Craft(recipe, count)
+    action.source = source
+    action.priority = BACKPACK_BAND
+    _put(loop, world, journal, action)
+
+
+def _handmade_recipe() -> Recipe | None:
+    global _HANDMADE, _HANDMADE_TRIED
+    if _HANDMADE_TRIED:
+        return _HANDMADE
+    _HANDMADE_TRIED = True
+    _HANDMADE = read_recipes(DEFAULT_RECIPES).for_item(HANDMADE)
+    return _HANDMADE
+
+
+def _free_general(world: World) -> int:
+    bags = world.bags or {}
+    used = sum(1 for slot in range(22, 22 + GENERAL_SLOTS) if bags.get(slot))
+    return GENERAL_SLOTS - used
 
 
 def _append_fetch(loop: Loop, world: World, journal: Journal | None, item_id: int, source: str) -> None:

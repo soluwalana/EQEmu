@@ -38,16 +38,44 @@ class ReadTasksTest(unittest.TestCase):
         self.assertNotIn("OP_Assist", action.opcodes())
         action.step(client, sheet)
         self.assertEqual(kinds(client).count("Talk"), 1)
-        self.assertEqual(kinds(client).count("Kill"), 1)
-        self.assertEqual(kinds(client).count("Fetch"), 1)
-        self.assertEqual(kinds(client).count("Pickup"), 1)
+        self.assertEqual(kinds(client).count("Kill"), 0)
         self.assertTrue(action.yielding)
         self.assertFalse(action.complete)
         self.assertFalse(client.journal.tutorial_done("Hero"))
         action.yielding = False
+        for item in list(client.queue):
+            if type(item).__name__ == "Talk":
+                client.queue.remove(item.insert)
+                client.journal.resolve_action("Hero", item)
         action.step(client, sheet)
+        self.assertEqual(kinds(client).count("Kill"), 1)
         self.assertFalse(action.complete)
         self.assertFalse(client.journal.tutorial_done("Hero"))
+
+    def test_an_open_find_hunt_drops_the_book_under_it(self):
+        from eqclient3.actions.kill import Kill
+        from eqclient3.actions.talk import Talk
+
+        client, sheet = fresh("tutorialb")
+        sheet.task_book = book()
+        action = ReadTasks()
+        place(client, action, "tutorialb", "read_tasks:tutorialb")
+        talk = Talk(3, "hail", "hail the guard")
+        talk.source = "task:0:1"
+        talk.priority = -2
+        client.queue.append(talk, sheet, client.journal, client.character)
+        hunt = Kill(camp="Gloom Spiders")
+        hunt.source = "find:gloomingdeep silk"
+        hunt.priority = -1
+        client.queue.append(hunt, sheet, client.journal, client.character)
+        action.step(client, sheet)
+        self.assertEqual(action.priority, -2)
+        self.assertTrue(action.yielding)
+        hunt.complete = True
+        action.yielding = False
+        action.step(client, sheet)
+        self.assertEqual(action.priority, 0)
+        self.assertEqual(talk.priority, 0)
 
     def test_empty_book_in_the_mine_does_not_complete(self):
         client, sheet = fresh("tutorialb")
@@ -116,7 +144,11 @@ class ReadTasksTest(unittest.TestCase):
         place(client, action, "tutorialb", "read_tasks:tutorialb")
         inbox(action, "OP_ChannelMessage", _channel("Hero", "Hail, Guard Rahtiz"))
         action.step(client, sheet)
-        self.assertNotIn("Talk", kinds(client))
+        self.assertFalse(any(str(item.source).startswith("chat:") for item in client.queue))
+        self.assertEqual(
+            [item.source for item in client.queue if type(item).__name__ == "Talk"],
+            ["hail:hobart"],
+        )
 
     def test_a_saylink_is_not_a_new_step(self):
         client, sheet = fresh("tutorialb")
@@ -129,7 +161,44 @@ class ReadTasksTest(unittest.TestCase):
             {"text": f"Would you like to be \x12{body}blessed\x12?"},
         )
         action.step(client, sheet)
-        self.assertNotIn("Talk", kinds(client))
+        self.assertFalse(any(str(item.source).startswith("chat:") for item in client.queue))
+        self.assertEqual(
+            [item.source for item in client.queue if type(item).__name__ == "Talk"],
+            ["hail:hobart"],
+        )
+
+    def test_say_before_a_link_is_not_a_new_step(self):
+        client, sheet = fresh("tutorialb")
+        action = ReadTasks()
+        place(client, action, "tutorialb", "read_tasks:tutorialb")
+        body = "0FFFFF00066000000000000000000000000000000000000000000000"
+        inbox(
+            action,
+            "OP_ChannelMessage",
+            _channel("Rashere", f"just say [\x12{body}bind my soul\x12]."),
+        )
+        action.step(client, sheet)
+        self.assertFalse(any(str(item.source).startswith("chat:") for item in client.queue))
+        self.assertEqual(
+            [item.source for item in client.queue if type(item).__name__ == "Talk"],
+            ["hail:hobart"],
+        )
+
+    def test_a_full_cursor_is_filed_instead_of_fetched(self):
+        client, sheet = fresh("tutorialb")
+        sheet.cursor = 9990
+        action = ReadTasks()
+        place(client, action, "tutorialb", "read_tasks:tutorialb")
+        inbox(
+            action,
+            "OP_SpecialMesg",
+            {"text": "You may not loot an item while you have an item on your cursor."},
+        )
+        action.step(client, sheet)
+        self.assertFalse(any(str(item.source).startswith("chat:") for item in client.queue))
+        moves = [item for item in client.queue if type(item).__name__ == "Cursor"]
+        self.assertEqual(len(moves), 1)
+        self.assertEqual(moves[0].move, (30, 22))
 
     def test_a_named_line_outside_the_mine_appends_nothing(self):
         client, sheet = fresh("qeynos")

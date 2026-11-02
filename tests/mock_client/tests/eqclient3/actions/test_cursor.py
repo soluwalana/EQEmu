@@ -52,6 +52,19 @@ class CursorTest(unittest.TestCase):
         self.assertEqual((src, dest), (23, 33))
         self.assertEqual(action.waiting, ["CURSOR"])
 
+    def test_a_quiet_move_lands_and_clears_the_cursor(self):
+        client, sheet = fresh()
+        sheet.cursor = 59964
+        action = Cursor(22, (30, 22))
+        action.step(client, sheet)
+        self.assertEqual(opcodes(client), ["OP_MoveItem"])
+        for _ in range(10):
+            action.step(client, sheet)
+        self.assertTrue(action.complete)
+        self.assertIsNone(sheet.cursor)
+        self.assertEqual(sheet.bags[22], 59964)
+        self.assertNotIn(22, sheet.refused_slots)
+
 
 if __name__ == "__main__":
     unittest.main()

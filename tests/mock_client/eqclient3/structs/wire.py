@@ -131,6 +131,37 @@ def _i32(value: int) -> int:
     return value
 
 
+# Bag contents use the same addresses as inventory.assign: general parent 22-29,
+# ten subslots, stride 200, first bag slot 251.
+_BAGS_BEGIN = 251
+_GENERAL_LO = 22
+_GENERAL_HI = 30
+_BAG_STRIDE = 200
+_SUBSLOTS = 10
+
+
+def _inventory_wire(slot: int) -> tuple[int, int]:
+    """RoF2 (main slot, sub index) for a client slot. A bag address carries its sub index."""
+    if slot >= _BAGS_BEGIN:
+        parent_index = (slot - _BAGS_BEGIN) // _BAG_STRIDE
+        sub = (slot - _BAGS_BEGIN) % _BAG_STRIDE
+        parent = _GENERAL_LO + parent_index
+        if 0 <= sub < _SUBSLOTS and _GENERAL_LO <= parent < _GENERAL_HI:
+            return (_to_rof2_slot(parent), sub)
+    return (_to_rof2_slot(slot), -1)
+
+
+def _client_slot(slot_type: int, main_slot: int, sub_slot: int) -> int:
+    """Client slot for a RoF2 inventory address. A sub index lands inside that bag."""
+    if slot_type == 0 and 0 <= sub_slot < _SUBSLOTS:
+        parent = _from_rof2_slot(main_slot)
+        if _GENERAL_LO <= parent < _GENERAL_HI:
+            return _BAGS_BEGIN + (parent - _GENERAL_LO) * _BAG_STRIDE + sub_slot
+    if slot_type == 0:
+        return _from_rof2_slot(main_slot)
+    return main_slot
+
+
 def _to_rof2_slot(slot: int) -> int:
     """Client possession slot to the RoF2 slot number. Cursor 30 is 33."""
     slot = _i16(slot)
@@ -162,15 +193,22 @@ def _from_rof2_slot(slot: int) -> int:
     return slot
 
 
-def _pack_inventory_slot(slot: int) -> bytes:
-    """Type 0, the RoF2 slot, sub-index and augment both invalid."""
+def _pack_typed_slot(kind: int, slot: int) -> bytes:
+    """A window slot. Trade is type 3, and slot 0 is the first hand-in cell."""
     # common/patches/rof2_structs.h:57 InventorySlot_Struct
-    return struct.pack("<hhhhhh", 0, 0, _i16(_to_rof2_slot(slot)), -1, -1, 0)
+    return struct.pack("<hhhhhh", _i16(kind), 0, _i16(slot), -1, -1, 0)
+
+
+def _pack_inventory_slot(slot: int) -> bytes:
+    """Type 0. A general slot has an invalid sub index. A bag slot names the parent and the sub index."""
+    # common/patches/rof2_structs.h:57 InventorySlot_Struct
+    wire, sub = _inventory_wire(slot)
+    return struct.pack("<hhhhhh", 0, 0, _i16(wire), _i16(sub), -1, 0)
 
 
 def _unpack_inventory_slot(data: bytes, offset: int) -> int:
-    _kind, _unknown, wire, _sub, _aug, _tail = struct.unpack_from("<hhhhhh", data, offset)
-    return _from_rof2_slot(int(wire))
+    kind, _unknown, wire, sub, _aug, _tail = struct.unpack_from("<hhhhhh", data, offset)
+    return _client_slot(int(kind), int(wire), int(sub))
 
 
 def _bitword(*parts: tuple[int, int]) -> int:

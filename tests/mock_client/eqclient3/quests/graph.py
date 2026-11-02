@@ -89,10 +89,10 @@ _FACTION_GAIN = re.compile(
     r"""(?:quest::faction|eq\.faction)\s*\(\s*["']?(\d+)["']?\s*,\s*(-?\d+)""",
     re.IGNORECASE,
 )
-_SUMMON = re.compile(
-    # quest::summonitem, eq.summon_item, e.other:SummonItem, or GetClientByName(...)->SummonItem
-    # Some Perl scripts quote the id: quest::summonitem("20699").
-    r"""(?:quest::summonitem|eq\.summon_item|(?::|->)SummonItem)\s*\(\s*["']?(\d+)["']?""",
+_SUMMON_OPEN = re.compile(
+    # quest::summonitem, eq.summon_item, e.other:SummonItem, or GetClientByName(...)->SummonItem.
+    # The argument may be an id or ChooseRandom(...).
+    r"""(?:quest::summonitem|eq\.summon_item|(?::|->)SummonItem)\s*\(""",
     re.IGNORECASE,
 )
 _QUEST_REWARD = re.compile(r"(?:QuestReward|quest::questreward)\s*\(", re.IGNORECASE)
@@ -213,7 +213,7 @@ def parse_script(text: str, filename: str) -> NpcScript:
         if word and key not in seen:
             seen.add(key)
             keywords.append(word)
-    rewards = {int(match.group(1)) for match in _SUMMON.finditer(text)}
+    rewards = {item_id for _pos, item_id in _summon_items(text)}
     needs: list[Need] = []
 
     def add(item_id: int, count: int) -> None:
@@ -758,8 +758,37 @@ def _quest_reward_items(body: str) -> list[int]:
     return []
 
 
+def _summon_ids(body: str) -> list[int]:
+    """Item ids a summon call hands over. ChooseRandom is every distinct id in the list."""
+    groups = _CHOOSE.findall(body)
+    if groups:
+        found: list[int] = []
+        seen: set[int] = set()
+        for group in groups:
+            for number in re.findall(r"\d+", group):
+                item_id = int(number)
+                if item_id not in seen:
+                    seen.add(item_id)
+                    found.append(item_id)
+        return found
+    direct = re.match(r"""\s*["']?(\d+)["']?""", body)
+    if direct:
+        return [int(direct.group(1))]
+    return []
+
+
+def _summon_items(text: str) -> list[tuple[int, int]]:
+    """(call offset, item id) for each summoned item."""
+    found: list[tuple[int, int]] = []
+    for match in _SUMMON_OPEN.finditer(text):
+        body, _end = _paren(text, match.end() - 1)
+        for item_id in _summon_ids(body):
+            found.append((match.start(), item_id))
+    return found
+
+
 def _reward_ids(block: str) -> list[int]:
-    found = [int(match.group(1)) for match in _SUMMON.finditer(block)]
+    found = [item_id for _pos, item_id in _summon_items(block)]
     for match in _QUEST_REWARD.finditer(block):
         body, _end = _paren(block, match.end() - 1)
         found.extend(_quest_reward_items(body))
@@ -1314,12 +1343,10 @@ def _emit_span(
     for match in _GLOBAL.finditer(text):
         if span[2] <= match.start() < span[3] and not _in_span(match.start(), holes):
             sets_here.append(match)
-    rewards = [
-        match
-        for match in _SUMMON.finditer(text)
-        if span[2] <= match.start() < span[3] and not _in_span(match.start(), holes)
+    summoned = [
+        (pos, item_id) for pos, item_id in _summon_items(text) if span[2] <= pos < span[3] and not _in_span(pos, holes)
     ]
-    rewards += [
+    quest_rewards = [
         match
         for match in _QUEST_REWARD.finditer(text)
         if span[2] <= match.start() < span[3] and not _in_span(match.start(), holes)
@@ -1329,7 +1356,7 @@ def _emit_span(
         for match in _GROUND.finditer(text)
         if span[2] <= match.start() < span[3] and not _in_span(match.start(), holes)
     ]
-    if sets_here or rewards or grounds:
+    if sets_here or summoned or quest_rewards or grounds:
         seen = {item_id for item_id, _op in holds}
         seen.update(
             item
@@ -1367,17 +1394,16 @@ def _emit_span(
         edges.append(edge)
     body = text[span[2] : span[3]]
     _emit_faction_gains(edges, say_id, body, group if holds else say_id)
-    for match in _SUMMON.finditer(text):
-        if span[2] <= match.start() < span[3] and not _in_span(match.start(), holes):
-            edges.append(
-                {
-                    "kind": "edge",
-                    "rel": "gives",
-                    "from": npc_id,
-                    "to": f"item:{int(match.group(1))}",
-                    "group": group,
-                }
-            )
+    for _pos, item_id in summoned:
+        edges.append(
+            {
+                "kind": "edge",
+                "rel": "gives",
+                "from": npc_id,
+                "to": f"item:{item_id}",
+                "group": group,
+            }
+        )
     for match in _QUEST_REWARD.finditer(text):
         if span[2] <= match.start() < span[3] and not _in_span(match.start(), holes):
             body, _end = _paren(text, match.end() - 1)
@@ -1531,8 +1557,8 @@ def _recipe_owner(
 def _body_events(block: str, origin: int) -> list[tuple[int, dict]]:
     """Gives, spawns, and flag writes in the order they appear in this branch."""
     found: list[tuple[int, dict]] = []
-    for match in _SUMMON.finditer(block):
-        found.append((origin + match.start(), {"rel": "gives", "item": int(match.group(1))}))
+    for pos, item_id in _summon_items(block):
+        found.append((origin + pos, {"rel": "gives", "item": item_id}))
     for match in _QUEST_REWARD.finditer(block):
         body, _end = _paren(block, match.end() - 1)
         for offset, item_id in enumerate(_quest_reward_items(body)):

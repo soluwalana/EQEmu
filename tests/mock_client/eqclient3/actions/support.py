@@ -18,7 +18,9 @@ from eqclient3.camps import Soulbinder, nearest_soulbinder
 from eqclient3.journal import Journal
 from eqclient3.movement import MovementAnnotatedMob
 from eqclient3.log import log
+from eqclient3.nav.path import water_of
 from eqclient3.nav.travel import ZoneGraph, ensure_zone_graph, first_leg
+from eqclient3.data.spells import role_of, spell_name
 from eqclient3.nav.zones import zone_id_of
 from eqclient3.structs import (
     Item,
@@ -95,7 +97,7 @@ MELEE = 15
 HAIL = 20
 INTERACT = 20
 LOOT_RANGE = 20
-CORPSE_NEAR = 45
+CORPSE_NEAR = 45  # server Corpse::Summon accepts 100 yards (DistanceSquaredNoZ <= 100^2, Z ignored)
 HOSTILE_CLOSE = 150
 HOSTILE_FAR = 250
 SIT = 110
@@ -105,7 +107,7 @@ BASH = 10
 SILK = 54234
 NORMAL_LOOT = (1, 3)
 TOO_FAR = 5
-SPEAK, KILL, LOOT, DELIVER = (4, 2, 3, 1)
+SPEAK, KILL, LOOT, DELIVER, COLLECT = (4, 2, 3, 1, 13)
 
 
 def character_name(loop: Loop | None, world: World) -> str:
@@ -487,7 +489,10 @@ def memorized(world: World, action: Action) -> list:
         else:
             spell_id = int(value.spell_id or 0)
             meta = value
-        gems.append(GemView(slot, spell_id, _spell_info(meta), recast.get(slot, 0)))
+        view = GemView(slot, spell_id, _spell_info(meta), recast.get(slot, 0))
+        if not view.heal and role_of(spell_name(spell_id)) == "heal":
+            view.heal = True
+        gems.append(view)
     return gems
 
 
@@ -564,10 +569,16 @@ def zone_packet(destination: str, zone_id: int, x: float, y: float, z: float) ->
 
 def zone_id(name: str) -> int:
     try:
-        return int(zone_id_of(name) or 0)
+        found = int(zone_id_of(name) or 0)
     except Exception:
         log.error("zone id lookup failed for %s", name, exc_info=True)
+        found = 0
+    if found:
+        return found
+    graph = ensure_zone_graph()
+    if graph is None:
         return 0
+    return int(graph.zones.get((name or "").lower(), 0))
 
 
 def empty_slots(world: World) -> int:
@@ -867,6 +878,31 @@ def fetch_plan(world: World, item_id: int) -> FetchPlan:
     )
 
 
+def exit_kind(world: World, destination: str) -> str:
+    """How the next hop leaves: door, stone, or point. Empty when the graph has no hop."""
+    graph = world.zone_graph or ensure_zone_graph()
+    if graph is None:
+        return ""
+    leg = first_leg(graph, (world.zone or "").lower(), (destination or "").lower())
+    if leg is None:
+        return ""
+    transit = graph.transit_at(leg.zone, leg.door_id)
+    if transit is None:
+        return ""
+    return transit.via
+
+
+def painted_line(world: World, anchor: tuple[float, float, float]) -> tuple[float, float, float] | None:
+    """A watermap zone-line sample near a zone point. Outdoor lines are volumes, not the row."""
+    water = water_of(world)
+    if water is None:
+        return None
+    if water.in_zone_line(anchor[0], anchor[1], anchor[2]):
+        return anchor
+    here = world.position
+    return water.nearest_zone_line(here[0], here[1], here[2], anchor=anchor, reach=300, step=10)
+
+
 def next_zoneline(world: World, destination: str) -> tuple[float, float, float] | None:
     """Where to walk to leave this zone toward `destination`.
 
@@ -884,17 +920,36 @@ def next_zoneline(world: World, destination: str) -> tuple[float, float, float] 
     dest = (destination or "").lower()
     leg = first_leg(graph, here, dest)
     if leg is not None:
-        spot = _transit_point(world, graph, leg.zone, leg.door_id)
+        spot = _transit_point(world, graph, leg.zone, leg.door_id, leg.dest)
         if spot is not None:
             return spot
     return _script_exit(world, here, dest)
 
 
-def _transit_point(world: World, graph: ZoneGraph, zone: str, door_id: int) -> tuple[float, float, float] | None:
+def _transit_point(
+    world: World, graph: ZoneGraph, zone: str, door_id: int, dest: str = ""
+) -> tuple[float, float, float] | None:
     transit = graph.transit_at(zone, door_id)
     if transit is not None and (transit.x or transit.y or transit.z):
         return (transit.x, transit.y, transit.z)
+    arrived = _return_landing(graph, zone, dest)
+    if arrived is not None:
+        return arrived
     return _door_point(world, door_id)
+
+
+def _return_landing(graph: ZoneGraph, here: str, dest: str) -> tuple[float, float, float] | None:
+    """A zone point stored with no origin. The reverse hop's landing is that point."""
+    home = (here or "").lower()
+    target = (dest or "").lower()
+    if not home or not target:
+        return None
+    for transit in graph.transits_from(target):
+        if transit.dest != home:
+            continue
+        if transit.dest_x or transit.dest_y or transit.dest_z:
+            return (transit.dest_x, transit.dest_y, transit.dest_z)
+    return None
 
 
 def _script_exit(world: World, here: str, destination: str) -> tuple[float, float, float] | None:

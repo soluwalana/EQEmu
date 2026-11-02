@@ -36,7 +36,7 @@ class Recipe:
     enabled: int = 1
     name: str = ""
 
-    def to_row(self) -> dict:
+    def to_row(self) -> dict[str, object]:
         return {
             "id": self.id,
             "result": self.result,
@@ -89,11 +89,12 @@ class RecipeBook:
         self.by_result = found
         self.by_skill = by_skill
 
-    def practice(self, skill_id: int, current: int, want: int) -> Recipe | None:
+    def practice(self, skill_id: int, current: int, want: int, skip: int = 0) -> Recipe | None:
         """A moderately hard combine for skillups (EQ: skillups only while skill < trivial).
 
         Prefer trivial a bit above `current` (challenge window), never already-trivial,
-        and never past the goal `want`. Result item is what the campaign stacks in bulk.
+        and never past the goal `want`. `skip` is the recipe this practice is in service
+        of, so its components are not burned on the way up.
         """
         candidates: list[Recipe] = []
         current = int(current or 0)
@@ -107,6 +108,8 @@ class RecipeBook:
         for recipe_id in self.by_skill.get(int(skill_id), ()):
             recipe = self.by_id.get(recipe_id)
             if recipe is None or not recipe.enabled or not recipe.components:
+                continue
+            if skip and recipe.id == skip:
                 continue
             if not recipe.result:
                 continue
@@ -130,7 +133,7 @@ class RecipeBook:
         if not candidates:
             return None
 
-        def _rank(recipe: Recipe) -> tuple:
+        def _rank(recipe: Recipe) -> tuple[int, int, int, int]:
             trivial = int(recipe.trivial or 0)
             in_sweet = 0 if sweet_lo <= trivial <= sweet_hi else 1
             # Prefer in-window, then closest to mid-window, then fewer ingredients.
