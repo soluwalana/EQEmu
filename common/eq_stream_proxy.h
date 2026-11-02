@@ -58,5 +58,6 @@ protected:
 	//this is a pointer to a pointer to make it less likely that a packet will
 	//reference an invalid opcode manager when they are being reloaded.
 	OpcodeManager **const			m_opcodes;
+	std::shared_ptr<EQStreamInterface> m_trace_stream;
 	//we do not own this object.
 };
