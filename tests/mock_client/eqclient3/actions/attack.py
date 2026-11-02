@@ -22,6 +22,7 @@ from eqclient3.actions.casting import (
     tick_recasts,
 )
 from eqclient3.log import log
+from eqclient3.nav.path import STRIDE, straight
 from eqclient3.structs import OP_AutoAttack, OP_CombatAbility, OP_Taunt
 from eqclient3.actions.bots.reconstitute import Reconstitute
 from eqclient3.actions.support import (
@@ -53,6 +54,15 @@ def _apart(a: tuple[float, float, float], b: tuple[float, float, float]) -> floa
     return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
 
 
+def _treasure(mob: Mob | None) -> bool:
+    """An LDoN object. Melee does not credit it. Opening it does."""
+    if mob is None:
+        return False
+    if int(mob.class_id or 0) == 62:
+        return True
+    return "vermin nest" in (mob.name or "").lower()
+
+
 class Attack(Action):
 
     def __init__(self, spawn_id: int, *, cautious: bool = False) -> None:
@@ -82,6 +92,7 @@ class Attack(Action):
         self.swing_hp = -1
         self.swing_still = 0
         self.misses = 0
+        self.zero_hp = 0
 
     def __setstate__(self, state: dict[str, object]) -> None:
         self.__dict__.update(state)
@@ -103,6 +114,8 @@ class Attack(Action):
             self.swing_still = 0
         if "misses" not in self.__dict__:
             self.misses = 0
+        if "zero_hp" not in self.__dict__:
+            self.zero_hp = 0
 
     def opcodes(self) -> tuple[str, ...]:
         return (
@@ -145,6 +158,14 @@ class Attack(Action):
                 return
             self.unwait("CAST")
             self.casting = False
+        if mob is not None and _treasure(mob) and float(mob.distance) <= 25:
+            # Opening uses the current target. Consider never answers an object,
+            # and the nest is often out of the mesh's line of sight, so neither
+            # of those waits can gate the open. The server only checks distance.
+            if not mob.targeted:
+                self.target_mob(loop, world)
+            loop.send("OP_LDoNOpen", b"")
+            return
         if self.waiting_for("TARGET"):
             # A treasure object answers consider with its name and no packet.
             self.target_tries += 1
@@ -159,6 +180,17 @@ class Attack(Action):
                 self._reconstitute(loop, world)
             self.complete = True
             return
+        if int(mob.hp or 0) == 0 and not _treasure(mob):
+            self.zero_hp += 1
+            if self.zero_hp >= 10:
+                target = self.spawn_id
+                if target is not None:
+                    log.info("attack dead spawn=%s", target)
+                    world.skip_spawn(target)
+                self.complete = True
+                return
+        else:
+            self.zero_hp = 0
         sees = world.line_of_sight(mob)
         if self.closed and not sees:
             self.closed = False
@@ -186,6 +218,12 @@ class Attack(Action):
                 if planned is None or _apart(planned, point) > 15:
                     self.active_path = None
                     self.planned = point
+                if sees and float(mob.distance) <= 35:
+                    length = STRIDE["los"][0]
+                    path = straight((world.x, world.y, world.z), point, length)
+                    self.active_path = path
+                    world.movement.advance(loop, world, path)
+                    return
                 mode = "walk" if self.cautious else "los"
                 walk(self, loop, world, point, mode)
                 return
@@ -208,6 +246,11 @@ class Attack(Action):
             walk(self, loop, world, mob.position, "los")
             return
         world.movement.face(loop, world, mob.position)
+        # Class 62 is an LDoN object. Melee never puts the player on its hate list,
+        # so the kill does not credit a task. Opening it does.
+        if _treasure(mob):
+            loop.send("OP_LDoNOpen", b"")
+            return
         if not self.opened:
             send_command(loop, "^attack")
             self.opened = True

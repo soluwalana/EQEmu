@@ -52,6 +52,21 @@ class CursorTest(unittest.TestCase):
         self.assertEqual((src, dest), (23, 33))
         self.assertEqual(action.waiting, ["CURSOR"])
 
+    def test_a_loot_packet_already_queued_does_not_refuse_the_move(self):
+        client, sheet = fresh()
+        sheet.cursor = 59955
+        action = Cursor(22, (30, 22))
+        inbox(action, "OP_ItemPacket", {"slot": 30, "item_id": 59955})
+        action.step(client, sheet)
+        self.assertEqual(opcodes(client), ["OP_MoveItem"])
+        self.assertFalse(action.complete)
+        self.assertNotIn(22, sheet.refused_slots)
+        for _ in range(10):
+            action.step(client, sheet)
+        self.assertTrue(action.complete)
+        self.assertEqual(sheet.bags[22], 59955)
+        self.assertIsNone(sheet.cursor)
+
     def test_a_quiet_move_lands_and_clears_the_cursor(self):
         client, sheet = fresh()
         sheet.cursor = 59964

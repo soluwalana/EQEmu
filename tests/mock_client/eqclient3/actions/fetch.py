@@ -29,7 +29,9 @@ from eqclient3.actions.trade import Trade
 from eqclient3.actions.travel import Travel
 from eqclient3.actions.zone import Zone
 from eqclient3.camps import grind_zones
+from eqclient3.data.ground import ground_at, nearest_spawn
 from eqclient3.data.merchants import MerchantBook, _norm_name, read_merchants
+from eqclient3.nav.navmesh import load_nav
 
 # Worn before a camp. A shop window is 210. The camp and its road are 0.
 GEAR_BAND = 50
@@ -68,6 +70,10 @@ class Fetch(Action):
             self.priority = GEAR_BAND
         if in_tutorial(world) and self.task_text.startswith("gear "):
             forget(loop, world, self)
+            return
+        if in_tutorial(world) and not str(self.source or "").startswith("task:"):
+            # The mine book hails and fights. A gear or reward fetch waits.
+            self.priority = -1
             return
         if self.item_id == 0 and self.copper:
             if _copper(world.coin) < self.copper:
@@ -142,8 +148,30 @@ class Fetch(Action):
                 return
             if drop is not None:
                 self._drop(loop, world, drop)
+                return
+            if not _is_gear(str(self.source or ""), str(self.task_text)):
+                self._seek(loop, world)
             return
         walk(self, loop, world, station, "run")
+
+    def _seek(self, loop: Loop, world: World) -> None:
+        """Walk to a ground spawn of this item. Roam the zone until one is in view."""
+        points = ground_at(self.item_id, world.zone_id, str(world.zone or ""))
+        if points:
+            here = (world.x, world.y, world.z)
+            point = min(points, key=lambda spot: (spot[0] - here[0]) ** 2 + (spot[1] - here[1]) ** 2)
+            seen = nearest_spawn(world.ground, point)
+            if seen is not None:
+                pickup = Pickup(seen.id, (seen.x, seen.y, seen.z))
+                pickup.item_id = self.item_id
+                yield_to(self, loop, world, pickup, f"pickup:{seen.id}")
+                return
+            walk(self, loop, world, point, "run")
+            return
+        mesh = load_nav(str(world.zone or ""))
+        spot = None if mesh is None else mesh.unvisited(world.position)
+        if spot is not None:
+            walk(self, loop, world, spot, "run")
 
     def _chain(
         self,

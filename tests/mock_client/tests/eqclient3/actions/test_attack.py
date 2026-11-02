@@ -26,6 +26,15 @@ class AttackTest(unittest.TestCase):
         action.step(client, sheet)
         self.assertEqual(movement().advances[-1].mode, "walk")
 
+    def test_a_nearby_visible_mob_is_stepped_toward(self):
+        client, sheet = fresh()
+        body = mob(sheet, 8, distance=20, targeted=True)
+        action = Attack(8)
+        action.step(client, sheet)
+        path = movement().advances[-1]
+        self.assertEqual(path.destination, body.position)
+        self.assertEqual(movement().plans, [])
+
     def test_inside_15_sends_attack_once_and_again_after_suspend(self):
         client, sheet = fresh()
         body = mob(sheet, 8, distance=10, targeted=False)
@@ -51,6 +60,16 @@ class AttackTest(unittest.TestCase):
         action.suspend()
         action.step(client, sheet)
         self.assertEqual(commands(client), ["^attack", "^attack"])
+
+    def test_a_treasure_object_is_opened_instead_of_attacked(self):
+        client, sheet = fresh()
+        body = mob(sheet, 8, distance=10, targeted=True)
+        body.class_id = 62
+        action = Attack(8)
+        action.step(client, sheet)
+        self.assertEqual(commands(client), [])
+        self.assertIn("OP_LDoNOpen", opcodes(client))
+        self.assertNotIn("OP_AutoAttack", opcodes(client))
 
     def test_casting_empty_inbox_returns(self):
         client, sheet = fresh()

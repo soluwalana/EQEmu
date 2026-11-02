@@ -14,6 +14,7 @@ from eqclient3.actions.travel import Travel
 from eqclient3.data.locations import read_locations
 from eqclient3.log import log
 from eqclient3.nav.navmesh import load_nav
+from eqclient3.nav.path import STRIDE, straight
 from eqclient3.nav.travel import ensure_zone_graph
 from eqclient3.world import Mob
 from eqclient3.actions.support import (
@@ -55,6 +56,7 @@ class Kill(Action):
         self.cursor = 0
         self.post = 0
         self.prey_loaded = False
+        self.force = False
 
     def __setstate__(self, state: dict[str, object]) -> None:
         self.__dict__.update(state)
@@ -70,6 +72,8 @@ class Kill(Action):
             self.post = 0
         if "prey_loaded" not in self.__dict__:
             self.prey_loaded = False
+        if "force" not in self.__dict__:
+            self.force = False
 
     def opcodes(self) -> tuple[str, ...]:
         return ("OP_BecomeCorpse",)
@@ -109,6 +113,15 @@ class Kill(Action):
         if self.spawn_id != before or self.where != previous:
             self.active_path = None
         if yards(world, dest) > INTERACT:
+            mob = world.mobs.get(self.spawn_id) if self.spawn_id else None
+            close = mob is not None and yards(world, dest) <= 35 and world.line_of_sight(mob)
+            if self.force or close:
+                self.force = False
+                length = STRIDE["los"][0]
+                path = straight((world.x, world.y, world.z), dest, length)
+                self.active_path = path
+                world.movement.advance(loop, world, path)
+                return
             walk(self, loop, world, dest, "run")
             return
         if self.spawn_id and (
@@ -263,6 +276,7 @@ class Kill(Action):
         mob = world.mobs.get(self.spawn_id) if self.spawn_id else None
         distance = 0.0 if mob is None else mob.distance
         log.info("kill unstick %s spawn=%s d=%.0f", self.camp, self.spawn_id, distance)
+        self.force = True
         if self.spawn_id:
             self.skipped.add(int(self.spawn_id))
         self.spawn_id = None

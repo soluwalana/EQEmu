@@ -49,4 +49,5 @@ def test_opcodes():
     death.DeathHandler().handle("OP_Death", death_packet(7, 9, 15), sheet, fresh)
     fallen = next(action for action in fresh.queue if type(action).__name__ == "Death")
     fallen.step(fresh, sheet)
-    assert any(action.source == "form:qeynos" for action in fresh.queue)
+    assert sheet.formed_for == ""
+    assert not any(action.source == "form:qeynos" for action in fresh.queue)

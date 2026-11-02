@@ -27,6 +27,18 @@ class PickupTest(unittest.TestCase):
         action.step(client, sheet)
         self.assertTrue(action.complete)
 
+    def test_a_click_that_yields_nothing_gives_up_on_that_spawn(self):
+        client, sheet = fresh()
+        sheet.ground[4] = GroundSpawn(4, "silk", 0.0, 0.0, 0.0)
+        action = Pickup(4, (0.0, 0.0, 0.0))
+        action.item_id = 7
+        action.step(client, sheet)
+        self.assertFalse(action.complete)
+        for _ in range(20):
+            action.step(client, sheet)
+        self.assertTrue(action.complete)
+        self.assertTrue(sheet.ground[4].used)
+
 
 if __name__ == "__main__":
     unittest.main()

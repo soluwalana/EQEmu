@@ -162,6 +162,56 @@ class FetchTest(unittest.TestCase):
         finally:
             fetch_mod._book, fetch_mod._loaded = saved
 
+    def test_an_empty_plan_walks_to_the_ground_spawn(self):
+        from eqclient3.actions import fetch as fetch_mod
+
+        saved = fetch_mod.ground_at
+        fetch_mod.ground_at = lambda _item_id, _zone_id, _zone: ((-53.6, -187.9, 15.2),)
+        try:
+            self.sheet.zone = "tutorialb"
+            self.sheet.zone_id = 189
+            action = Fetch(59955, 1, "Hail Xenaida")
+            action.source = "task:1448:3"
+            action.step(self.client, self.sheet)
+            self.assertEqual(self.sheet.movement.plans, [((-53.6, -187.9, 15.2), "run")])
+        finally:
+            fetch_mod.ground_at = saved
+
+    def test_a_ground_spawn_on_that_point_is_picked_up(self):
+        from eqclient3.actions import fetch as fetch_mod
+        from eqclient3.world import GroundSpawn
+
+        saved = fetch_mod.ground_at
+        fetch_mod.ground_at = lambda _item_id, _zone_id, _zone: ((-53.6, -187.9, 15.2),)
+        try:
+            self.sheet.zone = "tutorialb"
+            self.sheet.zone_id = 189
+            self.sheet.ground[4] = GroundSpawn(4, "IT401_ACTORDEF", -53.6, -187.9, 15.2)
+            action = Fetch(59955, 1, "Hail Xenaida")
+            action.source = "task:1448:3"
+            action.step(self.client, self.sheet)
+            picks = [row for row in self.client.queue if type(row).__name__ == "Pickup"]
+            self.assertEqual([row.drop_id for row in picks], [4])
+            self.assertEqual(picks[0].item_id, 59955)
+        finally:
+            fetch_mod.ground_at = saved
+
+
+class GroundSpawnParseTest(unittest.TestCase):
+    def test_a_point_box_is_the_spawn(self):
+        from eqclient3.data.ground import read_ground
+
+        rows = [
+            "INSERT INTO `zone` VALUES",
+            "('tutorialb',415,'','The Mines of Gloomingdeep',NULL,18,-147,20,0,0,0,255,0,189);",
+            "INSERT INTO `ground_spawns` VALUES",
+            "(62,189,0,-53.6,-187.9,15.2,-53.6,-187.9,0,'IT401_ACTORDEF',59955,1,'Gloom Musrooms',30,-1,-1,NULL,NULL),",
+        ]
+        spots, names = read_ground(rows)
+        self.assertEqual(names[189], "tutorialb")
+        self.assertEqual(spots[59955][0].zone_id, 189)
+        self.assertEqual((spots[59955][0].x, spots[59955][0].y, spots[59955][0].z), (-53.6, -187.9, 15.2))
+
 
 if __name__ == "__main__":
     unittest.main()

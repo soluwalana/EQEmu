@@ -69,6 +69,27 @@ class Path:
     fallback: bool = False
 
 
+def straight(
+    origin: tuple[float, float, float],
+    goal: tuple[float, float, float],
+    length: float,
+) -> Path:
+    """One stride toward a mob already in sight. The mesh walk around a room loses it."""
+    origin = _xyz(origin)
+    goal = _xyz(goal)
+    points = _trim(origin, [origin, goal], goal)
+    return Path(
+        distance=_horiz(origin, goal),
+        points=points,
+        mode="los",
+        destination=goal,
+        next_point=along(origin, points, length),
+        origin=origin,
+        stride_length=float(length),
+        anim=STRIDE["los"][1],
+    )
+
+
 def route(
     origin: tuple[float, float, float],
     destination: tuple[float, float, float] | str | Mob,

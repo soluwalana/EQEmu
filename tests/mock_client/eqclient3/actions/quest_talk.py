@@ -18,7 +18,16 @@ if TYPE_CHECKING:
 
 from eqclient3.action import Action
 from eqclient3.actions.fetch import Fetch
-from eqclient3.actions.support import HAIL, character_name, line_of, send_command, walk, yield_to
+from eqclient3.actions.support import (
+    HAIL,
+    character_name,
+    in_tutorial,
+    line_of,
+    send_command,
+    task_activities,
+    walk,
+    yield_to,
+)
 from eqclient3.actions.trade import Trade
 from eqclient3.handlers.common import mob_named
 
@@ -92,6 +101,18 @@ class ExpectFaction:
 Expect = ExpectItem | ExpectMoney | ExpectFaction
 
 
+def _book_open(world: World) -> bool:
+    """A tutorial activity is still open, so the mine book keeps the turn."""
+    if not in_tutorial(world):
+        return False
+    for activity in task_activities(world):
+        if activity.locked:
+            continue
+        if activity.done < (activity.goal or 1):
+            return True
+    return False
+
+
 class QuestTalk(Action):
 
     def __init__(self, npc: str, steps: tuple[Turn, ...], *, expect: Expect | None = None) -> None:
@@ -117,6 +138,10 @@ class QuestTalk(Action):
         self.suspended = True
 
     def step(self, loop: Loop, world: World) -> None:
+        if _book_open(world):
+            # The mine book is the pass bar. A gear conversation waits.
+            self.priority = -1
+            return
         if mob_named(world, self.npc) is None:
             # He is in another zone. A travel or zone step has to be able to win.
             self.priority = -1

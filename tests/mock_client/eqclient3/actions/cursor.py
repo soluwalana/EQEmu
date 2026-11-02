@@ -38,6 +38,12 @@ class Cursor(Action):
 
     def step(self, loop: Loop, world: World) -> None:
         if self.move and not self.sent:
+            # A loot packet already in the mailbox is the item arriving, not a refusal.
+            while self.consume("OP_ItemPacket") is not None:
+                pass
+            while self.consume("OP_DeleteItem") is not None:
+                pass
+
             world.cursor_move = self.move
             loop.send("OP_MoveItem", OP_MoveItem(self.move[0], self.move[1]).serialize())
             self.sent = True
@@ -45,20 +51,25 @@ class Cursor(Action):
             self.wait("CURSOR")
             self.suspended = False
             return
+
         message = self.consume("OP_ItemPacket") or self.consume("OP_DeleteItem")
         if self.sent and message is not None and self._returned(world, message):
             self._reject(world)
             return
+
         if self.waiting_for("CURSOR") and message is None:
             self.waited += 1
             if self.limit is None or self.waited < self.limit:
                 return
+            
             self.waited = 0
             if self.sent:
                 self._accept(world)
                 return
+            
             self._retry(loop, world)
             return
+
         if message is not None and self._finishes(message):
             self._write(world, message)
             self.unwait("CURSOR")
@@ -66,6 +77,7 @@ class Cursor(Action):
             self.outstanding = False
             self.complete = True
             return
+
         self.wait("CURSOR")
         self.suspended = False
 
@@ -118,6 +130,7 @@ class Cursor(Action):
         move = self.move or world.cursor_move
         if move:
             world.refused_slots.add(int(move[1]))
+
         self.unwait("CURSOR")
         self.outstanding = False
         self.complete = True

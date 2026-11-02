@@ -92,6 +92,38 @@ class FormTest(unittest.TestCase):
         action.step(client, sheet)
         self.assertEqual(commands(client)[-1], "^follow reset spawned")
 
+    def test_follow_with_nobody_respawns_once_then_lets_the_next_zone_in_try(self):
+        client, sheet = fresh()
+        sheet.formed_for = "qeynos"
+        action = Form("qeynos", 2)
+        action.built = True
+        action.roster = [("Herwar", 1)]
+        action.spawned = ["Herwar"]
+        action.phase = "follow"
+        action.step(client, sheet)
+        self.assertEqual(commands(client)[-1], "^follow reset spawned")
+        inbox(
+            action,
+            "OP_ChannelMessage",
+            {"text": "You have no spawned bots meeting this criteria - type: 'spawned', name: ''"},
+        )
+        action.step(client, sheet)
+        self.assertEqual(action.spawned, [])
+        self.assertEqual(commands(client)[-1], "^botspawn Herwar")
+        inbox(action, "OP_ChannelMessage", {"text": "I am ready to fight!"})
+        action.step(client, sheet)
+        for _ in range(11):
+            action.step(client, sheet)
+        self.assertEqual(commands(client)[-1], "^follow reset spawned")
+        inbox(
+            action,
+            "OP_ChannelMessage",
+            {"text": "You have no spawned bots meeting this criteria - type: 'spawned', name: ''"},
+        )
+        action.step(client, sheet)
+        self.assertTrue(action.complete)
+        self.assertEqual(sheet.formed_for, "")
+
     def test_six_members_uses_the_group_template(self):
         client, sheet = fresh()
         action = Form("qeynos")

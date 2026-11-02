@@ -217,8 +217,18 @@ class Form(Action):
     def _apply(self, loop: Loop, world: World, reply: str) -> None:
         kind = _reply(self.pending, reply)
         if kind is _Reply.ABSENT:
-            self.phase = "invite"
-            self.index = len(self.spawned)
+            # Follow found nobody. The names are still listed, so a respawn would
+            # skip every bot and send follow again. One real respawn, then stop.
+            # Repeating the command drops the session. Clearing formed_for lets
+            # the next zone-in try while the owner is alive.
+            if self.follow_tries >= 1:
+                self.phase = "done"
+                world.formed_for = ""
+                return
+            self.follow_tries += 1
+            self.spawned.clear()
+            self.phase = "spawn"
+            self.index = 0
             self.waited = 0
             return
         if kind is _Reply.FOLLOWED:

@@ -20,6 +20,7 @@ from eqclient3.actions.support import (
     corpse_drag,
     corpse_name,
     hostiles_within,
+    in_tutorial,
     ingest_corpse_mail,
     loot_packet,
     message_text,
@@ -47,6 +48,8 @@ class Reclaim(Action):
         self.slots: list[Item] = []
         self.quiet = 0
         self.tries = 0
+        self.anchor: tuple[float, float] | None = None
+        self.still = 0
 
     def __setstate__(self, state: dict[str, object]) -> None:
         self.__dict__.update(state)
@@ -54,6 +57,10 @@ class Reclaim(Action):
             self.quiet = 0
         if "tries" not in self.__dict__:
             self.tries = 0
+        if "anchor" not in self.__dict__:
+            self.anchor = None
+        if "still" not in self.__dict__:
+            self.still = 0
 
     def opcodes(self) -> tuple[str, ...]:
         return (
@@ -87,6 +94,11 @@ class Reclaim(Action):
         self.suspended = True
 
     def step(self, loop: Loop, world: World) -> None:
+        # A corpse in the mine is behind the task book. Chasing it walks into the camp.
+        if in_tutorial(world):
+            self.priority = -1
+            return
+        self.priority = 270
         self._world = world
         self._inbox()
         if self._gone():
@@ -172,6 +184,17 @@ class Reclaim(Action):
                 return True
 
     def _approach(self, loop: Loop, world: World, spot: tuple[float, float, float] | None) -> None:
+        here = (round(world.x, 1), round(world.y, 1))
+        if here == self.anchor:
+            self.still += 1
+        else:
+            self.anchor = here
+            self.still = 0
+        if self.still >= 40:
+            log.info("reclaim unstick corpse=%s", self.corpse_id)
+            self.active_path = None
+            self.complete = True
+            return
         mover = world.movement
         seen = mover.visible_mobs(yards=HOSTILE_FAR)
         on_path = mover.mobs_on_path(seen) or []

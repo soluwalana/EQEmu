@@ -19,6 +19,7 @@ import os
 import re
 from pathlib import Path
 from eqclient3.action import Action
+from eqclient3.structs import OP_PopupResponse
 from eqclient3.log import log
 from eqclient3.nav.navmesh import load_nav
 from eqclient3.actions.attack import Attack
@@ -38,6 +39,8 @@ from eqclient3.actions.support import (
     yield_to,
 )
 from eqclient3.handlers.common import attack_for, character_name, mark_fight, mob_named
+from eqclient3.actions.trade import Trade
+from eqclient3.quests.graph import QuestGraph, load_graph
 from eqclient3.structs import OP_TargetMouse
 from eqclient3.struct_helpers import saylink_words
 
@@ -81,6 +84,12 @@ class Talk(Action):
         self.anchor: tuple[float, float] | None = None
         self.still = 0
         self.roaming = False
+        self.popup_answered = False
+
+    def __setstate__(self, state: dict[str, object]) -> None:
+        self.__dict__.update(state)
+        if "popup_answered" not in self.__dict__:
+            self.popup_answered = False
 
     def opcodes(self) -> tuple[str, ...]:
         return (
@@ -151,6 +160,17 @@ class Talk(Action):
             if self._offer_find(loop, world):
                 return
             if str(self.source).startswith("task:") and not _step_done(world, str(self.source)):
+                item_id = _held_receipt(world, self.target_id)
+                if item_id and self.target_id:
+                    source = f"hand:{item_id}"
+                    if _find_source(loop, source):
+                        self._stand_aside()
+                        return
+                    trade = Trade(self.target_id, item_id)
+                    if yield_to(self, loop, world, trade, source):
+                        return
+                if self._offer_popup(loop, world):
+                    return
                 self.waited += 1
                 if self.waited < _STALL:
                     return
@@ -391,6 +411,19 @@ class Talk(Action):
             found.append(message)
         return found
 
+    def _offer_popup(self, loop: Loop, world: World) -> bool:
+        """Click OK on the popup this hail opens. The next windows arrive on their own."""
+        if self.popup_answered:
+            return False
+        mob = world.mobs.get(self.target_id) if self.target_id else None
+        name = mob.spoken_name() if mob is not None else ""
+        popup_id = _offer_popup_id(str(world.zone or ""), name)
+        if not popup_id:
+            return False
+        self.popup_answered = True
+        loop.send("OP_PopupResponse", OP_PopupResponse(popup_id).serialize())
+        return True
+
     def _stand_aside(self) -> None:
         """The find hunt is priority -1 and newer talks win that band. Drop below it."""
         self.priority = -2
@@ -581,6 +614,93 @@ def _find_open(loop: Loop, source: str = "") -> bool:
     return False
 
 
+def _find_source(loop: Loop, source: str) -> bool:
+    queue = loop.queue
+    if queue is None or not source:
+        return False
+    return any(action.source == source and not action.complete for action in queue)
+
+
+_graph: QuestGraph | None = None
+_graph_tried = False
+_receipts: dict[tuple[str, str], tuple[int, ...]] | None = None
+
+
+def _receipt_graph() -> QuestGraph | None:
+    global _graph, _graph_tried
+    if _graph_tried:
+        return _graph
+    _graph_tried = True
+    try:
+        _graph = load_graph()
+    except OSError:
+        return None
+    return _graph
+
+
+def _npc_key(name: str) -> str:
+    """Letters and digits only, so a backtick and a hyphen name the same npc."""
+    chars = [(ch if ch.isalnum() else " ") for ch in name.lower()]
+    return " ".join("".join(chars).split())
+
+
+def _receipts_for(name: str, zone: str = "") -> tuple[int, ...]:
+    """Item ids this npc takes in this zone. Built once from the quest graph."""
+    global _receipts
+    graph = _receipt_graph()
+    if graph is None or not name:
+        return ()
+    if _receipts is None:
+        found: dict[tuple[str, str], list[int]] = {}
+        for edge in graph.edges:
+            if edge.get("rel") != "receives":
+                continue
+            origin = str(edge.get("from") or "")
+            zone_name, _, npc_name = origin.rpartition("/")
+            npc = _npc_key(npc_name)
+            place = zone_name.rsplit("/", 1)[-1].lower()
+            token = str(edge.get("to") or "")
+            if not npc or not token.startswith("item:"):
+                continue
+            item_id = int(token[5:])
+            bucket = found.setdefault((place, npc), [])
+            if item_id not in bucket:
+                bucket.append(item_id)
+        _receipts = {key: tuple(ids) for key, ids in found.items()}
+    want = _npc_key(name)
+    here = (zone or "").lower()
+    if here:
+        exact = _receipts.get((here, want))
+        if exact:
+            return exact
+        for (place, key), ids in _receipts.items():
+            if place == here and (key.endswith(want) or want.endswith(key)):
+                return ids
+        return ()
+    for (_place, key), ids in _receipts.items():
+        if key == want or key.endswith(want) or want.endswith(key):
+            return ids
+    return ()
+
+
+def _held_receipt(world: World, spawn_id: int) -> int:
+    """A held item this npc takes, from the quest graph."""
+    graph = _receipt_graph()
+    if graph is None or not spawn_id:
+        return 0
+    mob = world.mobs.get(spawn_id)
+    if mob is None:
+        return 0
+    want = _npc_key(mob.spoken_name())
+    held = {item for item in world.bags.values() if item}
+    if world.cursor:
+        held.add(world.cursor)
+    for item_id in _receipts_for(want, str(world.zone or "")):
+        if item_id in held:
+            return item_id
+    return 0
+
+
 def _step_done(world: World, source: str) -> bool:
     """A task hail is finished when the server book shows that activity done."""
     for activity in task_activities(world):
@@ -687,8 +807,86 @@ def _advances(zone: str, npc: str) -> dict[str, set[tuple[int, int]]]:
     return found
 
 
-def _script_path(zone: str, npc: str) -> Path | None:
+def _offer_popup_id(zone: str, npc: str) -> int:
+    """The popup a hail of this npc opens. Zero when the script shows none."""
+    path = _script_path(zone, npc)
+    if path is None:
+        return 0
+    try:
+        text = path.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return 0
+    for match in _SAY.finditer(text):
+        word = (match.group(1) or match.group(2) or "").strip().lower()
+        if word != "hail":
+            continue
+        brace = text.find("{", match.end())
+        block = _brace_block(text, brace + 1) if brace >= 0 else ""
+        popup_id = _popup_id(block)
+        if popup_id:
+            return popup_id
+    return 0
+
+
+def _popup_id(block: str) -> int:
+    """The numeric id on quest::popup in this block. Zero when the call has none."""
+    start = block.lower().find("quest::popup")
+    if start < 0:
+        return 0
+    open_paren = block.find("(", start)
+    if open_paren < 0:
+        return 0
+    depth = 0
+    quote = ""
+    last = 0
+    number = ""
+    index = open_paren
+    while index < len(block):
+        ch = block[index]
+        if quote:
+            if ch == "\\" and index + 1 < len(block):
+                index += 2
+                continue
+            if ch == quote:
+                quote = ""
+            index += 1
+            continue
+        if ch in "\"'":
+            quote = ch
+            number = ""
+            index += 1
+            continue
+        if ch == "(":
+            depth += 1
+            number = ""
+        elif ch == ")":
+            if number and depth == 1:
+                last = int(number)
+            number = ""
+            depth -= 1
+            if depth == 0:
+                return last
+        elif ch.isdigit() and depth == 1:
+            number += ch
+        elif number and depth == 1:
+            last = int(number)
+            number = ""
+        index += 1
+    return last
+
+
+def _quests_root() -> str:
     root = os.environ.get("EQEMU_QUESTS", "")
+    if root:
+        return root
+    sibling = Path(__file__).resolve().parents[4].parent / "projecteqquests"
+    if sibling.is_dir():
+        return str(sibling)
+    return ""
+
+
+def _script_path(zone: str, npc: str) -> Path | None:
+    root = _quests_root()
     if not root or not zone or not npc:
         return None
     folder = Path(root) / zone

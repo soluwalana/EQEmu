@@ -26,7 +26,13 @@
 EQStreamProxy::EQStreamProxy(std::shared_ptr<EQStreamInterface> &stream, const StructStrategy *structs, OpcodeManager **opcodes)
 :	m_stream(stream),
 	m_structs(structs),
-	m_opcodes(opcodes)
+	m_opcodes(opcodes),
+	m_trace_stream([](const std::shared_ptr<EQStreamInterface>& raw) {
+		const char* path = std::getenv("EQEMU_PACKET_TRACE");
+		if (path && *path) return std::shared_ptr<EQStreamInterface>(
+			std::make_shared<PacketTrace::StreamTap>(raw));
+		return raw;
+	}(m_stream))
 {
 	stream = nullptr;	//take the stream.
 	m_stream->SetOpcodeManager(m_opcodes);
@@ -66,7 +72,7 @@ void EQStreamProxy::QueuePacket(const EQApplicationPacket *p, bool ack_req) {
 void EQStreamProxy::FastQueuePacket(EQApplicationPacket **p, bool ack_req) {
 	if(p == nullptr || *p == nullptr)
 		return;
-	m_structs->Encode(p, m_stream, ack_req);
+	m_structs->Encode(p, m_trace_stream, ack_req);
 }
 
 EQApplicationPacket *EQStreamProxy::PopPacket() {
@@ -74,8 +80,11 @@ EQApplicationPacket *EQStreamProxy::PopPacket() {
 	if(pack == nullptr)
 		return(nullptr);
 
-	//pass this packet through the struct strategy.
+	// Capture client-format body before translating to internal structs.
+	if (m_trace_stream != m_stream)
+		PacketTrace::Record(pack, false, true, m_stream->GetRemoteAddr());
 	m_structs->Decode(pack);
+
 	return(pack);
 }
 

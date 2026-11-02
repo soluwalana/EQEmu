@@ -141,7 +141,14 @@ def play(loop: Loop, client: Client, world: World, queue: Schedule) -> None:
     try:
         while True:
             loop.run_once(client, world, queue, bus)
+            if not client.closed:
+                continue
+            # The disconnect often arrives after this pulse already flushed.
+            # The next pulse is the one that reconnects. Still closed after that
+            # means the new session did not come up.
+            loop.run_once(client, world, queue, bus)
             if client.closed:
+                log.info("session closed")
                 break
     except KeyboardInterrupt:
         return

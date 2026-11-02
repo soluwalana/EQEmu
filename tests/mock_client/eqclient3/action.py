@@ -13,9 +13,6 @@ if TYPE_CHECKING:
 from eqclient3.structs import EQStruct, OP_Consider, OP_TargetMouse
 
 
-def _consider_packet(player: int, target: int) -> bytes:
-    return OP_Consider(player, target).serialize()
-
 
 def _consider_id(message: Message) -> int:
     payload = message.payload
@@ -67,9 +64,10 @@ class Action:
         self.description = ""
         self.active_path: Path | None = None
         self._gem_recast: dict[int, int] = {}
-        self.waited = 0
         self.limit: int | None = None
-        self.consider_due = False
+        self.consider_sent = False
+        self.target_sent = False
+        self.mob_targeted = 0
 
     def _hear(self, loop: Loop, world: World) -> None:
         return
@@ -77,54 +75,52 @@ class Action:
     def step(self, loop: Loop, world: World) -> None:
         if not self.target_id:
             return
+
         mob = world.mobs.get(self.target_id)
-        if mob is None:
+        if not mob:
             return
-        if self.waiting_for("TARGET"):
-            if self.consider_due:
-                if not world.line_of_sight(mob):
-                    self.target_mob(loop, world)
-                    return
-                self._send_consider(loop, world, mob)
-                self.consider_due = False
-                return
-            message = self.consume(
-                "OP_Consider",
-                lambda message: _consider_id(message) == int(self.target_id),
+
+        if self.mob_targeted != self.target_id:
+            self.wait("TARGET")
+
+        if not self.can_see_mob(world, loop, mob):
+            return
+
+        if not self.target_sent:
+            loop.send("OP_TargetMouse", OP_TargetMouse(int(self.target_id) & 65535).serialize())
+            self.target_sent = True
+            return
+
+        if not self.consider_sent:
+            spawn = int(world.self_id or 0)
+            loop.send(
+                "OP_Consider", 
+                OP_Consider(spawn, int(mob.id)).serialize(),
             )
-            if message:
-                mob.targeted = True
-                self.unwait("TARGET")
-                self.waited = 0
-                return
-            if not world.line_of_sight(mob):
-                self.target_mob(loop, world)
-                return
-            self.waited += 1
-            retry = 10 if self.limit is None else int(self.limit)
-            if self.waited < retry:
-                return
-            self.waited = 0
-            self._send_consider(loop, world, mob)
+            self.consider_sent = True
             return
 
-        if not mob.targeted:
-            self.target_mob(loop, world)
-
-    def target_mob(self, loop: Loop, world: World) -> None:
-        mob = world.mobs[self.target_id]
-        self.wait("TARGET")
-        if not world.line_of_sight(mob):
-            if not self.active_path:
-                self.active_path = world.movement.plan(mob, "run")
-            world.movement.advance(loop, world, self.active_path)
+        message = self.consume(
+            "OP_Consider",
+            lambda message: _consider_id(message) == int(self.target_id),
+        )
+        if message:
+            mob.targeted = True
+            self.mob_targeted = self.target_id  
+            self.unwait("TARGET")
+            self.consider_sent = False
+            self.target_sent = False
             return
-        loop.send("OP_TargetMouse", OP_TargetMouse(int(self.target_id) & 65535).serialize())
-        self.consider_due = True
 
-    def _send_consider(self, loop: Loop, world: World, mob: Mob) -> None:
-        spawn = int(world.self_id or 0)
-        loop.send("OP_Consider", _consider_packet(spawn, int(mob.id)))
+    def can_see_mob(self, world: World, loop: Loop, mob: Mob) -> bool:
+        if world.line_of_sight(mob):
+            return True
+        
+        if not self.active_path:
+            self.active_path = world.movement.plan(mob, "run")
+        
+        world.movement.advance(loop, world, self.active_path)
+        return False
 
     def wait(self, kind: str) -> None:
         pending = self._pending()

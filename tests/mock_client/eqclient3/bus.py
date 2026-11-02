@@ -9,11 +9,12 @@ if TYPE_CHECKING:
     from eqclient3.schedule import Schedule
     from eqclient3.world import World
 
-from .action import Message
-from .handler import Handler
-from .net.decode import body
-from .structs import EQStruct, ZONE_ENTRY_SIZE
-from .trace import note_handler, note_opcode
+from eqclient3.action import Message
+from eqclient3.handler import Handler
+from eqclient3.net.decode import body
+from eqclient3.structs import EQStruct, ZONE_ENTRY_SIZE
+from eqclient3.trace import note_comms
+from eqclient3.log import log
 
 
 class Bus:
@@ -49,13 +50,13 @@ class Bus:
         Bytes for a known opcode are deserialized once. Handlers, movement, and
         the mailbox see that struct. A failed decode does not call them. An
         exclusive opcode still claims the packet. An int or an unknown opcode
-        stays off the handlers and the mailbox. ``note_opcode`` logs the
-        original size.
+        stays off the handlers and the mailbox.
         """
         if self._autoload:
             self.load()
-        note_opcode(opcode, payload)
+        note_comms("incomming bus", opcode, payload, False)
         if opcode == "OP_ZoneEntry" and isinstance(payload, (bytes, bytearray)) and len(payload) > ZONE_ENTRY_SIZE:
+            log.debug("OP_ZoneEntry is too big, converting to OP_NewSpawn")
             opcode = "OP_NewSpawn"
         parsed = _struct(opcode, payload)
         claimed = False
@@ -65,15 +66,27 @@ class Bus:
             if opcode not in handler.opcodes:
                 continue
             if isinstance(parsed, EQStruct) and world is not None and loop is not None:
-                note_handler(type(handler).__name__, opcode)
+                handler_name = type(handler).__name__
+                note_comms(f"handler {handler_name}", opcode, parsed, False)
                 handler.handle(opcode, parsed, world, loop)
             if opcode in handler.exclusive:
                 claimed = True
         if isinstance(parsed, EQStruct):
             _movement(self.world, opcode, parsed)
-        queue = self.queue
-        if claimed or queue is None or not isinstance(parsed, EQStruct):
+
+        if claimed:
+            log.debug(f"Exclusively claimed opcode {opcode}")
             return
+
+        if not isinstance(parsed, EQStruct):
+            log.debug(f"Opcode {opcode} wasn't a struct")
+            return
+        
+        queue = self.queue
+        if not queue:
+            log.debug("No queue skipping OPCode -> action distribution")
+            return
+        
         for action in queue:
             if opcode in action.opcodes():
                 action.add_message(Message(parsed))
@@ -92,5 +105,5 @@ def _movement(world: World | None, opcode: str, payload: EQStruct) -> None:
         return
     if opcode not in mover.opcodes():
         return
-    note_handler("movement", opcode)
+    note_comms("movement", opcode, payload, False)
     mover.handle(opcode, payload, world)

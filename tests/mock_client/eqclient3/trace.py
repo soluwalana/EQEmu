@@ -53,10 +53,6 @@ def _write(kind: str, text: str) -> None:
     handle.write(f"{stamp} {kind} {text}\n")
 
 
-def note_opcode(opcode: str, payload: object, sent: bool = False) -> None:
+def note_comms(name: str, opcode: str, payload: object, sent: bool = False) -> None:
     size = len(payload) if isinstance(payload, (bytes, bytearray)) else 0
-    _write("opcode", f"{opcode} bytes={size} sent={sent}")
-
-
-def note_handler(name: str, opcode: str) -> None:
-    _write("handler", f"{name} {opcode}")
+    _write(name, f"{opcode} bytes={size} sent={sent}")

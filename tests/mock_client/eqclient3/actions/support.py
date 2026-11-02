@@ -107,7 +107,7 @@ BASH = 10
 SILK = 54234
 NORMAL_LOOT = (1, 3)
 TOO_FAR = 5
-SPEAK, KILL, LOOT, DELIVER, COLLECT = (4, 2, 3, 1, 13)
+SPEAK, KILL, LOOT, DELIVER, COLLECT, EXPLORE = (4, 2, 3, 1, 13, 5)
 
 
 def character_name(loop: Loop | None, world: World) -> str:

@@ -21,11 +21,14 @@ from eqclient3.actions.fetch import Fetch
 from eqclient3.actions.kill import Kill
 from eqclient3.actions.level_up import queue_level_gear
 from eqclient3.actions.pickup import Pickup
-from eqclient3.actions.talk import Talk
+from eqclient3.actions.talk import Talk, _receipts_for
+from eqclient3.actions.visit import Visit
+from eqclient3.data.areas import box_for
 from eqclient3.actions.zone import Zone
 from eqclient3.actions.support import (
     COLLECT,
     DELIVER,
+    EXPLORE,
     KILL,
     LOOT,
     SPEAK,
@@ -112,7 +115,7 @@ class ReadTasks(Action):
                 self.yielding = True
                 return
             # A step the book still lists is queued again. A resolved journal row is cleared.
-            action = _action_for(activity)
+            action = _action_for(world, activity)
             if not action:
                 continue
             _reopen(loop, world, source)
@@ -171,21 +174,53 @@ class ReadTasks(Action):
                 heard = True
 
 
-def _action_for(activity: Activity) -> Action | None:
+def _action_for(world: World, activity: Activity) -> Action | None:
     if activity.ground:
         return Pickup(activity.drop_id, activity.point)
     text = activity.text or activity.description
     if activity.kind == SPEAK:
         if not activity.npc and not text and not activity.target_name:
             return None
+        item_id = _sole_receipt(activity.target_name, str(world.zone or ""))
+        if item_id and world.held(item_id) < 1:
+            return Fetch(item_id, 1, text)
         talk = Talk(activity.npc, "hail", text)
         talk.bind_name = activity.target_name or ""
         return talk
     if activity.kind == KILL:
         return Kill(spawn_id=activity.spawn_id or None, camp=activity.target_name or None)
+    if activity.kind == EXPLORE:
+        box = box_for(int(activity.task_id), int(activity.activity_id))
+        if box is None:
+            return None
+        return Visit(int(activity.task_id), int(activity.activity_id), box.center())
     if activity.kind in (LOOT, DELIVER, COLLECT):
-        return Fetch(activity.item_id, activity.goal or 1, text)
+        item_id = activity.item_id or _first_receipt(activity.target_name, str(world.zone or ""))
+        if item_id and world.held(item_id) < (activity.goal or 1):
+            return Fetch(item_id, activity.goal or 1, text)
+        if activity.target_name or text:
+            talk = Talk(activity.npc, "hail", text)
+            talk.bind_name = activity.target_name or ""
+            return talk
+        return None
     return None
+
+
+def _sole_receipt(name: str, zone: str) -> int:
+    """The one item this npc takes here. Zero when they take none or several."""
+    found: list[int] = []
+    for item_id in _receipts_for(name, zone):
+        if item_id not in found:
+            found.append(item_id)
+    if len(found) == 1:
+        return found[0]
+    return 0
+
+
+def _first_receipt(name: str, zone: str) -> int:
+    for item_id in _receipts_for(name, zone):
+        return item_id
+    return 0
 
 
 def _line(message: Message) -> tuple[str, str]:
@@ -285,8 +320,11 @@ def _append(
         yield_to(parent, loop, world, action, source)
     elif kind == "deliver":
         item_name, npc_name = _deliver(subject)
+        item_id = _item_id(item_name)
+        if not item_id:
+            return
         npc = _npc(world, npc_name)
-        action = Deliver(_item_id(item_name), npc if npc else npc_name)
+        action = Deliver(item_id, npc if npc else npc_name)
         action.description = text
         yield_to(parent, loop, world, action, source)
     elif kind == "pickup":

@@ -352,6 +352,9 @@ class Session:
                     self._peer = addr
                 self._last_recv = time.monotonic()
                 self._handle_datagram(data)
+            # The writer sends acks and the keepalive. Reacquiring the lock
+            # immediately starves that thread, and the zone then drops the session.
+            time.sleep(0)
 
     def _session_request(self) -> bytes:
         return SessionRequest(3, self._connect_code, self.max_packet_size).serialize()
@@ -473,8 +476,11 @@ class Session:
 
     def _note_decode_failure(self) -> None:
         self._decode_failures += 1
-        if gap_needs_rezone(0.0, self._decode_failures):
-            self.needs_rezone = True
+        if self._decode_failures < DECODE_FAIL_LIMIT:
+            return
+        # A rezone from here asks the world to enter again, and the zone kicks the live client.
+        log.info("session decode failures=%s", self._decode_failures)
+        self._decode_failures = 0
 
     def _can_encode(self, data: bytes) -> bool:
         if len(data) < 2 or not self.connected:
@@ -532,6 +538,7 @@ class Session:
         elif opcode == OP_SESSION_STAT_REQUEST:
             self._on_stat_request(data)
         elif opcode == OP_SESSION_DISCONNECT:
+            log.info("server disconnected the session")
             self.closed = True
             self.connected = False
         elif opcode == OP_OUT_OF_SESSION:
@@ -627,7 +634,8 @@ class Session:
         if stream.gap_since <= 0.0:
             return
         queued_for = time.monotonic() - stream.gap_since
-        if gap_needs_rezone(queued_for, self._decode_failures):
+        if queued_for >= RESEND_WINDOW:
+            log.info("session reliable gap %.0fs", queued_for)
             self.needs_rezone = True
 
     def _consume_fragment(self, stream: _Stream, data: bytes) -> None:

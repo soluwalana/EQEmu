@@ -3,7 +3,7 @@
 import unittest
 from types import SimpleNamespace
 
-from harness import commands, fresh, inbox, kinds, mob, movement
+from harness import commands, fresh, inbox, kinds, mob, movement, opcodes
 
 from eqclient3.actions.fetch import Fetch
 from eqclient3.actions.talk import Talk
@@ -174,6 +174,50 @@ class TalkTest(unittest.TestCase):
         self.assertFalse(any(type(row).__name__ == "Trade" for row in client.queue))
         self.assertEqual(commands(client), ["Hail, Vahlara"])
 
+    def test_a_held_item_the_npc_receives_is_handed_over(self):
+        from unittest.mock import patch
+
+        client, sheet = fresh()
+        mob(sheet, 9, distance=5, name="Absor", targeted=True)
+        sheet.bags[13] = 9998
+        action = Talk(9, "hail", "Hail Absor and Learn About Weapons.")
+        action.source = "task:1448:1"
+        action.step(client, sheet)
+        action.expect_reply = False
+        with patch("eqclient3.actions.talk._receipts_for", return_value=(9998,)):
+            action.step(client, sheet)
+        hands = [row for row in client.queue if type(row).__name__ == "Trade"]
+        self.assertEqual(len(hands), 1)
+        self.assertEqual(hands[0].item, 9998)
+        self.assertEqual(hands[0].partner, 9)
+
+    def test_a_backtick_name_matches_the_hyphenated_receiver(self):
+        from types import SimpleNamespace
+
+        from eqclient3.actions import talk as talk_mod
+
+        saved = (talk_mod._graph, talk_mod._graph_tried, talk_mod._receipts)
+        talk_mod._graph = SimpleNamespace(
+            edges=[{"rel": "receives", "from": "tutorialb/xenaida akh-zrial", "to": "item:59955"}]
+        )
+        talk_mod._graph_tried = True
+        talk_mod._receipts = None
+        try:
+            self.assertEqual(talk_mod._receipts_for("Xenaida Akh`zrial"), (59955,))
+        finally:
+            talk_mod._graph, talk_mod._graph_tried, talk_mod._receipts = saved
+
+    def test_a_hail_with_no_hand_in_clicks_the_script_popup(self):
+        client, sheet = fresh()
+        mob(sheet, 9, distance=5, name="Prathun Stumblebum", targeted=True)
+        sheet.zone = "tutorialb"
+        action = Talk(9, "hail", "Hail Prathun and Learn About Communication.")
+        action.source = "task:1448:5"
+        action.step(client, sheet)
+        action.expect_reply = False
+        action.step(client, sheet)
+        self.assertIn("OP_PopupResponse", opcodes(client))
+
     def test_an_open_silk_hunt_is_given_the_turn(self):
         from eqclient3.actions.kill import Kill
 
@@ -227,18 +271,23 @@ class TalkTest(unittest.TestCase):
         self.assertFalse(any(type(row).__name__ == "Kill" for row in client.queue))
 
     def test_a_finished_silk_hunt_hands_the_silk(self):
+        from unittest.mock import patch
+
         client, sheet = fresh()
         mob(sheet, 9, distance=5, name="Vahlara", targeted=True)
+        sheet.bags[22] = 54234
         action = Talk(9, "hail", "Hail Vahlara and Learn About Armor.")
         action.source = "task:1448:2"
         action.step(client, sheet)
         action.sought = True
         action.priority = -2
         action.expect_reply = False
-        sheet.bags[22] = 54234
-        action.step(client, sheet)
-        self.assertFalse(any(type(row).__name__ == "Trade" for row in client.queue))
-        self.assertEqual(action.priority, 0)
+        with patch("eqclient3.actions.talk._receipts_for", return_value=(54234,)):
+            action.step(client, sheet)
+        hands = [row for row in client.queue if type(row).__name__ == "Trade"]
+        self.assertEqual(len(hands), 1)
+        self.assertEqual(hands[0].item, 54234)
+        self.assertEqual(hands[0].partner, 9)
 
     def test_find_a_person_queues_a_hail(self):
         client, sheet = fresh()

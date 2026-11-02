@@ -20,6 +20,15 @@ class KillTest(unittest.TestCase):
         self.assertTrue(action.yielding)
         self.assertFalse(action.complete)
 
+    def test_a_nearby_visible_spawn_is_stepped_toward(self):
+        client, sheet = fresh()
+        client.journal.set_soulbind("Hero", "qeynos")
+        body = mob(sheet, 8, distance=25, targeted=True)
+        action = Kill(spawn_id=8)
+        action.step(client, sheet)
+        self.assertEqual(movement().advances[-1].destination, body.position)
+        self.assertNotIn("Attack", kinds(client))
+
     def test_out_of_range_walks(self):
         client, sheet = fresh()
         client.journal.set_soulbind("Hero", "qeynos")

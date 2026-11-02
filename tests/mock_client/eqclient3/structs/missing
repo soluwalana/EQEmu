@@ -1,0 +1,11 @@
+OP_Untargetable
+OP_WearChange
+OP_Action
+OP_FormattedMessage
+OP_ManaUpdate
+OP_Endurance
+OP_TargetHoTT
+
+OP_MoveItem / OP_MoveItem-> OP_ItemPacket
+
+

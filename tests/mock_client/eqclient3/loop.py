@@ -15,17 +15,17 @@ if TYPE_CHECKING:
     from eqclient3.bus import Bus
     from eqclient3.schedule import Schedule
 
-from .actions.support import CURSOR_SLOT, character_name
-from .inventory.item_stats import ItemBook, ensure_items
-from .net.sheet import Character as Creation
-from .capture import Capture, open_capture
-from .journal import Journal
-from .log import log
-from .trace import note_opcode
-from .world import World
-from . import net
-from .net.client import Client, Login
-from .net.session import Session, SessionError
+from eqclient3.actions.support import CURSOR_SLOT, character_name
+from eqclient3.inventory.item_stats import ItemBook, ensure_items
+from eqclient3.net.sheet import Character as Creation
+from eqclient3.capture import Capture, open_capture
+from eqclient3.journal import Journal
+from eqclient3.log import log
+from eqclient3.trace import note_comms
+from eqclient3.world import World
+from eqclient3 import net
+from eqclient3.net.client import Client, Login
+from eqclient3.net.session import Session, SessionError
 
 PULSE = 0.1
 _HEARD = ("OP_ChannelMessage", "OP_SpecialMesg", "OP_SimpleMessage")
@@ -294,7 +294,7 @@ class Loop:
         self.flushed = batch
         for opcode, payload in batch:
             try:
-                note_opcode(opcode, payload, True)
+                note_comms("outbound loop", opcode, payload, True)
                 _send(session, opcode, payload)
                 self._capture("send", opcode, payload)
             except SessionError:
@@ -335,6 +335,11 @@ class Loop:
         if self._transferred:
             return
         self._transferred = True
+        # The zone-in that follows is a new entrance. A same-zone weather refresh
+        # does not come through here, so the party has to be built again.
+        world = self.world
+        if world is not None:
+            world.formed_for = ""
         transfer_zone(session)
 
 

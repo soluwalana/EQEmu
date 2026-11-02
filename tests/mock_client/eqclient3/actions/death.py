@@ -10,7 +10,6 @@ if TYPE_CHECKING:
 
 
 from eqclient3.action import Action
-from eqclient3.actions.bots.form import queue_form
 from eqclient3.actions.support import clear_source
 
 
@@ -37,6 +36,7 @@ class Death(Action):
             queue.remove(action.insert)
             clear_source(loop, world, action.source)
         self.complete = True
-        # The sweep drops the party. Login and rezone form on OP_ClientReady.
+        # The sweep drops the party. A dead owner is not in the client list, so a
+        # spawn here tells and then follow finds nobody. The respawn zone-in
+        # forms again from OP_ClientReady once the owner is alive.
         world.formed_for = ""
-        queue_form(loop, world)

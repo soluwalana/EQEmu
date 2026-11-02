@@ -54,6 +54,33 @@ class ReadTasksTest(unittest.TestCase):
         self.assertFalse(action.complete)
         self.assertFalse(client.journal.tutorial_done("Hero"))
 
+    def test_a_deliver_with_no_item_fetches_what_the_npc_receives(self):
+        from unittest.mock import patch
+
+        client, sheet = fresh("tutorialb")
+        step = Activity(1448, 3, 1, "Xenaida", "", "Hail Xenaida and Learn About Maps.", 1)
+        sheet.task_book = SimpleNamespace(activities=[step])
+        action = ReadTasks()
+        place(client, action, "tutorialb", "read_tasks:tutorialb")
+        with patch("eqclient3.actions.read_tasks._receipts_for", return_value=(59955,)):
+            action.step(client, sheet)
+        fetches = [row for row in client.queue if type(row).__name__ == "Fetch"]
+        self.assertEqual(len(fetches), 1)
+        self.assertEqual(fetches[0].item_id, 59955)
+
+    def test_a_hail_fetches_the_one_item_the_npc_receives(self):
+        from unittest.mock import patch
+
+        client, sheet = fresh("tutorialb")
+        step = Activity(1448, 6, 4, "Poxan", "", "Hail Poxan and Learn about Swimming", 1)
+        sheet.task_book = SimpleNamespace(activities=[step])
+        action = ReadTasks()
+        place(client, action, "tutorialb", "read_tasks:tutorialb")
+        with patch("eqclient3.actions.read_tasks._receipts_for", return_value=(59968,)):
+            action.step(client, sheet)
+        fetches = [row for row in client.queue if type(row).__name__ == "Fetch"]
+        self.assertEqual([row.item_id for row in fetches], [59968])
+
     def test_an_open_find_hunt_drops_the_book_under_it(self):
         from eqclient3.actions.kill import Kill
         from eqclient3.actions.talk import Talk

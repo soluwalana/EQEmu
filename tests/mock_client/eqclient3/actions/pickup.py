@@ -38,13 +38,21 @@ class Pickup(Action):
         if gone or held:
             self.complete = True
             return
-        if yards(world, self.point) > INTERACT or not self.clicked:
-            if yards(world, self.point) > INTERACT:
-                walk(self, loop, world, self.point, "run")
-                return
+        if yards(world, self.point) > INTERACT:
+            walk(self, loop, world, self.point, "run")
+            return
         if not self.clicked:
             loop.send(
                 "OP_ClickObject",
                 OP_ClickObject(int(self.drop_id), int(world.self_id or 0)).serialize(),
             )
             self.clicked = True
+            self.waited = 0
+            return
+        self.waited += 1
+        if self.waited < 20:
+            return
+        row = world.ground.get(self.drop_id)
+        if row is not None:
+            row.used = True
+        self.complete = True

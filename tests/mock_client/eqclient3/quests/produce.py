@@ -398,7 +398,7 @@ def _kit_ids(world: World, class_id: int, level: int) -> list[int]:
 def kit_for(class_id: int, level: int) -> list[int]:
     """Weapon and class armor. Through level 10 every class also wears the burlap set."""
     items: list[int] = []
-    if 2 <= level <= 10:
+    if level <= 10:
         items.extend(_BURLAP)
     weapon = _WEAPON.get(class_id, 0)
     if weapon:
