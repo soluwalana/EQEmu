@@ -13,7 +13,7 @@ import struct
 from dataclasses import dataclass, field
 from typing import ClassVar
 
-from eqclient3.structs.wire import EQStruct, _need, _fixed, _put_fixed, _put_cstr
+from eqclient3.structs.wire import EQStruct, _need, _fixed, _put_fixed, _put_cstr, _cstring
 
 
 def _exact(data: bytes, size: int, op: str) -> None:
@@ -765,6 +765,7 @@ class OP_ConfirmDelete(EQStruct):
     def deserialize(cls, data: bytes) -> "OP_ConfirmDelete":
         return cls(bytes(data))
 
+
 @dataclass
 class OP_ItemVerifyRequest(EQStruct):
     slot_type: int = 0
@@ -843,9 +844,14 @@ class OP_GMSummon(EQStruct):
         _put_fixed(out, 0, self.charname, 64)
         _put_fixed(out, 64, self.gmname, 64)
         struct.pack_into(
-            "<IIfffI", out, 128,
-            self.success, self.zone_id,
-            self.y, self.x, self.z,
+            "<IIfffI",
+            out,
+            128,
+            self.success,
+            self.zone_id,
+            self.y,
+            self.x,
+            self.z,
             self.unknown148,
         )
         return bytes(out)
@@ -859,7 +865,6 @@ class OP_GMSummon(EQStruct):
             _fixed(data, 64, 64),
             *struct.unpack_from("<IIfffI", data, 128),
         )
-
 
 
 @dataclass
@@ -887,48 +892,50 @@ class OP_TaskDescription(EQStruct):
         return (
             struct.pack(
                 "<IIBII",
-                self.sequence, self.task_id,
-                self.open_window, self.task_type,
+                self.sequence,
+                self.task_id,
+                self.open_window,
+                self.task_type,
                 self.reward_type,
             )
             + _put_cstr(self.title)
             + struct.pack(
                 "<III",
-                self.duration, self.duration_code, self.elapsed,
+                self.duration,
+                self.duration_code,
+                self.elapsed,
             )
             + _put_cstr(self.description)
             + struct.pack(
                 "<BIII",
-                self.has_rewards, self.coin_reward,
-                self.xp_reward, self.faction_reward,
+                self.has_rewards,
+                self.coin_reward,
+                self.xp_reward,
+                self.faction_reward,
             )
             + _put_cstr(self.reward)
             + _put_cstr(self.item_link)
             + struct.pack(
-                "<IB", self.points, self.has_reward_selection,
+                "<IB",
+                self.points,
+                self.has_reward_selection,
             )
         )
 
     @classmethod
     def deserialize(cls, data: bytes) -> "OP_TaskDescription":
         off = 0
-        seq, tid, opened, task_type, reward_type = (
-            struct.unpack_from("<IIBII", data, off)
-        )
+        seq, tid, opened, task_type, reward_type = struct.unpack_from("<IIBII", data, off)
         off += 17
 
         title, off = _cstring(data, off)
 
-        duration, duration_code, elapsed = (
-            struct.unpack_from("<III", data, off)
-        )
+        duration, duration_code, elapsed = struct.unpack_from("<III", data, off)
         off += 12
 
         description, off = _cstring(data, off)
 
-        has_rewards, coin, xp, faction = (
-            struct.unpack_from("<BIII", data, off)
-        )
+        has_rewards, coin, xp, faction = struct.unpack_from("<BIII", data, off)
         off += 13
 
         reward, off = _cstring(data, off)
@@ -940,13 +947,25 @@ class OP_TaskDescription(EQStruct):
         points, selection = struct.unpack_from("<IB", data, off)
 
         return cls(
-            seq, tid, title, description,
-            opened, task_type, reward_type,
-            duration, duration_code, elapsed,
-            has_rewards, coin, xp, faction,
-            reward, item_link, points, selection,
+            seq,
+            tid,
+            title,
+            description,
+            opened,
+            task_type,
+            reward_type,
+            duration,
+            duration_code,
+            elapsed,
+            has_rewards,
+            coin,
+            xp,
+            faction,
+            reward,
+            item_link,
+            points,
+            selection,
         )
-
 
 
 @dataclass
@@ -962,9 +981,7 @@ class OP_ItemLinkClick(EQStruct):
     _FMT = "<I6I2I12sH2s"
 
     def serialize(self) -> bytes:
-        if (len(self.augments) != 6
-            or len(self.unknown36) != 12
-            or len(self.unknown50) != 2):
+        if len(self.augments) != 6 or len(self.unknown36) != 12 or len(self.unknown50) != 2:
             raise ValueError("Invalid item link fields")
 
         return struct.pack(
@@ -984,6 +1001,11 @@ class OP_ItemLinkClick(EQStruct):
             raise ValueError(f"Expected 52 bytes, got {len(data)}")
         v = struct.unpack(cls._FMT, data)
         return cls(
-            v[0], tuple(v[1:7]), v[7],
-            v[8], v[9], v[10], v[11],
+            v[0],
+            tuple(v[1:7]),
+            v[7],
+            v[8],
+            v[9],
+            v[10],
+            v[11],
         )
