@@ -255,6 +255,12 @@ from eqclient3.structs.rof2_additional import (
     OP_LDoNOpen,
     OP_LDoNPickLock,
     OP_LDoNSenseTraps,
+    OP_ConfirmDelete,
+    OP_ItemVerifyRequest,
+    OP_ItemVerifyReply,
+    OP_GMSummon,
+    OP_ItemLinkClick,
+    OP_TaskDescription,
 )
 
 __all__ = [
@@ -463,4 +469,11 @@ __all__ = [
     "OP_LDoNOpen",
     "OP_LDoNPickLock",
     "OP_LDoNSenseTraps",
+    "OP_ConfirmDelete",
+    "OP_ConfirmDelete",
+    "OP_ItemVerifyRequest",
+    "OP_ItemVerifyReply",
+    "OP_GMSummon",
+    "OP_ItemLinkClick",
+    "OP_TaskDescription",
 ]

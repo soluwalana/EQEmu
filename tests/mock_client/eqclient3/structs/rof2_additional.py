@@ -13,7 +13,7 @@ import struct
 from dataclasses import dataclass, field
 from typing import ClassVar
 
-from eqclient3.structs.wire import EQStruct, _need, _fixed, _put_fixed
+from eqclient3.structs.wire import EQStruct, _need, _fixed, _put_fixed, _put_cstr
 
 
 def _exact(data: bytes, size: int, op: str) -> None:
@@ -752,3 +752,238 @@ class OP_RestState(EQStruct):
 
 class OP_AutoAttack2(_Opaque):
     """Opaque: EQEmu's handler ignores the body; don't assume bool/u32."""
+
+
+@dataclass
+class OP_ConfirmDelete(EQStruct):
+    payload: bytes = b""
+
+    def serialize(self) -> bytes:
+        return self.payload
+
+    @classmethod
+    def deserialize(cls, data: bytes) -> "OP_ConfirmDelete":
+        return cls(bytes(data))
+
+@dataclass
+class OP_ItemVerifyRequest(EQStruct):
+    slot_type: int = 0
+    unknown02: int = 0
+    slot: int = -1
+    sub_index: int = -1
+    aug_index: int = -1
+    unknown01: int = 0
+    target: int = 0
+
+    def serialize(self) -> bytes:
+        return struct.pack(
+            "<6hI",
+            self.slot_type,
+            self.unknown02,
+            self.slot,
+            self.sub_index,
+            self.aug_index,
+            self.unknown01,
+            self.target,
+        )
+
+    @classmethod
+    def deserialize(cls, data: bytes) -> OP_ItemVerifyRequest:
+        _need(data, 16, cls.__name__)
+        if len(data) != 16:
+            raise ValueError(f"{cls.__name__}: expected 16 bytes")
+        return cls(*struct.unpack("<6hI", data))
+
+
+@dataclass
+class OP_ItemVerifyReply(EQStruct):
+    slot_type: int = 0
+    unknown02: int = 0
+    slot: int = -1
+    sub_index: int = -1
+    aug_index: int = -1
+    unknown01: int = 0
+    spell: int = 0
+    target: int = 0
+
+    def serialize(self) -> bytes:
+        return struct.pack(
+            "<6hII",
+            self.slot_type,
+            self.unknown02,
+            self.slot,
+            self.sub_index,
+            self.aug_index,
+            self.unknown01,
+            self.spell,
+            self.target,
+        )
+
+    @classmethod
+    def deserialize(cls, data: bytes) -> OP_ItemVerifyReply:
+        _need(data, 20, cls.__name__)
+        if len(data) != 20:
+            raise ValueError(f"{cls.__name__}: expected 20 bytes")
+        return cls(*struct.unpack("<6hII", data))
+
+
+@dataclass
+class OP_GMSummon(EQStruct):
+    charname: str
+    gmname: str
+    success: int = 0
+    zone_id: int = 0
+    y: float = 0.0
+    x: float = 0.0
+    z: float = 0.0
+    unknown148: int = 0
+
+    def serialize(self) -> bytes:
+        out = bytearray(152)
+        _put_fixed(out, 0, self.charname, 64)
+        _put_fixed(out, 64, self.gmname, 64)
+        struct.pack_into(
+            "<IIfffI", out, 128,
+            self.success, self.zone_id,
+            self.y, self.x, self.z,
+            self.unknown148,
+        )
+        return bytes(out)
+
+    @classmethod
+    def deserialize(cls, data: bytes) -> "OP_GMSummon":
+        if len(data) != 152:
+            raise ValueError(f"Expected 152 bytes, got {len(data)}")
+        return cls(
+            _fixed(data, 0, 64),
+            _fixed(data, 64, 64),
+            *struct.unpack_from("<IIfffI", data, 128),
+        )
+
+
+
+@dataclass
+class OP_TaskDescription(EQStruct):
+    sequence: int
+    task_id: int
+    title: str
+    description: str
+    open_window: int = 0
+    task_type: int = 0
+    reward_type: int = 0
+    duration: int = 0
+    duration_code: int = 0
+    elapsed: int = 0
+    has_rewards: int = 0
+    coin_reward: int = 0
+    xp_reward: int = 0
+    faction_reward: int = 0
+    reward: str = ""
+    item_link: str = ""
+    points: int = 0
+    has_reward_selection: int = 0
+
+    def serialize(self) -> bytes:
+        return (
+            struct.pack(
+                "<IIBII",
+                self.sequence, self.task_id,
+                self.open_window, self.task_type,
+                self.reward_type,
+            )
+            + _put_cstr(self.title)
+            + struct.pack(
+                "<III",
+                self.duration, self.duration_code, self.elapsed,
+            )
+            + _put_cstr(self.description)
+            + struct.pack(
+                "<BIII",
+                self.has_rewards, self.coin_reward,
+                self.xp_reward, self.faction_reward,
+            )
+            + _put_cstr(self.reward)
+            + _put_cstr(self.item_link)
+            + struct.pack(
+                "<IB", self.points, self.has_reward_selection,
+            )
+        )
+
+    @classmethod
+    def deserialize(cls, data: bytes) -> "OP_TaskDescription":
+        off = 0
+        seq, tid, opened, task_type, reward_type = (
+            struct.unpack_from("<IIBII", data, off)
+        )
+        off += 17
+
+        title, off = _cstring(data, off)
+
+        duration, duration_code, elapsed = (
+            struct.unpack_from("<III", data, off)
+        )
+        off += 12
+
+        description, off = _cstring(data, off)
+
+        has_rewards, coin, xp, faction = (
+            struct.unpack_from("<BIII", data, off)
+        )
+        off += 13
+
+        reward, off = _cstring(data, off)
+        item_link, off = _cstring(data, off)
+
+        if len(data) != off + 5:
+            raise ValueError("Invalid task trailer length")
+
+        points, selection = struct.unpack_from("<IB", data, off)
+
+        return cls(
+            seq, tid, title, description,
+            opened, task_type, reward_type,
+            duration, duration_code, elapsed,
+            has_rewards, coin, xp, faction,
+            reward, item_link, points, selection,
+        )
+
+
+
+@dataclass
+class OP_ItemLinkClick(EQStruct):
+    item_id: int
+    augments: tuple[int, ...] = (0,) * 6
+    link_hash: int = 0
+    unknown32: int = 0
+    unknown36: bytes = bytes(12)
+    icon: int = 0
+    unknown50: bytes = bytes(2)
+
+    _FMT = "<I6I2I12sH2s"
+
+    def serialize(self) -> bytes:
+        if (len(self.augments) != 6
+            or len(self.unknown36) != 12
+            or len(self.unknown50) != 2):
+            raise ValueError("Invalid item link fields")
+
+        return struct.pack(
+            self._FMT,
+            self.item_id,
+            *self.augments,
+            self.link_hash,
+            self.unknown32,
+            self.unknown36,
+            self.icon,
+            self.unknown50,
+        )
+
+    @classmethod
+    def deserialize(cls, data: bytes) -> "OP_ItemLinkClick":
+        if len(data) != 52:
+            raise ValueError(f"Expected 52 bytes, got {len(data)}")
+        v = struct.unpack(cls._FMT, data)
+        return cls(
+            v[0], tuple(v[1:7]), v[7],
+            v[8], v[9], v[10], v[11],
+        )

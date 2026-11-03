@@ -26,6 +26,7 @@
 #include "cereal/archives/json.hpp"
 #include "cereal/types/map.hpp"
 #include <string>
+#include <unordered_set>
 
 // IsZoneStateValid checks if the zone state is valid
 // if these fields are all empty or zero value for an entire zone state, it's considered invalid
@@ -481,6 +482,30 @@ bool Zone::LoadZoneState(
 
 		LogZoneState("Loaded [{}] spawn2s", spawn2s.size());
 	}
+
+	std::unordered_set<uint32> restored_spawn_ids;
+
+	// Restore at most one static spawn per spawn2_id.
+	for (auto &s : spawn_states) {
+		if (s.spawn2_id == 0 ||
+			s.spawngroup_id == 0 ||
+			s.is_corpse ||
+			s.is_zone) {
+			continue;
+		}
+
+		if (!restored_spawn_ids.insert(s.spawn2_id).second) {
+			LogZoneState(
+				"Skipping duplicate saved spawn2 [{}] "
+				"zone [{}] instance [{}]",
+				s.spawn2_id,
+				GetShortName(),
+				GetInstanceID()
+			);
+			continue;
+		}
+	}
+
 
 	// spawn2
 	for (auto &s: spawn_states) {
