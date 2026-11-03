@@ -1,4 +1,4 @@
-/*	EQEmu: EQEmulator
+/*  EQEmu: EQEmulator
 
 	Copyright (C) 2001-2026 EQEmu Development Team
 
@@ -462,10 +462,11 @@ bool Zone::LoadZoneState(
 	zone->initgrids_timer.Trigger();
 	zone->Process();
 
-	// load base spawn2 data for spawn locations
+	// Load each base spawn2 ID only once, even if the saved snapshot is corrupt.
 	std::vector<std::string> spawn2_ids;
+	std::unordered_set<uint32> spawn2_ids_seen;
 	for (auto &s: spawn_states) {
-		if (s.spawn2_id > 0) {
+		if (s.spawn2_id > 0 && spawn2_ids_seen.insert(s.spawn2_id).second) {
 			spawn2_ids.push_back(std::to_string(s.spawn2_id));
 		}
 	}
@@ -483,33 +484,18 @@ bool Zone::LoadZoneState(
 		LogZoneState("Loaded [{}] spawn2s", spawn2s.size());
 	}
 
+	// Deduplicate as we restore: a preliminary pass would not prevent spawning.
 	std::unordered_set<uint32> restored_spawn_ids;
-
-	// Restore at most one static spawn per spawn2_id.
-	for (auto &s : spawn_states) {
-		if (s.spawn2_id == 0 ||
-			s.spawngroup_id == 0 ||
-			s.is_corpse ||
-			s.is_zone) {
-			continue;
-		}
-
-		if (!restored_spawn_ids.insert(s.spawn2_id).second) {
-			LogZoneState(
-				"Skipping duplicate saved spawn2 [{}] "
-				"zone [{}] instance [{}]",
-				s.spawn2_id,
-				GetShortName(),
-				GetInstanceID()
-			);
-			continue;
-		}
-	}
-
+	uint32 duplicate_restores_skipped = 0;
 
 	// spawn2
 	for (auto &s: spawn_states) {
 		if (s.spawngroup_id == 0 || s.is_corpse || s.is_zone) {
+			continue;
+		}
+
+		if (s.spawn2_id != 0 && !restored_spawn_ids.insert(s.spawn2_id).second) {
+			++duplicate_restores_skipped;
 			continue;
 		}
 
@@ -575,6 +561,13 @@ bool Zone::LoadZoneState(
 			LoadNPCState(zone, n, s);
 		}
 	}
+
+	LogInfo(
+		"ZONE STATE RESTORE: zone [{}] instance [{}] saved rows [{}] "
+		"unique spawn2 [{}] duplicates skipped [{}]",
+		GetShortName(), GetInstanceID(), spawn_states.size(),
+		restored_spawn_ids.size(), duplicate_restores_skipped
+	);
 
 	// compare state spawns to spawn2 list, if there are any missing, we need to add them
 	// this is to cover the rare case where a spawn2 is created in the database but not in the zone state
@@ -744,9 +737,16 @@ void Zone::SaveZoneState()
 	std::vector<ZoneStateSpawnsRepository::ZoneStateSpawns> spawns = {};
 	LinkedListIterator<Spawn2 *>                            iterator(spawn2_list);
 	iterator.Reset();
-	int count = 0;
+	std::unordered_set<uint32> saved_spawn_ids;
+	uint32 duplicate_saves_skipped = 0;
 	while (iterator.MoreElements()) {
 		Spawn2 *sp = iterator.GetData();
+		const uint32 spawn2_id = sp->GetID();
+		if (spawn2_id != 0 && !saved_spawn_ids.insert(spawn2_id).second) {
+			++duplicate_saves_skipped;
+			iterator.Advance();
+			continue;
+		}
 		auto   s   = ZoneStateSpawnsRepository::NewEntity();
 		s.zone_id             = GetZoneID();
 		s.instance_id         = GetInstanceID();
@@ -774,8 +774,14 @@ void Zone::SaveZoneState()
 
 		spawns.emplace_back(s);
 		iterator.Advance();
-		count++;
 	}
+
+	LogInfo(
+		"ZONE STATE SAVE: zone [{}] instance [{}] unique spawn2 [{}] "
+		"duplicates skipped [{}]",
+		GetShortName(), GetInstanceID(), saved_spawn_ids.size(),
+		duplicate_saves_skipped
+	);
 
 	// npc's that are not in the spawn2 list
 	for (auto &n: entity_list.GetNPCList()) {
