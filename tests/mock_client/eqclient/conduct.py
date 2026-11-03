@@ -40,7 +40,25 @@ _JOIN_PHRASES = (
 )
 FOOD_WORDS = ("bread", "ration", "meat", "cheese", "pie", "stew", "mushroom", "patty", "fish")
 DRINK_WORDS = ("water", "drink", "ale", "wine", "milk", "cider", "tea")
-ROLES = ("heal", "root", "snare", "slow", "mez", "stun", "dot", "nuke", "pet", "haste", "rez", "summon", "lifetap", "port", "buff", "shield", "mend")
+ROLES = (
+    "heal",
+    "root",
+    "snare",
+    "slow",
+    "mez",
+    "stun",
+    "dot",
+    "nuke",
+    "pet",
+    "haste",
+    "rez",
+    "summon",
+    "lifetap",
+    "port",
+    "buff",
+    "shield",
+    "mend",
+)
 
 
 @dataclass
@@ -450,7 +468,9 @@ def ability_reuse(name: str) -> float:
     return float(ABILITY_REUSE.get(name, 8.0))
 
 
-def ability_for(class_id: int, skills: dict[int, int], *, hungry: bool, in_fight: bool, leaving: bool, broke: bool = False) -> str:
+def ability_for(
+    class_id: int, skills: dict[int, int], *, hungry: bool, in_fight: bool, leaving: bool, broke: bool = False
+) -> str:
     """The opcode name to send, or empty. A skill of zero means this class does not have it."""
 
     def has(skill: int) -> bool:

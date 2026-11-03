@@ -325,10 +325,7 @@ def test_he_picks_the_option_that_finishes_the_open_step():
 
 
 def test_a_popup_names_the_next_person():
-    arias = (
-        "Then click on Absor's Name under 'Weapons'. A glowing pathway will appear. "
-        "Press 'OK' to continue."
-    )
+    arias = "Then click on Absor's Name under 'Weapons'. A glowing pathway will appear. " "Press 'OK' to continue."
     assert lesson_from(arias) == lesson_from("click on Absor's Name")
     found = lesson_from(arias)
     assert found is not None
@@ -365,7 +362,14 @@ def test_find_draws_the_path_past_where_he_stands():
     destination = (-200.0, -94.0, 15.0)
     here = (-35.0, -141.0, 14.0)
     nxt = (-48.0, -137.0, 13.0)
-    payload = point(*destination) + point(*destination) + point(*here) + point(*nxt) + point(*destination) + point(*destination)
+    payload = (
+        point(*destination)
+        + point(*destination)
+        + point(*here)
+        + point(*nxt)
+        + point(*destination)
+        + point(*destination)
+    )
     assert find_destination(payload) == destination
     route = guide_from(find_path(payload), here)
     assert route[0] == nxt
@@ -377,7 +381,7 @@ def test_find_draws_the_path_past_where_he_stands():
 def test_a_quest_popup_is_answered_with_ok():
     packet = bytearray(4244)
     packet[:4] = b"Find"
-    packet[128:160] = b"Press <c \"#F07F00\">OK</c> to continue."
+    packet[128:160] = b'Press <c "#F07F00">OK</c> to continue.'
     struct.pack_into("<I", packet, 4232, 7)
     title, text, popup_id = popup_message(bytes(packet))
     assert title == "Find"

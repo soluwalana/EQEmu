@@ -110,7 +110,9 @@ def test_assign_goal_does_not_erase_prior_stack():
 
 def test_journal_persists_full_goal_stack():
     journal = Journal(":memory:")
-    journal.save_goal_stack("Mockone", [62649, 1001], {62649: 1, 1001: 5}, deliver_to="Sam", deliver_item=1001, deliver_count=5)
+    journal.save_goal_stack(
+        "Mockone", [62649, 1001], {62649: 1, 1001: 5}, deliver_to="Sam", deliver_item=1001, deliver_count=5
+    )
     stack, counts = journal.load_goal_stack("Mockone")
     assert stack == [62649, 1001]
     assert counts[1001] == 5

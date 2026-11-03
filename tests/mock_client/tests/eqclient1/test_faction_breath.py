@@ -234,13 +234,9 @@ def test_skill_gate_blocks_craft_below_trivial():
     # Practice product on stack with mats → craft that recipe many times.
     camp = Campaign(class_id=1)
     camp.set_goal(5000, graph=graph)
-    step = camp.next_step(
-        graph, {101: _SKILL_PRACTICE, 17809: 1}, {}, level=50, recipes=book, skills={}
-    )
+    step = camp.next_step(graph, {101: _SKILL_PRACTICE, 17809: 1}, {}, level=50, recipes=book, skills={})
     assert 5001 in camp.stack
-    step = camp.next_step(
-        graph, {101: _SKILL_PRACTICE, 17809: 1}, {}, level=50, recipes=book, skills={}
-    )
+    step = camp.next_step(graph, {101: _SKILL_PRACTICE, 17809: 1}, {}, level=50, recipes=book, skills={})
     # After push, expand 5001 → craft recipe 2 (no recursive skill gate).
     assert step.kind == "craft"
     assert step.recipe_id == 2
@@ -264,9 +260,7 @@ def test_skill_gate_blocks_craft_below_trivial():
     camp.set_goal(5000, graph=graph)
     camp.push(5001, _SKILL_PRACTICE)
     camp.sell_after.add(5001)
-    step = camp.next_step(
-        graph, {5001: 20, 17809: 1}, {}, level=50, recipes=book, skills={}, bag_full=True
-    )
+    step = camp.next_step(graph, {5001: 20, 17809: 1}, {}, level=50, recipes=book, skills={}, bag_full=True)
     assert step.kind == "sell" and step.item_id == 5001 and step.count == 20
     assert camp.counts.get(5001) == _SKILL_PRACTICE - 20
     # Skill met, leftover practice comps → burn (not the goal recipe).
@@ -278,6 +272,7 @@ def test_skill_gate_blocks_craft_below_trivial():
     step = camp.next_step(graph, {100: 1, 17809: 1}, {}, level=50, recipes=book, skills={63: 100})
     assert step.kind == "craft"
     assert step.recipe_id == 1
+
 
 def test_breath_defaults_and_swim_height():
     model = ZoneModel("Mock")

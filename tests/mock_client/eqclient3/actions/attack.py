@@ -23,7 +23,7 @@ from eqclient3.actions.casting import (
 )
 from eqclient3.log import log
 from eqclient3.nav.path import STRIDE, straight
-from eqclient3.structs import OP_AutoAttack, OP_CombatAbility, OP_Taunt
+from eqclient3.structs import OP_AutoAttack, OP_CombatAbility, OP_Taunt, OP_LDoNOpen
 from eqclient3.actions.bots.reconstitute import Reconstitute
 from eqclient3.actions.support import (
     BASH,
@@ -35,7 +35,6 @@ from eqclient3.actions.support import (
     bar_ratio,
     buff_faded,
     cast_spell,
-    character_name,
     cures,
     known,
     lowest_hurt,
@@ -46,21 +45,12 @@ from eqclient3.actions.support import (
     send_command,
     spawn_of,
     walk,
-    yield_to,
 )
+from eqclient3.action import is_treasure_mob
 
 
 def _apart(a: tuple[float, float, float], b: tuple[float, float, float]) -> float:
     return ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
-
-
-def _treasure(mob: Mob | None) -> bool:
-    """An LDoN object. Melee does not credit it. Opening it does."""
-    if mob is None:
-        return False
-    if int(mob.class_id or 0) == 62:
-        return True
-    return "vermin nest" in (mob.name or "").lower()
 
 
 class Attack(Action):
@@ -139,48 +129,44 @@ class Attack(Action):
 
     def step(self, loop: Loop, world: World) -> None:
         super().step(loop, world)
+        if self.waiting_for("TARGET"):
+            return
+
         spawn = self.spawn_id
         mob = world.mobs.get(spawn) if spawn is not None else None
-        if mob is not None:
+        if mob:
             self.level = int(mob.level or 0)
+
         if self._become_corpse(loop, world):
             return
+
         tick_recasts(self)
         self._bars(world)
         self._cure_flag(world)
         self._string_251(loop, world)
         if not self.waiting_for("CAST") and fill_bar(loop, world):
             return
+
         self._request_heal(loop, world)
         self._request_cure(loop, world)
+
         if self.waiting_for("CAST") or self.casting:
             if not self.messages:
                 return
             self.unwait("CAST")
             self.casting = False
-        if mob is not None and _treasure(mob) and float(mob.distance) <= 25:
-            # Opening uses the current target. Consider never answers an object,
-            # and the nest is often out of the mesh's line of sight, so neither
-            # of those waits can gate the open. The server only checks distance.
-            if not mob.targeted:
-                self.target_mob(loop, world)
-            loop.send("OP_LDoNOpen", b"")
+
+        if mob and is_treasure_mob(mob) and float(mob.distance) <= 25:
+            loop.send("OP_LDoNOpen", OP_LDoNOpen().serialize())
             return
-        if self.waiting_for("TARGET"):
-            # A treasure object answers consider with its name and no packet.
-            self.target_tries += 1
-            if self.target_tries < 30:
-                return
-            self.unwait("TARGET")
-            self.target_tries = 0
-        else:
-            self.target_tries = 0
-        if mob is None or mob.dead:
-            if mob is not None and mob.dead:
-                self._reconstitute(loop, world)
+
+        if not mob or mob.dead:
+            if mob and mob.dead:
+                loop.append(Reconstitute(241))
             self.complete = True
             return
-        if int(mob.hp or 0) == 0 and not _treasure(mob):
+
+        if int(mob.hp or 0) == 0 and not is_treasure_mob(mob):
             self.zero_hp += 1
             if self.zero_hp >= 10:
                 target = self.spawn_id
@@ -240,7 +226,7 @@ class Attack(Action):
                 if target is not None:
                     log.info("attack no damage spawn=%s d=%.0f", target, mob.distance)
                     world.skip_spawn(target)
-                self._reconstitute(loop, world)
+                loop.append(Reconstitute(241))
                 self.complete = True
                 return
             walk(self, loop, world, mob.position, "los")
@@ -248,7 +234,7 @@ class Attack(Action):
         world.movement.face(loop, world, mob.position)
         # Class 62 is an LDoN object. Melee never puts the player on its hate list,
         # so the kill does not credit a task. Opening it does.
-        if _treasure(mob):
+        if is_treasure_mob(mob):
             loop.send("OP_LDoNOpen", b"")
             return
         if not self.opened:
@@ -295,18 +281,9 @@ class Attack(Action):
         corpse = self.consume("OP_BecomeCorpse", lambda message: spawn_of(message) in (0, self.spawn_id))
         if corpse is None:
             return False
-        self._reconstitute(loop, world)
+        loop.append(Reconstitute(241))
         self.complete = True
         return True
-
-    def _reconstitute(self, loop: Loop, world: World) -> None:
-        """The party is rebuilt before anyone sits. A resolved row from the last fight can run again."""
-        source = f"reconstitute:{int(self.spawn_id or 0)}"
-        journal = loop.journal
-        who = character_name(loop, world)
-        if journal is not None and who:
-            journal.clear_source(who, source)
-        yield_to(self, loop, world, Reconstitute(241), source)
 
     def _bars(self, world: World) -> None:
         message = self.consume("OP_HPUpdate") or self.consume("OP_MobHealth")

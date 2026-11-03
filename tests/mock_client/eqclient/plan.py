@@ -213,7 +213,12 @@ def choose(
     if talk is not None:
         return talk
 
-    if (world.zone or "").lower() == "tutorialb" and not tasks.local_work_left() and quests.exits and _ready_to_leave(world):
+    if (
+        (world.zone or "").lower() == "tutorialb"
+        and not tasks.local_work_left()
+        and quests.exits
+        and _ready_to_leave(world)
+    ):
         door = _exit_door(world, quests.exits)
         if door is not None:
             return _at(world, "leave", door.door_id, door.name, door.x, door.y, door.z)
@@ -221,7 +226,11 @@ def choose(
     if world.level and world.level < LEAVE_LEVEL and not tasks.local_work_left():
         enemy = _nearest(
             world,
-            [spawn for spawn in world.spawns.values() if spawn.npc == 1 and world.faction.get(spawn.spawn_id) in (8, 9)],
+            [
+                spawn
+                for spawn in world.spawns.values()
+                if spawn.npc == 1 and world.faction.get(spawn.spawn_id) in (8, 9)
+            ],
         )
         if enemy is not None:
             return _at(world, "fight", enemy.spawn_id, enemy.name, enemy.x, enemy.y, enemy.z)
@@ -301,13 +310,17 @@ def guide(
     if campaign_act is not None:
         return campaign_act
     if tasks.local_work_left() or tasks.pending or tasks.offer is not None:
-        return choose(world, tasks, quests, inventory, party_ready, skipped_ground, skipped_corpses, said, handed, lesson, flags)
+        return choose(
+            world, tasks, quests, inventory, party_ready, skipped_ground, skipped_corpses, said, handed, lesson, flags
+        )
     destination = tasks.away_zone_id()
     if destination and destination != world.zone_id:
         door = _door_to(world, quests, destination)
         if door is not None:
             return _at(world, "leave", door.door_id, f"zone {destination}", door.x, door.y, door.z)
-    local = choose(world, tasks, quests, inventory, party_ready, skipped_ground, skipped_corpses, said, handed, lesson, flags)
+    local = choose(
+        world, tasks, quests, inventory, party_ready, skipped_ground, skipped_corpses, said, handed, lesson, flags
+    )
     if (
         not tasks.has_open_work()
         and world.home_zone_id
@@ -317,7 +330,11 @@ def guide(
         door = _door_to(world, quests, world.home_zone_id)
         if door is not None:
             return _at(world, "leave", door.door_id, f"zone {world.home_zone_id}", door.x, door.y, door.z)
-    if graph is not None and not tasks.has_open_work() and (local is None or (local.kind == "explore" and not local.name)):
+    if (
+        graph is not None
+        and not tasks.has_open_work()
+        and (local is None or (local.kind == "explore" and not local.name))
+    ):
         flag_arg = flags if isinstance(flags, set) else set(flags or ())
         away = graph.continuation(
             world.zone or "",
@@ -332,7 +349,11 @@ def guide(
             if door is not None:
                 return _at(world, "leave", door.door_id, away.zone, door.x, door.y, door.z)
             return Intention("explore", name=away.zone, text=away.npc)
-    if _is_city(world) and not tasks.has_open_work() and (local is None or (local.kind == "explore" and not local.name)):
+    if (
+        _is_city(world)
+        and not tasks.has_open_work()
+        and (local is None or (local.kind == "explore" and not local.name))
+    ):
         return hub_goal(world, quests, visited_hubs or set())
     return local
 
@@ -398,14 +419,28 @@ def _campaign_intention(
         corpse = _grind_corpse(world, skipped_corpses)
         if corpse is not None:
             return _at(
-                world, "loot", corpse.spawn_id, corpse.name, corpse.x, corpse.y, corpse.z,
-                item_id=step.item_id, text=why,
+                world,
+                "loot",
+                corpse.spawn_id,
+                corpse.name,
+                corpse.x,
+                corpse.y,
+                corpse.z,
+                item_id=step.item_id,
+                text=why,
             )
         foe = _xp_foe(world)
         if foe is not None:
             return _at(
-                world, "fight", foe.spawn_id, foe.name, foe.x, foe.y, foe.z,
-                item_id=step.item_id, text=why,
+                world,
+                "fight",
+                foe.spawn_id,
+                foe.name,
+                foe.x,
+                foe.y,
+                foe.z,
+                item_id=step.item_id,
+                text=why,
             )
         return Intention("grind", name=camp.zone if camp else "farm", text=why, item_id=step.item_id)
 
@@ -414,10 +449,7 @@ def _campaign_intention(
 
         if step.item_id:
             name = str((getattr(graph, "items", None) or {}).get(int(step.item_id), {}).get("name") or "").lower()
-            if (
-                (step.item_id == BACKPACK_ITEM or "backpack" in name)
-                and bags_buyable(inventory) <= 0
-            ):
+            if (step.item_id == BACKPACK_ITEM or "backpack" in name) and bags_buyable(inventory) <= 0:
                 return None
         spawn = None
         for candidate in world.spawns.values():
@@ -483,14 +515,28 @@ def _campaign_intention(
         corpse = _grind_corpse(world, skipped_corpses)
         if corpse is not None:
             return _at(
-                world, "loot", corpse.spawn_id, corpse.name, corpse.x, corpse.y, corpse.z,
-                item_id=step.item_id, text=why,
+                world,
+                "loot",
+                corpse.spawn_id,
+                corpse.name,
+                corpse.x,
+                corpse.y,
+                corpse.z,
+                item_id=step.item_id,
+                text=why,
             )
         foe = _xp_foe(world)
         if foe is not None:
             return _at(
-                world, "fight", foe.spawn_id, foe.name, foe.x, foe.y, foe.z,
-                item_id=step.item_id, text=why,
+                world,
+                "fight",
+                foe.spawn_id,
+                foe.name,
+                foe.x,
+                foe.y,
+                foe.z,
+                item_id=step.item_id,
+                text=why,
             )
         return Intention("grind", name=camp.zone if camp else "xp", text=why, item_id=step.item_id)
     return None
@@ -689,9 +735,7 @@ def _faction_intention(world, step, factions=None) -> Intention:
         foes = [
             spawn
             for spawn in world.spawns.values()
-            if spawn.npc == 1
-            and world.faction.get(spawn.spawn_id) in (8, 9)
-            and _norm(spawn.name) not in protect
+            if spawn.npc == 1 and world.faction.get(spawn.spawn_id) in (8, 9) and _norm(spawn.name) not in protect
         ]
         foe = _nearest(world, foes)
     if foe is not None:
@@ -845,10 +889,7 @@ def _tutorial_next(world, tasks, said, quests=None) -> Intention | None:
     # NPC in zone still has an unsaid keyword (e.g. Arias) so those chains can run.
     if world.level >= 4 and (
         _named(world, "Guard Hobart", corpses=False) is not None
-        or (
-            (world.zone or "").lower() == "tutorialb"
-            and not _pending_script_keywords(world, quests, said)
-        )
+        or ((world.zone or "").lower() == "tutorialb" and not _pending_script_keywords(world, quests, said))
     ):
         return _seek(world, "Guard Hobart")
     seen = {activity.task_id for activity in tasks.activities} | tasks.completed
@@ -913,8 +954,7 @@ def _grind(world, tasks) -> Intention | None:
 
 def _task_open(tasks, task_id: int) -> bool:
     return any(
-        activity.task_id == task_id and not activity.finished and not activity.optional
-        for activity in tasks.activities
+        activity.task_id == task_id and not activity.finished and not activity.optional for activity in tasks.activities
     )
 
 
@@ -955,9 +995,7 @@ def _script_goal(world, tasks, quests, inventory, said, skipped_ground) -> Inten
                     continue
                 spawn = _named(world, script.npc, corpses=False)
                 if inventory.count(item_id) > 0 and spawn is not None:
-                    return _at(
-                        world, "hand_in", spawn.spawn_id, spawn.name, spawn.x, spawn.y, spawn.z, item_id=item_id
-                    )
+                    return _at(world, "hand_in", spawn.spawn_id, spawn.name, spawn.x, spawn.y, spawn.z, item_id=item_id)
                 found = _known_ground(world, inventory, [Need(item_id, 1, script.npc)], skipped_ground)
                 if found is not None:
                     return found
@@ -999,7 +1037,9 @@ def _hail_already_failed(activity: Activity, said: set[tuple[str, str]], quests=
     return True
 
 
-def _one_activity(world, tasks, quests, inventory, activity: Activity, skipped_corpses, skipped_ground, said=None) -> Intention:
+def _one_activity(
+    world, tasks, quests, inventory, activity: Activity, skipped_corpses, skipped_ground, said=None
+) -> Intention:
     said = said or set()
     if activity.kind == DELIVER and not _was_said(said, activity.target_name, "hail"):
         spawn = _named(world, activity.target_name, corpses=False)
@@ -1030,7 +1070,9 @@ def _one_activity(world, tasks, quests, inventory, activity: Activity, skipped_c
                 world, "hand_in", spawn.spawn_id, spawn.name, spawn.x, spawn.y, spawn.z, item_id=needs[0].item_id
             )
         return _explore_name(world, activity.target_name)
-    known = _known_ground(world, inventory, [need for need in needs if inventory.count(need.item_id) < need.count], skipped_ground)
+    known = _known_ground(
+        world, inventory, [need for need in needs if inventory.count(need.item_id) < need.count], skipped_ground
+    )
     if known is not None:
         return known
     corpse = _nearest(
@@ -1100,7 +1142,7 @@ def _was_said(records: set[tuple[str, str]], npc: str, detail: str) -> bool:
 
 def _turn_in(world, tasks, quests, inventory, handed: set[tuple[str, str]]) -> Intention | None:
     ready: list[tuple[Need, object]] = []
-    for need in _script_needs(quests, Inventory()) :  # counts from zero, so every script need
+    for need in _script_needs(quests, Inventory()):  # counts from zero, so every script need
         if (_norm(need.npc), str(need.item_id)) in handed:
             continue
         if inventory.count(need.item_id) >= need.count:
@@ -1286,7 +1328,9 @@ def _explore_name(world, name: str) -> Intention:
                 seen = value
                 break
     if seen is not None and seen[0] == world.zone:
-        return Intention("explore", name=name, where=(seen[1], seen[2], seen[3]), distance=_dist(world, seen[1], seen[2]))
+        return Intention(
+            "explore", name=name, where=(seen[1], seen[2], seen[3]), distance=_dist(world, seen[1], seen[2])
+        )
     return Intention("explore", name=name, distance=1e9)
 
 
@@ -1480,19 +1524,11 @@ def _xp_foe(
         return foe
     # Dubious / apprehensive (6–7) only — never indifferent (5). City guards often
     # con indifferent; hitting them ruins Qeynos/Freeport standing for later visits.
-    wary = [
-        spawn
-        for spawn in world.spawns.values()
-        if ok(spawn) and world.faction.get(spawn.spawn_id) in (6, 7)
-    ]
+    wary = [spawn for spawn in world.spawns.values() if ok(spawn) and world.faction.get(spawn.spawn_id) in (6, 7)]
     foe = pick(wary)
     if foe is not None or not unknown:
         return foe
-    unchecked = [
-        spawn
-        for spawn in world.spawns.values()
-        if ok(spawn) and spawn.spawn_id not in world.faction
-    ]
+    unchecked = [spawn for spawn in world.spawns.values() if ok(spawn) and spawn.spawn_id not in world.faction]
     return pick(unchecked)
 
 

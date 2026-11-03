@@ -19,15 +19,15 @@ _SILK = (1180, 1183, 1187, 1185, 1191)
 
 # Primary weapons by class (1-based Titanium ids).
 _WEAPON_BEGIN = {
-    1: 5013,   # war — rusty short sword
-    2: 6011,   # clr — rusty mace
-    3: 5013,   # pal
-    4: 5013,   # rng
-    5: 5013,   # sk
-    6: 6011,   # dru
-    7: 0,      # mnk — fists
-    8: 7007,   # brd — rusty dagger
-    9: 7007,   # rog
+    1: 5013,  # war — rusty short sword
+    2: 6011,  # clr — rusty mace
+    3: 5013,  # pal
+    4: 5013,  # rng
+    5: 5013,  # sk
+    6: 6011,  # dru
+    7: 0,  # mnk — fists
+    8: 7007,  # brd — rusty dagger
+    9: 7007,  # rog
     10: 6011,  # shm
     11: 7007,  # nec
     12: 7007,  # wiz
@@ -37,17 +37,17 @@ _WEAPON_BEGIN = {
     16: 5023,  # ber — rusty 2hs
 }
 _WEAPON_MID = {
-    1: 5026,   # bronze short sword
-    2: 6019,   # bronze mace
+    1: 5026,  # bronze short sword
+    2: 6019,  # bronze mace
     3: 5026,
-    9: 7012,   # bronze dagger
+    9: 7012,  # bronze dagger
     12: 7012,
     14: 7012,
 }
 _WEAPON_LATE = {
-    1: 5352,   # fine steel short sword
+    1: 5352,  # fine steel short sword
     2: 6019,
-    9: 7350,   # fine steel dagger
+    9: 7350,  # fine steel dagger
     12: 7350,
     14: 7350,
 }

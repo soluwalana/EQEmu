@@ -64,7 +64,14 @@ def test_raidform_all_then_form_on_connect():
     client = connect()
     try:
         client.command("raidform all")
-        formed = _wait_any(client, ("Bot raid formed.", "Saved",) + FORM_FAILURE)
+        formed = _wait_any(
+            client,
+            (
+                "Bot raid formed.",
+                "Saved",
+            )
+            + FORM_FAILURE,
+        )
         if "Bot raid formed." not in formed and "Saved" not in formed:
             assert any(needle in formed for needle in FORM_FAILURE)
             return

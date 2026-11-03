@@ -21,16 +21,13 @@ class Journal:
         self._db = sqlite3.connect(path, timeout=5.0)
         if path != ":memory:":
             self._db.execute("PRAGMA journal_mode=WAL")
-        self._db.execute(
-            """
+        self._db.execute("""
             CREATE TABLE IF NOT EXISTS zones (
                 name TEXT PRIMARY KEY,
                 zone_id INTEGER NOT NULL
             )
-            """
-        )
-        self._db.execute(
-            """
+            """)
+        self._db.execute("""
             CREATE TABLE IF NOT EXISTS events (
                 character TEXT NOT NULL,
                 zone TEXT NOT NULL,
@@ -40,8 +37,7 @@ class Journal:
                 created TEXT NOT NULL DEFAULT (datetime('now')),
                 PRIMARY KEY (character, zone, npc, kind, detail)
             )
-            """
-        )
+            """)
         self._db.commit()
         for name, zone_id in self._db.execute("SELECT name, zone_id FROM zones"):
             remember(name, zone_id)

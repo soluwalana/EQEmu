@@ -52,9 +52,7 @@ class WaterMap:
     regions: list[_ObbRegion] = field(default_factory=list)
     _surface: dict[tuple[int, int], float | None] = field(default_factory=dict)
     # Cached zoneline sample clouds keyed by rounded anchor + reach/step.
-    _zoneline_samples: dict[tuple[int, int, int, int], list[tuple[float, float, float]]] = field(
-        default_factory=dict
-    )
+    _zoneline_samples: dict[tuple[int, int, int, int], list[tuple[float, float, float]]] = field(default_factory=dict)
 
     def region(self, x: float, y: float, z: float) -> int:
         """Region type at EQ (x, y, z). Internally maps query as (y, x, z) like the zone server."""

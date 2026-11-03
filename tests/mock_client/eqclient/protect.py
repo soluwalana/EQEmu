@@ -14,9 +14,7 @@ def protected_ids(graph=None, campaign=None, zone_quests=None) -> set[int]:
     if campaign is not None:
         sell_after = {int(item_id) for item_id in (getattr(campaign, "sell_after", ()) or ())}
         found.update(
-            int(item_id)
-            for item_id in (getattr(campaign, "stack", ()) or ())
-            if int(item_id) not in sell_after
+            int(item_id) for item_id in (getattr(campaign, "stack", ()) or ()) if int(item_id) not in sell_after
         )
     if zone_quests is not None:
         for script in getattr(zone_quests, "scripts", {}).values():
@@ -46,10 +44,7 @@ def protected_ids(graph=None, campaign=None, zone_quests=None) -> set[int]:
                 quest_gives.add(item_id)
         for item_id, info in (getattr(graph, "items", {}) or {}).items():
             sources = info.get("sources") or ()
-            if any(
-                str(src).startswith(("loot:", "forage:", "fishing:", "ground:", "merchant:"))
-                for src in sources
-            ):
+            if any(str(src).startswith(("loot:", "forage:", "fishing:", "ground:", "merchant:")) for src in sources):
                 regenerative.add(int(item_id))
 
     found |= hand_ins

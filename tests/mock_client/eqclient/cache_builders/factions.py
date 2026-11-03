@@ -36,8 +36,7 @@ def ensure_factions(
 def main() -> None:
     book = ensure_factions(rebuild=True)
     print(
-        f"faction_hits: {len(book.by_faction)} factions, "
-        f"{len(book.primary_of)} primaries → {DEFAULT_FACTIONS}",
+        f"faction_hits: {len(book.by_faction)} factions, " f"{len(book.primary_of)} primaries → {DEFAULT_FACTIONS}",
         flush=True,
     )
 

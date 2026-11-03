@@ -1,11 +1,202 @@
-OP_Untargetable
-OP_WearChange
-OP_Action
-OP_FormattedMessage
-OP_ManaUpdate
-OP_Endurance
-OP_TargetHoTT
 
-OP_MoveItem / OP_MoveItem-> OP_ItemPacket
+server sent when opening inventory window: 
+
+[2026-11-02T17:36:15.399595] send client 10.0.0.210 OP_Unknown (336 bytes)
+
+
+Picking backpack up onto cursor:
+
+[2026-11-02T17:36:49.239261] send client 10.0.0.210 OP_MoveItem (28 bytes)
+{'from_slot': 25, 'to_slot': 30, 'count': 0, 'to_type': 0}
+
+No response from server, assumes completed.
+
+
+Put backpack back:
+
+[2026-11-02T17:37:36.849197] send client 10.0.0.210 OP_MoveItem (28 bytes)
+{'from_slot': 30, 'to_slot': 25, 'count': 0, 'to_type': 0}
+
+consume milk:
+[2026-11-02T17:37:58.452643] send client 10.0.0.210 OP_Consume (24 bytes)
+{'slot': 22, 'kind': 2, 'auto': 4294967295}
+
+Update stamina from server:
+[2026-11-02T17:37:58.468017] recv client 10.0.0.210 OP_Stamina (8 bytes)
+{'food': 5584, 'water': 6000}
+
+Pick milk up:
+[2026-11-02T17:38:04.768956] send client 10.0.0.210 OP_MoveItem (28 bytes)
+{'from_slot': 22, 'to_slot': 30, 'count': 0, 'to_type': 0}
+
+Put milk in backpack:
+[2026-11-02T17:38:48.342271] send client 10.0.0.210 OP_MoveItem (28 bytes)
+{'from_slot': 30, 'to_slot': 851, 'count': 0, 'to_type': 0}
+
+
+clicking on a mob:
+
+[2026-11-02T17:40:12.519339] send client 10.0.0.210 OP_TargetMouse (4 bytes)
+{'spawn_id': 437}
+
+[2026-11-02T17:40:12.519357] recv client 10.0.0.210 OP_MobHealth (3 bytes)
+{'spawn_id': 437, 'percent': 100}
+
+[2026-11-02T17:40:12.519366] recv client 10.0.0.210 OP_TargetHoTT (4 bytes)
+  000000  00 00 00 00                                      |....|
+
+[2026-11-02T17:40:13.064721] recv client 10.0.0.210 OP_AggroMeterTargetInfo (8 bytes)
+  000000  00 00 00 00 b5 01 00 00                          |........|
+
+
+Hailing a mob:
+
+
+[2026-11-02T17:41:10.559144] send client 10.0.0.210 OP_ChannelMessage (113 bytes)
+{'target': 'Nura000',
+ 'sender': 'Sammy',
+ 'language': 0,
+ 'channel': 8,
+ 'unused1': 0,
+ 'unused2': 0,
+ 'skill': 100,
+ 'text': 'Hail, Nura'}
+
+[2026-11-02T17:41:10.559165] recv client 10.0.0.210 OP_ChannelMessage (54 bytes)
+{'target': '',
+ 'sender': 'Sammy',
+ 'language': 0,
+ 'channel': 8,
+ 'unused1': 0,
+ 'unused2': 0,
+ 'skill': 100,
+ 'text': 'Hail, Nura'}
+
+[2026-11-02T17:41:10.559487] recv client 10.0.0.210 OP_SpecialMesg (106 bytes)
+{'header': '0x01 02 00',
+ 'msg_type': 10,
+ 'target_spawn_id': 21876,
+ 'speaker': 'Nura',
+ 'unknown': '0x00 00 00 00 00 00 00 00 00 00 00 00',
+ 'message': 'As long as blood still flows in my veins, no kobolds shall cross '
+            'this bridge.'}
+
+
+Targeting a corpse:
+
+[2026-11-02T17:53:10.358959] send client 10.0.0.210 OP_TargetMouse (4 bytes)
+{'spawn_id': 498}
+
+[2026-11-02T17:53:10.358979] recv client 10.0.0.210 OP_MobHealth (3 bytes)
+{'spawn_id': 498, 'percent': 0}
+
+
+Loot Corpse:
+
+
+[2026-11-02T17:53:59.062849] send client 10.0.0.210 OP_LootRequest (4 bytes)
+{'spawn_id': 498}
+
+[2026-11-02T17:53:59.075038] recv client 10.0.0.210 OP_MoneyOnCorpse (20 bytes)
+{'response': 1, 'platinum': 0, 'gold': 0, 'silver': 0, 'copper': 0}
+
+[2026-11-02T17:53:59.075365] recv client 10.0.0.210 OP_LootRequest (4 bytes)
+{'spawn_id': 498}
+
+[2026-11-02T17:53:59.075381] recv client 10.0.0.210 OP_MoneyOnCorpse (20 bytes)
+{'response': 6, 'platinum': 0, 'gold': 0, 'silver': 0, 'copper': 0}
+
+
+On Corpse Closed (loot all:)
+
+[2026-11-02T17:54:33.938865] send client 10.0.0.210 OP_Save (484 bytes)
+  000000  88 44 a5 06 0f 5c a7 ba c3 d7 b3 36 c3 f8 e5 1e  |.D...\.....6....|
+  000010  40 6e 01 00 00 00 00 00 00 00 00 00 00 00 00 00  |@n..............|
+  000020  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000030  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000040  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000050  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000060  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000070  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000080  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000090  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  0000a0  00 99 29 00 00 00 00 00 00 00 00 00 00 00 00 00  |..).............|
+  0000b0  00 00 00 00 00 30 00 00 00 00 00 00 00 00 00 00  |.....0..........|
+  0000c0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  0000d0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  0000e0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  0000f0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000100  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000110  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000120  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000130  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000140  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000150  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000160  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000170  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000180  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000190  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  0001a0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  0001b0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  0001c0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 ce ff  |................|
+  0001d0  01 23 00 00 00 99 29 00 00 30 00 00 00 50 00 00  |.#....)..0...P..|
+  0001e0  00 00 00 00                                      |....|
+
+
+
+[2026-11-02T17:58:58.662558] recv client 10.0.0.210 OP_MobRename (200 bytes)
+  000000  61 5f 63 61 76 65 5f 72 61 74 27 73 5f 63 6f 72  |a_cave_rat's_cor|
+  000010  70 73 65 35 32 38 00 00 00 00 00 00 00 00 00 00  |pse528..........|
+  000020  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000030  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000040  61 5f 63 61 76 65 5f 72 61 74 27 73 5f 63 6f 72  |a_cave_rat's_cor|
+  000050  70 73 65 35 32 38 00 00 00 00 00 00 00 00 00 00  |pse528..........|
+  000060  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000070  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  000080  61 5f 63 61 76 65 5f 72 61 74 60 73 5f 63 6f 72  |a_cave_rat`s_cor|
+  000090  70 73 65 35 32 38 00 00 00 00 00 00 00 00 00 00  |pse528..........|
+  0000a0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  0000b0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  |................|
+  0000c0  00 00 00 00 01 00 00 00
+
+Swapping backpack from cursor with skin of milk from inventory after death:
+
+[2026-11-02T18:07:00.597582] send client 10.0.0.210 OP_MoveItem (28 bytes)
+{'from_slot': 30, 'to_slot': 22, 'count': 0, 'to_type': 0}
+
+[2026-11-02T18:07:00.597903] recv client 10.0.0.210 OP_ItemPacket (933 bytes)
+{'item': {'kind': 106,
+          'slot': 30,
+          'name': 'Skin of Milk',
+          'id_file': 'IT63',
+          'item_id': 9990,
+          'stack': 19,
+          'slots': 0,
+          'classes': 65535,
+          'races': 65535,
+          'ac': 0,
+          'damage': 0,
+          'required_level': 0,
+          'size': 0,
+          'bag_slots': 0,
+          'bag_size': 0,
+          'item_type': 15,
+          'scroll_effect': -1,
+          'price': 0}}
+
+
+And putting the skin of milk back into inventory:
+[2026-11-02T18:09:22.240926] send client 10.0.0.210 OP_MoveItem (28 bytes)
+{'from_slot': 30, 'to_slot': 25, 'count': 0, 'to_type': 0}
+
+
+Notes:
+
+- No response from server on move, assume it's updated.
+
+
+
+OP_ZoneChange -> use this for triggering Form on zone entry not NewZone
+
 
 

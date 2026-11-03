@@ -15,6 +15,7 @@ Registry is any dict/mapping from opcode name to an EQStruct subclass whose
 class method deserialize(payload: bytes) returns an instance. Unknown opcodes
 and failed decodes are displayed as hex/ASCII instead of crashing the viewer.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -22,7 +23,6 @@ import cmd
 from dataclasses import fields, is_dataclass
 from datetime import date, datetime, timedelta
 from enum import Enum
-from importlib import import_module
 from pathlib import Path
 import pprint
 import re
@@ -31,291 +31,8 @@ import sqlite3
 from typing import Any, Mapping
 from urllib.parse import quote
 
-from eqclient3.structs import (
-    OP_SESSION_REQUEST_ID,
-    OP_SESSION_RESPONSE_ID,
-    OP_COMBINED_ID,
-    OP_SESSION_DISCONNECT_ID,
-    OP_KEEPALIVE_ID,
-    OP_SESSION_STAT_REQUEST_ID,
-    OP_SESSION_STAT_RESPONSE_ID,
-    OP_PACKET_ID,
-    OP_FRAGMENT_ID,
-    OP_OUT_OF_ORDER_ACK_ID,
-    OP_ACK_ID,
-    OP_APP_COMBINED_ID,
-    OP_OUTBOUND_PING_ID,
-    OP_OUT_OF_SESSION_ID,
-    OP_SESSION_REQUEST,
-    OP_SESSION_RESPONSE,
-    OP_COMBINED,
-    OP_SESSION_DISCONNECT,
-    OP_KEEPALIVE,
-    OP_SESSION_STAT_REQUEST,
-    OP_SESSION_STAT_RESPONSE,
-    OP_PACKET,
-    OP_FRAGMENT,
-    OP_OUT_OF_ORDER_ACK,
-    OP_ACK,
-    OP_APP_COMBINED,
-    OP_OUTBOUND_PING,
-    OP_OUT_OF_SESSION,
-    OP_SessionReady,
-    OP_ChatMessage,
-    OP_Login,
-    OP_LoginAccepted,
-    OP_ServerListRequest,
-    OP_ServerListResponse,
-    OP_PlayEverquestRequest,
-    OP_PlayEverquestResponse,
-    OP_SendLoginInfo,
-    OP_SendCharInfo,
-    OP_ApproveName,
-    OP_CharacterCreate,
-    OP_EnterWorld,
-    OP_ZoneServerInfo,
-    OP_ZoneEntry,
-    OP_NewZone,
-    OP_RequestClientZoneChange,
-    OP_ZoneChange,
-    OP_ZonePlayerToBind,
-    OP_FloatListThing,
-    OP_ClientReady,
-    OP_ReqNewZone,
-    OP_SendExpZonein,
-    OP_ReqClientSpawn,
-    OP_SendAAStats,
-    OP_ZoneServerReady,
-    OP_ZoneComplete,
-    OP_ReliableHole,
-    OP_ClientUpdate,
-    OP_MobUpdate,
-    OP_NewSpawn,
-    OP_ZoneSpawns,
-    OP_DeleteSpawn,
-    OP_SpawnAppearance,
-    OP_HPUpdate,
-    OP_MobHealth,
-    OP_Damage,
-    OP_Death,
-    OP_BecomeCorpse,
-    OP_Assist,
-    OP_Track,
-    OP_TrackTarget,
-    OP_FindPersonRequest,
-    OP_FindPersonReply,
-    OP_SpawnDoor,
-    OP_DoorSpawn,
-    OP_Doors,
-    OP_MoveDoor,
-    OP_ClickDoor,
-    OP_GroundSpawn,
-    OP_ClickObject,
-    OP_Consider,
-    OP_TargetMouse,
-    OP_AutoAttack,
-    OP_Taunt,
-    OP_CombatAbility,
-    OP_CastSpell,
-    OP_MemorizeSpell,
-    OP_Consume,
-    OP_Bind_Wound,
-    OP_Forage,
-    OP_Fishing,
-    OP_PlayerProfile,
-    OP_SkillUpdate,
-    OP_Stamina,
-    OP_MoneyUpdate,
-    OP_ManaChange,
-    OP_ExpUpdate,
-    OP_LevelUpdate,
-    OP_Buff,
-    OP_GMTraining,
-    OP_GMTrainSkill,
-    OP_GMEndTraining,
-    OP_ReadBook,
-    OP_CharInventory,
-    OP_ItemPacket,
-    OP_DeleteItem,
-    OP_MoveItem,
-    OP_LootRequest,
-    OP_EndLootRequest,
-    OP_LootItem,
-    OP_MoneyOnCorpse,
-    OP_CorpseDrag,
-    OP_ShopRequest,
-    OP_ShopPlayerBuy,
-    OP_ShopPlayerSell,
-    OP_ShopDelItem,
-    OP_TradeRequest,
-    OP_TradeRequestAck,
-    OP_CancelTrade,
-    OP_TradeSkillCombine,
-    OP_TradeAcceptClick,
-    OP_FinishTrade,
-    OP_GroupInvite,
-    OP_GroupInvite2,
-    OP_GroupUpdate,
-    OP_GroupUpdateB,
-    OP_GroupDisbandYou,
-    OP_GroupDisbandOther,
-    OP_RaidUpdate,
-    OP_RaidJoin,
-    OP_AcceptNewTask,
-    OP_TaskSelectWindow,
-    OP_TaskActivity,
-    OP_TaskActivityComplete,
-    OP_ChannelMessage,
-    OP_SpecialMesg,
-    OP_SimpleMessage,
-    OP_OnLevelMessage,
-    OP_PopupResponse,
-    OP_RezzRequest,
-    OP_RezzAnswer,
-)
+from eqclient3.structs import OPERATIONS
 
-OP_CODE_MAPPING = {
-    "OP_SESSION_REQUEST_ID": OP_SESSION_REQUEST_ID,
-    "OP_SESSION_RESPONSE_ID": OP_SESSION_RESPONSE_ID,
-    "OP_COMBINED_ID": OP_COMBINED_ID,
-    "OP_SESSION_DISCONNECT_ID": OP_SESSION_DISCONNECT_ID,
-    "OP_KEEPALIVE_ID": OP_KEEPALIVE_ID,
-    "OP_SESSION_STAT_REQUEST_ID": OP_SESSION_STAT_REQUEST_ID,
-    "OP_SESSION_STAT_RESPONSE_ID": OP_SESSION_STAT_RESPONSE_ID,
-    "OP_PACKET_ID": OP_PACKET_ID,
-    "OP_FRAGMENT_ID": OP_FRAGMENT_ID,
-    "OP_OUT_OF_ORDER_ACK_ID": OP_OUT_OF_ORDER_ACK_ID,
-    "OP_ACK_ID": OP_ACK_ID,
-    "OP_APP_COMBINED_ID": OP_APP_COMBINED_ID,
-    "OP_OUTBOUND_PING_ID": OP_OUTBOUND_PING_ID,
-    "OP_OUT_OF_SESSION_ID": OP_OUT_OF_SESSION_ID,
-    "OP_SESSION_REQUEST": OP_SESSION_REQUEST,
-    "OP_SESSION_RESPONSE": OP_SESSION_RESPONSE,
-    "OP_COMBINED": OP_COMBINED,
-    "OP_SESSION_DISCONNECT": OP_SESSION_DISCONNECT,
-    "OP_KEEPALIVE": OP_KEEPALIVE,
-    "OP_SESSION_STAT_REQUEST": OP_SESSION_STAT_REQUEST,
-    "OP_SESSION_STAT_RESPONSE": OP_SESSION_STAT_RESPONSE,
-    "OP_PACKET": OP_PACKET,
-    "OP_FRAGMENT": OP_FRAGMENT,
-    "OP_OUT_OF_ORDER_ACK": OP_OUT_OF_ORDER_ACK,
-    "OP_ACK": OP_ACK,
-    "OP_APP_COMBINED": OP_APP_COMBINED,
-    "OP_OUTBOUND_PING": OP_OUTBOUND_PING,
-    "OP_OUT_OF_SESSION": OP_OUT_OF_SESSION,
-    "OP_SessionReady": OP_SessionReady,
-    "OP_ChatMessage": OP_ChatMessage,
-    "OP_Login": OP_Login,
-    "OP_LoginAccepted": OP_LoginAccepted,
-    "OP_ServerListRequest": OP_ServerListRequest,
-    "OP_ServerListResponse": OP_ServerListResponse,
-    "OP_PlayEverquestRequest": OP_PlayEverquestRequest,
-    "OP_PlayEverquestResponse": OP_PlayEverquestResponse,
-    "OP_SendLoginInfo": OP_SendLoginInfo,
-    "OP_SendCharInfo": OP_SendCharInfo,
-    "OP_ApproveName": OP_ApproveName,
-    "OP_CharacterCreate": OP_CharacterCreate,
-    "OP_EnterWorld": OP_EnterWorld,
-    "OP_ZoneServerInfo": OP_ZoneServerInfo,
-    "OP_ZoneEntry": OP_ZoneEntry,
-    "OP_NewZone": OP_NewZone,
-    "OP_RequestClientZoneChange": OP_RequestClientZoneChange,
-    "OP_ZoneChange": OP_ZoneChange,
-    "OP_ZonePlayerToBind": OP_ZonePlayerToBind,
-    "OP_FloatListThing": OP_FloatListThing,
-    "OP_ClientReady": OP_ClientReady,
-    "OP_ReqNewZone": OP_ReqNewZone,
-    "OP_SendExpZonein": OP_SendExpZonein,
-    "OP_ReqClientSpawn": OP_ReqClientSpawn,
-    "OP_SendAAStats": OP_SendAAStats,
-    "OP_ZoneServerReady": OP_ZoneServerReady,
-    "OP_ZoneComplete": OP_ZoneComplete,
-    "OP_ReliableHole": OP_ReliableHole,
-    "OP_ClientUpdate": OP_ClientUpdate,
-    "OP_MobUpdate": OP_MobUpdate,
-    "OP_NewSpawn": OP_NewSpawn,
-    "OP_ZoneSpawns": OP_ZoneSpawns,
-    "OP_DeleteSpawn": OP_DeleteSpawn,
-    "OP_SpawnAppearance": OP_SpawnAppearance,
-    "OP_HPUpdate": OP_HPUpdate,
-    "OP_MobHealth": OP_MobHealth,
-    "OP_Damage": OP_Damage,
-    "OP_Death": OP_Death,
-    "OP_BecomeCorpse": OP_BecomeCorpse,
-    "OP_Assist": OP_Assist,
-    "OP_Track": OP_Track,
-    "OP_TrackTarget": OP_TrackTarget,
-    "OP_FindPersonRequest": OP_FindPersonRequest,
-    "OP_FindPersonReply": OP_FindPersonReply,
-    "OP_SpawnDoor": OP_SpawnDoor,
-    "OP_DoorSpawn": OP_DoorSpawn,
-    "OP_Doors": OP_Doors,
-    "OP_MoveDoor": OP_MoveDoor,
-    "OP_ClickDoor": OP_ClickDoor,
-    "OP_GroundSpawn": OP_GroundSpawn,
-    "OP_ClickObject": OP_ClickObject,
-    "OP_Consider": OP_Consider,
-    "OP_TargetMouse": OP_TargetMouse,
-    "OP_AutoAttack": OP_AutoAttack,
-    "OP_Taunt": OP_Taunt,
-    "OP_CombatAbility": OP_CombatAbility,
-    "OP_CastSpell": OP_CastSpell,
-    "OP_MemorizeSpell": OP_MemorizeSpell,
-    "OP_Consume": OP_Consume,
-    "OP_Bind_Wound": OP_Bind_Wound,
-    "OP_Forage": OP_Forage,
-    "OP_Fishing": OP_Fishing,
-    "OP_PlayerProfile": OP_PlayerProfile,
-    "OP_SkillUpdate": OP_SkillUpdate,
-    "OP_Stamina": OP_Stamina,
-    "OP_MoneyUpdate": OP_MoneyUpdate,
-    "OP_ManaChange": OP_ManaChange,
-    "OP_ExpUpdate": OP_ExpUpdate,
-    "OP_LevelUpdate": OP_LevelUpdate,
-    "OP_Buff": OP_Buff,
-    "OP_GMTraining": OP_GMTraining,
-    "OP_GMTrainSkill": OP_GMTrainSkill,
-    "OP_GMEndTraining": OP_GMEndTraining,
-    "OP_ReadBook": OP_ReadBook,
-    "OP_CharInventory": OP_CharInventory,
-    "OP_ItemPacket": OP_ItemPacket,
-    "OP_DeleteItem": OP_DeleteItem,
-    "OP_MoveItem": OP_MoveItem,
-    "OP_LootRequest": OP_LootRequest,
-    "OP_EndLootRequest": OP_EndLootRequest,
-    "OP_LootItem": OP_LootItem,
-    "OP_MoneyOnCorpse": OP_MoneyOnCorpse,
-    "OP_CorpseDrag": OP_CorpseDrag,
-    "OP_ShopRequest": OP_ShopRequest,
-    "OP_ShopPlayerBuy": OP_ShopPlayerBuy,
-    "OP_ShopPlayerSell": OP_ShopPlayerSell,
-    "OP_ShopDelItem": OP_ShopDelItem,
-    "OP_TradeRequest": OP_TradeRequest,
-    "OP_TradeRequestAck": OP_TradeRequestAck,
-    "OP_CancelTrade": OP_CancelTrade,
-    "OP_TradeSkillCombine": OP_TradeSkillCombine,
-    "OP_TradeAcceptClick": OP_TradeAcceptClick,
-    "OP_FinishTrade": OP_FinishTrade,
-    "OP_GroupInvite": OP_GroupInvite,
-    "OP_GroupInvite2": OP_GroupInvite2,
-    "OP_GroupUpdate": OP_GroupUpdate,
-    "OP_GroupUpdateB": OP_GroupUpdateB,
-    "OP_GroupDisbandYou": OP_GroupDisbandYou,
-    "OP_GroupDisbandOther": OP_GroupDisbandOther,
-    "OP_RaidUpdate": OP_RaidUpdate,
-    "OP_RaidJoin": OP_RaidJoin,
-    "OP_AcceptNewTask": OP_AcceptNewTask,
-    "OP_TaskSelectWindow": OP_TaskSelectWindow,
-    "OP_TaskActivity": OP_TaskActivity,
-    "OP_TaskActivityComplete": OP_TaskActivityComplete,
-    "OP_ChannelMessage": OP_ChannelMessage,
-    "OP_SpecialMesg": OP_SpecialMesg,
-    "OP_SimpleMessage": OP_SimpleMessage,
-    "OP_OnLevelMessage": OP_OnLevelMessage,
-    "OP_PopupResponse": OP_PopupResponse,
-    "OP_RezzRequest": OP_RezzRequest,
-    "OP_RezzAnswer": OP_RezzAnswer,
-}
 # Each end value includes the entire unit the user specified. For instance,
 # --end 2026-11-02T10:30 includes packets up to 10:30:59.999999.
 _DAY = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -389,7 +106,7 @@ def hexdump(payload: bytes, max_bytes: int) -> str:
     shown = payload[:max_bytes] if max_bytes > 0 else payload
     lines: list[str] = []
     for pos in range(0, len(shown), 16):
-        chunk = shown[pos:pos + 16]
+        chunk = shown[pos : pos + 16]
         hexcol = " ".join(f"{b:02x}" for b in chunk)
         ascii_col = "".join(chr(b) if 32 <= b <= 126 else "." for b in chunk)
         lines.append(f"  {pos:06x}  {hexcol:<47}  |{ascii_col}|")
@@ -446,7 +163,7 @@ class Viewer:
         if self.last:
             # Take the newest N *matching* rows, then display oldest-to-newest.
             query = (
-                f"SELECT * FROM ({select}{where} ORDER BY \"TimeSeen\" DESC, _id DESC LIMIT ?) "
+                f'SELECT * FROM ({select}{where} ORDER BY "TimeSeen" DESC, _id DESC LIMIT ?) '
                 'ORDER BY "TimeSeen", _id'
             )
             args.append(self.last)
@@ -456,11 +173,11 @@ class Viewer:
 
     def print_packets(self) -> None:
         rows = self.rows()
-        print(f"\n{len(rows)} packet(s) shown (oldest first); registry has {len(OP_CODE_MAPPING)} opcode(s).")
+        print(f"\n{len(rows)} packet(s) shown (oldest first); registry has {len(OPERATIONS)} opcode(s).")
         for row in rows:
             payload = bytes(row["Bytes"])
             code = str(row["Op_Code"])
-            struct_type = OP_CODE_MAPPING.get(code)
+            struct_type = OPERATIONS.get(code)
             print(
                 f'\n[{row["_id"]}] {row["TimeSeen"]}  '
                 f'{row["Direction"]:>4}  {row["Character"]}  {code}  ({len(payload)} bytes)'
@@ -577,16 +294,16 @@ class Shell(cmd.Cmd):
         print()
         return True
 
-    def emptyline(self) -> None:
-        pass
+    def emptyline(self) -> bool:
+        return False
 
-    def onecmd(self, line: str) -> bool | None:
+    def onecmd(self, line: str) -> bool:
         # Keep invalid interactive commands from terminating the viewer.
         try:
             return super().onecmd(line)
         except (ValueError, sqlite3.Error) as exc:
             print(f"Error: {exc}")
-            return None
+            return False
 
 
 def nonnegative_int(value: str) -> int:
@@ -599,14 +316,30 @@ def nonnegative_int(value: str) -> int:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("database", type=Path, help="Path to bus.sqlite3")
-    parser.add_argument("--only", action="append", default=[], help="Include opcodes (comma-separated, * wildcards); repeatable")
-    parser.add_argument("--exclude", action="append", default=[], help="Exclude opcodes (comma-separated, * wildcards); repeatable")
+    parser.add_argument(
+        "--only", action="append", default=[], help="Include opcodes (comma-separated, * wildcards); repeatable"
+    )
+    parser.add_argument(
+        "--exclude", action="append", default=[], help="Exclude opcodes (comma-separated, * wildcards); repeatable"
+    )
     parser.add_argument("--start", help="Lower bound: YYYY-MM-DD or YYYY-MM-DDTHH:MM[:SS[.ffffff]]")
     parser.add_argument("--end", help="Inclusive end date/time, at the entered precision")
     parser.add_argument("--character", help="Only this character")
     parser.add_argument("--direction", choices=["send", "recv"], help="Only sent or received packets")
-    parser.add_argument("--last", type=nonnegative_int, default=100, metavar="N", help="Newest N matching packets, displayed oldest first (0=all; default 100)")
-    parser.add_argument("--max-bytes", type=nonnegative_int, default=256, metavar="N", help="Max bytes in each hexdump (0=all; default 256)")
+    parser.add_argument(
+        "--last",
+        type=nonnegative_int,
+        default=100,
+        metavar="N",
+        help="Newest N matching packets, displayed oldest first (0=all; default 100)",
+    )
+    parser.add_argument(
+        "--max-bytes",
+        type=nonnegative_int,
+        default=256,
+        metavar="N",
+        help="Max bytes in each hexdump (0=all; default 256)",
+    )
     parser.add_argument("--hex", action="store_true", help="Show hex dump even for successfully decoded packets")
     parser.add_argument("-i", "--interactive", action="store_true", help="Interactive filter/refresh shell")
     args = parser.parse_args()

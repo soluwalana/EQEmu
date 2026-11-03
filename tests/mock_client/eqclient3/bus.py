@@ -81,12 +81,12 @@ class Bus:
         if not isinstance(parsed, EQStruct):
             log.debug(f"Opcode {opcode} wasn't a struct")
             return
-        
+
         queue = self.queue
         if not queue:
             log.debug("No queue skipping OPCode -> action distribution")
             return
-        
+
         for action in queue:
             if opcode in action.opcodes():
                 action.add_message(Message(parsed))

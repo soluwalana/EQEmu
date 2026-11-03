@@ -14,13 +14,13 @@ the y, x, z order used on the wire.
 
 from __future__ import annotations
 
-from .wire import (
+from eqclient3.structs.wire import (
     OPERATIONS,
     EQStruct,
     _cstring,
 )
 
-from .session import (
+from eqclient3.structs.session import (
     OP_SESSION_REQUEST_ID,
     OP_SESSION_RESPONSE_ID,
     OP_COMBINED_ID,
@@ -51,7 +51,7 @@ from .session import (
     OP_OUT_OF_SESSION,
 )
 
-from .login import (
+from eqclient3.structs.login import (
     LOGIN_BASE_SIZE,
     LOGIN_INFO_SIZE,
     NAME_APPROVAL_SIZE,
@@ -74,7 +74,7 @@ from .login import (
     OP_CharacterCreate,
 )
 
-from .zone import (
+from eqclient3.structs.zone import (
     ENTER_WORLD_SIZE,
     ZONE_ENTRY_SIZE,
     ZONE_SERVER_INFO_SIZE,
@@ -99,7 +99,7 @@ from .zone import (
     OP_ReliableHole,
 )
 
-from .mobs import (
+from eqclient3.structs.mobs import (
     Spawn,
     OP_ClientUpdate,
     OP_MobUpdate,
@@ -119,7 +119,7 @@ from .mobs import (
     OP_FindPersonReply,
 )
 
-from .world import (
+from eqclient3.structs.world import (
     DOOR_SIZE,
     Door,
     OP_SpawnDoor,
@@ -131,7 +131,7 @@ from .world import (
     OP_ClickObject,
 )
 
-from .combat import (
+from eqclient3.structs.combat import (
     OP_Consider,
     OP_TargetMouse,
     OP_AutoAttack,
@@ -145,7 +145,7 @@ from .combat import (
     OP_Fishing,
 )
 
-from .profile import (
+from eqclient3.structs.profile import (
     GM_TRAINING_SIZE,
     GM_SKILL_COUNT,
     PROFILE_SIZE,
@@ -164,7 +164,7 @@ from .profile import (
     OP_ReadBook,
 )
 
-from .items import (
+from eqclient3.structs.items import (
     ITEM_MERCHANT,
     ITEM_LOOT,
     ITEM_TRADE,
@@ -192,7 +192,7 @@ from .items import (
     OP_FinishTrade,
 )
 
-from .group import (
+from eqclient3.structs.group import (
     OP_GroupInvite,
     OP_GroupInvite2,
     OP_GroupUpdate,
@@ -203,7 +203,7 @@ from .group import (
     OP_RaidJoin,
 )
 
-from .tasks import (
+from eqclient3.structs.tasks import (
     TaskElement,
     TaskChoice,
     OP_AcceptNewTask,
@@ -212,7 +212,7 @@ from .tasks import (
     OP_TaskActivityComplete,
 )
 
-from .messages import (
+from eqclient3.structs.messages import (
     SAY_CHANNEL,
     CHANNEL_MESSAGE_SIZE,
     OP_ChannelMessage,
@@ -222,6 +222,39 @@ from .messages import (
     OP_PopupResponse,
     OP_RezzRequest,
     OP_RezzAnswer,
+)
+
+from eqclient3.structs.rof2_additional import (
+    OP_Untargetable,
+    OP_WearChange,
+    OP_Action,
+    OP_FormattedMessage,
+    OP_ManaUpdate,
+    OP_EnduranceUpdate,
+    OP_Endurance,
+    OP_BeginCast,
+    OP_XTargetResponse,
+    OP_PlayerStateAdd,
+    OP_PlayerStateRemove,
+    OP_Animation,
+    OP_RespondAA,
+    OP_MobRename,
+    OP_AltCurrency,
+    OP_SendFindableNPCs,
+    OP_CompletedTasks,
+    OP_AggroMeterTargetInfo,
+    OP_AggroMeterUpdate,
+    OP_TargetHoTT,
+    OP_RestState,
+    OP_AutoAttack2,
+    OP_Jump,
+    OP_KeyRing,
+    OP_LDoNButton,
+    OP_LDoNDisarmTraps,
+    OP_LDoNInspect,
+    OP_LDoNOpen,
+    OP_LDoNPickLock,
+    OP_LDoNSenseTraps,
 )
 
 __all__ = [
@@ -399,4 +432,35 @@ __all__ = [
     "OP_PopupResponse",
     "OP_RezzRequest",
     "OP_RezzAnswer",
+    "OP_Untargetable",
+    "OP_WearChange",
+    "OP_Action",
+    "OP_FormattedMessage",
+    "OP_ManaUpdate",
+    "OP_EnduranceUpdate",
+    "OP_Endurance",
+    "OP_BeginCast",
+    "OP_MobHealth",
+    "OP_XTargetResponse",
+    "OP_PlayerStateAdd",
+    "OP_PlayerStateRemove",
+    "OP_Animation",
+    "OP_RespondAA",
+    "OP_MobRename",
+    "OP_AltCurrency",
+    "OP_SendFindableNPCs",
+    "OP_CompletedTasks",
+    "OP_AggroMeterTargetInfo",
+    "OP_AggroMeterUpdate",
+    "OP_TargetHoTT",
+    "OP_RestState",
+    "OP_AutoAttack2",
+    "OP_Jump",
+    "OP_KeyRing",
+    "OP_LDoNButton",
+    "OP_LDoNDisarmTraps",
+    "OP_LDoNInspect",
+    "OP_LDoNOpen",
+    "OP_LDoNPickLock",
+    "OP_LDoNSenseTraps",
 ]

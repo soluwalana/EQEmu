@@ -148,9 +148,7 @@ def factions_from_lines(lines) -> FactionBook:
         for faction_id, value in entries.get(nf_id, ()):
             if value <= 0:
                 continue
-            buckets[faction_id].append(
-                FactionHit(faction_id, value, npc_id, name, where, zone_id)
-            )
+            buckets[faction_id].append(FactionHit(faction_id, value, npc_id, name, where, zone_id))
     for faction_id, hits in buckets.items():
         # Dedupe (npc, zone) keeping the largest value.
         best: dict[tuple[int, str], FactionHit] = {}

@@ -347,9 +347,7 @@ class ZoneModel:
         kind = self._echo_kind(x, y)
         if kind == "confirmed" and self.step_asked is not None and abs(z - self.step_asked[2]) > 6.0:
             z = self.step_asked[2]
-        changed = self.have_position and (
-            abs(self.x - x) > 0.5 or abs(self.y - y) > 0.5 or abs(self.z - z) > 0.5
-        )
+        changed = self.have_position and (abs(self.x - x) > 0.5 or abs(self.y - y) > 0.5 or abs(self.z - z) > 0.5)
         self.x, self.y, self.z = x, y, z
         self.have_position = True
         self.server_position = True
@@ -464,11 +462,7 @@ class ZoneModel:
             self.last_seen[name.lower()] = (self.zone, x, y, z)
             namel = name.lower()
             me = (self.character or "").lower()
-            own_husk = me and (
-                namel == me
-                or namel.startswith(f"{me}'s corpse")
-                or (me in namel and "corpse" in namel)
-            )
+            own_husk = me and (namel == me or namel.startswith(f"{me}'s corpse") or (me in namel and "corpse" in namel))
             # Bind id/coords only while a corpse run is already active — do not
             # start a new run from every leftover husk in the zone.
             if own_husk and npc in (2, 3) and self.needs_corpse:
@@ -572,8 +566,7 @@ class ZoneModel:
         if success == 1 and zone_id and zone_id != self.zone_id:
             known = zone_name_of(zone_id) or str(zone_id)
             print(
-                f"OP_ZoneChange success → {known} "
-                f"from={self.zone or self.zone_id} pos=({x:.0f},{y:.0f},{z:.0f})",
+                f"OP_ZoneChange success → {known} " f"from={self.zone or self.zone_id} pos=({x:.0f},{y:.0f},{z:.0f})",
                 flush=True,
             )
             # Keep self.zone as the egress short name until OP_NewZone wipes spawns.

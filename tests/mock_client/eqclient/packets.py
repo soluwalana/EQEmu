@@ -6,7 +6,6 @@ import re
 import struct
 from dataclasses import dataclass
 
-
 SAY_CHANNEL = 8
 
 LOGIN_BASE_SIZE = 10  # int32, bool, int8, int32, packed
@@ -190,7 +189,9 @@ def player_profile(payload: bytes) -> Played | None:
     level = payload[20]
     deity = struct.unpack_from("<I", payload, 124)[0]
     points, mana, hp = struct.unpack_from("<III", payload, 2224)
-    strength, stamina, charisma, dexterity, intelligence, agility, wisdom = struct.unpack_from("<IIIIIII", payload, 2236)
+    strength, stamina, charisma, dexterity, intelligence, agility, wisdom = struct.unpack_from(
+        "<IIIIIII", payload, 2236
+    )
     name = ""
     if len(payload) >= 13004:
         name = payload[12940:13004].split(b"\x00", 1)[0].decode("latin1")
@@ -349,7 +350,7 @@ def popup_message(payload: bytes) -> tuple[str, str, int]:
     if len(payload) < 128:
         return "", "", 0
     title = payload[:128].split(b"\x00", 1)[0].decode("latin1", errors="replace")
-    text = payload[128:128 + 4096].split(b"\x00", 1)[0].decode("latin1", errors="replace")
+    text = payload[128 : 128 + 4096].split(b"\x00", 1)[0].decode("latin1", errors="replace")
     popup_id = struct.unpack_from("<I", payload, 4232)[0] if len(payload) >= 4236 else 0
     return title, popup_plain(text), popup_id
 
@@ -688,7 +689,9 @@ def _pipe_int(fields: list[str], index: int) -> int:
     return int(text)
 
 
-def parse_inventory(payload: bytes) -> list[tuple[int, int, str, str, int, int, int, int, int, int, int, int, int, int, int]]:
+def parse_inventory(
+    payload: bytes,
+) -> list[tuple[int, int, str, str, int, int, int, int, int, int, int, int, int, int, int]]:
     """OP_CharInventory is the login list: null-terminated items, with no type prefix."""
     found = []
     for blob in payload.split(b"\x00"):
@@ -715,7 +718,9 @@ def profile_spells(payload: bytes) -> tuple[dict[int, int], dict[int, int]]:
     return book, gems
 
 
-def parse_item_packet(payload: bytes) -> tuple[int, int, str, str, int, int, int, int, int, int, int, int, int, int, int, int, int] | None:
+def parse_item_packet(
+    payload: bytes,
+) -> tuple[int, int, str, str, int, int, int, int, int, int, int, int, int, int, int, int, int] | None:
     """Type, slot, name, IDFile, id, stack, slot bits, classes, races, AC, damage, req level, size, bag slots, bag size."""
     if len(payload) < 5:
         return None

@@ -4,7 +4,19 @@ import struct
 from pathlib import Path
 
 from eqclient.builds import build_for, gear_value, next_train
-from eqclient.conduct import Recipe, RecipeBook, ability_for, bar_needed, craft_for, ensure_recipes, order_of, recipe_ready, recipes_from_lines, role_of, write_recipes
+from eqclient.conduct import (
+    Recipe,
+    RecipeBook,
+    ability_for,
+    bar_needed,
+    craft_for,
+    ensure_recipes,
+    order_of,
+    recipe_ready,
+    recipes_from_lines,
+    role_of,
+    write_recipes,
+)
 from eqclient.explore import is_stair, _step_height
 from eqclient.items import Held, Inventory, loot_picks
 from eqclient.journal import Journal
@@ -359,7 +371,11 @@ def test_a_certain_drop_sends_him_to_the_mob_when_no_quest_names_it(tmp_path):
     kill = home.next_step(graph, {}, {}, level=70, here="unrest", drops=book)
     assert kill.kind == "loot" and kill.npc == "a kor" and kill.text == "kill"
 
-    listed = type("G", (), {"edges": [{"rel": "loots", "to": "item:10524", "zone": "crushbone", "npc": "orc centurion"}], "items": {}})()
+    listed = type(
+        "G",
+        (),
+        {"edges": [{"rel": "loots", "to": "item:10524", "zone": "crushbone", "npc": "orc centurion"}], "items": {}},
+    )()
     named = Campaign(1)
     named.set_goal(10524)
     quest = named.next_step(listed, {}, {}, level=70, here="crushbone", drops=book)
@@ -404,10 +420,14 @@ def test_a_drop_farm_asks_for_the_count_still_missing():
     world.spawns[7] = Spawn(7, "a kor", 1, 1, 1, 10.0, 10.0, 0.0, 1, 1)
     hunting = Campaign(1)
     hunting.set_goal(10524, 4)
-    intent = guide(world, TaskBook(), ZoneQuests("unrest"), Inventory(), True, graph=graph, campaign=hunting, drops=book)
+    intent = guide(
+        world, TaskBook(), ZoneQuests("unrest"), Inventory(), True, graph=graph, campaign=hunting, drops=book
+    )
     assert intent is not None and intent.kind == "task_kill" and intent.name == "a kor"
     world.spawns[7] = Spawn(7, "a kor", 2, 1, 1, 10.0, 10.0, 0.0, 1, 1)
-    corpse = guide(world, TaskBook(), ZoneQuests("unrest"), Inventory(), True, graph=graph, campaign=hunting, drops=book)
+    corpse = guide(
+        world, TaskBook(), ZoneQuests("unrest"), Inventory(), True, graph=graph, campaign=hunting, drops=book
+    )
     assert corpse is not None and corpse.kind == "loot" and corpse.target == 7
 
     waiting = _world()
@@ -422,7 +442,13 @@ def test_a_drop_farm_asks_for_the_count_still_missing():
     assert clear is not None and clear.kind == "explore" and clear.name == "a kor" and clear.text == "loot"
     waiting.spawns[8] = Spawn(8, "a gnoll", 1, 70, 1, 30.0, -140.0, 0.0, 1, 1)
     filler = guide(waiting, TaskBook(), ZoneQuests("unrest"), Inventory(), True, graph=graph, campaign=idle, drops=book)
-    assert filler is not None and filler.kind == "fight" and filler.target == 8 and filler.name == "a gnoll" and filler.text == "respawn"
+    assert (
+        filler is not None
+        and filler.kind == "fight"
+        and filler.target == 8
+        and filler.name == "a gnoll"
+        and filler.text == "respawn"
+    )
     waiting.spawns[7] = Spawn(7, "a kor", 2, 1, 1, 12.0, -140.0, 0.0, 1, 1)
     first = guide(waiting, TaskBook(), ZoneQuests("unrest"), Inventory(), True, graph=graph, campaign=idle, drops=book)
     assert first is not None and first.kind == "loot" and first.target == 7
@@ -521,6 +547,7 @@ def test_a_zone_is_stored_when_he_enters_it_and_a_chain_can_continue_elsewhere()
     root = Path("/tmp/eq-graph-fixture")
     if root.exists():
         import shutil
+
         shutil.rmtree(root)
     (root / "freporte").mkdir(parents=True)
     (root / "freporte" / "Priest.pl").write_text(
@@ -544,7 +571,9 @@ def test_a_zone_is_stored_when_he_enters_it_and_a_chain_can_continue_elsewhere()
     world.zone = "qeynos"
     world.zone_id = 1
     world.doors[4] = Door(4, "zone", 5.0, 5.0, 0.0, 0)
-    intent = guide(world, TaskBook(), quests, Inventory(), True, graph=loaded, said_all={("freporte", "priest", "hail")})
+    intent = guide(
+        world, TaskBook(), quests, Inventory(), True, graph=loaded, said_all={("freporte", "priest", "hail")}
+    )
     assert intent is not None and intent.kind == "leave" and intent.name == "freporte"
 
 
@@ -575,6 +604,7 @@ def test_a_say_names_an_item_and_a_flag_gates_the_hand_in():
     root = Path("/tmp/eq-graph-items")
     if root.exists():
         import shutil
+
         shutil.rmtree(root)
     (root / "neriaka").mkdir(parents=True)
     (root / "neriaka" / "X-Ta_Tempi.pl").write_text(
@@ -710,6 +740,7 @@ def test_a_script_under_the_zone_folder_is_part_of_that_zone():
     root = Path("/tmp/eq-graph-nested")
     if root.exists():
         import shutil
+
         shutil.rmtree(root)
     encounter = root / "dranik" / "encounters"
     encounter.mkdir(parents=True)
@@ -725,7 +756,7 @@ def test_a_script_under_the_zone_folder_is_part_of_that_zone():
     )
     (root / "plugins").mkdir()
     (root / "plugins" / "ignored.lua").write_text(
-        'if(item_lib.check_turn_in(e.trade, {item1 = 1})) then e.other:SummonItem(2); end\n',
+        "if(item_lib.check_turn_in(e.trade, {item1 = 1})) then e.other:SummonItem(2); end\n",
         encoding="utf-8",
     )
     graph = build_graph(str(root))
@@ -778,7 +809,9 @@ def test_coins_held_items_grounds_loot_and_recipes_join_the_graph():
     end
     """
     edges = link_script(ground, "Arem.lua", "freeportwest")
-    assert any(edge["rel"] == "grounds" and edge["to"] == "item:69961" and edge["zone"] == "freeportwest" for edge in edges)
+    assert any(
+        edge["rel"] == "grounds" and edge["to"] == "item:69961" and edge["zone"] == "freeportwest" for edge in edges
+    )
 
     timer = """
     function event_timer(e)
@@ -813,6 +846,7 @@ def test_coins_held_items_grounds_loot_and_recipes_join_the_graph():
     root = Path("/tmp/eq-graph-recipes")
     if root.exists():
         import shutil
+
         shutil.rmtree(root)
     (root / "global").mkdir(parents=True)
     (root / "global" / "global_player.lua").write_text(
@@ -893,11 +927,20 @@ def test_a_perl_comment_an_or_gate_a_kill_and_a_spawned_corpse_stay_on_the_step(
     """
     edges = link_script(merit, "default.lua", "wallofslaughter")
     kill = [edge for edge in edges if edge["from"].endswith("#kill")]
-    assert any(edge["rel"] == "needs" and edge.get("flag") == "cleric20_darkdisciples" and edge.get("at") == "set" for edge in kill)
-    assert any(edge["rel"] == "needs" and edge.get("flag") == "cleric20_robedropped" and edge.get("at") == "unset" for edge in kill)
+    assert any(
+        edge["rel"] == "needs" and edge.get("flag") == "cleric20_darkdisciples" and edge.get("at") == "set"
+        for edge in kill
+    )
+    assert any(
+        edge["rel"] == "needs" and edge.get("flag") == "cleric20_robedropped" and edge.get("at") == "unset"
+        for edge in kill
+    )
     assert {edge["to"] for edge in kill if edge["rel"] == "spawns"} == {"npc:300072", "npc:300073"}
     assert any(edge["rel"] == "loots" and edge["to"] == "item:12433" for edge in kill)
-    assert any(edge["rel"] == "sets" and edge.get("flag") == "cleric20_robedropped" and edge.get("value") == "1" for edge in kill)
+    assert any(
+        edge["rel"] == "sets" and edge.get("flag") == "cleric20_robedropped" and edge.get("value") == "1"
+        for edge in kill
+    )
 
     chest = """
     function event_loot(e)
@@ -907,11 +950,15 @@ def test_a_perl_comment_an_or_gate_a_kill_and_a_spawned_corpse_stay_on_the_step(
     end
     """
     edges = link_script(chest, "player.lua", "wakening")
-    assert any(edge["rel"] == "sets" and edge.get("flag") == "cleric_epic_wakeningchest" and edge["from"].endswith("#loot") for edge in edges)
+    assert any(
+        edge["rel"] == "sets" and edge.get("flag") == "cleric_epic_wakeningchest" and edge["from"].endswith("#loot")
+        for edge in edges
+    )
 
     root = Path("/tmp/eq-graph-spawn-loot")
     if root.exists():
         import shutil
+
         shutil.rmtree(root)
     (root / "lavastorm").mkdir(parents=True)
     (root / "lavastorm" / "Laura.lua").write_text(
@@ -952,9 +999,20 @@ def test_a_say_keyword_and_a_turn_in_can_spawn_the_next_npc():
     nodes = parse_chain(madman, "#a_madman.lua", "nro")
     assert [node.word for node in nodes] == ["Geadin", "will do"]
     edges = link_script(madman, "#a_madman.lua", "nro")
-    assert any(edge["rel"] == "needs" and edge.get("flag") == "druid_epic" and edge.get("at") == "==3" and edge["from"].endswith("#geadin") for edge in edges)
+    assert any(
+        edge["rel"] == "needs"
+        and edge.get("flag") == "druid_epic"
+        and edge.get("at") == "==3"
+        and edge["from"].endswith("#geadin")
+        for edge in edges
+    )
     spawned = [edge for edge in edges if edge["rel"] == "spawns"]
-    assert spawned and spawned[0]["from"].endswith("#will do") and spawned[0]["to"] == "npc:392104" and spawned[0]["name"] == "a haunt"
+    assert (
+        spawned
+        and spawned[0]["from"].endswith("#will do")
+        and spawned[0]["to"] == "npc:392104"
+        and spawned[0]["name"] == "a haunt"
+    )
 
     ogre = """
     function event_trade(e)
@@ -1026,6 +1084,7 @@ def test_a_spell_a_forage_and_a_callback_still_create_the_item():
     assert catalog.zones[52934] == ("pojustice",)
     assert "ground:pojustice" in catalog.sources[52934]
     from eqclient.catalog import audit_zones
+
     report = audit_zones(catalog, {"lakerathe", "plugins", "missingzone"})
     assert report["quest_without_zone"] == ["missingzone"]
     assert (201, "lakerathe", "pojustice") in report["id_collisions"]
@@ -1052,10 +1111,14 @@ def test_a_spell_a_forage_and_a_callback_still_create_the_item():
     }
     """
     edges = link_script(handed, "Rahoul.pl", "sharvahl")
-    assert any(edge["rel"] == "sets" and edge.get("flag") == "beast_epic" and edge.get("value") == "2" for edge in edges)
+    assert any(
+        edge["rel"] == "sets" and edge.get("flag") == "beast_epic" and edge.get("value") == "2" for edge in edges
+    )
     assert any(edge["rel"] == "receives" and edge["to"] == "item:57008" for edge in edges)
     assert any(edge["rel"] == "gives" and edge["to"] == "item:52931" for edge in edges)
-    assert any(edge["rel"] == "receives" and edge["to"] == "coin:platinum" and edge.get("count") == 2000 for edge in edges)
+    assert any(
+        edge["rel"] == "receives" and edge["to"] == "coin:platinum" and edge.get("count") == 2000 for edge in edges
+    )
     assert any(edge["rel"] == "gives" and edge["to"] == "item:10651" for edge in edges)
     assert any(edge["rel"] == "gives" and edge["to"] == "item:15793" for edge in edges)
 
@@ -1088,7 +1151,9 @@ def test_a_spell_a_forage_and_a_callback_still_create_the_item():
     """
     edges = link_script(callback, "berserkerepic_1_5.lua", "sebilis")
     assert any(edge["rel"] == "gives" and edge["to"] == "item:17833" for edge in edges)
-    assert any(edge["rel"] == "sets" and edge.get("flag") == "berserk_epic" and edge.get("value") == "4" for edge in edges)
+    assert any(
+        edge["rel"] == "sets" and edge.get("flag") == "berserk_epic" and edge.get("value") == "4" for edge in edges
+    )
     assert any(edge["rel"] == "spawns" and edge["to"] == "npc:303129" for edge in edges)
 
 
@@ -1103,7 +1168,9 @@ def test_a_local_spawn_and_a_world_station_are_not_missing_items():
     end
     """
     edges = link_script(leech, "a_dire_leech.lua", "swampofnohope")
-    assert any(edge["rel"] == "spawns" and edge["to"] == "npc:83249" and edge["from"].endswith("#event_hp") for edge in edges)
+    assert any(
+        edge["rel"] == "spawns" and edge["to"] == "npc:83249" and edge["from"].endswith("#event_hp") for edge in edges
+    )
 
     twice = """
     local dragon_id = 1
@@ -1146,10 +1213,16 @@ def test_a_local_spawn_and_a_world_station_are_not_missing_items():
     assert catalog.world_containers[17]["zones"] == ("commons",)
     assert catalog.world_containers[15]["name"] == "Oven"
     graph = QuestGraph()
-    graph.edges.append({"kind": "edge", "rel": "sets", "from": "global/x#recipe:9", "to": "flag:x", "flag": "x", "value": "1"})
-    graph.edges.append({"kind": "edge", "rel": "sets", "from": "global/x#recipe:10", "to": "flag:x", "flag": "x", "value": "1"})
+    graph.edges.append(
+        {"kind": "edge", "rel": "sets", "from": "global/x#recipe:9", "to": "flag:x", "flag": "x", "value": "1"}
+    )
+    graph.edges.append(
+        {"kind": "edge", "rel": "sets", "from": "global/x#recipe:10", "to": "flag:x", "flag": "x", "value": "1"}
+    )
     _add_recipes(graph, catalog, set())
-    assert any(edge["rel"] == "container" and edge["to"] == "world:17" and edge["from"] == "recipe:9" for edge in graph.edges)
+    assert any(
+        edge["rel"] == "container" and edge["to"] == "world:17" and edge["from"] == "recipe:9" for edge in graph.edges
+    )
     assert any(edge["rel"] == "container" and edge["to"] == "item:17762" for edge in graph.edges)
     assert not any(edge.get("to") == "item:17" for edge in graph.edges)
     assert 17 not in graph.items
@@ -1210,15 +1283,11 @@ def test_trap_npc_zones_from_quest_scripts(tmp_path):
     grey = tmp_path / "thegrey"
     grey.mkdir()
     (grey / "a_creature.pl").write_text(
-        "sub EVENT_ENTER {\n"
-        "  quest::spawn2(quest::ChooseRandom(171051,171063,171064,171069),0,0,1,1,1,0);\n"
-        "}\n"
+        "sub EVENT_ENTER {\n" "  quest::spawn2(quest::ChooseRandom(171051,171063,171064,171069),0,0,1,1,1,0);\n" "}\n"
     )
     feer = tmp_path / "feerrott"
     feer.mkdir()
-    (feer / "#druid_epic_trap.pl").write_text(
-        "sub EVENT_ENTER { quest::spawn2(47208,0,0,1,1,1,0); }\n"
-    )
+    (feer / "#druid_epic_trap.pl").write_text("sub EVENT_ENTER { quest::spawn2(47208,0,0,1,1,1,0); }\n")
     zones = _trap_npc_zones(tmp_path)
     assert zones[171051] == ("thegrey",)
     assert zones[171069] == ("thegrey",)
@@ -1276,14 +1345,23 @@ def test_a_combine_can_return_two_items_and_names_its_skill():
     assert catalog.recipes[200]["must_learn"] == 1
     graph = QuestGraph()
     graph.edges.append({"kind": "edge", "rel": "needs", "from": "qeynos/a#hail", "to": "item:66176", "item": 66176})
-    graph.edges.append({"kind": "edge", "rel": "sets", "from": "global/x#recipe:200", "to": "flag:x", "flag": "x", "value": "1"})
-    graph.edges.append({"kind": "edge", "rel": "sets", "from": "global/x#recipe:201", "to": "flag:x", "flag": "x", "value": "1"})
+    graph.edges.append(
+        {"kind": "edge", "rel": "sets", "from": "global/x#recipe:200", "to": "flag:x", "flag": "x", "value": "1"}
+    )
+    graph.edges.append(
+        {"kind": "edge", "rel": "sets", "from": "global/x#recipe:201", "to": "flag:x", "flag": "x", "value": "1"}
+    )
     _add_recipes(graph, catalog, {66176})
     produced = [edge for edge in graph.edges if edge["rel"] == "produces" and edge["from"] == "recipe:10347"]
     assert {edge["to"] for edge in produced} == {"item:66176", "item:66177"}
     assert produced[0]["skill_name"] == "Pottery" and produced[0]["trivial"] == 0 and produced[0]["nofail"] == 1
     hard = [edge for edge in graph.edges if edge["rel"] == "produces" and edge["from"] == "recipe:200"]
-    assert hard and hard[0]["skillneeded"] == 200 and hard[0]["trivial"] == 252 and hard[0]["skill_name"] == "Blacksmithing"
+    assert (
+        hard
+        and hard[0]["skillneeded"] == 200
+        and hard[0]["trivial"] == 252
+        and hard[0]["skill_name"] == "Blacksmithing"
+    )
     assert not any(edge.get("from") == "recipe:201" for edge in graph.edges)
 
 
@@ -1358,10 +1436,7 @@ def test_a_timer_can_summon_through_a_client_lookup_and_add_loot_to_a_spawn():
     """
     edges = link_script(lua, "druid_1_5.lua", "frontiermtns")
     assert any(edge["rel"] == "spawns" and edge["to"] == "npc:92202" for edge in edges)
-    assert any(
-        edge["rel"] == "loots" and edge["to"] == "item:62826" and edge.get("npc") == 92202
-        for edge in edges
-    )
+    assert any(edge["rel"] == "loots" and edge["to"] == "item:62826" and edge.get("npc") == 92202 for edge in edges)
 
 
 def test_event_loot_getid_is_a_gate_and_numeric_npc_files_take_dump_names():
@@ -1381,8 +1456,13 @@ def test_event_loot_getid_is_a_gate_and_numeric_npc_files_take_dump_names():
     end
     """
     edges = link_script(loot_gate, "player.lua", "wallofslaughter")
-    assert any(edge["rel"] == "needs" and edge["to"] == "item:76999" and edge["from"].endswith("#loot") for edge in edges)
-    assert not any(edge["rel"] == "loots" and edge["to"] == "item:76999" and "player#loot" in str(edge.get("from")) for edge in edges)
+    assert any(
+        edge["rel"] == "needs" and edge["to"] == "item:76999" and edge["from"].endswith("#loot") for edge in edges
+    )
+    assert not any(
+        edge["rel"] == "loots" and edge["to"] == "item:76999" and "player#loot" in str(edge.get("from"))
+        for edge in edges
+    )
     assert any(edge["rel"] == "spawns" and edge.get("npc") == 300057 for edge in edges)
 
     catalog = Catalog()
@@ -1407,8 +1487,14 @@ def test_event_loot_getid_is_a_gate_and_numeric_npc_files_take_dump_names():
     end
     """
     edges = link_script(encounter, "ranger_1_5.lua", "dranik")
-    assert any(edge["rel"] == "gives" and edge["to"] == "item:62626" and "hand:62623" in str(edge.get("group")) for edge in edges)
-    assert not any(edge["rel"] == "gives" and edge["to"] == "item:62626" and "uisima_trade" in str(edge.get("group") or "").lower() for edge in edges)
+    assert any(
+        edge["rel"] == "gives" and edge["to"] == "item:62626" and "hand:62623" in str(edge.get("group"))
+        for edge in edges
+    )
+    assert not any(
+        edge["rel"] == "gives" and edge["to"] == "item:62626" and "uisima_trade" in str(edge.get("group") or "").lower()
+        for edge in edges
+    )
 
 
 def test_a_quoted_summon_a_lua_handin_spawn_and_a_deferred_trade_reward():

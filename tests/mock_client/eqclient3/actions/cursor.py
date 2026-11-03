@@ -61,12 +61,12 @@ class Cursor(Action):
             self.waited += 1
             if self.limit is None or self.waited < self.limit:
                 return
-            
+
             self.waited = 0
             if self.sent:
                 self._accept(world)
                 return
-            
+
             self._retry(loop, world)
             return
 

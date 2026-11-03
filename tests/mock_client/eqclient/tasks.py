@@ -99,7 +99,10 @@ class TaskBook:
             steps = [
                 activity
                 for activity in self.activities
-                if activity.task_id == task_id and not activity.optional and not activity.finished and not self._step_local(activity)
+                if activity.task_id == task_id
+                and not activity.optional
+                and not activity.finished
+                and not self._step_local(activity)
             ]
             if not steps:
                 continue

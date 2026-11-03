@@ -43,8 +43,7 @@ def main() -> None:
     named = sum(1 for row in book.rows if row.name)
     lists = sorted(book.list_names.items())
     print(
-        f"bot_spells: {len(book.rows)} entries ({named} named), "
-        f"{len(book.by_list)} lists → {DEFAULT_BOT_SPELLS}",
+        f"bot_spells: {len(book.rows)} entries ({named} named), " f"{len(book.by_list)} lists → {DEFAULT_BOT_SPELLS}",
         flush=True,
     )
     for list_id, name in lists:

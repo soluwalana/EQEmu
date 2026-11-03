@@ -294,8 +294,17 @@ def _upgrade_slot(inventory: Inventory, held: Held, score=None) -> int | None:
 
 
 _STARTER_JUNK = (
-    "burlap", "patched", "tattered", "ruined", "training", "cloth cap", "cloth shirt",
-    "cloth pants", "cloth sleeves", "cloth wrist", "worn cloth",
+    "burlap",
+    "patched",
+    "tattered",
+    "ruined",
+    "training",
+    "cloth cap",
+    "cloth shirt",
+    "cloth pants",
+    "cloth sleeves",
+    "cloth wrist",
+    "worn cloth",
 )
 
 
@@ -344,8 +353,10 @@ def _gain(held: Held, current: Held | None, score=None) -> int:
     # Packet AC often lands as 0 — still swap starter junk for real named gear.
     cur_n = (current.name or "").lower()
     new_n = (held.name or "").lower()
-    if is_wearable_gear(held) and any(tip in cur_n for tip in _STARTER_JUNK) and not any(
-        tip in new_n for tip in _STARTER_JUNK
+    if (
+        is_wearable_gear(held)
+        and any(tip in cur_n for tip in _STARTER_JUNK)
+        and not any(tip in new_n for tip in _STARTER_JUNK)
     ):
         return 1
     return 0
@@ -534,9 +545,27 @@ def is_vendor_trash(held: Held, protect: set[int] | None = None) -> bool:
     if any(
         word in name
         for word in (
-            "bread", "cake", "muffin", "pie", "meat", "cheese", "stew", "ration",
-            "water", "drink", "ale", "wine", "milk", "cider", "tea", "mushroom",
-            "tome", "book", "spell", "backpack", " bag",
+            "bread",
+            "cake",
+            "muffin",
+            "pie",
+            "meat",
+            "cheese",
+            "stew",
+            "ration",
+            "water",
+            "drink",
+            "ale",
+            "wine",
+            "milk",
+            "cider",
+            "tea",
+            "mushroom",
+            "tome",
+            "book",
+            "spell",
+            "backpack",
+            " bag",
         )
     ):
         return False

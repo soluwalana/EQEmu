@@ -718,9 +718,7 @@ class Agent:
                 plat, gold, silver, copper = struct.unpack_from("<IIII", payload, 4)
                 who = self._loot_corpse_tip()
                 if payload[0] in (1, 3):
-                    self._loot_coin_copper = (
-                        int(plat) * 1000 + int(gold) * 100 + int(silver) * 10 + int(copper)
-                    )
+                    self._loot_coin_copper = int(plat) * 1000 + int(gold) * 100 + int(silver) * 10 + int(copper)
                     gained = self.model.add_coin(plat, gold, silver, copper)
                     print(
                         f"loot coin {who}response={payload[0]} {plat}p {gold}g {silver}s {copper}c "
@@ -748,11 +746,7 @@ class Agent:
                     zone = self.model.own_corpse_zone or self.model.zone or "?"
                     x, y, z = spot
                     print(f"death corpse zone={zone} pos=({x:.0f}, {y:.0f}, {z:.0f})", flush=True)
-                elif spawn_id and (
-                    spawn_id in self.attacked
-                    or spawn_id == self._swing_id
-                    or spawn_id == self._focus
-                ):
+                elif spawn_id and (spawn_id in self.attacked or spawn_id == self._swing_id or spawn_id == self._focus):
                     # Prefer _retire (HP 0); BecomeCorpse is a backup if that missed.
                     self._retire(spawn_id)
                 elif spawn_id:
@@ -877,9 +871,7 @@ class Agent:
             target_spawn = self._spawn_by_entity(target)
             # Poison/DoT keeps firing with the dead entity id after BecomeCorpse —
             # never promote a corpse into bot-threat / retaliate.
-            if self._is_corpse_spawn(source_spawn) or (
-                target != me and self._is_corpse_spawn(target_spawn)
-            ):
+            if self._is_corpse_spawn(source_spawn) or (target != me and self._is_corpse_spawn(target_spawn)):
                 pass
             else:
                 bot_ids = {spawn.spawn_id & 0xFFFF for spawn in self._bot_spawns()}
@@ -897,9 +889,7 @@ class Agent:
                     # Bot landed a hit — they have a fight; do not walk off and leave them.
                     victim = _live_npc(target)
                     if victim is not None and not self._has_gave_up(victim.spawn_id):
-                        self._note_bot_threat(
-                            victim, f"bot-hit dmg={damage}", bot_id=source
-                        )
+                        self._note_bot_threat(victim, f"bot-hit dmg={damage}", bot_id=source)
                 elif source and source != me and (target == me or target in bot_ids):
                     # Only credit a live NPC source — never "nearest mob" guesswork
                     # (that turned poison-on-corpse into a false retaliate).
@@ -918,9 +908,7 @@ class Agent:
                         )
                         if not (spell_dot and (far or self._cure_spells)):
                             bot_id = target if target in bot_ids else 0
-                            self._note_bot_threat(
-                                attacker, f"dmg={damage} on={who}", bot_id=bot_id
-                            )
+                            self._note_bot_threat(attacker, f"dmg={damage} on={who}", bot_id=bot_id)
                     if target == me and damage > 0:
                         self._maybe_emergency_heal()
                         if dmg_type == 231 and spell_id not in (0, 0xFFFF):
@@ -1018,36 +1006,24 @@ class Agent:
                     continue
             # Rebuild bots even on a corpse run — solo reclaim at ecommons undead is a wipe.
             # Form to completion before reclaim/shop; only pause for close combat.
-            if (
-                (self.form_raid or self.form_group)
-                and not self._pc_party
-                and not self.party.formed
-            ):
+            if (self.form_raid or self.form_group) and not self._pc_party and not self.party.formed:
                 # Camp/spawn refuse while raid/group engaged — leave raid, fight, then retry.
                 if getattr(self.party, "blocked", False):
                     if not self.form_raid:
                         self._leave_raid(camp=False)
                     if self._forming_under_fire():
-                        next_report = self._report(
-                            next_report, Intention("form_party"), force=False
-                        )
+                        next_report = self._report(next_report, Intention("form_party"), force=False)
                         # Fall through — close fight only; reclaim stays gated below.
                     else:
                         self.party.clear_block()
-                        next_report = self._report(
-                            next_report, Intention("form_party"), force=False
-                        )
+                        next_report = self._report(next_report, Intention("form_party"), force=False)
                         self._form_party()
                         continue
                 elif self._forming_under_fire():
                     # Close fight interrupted invite/camp — defend, then resume form.
-                    next_report = self._report(
-                        next_report, Intention("form_party"), force=False
-                    )
+                    next_report = self._report(next_report, Intention("form_party"), force=False)
                 else:
-                    next_report = self._report(
-                        next_report, Intention("form_party"), force=False
-                    )
+                    next_report = self._report(next_report, Intention("form_party"), force=False)
                     self._form_party()
                     continue
             if (
@@ -1066,16 +1042,9 @@ class Agent:
             ):
                 self._setup_bot_heal()
             # Inventory cache after heal setup — listing all bots first kills create replies.
-            if (
-                self.party.formed
-                and self._heal_rotation_set
-                and len(self._bot_worn_listed) < len(self.party.spawned)
-            ):
+            if self.party.formed and self._heal_rotation_set and len(self._bot_worn_listed) < len(self.party.spawned):
                 self._cache_all_bot_worn()
-            reclaiming_now = bool(
-                self.model.needs_corpse
-                or self.journal.outstanding_corpses(self.model.character) > 0
-            )
+            reclaiming_now = bool(self.model.needs_corpse or self.journal.outstanding_corpses(self.model.character) > 0)
             if (
                 not reclaiming_now
                 and self.inventory.tome() is None
@@ -1109,10 +1078,7 @@ class Agent:
             # Never inventorygive / equip churn while mobs are on us — trade pumps
             # used to lock the tick through aggro (lantern → Mocwiz spin).
             # Also skip bag→bot churn while corpse coin is outstanding.
-            reclaiming_now = bool(
-                self.model.needs_corpse
-                or self.journal.outstanding_corpses(self.model.character) > 0
-            )
+            reclaiming_now = bool(self.model.needs_corpse or self.journal.outstanding_corpses(self.model.character) > 0)
             if not self._under_fire() and not self._engaged() and not reclaiming_now:
                 self._settle_gear()
                 self._seek_gear()
@@ -1153,10 +1119,7 @@ class Agent:
                 # so do not wait for reclaim-only rally.
                 why = (
                     "reclaim threat"
-                    if (
-                        self.model.needs_corpse
-                        or self.journal.outstanding_corpses(self.model.character) > 0
-                    )
+                    if (self.model.needs_corpse or self.journal.outstanding_corpses(self.model.character) > 0)
                     else "retaliate"
                 )
                 self._rally_bots(
@@ -1178,9 +1141,7 @@ class Agent:
                 and not self.party.formed
                 and not self._forming_under_fire()
             ):
-                next_report = self._report(
-                    next_report, Intention("form_party"), force=False
-                )
+                next_report = self._report(next_report, Intention("form_party"), force=False)
                 self._form_party()
                 continue
             # Corpse reclaim (coin) outranks grind — but never walk through open aggro.
@@ -1212,9 +1173,7 @@ class Agent:
                         self._pursuit,
                         self._reclaim_held_for,
                     )
-                    sdist = _horiz(
-                        self.model.position, (swinging.x, swinging.y, swinging.z)
-                    )
+                    sdist = _horiz(self.model.position, (swinging.x, swinging.y, swinging.z))
                     if not active_clear and sdist > max(80.0, _RECLAIM_CAUTION):
                         print(
                             f"combat drop swing {swinging.name} (reclaim far {sdist:.0f})",
@@ -1272,9 +1231,7 @@ class Agent:
                     if not self._bots_close(100):
                         spawn = self.model.spawns.get(retaliate.target or 0)
                         if spawn is not None:
-                            dist = _horiz(
-                                self.model.position, (spawn.x, spawn.y, spawn.z)
-                            )
+                            dist = _horiz(self.model.position, (spawn.x, spawn.y, spawn.z))
                             print(
                                 f"reclaim wait bots → {retaliate.name} "
                                 f"dist={dist:.0f} threat={_RECLAIM_CAUTION:.0f}yd",
@@ -1295,17 +1252,17 @@ class Agent:
                 at_safe = _horiz(self.model.position, self.model.safe) <= SAFE_RANGE
                 # Zones under recommended L30: sit where we are (ecommons, etc.).
                 sit_here = zone_recommended_level(self.model.zone or "") < 30
-                hurt = (
-                    self.model.needs_rest(self._sitting)
-                    or self._needs_mana_rest()
-                    or self._party_needs_rest()
-                )
+                hurt = self.model.needs_rest(self._sitting) or self._needs_mana_rest() or self._party_needs_rest()
                 # Feet-loot / explicit loot keeps priority over sit.
-                decision = None if looting else recover(
-                    hurt,
-                    self._engaged(),
-                    at_safe,
-                    sit_here=sit_here,
+                decision = (
+                    None
+                    if looting
+                    else recover(
+                        hurt,
+                        self._engaged(),
+                        at_safe,
+                        sit_here=sit_here,
+                    )
                 )
                 if decision == "safe":
                     if reclaiming and self._reclaim_rest_logged != "safe":
@@ -1315,7 +1272,11 @@ class Agent:
                     self._break_off()
                     reclaiming = False
                 elif decision == "rest":
-                    if self._needs_mana_rest() and not self.model.needs_rest(self._sitting) and not self._party_needs_rest():
+                    if (
+                        self._needs_mana_rest()
+                        and not self.model.needs_rest(self._sitting)
+                        and not self._party_needs_rest()
+                    ):
                         why = "mana"
                         self._cleric_medding = True
                     elif self._party_needs_rest() and not self.model.needs_rest(self._sitting):
@@ -1362,12 +1323,7 @@ class Agent:
                     intention = self._grind_cycle(intention)
             # Finish the pull we already opened before any new grind pick.
             # Never abandon corpse reclaim / feet-loot for a leftover swing from before death.
-            if (
-                not reclaiming
-                and not looting
-                and self._swing_id
-                and not self._has_gave_up(self._swing_id)
-            ):
+            if not reclaiming and not looting and self._swing_id and not self._has_gave_up(self._swing_id):
                 swinging = self.model.spawns.get(self._swing_id)
                 if swinging is not None and self._is_companion_pet(swinging):
                     print(f"combat drop pet swing {swinging.name}", flush=True)
@@ -1380,14 +1336,11 @@ class Agent:
                         self._threat = 0
                     self.client.send("OP_AutoAttack", b"\x00\x00\x00\x00")
                 elif swinging is not None and swinging.npc == 1:
-                    dist = _horiz(
-                        self.model.position, (swinging.x, swinging.y, swinging.z)
-                    )
+                    dist = _horiz(self.model.position, (swinging.x, swinging.y, swinging.z))
                     # Stale swing after a corpse hike — don't cross the zone "finishing".
                     if dist > _FINISH_MAX_DIST:
                         print(
-                            f"combat drop finish {swinging.name} id={self._swing_id} "
-                            f"(far {dist:.0f})",
+                            f"combat drop finish {swinging.name} id={self._swing_id} " f"(far {dist:.0f})",
                             flush=True,
                         )
                         self._mark_gave_up(self._swing_id, 60.0)
@@ -1504,8 +1457,7 @@ class Agent:
                 in_melee = (
                     swinging is not None
                     and swinging.npc == 1
-                    and _horiz(self.model.position, (swinging.x, swinging.y, swinging.z))
-                    <= _MELEE_RANGE + 8
+                    and _horiz(self.model.position, (swinging.x, swinging.y, swinging.z)) <= _MELEE_RANGE + 8
                 )
                 if in_melee:
                     print("regroup", flush=True)
@@ -1547,11 +1499,7 @@ class Agent:
                 and not self._party_needs_rest()
             ):
                 self._stand()
-            elif (
-                self._sitting
-                and intention is not None
-                and intention.kind not in ("rest", "loot")
-            ):
+            elif self._sitting and intention is not None and intention.kind not in ("rest", "loot"):
                 # Still regenerating HP/mana/party — do not walk/grind until stood up above.
                 # Loot at feet still wins so kills are not left on the ground.
                 if self._needs_mana_rest():
@@ -1816,7 +1764,12 @@ class Agent:
                 return
         if kind in ("explore", "grind"):
             # Sell/buy seek: once the cached seller is spawned, Find-path to them.
-            if kind == "explore" and intention.text in ("sell", "buy") and intention.name and intention.name.lower() != "merchant":
+            if (
+                kind == "explore"
+                and intention.text in ("sell", "buy")
+                and intention.name
+                and intention.name.lower() != "merchant"
+            ):
                 spawn = self._spawn_named(intention.name)
                 if spawn is None:
                     spawn = self._nearest_merchant(item_id=intention.item_id)
@@ -2005,8 +1958,16 @@ class Agent:
         """Spawn coordinates from the latest packet. An NPC does not stay on its first point."""
         spawn = self.model.spawns.get(intention.target)
         if spawn is not None and intention.kind in (
-            "task_talk", "hail", "talk", "task_kill", "fight", "train", "hand_in", "shop",
-            "reclaim", "loot",
+            "task_talk",
+            "hail",
+            "talk",
+            "task_kill",
+            "fight",
+            "train",
+            "hand_in",
+            "shop",
+            "reclaim",
+            "loot",
         ):
             return (spawn.x, spawn.y, spawn.z)
         return intention.where
@@ -2015,8 +1976,16 @@ class Agent:
         """Rewrite intention.where from the live spawn so goto/chase track movers."""
         spawn = self.model.spawns.get(intention.target)
         if spawn is None or intention.kind not in (
-            "task_talk", "hail", "talk", "task_kill", "fight", "train", "hand_in", "shop",
-            "reclaim", "loot",
+            "task_talk",
+            "hail",
+            "talk",
+            "task_kill",
+            "fight",
+            "train",
+            "hand_in",
+            "shop",
+            "reclaim",
+            "loot",
         ):
             return intention
         live = (spawn.x, spawn.y, spawn.z)
@@ -2120,10 +2089,7 @@ class Agent:
         here = self.model.position
         dist = _horiz(here, goal)
         combat = bool(
-            entity_id
-            and not walk
-            and entity_id
-            in (self._swing_id, self._pursuit, self._focus, self._threat)
+            entity_id and not walk and entity_id in (self._swing_id, self._pursuit, self._focus, self._threat)
         )
         if combat:
             best = self._chase_best_dist.get(entity_id)
@@ -2145,9 +2111,7 @@ class Agent:
                 self._step(goal, length=stride)
                 return
         # Known combat goal + Find failed/arrived: path at the mob, don't polygon-wander.
-        if combat and (
-            entity_id in self._find_empty or entity_id in self._find_arrived
-        ):
+        if combat and (entity_id in self._find_empty or entity_id in self._find_arrived):
             self._step(goal, length=stride)
             return
         if self.nav is None:
@@ -2170,9 +2134,7 @@ class Agent:
         """After Find said too far, ask again only once we've moved closer or enough time passed."""
         now = time.monotonic()
         # Grind chases retry Find sooner — mesh-only walks miss nearby spawns.
-        grind = entity_id and (
-            entity_id == self._pursuit or entity_id == self._swing_id or entity_id == self._focus
-        )
+        grind = entity_id and (entity_id == self._pursuit or entity_id == self._swing_id or entity_id == self._focus)
         wait = 8.0 if grind else 12.0
         if now - self._find_at < wait:
             return
@@ -2190,9 +2152,7 @@ class Agent:
         now = time.monotonic()
         if self.guide and self._guide_for == entity_id:
             return
-        grind = entity_id and (
-            entity_id == self._pursuit or entity_id == self._swing_id or entity_id == self._focus
-        )
+        grind = entity_id and (entity_id == self._pursuit or entity_id == self._swing_id or entity_id == self._focus)
         if self._find_for == entity_id and now - self._find_at < (1.25 if grind else 3.0):
             return
         self._find_for = entity_id
@@ -2549,11 +2509,7 @@ class Agent:
         self.client.say(keyword)
         self.client.pump(0.3)
         self._remember(name, "say", keyword.lower())
-        if (
-            self.lesson is not None
-            and self.lesson.kind == "say"
-            and keyword.lower() == self.lesson.text.lower()
-        ):
+        if self.lesson is not None and self.lesson.kind == "say" and keyword.lower() == self.lesson.text.lower():
             self.lesson = None
         if len(self.client.messages) > before:
             self.score.keywords += 1
@@ -2716,9 +2672,7 @@ class Agent:
         if goal is not None:
             detour = self.survey.new_approach(here, goal)
             if detour is None and self.nav is not None:
-                detour = self.search.advance(
-                    here, goal, self.nav.locate, self.nav.links, self.nav.center
-                )
+                detour = self.search.advance(here, goal, self.nav.locate, self.nav.links, self.nav.center)
         if detour is None:
             detour = self._far_poly()
         self._walk_stuck_pos = here
@@ -2981,8 +2935,7 @@ class Agent:
                 self._note_grind_pad(cur.x, cur.y)
                 self._grind_walk_until = 0.0
                 print(
-                    f"grind empty pad {cur.name} id={cur.spawn_id} "
-                    f"at ({cur.x:.0f},{cur.y:.0f})",
+                    f"grind empty pad {cur.name} id={cur.spawn_id} " f"at ({cur.x:.0f},{cur.y:.0f})",
                     flush=True,
                 )
             else:
@@ -2991,18 +2944,12 @@ class Agent:
                 return self._grind_fight_of(cur, text=why)
 
         # Renew existing walk target after commit expired / rest, without Find spam.
-        if (
-            cur is not None
-            and cur.npc == 1
-            and cur.spawn_id not in skip
-            and self._grind_mode == "walk"
-        ):
+        if cur is not None and cur.npc == 1 and cur.spawn_id not in skip and self._grind_mode == "walk":
             if self._on_spawn_pad(cur) and not self._in_sight((cur.x, cur.y, cur.z)):
                 self._note_grind_pad(cur.x, cur.y)
                 self._grind_walk_until = 0.0
                 print(
-                    f"grind empty pad {cur.name} id={cur.spawn_id} "
-                    f"at ({cur.x:.0f},{cur.y:.0f})",
+                    f"grind empty pad {cur.name} id={cur.spawn_id} " f"at ({cur.x:.0f},{cur.y:.0f})",
                     flush=True,
                 )
             else:
@@ -3135,11 +3082,7 @@ class Agent:
         if spawn is not None:
             return spawn
         return next(
-            (
-                s
-                for s in self.model.spawns.values()
-                if (s.spawn_id & 0xFFFF) == short
-            ),
+            (s for s in self.model.spawns.values() if (s.spawn_id & 0xFFFF) == short),
             None,
         )
 
@@ -3176,11 +3119,7 @@ class Agent:
         if not spawn_id or (spawn_id & 0xFFFF) == me:
             return None
         spawn = self.model.spawns.get(spawn_id) or next(
-            (
-                s
-                for s in self.model.spawns.values()
-                if (s.spawn_id & 0xFFFF) == (spawn_id & 0xFFFF)
-            ),
+            (s for s in self.model.spawns.values() if (s.spawn_id & 0xFFFF) == (spawn_id & 0xFFFF)),
             None,
         )
         if spawn is None or spawn.npc in (1, 2, 3):
@@ -3546,9 +3485,8 @@ class Agent:
                 if bagged is not None:
                     return bagged
             corpse = self._lootable_corpse()
-            if (
-                corpse is not None
-                and (intention is None or intention.kind in ("fight", "grind", "explore", "loot", "rest", "reclaim", "shop"))
+            if corpse is not None and (
+                intention is None or intention.kind in ("fight", "grind", "explore", "loot", "rest", "reclaim", "shop")
             ):
                 why = (
                     intention.text
@@ -3577,7 +3515,9 @@ class Agent:
                         return sold
                     banker = self._spawn_by_substring("bank")
                     if banker is not None and _horiz(self.model.position, (banker.x, banker.y, banker.z)) < 80:
-                        return Intention("bank", target=banker.spawn_id, name=banker.name, where=(banker.x, banker.y, banker.z))
+                        return Intention(
+                            "bank", target=banker.spawn_id, name=banker.name, where=(banker.x, banker.y, banker.z)
+                        )
         if (
             intention is not None
             and intention.target
@@ -4102,9 +4042,7 @@ class Agent:
                             continue
                         priority = entry.priority if entry.priority > 0 else 1
                         before = len(self.client.messages)
-                        self.client.command(
-                            f"spellsettingsadd {entry.spell_id} {priority} 0 100"
-                        )
+                        self.client.command(f"spellsettingsadd {entry.spell_id} {priority} 0 100")
                         self.client.pump(0.25)
                         msgs = list(self.client.messages[before:])
                         blob = " ".join(msgs).lower()
@@ -4143,11 +4081,7 @@ class Agent:
         for item_id in kit_for(self.model.class_id or 0, "beginner"):
             if item_id not in want:
                 want.append(item_id)
-        missing = [
-            item_id
-            for item_id in want
-            if item_id not in held and item_id not in self.campaign.skipped
-        ]
+        missing = [item_id for item_id in want if item_id not in held and item_id not in self.campaign.skipped]
         tip = self.campaign.peek()
         tip_is_kit = tip in want if tip else False
         naked = self._undergeared()
@@ -4214,11 +4148,7 @@ class Agent:
         czone, cx, cy, cz = remembered
         # Retarget when a closer journal corpse appears (or we had no aim).
         cur = self.model.own_corpse_at
-        if (
-            self.model.needs_corpse
-            and cur is not None
-            and (self.model.own_corpse_zone or "").lower() == czone.lower()
-        ):
+        if self.model.needs_corpse and cur is not None and (self.model.own_corpse_zone or "").lower() == czone.lower():
             if abs(cur[0] - cx) + abs(cur[1] - cy) + abs(cur[2] - cz) < 1.0:
                 return
             # Keep current aim if it is still outstanding and not farther than the pick.
@@ -4258,7 +4188,12 @@ class Agent:
                 self._bag_goal = False
                 self._persist_goals()
                 print("bags defer (no empty general slot)", flush=True)
-            elif short <= 0 and getattr(self, "_bag_goal", False) and self.campaign.stack and self.campaign.stack[-1] == item_id:
+            elif (
+                short <= 0
+                and getattr(self, "_bag_goal", False)
+                and self.campaign.stack
+                and self.campaign.stack[-1] == item_id
+            ):
                 self.campaign.pop()
                 self._bag_goal = False
                 self._persist_goals()
@@ -4335,12 +4270,18 @@ class Agent:
             )
         seller = self._cached_seller(item_id=item_id)
         if seller is not None:
-            seen = (self.model.last_seen.get(seller.name.lower())
-                    or self.model.last_seen.get(_merchant_norm(seller.name)))
+            seen = self.model.last_seen.get(seller.name.lower()) or self.model.last_seen.get(
+                _merchant_norm(seller.name)
+            )
             where = None
-            if seen and len(seen) >= 4 and str(seen[0] or "").lower() in (
-                (self.model.zone or "").lower(),
-                seller.zone,
+            if (
+                seen
+                and len(seen) >= 4
+                and str(seen[0] or "").lower()
+                in (
+                    (self.model.zone or "").lower(),
+                    seller.zone,
+                )
             ):
                 where = (float(seen[1]), float(seen[2]), float(seen[3]))
             return Intention("explore", name=seller.name, item_id=item_id, where=where, text=text)
@@ -4585,9 +4526,7 @@ class Agent:
 
     def _bag_signature(self) -> tuple[tuple[int, int], ...]:
         """Inventory bags that can affect whether a combine succeeds later."""
-        return tuple(
-            sorted((slot, held.item_id) for slot, held in self.inventory.slots.items() if held.bag_slots)
-        )
+        return tuple(sorted((slot, held.item_id) for slot, held in self.inventory.slots.items() if held.bag_slots))
 
     def _recipe_deferred(self, recipe_id: int) -> bool:
         """True while a recent craft failure is cooling down for this recipe."""
@@ -4627,7 +4566,9 @@ class Agent:
             from eqclient.conduct import _WORLD_CONTAINER
 
             if container in _WORLD_CONTAINER:
-                picked = pick_station(container, self.model.doors.values(), self.model.ground.values(), self.model.position)
+                picked = pick_station(
+                    container, self.model.doors.values(), self.model.ground.values(), self.model.position
+                )
                 if picked is None:
                     return False
                 kind, station = picked
@@ -4982,11 +4923,7 @@ class Agent:
             # Same/lower level, no LoS, or current nearly dead — queue; finish kill first.
             if fresh:
                 hp = self._fight_hp_pct(stuck)
-                hold = (
-                    f"(hold {stuck.name} L{stuck.level or 0}"
-                    + (f" {hp}%" if hp is not None else "")
-                    + ")"
-                )
+                hold = f"(hold {stuck.name} L{stuck.level or 0}" + (f" {hp}%" if hp is not None else "") + ")"
                 print(
                     f"aggro +{spawn.name} L{spawn.level or 0} {why} {hold}",
                     flush=True,
@@ -5008,12 +4945,7 @@ class Agent:
         live = []
         for spawn_id in list(self._bot_threats):
             spawn = self.model.spawns.get(spawn_id)
-            if (
-                spawn is None
-                or spawn.npc != 1
-                or self._has_gave_up(spawn_id)
-                or self._is_companion_pet(spawn)
-            ):
+            if spawn is None or spawn.npc != 1 or self._has_gave_up(spawn_id) or self._is_companion_pet(spawn):
                 self._bot_threats.discard(spawn_id)
                 if self._threat == spawn_id:
                     self._threat = 0
@@ -5047,12 +4979,7 @@ class Agent:
             if not hold_id or hold_id in protected:
                 continue
             held = self.model.spawns.get(hold_id)
-            if (
-                held is None
-                or held.npc != 1
-                or self._has_gave_up(hold_id)
-                or self._is_companion_pet(held)
-            ):
+            if held is None or held.npc != 1 or self._has_gave_up(hold_id) or self._is_companion_pet(held):
                 continue
             if not _camp_mob(held):
                 continue
@@ -5074,11 +5001,7 @@ class Agent:
             dist = _horiz(here, where)
             if dist > _RECLAIM_CAUTION or dist < 2.0:
                 # Near the body: also take hostiles sitting on the corpse pad.
-                if (
-                    corpse_where is None
-                    or corpse_dist > 160.0
-                    or _horiz(where, corpse_where) > _RECLAIM_CORPSE_CLEAR
-                ):
+                if corpse_where is None or corpse_dist > 160.0 or _horiz(where, corpse_where) > _RECLAIM_CORPSE_CLEAR:
                     continue
                 if dist > _SIGHT_RANGE:
                     continue
@@ -5166,8 +5089,7 @@ class Agent:
             if getattr(self, "_aggro_focus_logged", 0) != switch_to.spawn_id:
                 self._aggro_focus_logged = switch_to.spawn_id
                 print(
-                    f"aggro focus {switch_to.name} L{switch_to.level or 0} "
-                    f"(over {stuck.name} L{stuck.level or 0})",
+                    f"aggro focus {switch_to.name} L{switch_to.level or 0} " f"(over {stuck.name} L{stuck.level or 0})",
                     flush=True,
                 )
             return _kill_intent(switch_to)
@@ -5242,11 +5164,7 @@ class Agent:
         now = time.monotonic()
         if now - float(getattr(self, "_cleric_respawn_at", 0.0)) < 3.0:
             return []
-        missing = [
-            name
-            for name, cid in self.party.roster
-            if cid == 2 and self._bot_spawn_named(name) is None
-        ]
+        missing = [name for name, cid in self.party.roster if cid == 2 and self._bot_spawn_named(name) is None]
         if not missing:
             return []
         self._cleric_respawn_at = now
@@ -5304,9 +5222,7 @@ class Agent:
         missing = [
             name
             for name, cid in self.party.roster
-            if cid != 2
-            and name in self.party.spawned
-            and self._bot_spawn_named(name) is None
+            if cid != 2 and name in self.party.spawned and self._bot_spawn_named(name) is None
         ]
         if not missing:
             return
@@ -5782,7 +5698,9 @@ class Agent:
             return
         faction = self.model.faction.get(spawn_id)
         if faction is None:
-            self.client.send("OP_Consider", struct.pack("<IIIIIIBBBB", self.model.self_id, spawn_id, 0, 0, 0, 0, 0, 0, 0, 0))
+            self.client.send(
+                "OP_Consider", struct.pack("<IIIIIIBBBB", self.model.self_id, spawn_id, 0, 0, 0, 0, 0, 0, 0, 0)
+            )
             self.client.pump(0.2)
             faction = self.model.faction.get(spawn_id)
         # Friendly / indifferent (1–5): never for grind — Qeynos/Freeport guards con 5.
@@ -5888,14 +5806,7 @@ class Agent:
         # Throttle ^attack until we have LoS (BotsRequireLoS). Being hit / bots
         # already chewing still force the order. No sight → mesh/Find, no pull-hold.
         can_see = self._in_sight(where)
-        if (
-            grouped
-            and dist <= _BOT_SEND_RANGE
-            and self.model.hp > 0
-            and not can_see
-            and not being_hit
-            and not bots_on
-        ):
+        if grouped and dist <= _BOT_SEND_RANGE and self.model.hp > 0 and not can_see and not being_hit and not bots_on:
             self.client.send("OP_AutoAttack", b"\x00\x00\x00\x00")
             if self._bot_pull_logged != spawn_id:
                 self._bot_pull_logged = spawn_id
@@ -5932,10 +5843,7 @@ class Agent:
             grouped
             and not bots_on
             and dist <= _BOT_SEND_RANGE + 15.0
-            and (
-                not bots_sent
-                or (ordered and (reclaiming or not being_hit))
-            )
+            and (not bots_sent or (ordered and (reclaiming or not being_hit)))
         )
         if waiting_bots:
             self.client.send("OP_AutoAttack", b"\x00\x00\x00\x00")
@@ -6012,11 +5920,7 @@ class Agent:
         """Taunt / Kick / Bash on reuse. SkillUpdate may omit a skill until first use — class gates then."""
         # Taunt/Kick/Bash: server reuse ~5–8s. Spamming every tick → recovery chat.
         # Owner only: skip taunt on corpse runs (bot tanks keep ^taunt on).
-        if (
-            tactic == "tank"
-            and self._ability_ready_now("taunt")
-            and not self._is_reclaiming()
-        ):
+        if tactic == "tank" and self._ability_ready_now("taunt") and not self._is_reclaiming():
             self.client.send("OP_Taunt", struct.pack("<I", spawn_id))
             self._mark_ability("taunt")
         # Kick=30, Bash=10 (common/skills.h). Secondary/shield slot = 14.
@@ -6217,11 +6121,7 @@ class Agent:
             if self._loot_open in (0, 2):
                 tip = self._loot_corpse_tip(spawn_id)
                 gone = self.model.spawns.pop(spawn_id, None)
-                where = (
-                    (gone.x, gone.y, gone.z)
-                    if gone is not None
-                    else self.model.own_corpse_at
-                )
+                where = (gone.x, gone.y, gone.z) if gone is not None else self.model.own_corpse_at
                 print(
                     f"loot ghost {tip}open={self._loot_open} — drop local spawn",
                     flush=True,
@@ -6419,11 +6319,7 @@ class Agent:
                 self._refresh_corpse_backlog()
                 extra = f" (+{added} found in zone)" if added else ""
                 aim = self.model.own_corpse_at
-                tip = (
-                    f" next=({aim[0]:.0f},{aim[1]:.0f},{aim[2]:.0f})"
-                    if aim is not None
-                    else ""
-                )
+                tip = f" next=({aim[0]:.0f},{aim[1]:.0f},{aim[2]:.0f})" if aim is not None else ""
                 coin = f" coin={self._loot_coin_copper}c" if self._loot_coin_copper else ""
                 print(
                     f"reclaim done (coin + gear){coin}; {remaining} corpse(s) still outstanding{extra}{tip}",
@@ -6445,9 +6341,7 @@ class Agent:
                 self._equip()
                 self._distribute_bot_gear()
 
-    def _journal_has_corpse_near(
-        self, zone: str, x: float, y: float, z: float, *, radius: float = 30.0
-    ) -> bool:
+    def _journal_has_corpse_near(self, zone: str, x: float, y: float, z: float, *, radius: float = 30.0) -> bool:
         """True when an outstanding journal corpse is already at this spot."""
         want = (zone or "").lower()
         r2 = radius * radius
@@ -6458,9 +6352,7 @@ class Agent:
                 return True
         return False
 
-    def _prune_missing_journal_corpse(
-        self, where: tuple[float, float, float], *, arrive: float = 12.0
-    ) -> bool:
+    def _prune_missing_journal_corpse(self, where: tuple[float, float, float], *, arrive: float = 12.0) -> bool:
         """Drop a journal ghost only when we are on its pad and no own body exists in-zone.
 
         Aggressive prune used to erase journal entries for corpses that still had coin
@@ -6493,8 +6385,7 @@ class Agent:
         if remaining >= before:
             return False
         print(
-            f"reclaim prune ghost at ({where[0]:.0f},{where[1]:.0f},{where[2]:.0f}); "
-            f"{remaining} outstanding",
+            f"reclaim prune ghost at ({where[0]:.0f},{where[1]:.0f},{where[2]:.0f}); " f"{remaining} outstanding",
             flush=True,
         )
         self.model.own_corpse_id = 0
@@ -6623,7 +6514,10 @@ class Agent:
             self.client.send("OP_GMTraining", bytes(window))
             self._trainer_open = True
         # GMSkillChange_Struct: npc id, pad, skill bank 0, pad, skill id, pad.
-        self.client.send("OP_GMTrainSkill", struct.pack("<H2sH2sH2s", spawn_id & 0xFFFF, b"\x00\x00", 0, b"\x00\x00", skill, b"\x00\x00"))
+        self.client.send(
+            "OP_GMTrainSkill",
+            struct.pack("<H2sH2sH2s", spawn_id & 0xFFFF, b"\x00\x00", 0, b"\x00\x00", skill, b"\x00\x00"),
+        )
         self.client.pump(0.4)
         text = " ".join(self.client.messages[-4:]).lower()
         if self._trained:
@@ -6643,7 +6537,6 @@ class Agent:
             if skill not in self._retired_skills:
                 return skill
         return None
-
 
     def _held_dump_line(self, held) -> str:
         """`Item Name (ac=…)` or `-` when the slot is empty."""
@@ -6710,7 +6603,9 @@ class Agent:
             protect.add(need.item_id)
         build = build_for(self.model.class_id)
         score = (lambda item: held_gear_value(build, item)) if build is not None else None
-        move = equip_move(self.inventory, self.model.class_id, self.model.race_id, self.model.level or 1, protect, score)
+        move = equip_move(
+            self.inventory, self.model.class_id, self.model.race_id, self.model.level or 1, protect, score
+        )
         failed = getattr(self, "_failed_equips", set())
         self._failed_equips = failed
         if move is None:
@@ -6769,14 +6664,12 @@ class Agent:
         if cursor is not None:
             tip = cursor.name or str(cursor.item_id)
             print(
-                f"inventory sync waiting on cursor {tip} "
-                f"(attempt {self._inv_settle_attempts}/5)",
+                f"inventory sync waiting on cursor {tip} " f"(attempt {self._inv_settle_attempts}/5)",
                 flush=True,
             )
             if self._inv_settle_attempts >= 5:
                 self._inventory_fatal(
-                    f"could not settle cursor item {tip} after "
-                    f"{self._inv_settle_attempts} attempts"
+                    f"could not settle cursor item {tip} after " f"{self._inv_settle_attempts} attempts"
                 )
             return False
         self._dump_inventory(why="start")
@@ -6926,10 +6819,7 @@ class Agent:
         else:
             goal = where if where is not None else ((door.x, door.y, door.z) if door is not None else None)
         here = self.model.position
-        if via == "point" or (
-            where is not None
-            and (door is None or _horiz((door.x, door.y, door.z), where) > 30)
-        ):
+        if via == "point" or (where is not None and (door is None or _horiz((door.x, door.y, door.z), where) > 30)):
             dest_id = int(transit.dest_id or 0) if transit is not None else 0
             dest = (transit.dest if transit is not None else "") or ""
             on_line = self.water is not None and self.water.in_zone_line(*here)
@@ -6939,8 +6829,7 @@ class Agent:
                     lift = (here[0], here[1], goal[2])
                     if self.water is not None and self.water.in_zone_line(*lift):
                         print(
-                            f"zonepoint lift z {here[2]:.0f}->{goal[2]:.0f} "
-                            f"at ({here[0]:.0f}, {here[1]:.0f})",
+                            f"zonepoint lift z {here[2]:.0f}->{goal[2]:.0f} " f"at ({here[0]:.0f}, {here[1]:.0f})",
                             flush=True,
                         )
                         self._step(lift, direct=True, length=min(STEP, 6.0))
@@ -7238,9 +7127,7 @@ class Agent:
         held = self.inventory.slots.get(from_slot)
         if held is None:
             return False
-        displacing = to_slot in self.inventory.slots and (
-            self.inventory.slots[to_slot].item_id != RESYNC_TOKEN_ID
-        )
+        displacing = to_slot in self.inventory.slots and (self.inventory.slots[to_slot].item_id != RESYNC_TOKEN_ID)
         mark = len(self.client.messages)
         self.client.send("OP_MoveItem", struct.pack("<III", from_slot, to_slot, 0))
         self.inventory.note_move(from_slot, to_slot)
@@ -7275,8 +7162,7 @@ class Agent:
             if not self._await_cursor(want, timeout=1.0):
                 # Soft miss — keep prediction; next ItemPacket / CharInventory repairs.
                 print(
-                    f"move cursor resync pending {from_slot}→{to_slot} "
-                    f"(want={'full' if want else 'empty'})",
+                    f"move cursor resync pending {from_slot}→{to_slot} " f"(want={'full' if want else 'empty'})",
                     flush=True,
                 )
         return True
@@ -7306,9 +7192,7 @@ class Agent:
             return list(self.inventory.empty_generals())
         dests = list(self.inventory.empty_generals())
         dests.extend(empty_bag_pockets(self.inventory, held))
-        if PRIMARY not in self.inventory.slots and (
-            held.slots == 0 or held.slots & (1 << PRIMARY)
-        ):
+        if PRIMARY not in self.inventory.slots and (held.slots == 0 or held.slots & (1 << PRIMARY)):
             dests.append(PRIMARY)
         return dests
 
@@ -7379,8 +7263,7 @@ class Agent:
             if now - float(getattr(self, "_stuck_cursor_log_at", 0.0)) >= 8.0:
                 self._stuck_cursor_log_at = now
                 print(
-                    f"cursor park {held.name} "
-                    f"(room={room[:6]}{'…' if len(room) > 6 else ''}, moves failing)",
+                    f"cursor park {held.name} " f"(room={room[:6]}{'…' if len(room) > 6 else ''}, moves failing)",
                     flush=True,
                 )
             return False
@@ -7415,9 +7298,7 @@ class Agent:
         now = time.monotonic()
         # Expire dest blacklists quickly — permanent skips made empty packs look full.
         raw_fail = getattr(self, "_failed_stow_at", None) or {}
-        self._failed_stow_at = {
-            slot: at for slot, at in raw_fail.items() if now - at < 2.5
-        }
+        self._failed_stow_at = {slot: at for slot, at in raw_fail.items() if now - at < 2.5}
         skip = set(self._failed_stow_at)
         self._failed_stow_dests = skip
         destinations = [d for d in self._stow_room(held) if d not in skip]
@@ -7572,21 +7453,14 @@ class Agent:
 
     def _is_reclaiming(self) -> bool:
         """True while we still owe corpse coin — bots-first aggro, owner taunt off."""
-        return bool(
-            self.model.needs_corpse
-            or self.journal.outstanding_corpses(self.model.character) > 0
-        )
+        return bool(self.model.needs_corpse or self.journal.outstanding_corpses(self.model.character) > 0)
 
     def _enable_tank_taunt(self) -> None:
         """Turn taunt on for every spawned warrior (1) and paladin (3)."""
         if not self.party.formed:
             return
         for class_id, label in ((1, "war"), (3, "pal")):
-            names = [
-                name
-                for name, cid in self.party.roster
-                if cid == class_id and name in self.party.spawned
-            ]
+            names = [name for name, cid in self.party.roster if cid == class_id and name in self.party.spawned]
             if not names:
                 continue
             try:
@@ -7605,15 +7479,15 @@ class Agent:
         """Stagger follow distances so the group does not stack on one point."""
         # Tight rings behind owner — 1yd steps (was 4); melee close, casters a bit out.
         by_class = {
-            1: 3,    # war
-            3: 4,    # pal
-            16: 5,   # ber
-            9: 6,    # rog
-            7: 7,    # mnk
-            2: 8,    # clr
-            10: 9,   # shm
-            6: 10,   # dru
-            8: 11,   # brd
+            1: 3,  # war
+            3: 4,  # pal
+            16: 5,  # ber
+            9: 6,  # rog
+            7: 7,  # mnk
+            2: 8,  # clr
+            10: 9,  # shm
+            6: 10,  # dru
+            8: 11,  # brd
             14: 12,  # enc
             13: 13,  # mag
             11: 14,  # nec
@@ -7658,9 +7532,7 @@ class Agent:
             if key in roster or len(stem) < 5:
                 continue
             # Exact botlist name only — never a short prefix (Moc → Mockone's corpse).
-            if key not in owned and not any(
-                key == o or (key.startswith(o) and key[len(o) :].isdigit()) for o in owned
-            ):
+            if key not in owned and not any(key == o or (key.startswith(o) and key[len(o) :].isdigit()) for o in owned):
                 continue
             extras.append(stem)
         for name in sorted(set(extras)):
@@ -7799,9 +7671,7 @@ class Agent:
         returned = any("returned" in m for m in msgs)
         cursor = self.inventory.cursor()
         gone = cursor is None or cursor.item_id != item_id
-        ok = gone or accepted or any(
-            tip in m for m in msgs for tip in ("gave ", "equip", "received")
-        )
+        ok = gone or accepted or any(tip in m for m in msgs for tip in ("gave ", "equip", "received"))
         if ok:
             self._bot_given.add((bot_name, item_id))
             self._gear_settle_gave = True
@@ -8033,11 +7903,7 @@ class Agent:
         me = self.model.character or ""
         if not me:
             return
-        clerics = [
-            name
-            for name, cid in self.party.roster
-            if cid == 2 and name in self.party.spawned
-        ]
+        clerics = [name for name, cid in self.party.roster if cid == 2 and name in self.party.spawned]
 
         def _bot(cmd: str, wait: float = 0.8) -> list[str]:
             before = len(self.client.messages)
@@ -8138,9 +8004,7 @@ class Agent:
 
         def _start_rotation(*, have_me: bool) -> bool:
             started = _bot(f"healrotationstart {clr}", 1.0)
-            ok = _has(started, "now active") or (
-                have_me and _has(started, "already active")
-            )
+            ok = _has(started, "now active") or (have_me and _has(started, "already active"))
             if _has(started, "failed to start"):
                 ok = False
             if ok:
@@ -8292,13 +8156,10 @@ class Agent:
 
         have_me = me.lower() in {t.lower() for t in info.get("targets") or []}
         if _usable(info):
-            missing = [
-                n for n in clerics if n.lower() not in {m.lower() for m in info["members"]}
-            ]
+            missing = [n for n in clerics if n.lower() not in {m.lower() for m in info["members"]}]
             tip = "loaded ok" if not missing else f"patch +{','.join(missing)}"
             print(
-                f"healrotation {clr} {tip} "
-                f"members={len(info['members'])} targets={len(info['targets'])}",
+                f"healrotation {clr} {tip} " f"members={len(info['members'])} targets={len(info['targets'])}",
                 flush=True,
             )
             if not _patch_rotation(info):
@@ -8318,8 +8179,7 @@ class Agent:
 
         why = "empty" if fresh else "broken"
         print(
-            f"healrotation {clr} {why} "
-            f"(members={info.get('members')} has_me={have_me}) — rebuild",
+            f"healrotation {clr} {why} " f"(members={info.get('members')} has_me={have_me}) — rebuild",
             flush=True,
         )
         if not _rebuild():
@@ -8415,11 +8275,7 @@ class Agent:
         spawn = self.model.spawns.get(intention.target) if intention.target else None
         if spawn is None:
             spawn = self._spawn_by_substring("soulbinder") or self._spawn_named(intention.name or "")
-        where = (
-            (spawn.x, spawn.y, spawn.z)
-            if spawn is not None
-            else intention.where
-        )
+        where = (spawn.x, spawn.y, spawn.z) if spawn is not None else intention.where
         if where is None:
             return
         if _horiz(self.model.position, where) > _ACT_RANGE.get("soulbind", 25.0):
@@ -8553,7 +8409,9 @@ class Agent:
             if step.kind == "bank":
                 banker = self._spawn_named("banker") or self._spawn_by_substring("bank")
                 if banker is not None:
-                    return Intention("bank", target=banker.spawn_id, name=banker.name, where=(banker.x, banker.y, banker.z))
+                    return Intention(
+                        "bank", target=banker.spawn_id, name=banker.name, where=(banker.x, banker.y, banker.z)
+                    )
             return Intention("explore", name="safe", where=self.model.safe)
         if step.kind == "travel" and step.zone:
             return self._travel_intention(step.zone, text=step.npc or "", item_id=step.item_id) or Intention(
@@ -8563,18 +8421,34 @@ class Agent:
             return Intention("craft", target=step.recipe_id, item_id=step.item_id)
         if step.kind == "buy":
             if step.item_id and bags_buyable(self.inventory) <= 0:
-                name = str((getattr(self.graph, "items", None) or {}).get(int(step.item_id), {}).get("name") or "").lower()
+                name = str(
+                    (getattr(self.graph, "items", None) or {}).get(int(step.item_id), {}).get("name") or ""
+                ).lower()
                 if step.item_id == BACKPACK_ITEM or "backpack" in name:
                     return None
             spawn = self._spawn_named(step.npc) if step.npc else self._nearest_merchant(item_id=step.item_id)
             if spawn is not None:
-                return Intention("shop", target=spawn.spawn_id, name=spawn.name, item_id=step.item_id, where=(spawn.x, spawn.y, spawn.z), text="buy")
+                return Intention(
+                    "shop",
+                    target=spawn.spawn_id,
+                    name=spawn.name,
+                    item_id=step.item_id,
+                    where=(spawn.x, spawn.y, spawn.z),
+                    text="buy",
+                )
             return Intention("explore", name=step.npc or "merchant")
         if step.kind in {"hail", "hand"} and step.npc:
             spawn = self._spawn_named(step.npc)
             if spawn is not None:
                 kind = "hand_in" if step.kind == "hand" else "task_talk"
-                intent = Intention(kind, spawn.spawn_id, spawn.name, step.item_id, (spawn.x, spawn.y, spawn.z), text=step.word or "Hail")
+                intent = Intention(
+                    kind,
+                    spawn.spawn_id,
+                    spawn.name,
+                    step.item_id,
+                    (spawn.x, spawn.y, spawn.z),
+                    text=step.word or "Hail",
+                )
                 return intent
             if step.zone and (self.model.zone or "").lower() != step.zone.lower():
                 return Intention("explore", name=step.zone, text=step.npc)
@@ -8582,7 +8456,13 @@ class Agent:
         if step.kind in {"kill", "loot"} and step.npc:
             spawn = self._spawn_named(step.npc)
             if spawn is not None:
-                return Intention("task_kill", target=spawn.spawn_id, name=spawn.name, where=(spawn.x, spawn.y, spawn.z), item_id=step.item_id)
+                return Intention(
+                    "task_kill",
+                    target=spawn.spawn_id,
+                    name=spawn.name,
+                    where=(spawn.x, spawn.y, spawn.z),
+                    item_id=step.item_id,
+                )
             return Intention("explore", name=step.npc or step.zone)
         if step.kind == "forage":
             return Intention("forage", item_id=step.item_id, name=step.zone)
@@ -8606,7 +8486,13 @@ class Agent:
             spawn = self._spawn_named(step.npc) if step.npc else None
             if spawn is not None:
                 kind = "loot" if step.kind == "chest" else "task_kill"
-                return Intention(kind, target=spawn.spawn_id, name=spawn.name, where=(spawn.x, spawn.y, spawn.z), item_id=step.item_id)
+                return Intention(
+                    kind,
+                    target=spawn.spawn_id,
+                    name=spawn.name,
+                    where=(spawn.x, spawn.y, spawn.z),
+                    item_id=step.item_id,
+                )
             return Intention("explore", name=step.npc or step.zone, text=step.kind)
         if step.kind == "level":
             from eqclient.plan import _grind_corpse, _xp_foe, grind_why
@@ -8833,11 +8719,7 @@ class Agent:
         zone = self.model.zone or ""
         if not self.journal.has(self.model.character, zone, "guard hobart", "task", "5102"):
             return
-        rows = [
-            activity
-            for activity in self.tasks.activities
-            if activity.task_id == 5102 and not activity.optional
-        ]
+        rows = [activity for activity in self.tasks.activities if activity.task_id == 5102 and not activity.optional]
         if rows and not all(activity.finished for activity in rows):
             return
         self.tasks.completed.add(5102)

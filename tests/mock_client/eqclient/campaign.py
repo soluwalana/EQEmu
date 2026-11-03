@@ -409,9 +409,7 @@ class Campaign:
 def _build_indexes(edges: list[dict]) -> _Index:
     gives: dict[int, list[dict]] = defaultdict(list)
     produces: dict[int, list[int]] = defaultdict(list)
-    recipe: dict[int, dict] = defaultdict(
-        lambda: {"consumes": [], "container": 0, "products": []}
-    )
+    recipe: dict[int, dict] = defaultdict(lambda: {"consumes": [], "container": 0, "products": []})
     by_from: dict[str, list[dict]] = defaultdict(list)
     by_group: dict[str, list[dict]] = defaultdict(list)
     sets_of: dict[str, list[dict]] = defaultdict(list)
@@ -585,9 +583,7 @@ def _travel_to(
     text: str = "",
 ) -> CampaignStep:
     """Travel, or the intention that unlocks a missing plane/zone flag first."""
-    gated = _travel_gate(
-        item_id, zone, npc, level, flags=flags, edges=edges, held=held, here=here, stack=stack
-    )
+    gated = _travel_gate(item_id, zone, npc, level, flags=flags, edges=edges, held=held, here=here, stack=stack)
     if gated is not None:
         if text and not gated.text:
             gated.text = text
@@ -600,7 +596,9 @@ def _faction_need(edges, group: str) -> str | None:
     for edge in edges:
         if edge.get("rel") != "needs":
             continue
-        if not (_groups_match(str(edge.get("group") or ""), group) or _groups_match(str(edge.get("from") or ""), group)):
+        if not (
+            _groups_match(str(edge.get("group") or ""), group) or _groups_match(str(edge.get("from") or ""), group)
+        ):
             continue
         to = str(edge.get("to") or "")
         if to.startswith("faction:"):
@@ -724,6 +722,7 @@ def _raise_faction(
         candidates.append((value, edge))
     if not candidates:
         return None
+
     # Prefer larger gains, then paths whose hand items we already hold.
     def _rank(pair: tuple[int, dict]) -> tuple[int, int]:
         value, edge = pair
@@ -938,6 +937,7 @@ def _skill_gate(
         text=f"{skill_id}@{want}",
     )
 
+
 def _practice_with_stock(recipes, skill_id: int, held: dict[int, int], exclude: int = 0):
     """A practice recipe we can still combine from inventory (burn stacks).
 
@@ -1066,9 +1066,7 @@ def _leaf_step(
             npc=npc,
             text=str(edge.get("lockout") or ""),
         )
-    hunted = _drop_step(
-        item_id, drops, here, level, still, flags=flags, edges=edges, held=held, stack=stack
-    )
+    hunted = _drop_step(item_id, drops, here, level, still, flags=flags, edges=edges, held=held, stack=stack)
     if hunted is not None:
         return hunted
     bought = _merchant_step(
@@ -1170,7 +1168,12 @@ def _recipe_step(
     if skill_gate is not None:
         return skill_gate
     container = recipe.container
-    if container and container not in _WORLD_CONTAINER and inventory_counts.get(container, 0) < 1 and container not in stack:
+    if (
+        container
+        and container not in _WORLD_CONTAINER
+        and inventory_counts.get(container, 0) < 1
+        and container not in stack
+    ):
         return CampaignStep(kind="need_item", item_id=container, count=1, recipe_id=recipe.id)
     makes = 1
     for result_id, qty in recipe.results or ((recipe.result, 1),):
@@ -1264,7 +1267,9 @@ def _missing_needs(edges, group: str, held: dict[int, int]) -> tuple[int, int] |
     for edge in edges:
         if edge.get("rel") != "needs":
             continue
-        if not (_groups_match(str(edge.get("group") or ""), group) or _groups_match(str(edge.get("from") or ""), group)):
+        if not (
+            _groups_match(str(edge.get("group") or ""), group) or _groups_match(str(edge.get("from") or ""), group)
+        ):
             continue
         to = str(edge.get("to") or "")
         if not to.startswith("item:"):
@@ -1288,7 +1293,9 @@ def _flags_ok(edges, group: str, flags: dict[str, int]) -> bool:
     for edge in edges:
         if edge.get("rel") != "needs":
             continue
-        if not (_groups_match(str(edge.get("group") or ""), group) or _groups_match(str(edge.get("from") or ""), group)):
+        if not (
+            _groups_match(str(edge.get("group") or ""), group) or _groups_match(str(edge.get("from") or ""), group)
+        ):
             continue
         to = str(edge.get("to") or "")
         if not to.startswith("flag:"):
@@ -1304,7 +1311,9 @@ def _unmet_flag(edges, group: str, flags: dict[str, int]) -> tuple[str, str] | N
     for edge in edges:
         if edge.get("rel") != "needs":
             continue
-        if not (_groups_match(str(edge.get("group") or ""), group) or _groups_match(str(edge.get("from") or ""), group)):
+        if not (
+            _groups_match(str(edge.get("group") or ""), group) or _groups_match(str(edge.get("from") or ""), group)
+        ):
             continue
         to = str(edge.get("to") or "")
         if not to.startswith("flag:"):
@@ -1370,8 +1379,7 @@ def _handed_ids(edges, group: str) -> list[int]:
         if edge.get("rel") != "receives":
             continue
         if not (
-            _script_base(str(edge.get("group") or "")) == _script_base(group)
-            or str(edge.get("group") or "") == group
+            _script_base(str(edge.get("group") or "")) == _script_base(group) or str(edge.get("group") or "") == group
         ):
             continue
         to = str(edge.get("to") or "")

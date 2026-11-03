@@ -162,7 +162,17 @@ def catalog_from_lines(lines, catalog: Catalog | None = None, quests_root: str |
     catalog.forage_zone_ids = set(zone_id for zones in forage.values() for zone_id in zones)
     catalog.fishing_zone_ids = set(zone_id for zones in fishing.values() for zone_id in zones)
     catalog.zones = _zones(
-        drops, tables, npc_loot, npc_merchant, merchant_items, npc_groups, group_zones, ground, zone_names, forage, fishing
+        drops,
+        tables,
+        npc_loot,
+        npc_merchant,
+        merchant_items,
+        npc_groups,
+        group_zones,
+        ground,
+        zone_names,
+        forage,
+        fishing,
     )
     _apply_recipe_skill(recipes, recipe_skill)
     catalog.recipes = recipes
@@ -227,12 +237,7 @@ def _trap_npc_zones(quests_root: str | Path | None = None) -> dict[int, tuple[st
             continue
         low = text.lower()
         name = path.name
-        if not (
-            "set_proximity" in low
-            or "setproximity" in low
-            or "event_enter" in low
-            or _TRAP_SCRIPT.search(name)
-        ):
+        if not ("set_proximity" in low or "setproximity" in low or "event_enter" in low or _TRAP_SCRIPT.search(name)):
             continue
         for match in _SPAWN2_IDS.finditer(text):
             blob = match.group(1) or match.group(2) or ""
@@ -667,7 +672,34 @@ _SKILLS = {
 _WORDS = re.compile(r"[A-Za-z][A-Za-z'`-]*")
 _LEAD = {"a", "an", "the"}
 _SKIP = {
-    "you", "your", "must", "bring", "from", "with", "and", "then", "will", "this", "that",
-    "have", "for", "are", "our", "not", "yet", "into", "they", "them", "their", "hello",
-    "there", "need", "something", "accept", "thanks", "reward", "quested", "well",
+    "you",
+    "your",
+    "must",
+    "bring",
+    "from",
+    "with",
+    "and",
+    "then",
+    "will",
+    "this",
+    "that",
+    "have",
+    "for",
+    "are",
+    "our",
+    "not",
+    "yet",
+    "into",
+    "they",
+    "them",
+    "their",
+    "hello",
+    "there",
+    "need",
+    "something",
+    "accept",
+    "thanks",
+    "reward",
+    "quested",
+    "well",
 }

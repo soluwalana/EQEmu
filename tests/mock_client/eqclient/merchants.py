@@ -258,7 +258,12 @@ def write_merchants(book: MerchantBook, path: str) -> None:
     for item_id, row in sorted(book.by_item.items()):
         lines.append(
             json.dumps(
-                {"kind": "item", "item": item_id, "npcs": list(row.get("npcs") or ()), "cost": int(row.get("cost") or 0)},
+                {
+                    "kind": "item",
+                    "item": item_id,
+                    "npcs": list(row.get("npcs") or ()),
+                    "cost": int(row.get("cost") or 0),
+                },
                 ensure_ascii=True,
             )
         )

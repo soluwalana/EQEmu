@@ -39,7 +39,7 @@ inline void Record(const EQApplicationPacket* p, bool server_to_client,
     op = op.substr(0, std::min<size_t>(op.size(), 65535));
     peer = peer.substr(0, std::min<size_t>(peer.size(), 65535));
 
-    // Frame body: microseconds UTC, direction, stage, opcode name length,
+    // Frame body: microseconds UTC, direction stage, opcode name length,
     // peer name length, payload length, then the 3 variable-width pieces.
     const uint32_t body_length = static_cast<uint32_t>(18u + op.size() +
                                                        peer.size() + p->size);

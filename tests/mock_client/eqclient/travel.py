@@ -182,10 +182,7 @@ class ZoneGraph:
                 for dest_id in destinations:
                     if dest_id not in known:
                         known.append(dest_id)
-        seen = {
-            (e.get("from"), e.get("to"), e.get("rel"), e.get("door"), e.get("via"))
-            for e in graph.edges
-        }
+        seen = {(e.get("from"), e.get("to"), e.get("rel"), e.get("door"), e.get("via")) for e in graph.edges}
         for edge in self.edges:
             key = (edge.get("from"), edge.get("to"), edge.get("rel"), edge.get("door"), edge.get("via"))
             if key in seen:
@@ -272,7 +269,12 @@ def adjacency(
                 door_ids=door_ids,
             ):
                 continue
-            dest = transit.dest or _name_of(transit.dest_id, zone_names) or zone_name_of(transit.dest_id) or f"zone{transit.dest_id}"
+            dest = (
+                transit.dest
+                or _name_of(transit.dest_id, zone_names)
+                or zone_name_of(transit.dest_id)
+                or f"zone{transit.dest_id}"
+            )
             links[transit.zone].append((transit.door_id, dest, transit.dest_id))
         return links
     doors = getattr(graph, "doors", {}) or {}
@@ -337,7 +339,11 @@ def path(
     while queue:
         cur = queue.popleft()
         for door_id, nxt, dest_id in links.get(cur, ()):
-            key = nxt if not str(nxt).startswith("zone") else (_name_of(dest_id, zone_names) or zone_name_of(dest_id) or nxt)
+            key = (
+                nxt
+                if not str(nxt).startswith("zone")
+                else (_name_of(dest_id, zone_names) or zone_name_of(dest_id) or nxt)
+            )
             if key in seen:
                 continue
             seen.add(key)
@@ -374,7 +380,11 @@ def build_zone_graph(peq: str | Path, quest_doors: dict[str, dict[int, list[int]
                 for dest_id in destinations:
                     dest_id = int(dest_id)
                     dest = _name_of(dest_id, graph.zones) or zone_name_of(dest_id) or f"zone{dest_id}"
-                    need = TransitNeed(zone_flag=dest_id) if dest in graph.flagged or dest_id in graph.flagged.values() else TransitNeed()
+                    need = (
+                        TransitNeed(zone_flag=dest_id)
+                        if dest in graph.flagged or dest_id in graph.flagged.values()
+                        else TransitNeed()
+                    )
                     _add_transit(
                         graph,
                         Transit(zone=home, door_id=int(door_id), dest=dest, dest_id=dest_id, via="script", need=need),
@@ -430,7 +440,9 @@ def read_zone_graph(path: str) -> ZoneGraph:
                 dest_id = int(dest_id)
                 dest = _name_of(dest_id, graph.zones) or zone_name_of(dest_id) or f"zone{dest_id}"
                 need = TransitNeed(zone_flag=dest_id) if dest in graph.flagged else TransitNeed()
-                _add_transit(graph, Transit(zone=zone, door_id=door_id, dest=dest, dest_id=dest_id, via="door", need=need))
+                _add_transit(
+                    graph, Transit(zone=zone, door_id=door_id, dest=dest, dest_id=dest_id, via="door", need=need)
+                )
             continue
     graph.remember_all()
     return graph

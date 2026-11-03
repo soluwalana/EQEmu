@@ -13,7 +13,6 @@ if TYPE_CHECKING:
 from eqclient3.structs import EQStruct, OP_Consider, OP_TargetMouse
 
 
-
 def _consider_id(message: Message) -> int:
     payload = message.payload
     if isinstance(payload, OP_Consider):
@@ -68,6 +67,7 @@ class Action:
         self.consider_sent = False
         self.target_sent = False
         self.mob_targeted = 0
+        self.waited = 0
 
     def _hear(self, loop: Loop, world: World) -> None:
         return
@@ -86,6 +86,10 @@ class Action:
         if not self.can_see_mob(world, loop, mob):
             return
 
+        if is_treasure_mob(mob) and float(mob.distance) > 25:
+            self.move_closer(world, loop, mob)
+            return
+
         if not self.target_sent:
             loop.send("OP_TargetMouse", OP_TargetMouse(int(self.target_id) & 65535).serialize())
             self.target_sent = True
@@ -94,7 +98,7 @@ class Action:
         if not self.consider_sent:
             spawn = int(world.self_id or 0)
             loop.send(
-                "OP_Consider", 
+                "OP_Consider",
                 OP_Consider(spawn, int(mob.id)).serialize(),
             )
             self.consider_sent = True
@@ -106,7 +110,7 @@ class Action:
         )
         if message:
             mob.targeted = True
-            self.mob_targeted = self.target_id  
+            self.mob_targeted = self.target_id
             self.unwait("TARGET")
             self.consider_sent = False
             self.target_sent = False
@@ -115,12 +119,13 @@ class Action:
     def can_see_mob(self, world: World, loop: Loop, mob: Mob) -> bool:
         if world.line_of_sight(mob):
             return True
-        
+        self.move_closer(world, loop, mob)
+        return False
+
+    def move_closer(self, world: World, loop: Loop, mob: Mob) -> None:
         if not self.active_path:
             self.active_path = world.movement.plan(mob, "run")
-        
         world.movement.advance(loop, world, self.active_path)
-        return False
 
     def wait(self, kind: str) -> None:
         pending = self._pending()
@@ -174,3 +179,12 @@ class Action:
     def key(action: Action) -> tuple[object, ...]:
         # Within one band, smaller runs first. Newest insert is the default.
         return (-action.insert,)
+
+
+def is_treasure_mob(mob: Mob | None) -> bool:
+    """An LDoN object. Melee does not credit it. Opening it does."""
+    if not mob:
+        return False
+    if int(mob.class_id or 0) == 62:
+        return True
+    return False

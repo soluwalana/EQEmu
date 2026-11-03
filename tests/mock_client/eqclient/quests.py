@@ -98,9 +98,7 @@ _SPAWN = re.compile(
     r"(?<![\w])(?:unique_spawn|spawn2|spawn)\s*\(\s*\$?(\d+|[A-Za-z_][A-Za-z0-9_]*)",
     re.IGNORECASE,
 )
-_LOCAL = re.compile(
-    r"(?m)^[ \t]*(?:local[ \t]+|my[ \t]+)?\$?([A-Za-z_][A-Za-z0-9_]*)[ \t]*=[ \t]*(\d+)\b"
-)
+_LOCAL = re.compile(r"(?m)^[ \t]*(?:local[ \t]+|my[ \t]+)?\$?([A-Za-z_][A-Za-z0-9_]*)[ \t]*=[ \t]*(\d+)\b")
 _CHOOSE = re.compile(r"ChooseRandom\s*\(([^)]*)\)", re.IGNORECASE)
 _ADDITEM = re.compile(r"AddItem\s*\(\s*(\d+)", re.IGNORECASE)
 _NPC_TYPE_ID = re.compile(r"GetNPCTypeID\s*\(\s*\)\s*==\s*(\d+)", re.IGNORECASE)
@@ -662,9 +660,7 @@ def _faction_gains(text: str) -> list[tuple[str, int]]:
     return found
 
 
-def _emit_faction_needs(
-    edges: list[dict], source: str, gate: str, group: str = "", script: str | None = None
-) -> None:
+def _emit_faction_needs(edges: list[dict], source: str, gate: str, group: str = "", script: str | None = None) -> None:
     for faction_id, at in _faction_needs(gate, script):
         edge = {
             "kind": "edge",
@@ -964,7 +960,9 @@ def link_script(text: str, filename: str, zone: str, catalog=None) -> list[dict]
         span = _chosen_branch(text, match.start())
         if span is None:
             for name, at in _flags(gate):
-                edges.append({"kind": "edge", "rel": "needs", "from": say_id, "to": f"flag:{name}", "flag": name, "at": at})
+                edges.append(
+                    {"kind": "edge", "rel": "needs", "from": say_id, "to": f"flag:{name}", "flag": name, "at": at}
+                )
             _emit_faction_needs(edges, say_id, gate, say_id, script=text)
             for item_id, op in _item_gates(gate):
                 edge = {"kind": "edge", "rel": "needs", "from": say_id, "to": f"item:{item_id}", "item": item_id}
@@ -972,7 +970,9 @@ def link_script(text: str, filename: str, zone: str, catalog=None) -> list[dict]
                     edge["op"] = op
                 edges.append(edge)
             for name, value in _all_flag_sets(block):
-                edges.append({"kind": "edge", "rel": "sets", "from": say_id, "to": f"flag:{name}", "flag": name, "value": value})
+                edges.append(
+                    {"kind": "edge", "rel": "sets", "from": say_id, "to": f"flag:{name}", "flag": name, "value": value}
+                )
             _emit_faction_gains(edges, say_id, block, say_id)
             for reward in _reward_ids(block):
                 edges.append({"kind": "edge", "rel": "gives", "from": npc_id, "to": f"item:{reward}", "group": say_id})
@@ -993,11 +993,25 @@ def link_script(text: str, filename: str, zone: str, catalog=None) -> list[dict]
             group = f"{npc_id}#hand:" + "+".join(f"{name}:{amount}" for name, amount in coins)
         for item_id, count in turn["items"]:
             edges.append(
-                {"kind": "edge", "rel": "receives", "from": npc_id, "to": f"item:{item_id}", "count": count, "group": group}
+                {
+                    "kind": "edge",
+                    "rel": "receives",
+                    "from": npc_id,
+                    "to": f"item:{item_id}",
+                    "count": count,
+                    "group": group,
+                }
             )
         for name, amount in coins:
             edges.append(
-                {"kind": "edge", "rel": "receives", "from": npc_id, "to": f"coin:{name}", "count": amount, "group": group}
+                {
+                    "kind": "edge",
+                    "rel": "receives",
+                    "from": npc_id,
+                    "to": f"coin:{name}",
+                    "count": amount,
+                    "group": group,
+                }
             )
         for reward in turn["rewards"]:
             edges.append({"kind": "edge", "rel": "gives", "from": npc_id, "to": f"item:{reward}", "group": group})
@@ -1016,7 +1030,9 @@ def link_script(text: str, filename: str, zone: str, catalog=None) -> list[dict]
                 }
             )
         for name, value in turn["sets"]:
-            edges.append({"kind": "edge", "rel": "sets", "from": group, "to": f"flag:{name}", "flag": name, "value": value})
+            edges.append(
+                {"kind": "edge", "rel": "sets", "from": group, "to": f"flag:{name}", "flag": name, "value": value}
+            )
         for faction_id, delta in turn.get("faction_gains", []):
             edges.append(
                 {
@@ -1052,7 +1068,17 @@ def link_script(text: str, filename: str, zone: str, catalog=None) -> list[dict]
             continue
         source = f"{npc_id}#recipe:{recipe_id}"
         for name, at in _flags(cond):
-            edges.append({"kind": "edge", "rel": "needs", "from": source, "to": f"flag:{name}", "flag": name, "at": at, "group": source})
+            edges.append(
+                {
+                    "kind": "edge",
+                    "rel": "needs",
+                    "from": source,
+                    "to": f"flag:{name}",
+                    "flag": name,
+                    "at": at,
+                    "group": source,
+                }
+            )
         _emit_body(edges, events, source, npc_id)
     _zone_events(edges, text, npc_id)
     _spawn_calls.constants = {}  # type: ignore[attr-defined]
@@ -1062,9 +1088,7 @@ def link_script(text: str, filename: str, zone: str, catalog=None) -> list[dict]
 def _children(text: str, span: tuple[int, int, int, int]) -> list[tuple[int, int, int, int]]:
     """Branches nested in this body. A grandchild is included."""
     return [
-        branch
-        for branch in _branch_index(text)
-        if branch != span and span[2] <= branch[0] and branch[3] <= span[3]
+        branch for branch in _branch_index(text) if branch != span and span[2] <= branch[0] and branch[3] <= span[3]
     ]
 
 
@@ -1118,7 +1142,14 @@ def _emit_span(
         }
         edges.append(edge)
     for item_id, op in holds:
-        edge = {"kind": "edge", "rel": "needs", "from": say_id, "to": f"item:{item_id}", "item": item_id, "group": group}
+        edge = {
+            "kind": "edge",
+            "rel": "needs",
+            "from": say_id,
+            "to": f"item:{item_id}",
+            "item": item_id,
+            "group": group,
+        }
         if op or either:
             edge["op"] = op or "or"
         edges.append(edge)
@@ -1180,7 +1211,9 @@ def _emit_span(
     _emit_faction_gains(edges, say_id, body, group if holds else say_id)
     for match in _SUMMON.finditer(text):
         if span[2] <= match.start() < span[3] and not _in_span(match.start(), holes):
-            edges.append({"kind": "edge", "rel": "gives", "from": npc_id, "to": f"item:{int(match.group(1))}", "group": group})
+            edges.append(
+                {"kind": "edge", "rel": "gives", "from": npc_id, "to": f"item:{int(match.group(1))}", "group": group}
+            )
     for match in _QUEST_REWARD.finditer(text):
         if span[2] <= match.start() < span[3] and not _in_span(match.start(), holes):
             body, _end = _paren(text, match.end() - 1)
@@ -1240,7 +1273,14 @@ def _zone_events(edges: list[dict], text: str, npc_id: str) -> None:
             if holds:
                 group = source + "#holds:" + "+".join(str(item_id) for item_id, _op in holds)
             for item_id, op in holds:
-                edge = {"kind": "edge", "rel": "needs", "from": source, "to": f"item:{item_id}", "item": item_id, "group": group}
+                edge = {
+                    "kind": "edge",
+                    "rel": "needs",
+                    "from": source,
+                    "to": f"item:{item_id}",
+                    "item": item_id,
+                    "group": group,
+                }
                 if op:
                     edge["op"] = op
                 edges.append(edge)
@@ -1274,7 +1314,15 @@ def _zone_events(edges: list[dict], text: str, npc_id: str) -> None:
                 )
             for name, value in sets:
                 edges.append(
-                    {"kind": "edge", "rel": "sets", "from": source, "to": f"flag:{name}", "flag": name, "value": value, "group": group}
+                    {
+                        "kind": "edge",
+                        "rel": "sets",
+                        "from": source,
+                        "to": f"flag:{name}",
+                        "flag": name,
+                        "value": value,
+                        "group": group,
+                    }
                 )
             for npc_type, spawn_name in spawns:
                 edges.append(_spawn_edge(source, npc_type, spawn_name, group))
@@ -1382,7 +1430,15 @@ def _emit_body(edges: list[dict], events: list[tuple[int, dict]], source: str, n
 
 def _other_summons(edges: list[dict], text: str, npc_id: str) -> None:
     """A summon, spawn, or flag write outside a say, such as a timer, a death, or a Perl helper."""
-    skip = {"event_say", "event_trade", "event_item", "event_enter_zone", "event_enter", "event_loot", "event_killed_merit"}
+    skip = {
+        "event_say",
+        "event_trade",
+        "event_item",
+        "event_enter_zone",
+        "event_enter",
+        "event_loot",
+        "event_killed_merit",
+    }
     branches = _branch_index(text)
     for name, start, stop in _functions(text):
         if name in skip or start < 0:
@@ -1867,10 +1923,10 @@ def write_graph(graph: QuestGraph, path: str) -> None:
             )
         )
     for item_id, info in sorted(graph.items.items()):
-            row = {"kind": "item", "item": item_id, "name": info.get("name", ""), "zones": info.get("zones", [])}
-            if info.get("sources"):
-                row["sources"] = info["sources"]
-            lines.append(json.dumps(row, ensure_ascii=True))
+        row = {"kind": "item", "item": item_id, "name": info.get("name", ""), "zones": info.get("zones", [])}
+        if info.get("sources"):
+            row["sources"] = info["sources"]
+        lines.append(json.dumps(row, ensure_ascii=True))
     for zone, doors in sorted(graph.doors.items()):
         for door_id, destinations in sorted(doors.items()):
             lines.append(json.dumps({"zone": zone, "door": door_id, "to": destinations}, ensure_ascii=True))
