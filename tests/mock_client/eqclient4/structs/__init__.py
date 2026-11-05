@@ -4,9 +4,8 @@ Application objects serialize and deserialize the RoF2 opcode body
 (little-endian). Session objects serialize and deserialize the whole datagram
 (big-endian), including the leading zero and the session opcode byte.
 
-Inventory slots on these objects stay the client numbers (cursor 30, ammo 21,
-general 22-29). Serialize and deserialize translate those to the RoF2 slot
-struct, whose cursor is 33.
+Inventory slots use native RoF2 indices: power source 21, ammo 22,
+general 23-32, cursor 33. EQEmu's flat bag-cell IDs start at 251.
 
 Coordinates on these objects are x, y, z. Serialize and deserialize convert
 the y, x, z order used on the wire.

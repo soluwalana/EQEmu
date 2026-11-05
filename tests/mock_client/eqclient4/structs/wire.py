@@ -4,9 +4,8 @@ Application objects serialize and deserialize the RoF2 opcode body
 (little-endian). Session objects serialize and deserialize the whole datagram
 (big-endian), including the leading zero and the session opcode byte.
 
-Inventory slots on these objects stay the client numbers (cursor 30, ammo 21,
-general 22-29). Serialize and deserialize translate those to the RoF2 slot
-struct, whose cursor is 33.
+Inventory slots use native RoF2 indices: power source 21, ammo 22,
+general 23-32, cursor 33. EQEmu's flat bag-cell IDs start at 251.
 
 Coordinates on these objects are x, y, z. Serialize and deserialize convert
 the y, x, z order used on the wire.
@@ -16,6 +15,8 @@ import re
 import struct
 from dataclasses import dataclass, field
 from typing import ClassVar, TypeAlias, TypeVar
+
+from eqclient4.structs.constants import CURSOR_SLOT, GENERAL_SLOTS
 
 OPERATIONS: dict[str, type[EQStruct]] = {}
 
@@ -140,12 +141,11 @@ def read_i32(data: bytes, offset: int = 0) -> int:
     return struct.unpack_from("<i", data, offset)[0]
 
 
-# Bag contents use the same addresses as inventory.assign: general parent 22-29,
-# ten subslots, stride 200, first bag slot 251.
+# EQEmu's flat bag IDs: 251-350 for the ten general bags,
+# 351-360 for the cursor bag; ten cells per container.
 _BAGS_BEGIN = 251
-_GENERAL_LO = 22
-_GENERAL_HI = 30
-_BAG_STRIDE = 200
+_GENERAL_LO = GENERAL_SLOTS.start
+_BAG_STRIDE = 10
 _SUBSLOTS = 10
 
 
@@ -166,7 +166,7 @@ class InventorySlot:
 
     @classmethod
     def for_client(cls, kind: int, slot: int) -> InventorySlot:
-        # Possessions use translated client indices, including bag subslots.
+        # Possessions already use RoF2 indices; flat bag IDs resolve to main/sub.
         if kind == 0:
             main, sub = inventory_wire(slot)
         else:
@@ -242,56 +242,23 @@ class TypelessInventorySlot:
 
 
 def inventory_wire(slot: int) -> tuple[int, int]:
-    """RoF2 (main slot, sub index) for a client slot. A bag address carries its sub index."""
-    if slot >= _BAGS_BEGIN:
-        parent_index = (slot - _BAGS_BEGIN) // _BAG_STRIDE
-        sub = (slot - _BAGS_BEGIN) % _BAG_STRIDE
-        parent = _GENERAL_LO + parent_index
-        if 0 <= sub < _SUBSLOTS and _GENERAL_LO <= parent < _GENERAL_HI:
-            return (to_rof2_slot(parent), sub)
-    return (to_rof2_slot(slot), -1)
+    """Native RoF2 main/sub address for a top-level slot or EQEmu flat bag cell."""
+    # Ten general bags plus the cursor bag, each with ten subslots.
+    if _BAGS_BEGIN <= slot < _BAGS_BEGIN + (len(GENERAL_SLOTS) + 1) * _BAG_STRIDE:
+        index = slot - _BAGS_BEGIN
+        return (_GENERAL_LO + index // _BAG_STRIDE, index % _BAG_STRIDE)
+    return (i16(slot), -1)
 
 
 def client_slot(slot_type: int, main_slot: int, sub_slot: int) -> int:
-    """Client slot for a RoF2 inventory address. A sub index lands inside that bag."""
-    if slot_type == 0 and 0 <= sub_slot < _SUBSLOTS:
-        parent = from_rof2_slot(main_slot)
-        if _GENERAL_LO <= parent < _GENERAL_HI:
-            return _BAGS_BEGIN + (parent - _GENERAL_LO) * _BAG_STRIDE + sub_slot
-    if slot_type == 0:
-        return from_rof2_slot(main_slot)
+    """Flat bag ID for possession subslots, otherwise the native slot index."""
+    if (
+        slot_type == 0
+        and _GENERAL_LO <= main_slot <= CURSOR_SLOT
+        and 0 <= sub_slot < _SUBSLOTS
+    ):
+        return _BAGS_BEGIN + (main_slot - _GENERAL_LO) * _BAG_STRIDE + sub_slot
     return main_slot
-
-
-def to_rof2_slot(slot: int) -> int:
-    """Client possession slot to the RoF2 slot number. Cursor 30 is 33."""
-    slot = i16(slot)
-    if slot < 0:
-        return -1
-    if slot <= 20:
-        return slot
-    if slot == 21:
-        return 22
-    if 22 <= slot <= 29:
-        return slot + 1
-    if slot == 30:
-        return 33
-    return slot
-
-
-def from_rof2_slot(slot: int) -> int:
-    slot = i16(slot)
-    if slot < 0:
-        return -1
-    if slot <= 20:
-        return slot
-    if slot == 22:
-        return 21
-    if 23 <= slot <= 30:
-        return slot - 1
-    if slot == 33:
-        return 30
-    return slot
 
 
 def pack_typed_slot(kind: int, slot: int) -> bytes:

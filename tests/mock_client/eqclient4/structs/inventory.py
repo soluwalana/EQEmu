@@ -22,7 +22,8 @@ from eqclient4.structs.items import (
     OP_ItemPacket,
     OP_MoveItem,
 )
-from eqclient4.structs.wire import EQStruct, InventorySlot, from_rof2_slot
+from eqclient4.structs.constants import CURSOR_SLOT, GENERAL_SLOTS
+from eqclient4.structs.wire import EQStruct, InventorySlot
 
 _WORN = (
     "Charm",
@@ -46,6 +47,7 @@ _WORN = (
     "Legs",
     "Feet",
     "Waist",
+    "Power Source",
     "Ammo",
 )
 _BANK_SLOTS = 24
@@ -95,13 +97,13 @@ def _format_item(item: Item, show_ids: bool) -> str:
 
 
 def _format_address(address: InventorySlot) -> str:
-    number = from_rof2_slot(address.main_slot) if address.type == 0 else address.main_slot
+    number = address.main_slot
     if address.type == 0:
         if 0 <= number < len(_WORN):
             result = _WORN[number]
-        elif 22 <= number <= 29:
-            result = f"General {number - 21}"
-        elif number == 30:
+        elif number in GENERAL_SLOTS:
+            result = f"General {number - GENERAL_SLOTS.start + 1}"
+        elif number == CURSOR_SLOT:
             result = "Cursor"
         else:
             result = f"Possessions {number}"
@@ -152,7 +154,7 @@ class CharacterInventory:
 
     @staticmethod
     def address(kind: int, slot: int) -> InventorySlot:
-        """Build an address from eqclient4's client numbering (cursor=30)."""
+        """Build a typed address using native RoF2 slot numbers (cursor=33)."""
         return InventorySlot.for_client(kind, slot)
 
     @staticmethod
@@ -561,9 +563,12 @@ class CharacterInventory:
         for index, name in enumerate(_WORN):
             show(self.address(0, index), f"{name} ({index:02d})")
         lines.extend(("", "[GENERAL]"))
-        for index in range(22, 30):
-            show(self.address(0, index), f"General {index - 21} ({index})")
-        show(self.address(0, 30), "Cursor (30)")
+        for index in GENERAL_SLOTS:
+            show(
+                self.address(0, index),
+                f"General {index - GENERAL_SLOTS.start + 1} ({index})",
+            )
+        show(self.address(0, CURSOR_SLOT), f"Cursor ({CURSOR_SLOT})")
 
         for kind, name, capacity in (
             (1, "BANK", _BANK_SLOTS),
