@@ -16,22 +16,21 @@ class method deserialize(payload: bytes) returns an instance. Unknown opcodes
 and failed decodes are displayed as hex/ASCII instead of crashing the viewer.
 """
 
-from __future__ import annotations
-
 import argparse
 import cmd
-from dataclasses import fields, is_dataclass
-from datetime import date, datetime, timedelta
-from enum import Enum
-from pathlib import Path
 import pprint
 import re
 import shlex
 import sqlite3
+from dataclasses import fields, is_dataclass
+from datetime import date, datetime, timedelta
+from enum import Enum
+from pathlib import Path
 from typing import Any, Mapping
 from urllib.parse import quote
 
-from eqclient3.structs import OPERATIONS
+from eqclient4.structs import OPERATIONS
+from eqclient4.structs.inventory import CharacterInventory
 
 # Each end value includes the entire unit the user specified. For instance,
 # --end 2026-11-02T10:30 includes packets up to 10:30:59.999999.
@@ -90,7 +89,9 @@ def view_value(value: Any, seen: set[int] | None = None) -> Any:
     seen.add(ident)
     try:
         if is_dataclass(value) and not isinstance(value, type):
-            return {f.name: view_value(getattr(value, f.name), seen) for f in fields(value)}
+            return {
+                f.name: view_value(getattr(value, f.name), seen) for f in fields(value) if f.repr
+            }
         if isinstance(value, Mapping):
             return {str(k): view_value(v, seen) for k, v in value.items()}
         if isinstance(value, (list, tuple, set, frozenset)):
@@ -173,7 +174,9 @@ class Viewer:
 
     def print_packets(self) -> None:
         rows = self.rows()
-        print(f"\n{len(rows)} packet(s) shown (oldest first); registry has {len(OPERATIONS)} opcode(s).")
+        print(
+            f"\n{len(rows)} packet(s) shown (oldest first); registry has {len(OPERATIONS)} opcode(s)."
+        )
         for row in rows:
             payload = bytes(row["Bytes"])
             code = str(row["Op_Code"])
@@ -189,7 +192,9 @@ class Viewer:
             try:
                 decoded = struct_type.deserialize(payload)
                 name = getattr(struct_type, "__name__", str(struct_type))
-                formatted = pprint.pformat(view_value(decoded), indent=2, width=110, sort_dicts=False)
+                formatted = pprint.pformat(
+                    view_value(decoded), indent=2, width=110, sort_dicts=False
+                )
                 print(f"  {name}:\n" + "\n".join("    " + line for line in formatted.splitlines()))
             except Exception as exc:
                 print(f"  [decode error: {type(exc).__name__}: {exc}]")
@@ -314,18 +319,28 @@ def nonnegative_int(value: str) -> int:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     parser.add_argument("database", type=Path, help="Path to bus.sqlite3")
     parser.add_argument(
-        "--only", action="append", default=[], help="Include opcodes (comma-separated, * wildcards); repeatable"
+        "--only",
+        action="append",
+        default=[],
+        help="Include opcodes (comma-separated, * wildcards); repeatable",
     )
     parser.add_argument(
-        "--exclude", action="append", default=[], help="Exclude opcodes (comma-separated, * wildcards); repeatable"
+        "--exclude",
+        action="append",
+        default=[],
+        help="Exclude opcodes (comma-separated, * wildcards); repeatable",
     )
     parser.add_argument("--start", help="Lower bound: YYYY-MM-DD or YYYY-MM-DDTHH:MM[:SS[.ffffff]]")
     parser.add_argument("--end", help="Inclusive end date/time, at the entered precision")
     parser.add_argument("--character", help="Only this character")
-    parser.add_argument("--direction", choices=["send", "recv"], help="Only sent or received packets")
+    parser.add_argument(
+        "--direction", choices=["send", "recv"], help="Only sent or received packets"
+    )
     parser.add_argument(
         "--last",
         type=nonnegative_int,
@@ -340,8 +355,12 @@ def main() -> None:
         metavar="N",
         help="Max bytes in each hexdump (0=all; default 256)",
     )
-    parser.add_argument("--hex", action="store_true", help="Show hex dump even for successfully decoded packets")
-    parser.add_argument("-i", "--interactive", action="store_true", help="Interactive filter/refresh shell")
+    parser.add_argument(
+        "--hex", action="store_true", help="Show hex dump even for successfully decoded packets"
+    )
+    parser.add_argument(
+        "-i", "--interactive", action="store_true", help="Interactive filter/refresh shell"
+    )
     args = parser.parse_args()
 
     try:

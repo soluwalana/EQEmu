@@ -2,6 +2,7 @@
 
 from eqclient4.handler import Handler
 from eqclient4.log import log
+from eqclient4.net import transfer_zone
 
 # from eqclient4.actions.bots.form import queue_form
 # from eqclient4.actions.level_up import queue_level_gear
@@ -17,6 +18,9 @@ from eqclient4.structs import (
 
 TUTORIAL = "tutorialb"
 
+STARTED = 1
+DONE = 2
+
 
 class ZoningHandler(Handler):
     opcodes = (
@@ -31,7 +35,7 @@ class ZoningHandler(Handler):
         match payload:
             case OP_ReliableHole():
                 # A reliable-stream hole rezones on the copied session and does not append Zone.
-                self.loop.client.transfer_zone()
+                transfer_zone(self.loop.client)
                 return
 
             case OP_NewZone():
@@ -71,24 +75,15 @@ class ZoningHandler(Handler):
         world.zone_formed = short
 
         if short.lower() == TUTORIAL:
-            if self.loop.journal.get_flag(world.character.name, "tutorial_state") == "started":
+            if self.loop.journal.get_flag("tutorial_state") in (STARTED, DONE):
                 return
 
-            world.tutorial_started = True
-            self.loop.journal.set_flag(
-                world.character.name,
-                "tutorial_state",
-                "started",
-            )
+            self.loop.journal.set_flag("tutorial_state", STARTED)
             log.error("Need to implement queue_level_gear(self.loop, self.world)")
 
-        tutorial_done = world.journal.get_flag(world.character.name, "tutorial_state") == "done"
+        tutorial_done = self.loop.journal.get_flag("tutorial_state") == DONE
         if not tutorial_done:
-            self.loop.journal.set_flag(
-                world.character.name,
-                "tutorial_state",
-                "done",
-            )
+            self.loop.journal.set_flag("tutorial_state", DONE)
             produce(self.loop, world, leaving_tutorial=True)
 
     def form_party(self) -> None:
@@ -112,12 +107,12 @@ class ZoningHandler(Handler):
         """
         zone_id, success = payload.zone_id, payload.success
         if not self.loop.session_open():
-            self.loop.client.transfer_zone()
+            transfer_zone(self.loop.client)
             return
 
         if success == 1 and zone_id and zone_id != self.world.zone_id:
             self.world.zone_id = zone_id
-            self.loop.client.transfer_zone()
+            transfer_zone(self.loop.client)
             return
 
         payload_point = (payload.x, payload.y, payload.z)
@@ -141,8 +136,9 @@ class ZoningHandler(Handler):
             return
 
         if not self.loop.session_open():
-            self.loop.client.transfer_zone()
+            transfer_zone(self.loop.client)
             return
+
         self.loop.send(
             "OP_ZoneChange",
             OP_ZoneChange(self.world.character.name, zone_id, x, y, z).serialize(),

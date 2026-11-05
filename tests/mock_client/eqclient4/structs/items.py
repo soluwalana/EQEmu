@@ -3,26 +3,20 @@ from dataclasses import dataclass, field
 
 from eqclient4.structs.wire import (
     EQStruct,
+    InventorySlot,
+    TypelessInventorySlot,
     advance,
-    client_slot,
     cstring,
-    from_rof2_slot,
-    i16,
+    exact,
     i32,
     need,
     pack_inventory_slot,
     pack_names,
-    pack_typed_slot,
     put_cstr,
+    read_i32,
     read_u32,
-    to_rof2_slot,
     two_names,
     u32,
-    unpack_inventory_slot,
-    InventorySlot,
-    TypelessInventorySlot,
-    inventory_wire,
-    exact,
 )
 
 # common/patches/rof2_structs.h:4977 ItemQuaternaryBodyStruct, packed.
@@ -35,182 +29,113 @@ ITEM_INVENTORY = 0x69
 ITEM_SUMMON = 0x6A
 
 
-def _pack_item_body(item: Item) -> bytes:
-    """RoF2 SerializeItem for the fields this client reads back."""
-    wire = to_rof2_slot(item.slot) if item.kind != ITEM_MERCHANT else item.slot
-    wire, sub = inventory_wire(item.slot) if item.kind != ITEM_MERCHANT else (item.slot, -1)
+# Replacement for _pack_item_body, _read_item, AugmentSocket, the field tables,
+# and Item in eqclient4/structs/items.py.
+# Assumes existing imports: struct, dataclass, field, EQStruct, InventorySlot,
+# advance, cstring, need, put_cstr, read_u32, u32, and ITEM_MERCHANT.
 
-    # common/patches/rof2_structs.h:4733 ItemSerializationHeader
-    header = struct.pack(
-        "<17sIIBHHHIIIIIIIIIIIB",
-        b"\x00" * 17,
-        max(1, int(item.stack)) & 0xFFFFFFFF,
-        0,
-        9 if item.kind == ITEM_MERCHANT else 0,
-        int(wire) & 0xFFFF,
-        0xFFFF,
-        int(sub) & 0xFFFF,
-        0xFFFF,
-        item.price & 0xFFFFFFFF,
-        1,
-        0,
-        0,
-        0,
-        0,
-        max(1, int(item.stack)) & 0xFFFFFFFF,
-        0,
-        0,
-        0,
-        0,
-        0,
-    )
-    body = bytearray(255)
-    # common/patches/rof2_structs.h:4779 ItemBodyStruct
-    struct.pack_into("<I", body, 0, item.item_id & 0xFFFFFFFF)
-    body[11] = item.size & 0xFF
-    # common/patches/rof2_structs.h:4785 ItemBodyStruct
-    struct.pack_into("<I", body, 12, item.slots & 0xFFFFFFFF)
-    # common/patches/rof2_structs.h:4808 ItemBodyStruct
-    struct.pack_into("<i", body, 56, i32(item.ac))
-    # common/patches/rof2_structs.h:4812 ItemBodyStruct
-    struct.pack_into("<I", body, 72, item.classes & 0xFFFFFFFF)
-    # common/patches/rof2_structs.h:4813 ItemBodyStruct
-    struct.pack_into("<I", body, 76, item.races & 0xFFFFFFFF)
-    # common/patches/rof2_structs.h:4825 ItemBodyStruct
-    struct.pack_into("<I", body, 121, item.required_level & 0xFFFFFFFF)
-    # common/patches/rof2_structs.h:4835 ItemBodyStruct
-    struct.pack_into("<I", body, 146, item.damage & 0xFFFFFFFF)
-    body[158] = item.item_type & 0xFF
-    secondary = bytearray(74)
-    secondary[69] = item.bag_slots & 0xFF
-    secondary[70] = item.bag_size & 0xFF
-    effects = b""
-    for index in range(6):
-        effect = item.scroll_effect if index == 4 else 0
-        # common/patches/rof2_structs.h:4934 ClickEffectStruct
-        effect_bytes = struct.pack("<i", i32(effect))
-        # common/patches/rof2.cpp:6759 effect_unknown
-        unknown = struct.pack("<i", 0)
-        effects += effect_bytes + b"\x00" * 26 + put_cstr("") + unknown
-    return (
-        header
-        + put_cstr("")
-        + put_cstr("")
-        + b"\x00" * 26
-        + put_cstr(item.name)
-        + put_cstr("")
-        + put_cstr(item.id_file)
-        + put_cstr("")
-        + bytes(body)
-        + put_cstr("")
-        + bytes(secondary)
-        + put_cstr("")
-        + b"\x00" * 76
-        + effects
-        + bytes(_QUATERNARY)
-        + struct.pack("<I", 0)
-    )
+SECTION_SIZES = {
+    "header": 77,
+    "finish": 26,
+    "body": 255,
+    "secondary": 74,
+    "tertiary": 76,
+    "quaternary": 171,
+}
+ADDRESS_LAYOUT = ("header", "<Bhhh", 25)
+AUGMENT_LAYOUT = ("secondary", "<IBB", 12)
+NO_RENT_OFFSET = 8
+MERCHANT_SLOT_OFFSET = 36
+EVOLVING_FLAG_OFFSET = 76
+ITEM_MERCHANT = 0x64
+ITEM_LOOT = 0x66
+ITEM_TRADE = 0x67
+ITEM_INVENTORY = 0x69
+ITEM_SUMMON = 0x6A
 
 
-def _read_item(data: bytes, offset: int, kind: int) -> tuple[list[Item], int]:
-    """One RoF2 serialized item and the items packed inside it."""
-    begin = offset
-    offset = advance(data, offset, 77, "item")
-    base = offset - 77
-    stack, _unknown, slot_type, main_slot, _sub, _aug, price = struct.unpack_from("<IIBhhhI", data, base + 17)
-    evolving = data[base + 76]
-    if evolving:
-        offset = advance(data, offset, 25, "item")
-    _ornament, offset = cstring(data, offset)
-    _offhand, offset = cstring(data, offset)
-    offset = advance(data, offset, 26, "item")
-    name_start = offset
-    name, offset = cstring(data, offset)
-    name_end = offset
-    _lore, offset = cstring(data, offset)
-    id_file_start = offset
-    id_file, offset = cstring(data, offset)
-    id_file_end = offset
-    _blank, offset = cstring(data, offset)
-    offset = advance(data, offset, 255, "item")
-    body = offset - 255
-    item_id = read_u32(data, body)
-    size = data[body + 11]
-    slots = read_u32(data, body + 12)
-    ac = struct.unpack_from("<i", data, body + 56)[0]
-    classes = read_u32(data, body + 72)
-    races = read_u32(data, body + 76)
-    required = read_u32(data, body + 121)
-    damage = read_u32(data, body + 146)
-    item_type = data[body + 158]
-    _charm, offset = cstring(data, offset)
-    offset = advance(data, offset, 74, "item")
-    secondary_start = offset
-    bag_slots = data[offset - 74 + 69]
-    bag_size = data[offset - 74 + 70]
-    _filename, offset = cstring(data, offset)
-    offset = advance(data, offset, 76, "item")
-    scroll = 0
-    scroll_start = -1
-    for index in range(6):
-        scroll_effect_start = offset
-        offset = advance(data, offset, 30, "item")
-        if index == 4:
-            scroll_start = offset - 30
-            scroll = struct.unpack_from("<i", data, scroll_start)[0]
-        _effect_name, offset = cstring(data, offset)
-        offset = advance(data, offset, 4, "item")
-    offset = advance(data, offset, _QUATERNARY, "item")
-    nested_count = read_u32(data, offset)
-    offset += 4
-    prefix_end = offset
-    direct_children: list[Item] = []
-    nested: list[Item] = []
-    for _index in range(nested_count):
-        entry_index = read_u32(data, offset)
-        offset = advance(data, offset, 4, "item")
-        descendants, offset = _read_item(data, offset, kind)
-        descendants[0]._entry_index = entry_index
-        direct_children.append(descendants[0])
-        nested.extend(descendants)
+@dataclass(frozen=True)
+class AugmentSocket:
+    type: int = 0
+    visible: int = 0
+    unknown: int = 0
 
-    slot = client_slot(int(slot_type), int(main_slot), int(_sub))
-    count = int(stack) if int(stack) > 0 else 1
-    item = Item(
-        kind,
-        slot,
-        name,
-        id_file,
-        int(item_id),
-        count,
-        int(slots),
-        int(classes),
-        int(races),
-        int(ac),
-        int(damage),
-        int(required),
-        int(size),
-        int(bag_slots),
-        int(bag_size),
-        int(item_type),
-        int(scroll),
-        int(price),
-    )
-    item.children = direct_children
-    item._wire_prefix = bytes(data[begin:prefix_end])
-    item._wire_offsets = {
-        "name": (name_start - begin, name_end - begin),
-        "id_file": (id_file_start - begin, id_file_end - begin),
-        "body": body - begin,
-        "secondary": secondary_start - begin,
-        "scroll": scroll_start - begin,
-    }
-    item._original_fields = {name: getattr(item, name) for name in (
-        "slot", "name", "id_file", "item_id", "stack", "slots",
-        "classes", "races", "ac", "damage", "required_level",
-        "size", "bag_slots", "bag_size", "item_type", "scroll_effect", "price",
-    )}
-    return ([item, *nested], offset)
+
+ITEM_EFFECT_FIELDS = (
+    "click_effect",
+    "proc_effect",
+    "worn_effect",
+    "focus_effect",
+    "scroll_effect",
+    "bard_effect",
+)
+
+# Single source of truth: attribute -> (section, wire format, section-relative offset).
+# A section's start (including each variable-position effect) is stored in
+# _wire_offsets. All reads and writes use this layout.
+ITEM_FIELD_LAYOUT: dict[str, tuple[str, str, int]] = {
+    # ItemSerializationHeader (77 bytes)
+    "stack": ("header", "<I", 17),
+    "price": ("header", "<I", 32),
+    "charges": ("header", "<i", 56),
+    "attuned": ("header", "<I", 60),
+    # ItemBodyStruct (255 bytes)
+    "item_id": ("body", "<I", 0),
+    "weight": ("body", "<i", 4),
+    "no_drop": ("body", "<B", 9),  # Wire 0 = No Drop; 255 = droppable
+    "size": ("body", "<B", 11),
+    "slots": ("body", "<I", 12),
+    "resist_cold": ("body", "<b", 31),
+    "resist_disease": ("body", "<b", 32),
+    "resist_poison": ("body", "<b", 33),
+    "resist_magic": ("body", "<b", 34),
+    "resist_fire": ("body", "<b", 35),
+    "resist_corruption": ("body", "<b", 36),
+    "strength": ("body", "<b", 37),
+    "stamina": ("body", "<b", 38),
+    "agility": ("body", "<b", 39),
+    "dexterity": ("body", "<b", 40),
+    "charisma": ("body", "<b", 41),
+    "intelligence": ("body", "<b", 42),
+    "wisdom": ("body", "<b", 43),
+    "hp": ("body", "<i", 44),
+    "mana": ("body", "<i", 48),
+    "endurance": ("body", "<I", 52),
+    "ac": ("body", "<i", 56),
+    "classes": ("body", "<I", 72),
+    "races": ("body", "<I", 76),
+    "deity": ("body", "<I", 80),
+    "magic": ("body", "<B", 116),
+    "required_level": ("body", "<I", 121),
+    "recommended_level": ("body", "<I", 125),
+    "delay": ("body", "<B", 142),
+    "elemental_damage_type": ("body", "<B", 143),
+    "elemental_damage": ("body", "<B", 144),
+    "range": ("body", "<B", 145),
+    "damage": ("body", "<I", 146),
+    "prestige": ("body", "<I", 154),
+    "item_type": ("body", "<B", 158),
+    "shielding": ("body", "<i", 187),
+    "avoidance": ("body", "<i", 211),
+    "accuracy": ("body", "<i", 215),
+    # ItemSecondaryBodyStruct (74 bytes)
+    "aug_type": ("secondary", "<I", 0),
+    "aug_restrict2": ("secondary", "<i", 4),
+    "aug_restrict": ("secondary", "<I", 8),
+    "bag_type": ("secondary", "<B", 68),
+    "bag_slots": ("secondary", "<B", 69),
+    "bag_size": ("secondary", "<B", 70),
+    "bag_weight_reduction": ("secondary", "<B", 71),
+    # ItemTertiaryBodyStruct (76 bytes)
+    "lore_group": ("tertiary", "<i", 0),
+    "attack": ("tertiary", "<i", 15),
+    "haste": ("tertiary", "<i", 19),
+    "damage_shield": ("tertiary", "<i", 23),
+    "stack_size": ("tertiary", "<I", 50),
+    "no_transfer": ("tertiary", "<B", 54),
+    # Six effects, each at an independently located offset, owing to C-strings
+    **{name: (f"effect:{name}", "<i", 0) for name in ITEM_EFFECT_FIELDS},
+}
 
 
 @dataclass
@@ -233,64 +158,347 @@ class Item(EQStruct):
     item_type: int = 0
     scroll_effect: int = 0
     price: int = 0
-    # Direct children; unlike the old flattened parser this preserves nesting.
+
+    # Flags and inventory metadata
+    no_drop: bool = False
+    attuned: bool = False
+    lore_group: int = 0
+    weight: int = 0
+    charges: int = 0
+    stack_size: int = 0
+    bag_type: int = 0
+    bag_weight_reduction: int = 0
+    no_transfer: bool = False
+
+    # Weapons, statistics and restrictions
+    delay: int = 0
+    range: int = 0
+    magic: int = 0
+    elemental_damage_type: int = 0
+    elemental_damage: int = 0
+    strength: int = 0
+    stamina: int = 0
+    agility: int = 0
+    dexterity: int = 0
+    wisdom: int = 0
+    intelligence: int = 0
+    charisma: int = 0
+    hp: int = 0
+    mana: int = 0
+    endurance: int = 0
+    resist_magic: int = 0
+    resist_fire: int = 0
+    resist_cold: int = 0
+    resist_poison: int = 0
+    resist_disease: int = 0
+    resist_corruption: int = 0
+    deity: int = 0
+    recommended_level: int = 0
+    prestige: int = 0
+    attack: int = 0
+    haste: int = 0
+    damage_shield: int = 0
+    shielding: int = 0
+    avoidance: int = 0
+    accuracy: int = 0
+
+    # Spell effects (scroll_effect stays in the legacy constructor above)
+    click_effect: int = 0
+    proc_effect: int = 0
+    worn_effect: int = 0
+    focus_effect: int = 0
+    bard_effect: int = 0
+
+    # Augment compatibility, not installed augment items (those are children)
+    aug_type: int = 0
+    aug_restrict: int = 0
+    aug_restrict2: int = 0
+    augment_slots: dict[int, AugmentSocket] = field(default_factory=dict)
+
+    address: InventorySlot | None = field(default=None, repr=False, compare=False)
     children: list[Item] = field(default_factory=list, repr=False, compare=False)
     _entry_index: int = field(default=0, repr=False, compare=False)
     _wire_prefix: bytes = field(default=b"", repr=False, compare=False)
     _wire_offsets: dict = field(default_factory=dict, repr=False, compare=False)
     _original_fields: dict = field(default_factory=dict, repr=False, compare=False)
 
+    @property
+    def is_lore(self) -> bool:
+        return self.lore_group != 0
+
+    @property
+    def is_no_drop(self) -> bool:
+        return self.no_drop or self.attuned
+
+    @property
+    def augments(self) -> dict[int, Item]:
+        """Installed augments indexed by socket position."""
+        if self.item_class != 0:
+            return {}
+
+        return {child._entry_index: child for child in self.children if 0 <= child._entry_index < 6}
+
+    def _effective_address(self) -> InventorySlot:
+        if self.address is None:
+            return InventorySlot.for_client(9 if self.kind == ITEM_MERCHANT else 0, self.slot)
+        original = self._original_fields
+        if original and self.slot != original["slot"] and self.address == original["address"]:
+            return InventorySlot.for_client(self.address.type, self.slot)
+        return self.address
+
+    @staticmethod
+    def _wire_value(name: str, value: int | bool, fmt: str) -> int:
+        """Map Python field semantics to a representable wire integer."""
+        if name == "no_drop":
+            return 0 if value else 255
+        value = int(value)
+        bits = struct.calcsize(fmt) * 8
+        value &= (1 << bits) - 1
+        if fmt[-1] in "bhi" and value >= (1 << (bits - 1)):
+            value -= 1 << bits
+        return value
+
+    @staticmethod
+    def _python_value(name: str, value: int) -> int | bool:
+        if name == "no_drop":
+            return value == 0
+        if name in {"attuned", "no_transfer"}:
+            return bool(value)
+        return value
+
+    @staticmethod
+    def _pack_item_body(item: Item) -> bytes:
+        """Construct a minimal, valid serialized item when there is no raw prefix."""
+        buf = {
+            "header": bytearray(SECTION_SIZES["header"]),
+            "body": bytearray(SECTION_SIZES["body"]),
+            "secondary": bytearray(SECTION_SIZES["secondary"]),
+            "tertiary": bytearray(SECTION_SIZES["tertiary"]),
+            **{f"effect:{name}": bytearray(35) for name in ITEM_EFFECT_FIELDS},
+        }
+        # The RoF2 body uses 255 for the *absence* of No Rent.
+        buf["body"][NO_RENT_OFFSET] = 255
+        # Server uses merchant_slot=1 for nonmerchant items.
+        struct.pack_into("<I", buf["header"], MERCHANT_SLOT_OFFSET, 1)
+        address = item._effective_address()
+        address_section, address_fmt, address_delta = ADDRESS_LAYOUT
+        struct.pack_into(
+            address_fmt,
+            buf[address_section],
+            address_delta,
+            address.type & 0xFF,
+            address.main_slot,
+            address.sub_index,
+            address.aug_index,
+        )
+
+        for name, (section, fmt, delta) in ITEM_FIELD_LAYOUT.items():
+            raw = Item._wire_value(name, getattr(item, name), fmt)
+            if name == "stack":
+                raw = max(1, raw)
+            struct.pack_into(fmt, buf[section], delta, raw)
+
+        if any(not 0 <= i < 6 for i in item.augment_slots):
+            raise ValueError("Invalid augment socket index")
+
+        aug_section, aug_fmt, aug_delta = AUGMENT_LAYOUT
+        for i in range(6):
+            socket = item.augment_slots.get(i, AugmentSocket(type=0, visible=1, unknown=0))
+            struct.pack_into(
+                aug_fmt,
+                buf[aug_section],
+                aug_delta + i * struct.calcsize(aug_fmt),
+                socket.type,
+                socket.visible,
+                socket.unknown,
+            )
+
+        return b"".join(
+            (
+                buf["header"],
+                put_cstr(""),
+                put_cstr(""),
+                bytes(SECTION_SIZES["finish"]),
+                put_cstr(item.name),
+                put_cstr(""),
+                put_cstr(item.id_file),
+                put_cstr(""),
+                buf["body"],
+                put_cstr(""),
+                buf["secondary"],
+                put_cstr(""),
+                buf["tertiary"],
+                *(buf[f"effect:{name}"] for name in ITEM_EFFECT_FIELDS),
+                bytes(SECTION_SIZES["quaternary"]),
+                u32(0),
+            )
+        )
+
+    @staticmethod
+    def _read_item(data: bytes, offset: int, kind: int) -> tuple[Item, int]:
+        """Parse one root item (including children), returning the next position."""
+        begin = offset
+        offsets: dict[str, int | tuple[int, int]] = {"header": 0}
+
+        offset = advance(data, offset, SECTION_SIZES["header"], "item header")
+        if data[begin + offsets["header"] + EVOLVING_FLAG_OFFSET]:
+            offset = advance(data, offset, 25, "evolving item")
+
+        for _ in range(2):  # Ornament strings
+            _, offset = cstring(data, offset)
+        offset = advance(data, offset, SECTION_SIZES["finish"], "item header finish")
+
+        name_start = offset
+        name, offset = cstring(data, offset)
+
+        offsets["name"] = (name_start - begin, offset - begin)
+        _, offset = cstring(data, offset)  # Lore display string
+        id_start = offset
+        id_file, offset = cstring(data, offset)
+
+        offsets["id_file"] = (id_start - begin, offset - begin)
+        _, offset = cstring(data, offset)  # Blank field
+
+        offsets["body"] = offset - begin
+        offset = advance(data, offset, SECTION_SIZES["body"], "item body")
+        _, offset = cstring(data, offset)  # Charm string
+
+        offsets["secondary"] = offset - begin
+        offset = advance(data, offset, SECTION_SIZES["secondary"], "item secondary body")
+        _, offset = cstring(data, offset)  # Filename
+
+        offsets["tertiary"] = offset - begin
+        offset = advance(data, offset, SECTION_SIZES["tertiary"], "item tertiary body")
+
+        for effect_name in ITEM_EFFECT_FIELDS:
+            offsets[f"effect:{effect_name}"] = offset - begin
+            offset = advance(data, offset, 30, f"{effect_name} header")
+            _, offset = cstring(data, offset)  # Variable-length effect name
+            offset = advance(data, offset, 4, f"{effect_name} trailer")
+
+        offset = advance(data, offset, SECTION_SIZES["quaternary"], "item quaternary body")
+        nested_count = read_u32(data, offset)
+        offset = advance(data, offset, 4, "item child count")
+        prefix_end = offset
+
+        fields = {
+            name: Item._python_value(
+                name, struct.unpack_from(fmt, data, begin + offsets[section] + delta)[0]
+            )
+            for name, (section, fmt, delta) in ITEM_FIELD_LAYOUT.items()
+        }
+
+        # The protocol sometimes serializes zero stack quantity for unstackables.
+        if not fields["stack"]:
+            fields["stack"] = 1
+
+        address_section, address_fmt, address_delta = ADDRESS_LAYOUT
+        addr_type, main, sub, aug = struct.unpack_from(
+            address_fmt, data, begin + offsets[address_section] + address_delta
+        )
+        address = InventorySlot(addr_type, 0, main, sub, aug, 0)
+
+        aug_section, aug_fmt, aug_delta = AUGMENT_LAYOUT
+
+        augment_slots = {
+            i: socket
+            for i in range(6)
+            if (
+                socket := AugmentSocket(
+                    *struct.unpack_from(
+                        aug_fmt,
+                        data,
+                        begin + offsets[aug_section] + aug_delta + i * struct.calcsize(aug_fmt),
+                    )
+                )
+            ).type
+            != 0
+        }
+
+        item = Item(
+            kind=kind,
+            slot=address.client_slot,
+            name=name,
+            id_file=id_file,
+            address=address,
+            augment_slots=augment_slots,
+            **fields,
+        )
+        item._wire_prefix = bytes(data[begin:prefix_end])
+        item._wire_offsets = offsets
+        item._original_fields = {
+            name: getattr(item, name)
+            for name in (*ITEM_FIELD_LAYOUT, "slot", "address", "augment_slots", "name", "id_file")
+        }
+
+        for _ in range(nested_count):
+            entry_index = read_u32(data, offset)
+            offset = advance(data, offset, 4, "item child index")
+            child, offset = Item._read_item(data, offset, kind)
+            child._entry_index = entry_index
+            item.children.append(child)
+
+        return item, offset
+
     def _serialize_body(self) -> bytes:
         if not self._wire_prefix:
-            # Synthetic items retain the previous minimal serializer.
-            data = bytearray(_pack_item_body(self))
+            data = bytearray(Item._pack_item_body(self))
         else:
             data = bytearray(self._wire_prefix)
-            original = self._original_fields
             offsets = self._wire_offsets
-            body = offsets["body"]
-            secondary = offsets["secondary"]
+            original = self._original_fields
 
-            def changed(name: str) -> bool:
-                return getattr(self, name) != original[name]
+            for name, (section, fmt, delta) in ITEM_FIELD_LAYOUT.items():
+                if getattr(self, name) != original[name]:
+                    struct.pack_into(
+                        fmt,
+                        data,
+                        offsets[section] + delta,
+                        Item._wire_value(name, getattr(self, name), fmt),
+                    )
 
-            def patch(name: str, fmt: str, location: int) -> None:
-                if changed(name):
-                    struct.pack_into(fmt, data, location, getattr(self, name))
+            address = self._effective_address()
+            if address != original["address"]:
+                address_section, address_fmt, address_delta = ADDRESS_LAYOUT
+                struct.pack_into(
+                    address_fmt,
+                    data,
+                    offsets[address_section] + address_delta,
+                    address.type & 0xFF,
+                    address.main_slot,
+                    address.sub_index,
+                    address.aug_index,
+                )
 
-            patch("stack", "<I", 17)
-            patch("price", "<I", 32)
-            patch("item_id", "<I", body)
-            patch("size", "<B", body + 11)
-            patch("slots", "<I", body + 12)
-            patch("ac", "<i", body + 56)
-            patch("classes", "<I", body + 72)
-            patch("races", "<I", body + 76)
-            patch("required_level", "<I", body + 121)
-            patch("damage", "<I", body + 146)
-            patch("item_type", "<B", body + 158)
-            patch("bag_slots", "<B", secondary + 69)
-            patch("bag_size", "<B", secondary + 70)
-            patch("scroll_effect", "<i", offsets["scroll"])
+            if len(self.augment_slots) > 6:
+                raise ValueError("Expected exactly six augment sockets")
+            if len(self.augment_slots) < 6:
+                for _ in range(6 - len(self.augment_slots)):
+                    self.augment_slots.append(AugmentSocket(type=0, visible=1, unknown=0))
 
-            if changed("slot"):
-                slot_type = data[25]
-                if slot_type == 0:
-                    main, sub = inventory_wire(self.slot)
-                else:
-                    main, sub = self.slot, -1
-                struct.pack_into("<hh", data, 26, i16(main), i16(sub))
+            if self.augment_slots != original["augment_slots"]:
+                aug_section, aug_fmt, aug_delta = AUGMENT_LAYOUT
+                for index, socket in enumerate(self.augment_slots):
+                    struct.pack_into(
+                        aug_fmt,
+                        data,
+                        offsets[aug_section] + aug_delta + index * struct.calcsize(aug_fmt),
+                        socket.type,
+                        socket.visible,
+                        socket.unknown,
+                    )
 
-            # Apply variable-size string updates in reverse offset order.
-            # Everything else was patched using offsets from the original bytes.
+            # Apply variable-length edits in reverse byte order. Static offsets
+            # above refer to the *original* data, before these replacements.
             edits = []
-            if changed("name"):
-                edits.append((*offsets["name"], put_cstr(self.name)))
-            if changed("id_file"):
-                edits.append((*offsets["id_file"], put_cstr(self.id_file)))
+            for name in ("name", "id_file"):
+                if getattr(self, name) != original[name]:
+                    start, end = offsets[name]
+                    edits.append((start, end, put_cstr(getattr(self, name))))
             for start, end, value in sorted(edits, reverse=True):
                 data[start:end] = value
 
+        # Direct nested children are serialized after the root's fixed prefix.
         struct.pack_into("<I", data, len(data) - 4, len(self.children))
         for child in self.children:
             data += u32(child._entry_index)
@@ -304,14 +512,14 @@ class Item(EQStruct):
         yield self
         for child in self.children:
             yield from child.walk()
- 
+
     @classmethod
     def deserialize(cls, data: bytes) -> Item:
         need(data, 4, "item packet")
-        found, offset = _read_item(data, 4, read_u32(data))
-        if offset != len(data):
-            raise ValueError(f"Item packet trailing data: {len(data) - offset} bytes")
-        return found[0]
+        item, end = cls._read_item(data, 4, read_u32(data))
+        if end != len(data):
+            raise ValueError(f"Item packet trailing data: {len(data) - end} bytes")
+        return item
 
 
 @dataclass
@@ -322,7 +530,6 @@ class OP_CharInventory(EQStruct):
     def flat_items(self) -> list[Item]:
         """Compatibility view of the former flattened `items` list."""
         return [item for root in self.items for item in root.walk()]
- 
 
     def serialize(self) -> bytes:
         # common/patches/rof2.cpp:1075 OP_CharInventory
@@ -338,8 +545,9 @@ class OP_CharInventory(EQStruct):
         offset = 4
         found: list[Item] = []
         for _index in range(count):
-            rows, offset = _read_item(data, offset, ITEM_INVENTORY)
-            found.extend(rows[0])
+            item, offset = Item._read_item(data, offset, ITEM_INVENTORY)
+            found.append(item)
+
         if offset != len(data):
             raise ValueError(f"OP_CharInventory trailing data: {len(data) - offset} bytes")
         return cls(found)
@@ -376,14 +584,13 @@ class OP_DeleteItem(EQStruct):
             source = self.from_address.preserve_inventory_slot(self.from_type, self.from_slot)
         else:
             source = InventorySlot.for_client(self.from_type, self.from_slot)
-        
+
         if self.to_address:
             dest = self.to_address.preserve_inventory_slot(self.to_type, self.to_slot or 0)
         else:
             dest = InventorySlot.for_client(self.to_type, self.to_slot or 0)
 
         return source.pack() + dest.pack() + u32(self.count or 0)
-
 
     @classmethod
     def deserialize(cls, data: bytes) -> OP_DeleteItem:
@@ -393,9 +600,17 @@ class OP_DeleteItem(EQStruct):
             raise ValueError(f"OP_DeleteItem expected 4 or 28 bytes, got {len(data)}")
         source = InventorySlot.unpack(data, 0)
         dest = InventorySlot.unpack(data, 12)
-        return cls(source.client_slot, dest.client_slot, read_u32(data, 24),
-                   source.type, dest.type, False, source, dest,)
- 
+        return cls(
+            source.client_slot,
+            dest.client_slot,
+            read_u32(data, 24),
+            source.type,
+            dest.type,
+            False,
+            source,
+            dest,
+        )
+
 
 @dataclass
 class OP_MoveItem(EQStruct):
@@ -423,8 +638,15 @@ class OP_MoveItem(EQStruct):
         exact(data, 28, "OP_MoveItem")
         source = InventorySlot.unpack(data, 0)
         dest = InventorySlot.unpack(data, 12)
-        return cls(source.client_slot, dest.client_slot, read_u32(data, 24),
-                   dest.type, source.type, source, dest,)
+        return cls(
+            source.client_slot,
+            dest.client_slot,
+            read_u32(data, 24),
+            dest.type,
+            source.type,
+            source,
+            dest,
+        )
 
 
 @dataclass
@@ -464,11 +686,10 @@ class OP_LootItem(EQStruct):
     unknown10: int = 0
     unknown16: int = 0
 
-
     def serialize(self) -> bytes:
         # common/patches/rof2_structs.h:2058 LootingItem_Struct
         return struct.pack(
-            "<IIHHiI", 
+            "<IIHHiI",
             self.corpse_id & 0xFFFFFFFF,
             self.player_id & 0xFFFFFFFF,
             self.slot & 0xFFFF,
@@ -476,12 +697,13 @@ class OP_LootItem(EQStruct):
             i32(self.auto_loot),
             self.unknown16 & 0xFFFFFFFF,
         )
- 
 
     @classmethod
     def deserialize(cls, data: bytes) -> OP_LootItem:
         exact(data, 12, "OP_LootItem")
-        corpse_id, player_id, slot, unknown10, auto_loot, unknown16 = struct.unpack_from("<IIHHiI", data)
+        corpse_id, player_id, slot, unknown10, auto_loot, unknown16 = struct.unpack_from(
+            "<IIHHiI", data
+        )
         return cls(corpse_id, player_id, slot, auto_loot, unknown10, unknown16)
 
 
@@ -497,7 +719,6 @@ class OP_MoneyOnCorpse(EQStruct):
     unknown03: int = 0
     packet_size: int = field(default=20, repr=False, compare=False)
 
-
     def serialize(self) -> bytes:
         # common/eq_packet_structs.h:1829 moneyOnCorpseStruct. zone/corpse.cpp:1280 writes 0x42, 0xef.
         if self.packet_size == 0:
@@ -506,12 +727,18 @@ class OP_MoneyOnCorpse(EQStruct):
             return bytes((self.response & 0xFF,))
         if self.packet_size != 20:
             raise ValueError("OP_MoneyOnCorpse packet_size must be 0, 1 or 20")
-        
-        return struct.pack("<BBBBIIII", self.response & 0xFF,
-                           self.unknown01 & 0xFF, self.unknown02 & 0xFF,
-                           self.unknown03 & 0xFF, self.platinum & 0xFFFFFFFF,
-                           self.gold & 0xFFFFFFFF, self.silver & 0xFFFFFFFF,
-                           self.copper & 0xFFFFFFFF,)
+
+        return struct.pack(
+            "<BBBBIIII",
+            self.response & 0xFF,
+            self.unknown01 & 0xFF,
+            self.unknown02 & 0xFF,
+            self.unknown03 & 0xFF,
+            self.platinum & 0xFFFFFFFF,
+            self.gold & 0xFFFFFFFF,
+            self.silver & 0xFFFFFFFF,
+            self.copper & 0xFFFFFFFF,
+        )
 
     @classmethod
     def deserialize(cls, data: bytes) -> OP_MoneyOnCorpse:
@@ -607,6 +834,7 @@ class OP_ShopPlayerBuy(EQStruct):
         npc, player, slot, unknown, quantity, gap, price, tail = struct.unpack("<8I", data)
         return cls(npc, player, slot, unknown, quantity, price, gap, tail)
 
+
 @dataclass
 class OP_ShopPlayerSell(EQStruct):
     npc_id: int
@@ -615,7 +843,6 @@ class OP_ShopPlayerSell(EQStruct):
     price: int = 0
     slot_address: TypelessInventorySlot | None = field(default=None, repr=False, compare=False)
 
-
     def serialize(self) -> bytes:
         # common/patches/rof2_structs.h:2297 Merchant_Purchase_Struct
         # common/patches/rof2_structs.h:71 TypelessInventorySlot_Struct
@@ -623,10 +850,17 @@ class OP_ShopPlayerSell(EQStruct):
             address = self.slot_address.preserve_typeless_slot(self.slot)
         else:
             address = TypelessInventorySlot.for_client(self.slot)
-        
-        return u32(self.npc_id) + address.pack() + struct.pack(
-            "<II", self.quantity & 0xFFFFFFFF, self.price & 0xFFFFFFFF,)
- 
+
+        return (
+            u32(self.npc_id)
+            + address.pack()
+            + struct.pack(
+                "<II",
+                self.quantity & 0xFFFFFFFF,
+                self.price & 0xFFFFFFFF,
+            )
+        )
+
     @classmethod
     def deserialize(cls, data: bytes) -> OP_ShopPlayerSell:
         exact(data, 20, "OP_ShopPlayerSell")
@@ -646,10 +880,10 @@ class OP_ShopDelItem(EQStruct):
     def serialize(self) -> bytes:
         # common/eq_packet_structs.h:2242 Merchant_DelItem_Struct
         return struct.pack(
-            "<4I", 
-            self.npc_id & 0xFFFFFFFF, 
-            self.player_id & 0xFFFFFFFF, 
-            self.slot & 0xFFFFFFFF, 
+            "<4I",
+            self.npc_id & 0xFFFFFFFF,
+            self.player_id & 0xFFFFFFFF,
+            self.slot & 0xFFFFFFFF,
             self.unknown12 & 0xFFFFFFFF,
         )
 
@@ -717,22 +951,28 @@ class OP_TradeSkillCombine(EQStruct):
     guildtribute_address: InventorySlot | None = field(default=None, repr=False, compare=False)
 
     def serialize(self) -> bytes:
-        
-        return pack_inventory_slot(self.container_slot) + pack_inventory_slot(self.guildtribute_slot)
-    
+
+        return pack_inventory_slot(self.container_slot) + pack_inventory_slot(
+            self.guildtribute_slot
+        )
+
     def serialize(self) -> bytes:
         # common/patches/rof2_structs.h:3933 NewCombine_Struct
         if self.container_address:
-            container = self.container_address.preserve_inventory_slot(self.container_type, self.container_slot)
+            container = self.container_address.preserve_inventory_slot(
+                self.container_type, self.container_slot
+            )
         else:
             container = InventorySlot.for_client(self.container_type, self.container_slot)
         if self.guildtribute_address:
-            tribute = self.guildtribute_address.preserve_inventory_slot(self.guildtribute_type, self.guildtribute_slot)
+            tribute = self.guildtribute_address.preserve_inventory_slot(
+                self.guildtribute_type, self.guildtribute_slot
+            )
         else:
             tribute = InventorySlot.for_client(self.guildtribute_type, self.guildtribute_slot)
-        
+
         return container.pack() + tribute.pack()
- 
+
     @classmethod
     def deserialize(cls, data: bytes) -> OP_TradeSkillCombine:
         exact(data, 24, "OP_TradeSkillCombine")
@@ -767,6 +1007,7 @@ class OP_TradeAcceptClick(EQStruct):
 @dataclass
 class OP_FinishTrade(EQStruct):
     """The server closed the trade. The body is ignored."""
+
     payload: bytes = b""
 
     def serialize(self) -> bytes:
@@ -775,4 +1016,3 @@ class OP_FinishTrade(EQStruct):
     @classmethod
     def deserialize(cls, data: bytes) -> OP_FinishTrade:
         return cls(bytes(data))
-

@@ -14,7 +14,7 @@ the y, x, z order used on the wire.
 
 import re
 import struct
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import ClassVar, TypeAlias, TypeVar
 
 OPERATIONS: dict[str, type[EQStruct]] = {}
@@ -136,6 +136,10 @@ def i32(value: int) -> int:
     return value
 
 
+def read_i32(data: bytes, offset: int = 0) -> int:
+    return struct.unpack_from("<i", data, offset)[0]
+
+
 # Bag contents use the same addresses as inventory.assign: general parent 22-29,
 # ten subslots, stride 200, first bag slot 251.
 _BAGS_BEGIN = 251
@@ -149,11 +153,11 @@ _SUBSLOTS = 10
 @dataclass(frozen=True)
 class InventorySlot:
     type: int
-    unknown02: int
+    unknown02: int = field(compare=False)
     main_slot: int
     sub_index: int
     aug_index: int
-    unknown10: int
+    unknown10: int = field(compare=False)
 
     @classmethod
     def unpack(cls, data: bytes, offset: int = 0) -> InventorySlot:
@@ -167,19 +171,31 @@ class InventorySlot:
             main, sub = inventory_wire(slot)
         else:
             main, sub = slot, -1
-        return cls(i16(kind), 0, i16(main), i16(sub), -1, 0,)
+        return cls(
+            i16(kind),
+            0,
+            i16(main),
+            i16(sub),
+            -1,
+            0,
+        )
 
     @property
     def client_slot(self) -> int:
         return client_slot(self.type, self.main_slot, self.sub_index)
 
     def pack(self) -> bytes:
-        return struct.pack("<6h", self.type, self.unknown02,
-                           self.main_slot, self.sub_index, self.aug_index, self.unknown10,)
+        return struct.pack(
+            "<6h",
+            self.type,
+            self.unknown02,
+            self.main_slot,
+            self.sub_index,
+            self.aug_index,
+            self.unknown10,
+        )
 
-    def preserve_inventory_slot(
-        self, kind: int, slot: int
-    ) -> InventorySlot:
+    def preserve_inventory_slot(self, kind: int, slot: int) -> InventorySlot:
         if self.type == kind and self.client_slot == slot:
             return self
         return InventorySlot.for_client(kind, slot)
@@ -204,15 +220,22 @@ class TypelessInventorySlot:
 
     @property
     def client_slot(self) -> int:
-        return client_slot(0, self.main_slot, self.sub_index,)
+        return client_slot(
+            0,
+            self.main_slot,
+            self.sub_index,
+        )
 
     def pack(self) -> bytes:
-        return struct.pack("<4h", self.main_slot, self.sub_index,
-                           self.aug_index, self.unknown06,)
+        return struct.pack(
+            "<4h",
+            self.main_slot,
+            self.sub_index,
+            self.aug_index,
+            self.unknown06,
+        )
 
-    def preserve_typeless_slot(
-        self, slot: int
-    ) -> TypelessInventorySlot:
+    def preserve_typeless_slot(self, slot: int) -> TypelessInventorySlot:
         if self.client_slot == slot:
             return self
         return TypelessInventorySlot.for_client(slot)
@@ -439,7 +462,8 @@ def leading_int(text: str) -> int:
     raw = text or ""
     start = 0
     while start < len(raw) and not (
-        raw[start].isdigit() or (raw[start] == "-" and start + 1 < len(raw) and raw[start + 1].isdigit())
+        raw[start].isdigit()
+        or (raw[start] == "-" and start + 1 < len(raw) and raw[start + 1].isdigit())
     ):
         start += 1
     if start >= len(raw):

@@ -263,7 +263,9 @@ class Talk(Action):
             return
 
         follow = world.follow_up
-        if follow is not None and yield_to(self, loop, world, follow, follow.source or "talk:follow"):
+        if follow is not None and yield_to(
+            self, loop, world, follow, follow.source or "talk:follow"
+        ):
             self.followed = True
             return
 
@@ -347,7 +349,9 @@ class Talk(Action):
             self.sought = False
         if not hasattr(self, "heard_text"):
             self.heard_text = ""
-        if isinstance(getattr(self, "pending", None), list) and isinstance(getattr(self, "heard", None), set):
+        if isinstance(getattr(self, "pending", None), list) and isinstance(
+            getattr(self, "heard", None), set
+        ):
             return
         self.said = set()
         self.pending = []

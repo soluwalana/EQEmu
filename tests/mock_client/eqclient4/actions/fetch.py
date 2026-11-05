@@ -149,7 +149,9 @@ class Fetch(Action):
         points = ground_at(self.item_id, world.zone_id, str(world.zone or ""))
         if points:
             here = (world.x, world.y, world.z)
-            point = min(points, key=lambda spot: (spot[0] - here[0]) ** 2 + (spot[1] - here[1]) ** 2)
+            point = min(
+                points, key=lambda spot: (spot[0] - here[0]) ** 2 + (spot[1] - here[1]) ** 2
+            )
             seen = nearest_spawn(world.ground, point)
             if seen is not None:
                 pickup = Pickup(seen.id, (seen.x, seen.y, seen.z))
@@ -196,7 +198,9 @@ class Fetch(Action):
             return
         queue = loop.queue
         for spawn_id in drop.spawns:
-            if queue is not None and any(isinstance(action, Kill) and action.spawn_id == spawn_id for action in queue):
+            if queue is not None and any(
+                isinstance(action, Kill) and action.spawn_id == spawn_id for action in queue
+            ):
                 continue
             yield_to(self, loop, world, Kill(spawn_id=spawn_id), f"kill:{spawn_id}")
 

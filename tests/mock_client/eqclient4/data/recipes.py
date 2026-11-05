@@ -163,7 +163,9 @@ class RecipeBook:
             candidates.append(recipe)
         if not candidates:
             return None
-        candidates.sort(key=lambda recipe: (len(recipe.components), recipe.trivial or 9999, recipe.id))
+        candidates.sort(
+            key=lambda recipe: (len(recipe.components), recipe.trivial or 9999, recipe.id)
+        )
         return candidates[0]
 
     def craft_list(self) -> list[tuple[int, int, tuple[tuple[int, int], ...]]]:

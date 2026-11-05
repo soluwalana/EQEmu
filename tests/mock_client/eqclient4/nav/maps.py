@@ -98,7 +98,9 @@ class ZoneMap:
         self._rays[key] = result
         return result
 
-    def _ray_clear(self, start: tuple[float, float, float], end: tuple[float, float, float]) -> bool:
+    def _ray_clear(
+        self, start: tuple[float, float, float], end: tuple[float, float, float]
+    ) -> bool:
         """True when no collidable triangle sits between the two eye points."""
         origin = (start[0], start[1], start[2] + _EYE)
         target = (end[0], end[1], end[2] + _SEE)
@@ -156,7 +158,9 @@ class ZoneMap:
 _LOADED: dict[str, ZoneMap | None] = {}
 
 
-def _ray_key(start: tuple[float, float, float], end: tuple[float, float, float]) -> tuple[int, int, int, int, int, int]:
+def _ray_key(
+    start: tuple[float, float, float], end: tuple[float, float, float]
+) -> tuple[int, int, int, int, int, int]:
     cell = _RAY_CELL
     return (
         int(start[0] // cell),

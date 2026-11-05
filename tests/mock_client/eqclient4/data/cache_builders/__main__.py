@@ -23,7 +23,9 @@ def main(argv: list[str] | None = None) -> None:
             names.append("quest_graph")
     unknown = [name for name in names if name not in BUILDERS]
     if unknown:
-        raise SystemExit(f"unknown builders: {', '.join(unknown)}; choose from {', '.join(BUILDERS)}")
+        raise SystemExit(
+            f"unknown builders: {', '.join(unknown)}; choose from {', '.join(BUILDERS)}"
+        )
     for name in names:
         module = importlib.import_module(f"eqclient4.data.cache_builders.{name}")
         module.main()

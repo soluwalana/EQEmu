@@ -277,7 +277,9 @@ class Attack(Action):
         return True
 
     def _become_corpse(self, loop: Loop, world: World) -> bool:
-        corpse = self.consume("OP_BecomeCorpse", lambda message: spawn_of(message) in (0, self.spawn_id))
+        corpse = self.consume(
+            "OP_BecomeCorpse", lambda message: spawn_of(message) in (0, self.spawn_id)
+        )
         if corpse is None:
             return False
         loop.append(Reconstitute(241))

@@ -54,7 +54,9 @@ class WaterMap:
     regions: list[_ObbRegion] = field(default_factory=list)
     _surface: dict[tuple[int, int], float | None] = field(default_factory=dict)
     # Cached zoneline sample clouds keyed by rounded anchor + reach/step.
-    _zoneline_samples: dict[tuple[int, int, int, int], list[tuple[float, float, float]]] = field(default_factory=dict)
+    _zoneline_samples: dict[tuple[int, int, int, int], list[tuple[float, float, float]]] = field(
+        default_factory=dict
+    )
 
     def region(self, x: float, y: float, z: float) -> int:
         """Region type at EQ (x, y, z). Internally maps query as (y, x, z) like the zone server."""
@@ -113,7 +115,9 @@ class WaterMap:
     def in_liquid(self, x: float, y: float, z: float) -> bool:
         return self.region(x, y, z) in _LIQUID
 
-    def can_fish_at(self, x: float, y: float, z: float, rod: float = 30.0, line: float = 100.0) -> bool:
+    def can_fish_at(
+        self, x: float, y: float, z: float, rod: float = 30.0, line: float = 100.0
+    ) -> bool:
         """True when a cast from (x,y,z) can reach water (server FishingRodLength ~30)."""
         if self.region(x, y, z) == REGION_LAVA:
             return False
@@ -167,7 +171,9 @@ class WaterMap:
             return (x, y, z)
         return None
 
-    def fish_aim(self, x: float, y: float, z: float, rod: float = 30.0) -> tuple[float, float, float] | None:
+    def fish_aim(
+        self, x: float, y: float, z: float, rod: float = 30.0
+    ) -> tuple[float, float, float] | None:
         """A point over water to face while casting, or None when no water in reach."""
         for deg in range(0, 360, 15):
             rad = math.radians(deg)
@@ -182,7 +188,9 @@ class WaterMap:
                 return (rx, ry, surf)
         return None
 
-    def surface_z(self, x: float, y: float, lo: float = -1000.0, hi: float = 1000.0) -> float | None:
+    def surface_z(
+        self, x: float, y: float, lo: float = -1000.0, hi: float = 1000.0
+    ) -> float | None:
         """Highest liquid z at (x, y), or None when this column has no water."""
         key = (int(x) // 4, int(y) // 4)
         if key in self._surface:
@@ -313,7 +321,9 @@ def _load_v1(zone: str, data: bytes) -> WaterMap | None:
     nodes: list[_BspNode] = []
     off = 18
     for _ in range(count):
-        _nn, nx, ny, nz, split, _region, special, left, right = struct.unpack_from("<i4f4i", data, off)
+        _nn, nx, ny, nz, split, _region, special, left, right = struct.unpack_from(
+            "<i4f4i", data, off
+        )
         nodes.append(_BspNode((nx, ny, nz), split, special, left, right))
         off += 36
     return WaterMap(zone=zone, version=1, nodes=nodes)
@@ -328,8 +338,8 @@ def _load_v2(zone: str, data: bytes) -> WaterMap | None:
             return None
         kind = struct.unpack_from("<I", data, off)[0]
         off += 4
-        x, y, z, x_rot, y_rot, z_rot, x_scale, y_scale, z_scale, x_ext, y_ext, z_ext = struct.unpack_from(
-            "<12f", data, off
+        x, y, z, x_rot, y_rot, z_rot, x_scale, y_scale, z_scale, x_ext, y_ext, z_ext = (
+            struct.unpack_from("<12f", data, off)
         )
         off += 48
         min_x, max_x = sorted((-x_ext, x_ext))

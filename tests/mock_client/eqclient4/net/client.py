@@ -81,7 +81,9 @@ def _create_character(
     this client version, and a zero sends the new character to the start city.
     """
     approve = require(opcodes, "OP_ApproveName")
-    session.send_app(struct.pack("<H", approve) + OP_ApproveName(name, sheet.race, sheet.class_id).serialize())
+    session.send_app(
+        struct.pack("<H", approve) + OP_ApproveName(name, sheet.race, sheet.class_id).serialize()
+    )
     reply = _wait_opcode(session, approve, deadline)
     try:
         approved = OP_ApproveName.deserialize(reply).approved
@@ -153,8 +155,13 @@ def enter_world_session(
                 played.level,
                 played.zone_id,
             )
-        session.send_app(struct.pack("<H", require(opcodes, "OP_EnterWorld")) + OP_EnterWorld(character).serialize())
-        zone = OP_ZoneServerInfo.deserialize(_wait_opcode(session, require(opcodes, "OP_ZoneServerInfo"), deadline))
+        session.send_app(
+            struct.pack("<H", require(opcodes, "OP_EnterWorld"))
+            + OP_EnterWorld(character).serialize()
+        )
+        zone = OP_ZoneServerInfo.deserialize(
+            _wait_opcode(session, require(opcodes, "OP_ZoneServerInfo"), deadline)
+        )
         zone_host, zone_port = zone.host, zone.port
         if not zone_host or zone_host == "0.0.0.0":
             zone_host = host
@@ -322,7 +329,12 @@ class Client:
         if self.world is not None:
             self.world.pump(0)
         session = self.session
-        if session is not None and session.connected and (not session.closed) and (not session.needs_rezone):
+        if (
+            session is not None
+            and session.connected
+            and (not session.closed)
+            and (not session.needs_rezone)
+        ):
             drain(session, self.on_app, timeout)
         rows = self._inbox
         self._inbox = []
@@ -349,7 +361,9 @@ class Client:
             _print_say(payload, self.character)
         send(self.session, require(self.opcodes, opcode_name), payload)
 
-    def say(self, text: str, *, language: int = 0, lang_skill: int = 100, pump: bool = True) -> None:
+    def say(
+        self, text: str, *, language: int = 0, lang_skill: int = 100, pump: bool = True
+    ) -> None:
         self._chat(text, SAY_CHANNEL, language=language, lang_skill=lang_skill, pump=pump)
 
     def command(self, text: str, *, pump: bool = True) -> None:
@@ -375,7 +389,9 @@ class Client:
         lang_skill: int = 100,
         pump: bool = True,
     ) -> None:
-        payload = OP_ChannelMessage(target, self.character, language, channel, skill=lang_skill, text=text).serialize()
+        payload = OP_ChannelMessage(
+            target, self.character, language, channel, skill=lang_skill, text=text
+        ).serialize()
         self.send("OP_ChannelMessage", payload)
         if pump:
             self.pump(0.05)
@@ -507,7 +523,9 @@ def connect(
     return client
 
 
-def enter(session: Client, sheet: CreateCharacter | None = None, *, timeout: float | None = None) -> Client:
+def enter(
+    session: Client, sheet: CreateCharacter | None = None, *, timeout: float | None = None
+) -> Client:
     """Char select or create, connect the zone session, and zone_in.
 
     loop.start calls enter(session, sheet) after connect. zone_in is the public

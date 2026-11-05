@@ -50,7 +50,9 @@ def zone_aliases(zone: str) -> frozenset[str]:
 
 def _norm_name(name: str) -> str:
     """Fold EQ spawn names: underscores, backticks, and trailing instance digits."""
-    folded = " ".join((name or "").lower().replace("_", " ").replace("`", " ").replace("#", " ").split())
+    folded = " ".join(
+        (name or "").lower().replace("_", " ").replace("`", " ").replace("#", " ").split()
+    )
     return re.sub(r"\s*\d+$", "", folded).strip()
 
 
@@ -113,7 +115,11 @@ class MerchantBook:
         if self._indexed:
             npc_ids = [npc_id for alias in aliases for npc_id in self.by_zone.get(alias, ())]
         else:
-            npc_ids = [npc_id for npc_id, row in self.by_npc.items() if str(row.get("where") or "").lower() in aliases]
+            npc_ids = [
+                npc_id
+                for npc_id, row in self.by_npc.items()
+                if str(row.get("where") or "").lower() in aliases
+            ]
         found = [seller for npc_id in npc_ids if (seller := self._seller(npc_id)) is not None]
         found.sort(key=lambda seller: (seller.name.lower(), seller.npc_id))
         return found
@@ -221,13 +227,21 @@ def _take_price(fields: list[str], prices: dict[int, int]) -> None:
 
 
 def _take_stock(fields: list[str], stock: dict[int, set[int]]) -> None:
-    if len(fields) < 3 or not fields[0].lstrip("-").isdigit() or not fields[2].lstrip("-").isdigit():
+    if (
+        len(fields) < 3
+        or not fields[0].lstrip("-").isdigit()
+        or not fields[2].lstrip("-").isdigit()
+    ):
         return
     merchant_id = int(fields[0])
     item_id = int(fields[2])
     if merchant_id <= 0 or item_id <= 0:
         return
-    if len(fields) > _ALT_CURRENCY and fields[_ALT_CURRENCY].lstrip("-").isdigit() and int(fields[_ALT_CURRENCY]) > 0:
+    if (
+        len(fields) > _ALT_CURRENCY
+        and fields[_ALT_CURRENCY].lstrip("-").isdigit()
+        and int(fields[_ALT_CURRENCY]) > 0
+    ):
         return
     stock[merchant_id].add(item_id)
 

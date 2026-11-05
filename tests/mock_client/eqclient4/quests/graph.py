@@ -27,7 +27,9 @@ _EXIT_DOOR = re.compile(
     r"if\s*\(\s*\$(?:d_id|doorid)\s*==\s*(\d+)\s*\)\s*\{",
     re.IGNORECASE,
 )
-_ZONE_OUT = re.compile(r"(?:quest::movepc|quest::zone|quest::movezone|e\.self:MovePC)\b", re.IGNORECASE)
+_ZONE_OUT = re.compile(
+    r"(?:quest::movepc|quest::zone|quest::movezone|e\.self:MovePC)\b", re.IGNORECASE
+)
 _MOVEPC = re.compile(
     r"(?:quest::movepc|eq\.movepc|e\.self:MovePC)\s*\(\s*(\d+)",
     re.IGNORECASE,
@@ -105,7 +107,9 @@ _SPAWN = re.compile(
     r"(?<![\w])(?:unique_spawn|spawn2|spawn)\s*\(\s*\$?(\d+|[A-Za-z_][A-Za-z0-9_]*)",
     re.IGNORECASE,
 )
-_LOCAL = re.compile(r"(?m)^[ \t]*(?:local[ \t]+|my[ \t]+)?\$?([A-Za-z_][A-Za-z0-9_]*)[ \t]*=[ \t]*(\d+)\b")
+_LOCAL = re.compile(
+    r"(?m)^[ \t]*(?:local[ \t]+|my[ \t]+)?\$?([A-Za-z_][A-Za-z0-9_]*)[ \t]*=[ \t]*(\d+)\b"
+)
 _CHOOSE = re.compile(r"ChooseRandom\s*\(([^)]*)\)", re.IGNORECASE)
 _ADDITEM = re.compile(r"AddItem\s*\(\s*(\d+)", re.IGNORECASE)
 _NPC_TYPE_ID = re.compile(r"GetNPCTypeID\s*\(\s*\)\s*==\s*(\d+)", re.IGNORECASE)
@@ -332,7 +336,9 @@ def _skip_quote(text: str, start: int) -> int:
     return limit
 
 
-def _compute_branches(text: str) -> tuple[list[tuple[int, int, int, int]], list[tuple[str, int, int]]]:
+def _compute_branches(
+    text: str,
+) -> tuple[list[tuple[int, int, int, int]], list[tuple[str, int, int]]]:
     """One span per if, elsif, and elseif: condition start, condition end, body start, body end.
 
     Perl opens the body with a brace. Lua opens it with then and closes a branch at
@@ -436,7 +442,12 @@ def _compute_branches(text: str) -> tuple[list[tuple[int, int, int, int]], list[
                 continue
             if word in {"elseif", "elsif"}:
                 frame = stack[-1] if stack else None
-                if frame and frame["kind"] == "if" and frame["body"] >= 0 and frame.get("closer") != "brace":
+                if (
+                    frame
+                    and frame["kind"] == "if"
+                    and frame["body"] >= 0
+                    and frame.get("closer") != "brace"
+                ):
                     close_branch(index)
                 stack.append(
                     {
@@ -459,13 +470,24 @@ def _compute_branches(text: str) -> tuple[list[tuple[int, int, int, int]], list[
                         "braces": 0,
                     }
                 )
-            elif word == "then" and paren == 0 and stack and stack[-1]["kind"] == "if" and stack[-1]["body"] < 0:
+            elif (
+                word == "then"
+                and paren == 0
+                and stack
+                and stack[-1]["kind"] == "if"
+                and stack[-1]["body"] < 0
+            ):
                 stack[-1]["body"] = end
                 stack[-1]["cond_hi"] = index
                 stack[-1]["closer"] = "end"
             elif word == "else":
                 frame = stack[-1] if stack else None
-                if frame and frame["kind"] == "if" and frame["body"] >= 0 and frame.get("closer") != "brace":
+                if (
+                    frame
+                    and frame["kind"] == "if"
+                    and frame["body"] >= 0
+                    and frame.get("closer") != "brace"
+                ):
                     close_branch(index)
                     stack.append(
                         {
@@ -673,7 +695,9 @@ def _faction_needs(gate: str, script: str | None = None) -> list[tuple[str, str]
     found: list[tuple[str, str]] = []
     seen: set[tuple[str, str]] = set()
     assign_src = script if script is not None else gate
-    assigned = {name.lower(): faction_id for name, faction_id in _FACTION_ASSIGN.findall(assign_src)}
+    assigned = {
+        name.lower(): faction_id for name, faction_id in _FACTION_ASSIGN.findall(assign_src)
+    }
     # Bare $faction is NPC consider standing unless assigned from GetCharacterFactionLevel.
     standing_id = assigned.get("faction", "primary")
     for op, value in _FACTION_STANDING.findall(gate):
@@ -1041,7 +1065,9 @@ def _coin_gates(text: str) -> list[dict]:
     return found
 
 
-def link_script(text: str, filename: str, zone: str, catalog: Catalog | None = None) -> list[dict[str, object]]:
+def link_script(
+    text: str, filename: str, zone: str, catalog: Catalog | None = None
+) -> list[dict[str, object]]:
     """Edges between a say, the next say, the items the sentence names, and a hand-in."""
     npc = npc_name(filename, catalog)
     home = zone.lower()
@@ -1267,7 +1293,9 @@ def link_script(text: str, filename: str, zone: str, catalog: Catalog | None = N
 def _children(text: str, span: tuple[int, int, int, int]) -> list[tuple[int, int, int, int]]:
     """Branches nested in this body. A grandchild is included."""
     return [
-        branch for branch in _branch_index(text) if branch != span and span[2] <= branch[0] and branch[3] <= span[3]
+        branch
+        for branch in _branch_index(text)
+        if branch != span and span[2] <= branch[0] and branch[3] <= span[3]
     ]
 
 
@@ -1276,7 +1304,9 @@ def _immediate(text: str, span: tuple[int, int, int, int]) -> list[tuple[int, in
     return [
         child
         for child in children
-        if not any(other[0] <= child[0] and child[3] <= other[3] and other != child for other in children)
+        if not any(
+            other[0] <= child[0] and child[3] <= other[3] and other != child for other in children
+        )
     ]
 
 
@@ -1344,7 +1374,9 @@ def _emit_span(
         if span[2] <= match.start() < span[3] and not _in_span(match.start(), holes):
             sets_here.append(match)
     summoned = [
-        (pos, item_id) for pos, item_id in _summon_items(text) if span[2] <= pos < span[3] and not _in_span(pos, holes)
+        (pos, item_id)
+        for pos, item_id in _summon_items(text)
+        if span[2] <= pos < span[3] and not _in_span(pos, holes)
     ]
     quest_rewards = [
         match
@@ -1456,12 +1488,17 @@ def _zone_events(edges: list[dict], text: str, npc_id: str) -> None:
         leaves = [
             branch
             for branch in inside
-            if not any(branch[2] <= other[0] and other[3] <= branch[3] and other != branch for other in inside)
+            if not any(
+                branch[2] <= other[0] and other[3] <= branch[3] and other != branch
+                for other in inside
+            )
         ]
         # A proximity trap with no if still spawns on enter (thegrey/a_creature.pl).
         spans = leaves or [(-1, -1, start, stop)]
         for span in spans:
-            ancestors = [branch for branch in inside if branch[0] <= span[0] and branch[3] >= span[3]]
+            ancestors = [
+                branch for branch in inside if branch[0] <= span[0] and branch[3] >= span[3]
+            ]
             conds = "\n".join(text[branch[0] : branch[1]] for branch in ancestors)
             holds = _item_gates(conds)
             flags = _flags(conds)
@@ -1546,7 +1583,11 @@ def _recipe_owner(
 ) -> int:
     """The recipe_id check that wraps this branch, including an if nested inside the combine."""
     owners = [span]
-    owners.extend(branch for branch in branches if branch != span and branch[0] <= span[0] and span[3] <= branch[3])
+    owners.extend(
+        branch
+        for branch in branches
+        if branch != span and branch[0] <= span[0] and span[3] <= branch[3]
+    )
     for branch in owners:
         found = _RECIPE.search(text[branch[0] : branch[1]])
         if found:
@@ -1965,7 +2006,11 @@ class QuestGraph:
         for (zone, npc), nodes in self.nodes.items():
             if zone == home:
                 continue
-            words = {detail for said_zone, said_npc, detail in said if said_zone.lower() == zone and said_npc == npc}
+            words = {
+                detail
+                for said_zone, said_npc, detail in said
+                if said_zone.lower() == zone and said_npc == npc
+            }
             node = next_node(nodes, words, flags, class_id, items)
             if not node or not node.requires:
                 continue
@@ -1983,7 +2028,9 @@ def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
         graph.index()
         return graph
     item_ids: set[int] = set()
-    for folder in sorted(path for path in base.iterdir() if path.is_dir() and path.name not in _SKIP_DIRS):
+    for folder in sorted(
+        path for path in base.iterdir() if path.is_dir() and path.name not in _SKIP_DIRS
+    ):
         zone = folder.name.lower()
         for path in _quest_scripts(folder):
             text = path.read_text(encoding="utf-8", errors="replace")
@@ -2319,7 +2366,9 @@ def read_graph(path: str | os.PathLike) -> QuestGraph:
             continue
         zone = str(row.get("zone", "")).lower()
         if "door" in row and "npc" not in row:
-            graph.doors.setdefault(zone, {})[int(row["door"])] = [int(zone_id) for zone_id in row.get("to", [])]
+            graph.doors.setdefault(zone, {})[int(row["door"])] = [
+                int(zone_id) for zone_id in row.get("to", [])
+            ]
             continue
         node = QuestNode(
             npc=row.get("npc", ""),
@@ -2339,9 +2388,13 @@ def read_graph(path: str | os.PathLike) -> QuestGraph:
     return graph
 
 
-def ensure_graph(root: str | None = None, path: str | None = None, *, rebuild: bool = False) -> QuestGraph:
+def ensure_graph(
+    root: str | None = None, path: str | None = None, *, rebuild: bool = False
+) -> QuestGraph:
     """Load quest_graph.jsonl, or build once from EQEMU_QUESTS."""
-    path = path or os.environ.get("EQEMU_GRAPH", str(Path.home() / ".eqclient" / "quest_graph.jsonl"))
+    path = path or os.environ.get(
+        "EQEMU_GRAPH", str(Path.home() / ".eqclient" / "quest_graph.jsonl")
+    )
     file = Path(path)
     if file.is_file() and not rebuild:
         return read_graph(path)
@@ -2354,7 +2407,11 @@ def ensure_graph(root: str | None = None, path: str | None = None, *, rebuild: b
 
 
 def load_graph(path: str | os.PathLike | None = None) -> QuestGraph:
-    chosen = path or os.environ.get("EQEMU_GRAPH") or str(Path.home() / ".eqclient" / "quest_graph.jsonl")
+    chosen = (
+        path
+        or os.environ.get("EQEMU_GRAPH")
+        or str(Path.home() / ".eqclient" / "quest_graph.jsonl")
+    )
     return read_graph(chosen)
 
 

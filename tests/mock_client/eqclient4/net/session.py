@@ -378,7 +378,12 @@ class Session:
     def _wait_for_ack_room(self, stream: _Stream) -> None:
         """Stay inside the server's receive window. Packets read here stay queued."""
         deadline = time.monotonic() + 2.0
-        while len(stream.sent) > 30 and time.monotonic() < deadline and self.connected and (not self._stop.is_set()):
+        while (
+            len(stream.sent) > 30
+            and time.monotonic() < deadline
+            and self.connected
+            and (not self._stop.is_set())
+        ):
             if self._io:
                 self._lock.release()
                 time.sleep(0.02)
@@ -460,7 +465,9 @@ class Session:
                 return None
             body = data[: -self.crc_bytes]
             actual = struct.unpack_from(">H" if self.crc_bytes == 2 else ">I", data, len(body))[0]
-            expected = crc32(body, self.encode_key) & (0xFFFF if self.crc_bytes == 2 else 0xFFFFFFFF)
+            expected = crc32(body, self.encode_key) & (
+                0xFFFF if self.crc_bytes == 2 else 0xFFFFFFFF
+            )
             if actual != expected:
                 self._note_decode_failure()
                 return None

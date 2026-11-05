@@ -721,7 +721,11 @@ class Movement:
             built.z_only = True
             built.swim_z = target_z
             built.next_point = _z_step(origin, target_z, length)
-            built.in_water = built.in_water or _liquid(water, built.next_point) or _liquid(water, built.destination)
+            built.in_water = (
+                built.in_water
+                or _liquid(water, built.next_point)
+                or _liquid(water, built.destination)
+            )
 
         kept = self._keep_find_path(built)
         chosen = built if kept is None else kept
@@ -895,7 +899,11 @@ class Movement:
         length: float,
         anim: int,
     ) -> Path | None:
-        if _same(found.origin, origin, tol=0.5) and found.mode == mode and found.stride_length == length:
+        if (
+            _same(found.origin, origin, tol=0.5)
+            and found.mode == mode
+            and found.stride_length == length
+        ):
             self.path = found
             return found
         ahead = _ahead(origin, found)
@@ -989,7 +997,11 @@ class Movement:
             mesh = self._mesh()
             if mesh:
                 poly = mesh.nearest((step[0], step[1], here[2]))
-                if poly and _horiz((step[0], step[1], 0.0), (poly.center[0], poly.center[1], 0.0)) <= 18.0:
+                if (
+                    poly
+                    and _horiz((step[0], step[1], 0.0), (poly.center[0], poly.center[1], 0.0))
+                    <= 18.0
+                ):
                     target_z = poly.center[2]
         gap = target_z - here[2]
         travel = max(_horiz(here, step), 0.5)
@@ -1123,7 +1135,11 @@ class Movement:
             if door.id in self.open_ids:
                 continue
             spot = (float(door.x), float(door.y), float(door.z))
-            if _horiz(here, spot) <= 1.5 and abs(here[2] - spot[2]) <= 20.0 and (_horiz(here, nxt) > 1.0):
+            if (
+                _horiz(here, spot) <= 1.5
+                and abs(here[2] - spot[2]) <= 20.0
+                and (_horiz(here, nxt) > 1.0)
+            ):
                 return door
         return None
 
@@ -1152,7 +1168,8 @@ class Movement:
                 self.committed = True
                 self.refused = False
             elif _horiz(point, self.position) <= 0.8 and (
-                _horiz(self.position, self.asked) > 0.4 or abs(self.position[2] - self.asked[2]) > 0.4
+                _horiz(self.position, self.asked) > 0.4
+                or abs(self.position[2] - self.asked[2]) > 0.4
             ):
                 self.refused = True
         self.position = point
@@ -1197,7 +1214,9 @@ class Movement:
         path.fallback = False
 
 
-def _z_step(here: tuple[float, float, float], target_z: float, length: float) -> tuple[float, float, float]:
+def _z_step(
+    here: tuple[float, float, float], target_z: float, length: float
+) -> tuple[float, float, float]:
     gap = float(target_z) - here[2]
     if abs(gap) <= length:
         nz = float(target_z)
@@ -1261,7 +1280,9 @@ def _zone_map(world: World) -> ZoneMap | None:
     return load_map(zone)
 
 
-def _mob_on_stride(here: tuple[float, float, float], end: tuple[float, float, float], mob: Mob) -> bool:
+def _mob_on_stride(
+    here: tuple[float, float, float], end: tuple[float, float, float], mob: Mob
+) -> bool:
     point = mob_point(mob)
     if not point:
         return False

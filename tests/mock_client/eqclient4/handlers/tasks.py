@@ -17,7 +17,12 @@ from eqclient4.structs import (
 
 
 class TasksHandler(Handler):
-    opcodes = ("OP_TaskSelectWindow", "OP_TaskActivity", "OP_TaskActivityComplete", "OP_TaskDescription")
+    opcodes = (
+        "OP_TaskSelectWindow",
+        "OP_TaskActivity",
+        "OP_TaskActivityComplete",
+        "OP_TaskDescription",
+    )
 
     def on(self, opcode: str, payload: EQStruct) -> None:
         match payload:

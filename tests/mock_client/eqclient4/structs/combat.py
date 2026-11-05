@@ -102,7 +102,9 @@ class OP_CombatAbility(EQStruct):
 
     def serialize(self) -> bytes:
         # common/eq_packet_structs.h:1993 CombatAbility_Struct
-        return struct.pack("<III", self.target_id & 0xFFFFFFFF, self.attack & 0xFFFFFFFF, self.skill & 0xFFFFFFFF)
+        return struct.pack(
+            "<III", self.target_id & 0xFFFFFFFF, self.attack & 0xFFFFFFFF, self.skill & 0xFFFFFFFF
+        )
 
     @classmethod
     def deserialize(cls, data: bytes) -> OP_CombatAbility:
@@ -201,7 +203,11 @@ class OP_Bind_Wound(EQStruct):
     def serialize(self) -> bytes:
         # common/eq_packet_structs.h:1258 BindWound_Struct
         return struct.pack(
-            "<HHHH", self.target_id & 0xFFFF, self.unknown2 & 0xFFFF, self.type & 0xFFFF, self.unknown6 & 0xFFFF
+            "<HHHH",
+            self.target_id & 0xFFFF,
+            self.unknown2 & 0xFFFF,
+            self.type & 0xFFFF,
+            self.unknown6 & 0xFFFF,
         )
 
     @classmethod

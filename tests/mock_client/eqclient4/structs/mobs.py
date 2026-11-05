@@ -35,7 +35,9 @@ def _pack_spawn(spawn: Spawn) -> bytes:
     out = bytearray()
     out += put_cstr(spawn.name)
     # common/patches/rof2.cpp:4664
-    out += struct.pack("<IBfB", spawn.spawn_id & 0xFFFFFFFF, spawn.level & 0xFF, 0.0, spawn.npc & 0xFF)
+    out += struct.pack(
+        "<IBfB", spawn.spawn_id & 0xFFFFFFFF, spawn.level & 0xFF, 0.0, spawn.npc & 0xFF
+    )
     out += b"\x00" * 5
     # common/patches/rof2.cpp:4735 unknown3
     out += struct.pack("<ff", -1.0, 0.0)
@@ -301,7 +303,9 @@ class OP_SpawnAppearance(EQStruct):
 
     def serialize(self) -> bytes:
         # common/eq_packet_structs.h:523
-        return struct.pack("<HHI", self.spawn_id & 0xFFFF, self.type & 0xFFFF, self.parameter & 0xFFFFFFFF)
+        return struct.pack(
+            "<HHI", self.spawn_id & 0xFFFF, self.type & 0xFFFF, self.parameter & 0xFFFFFFFF
+        )
 
     @classmethod
     def deserialize(cls, data: bytes) -> OP_SpawnAppearance:
@@ -424,8 +428,8 @@ class OP_Death(EQStruct):
     @classmethod
     def deserialize(cls, data: bytes) -> OP_Death:
         need(data, 32, "OP_Death")
-        spawn_id, killer_id, corpse_id, bind_zone_id, spell_id, attack_skill, damage, unknown = struct.unpack_from(
-            "<8I", data
+        spawn_id, killer_id, corpse_id, bind_zone_id, spell_id, attack_skill, damage, unknown = (
+            struct.unpack_from("<8I", data)
         )
         return cls(
             int(spawn_id),

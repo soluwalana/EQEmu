@@ -258,7 +258,9 @@ class SpellBook:
         for rows in self.by_class.values():
             rows.sort(key=lambda row: (row.level, row.name.lower(), row.spell_id))
 
-    def missing(self, class_id: int, level: int, scribed: set[int], skip_items: set[int]) -> list[SpellScroll]:
+    def missing(
+        self, class_id: int, level: int, scribed: set[int], skip_items: set[int]
+    ) -> list[SpellScroll]:
         """Spells this class can use by `level` that are not in the book and not already queued or held."""
         if class_id <= 0 or level <= 0:
             return []

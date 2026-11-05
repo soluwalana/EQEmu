@@ -9,7 +9,9 @@ from eqclient4.structs.tasks import OP_TaskActivity
 
 class Talk(Action):
 
-    def __init__(self, npc: Mob, task_text: str, priority: int = 0, activity: OP_TaskActivity | None = None) -> None:
+    def __init__(
+        self, npc: Mob, task_text: str, priority: int = 0, activity: OP_TaskActivity | None = None
+    ) -> None:
         super().__init__()
         self.priority = priority
         self.npc = npc
@@ -32,7 +34,6 @@ class Talk(Action):
         self.suspended = True
 
     def step(self) -> None:
-
 
         if self.active_path is None:
             self.active_path = self._world.movement.plan(self.npc, "run")

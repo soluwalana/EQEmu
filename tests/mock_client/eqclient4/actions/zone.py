@@ -16,8 +16,8 @@ from eqclient4.structs import OP_ZoneChange
 
 
 class Zone(LevelHoldAction):
-    def __init__(self, destination: str) -> None:
-        super().__init__()
+    def __init__(self, world: World, loop: Loop, destination: str) -> None:
+        super().__init__(world, loop)
         self.priority = 400
         self.durable = False
         self.destination = destination
@@ -29,7 +29,7 @@ class Zone(LevelHoldAction):
     def suspend(self) -> None:
         self.suspended = True
 
-    def step(self, loop: Loop, world: World) -> None:
+    def step(self) -> None:
         if self.gear_vendor_trip():
             self._loop.forget(self)
             return
@@ -43,15 +43,15 @@ class Zone(LevelHoldAction):
         if not self._loop.session_open():
             return
 
-        if self.hold_for_level(self, self.destination):
+        if self.hold_for_level(self.destination):
             self.priority = 0
             return
 
         self.priority = 400
 
-        point = world.position
+        point = self._world.position
         zone_id = self._world.zone_graph.zones.get(self.destination, 0)
-        loop.send(
+        self._loop.send(
             "OP_ZoneChange",
             OP_ZoneChange(
                 self.destination,
@@ -67,7 +67,7 @@ class Zone(LevelHoldAction):
 
     def gear_vendor_trip(self) -> bool:
         """A zone change that only exists to buy level-up gear. A quest exit uses another source."""
-        if self.world.zone == "tutorialb" or not self.destination:
+        if self._world.zone == "tutorialb" or not self.destination:
             return False
 
         if "#zone:" in self.source or "#gold:" in self.source:

@@ -83,7 +83,9 @@ def load_catalog(path: str, quests_root: str | None = None) -> Catalog:
         return catalog_from_lines(handle, catalog, quests_root=quests_root)
 
 
-def catalog_from_lines(lines: Iterable[str], catalog: Catalog | None = None, quests_root: str | None = None) -> Catalog:
+def catalog_from_lines(
+    lines: Iterable[str], catalog: Catalog | None = None, quests_root: str | None = None
+) -> Catalog:
     """One pass over INSERT lines. Item names, then where those items are found."""
     catalog = catalog or Catalog()
     mode = ""
@@ -134,7 +136,11 @@ def catalog_from_lines(lines: Iterable[str], catalog: Catalog | None = None, que
                     npc_merchant[npc_id] = merchant
         elif mode == "merchantlist":
             fields = _tuple(line)
-            if len(fields) >= 3 and fields[0].lstrip("-").isdigit() and fields[2].lstrip("-").isdigit():
+            if (
+                len(fields) >= 3
+                and fields[0].lstrip("-").isdigit()
+                and fields[2].lstrip("-").isdigit()
+            ):
                 merchant_items[int(fields[0])].add(int(fields[2]))
         elif mode == "spawnentry":
             fields = _tuple(line)
@@ -220,7 +226,9 @@ def _trap_npc_zones(
     quests_root: str | Path | None = None,
 ) -> dict[int, tuple[str, ...]]:
     """npc id → zones for proximity / EVENT_ENTER trap scripts (no spawn2 row in the dump)."""
-    root = Path(quests_root if quests_root is not None else os.environ.get("EQEMU_QUESTS", "") or "")
+    root = Path(
+        quests_root if quests_root is not None else os.environ.get("EQEMU_QUESTS", "") or ""
+    )
     if not root.is_dir():
         return {}
     found: dict[int, set[str]] = defaultdict(set)
@@ -246,7 +254,12 @@ def _trap_npc_zones(
             continue
         low = text.lower()
         name = path.name
-        if not ("set_proximity" in low or "setproximity" in low or "event_enter" in low or _TRAP_SCRIPT.search(name)):
+        if not (
+            "set_proximity" in low
+            or "setproximity" in low
+            or "event_enter" in low
+            or _TRAP_SCRIPT.search(name)
+        ):
             continue
         for match in _SPAWN2_IDS.finditer(text):
             blob = match.group(1) or match.group(2) or ""
@@ -378,7 +391,9 @@ def audit_zones(catalog: Catalog, quest_dirs: set[str]) -> dict[str, list]:
     Ground spawns, forage, and fishing carry the zoneidnumber.
     """
     skip = {"plugins", "lua_modules"}
-    folders = sorted(name.lower() for name in quest_dirs if name.lower() not in skip and not name.startswith("."))
+    folders = sorted(
+        name.lower() for name in quest_dirs if name.lower() not in skip and not name.startswith(".")
+    )
     shorts = catalog.short_names
 
     def unresolved(zone_ids: set[int]) -> list[tuple[int, str]]:
@@ -449,7 +464,9 @@ def _sources(
         name = names.get(npc) or ""
         if not name:
             continue
-        zones = tuple(sorted({zone for group in groups.get(npc, ()) for zone in zones_of.get(group, ())}))
+        zones = tuple(
+            sorted({zone for group in groups.get(npc, ()) for zone in zones_of.get(group, ())})
+        )
         for item_id in item_ids:
             by_item[item_id].append((npc, name, zones))
     for item_id, droppers in by_item.items():
@@ -480,7 +497,11 @@ def _npc_drops(
 def _take_object(line: str, placed: dict[int, set[int]], titles: dict[int, set[str]]) -> None:
     """One world object. Column 2 is zoneidnumber. Column 11 is the bag type."""
     fields = _tuple(line)
-    if len(fields) < 11 or not fields[1].lstrip("-").isdigit() or not fields[10].lstrip("-").isdigit():
+    if (
+        len(fields) < 11
+        or not fields[1].lstrip("-").isdigit()
+        or not fields[10].lstrip("-").isdigit()
+    ):
         return
     kind = int(fields[10])
     zone_id = int(fields[1])
@@ -547,7 +568,9 @@ def _take_recipe(line: str, recipes: dict[int, dict]) -> None:
     success = int(fields[3]) if fields[3].lstrip("-").isdigit() else 0
     count = int(fields[5]) if fields[5].lstrip("-").isdigit() else 0
     container = int(fields[7]) if fields[7].lstrip("-").isdigit() else 0
-    slot = recipes.setdefault(recipe_id, {"components": [], "container": 0, "result": 0, "results": []})
+    slot = recipes.setdefault(
+        recipe_id, {"components": [], "container": 0, "result": 0, "results": []}
+    )
     slot.setdefault("results", [])
     if container and item_id:
         slot["container"] = item_id

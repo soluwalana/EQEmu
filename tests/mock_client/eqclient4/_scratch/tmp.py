@@ -131,7 +131,9 @@ def gear_vendor_trip(loop: Loop, world: World, destination: str, source: str) ->
     return False
 
 
-def queued(loop: Loop, kind: str, corpse_id: int | None = None, spawn_id: int | None = None) -> bool:
+def queued(
+    loop: Loop, kind: str, corpse_id: int | None = None, spawn_id: int | None = None
+) -> bool:
     for action in _queue(loop):
         if type(action).__name__ != kind:
             continue
@@ -280,7 +282,9 @@ def standing_of(mob: Mob | None) -> int:
     return int(mob.consider.standing)
 
 
-def hostiles_within(items: Sequence[Mob | MovementAnnotatedMob] | None, yards_limit: float) -> list[Mob]:
+def hostiles_within(
+    items: Sequence[Mob | MovementAnnotatedMob] | None, yards_limit: float
+) -> list[Mob]:
     found: list[Mob] = []
     for item in items or []:
         if isinstance(item, MovementAnnotatedMob):
@@ -692,7 +696,9 @@ def _drop_of(value: object) -> FetchDrop | None:
         return None
     raw_spawns = fields.get("spawns") or ()
     spawns = (
-        tuple(spawn for spawn in raw_spawns if isinstance(spawn, int) and not isinstance(spawn, bool))
+        tuple(
+            spawn for spawn in raw_spawns if isinstance(spawn, int) and not isinstance(spawn, bool)
+        )
         if isinstance(raw_spawns, (list, tuple))
         else ()
     )
@@ -783,7 +789,9 @@ def exit_kind(world: World, destination: str) -> str:
     return transit.via
 
 
-def painted_line(world: World, anchor: tuple[float, float, float]) -> tuple[float, float, float] | None:
+def painted_line(
+    world: World, anchor: tuple[float, float, float]
+) -> tuple[float, float, float] | None:
     """A watermap zone-line sample near a zone point. Outdoor lines are volumes, not the row."""
     water = water_of(world)
     if water is None:
@@ -901,7 +909,9 @@ class _CorpseWindow(Protocol):
     opened: bool
     requested: bool
 
-    def consume(self, opcode: str, match: Callable[[Message], bool] | None = None) -> Message | None: ...
+    def consume(
+        self, opcode: str, match: Callable[[Message], bool] | None = None
+    ) -> Message | None: ...
 
     def unwait(self, kind: str) -> None: ...
 

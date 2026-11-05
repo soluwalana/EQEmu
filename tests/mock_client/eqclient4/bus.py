@@ -52,7 +52,11 @@ class Bus:
 
         note_comms("incomming bus", opcode, payload, False)
 
-        if opcode == "OP_ZoneEntry" and isinstance(payload, (bytes, bytearray)) and len(payload) > ZONE_ENTRY_SIZE:
+        if (
+            opcode == "OP_ZoneEntry"
+            and isinstance(payload, (bytes, bytearray))
+            and len(payload) > ZONE_ENTRY_SIZE
+        ):
             log.debug("OP_ZoneEntry is too big, converting to OP_NewSpawn")
             opcode = "OP_NewSpawn"
 

@@ -80,7 +80,9 @@ class Action:
             return
 
         if not self.target_sent:
-            self._loop.send("OP_TargetMouse", OP_TargetMouse(int(self.target_id) & 65535).serialize())
+            self._loop.send(
+                "OP_TargetMouse", OP_TargetMouse(int(self.target_id) & 65535).serialize()
+            )
             self.target_sent = True
             return
 
@@ -137,7 +139,9 @@ class Action:
         self.waiting = []
         return self.waiting
 
-    def consume(self, opcode: str, match: Callable[[EQStruct], bool] | None = None) -> EQStruct | None:
+    def consume(
+        self, opcode: str, match: Callable[[EQStruct], bool] | None = None
+    ) -> EQStruct | None:
         for index, message in enumerate(self.messages):
             if message.opcode != opcode:
                 continue

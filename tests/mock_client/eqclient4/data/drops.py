@@ -206,7 +206,9 @@ def _npc_chances(
         opened = _open_chance(probability)
         if opened <= 0 or mult <= 0:
             continue
-        for item_id, once in _list_chances(lists.get(lootdrop_id, ()), npc_level, drop_limit, min_drop).items():
+        for item_id, once in _list_chances(
+            lists.get(lootdrop_id, ()), npc_level, drop_limit, min_drop
+        ).items():
             parts[item_id].append(_at_least(opened * once, mult))
     found: dict[int, float] = {}
     for item_id, chances in parts.items():
@@ -240,7 +242,9 @@ def _independent(entries: Sequence[tuple[Any, ...]]) -> dict[int, float]:
     return {item_id: 1.0 - miss[item_id] for item_id in seen if miss[item_id] < 1.0}
 
 
-def _weighted(entries: Sequence[tuple[Any, ...]], drop_limit: int, min_drop: int) -> dict[int, float]:
+def _weighted(
+    entries: Sequence[tuple[Any, ...]], drop_limit: int, min_drop: int
+) -> dict[int, float]:
     limit = drop_limit
     if len(entries) > 100 and limit == 0:
         limit = 10
@@ -454,7 +458,9 @@ def write_drops(book: DropBook, path: str) -> None:
                     "where": row.get("where") or "",
                     "name": row.get("name") or "",
                     "level": int(row.get("level") or 0),
-                    "items": [[int(item_id), float(pct)] for item_id, pct in _pairs(row.get("items"))],
+                    "items": [
+                        [int(item_id), float(pct)] for item_id, pct in _pairs(row.get("items"))
+                    ],
                 },
                 ensure_ascii=True,
             )
@@ -610,7 +616,9 @@ def _read_drops_json(path: Path) -> DropBook:
         elif row.get("kind") == "item":
             item_id = int(row.get("item") or 0)
             if item_id:
-                book.by_item[item_id] = {"npcs": [[npc_id, pct] for npc_id, pct in _pairs(row.get("npcs"))]}
+                book.by_item[item_id] = {
+                    "npcs": [[npc_id, pct] for npc_id, pct in _pairs(row.get("npcs"))]
+                }
     return book
 
 

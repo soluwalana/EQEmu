@@ -69,7 +69,9 @@ class OP_SESSION_RESPONSE(EQStruct):
     @classmethod
     def deserialize(cls, data: bytes) -> OP_SESSION_RESPONSE:
         need(data, 17, "OP_SESSION_RESPONSE")
-        _zero, _opcode, code, key, crc_bytes, pass1, pass2, max_size = struct.unpack(">BBIIBBBI", data[:17])
+        _zero, _opcode, code, key, crc_bytes, pass1, pass2, max_size = struct.unpack(
+            ">BBIIBBBI", data[:17]
+        )
         return cls(int(code), int(key), int(crc_bytes), int(pass1), int(pass2), int(max_size))
 
 
@@ -217,7 +219,9 @@ class OP_FRAGMENT(EQStruct):
 
     def serialize(self) -> bytes:
         # common/net/reliable_stream_structs.h:105 ReliableStreamReliableHeader
-        header = struct.pack(">BBH", 0, OP_FRAGMENT_ID + (self.stream_id & 3), self.sequence & 0xFFFF)
+        header = struct.pack(
+            ">BBH", 0, OP_FRAGMENT_ID + (self.stream_id & 3), self.sequence & 0xFFFF
+        )
         if self.total_size is None:
             return header + self.data
         # common/net/reliable_stream_structs.h:125 ReliableStreamReliableFragmentHeader total_size
@@ -238,7 +242,9 @@ class OP_OUT_OF_ORDER_ACK(EQStruct):
 
     def serialize(self) -> bytes:
         # common/net/reliable_stream_connection.cpp:1321 SendOutOfOrderAck
-        return struct.pack(">BBH", 0, OP_OUT_OF_ORDER_ACK_ID + (self.stream_id & 3), self.sequence & 0xFFFF)
+        return struct.pack(
+            ">BBH", 0, OP_OUT_OF_ORDER_ACK_ID + (self.stream_id & 3), self.sequence & 0xFFFF
+        )
 
     @classmethod
     def deserialize(cls, data: bytes) -> OP_OUT_OF_ORDER_ACK:

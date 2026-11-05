@@ -149,8 +149,8 @@ class OP_PlayerProfile(EQStruct):
         strength = stamina = charisma = dexterity = intelligence = agility = wisdom = 0
         if len(data) >= 980:
             points, mana, hp = struct.unpack_from("<III", data, 940)
-            strength, stamina, charisma, dexterity, intelligence, agility, wisdom = struct.unpack_from(
-                "<IIIIIII", data, 952
+            strength, stamina, charisma, dexterity, intelligence, agility, wisdom = (
+                struct.unpack_from("<IIIIIII", data, 952)
             )
         platinum = gold = silver = copper = 0
         coin_known = False

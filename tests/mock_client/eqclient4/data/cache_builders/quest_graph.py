@@ -16,7 +16,9 @@ def quests_root(root: str | None = None) -> str:
     return root or os.environ.get("EQEMU_QUESTS", "")
 
 
-def ensure_graph(root: str | None = None, path: str | None = None, *, rebuild: bool = False) -> QuestGraph:
+def ensure_graph(
+    root: str | None = None, path: str | None = None, *, rebuild: bool = False
+) -> QuestGraph:
     """Load quest_graph.jsonl, or build once from EQEMU_QUESTS."""
     path = path or os.environ.get("EQEMU_GRAPH", DEFAULT_GRAPH)
     file = Path(path)

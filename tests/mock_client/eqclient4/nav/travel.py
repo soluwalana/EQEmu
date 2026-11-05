@@ -214,7 +214,10 @@ class ZoneGraph:
                 for dest_id in destinations:
                     if dest_id not in known:
                         known.append(dest_id)
-        seen = {(e.get("from"), e.get("to"), e.get("rel"), e.get("door"), e.get("via")) for e in graph.edges}
+        seen = {
+            (e.get("from"), e.get("to"), e.get("rel"), e.get("door"), e.get("via"))
+            for e in graph.edges
+        }
         for edge in self.edges:
             key = (
                 edge.get("from"),
@@ -422,7 +425,9 @@ def first_leg(
     return legs[0] if legs else None
 
 
-def build_zone_graph(peq: str | Path, quest_doors: dict[str, dict[int, list[int]]] | None = None) -> ZoneGraph:
+def build_zone_graph(
+    peq: str | Path, quest_doors: dict[str, dict[int, list[int]]] | None = None
+) -> ZoneGraph:
     """Offline dump → zones, door/point transits with coords + requirements."""
     peq = Path(peq)
     graph = ZoneGraph()
@@ -442,7 +447,9 @@ def build_zone_graph(peq: str | Path, quest_doors: dict[str, dict[int, list[int]
             for door_id, destinations in by_door.items():
                 for dest_id in destinations:
                     dest_id = int(dest_id)
-                    dest = _name_of(dest_id, graph.zones) or zone_name_of(dest_id) or f"zone{dest_id}"
+                    dest = (
+                        _name_of(dest_id, graph.zones) or zone_name_of(dest_id) or f"zone{dest_id}"
+                    )
                     need = (
                         TransitNeed(zone_flag=dest_id)
                         if dest in graph.flagged or dest_id in graph.flagged.values()
@@ -599,7 +606,11 @@ def _parse_zones(text: str) -> tuple[dict[str, int], dict[str, int]]:
     flagged: dict[str, int] = {}
     mode = ""
     for line in text.splitlines():
-        if "INSERT INTO `zone`" in line and "zone_points" not in line and ("zone_flags" not in line):
+        if (
+            "INSERT INTO `zone`" in line
+            and "zone_points" not in line
+            and ("zone_flags" not in line)
+        ):
             mode = "zone"
             continue
         if line.startswith("INSERT INTO `"):
@@ -634,7 +645,9 @@ def _dest_zone_flag(dest: str, dest_id: int, flagged: dict[str, int]) -> int:
     return 0
 
 
-def _parse_doors(text: str, zones: dict[str, int], flagged: dict[str, int] | None = None) -> list[Transit]:
+def _parse_doors(
+    text: str, zones: dict[str, int], flagged: dict[str, int] | None = None
+) -> list[Transit]:
     """doors columns: doorid, zone, name, pos_y/x/z, heading, lockpick, keyitem, dest_zone, dest xyz, expansions."""
     flagged = flagged or {}
     found: list[Transit] = []
@@ -723,7 +736,9 @@ def _parse_doors(text: str, zones: dict[str, int], flagged: dict[str, int] | Non
     return found
 
 
-def _parse_zone_points(text: str, zones: dict[str, int], flagged: dict[str, int] | None = None) -> list[Transit]:
+def _parse_zone_points(
+    text: str, zones: dict[str, int], flagged: dict[str, int] | None = None
+) -> list[Transit]:
     flagged = flagged or {}
     found: list[Transit] = []
     mode = ""

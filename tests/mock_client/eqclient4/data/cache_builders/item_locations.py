@@ -12,7 +12,9 @@ from eqclient4.data.catalog import _tuple
 from eqclient4.data.drops import _lines, drops_from_lines
 from eqclient4.log import log
 
-OUT = Path(os.environ.get("EQEMU_ITEM_LOCATIONS", Path.home() / ".eqclient" / "item_locations.jsonl"))
+OUT = Path(
+    os.environ.get("EQEMU_ITEM_LOCATIONS", Path.home() / ".eqclient" / "item_locations.jsonl")
+)
 
 
 def spawn_xyz(fields: list[str]) -> tuple[str, float, float, float] | None:

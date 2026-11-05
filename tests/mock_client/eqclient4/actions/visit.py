@@ -30,7 +30,10 @@ class Visit(Action):
 
     def step(self, loop: Loop, world: World) -> None:
         for activity in task_activities(world):
-            if int(activity.task_id) != self.task_id or int(activity.activity_id) != self.activity_id:
+            if (
+                int(activity.task_id) != self.task_id
+                or int(activity.activity_id) != self.activity_id
+            ):
                 continue
             if activity.finished:
                 self.complete = True

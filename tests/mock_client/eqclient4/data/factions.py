@@ -45,7 +45,9 @@ class FactionBook:
 
     def index(self) -> None:
         """Remember the densest farm zone for each faction so later lookups do not rescan the hits."""
-        self._densest = {int(faction_id): self._densest_zone(int(faction_id)) for faction_id in self.by_faction}
+        self._densest = {
+            int(faction_id): self._densest_zone(int(faction_id)) for faction_id in self.by_faction
+        }
 
     def densest_zone(self, faction_id: int) -> str:
         faction_id = int(faction_id)

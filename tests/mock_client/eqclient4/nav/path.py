@@ -221,7 +221,9 @@ def doors_on_stride(
     return [door for _tee, door in hits]
 
 
-def find(loop: Loop, world: World, mob: Mob, origin: tuple[float, float, float] | None = None) -> bool:
+def find(
+    loop: Loop, world: World, mob: Mob, origin: tuple[float, float, float] | None = None
+) -> bool:
     """OP_FindPersonRequest when the mob is not nearby and the mesh has no route."""
     origin = _xyz(origin) if origin is not None else _world_origin(world)
     if is_nearby(world, mob, origin):
@@ -236,7 +238,9 @@ def find(loop: Loop, world: World, mob: Mob, origin: tuple[float, float, float] 
     return True
 
 
-def track(loop: Loop, world: World, mob: Mob, origin: tuple[float, float, float] | None = None) -> bool:
+def track(
+    loop: Loop, world: World, mob: Mob, origin: tuple[float, float, float] | None = None
+) -> bool:
     """OP_Track then OP_TrackTarget when the skill is known and the mob is outside nearby.
 
     The track list itself is the mob handler's write. This does not create a
@@ -260,7 +264,9 @@ def find_waypoints(payload: bytes) -> list[tuple[float, float, float]]:
     return OP_FindPersonReply.deserialize(payload).points
 
 
-def mesh_reaches(zone: str, origin: tuple[float, float, float], goal: tuple[float, float, float]) -> bool:
+def mesh_reaches(
+    zone: str, origin: tuple[float, float, float], goal: tuple[float, float, float]
+) -> bool:
     if not zone or goal is None:
         return False
     try:

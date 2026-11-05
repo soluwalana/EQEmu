@@ -260,7 +260,9 @@ class _SpellEntry(Protocol):
 
 
 class _BotBook(Protocol):
-    def roles_available(self, class_id: int, level: int, roles: set[str]) -> Iterable[_SpellEntry]: ...
+    def roles_available(
+        self, class_id: int, level: int, roles: set[str]
+    ) -> Iterable[_SpellEntry]: ...
 
 
 class _BotWorld(Protocol):

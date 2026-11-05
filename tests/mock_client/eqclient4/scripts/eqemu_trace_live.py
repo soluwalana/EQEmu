@@ -6,21 +6,35 @@ Example:
   python eqemu_trace_live.py /tmp/eqtrace.1234.bin --only 'OP_Consider,OP_Spawn*'
 """
 
-from __future__ import annotations
-
 import argparse
-from datetime import datetime
 import fnmatch
-from pathlib import Path
-from typing import IO, Generator
 import pprint
 import struct
 import time
+from datetime import datetime
+from pathlib import Path
+from typing import IO, Generator
 
-from eqclient3.scripts.eq_packet_viewer import view_value, hexdump, timestamp_bound, split_patterns
-from eqclient3.structs import OPERATIONS
+from eqclient4.scripts.eq_packet_viewer import (
+    hexdump,
+    split_patterns,
+    timestamp_bound,
+    view_value,
+)
+from eqclient4.structs import (
+    OPERATIONS,
+    OP_CancelTrade,
+    OP_CharInventory,
+    OP_DeleteItem,
+    OP_FinishTrade,
+    OP_ItemPacket,
+    OP_MoveItem,
+)
+from eqclient4.structs.inventory import CharacterInventory
 
-FRAME = struct.Struct("<QBBHHI")  # unix microseconds, direction, stage, name len, peer len, data len
+FRAME = struct.Struct(
+    "<QBBHHI"
+)  # unix microseconds, direction, stage, name len, peer len, data len
 LENGTH = struct.Struct("<I")
 MAX_RECORD = 8 * 1024 * 1024 + 131090
 
@@ -69,11 +83,15 @@ def main() -> None:
     p.add_argument("--exclude", action="append", default=[], metavar="OPCODES")
     p.add_argument("--start", help="YYYY-MM-DD or ISO timestamp")
     p.add_argument("--end", help="YYYY-MM-DD or ISO timestamp, inclusive precision")
-    p.add_argument("--direction", choices=("send", "recv"), help="direction from CLIENT perspective")
+    p.add_argument(
+        "--direction", choices=("send", "recv"), help="direction from CLIENT perspective"
+    )
     p.add_argument("--stage", choices=("emu", "client"))
     p.add_argument("--max-bytes", type=int, default=128)
     p.add_argument("--hex", action="store_true")
-    p.add_argument("--from-end", action="store_true", help="ignore existing data, follow new records")
+    p.add_argument(
+        "--from-end", action="store_true", help="ignore existing data, follow new records"
+    )
     p.add_argument("--no-follow", action="store_true")
     args = p.parse_args()
     only = split_patterns(args.only)
@@ -81,11 +99,15 @@ def main() -> None:
     start = timestamp_bound(args.start, end=False) if args.start else None
     end = timestamp_bound(args.end, end=True) if args.end else None
 
+    inventory = CharacterInventory()
+
     with args.file.open("rb") as f:
         if args.from_end:
             f.seek(0, 2)
         try:
-            for unix_us, direction, stage, opcode, peer, payload in read_frames(f, not args.no_follow):
+            for unix_us, direction, stage, opcode, peer, payload in read_frames(
+                f, not args.no_follow
+            ):
                 dt = datetime.fromtimestamp(unix_us / 1_000_000)
                 stamp = dt.isoformat(timespec="microseconds")
                 if start and stamp < start or end and stamp >= end:
@@ -97,18 +119,39 @@ def main() -> None:
                 if only and not matches(opcode, only) or exclude and matches(opcode, exclude):
                     continue
 
-                print(f"[{stamp}] {way:4} {layer:6} {peer} {opcode} ({len(payload)} bytes)", flush=True)
+                print(
+                    f"[{stamp}] {way:4} {layer:6} {peer} {opcode} ({len(payload)} bytes)",
+                    flush=True,
+                )
                 cls = OPERATIONS.get(opcode)
                 if cls and layer == "client":
                     try:
                         obj = cls.deserialize(payload)
                         print(pprint.pformat(view_value(obj), sort_dicts=False), flush=True)
+                        match obj:
+                            case (
+                                OP_CharInventory()
+                                | OP_ItemPacket()
+                                | OP_MoveItem()
+                                | OP_DeleteItem()
+                                | OP_FinishTrade()
+                                | OP_CancelTrade()
+                            ):
+                                event = inventory.apply(obj)
+                                if event.changed:
+                                    print(inventory.render_change(event), flush=True)
+                                print(inventory.render(show_empty=False), flush=True)
+                            case _:
+                                pass
                     except Exception as e:
                         print(f"  DECODE FAILED: {type(e).__name__}: {e}", flush=True)
                         print(hexdump(payload, args.max_bytes), flush=True)
                 else:
                     if cls and layer == "emu":
-                        print("  [Emulator layout; client-version EQStruct decoder not attempted]", flush=True)
+                        print(
+                            "  [Emulator layout; client-version EQStruct decoder not attempted]",
+                            flush=True,
+                        )
                     if args.hex or not cls or layer == "emu":
                         print(hexdump(payload, args.max_bytes), flush=True)
                 print(flush=True)

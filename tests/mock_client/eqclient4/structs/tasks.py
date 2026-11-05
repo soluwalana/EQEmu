@@ -349,8 +349,8 @@ class OP_TaskActivity(EQStruct):
         if len(data) < 25:
             raise ValueError(f"OP_TaskActivity is {len(data)} bytes")
         if len(data) == 25:
-            client_index, task_type, task_id, activity_id, list_group, _hidden, optional = struct.unpack_from(
-                "<IIIIIIB", data
+            client_index, task_type, task_id, activity_id, list_group, _hidden, optional = (
+                struct.unpack_from("<IIIIIIB", data)
             )
             return cls(
                 int(task_id),
@@ -362,7 +362,9 @@ class OP_TaskActivity(EQStruct):
                 optional=int(optional),
             )
         offset = 0
-        client_index, task_type, task_id, activity_id, list_group = struct.unpack_from("<IIIII", data, offset)
+        client_index, task_type, task_id, activity_id, list_group = struct.unpack_from(
+            "<IIIII", data, offset
+        )
         offset += 20
         kind, optional, request = struct.unpack_from("<iBi", data, offset)
         offset += 9
@@ -428,5 +430,14 @@ class OP_TaskActivityComplete(EQStruct):
     @classmethod
     def deserialize(cls, data: bytes) -> OP_TaskActivityComplete:
         need(data, 24, "OP_TaskActivityComplete")
-        index, task_type, task_id, activity_id, task_completed, stage_complete = struct.unpack_from("<IIIIII", data)
-        return cls(int(index), int(task_type), int(task_id), int(activity_id), int(task_completed), int(stage_complete))
+        index, task_type, task_id, activity_id, task_completed, stage_complete = struct.unpack_from(
+            "<IIIIII", data
+        )
+        return cls(
+            int(index),
+            int(task_type),
+            int(task_id),
+            int(activity_id),
+            int(task_completed),
+            int(stage_complete),
+        )

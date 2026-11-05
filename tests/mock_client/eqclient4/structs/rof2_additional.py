@@ -464,7 +464,9 @@ class OP_AltCurrency(EQStruct):
                 raise ValueError("truncated OP_AltCurrency populate entries")
             entries = []
             for index in range(count):
-                entries.append(AltCurrencyEntry(*struct.unpack_from("<IIIIIIB", data, 8 + index * 25)))
+                entries.append(
+                    AltCurrencyEntry(*struct.unpack_from("<IIIIIIB", data, 8 + index * 25))
+                )
             return cls(mode, entries, None, data[8 + count * 25 :])
         if mode == 7:
             need(data, 88, cls.__name__)

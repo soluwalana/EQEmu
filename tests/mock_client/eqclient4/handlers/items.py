@@ -21,7 +21,9 @@ from eqclient4.structs.constants import CURSOR_SLOT, TOKEN
 
 class Held:
 
-    def __init__(self, item_id: int, name: str, item_type: int, stack: int, scroll_effect: int = 0) -> None:
+    def __init__(
+        self, item_id: int, name: str, item_type: int, stack: int, scroll_effect: int = 0
+    ) -> None:
         self.item_id = item_id
         self.name = name
         self.item_type = item_type
@@ -78,7 +80,7 @@ class ItemsHandler(Handler):
         slot = item.slot
         item_id = item.item_id
         if item_id == TOKEN:
-            enqueue_once(self.loop, self.world, Cursor(slot), f"cursor:{slot}")
+            self.loop.enqueue_once(Cursor(slot), source=f"cursor:{slot}")
             return False
         stack = item.stack if item.stack > 0 else 1
         self.items()[item_id] = Held(item_id, item.name, item.item_type, stack, item.scroll_effect)
@@ -122,7 +124,7 @@ class ItemsHandler(Handler):
     def open_shops(self) -> list[Trade | Sell]:
         """Trade and Sell actions that are still open. An empty list means the window is dropped."""
         opened: list[Trade | Sell] = []
-        for action in queue_of(self.loop):
+        for action in self.loop.queue:
             if action.complete:
                 continue
             if isinstance(action, (Trade, Sell)):
@@ -131,9 +133,6 @@ class ItemsHandler(Handler):
 
     def _save_inventory(self) -> None:
         journal = self.loop.journal
-        who = character_name(self.loop, self.world)
-        if journal is None or not who:
-            return
         rows: list[InventorySlot] = []
         seen: set[int] = set()
         items: dict[int, Held] = {}
@@ -146,7 +145,7 @@ class ItemsHandler(Handler):
         cursor = self.world.cursor
         if cursor and CURSOR_SLOT not in seen:
             rows.append(_held_slot(CURSOR_SLOT, int(cursor), items))
-        journal.replace_inventory(who, rows)
+        journal.replace_inventory(rows)
 
     def bags(self) -> dict:
         bags = self.world.bags

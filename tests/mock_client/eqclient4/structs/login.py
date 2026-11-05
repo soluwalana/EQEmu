@@ -93,7 +93,9 @@ class OP_ChatMessage(EQStruct):
     extra: str = ""
 
     def serialize(self) -> bytes:
-        head = LoginBase(self.sequence, self.compressed, self.encrypt_type, self.unknown).serialize()
+        head = LoginBase(
+            self.sequence, self.compressed, self.encrypt_type, self.unknown
+        ).serialize()
         # loginserver/login_types.h:35 LoginBaseReplyMessage
         reply = (
             bytes((int(self.success),))
@@ -125,7 +127,14 @@ class OP_ChatMessage(EQStruct):
         except ValueError:
             pass
         return cls(
-            base.sequence, base.compressed, base.encrypt_type, base.unknown, success, int(error_id), message, extra
+            base.sequence,
+            base.compressed,
+            base.encrypt_type,
+            base.unknown,
+            success,
+            int(error_id),
+            message,
+            extra,
         )
 
 
@@ -140,7 +149,9 @@ class OP_Login(EQStruct):
     cipher: bytes = b""
 
     def serialize(self) -> bytes:
-        head = LoginBase(self.sequence, self.compressed, self.encrypt_type, self.unknown).serialize()
+        head = LoginBase(
+            self.sequence, self.compressed, self.encrypt_type, self.unknown
+        ).serialize()
         if self.cipher:
             return head + self.cipher
         return head + put_cstr(self.username) + put_cstr(self.password)
@@ -151,9 +162,13 @@ class OP_Login(EQStruct):
         rest = data[LOGIN_BASE_SIZE:]
         pair = _credential_pair(rest)
         if pair is None:
-            return cls("", "", base.sequence, base.compressed, base.encrypt_type, base.unknown, rest)
+            return cls(
+                "", "", base.sequence, base.compressed, base.encrypt_type, base.unknown, rest
+            )
         username, password = pair
-        return cls(username, password, base.sequence, base.compressed, base.encrypt_type, base.unknown, b"")
+        return cls(
+            username, password, base.sequence, base.compressed, base.encrypt_type, base.unknown, b""
+        )
 
 
 def _credential_pair(rest: bytes) -> tuple[str, str] | None:
@@ -231,7 +246,11 @@ class OP_LoginAccepted(EQStruct):
         account_at = offset + 2
         need(data, account_at + 4 + 11, "OP_LoginAccepted")
         account_id = struct.unpack_from("<i", data, account_at)[0]
-        key = data[account_at + 4 : account_at + 15].split(b"\x00", 1)[0].decode("latin1", errors="replace")
+        key = (
+            data[account_at + 4 : account_at + 15]
+            .split(b"\x00", 1)[0]
+            .decode("latin1", errors="replace")
+        )
         cursor = account_at + 15
         failed = show = 0
         offers = [0, 0, 0, 0, 0, 0, 0]
@@ -296,7 +315,9 @@ class OP_ServerListResponse(EQStruct):
     servers: list[ServerEntry] = field(default_factory=list)
 
     def serialize(self) -> bytes:
-        out = bytearray(LoginBase(self.sequence, self.compressed, self.encrypt_type, self.unknown).serialize())
+        out = bytearray(
+            LoginBase(self.sequence, self.compressed, self.encrypt_type, self.unknown).serialize()
+        )
         out.append(int(self.success))
         # loginserver/login_types.h:35 LoginBaseReplyMessage
         out += struct.pack("<i", i32(self.error_id))
@@ -328,7 +349,15 @@ class OP_ServerListResponse(EQStruct):
         try:
             message, offset = cstring(data, offset)
         except ValueError:
-            return cls(base.sequence, base.compressed, base.encrypt_type, base.unknown, success, int(error_id), message)
+            return cls(
+                base.sequence,
+                base.compressed,
+                base.encrypt_type,
+                base.unknown,
+                success,
+                int(error_id),
+                message,
+            )
         servers: list[ServerEntry] = []
         if offset + 4 > len(data):
             return cls(
@@ -363,10 +392,26 @@ class OP_ServerListResponse(EQStruct):
             status, players = struct.unpack_from("<iI", data, offset)
             offset += 8
             servers.append(
-                ServerEntry(ip, int(server_type), int(server_id), name, country, language, int(status), int(players))
+                ServerEntry(
+                    ip,
+                    int(server_type),
+                    int(server_id),
+                    name,
+                    country,
+                    language,
+                    int(status),
+                    int(players),
+                )
             )
         return cls(
-            base.sequence, base.compressed, base.encrypt_type, base.unknown, success, int(error_id), message, servers
+            base.sequence,
+            base.compressed,
+            base.encrypt_type,
+            base.unknown,
+            success,
+            int(error_id),
+            message,
+            servers,
         )
 
 
@@ -379,15 +424,21 @@ class OP_PlayEverquestRequest(EQStruct):
     unknown: int = 0
 
     def serialize(self) -> bytes:
-        return LoginBase(self.sequence, self.compressed, self.encrypt_type, self.unknown).serialize() + u32(
-            self.server_id
-        )
+        return LoginBase(
+            self.sequence, self.compressed, self.encrypt_type, self.unknown
+        ).serialize() + u32(self.server_id)
 
     @classmethod
     def deserialize(cls, data: bytes) -> OP_PlayEverquestRequest:
         need(data, LOGIN_BASE_SIZE + 4, "OP_PlayEverquestRequest")
         base = LoginBase.deserialize(data)
-        return cls(read_u32(data, LOGIN_BASE_SIZE), base.sequence, base.compressed, base.encrypt_type, base.unknown)
+        return cls(
+            read_u32(data, LOGIN_BASE_SIZE),
+            base.sequence,
+            base.compressed,
+            base.encrypt_type,
+            base.unknown,
+        )
 
 
 @dataclass
@@ -402,7 +453,9 @@ class OP_PlayEverquestResponse(EQStruct):
     server_id: int = 0
 
     def serialize(self) -> bytes:
-        out = bytearray(LoginBase(self.sequence, self.compressed, self.encrypt_type, self.unknown).serialize())
+        out = bytearray(
+            LoginBase(self.sequence, self.compressed, self.encrypt_type, self.unknown).serialize()
+        )
         out.append(int(self.success))
         # loginserver/login_types.h:35 LoginBaseReplyMessage
         out += struct.pack("<i", i32(self.error_id))

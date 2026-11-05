@@ -473,7 +473,9 @@ def _quiet[T](load: Callable[[str], T], zone: str) -> T | None:
         return None
 
 
-_ITEM_KEY = re.compile(r"(?:fetch|trade|sell|camp):(\d+(?:,\d+)*)|item=(\d+)|distribute:[^:#\s]+:(\d+)")
+_ITEM_KEY = re.compile(
+    r"(?:fetch|trade|sell|camp):(\d+(?:,\d+)*)|item=(\d+)|distribute:[^:#\s]+:(\d+)"
+)
 
 
 def _item_ids(action: Action) -> list[int]:

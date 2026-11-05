@@ -162,7 +162,9 @@ class NavMesh:
         parts = self._parts()
         return parts[0] if parts else set()
 
-    def _closest(self, point: tuple[float, float, float], group: set[tuple[int, int]]) -> _Poly | None:
+    def _closest(
+        self, point: tuple[float, float, float], group: set[tuple[int, int]]
+    ) -> _Poly | None:
         lookup = self._index()
         best = None
         best_d = 1e18
@@ -189,7 +191,8 @@ class NavMesh:
         fresh = [
             poly
             for poly in self.polys
-            if (poly.tile, poly.index) not in self.visited and cell_of(poly.center[0], poly.center[1]) not in avoid
+            if (poly.tile, poly.index) not in self.visited
+            and cell_of(poly.center[0], poly.center[1]) not in avoid
         ]
         if not fresh:
             fresh = [poly for poly in self.polys if (poly.tile, poly.index) not in self.visited]
@@ -211,7 +214,9 @@ class NavMesh:
             return None
         return poly.center
 
-    def links(self, poly_id: tuple[int, int]) -> list[tuple[tuple[int, int], tuple[float, float, float]]]:
+    def links(
+        self, poly_id: tuple[int, int]
+    ) -> list[tuple[tuple[int, int], tuple[float, float, float]]]:
         poly = self._index().get(poly_id)
         if poly is None:
             return []
@@ -317,7 +322,9 @@ def _tile_polys(
             raw_neis.append([])
             found.append(_Poly(tile_index, index, (0.0, 0.0, 0.0), []))
             continue
-        poly_verts = [verts[indexes[i]] for i in range(min(vert_count, 6)) if indexes[i] < len(verts)]
+        poly_verts = [
+            verts[indexes[i]] for i in range(min(vert_count, 6)) if indexes[i] < len(verts)
+        ]
         if not poly_verts:
             raw_neis.append([])
             found.append(_Poly(tile_index, index, (0.0, 0.0, 0.0), []))

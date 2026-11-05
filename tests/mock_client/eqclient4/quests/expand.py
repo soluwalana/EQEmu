@@ -77,7 +77,9 @@ def _expand(edge: dict, *, here: str, graph: QuestGraph | None, source: str, see
                 )
             )
     for item_id, count in hand:
-        actions.extend(_obtain(item_id, count, here=here, graph=graph, source=label, seen=seen, npc=npc))
+        actions.extend(
+            _obtain(item_id, count, here=here, graph=graph, source=label, seen=seen, npc=npc)
+        )
     actions.extend(_giver(zone, npc, hand, here=here, source=label, graph=graph, edge=edge))
     return actions
 
@@ -152,7 +154,9 @@ def _drop(edge: dict, *, here: str, source: str, item_id: int = 0, count: int = 
     return actions
 
 
-def conversation(graph: QuestGraph, origin: str, expect: int) -> tuple[tuple[Turn, ...], Expect | None]:
+def conversation(
+    graph: QuestGraph, origin: str, expect: int
+) -> tuple[tuple[Turn, ...], Expect | None]:
     """The say, hand, and receive steps from this node through the then-links that belong to it.
 
     A later say is part of this conversation when the flag it needs was set on the way.
@@ -283,7 +287,11 @@ def _tail(origin: str) -> str:
 
 def _word(tail: str) -> str:
     """The script match. A hand-in, a recipe, and an event have none."""
-    if not tail or tail.startswith(("hand:", "recipe:", "event_")) or tail in {"enter", "loot", "kill"}:
+    if (
+        not tail
+        or tail.startswith(("hand:", "recipe:", "event_"))
+        or tail in {"enter", "loot", "kill"}
+    ):
         return ""
     return tail
 
@@ -415,7 +423,9 @@ def _then_next(index: dict[str, list[dict]], node: str) -> str:
     return ""
 
 
-def _gate_open(index: dict[str, list[dict]], node: str, sets: dict[str, str], received: set[int]) -> bool:
+def _gate_open(
+    index: dict[str, list[dict]], node: str, sets: dict[str, str], received: set[int]
+) -> bool:
     """True when this say's flag and item gates were met by the lines already included."""
     for edge in index.get(node, []):
         if edge.get("rel") != "needs" or edge.get("from") != node:
@@ -498,7 +508,9 @@ def produced(graph: QuestGraph, item_id: int) -> dict | None:
     return ranked[0][1]
 
 
-def _craft(edge: dict, *, here: str, graph: QuestGraph | None, source: str, seen: set) -> list[Action]:
+def _craft(
+    edge: dict, *, here: str, graph: QuestGraph | None, source: str, seen: set
+) -> list[Action]:
     """Components first, then the station zone, then the combine."""
     if graph is None:
         return []
@@ -514,9 +526,13 @@ def _craft(edge: dict, *, here: str, graph: QuestGraph | None, source: str, seen
     label = source or f"recipe:{recipe.id}"
     actions: list[Action] = []
     for component, count in recipe.components:
-        actions.extend(_obtain(component, count, here=here, graph=graph, source=label, seen=seen, npc=""))
+        actions.extend(
+            _obtain(component, count, here=here, graph=graph, source=label, seen=seen, npc="")
+        )
     if recipe.container and recipe.container not in _WORLD_CONTAINER:
-        actions.extend(_obtain(recipe.container, 1, here=here, graph=graph, source=label, seen=seen, npc=""))
+        actions.extend(
+            _obtain(recipe.container, 1, here=here, graph=graph, source=label, seen=seen, npc="")
+        )
     zone = _station_zone(graph, recipe.container, here)
     if zone:
         station = Zone(zone)

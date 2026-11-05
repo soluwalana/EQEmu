@@ -39,11 +39,15 @@ def login(host: str, port: int, username: str, password: str, timeout: float = 1
     try:
         session.connect(host, port, timeout=timeout)
         deadline = time.monotonic() + timeout
-        session.send_app(struct.pack("<H", require(opcodes, "OP_SessionReady")) + OP_SessionReady(1).serialize())
+        session.send_app(
+            struct.pack("<H", require(opcodes, "OP_SessionReady")) + OP_SessionReady(1).serialize()
+        )
         _wait_opcode(session, require(opcodes, "OP_ChatMessage"), deadline)
 
         plain = OP_Login(username, password).serialize()
-        body = OP_Login(username, password, cipher=encrypt_block(plain[LOGIN_BASE_SIZE:])).serialize()
+        body = OP_Login(
+            username, password, cipher=encrypt_block(plain[LOGIN_BASE_SIZE:])
+        ).serialize()
         session.send_app(struct.pack("<H", require(opcodes, "OP_Login")) + body)
         accepted = _wait_opcode(session, require(opcodes, "OP_LoginAccepted"), deadline)
         received = OP_Login.deserialize(accepted)
@@ -53,7 +57,8 @@ def login(host: str, port: int, username: str, password: str, timeout: float = 1
             raise SessionError(f"login rejected for {username}")
 
         session.send_app(
-            struct.pack("<H", require(opcodes, "OP_ServerListRequest")) + OP_ServerListRequest(4).serialize()
+            struct.pack("<H", require(opcodes, "OP_ServerListRequest"))
+            + OP_ServerListRequest(4).serialize()
         )
         listing = _wait_opcode(session, require(opcodes, "OP_ServerListResponse"), deadline)
         servers = OP_ServerListResponse.deserialize(listing).servers

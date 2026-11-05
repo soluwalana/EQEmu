@@ -45,7 +45,14 @@ class OP_ChannelMessage(EQStruct):
             "<I",
             max(0, min(100, int(self.skill))) & 0xFFFFFFFF,
         )
-        return put_cstr(self.sender) + put_cstr(self.target) + language + b"\x00" * 5 + skill + put_cstr(self.text)
+        return (
+            put_cstr(self.sender)
+            + put_cstr(self.target)
+            + language
+            + b"\x00" * 5
+            + skill
+            + put_cstr(self.text)
+        )
 
     @classmethod
     def deserialize(cls, data: bytes) -> OP_ChannelMessage:
@@ -223,7 +230,9 @@ class OP_OnLevelMessage(EQStruct):
         # common/patches/rof2.cpp:2455 OnLevelMessage_Struct
         struct.pack_into("<I", packet, 4292, self.duration & 0xFFFFFFFF)
         # common/patches/rof2.cpp:2456 OnLevelMessage_Struct
-        struct.pack_into("<II", packet, 4296, self.popup_id & 0xFFFFFFFF, self.unknown4236 & 0xFFFFFFFF)
+        struct.pack_into(
+            "<II", packet, 4296, self.popup_id & 0xFFFFFFFF, self.unknown4236 & 0xFFFFFFFF
+        )
         packet[4290] = self.buttons & 0xFF
         return bytes(packet)
 

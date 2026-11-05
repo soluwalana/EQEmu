@@ -125,7 +125,9 @@ def find_record(buf: _View, offset: int, count: int, stride: int, key: int) -> i
     return None
 
 
-def write_eqm(dest: Path, kind: bytes, slots: tuple[int, ...], parts: list[bytes | bytearray]) -> None:
+def write_eqm(
+    dest: Path, kind: bytes, slots: tuple[int, ...], parts: list[bytes | bytearray]
+) -> None:
     blob = bytearray(pack_header(kind, slots))
     for part in parts:
         blob += part

@@ -173,7 +173,10 @@ def other_step(
     base = math.atan2(dy, dx) + math.radians(turn_offset)
     for turn in (0, 45, -45, 90, -90, 135, -135, 180):
         angle = base + math.radians(turn)
-        if bearing(here, (here[0] + math.cos(angle), here[1] + math.sin(angle), here[2])) in refused_dirs:
+        if (
+            bearing(here, (here[0] + math.cos(angle), here[1] + math.sin(angle), here[2]))
+            in refused_dirs
+        ):
             continue
         travel = min(length, dist)
         return (

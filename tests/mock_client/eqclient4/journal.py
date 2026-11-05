@@ -19,34 +19,12 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from eqclient4.action import Action
-from eqclient4.data.items import ItemStats
 from eqclient4.log import log
 
 JOURNAL_ROOT = Path.home() / ".eqclient" / "journal"
 JOURNAL_ROOT.mkdir(parents=True, exist_ok=True)
 DB_NAME = "journal-v4.sqlite3"
 catalog = JOURNAL_ROOT / "characters.json"
-
-
-@dataclass(frozen=True)
-class InventorySlot:
-    slot: int
-    item_id: int
-    name: str
-    stack: int
-    item_stats: ItemStats | None
-
-
-_INVENTORY = """
-CREATE TABLE IF NOT EXISTS inventory (
-    character TEXT NOT NULL,
-    slot INTEGER NOT NULL,
-    item_id INTEGER NOT NULL,
-    name TEXT NOT NULL DEFAULT '',
-    stack INTEGER NOT NULL DEFAULT 1,
-    PRIMARY KEY (character, slot)
-);
-"""
 
 
 def characters() -> dict[str, dict[str, str]]:
@@ -82,7 +60,6 @@ class Journal:
             self._db.execute("PRAGMA journal_mode=WAL")
 
         self._db.executescript(_SCHEMA)
-        self._db.executescript(_INVENTORY)
         self._db.commit()
         self._drop_ephemeral()
 
@@ -124,12 +101,24 @@ class Journal:
         )
         self._db.commit()
 
+    def get_flag(self, name: str) -> int | None:
+        row = self._db.execute(
+            "SELECT value FROM flags WHERE character = ? AND name = ?", (self.character, name)
+        ).fetchone()
+        if not row:
+            return None
+        return int(row[0])
+
     def flag_values(self) -> dict[str, int]:
-        rows = self._db.execute("SELECT name, value FROM flags WHERE character = ?", (self.character,))
+        rows = self._db.execute(
+            "SELECT name, value FROM flags WHERE character = ?", (self.character,)
+        )
         return {name: int(value) for name, value in rows}
 
     def soulbind_zone(self) -> str:
-        row = self._db.execute("SELECT zone FROM soulbind WHERE character = ?", (self.character,)).fetchone()
+        row = self._db.execute(
+            "SELECT zone FROM soulbind WHERE character = ?", (self.character,)
+        ).fetchone()
         return "" if row is None else str(row[0])
 
     def set_soulbind(self, zone: str) -> None:
@@ -179,7 +168,10 @@ class Journal:
         self._db.execute("DELETE FROM goals WHERE character = ?", (self.character,))
         self._db.executemany(
             "INSERT INTO goals (character, position, item_id, count) VALUES (?, ?, ?, ?)",
-            [(self.character, index, int(item_id), int(count)) for index, (item_id, count) in enumerate(goals)],
+            [
+                (self.character, index, int(item_id), int(count))
+                for index, (item_id, count) in enumerate(goals)
+            ],
         )
         self._db.commit()
 
@@ -210,7 +202,9 @@ class Journal:
         dropped too: the server wipes a zone request on disconnect.
         """
         self._db.execute("DELETE FROM actions WHERE durable = 0 AND resolved = 0")
-        self._db.execute("DELETE FROM actions WHERE resolved = 0 AND kind = 'eqclient3.actions.zone:Zone'")
+        self._db.execute(
+            "DELETE FROM actions WHERE resolved = 0 AND kind = 'eqclient3.actions.zone:Zone'"
+        )
         rows = list(self._db.execute("SELECT character, position, payload FROM actions"))
         for character, position, payload in rows:
             if self._thaw(payload) is None:
@@ -315,47 +309,6 @@ class Journal:
         )
         self._db.commit()
 
-    def replace_inventory(self, slots: list[InventorySlot]) -> None:
-        """Replace the stored bags. The list is the whole inventory, including an empty one."""
-        self._db.execute("DELETE FROM inventory WHERE character = ?", (self.character,))
-        self._db.executemany(
-            "INSERT INTO inventory (character, slot, item_id, name, stack) VALUES (?, ?, ?, ?, ?)",
-            [(self.character, row.slot, row.item_id, row.name, row.stack) for row in slots],
-        )
-        self._db.commit()
-
-    def inventory(self) -> list[InventorySlot]:
-        rows = self._db.execute(
-            "SELECT slot, item_id, name, stack FROM inventory WHERE character = ? ORDER BY slot",
-            (self.character,),
-        )
-        items = []
-        for slot, item_id, name, stack in rows:
-            items.append(
-                InventorySlot(
-                    int(slot),
-                    int(item_id),
-                    str(name),
-                    int(stack),
-                    None,
-                )
-            )
-        return items
-
-    def set_worn(self, bot_name: str, slot: int, item_id: int) -> None:
-        self._db.execute(
-            "INSERT INTO bot_worn (character, bot_name, slot, item_id) VALUES (?, ?, ?, ?) ON CONFLICT(character, bot_name, slot) DO UPDATE SET item_id = excluded.item_id",
-            (self.character, bot_name, int(slot), int(item_id)),
-        )
-        self._db.commit()
-
-    def worn(self, bot_name: str) -> dict[int, int]:
-        rows = self._db.execute(
-            "SELECT slot, item_id FROM bot_worn WHERE character = ? AND bot_name = ? ORDER BY slot",
-            (self.character, bot_name),
-        )
-        return {int(slot): int(item_id) for slot, item_id in rows}
-
     def remember_bot(self, bot_name: str, class_id: int = 0) -> None:
         self._db.execute(
             "INSERT INTO bots (character, bot_name, class_id) VALUES (?, ?, ?) ON CONFLICT(character, bot_name) DO UPDATE SET class_id = excluded.class_id",
@@ -409,7 +362,9 @@ class Journal:
         self._db.commit()
 
     def sell_marks(self) -> set[int]:
-        rows = self._db.execute("SELECT item_id FROM sell_marks WHERE character = ?", (self.character,))
+        rows = self._db.execute(
+            "SELECT item_id FROM sell_marks WHERE character = ?", (self.character,)
+        )
         return {int(item_id) for item_id, in rows}
 
     def recent_fetch_ids(self, limit: int = 20) -> list[int]:

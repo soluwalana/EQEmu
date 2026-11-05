@@ -98,10 +98,16 @@ class Kill(Action):
         queue = loop.queue
         if queue is None:
             return
-        if not has_soulbind(loop, world) and (not any((str(a.source).startswith("soulbind:") for a in queue))):
+        if not has_soulbind(loop, world) and (
+            not any((str(a.source).startswith("soulbind:") for a in queue))
+        ):
             if append_soulbind(self, loop, world):
                 return
-        if self.spawn_id is None and self.level is not None and (int(world.level or 0) >= int(self.level)):
+        if (
+            self.spawn_id is None
+            and self.level is not None
+            and (int(world.level or 0) >= int(self.level))
+        ):
             self.complete = True
             return
         self._unstick(world)
@@ -125,7 +131,12 @@ class Kill(Action):
             walk(self, loop, world, dest, "run")
             return
         if self.spawn_id and (
-            not any((type(action).__name__ == "Attack" and action.spawn_id == self.spawn_id for action in queue))
+            not any(
+                (
+                    type(action).__name__ == "Attack" and action.spawn_id == self.spawn_id
+                    for action in queue
+                )
+            )
         ):
             attack = Attack(self.spawn_id)
             world.note_fight(self.spawn_id)
@@ -143,7 +154,9 @@ class Kill(Action):
             return False
         source = f"{self.source}#travel"
         queue = loop.queue
-        if queue is not None and any(action.source == source and not action.complete for action in queue):
+        if queue is not None and any(
+            action.source == source and not action.complete for action in queue
+        ):
             self.priority = -1
             self.yielding = True
             return True
@@ -220,7 +233,9 @@ class Kill(Action):
             name = str(row.get("name") or "")
             if name and name not in names:
                 names.append(name)
-            posts.append((float(row.get("x") or 0.0), float(row.get("y") or 0.0), float(row.get("z") or 0.0)))
+            posts.append(
+                (float(row.get("x") or 0.0), float(row.get("y") or 0.0), float(row.get("z") or 0.0))
+            )
         posts.sort(key=lambda point: (point[0] - world.x) ** 2 + (point[1] - world.y) ** 2)
         self.mobs = tuple(names)
         self.posts = tuple(posts)
@@ -316,7 +331,9 @@ def _fold_name(name: str) -> str:
     return text
 
 
-def _one_of(world: World, names: tuple[str, ...], cursor: int, skip: set[int]) -> tuple[Mob, int] | None:
+def _one_of(
+    world: World, names: tuple[str, ...], cursor: int, skip: set[int]
+) -> tuple[Mob, int] | None:
     """The next listed mob that is alive. cursor is where the previous pick left off."""
     folded = [_fold_name(name) for name in names]
     if not folded:

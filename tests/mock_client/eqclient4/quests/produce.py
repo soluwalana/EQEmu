@@ -135,7 +135,9 @@ def _after_tutorial(loop: Loop, world: World) -> None:
     )
 
 
-def _fill_goals(loop: Loop, world: World, journal: Journal | None, graph: QuestGraph | None, character: str) -> None:
+def _fill_goals(
+    loop: Loop, world: World, journal: Journal | None, graph: QuestGraph | None, character: str
+) -> None:
 
     goals = loop.journal.load_goals()
     if not goals:

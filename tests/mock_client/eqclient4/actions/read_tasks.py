@@ -67,7 +67,13 @@ class ReadTasks(Action):
         self.idle_count = 0
 
     def opcodes(self) -> tuple[str, ...]:
-        return ("OP_NewZone", "OP_ChannelMessage", "OP_SpecialMesg", "OP_SimpleMessage")
+        return (
+            "OP_NewZone",
+            "OP_ChannelMessage",
+            "OP_SpecialMesg",
+            "OP_SimpleMessage",
+            "OP_TaskSelectWindow",
+        )
 
     def suspend(self) -> None:
         self.suspended = True
@@ -208,7 +214,9 @@ class ReadTasks(Action):
             return Visit(int(activity.task_id), int(activity.activity_id), box.center())
 
         if activity.kind in (LOOT, DELIVER, COLLECT):
-            item_id = activity.item_id or _first_receipt(activity.target_name, str(world.zone or ""))
+            item_id = activity.item_id or _first_receipt(
+                activity.target_name, str(world.zone or "")
+            )
             if item_id and world.held(item_id) < (activity.goal or 1):
                 return Fetch(item_id, activity.goal or 1, text)
             if activity.target_name or text:
@@ -221,14 +229,18 @@ class ReadTasks(Action):
     def _listen(self) -> bool:
         if str(self._world.zone or "").lower() != "tutorialb":
             while (
-                self.consume("OP_ChannelMessage") or self.consume("OP_SpecialMesg") or self.consume("OP_SimpleMessage")
+                self.consume("OP_ChannelMessage")
+                or self.consume("OP_SpecialMesg")
+                or self.consume("OP_SimpleMessage")
             ):
                 pass
             return False
         heard = False
         while True:
             message = (
-                self.consume("OP_ChannelMessage") or self.consume("OP_SpecialMesg") or self.consume("OP_SimpleMessage")
+                self.consume("OP_ChannelMessage")
+                or self.consume("OP_SpecialMesg")
+                or self.consume("OP_SimpleMessage")
             )
             if not message:
                 return heard
