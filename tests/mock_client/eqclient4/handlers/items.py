@@ -16,31 +16,18 @@ from eqclient4.structs import (
     OP_ItemPacket,
     OP_ShopDelItem,
 )
-from eqclient4.structs.constants import CURSOR_SLOT, TOKEN
-
-
-class Held:
-
-    def __init__(
-        self, item_id: int, name: str, item_type: int, stack: int, scroll_effect: int = 0
-    ) -> None:
-        self.item_id = item_id
-        self.name = name
-        self.item_type = item_type
-        self.stack = stack
-        self.scroll_effect = scroll_effect
-
-
-def _held_slot(slot: int, item_id: int, items: dict[int, Held]) -> InventorySlot:
-    held = items.get(item_id)
-    if held is None:
-        return InventorySlot(slot, item_id, "", 1)
-    stack = held.stack if held.stack else 1
-    return InventorySlot(slot, item_id, held.name, stack)
 
 
 class ItemsHandler(Handler):
-    opcodes = ("OP_CharInventory", "OP_ItemPacket", "OP_DeleteItem", "OP_ShopDelItem")
+    opcodes = (
+        "OP_CharInventory",
+        "OP_ItemPacket",
+        "OP_DeleteItem",
+        "OP_ShopDelItem",
+        "OP_UpdateAugmentSlots",
+        "OP_CancelTrade",
+        "OP_FinishTrade",
+    )
 
     def on(self, opcode: str, payload: EQStruct) -> None:
         wrote_bags = False

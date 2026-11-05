@@ -18,7 +18,6 @@ from typing import Literal
 
 from eqclient4.data.items import ItemBook, ensure_items
 from eqclient4.data.merchants import MerchantBook, ensure_merchants
-from eqclient4.journal import InventorySlot
 from eqclient4.log import log
 from eqclient4.nav.maps import ZoneMap, load_map
 from eqclient4.nav.navmesh import NavMesh, load_nav
@@ -50,6 +49,7 @@ from eqclient4.structs import (
     OP_TaskActivity,
     OP_TaskDescription,
 )
+from eqclient4.inventory import CharacterInventory, Merchant
 from eqclient4.utils import eq_heading
 
 RosterMode = Literal["party", "raid"]
@@ -153,8 +153,8 @@ class Character:
         self.intelligence: int = 0
         self.charisma: int = 0
         self.coin: tuple[int, int, int, int] | None = None
-        self.inventory: dict[int, InventorySlot] = {}
-        self.cursor: InventorySlot | None = None
+        self.inventory: CharacterInventory = CharacterInventory()
+        self.merchants: dict[int, Merchant] = {}
 
     def ability_known(self, skill_id: int) -> bool:
         skills = self.abilities.skills

@@ -13,6 +13,7 @@ from dataclasses import dataclass, field
 from struct import unpack_from
 from typing import Iterator
 
+from eqclient4.structs.constants import CURSOR_SLOT, GENERAL_SLOTS
 from eqclient4.structs.items import (
     Item,
     OP_CancelTrade,
@@ -22,7 +23,6 @@ from eqclient4.structs.items import (
     OP_ItemPacket,
     OP_MoveItem,
 )
-from eqclient4.structs.constants import CURSOR_SLOT, GENERAL_SLOTS
 from eqclient4.structs.wire import EQStruct, InventorySlot
 
 _WORN = (
@@ -129,7 +129,6 @@ class InventoryEvent:
         return f"{self.action}: {self.message}"
 
 
-@dataclass
 class CharacterInventory:
     """Stateful collection of the *existing* Item objects indexed by InventorySlot.
 
@@ -139,8 +138,13 @@ class CharacterInventory:
     received packet header; the mapping key is the current location.
     """
 
-    slots: dict[InventorySlot, Item] = field(default_factory=dict)
-    changes: list[InventoryEvent] = field(default_factory=list)
+    slots: dict[InventorySlot, Item]
+    changes: list[InventoryEvent]
+
+    def __init__(self) -> None:
+        self.slots = {}
+        self.changes = []
+        self.tick = 0
 
     @classmethod
     def from_packet(cls, packet: OP_CharInventory) -> CharacterInventory:
@@ -624,3 +628,10 @@ def _slot_id(address: InventorySlot) -> str:
         return f"{kind}:{address.main_slot}:{address.sub_index}"
 
     return f"{kind}:{address.main_slot}"
+
+
+@dataclass
+class Merchant:
+    npc_id: int
+    items: dict[int, Item] = field(default_factory=dict)
+    is_open: bool = False

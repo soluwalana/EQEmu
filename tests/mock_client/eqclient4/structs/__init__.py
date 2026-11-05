@@ -63,6 +63,7 @@ from eqclient4.structs.items import (
     OP_TradeRequestAck,
     OP_TradeSkillCombine,
 )
+
 from eqclient4.structs.login import (
     CHAR_CREATE_SIZE,
     CHAR_SELECT_ENTRY,

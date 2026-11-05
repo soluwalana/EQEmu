@@ -252,11 +252,7 @@ def inventory_wire(slot: int) -> tuple[int, int]:
 
 def client_slot(slot_type: int, main_slot: int, sub_slot: int) -> int:
     """Flat bag ID for possession subslots, otherwise the native slot index."""
-    if (
-        slot_type == 0
-        and _GENERAL_LO <= main_slot <= CURSOR_SLOT
-        and 0 <= sub_slot < _SUBSLOTS
-    ):
+    if slot_type == 0 and _GENERAL_LO <= main_slot <= CURSOR_SLOT and 0 <= sub_slot < _SUBSLOTS:
         return _BAGS_BEGIN + (main_slot - _GENERAL_LO) * _BAG_STRIDE + sub_slot
     return main_slot
 
