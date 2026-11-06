@@ -6,7 +6,7 @@ from eqclient4.net import transfer_zone
 
 # from eqclient4.actions.bots.form import queue_form
 # from eqclient4.actions.level_up import queue_level_gear
-from eqclient4.quests.produce import produce
+# from eqclient4.quests.produce import produce
 from eqclient4.structs import (
     EQStruct,
     OP_ClientReady,
@@ -84,7 +84,8 @@ class ZoningHandler(Handler):
         tutorial_done = self.loop.journal.get_flag("tutorial_state") == DONE
         if not tutorial_done:
             self.loop.journal.set_flag("tutorial_state", DONE)
-            produce(self.loop, world, leaving_tutorial=True)
+            log.error("Need to implement produce(self.loop, world, leaving_tutorial=True)")
+            # produce(self.loop, world, leaving_tutorial=True)
 
     def form_party(self) -> None:
         """Login and rezone. A same-zone OP_ClientReady is the weather refresh."""

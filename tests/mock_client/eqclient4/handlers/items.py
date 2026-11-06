@@ -1,6 +1,7 @@
 """Bags, the cursor token, merchant window, and one assign pass."""
 
 from eqclient4.handler import Handler
+from eqclient4.inventory import Merchant
 from eqclient4.log import log
 from eqclient4.structs import (
     ITEM_MERCHANT,
@@ -16,7 +17,6 @@ from eqclient4.structs import (
     OP_ShopPlayerSell,
     OP_ShopRequest,
 )
-from eqclient4.inventory import Merchant
 
 
 class ItemsHandler(Handler):
@@ -52,7 +52,11 @@ class ItemsHandler(Handler):
 
             case OP_ShopRequest():
                 if payload.npc_id not in self.world.active_merchants:
-                    self.world.active_merchants[payload.npc_id] = Merchant(npc_id=payload.npc_id, is_open=True, items={},)
+                    self.world.active_merchants[payload.npc_id] = Merchant(
+                        npc_id=payload.npc_id,
+                        is_open=True,
+                        items={},
+                    )
                 else:
                     self.world.active_merchants[payload.npc_id].is_open = True
 

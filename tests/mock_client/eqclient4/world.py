@@ -16,7 +16,8 @@ from collections import defaultdict
 from dataclasses import dataclass
 from typing import Literal
 
-from eqclient4.data.ground import GroundSpawnBook, ensure_ground_spawns
+from eqclient4.character import Character
+from eqclient4.data.ground import GroundSpawn, GroundSpawnBook, ensure_ground_spawns
 from eqclient4.data.items import ItemBook, ensure_items
 from eqclient4.data.merchants import MerchantBook, ensure_merchants
 from eqclient4.inventory import CharacterInventory, Merchant
@@ -81,16 +82,6 @@ class Door:
 
 
 @dataclass
-class GroundSpawn:
-    id: int
-    name: str
-    x: float
-    y: float
-    z: float
-    used: bool = False
-
-
-@dataclass
 class Bot:
     name: str = ""
     class_id: int = 0
@@ -108,126 +99,6 @@ class Consider:
     standing: int = 0
     level_color: int = 0
     name: str = ""
-
-
-class Abilities:
-    """Skills and the gear that lets bash fire. Owned by Character."""
-
-    def __init__(self) -> None:
-        self.skills: dict[int, int] = {}
-        self.can_bash: bool = False
-        self.shield: bool = False
-        self.two_hand: bool = False
-
-
-class Character:
-    """The player this sheet is showing. name is the journal key.
-
-    Stats, inventory, and whether the tutorial and the quest have started live here.
-    """
-
-    def __init__(self, name: str = "") -> None:
-        self.name: str = name
-        self.abilities: Abilities = Abilities()
-        self.tutorial_started: bool = False
-        self.quest_started: bool = False
-        self.self_id: int = 0
-        self.class_id: int = 0
-        self.race: int = 0
-        self.gender: int = 0
-        self.deity: int = 0
-        self.level: int = 0
-        self.exp: int = 0
-        self.training_points: int = 0
-        self.points: int = 0
-        self.hp: int = 0
-        self.max_hp: int = 0
-        self.mana: int = 0
-        self.max_mana: int = 0
-        self.food: int = 0
-        self.water: int = 0
-        self.strength: int = 0
-        self.stamina: int = 0
-        self.agility: int = 0
-        self.dexterity: int = 0
-        self.wisdom: int = 0
-        self.intelligence: int = 0
-        self.charisma: int = 0
-        self.coin: tuple[int, int, int, int] = (0, 0, 0, 0)
-
-    def ability_known(self, skill_id: int) -> bool:
-        skills = self.abilities.skills
-        return int(skills.get(skill_id, 0)) > 0
-
-    @property
-    def coin(self) -> tuple[int, int, int, int]:
-        return self.coin
-
-    @coin.setter
-    def coin(self, value: tuple[int, int, int, int]) -> None:
-        self.coin = value
-
-    def set_coin(self, platinum: int, gold: int, silver: int, copper: int) -> None:
-        """Replace the four denominations. None meant the profile had not arrived."""
-        self.coin = (int(platinum), int(gold), int(silver), int(copper))
-
-    def add_coins(self, platinum: int, gold: int, silver: int, copper: int) -> None:
-        """Add each denomination. Unknown coin starts at zero."""
-        self.coin[0] += int(platinum)
-        self.coin[1] += int(gold)
-        self.coin[2] += int(silver)
-        self.coin[3] += int(copper)
-
-    def add_coin(
-        self,
-        coin: int,
-    ) -> None:
-        plat, gold, silver, copper = self.coin
-        p, coin = divmod(coin, 1000)
-        g, coin = divmod(coin, 100)
-        s, c = divmod(coin, 10)
-        self.set_coin(plat + p, gold + g, silver + s, copper + c)
-
-    def deduct_coins(
-        self,
-        price: int,
-    ) -> tuple[int, int, int, int] | None:
-        """Deduct copper-denominated price, matching EQEmu's TakeMoneyFromPP."""
-        plat, gold, silver, copper = self.coin
-
-        if price < 0:
-            raise ValueError("Negative price")
-
-        total = plat * 1000 + gold * 100 + silver * 10 + copper
-        if price > total:
-            return None  # Insufficient funds
-
-        if copper >= price:
-            return plat, gold, silver, copper - price
-
-        price -= copper
-        copper = 0
-
-        if silver * 10 >= price:
-            silver, copper = divmod(silver * 10 - price, 10)
-            return plat, gold, silver, copper
-
-        price -= silver * 10
-        silver = 0
-
-        if gold * 100 >= price:
-            gold, remainder = divmod(gold * 100 - price, 100)
-            silver, copper = divmod(remainder, 10)
-            return plat, gold, silver, copper
-
-        price -= gold * 100
-        gold = 0
-
-        plat, remainder = divmod(plat * 1000 - price, 1000)
-        gold, remainder = divmod(remainder, 100)
-        silver, copper = divmod(remainder, 10)
-
-        return plat, gold, silver, copper
 
 
 class GroupRoster:

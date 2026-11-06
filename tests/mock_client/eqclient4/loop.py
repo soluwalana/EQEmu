@@ -2,7 +2,6 @@ import re
 import time
 import types
 from collections.abc import Callable, Iterator
-from dataclasses import replace
 
 from eqclient4.action import Action
 from eqclient4.bus import Bus
@@ -10,7 +9,6 @@ from eqclient4.journal import Journal
 from eqclient4.log import log, note_comms, open_capture
 from eqclient4.nav.maps import load_map
 from eqclient4.nav.navmesh import load_nav
-from eqclient4.nav.travel import ensure_zone_graph
 from eqclient4.nav.water import load_water
 from eqclient4.nav.zones import zone_name_of
 from eqclient4.net import transfer_zone
@@ -200,12 +198,10 @@ class Loop:
 
         if zone:
             self.world.zone = zone
-            nav = _quiet(load_nav, zone)
-            water = _quiet(load_water, zone)
-            zone_map = _quiet(load_map, zone)
-            log.info(
-                f"loaded {zone} nav={nav} water={water} map={zone_map}",
-            )
+            _quiet(load_nav, zone)
+            _quiet(load_water, zone)
+            _quiet(load_map, zone)
+            log.info(f"loaded {zone}",)
 
         graph = self.world.zone_graph
         self.world.exit_doors = graph.doors
@@ -252,7 +248,7 @@ class Loop:
 
         for packet in self.client.pump(PULSE):
             self.recv_count += 1
-            self.world.inventory.tick(self.recv_count)
+            self.world.inventory.tick = self.recv_count
             match packet:
                 case (str() as opcode, bytes() as payload):
                     self.capture.record("recv", opcode, payload)

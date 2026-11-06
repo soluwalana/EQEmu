@@ -10,6 +10,7 @@ from __future__ import annotations
 import sys
 
 from eqclient4.journal import Journal
+from eqclient4.world import World
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -17,22 +18,22 @@ def main(argv: list[str] | None = None) -> None:
     if not args:
         raise SystemExit("python -m eqclient4.reset_character NAME")
     character = args[0]
-    journal = Journal(character=character)
+    world = World(character)
+    journal = Journal(character, world)
     try:
-        print("\n".join(report(reset(journal, character), character)))
+        print("\n".join(report(reset(journal), character)))
     finally:
         journal.close()
 
 
-def reset(journal: Journal, character: str) -> dict[str, int]:
+def reset(journal: Journal) -> dict[str, int]:
     """Drop the queue, the quest goals, the tutorial-done row, and both started flags."""
     counts = {
-        "actions": journal.clear_actions(character),
-        "goals": journal.clear_goals(character),
-        "tutorial": journal.clear_tutorial(character),
+        "actions": journal.clear_actions(),
+        "goals": journal.clear_goals(),
     }
-    journal.set_flag(character, "tutorial_started", 0)
-    journal.set_flag(character, "quest_started", 0)
+    journal.set_flag("tutorial_state", 0)
+    journal.set_flag("quest_started", 0)
     return counts
 
 
@@ -41,7 +42,6 @@ def report(counts: dict[str, int], character: str) -> list[str]:
         f"{character}",
         f"actions {counts['actions']}",
         f"goals {counts['goals']}",
-        f"tutorial {counts['tutorial']}",
         "tutorial_started 0",
         "quest_started 0",
     ]

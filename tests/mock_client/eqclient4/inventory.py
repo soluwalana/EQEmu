@@ -300,7 +300,7 @@ class CharacterInventory:
         for item in packet.items:
             self._index(_item_address(item), item)
         self._relink()
-        return self._event("snapshot", f"Loaded {len(self.slots)} items", changed=True)
+        return self._event("snapshot", f"Loaded {len(self.slots)} items\n{self.render()}\n", changed=True,)
 
     def apply(self, packet: EQStruct, from_server: bool = True) -> InventoryEvent:
         """Apply one packet *now*; scheduling/connection checks belong to caller."""

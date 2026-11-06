@@ -8,8 +8,7 @@ if TYPE_CHECKING:
 
 from eqclient4.handler import Handler
 from eqclient4.log import log, note_comms
-from eqclient4.net.decode import body
-from eqclient4.structs import ZONE_ENTRY_SIZE, EQStruct
+from eqclient4.structs import EQStruct, bytes_to_eqstruct, hexdump
 
 
 class Bus:
@@ -39,7 +38,7 @@ class Bus:
         for kind in Handler.registered():
             self.register(kind())
 
-    def publish(self, opcode: str, payload: object) -> None:
+    def publish(self, opcode: str, payload: bytes | bytearray) -> None:
         """Handlers first, then movement when the opcode is in its list, then actions.
 
         Bytes for a known opcode are deserialized once. Handlers, movement, and
@@ -52,17 +51,9 @@ class Bus:
 
         note_comms("incomming bus", opcode, payload, False)
 
-        if (
-            opcode == "OP_ZoneEntry"
-            and isinstance(payload, (bytes, bytearray))
-            and len(payload) > ZONE_ENTRY_SIZE
-        ):
-            log.debug("OP_ZoneEntry is too big, converting to OP_NewSpawn")
-            opcode = "OP_NewSpawn"
-
-        parsed = _struct(opcode, payload)
+        parsed = bytes_to_eqstruct(opcode, payload)
         if not parsed:
-            log.error(f"Opcode {opcode} is not a struct")
+            log.error(f"Opcode {opcode} is not a struct\n{hexdump(payload)}")
             return
 
         claimed = False
@@ -78,6 +69,9 @@ class Bus:
                 claimed = True
 
         _movement(self.world, opcode, parsed)
+        evt = self.world.character.apply(parsed)
+        if evt and evt.changed:
+            log.info(f"{evt}")
 
         if claimed:
             log.debug(f"Exclusively claimed opcode {opcode}")
@@ -86,13 +80,6 @@ class Bus:
         for action in self.queue:
             if opcode in action.opcodes():
                 action.add_message(parsed)
-
-
-def _struct(opcode: str, payload: object) -> EQStruct | None:
-    """The one decode for this publish. None means this publish is not a struct."""
-    if isinstance(payload, EQStruct):
-        return payload
-    return body(opcode, payload)
 
 
 def _movement(world: World, opcode: str, payload: EQStruct) -> None:

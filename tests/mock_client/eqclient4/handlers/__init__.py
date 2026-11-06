@@ -1,1 +1,1 @@
-MODULES = ("tasks",)
+MODULES = ("tasks","items","zoning",)

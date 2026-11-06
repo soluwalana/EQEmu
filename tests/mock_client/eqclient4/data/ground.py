@@ -11,9 +11,18 @@ from dataclasses import dataclass
 
 from eqclient4.data.cache_builders.common import lines, peq_path
 from eqclient4.data.catalog import _table, _tuple
-from eqclient4.world import GroundSpawn
 
 _NEAR = 40.0
+
+
+@dataclass
+class GroundSpawn:
+    id: int
+    name: str
+    x: float
+    y: float
+    z: float
+    used: bool = False
 
 
 @dataclass(frozen=True)
@@ -49,14 +58,14 @@ def ensure_ground_spawns() -> GroundSpawnBook:
 
 def ground_at(item_id: int, zone_id: int, zone: str) -> tuple[tuple[float, float, float], ...]:
     """Points in this zone where the item sits on the ground. Empty when the dump has none."""
-    spots, names = _book()
+    book = ensure_ground_spawns()
     here = (zone or "").lower()
     found: list[tuple[float, float, float]] = []
-    for spot in spots.get(item_id, ()):
+    for spot in book.spots.get(item_id, ()):
         if zone_id and spot.zone_id == zone_id:
             found.append((spot.x, spot.y, spot.z))
             continue
-        if here and names.get(spot.zone_id) == here:
+        if here and book.zones.get(spot.zone_id) == here:
             found.append((spot.x, spot.y, spot.z))
     return tuple(found)
 

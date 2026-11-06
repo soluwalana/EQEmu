@@ -3,8 +3,8 @@
 A short offer stays in the book and is not taken.
 """
 
-from eqclient4.action import Action
-from eqclient4.actions.read_tasks import ReadTasks
+# from eqclient4.action import Action
+# from eqclient4.actions.read_tasks import ReadTasks
 from eqclient4.handler import Handler
 from eqclient4.log import log
 from eqclient4.structs import (
@@ -41,11 +41,12 @@ class TasksHandler(Handler):
     def description(self, data: OP_TaskDescription) -> None:
         log.info(f"Setting task description {data.task_id} {data.title}")
         self.world.tasks.tasks[data.task_id] = data
-        action: Action = ReadTasks(data.task_id)
-        self.loop.enqueue_once(action, source=f"task:{data.task_id}")
+        # action: Action = ReadTasks(data.task_id)
+        # self.loop.enqueue_once(action, source=f"task:{data.task_id}")
+        log.error(f"Need to implement ReadTasks(data.task_id) {data.task_id}")
 
     def activity(self, data: OP_TaskActivity) -> None:
-        log.info(f"Setting task activity {data.task_id} {data.activity_id}")
+        log.info(f"Setting task activity {data.task_id} {data.activity_id} - {data.description} - {data.done} / {data.goal}")
         activity_map = self.world.tasks.activities[data.task_id]
         activity_map[data.activity_id] = data
 

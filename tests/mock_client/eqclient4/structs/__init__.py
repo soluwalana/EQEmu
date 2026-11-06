@@ -13,6 +13,9 @@ the y, x, z order used on the wire.
 
 from __future__ import annotations
 
+import struct
+
+from eqclient4.log import log
 from eqclient4.structs.combat import (
     OP_AutoAttack,
     OP_Bind_Wound,
@@ -140,6 +143,7 @@ from eqclient4.structs.profile import (
     OP_ReadBook,
     OP_SkillUpdate,
     OP_Stamina,
+    ProfileBind,
     SpellBuff,
 )
 from eqclient4.structs.rof2_additional import (
@@ -179,6 +183,7 @@ from eqclient4.structs.rof2_additional import (
     OP_XTargetResponse,
 )
 from eqclient4.structs.rof_missing import (
+    BuffIconEntry,
     OP_AAExpUpdate,
     OP_BlockedBuffs,
     OP_BuffCreate,
@@ -517,4 +522,33 @@ __all__ = [
     "OP_AAExpUpdate",
     "OP_Save",
     "OP_ItemLinkText",
+    "BuffIconEntry",
+    "ProfileBind",
 ]
+
+
+def bytes_to_eqstruct(name: str, payload: bytes | bytearray) -> EQStruct | None:
+    """The struct for this opcode. An already-built one is returned. Short or unknown packets are None."""
+    cls = OPERATIONS.get(name)
+    if not cls or not isinstance(payload, (bytes, bytearray)):
+        return None
+    try:
+        return cls.deserialize(bytes(payload))
+    except (ValueError, struct.error):
+        log.error("decode %s failed", name, exc_info=True)
+        return None
+
+
+def hexdump(payload: bytes | bytearray, max_bytes: int = -1) -> str:
+    shown = bytes(payload[:max_bytes]) if max_bytes > 0 else bytes(payload)
+    lines: list[str] = []
+    for pos in range(0, len(shown), 16):
+        chunk = shown[pos : pos + 16]
+        hexcol = " ".join(f"{b:02x}" for b in chunk)
+        ascii_col = "".join(chr(b) if 32 <= b <= 126 else "." for b in chunk)
+        lines.append(f"  {pos:06x}  {hexcol:<47}  |{ascii_col}|")
+    if not lines:
+        lines.append("  <empty payload>")
+    if len(payload) > len(shown):
+        lines.append(f"  ... {len(payload) - len(shown)} more bytes (use --max-bytes 0 for all)")
+    return "\n".join(lines)
