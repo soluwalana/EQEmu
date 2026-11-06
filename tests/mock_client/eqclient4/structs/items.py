@@ -832,7 +832,16 @@ class OP_ShopPlayerBuy(EQStruct):
     def deserialize(cls, data: bytes) -> OP_ShopPlayerBuy:
         exact(data, 32, "OP_ShopPlayerBuy")
         npc, player, slot, unknown, quantity, gap, price, tail = struct.unpack("<8I", data)
-        return cls(npc, player, slot, unknown, quantity, price, gap, tail)
+        return cls(
+            npc,
+            player,
+            slot,
+            unknown,
+            quantity,
+            price,
+            gap,
+            tail,
+        )
 
 
 @dataclass

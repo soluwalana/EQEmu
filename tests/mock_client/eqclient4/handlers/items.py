@@ -17,7 +17,7 @@ from eqclient4.structs import (
     OP_FinishTrade,
     OP_ItemPacket,
     OP_ShopDelItem,
-    OP_ShopEnd,
+    OP_MoneyUpdate,
     OP_ShopEndConfirm,
     OP_ShopPlayerBuy,
     OP_ShopPlayerSell,
@@ -70,6 +70,7 @@ class ItemsHandler(Handler):
         if not active:
             log.error(f"Shop management arrived for a merchant that is not open {payload}")
             return
+
         match payload:
             case OP_ItemPacket():
                 active.items[payload.item.slot] = payload.item

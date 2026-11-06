@@ -10,7 +10,6 @@ The generated AASkill constants are the *rank IDs* in zone/aa.h's aaID
 enumeration (not aa_ability.id and not conventional SkillType IDs).
 """
 
-
 import argparse
 import re
 from pathlib import Path
@@ -75,18 +74,20 @@ def make_source(innate: dict[str, int], aa: dict[str, int]) -> str:
     for slot in range(size):
         name = known_slots.get(slot, f"UNKNOWN_{slot:02}")
         lines.append(f"    {name} = {slot}")
-    lines.extend([
-        "",
-        "",
-        "class InnateState(IntEnum):",
-        '    """Value stored at a particular innate skill slot."""',
-        f'    ENABLED = {states["InnateEnabled"]}',
-        f'    DISABLED = {states["InnateDisabled"]}',
-        "",
-        "",
-        "class AASkill(IntEnum):",
-        '    """EQEmu legacy aaID enumeration: named AA RANK IDs, not ability IDs."""',
-    ])
+    lines.extend(
+        [
+            "",
+            "",
+            "class InnateState(IntEnum):",
+            '    """Value stored at a particular innate skill slot."""',
+            f'    ENABLED = {states["InnateEnabled"]}',
+            f'    DISABLED = {states["InnateDisabled"]}',
+            "",
+            "",
+            "class AASkill(IntEnum):",
+            '    """EQEmu legacy aaID enumeration: named AA RANK IDs, not ability IDs."""',
+        ]
+    )
     used: dict[str, str] = {}
     for cpp_name, value in aa.items():
         if not cpp_name.startswith("aa"):
@@ -113,7 +114,9 @@ def main() -> None:
     compile(source, str(args.output), "exec")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(source, encoding="utf-8")
-    print(f"Wrote {len(aa)} AA rank IDs and {innate['InnateSkillMax']} innate slots to {args.output}")
+    print(
+        f"Wrote {len(aa)} AA rank IDs and {innate['InnateSkillMax']} innate slots to {args.output}"
+    )
 
 
 if __name__ == "__main__":

@@ -4,8 +4,6 @@ Add `from eqclient4.structs import rof2_missing` to structs/__init__.py to regis
 all OP_* classes in the existing OPERATIONS registry (no duplicate definitions).
 """
 
-from __future__ import annotations
-
 import struct
 from dataclasses import dataclass, field
 

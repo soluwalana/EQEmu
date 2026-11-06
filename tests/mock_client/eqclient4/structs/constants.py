@@ -146,9 +146,9 @@ class InnateState(IntEnum):
     DISABLED = 255
 
 
-
 class AASkill(IntEnum):
     """EQEmu legacy aaID enumeration: named AA RANK IDs, not ability IDs."""
+
     NONE = 0
     INNATE_STRENGTH = 2
     INNATE_STAMINA = 7
