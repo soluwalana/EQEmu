@@ -1,5 +1,6 @@
 import struct
 from dataclasses import dataclass, field
+from typing import Generator
 
 from eqclient4.structs.wire import (
     EQStruct,
@@ -13,7 +14,6 @@ from eqclient4.structs.wire import (
     pack_inventory_slot,
     pack_names,
     put_cstr,
-    read_i32,
     read_u32,
     two_names,
     u32,
@@ -22,11 +22,11 @@ from eqclient4.structs.wire import (
 # common/patches/rof2_structs.h:4977 ItemQuaternaryBodyStruct, packed.
 _QUATERNARY = 171
 
-ITEM_MERCHANT = 0x64
-ITEM_LOOT = 0x66
-ITEM_TRADE = 0x67
-ITEM_INVENTORY = 0x69
-ITEM_SUMMON = 0x6A
+ITEM_MERCHANT = 0x64  # 100
+ITEM_LOOT = 0x66  # 102
+ITEM_TRADE = 0x67  # 103
+ITEM_INVENTORY = 0x69  # 105
+ITEM_SUMMON = 0x6A  # 106
 
 
 # Replacement for _pack_item_body, _read_item, AugmentSocket, the field tables,
@@ -133,6 +133,7 @@ ITEM_FIELD_LAYOUT: dict[str, tuple[str, str, int]] = {
     "damage_shield": ("tertiary", "<i", 23),
     "stack_size": ("tertiary", "<I", 50),
     "no_transfer": ("tertiary", "<B", 54),
+    "item_class": ("finish", "<B", 25),
     # Six effects, each at an independently located offset, owing to C-strings
     **{name: (f"effect:{name}", "<i", 0) for name in ITEM_EFFECT_FIELDS},
 }
@@ -201,6 +202,7 @@ class Item(EQStruct):
     shielding: int = 0
     avoidance: int = 0
     accuracy: int = 0
+    item_class: int = 0
 
     # Spell effects (scroll_effect stays in the legacy constructor above)
     click_effect: int = 0
@@ -214,6 +216,9 @@ class Item(EQStruct):
     aug_restrict: int = 0
     aug_restrict2: int = 0
     augment_slots: dict[int, AugmentSocket] = field(default_factory=dict)
+
+    ornament_mainhand: str = ""
+    ornament_offhand: str = ""
 
     address: InventorySlot | None = field(default=None, repr=False, compare=False)
     children: list[Item] = field(default_factory=list, repr=False, compare=False)
@@ -271,6 +276,7 @@ class Item(EQStruct):
         """Construct a minimal, valid serialized item when there is no raw prefix."""
         buf = {
             "header": bytearray(SECTION_SIZES["header"]),
+            "finish": bytearray(SECTION_SIZES["finish"]),
             "body": bytearray(SECTION_SIZES["body"]),
             "secondary": bytearray(SECTION_SIZES["secondary"]),
             "tertiary": bytearray(SECTION_SIZES["tertiary"]),
@@ -316,9 +322,9 @@ class Item(EQStruct):
         return b"".join(
             (
                 buf["header"],
-                put_cstr(""),
-                put_cstr(""),
-                bytes(SECTION_SIZES["finish"]),
+                put_cstr(item.ornament_mainhand),
+                put_cstr(item.ornament_offhand),
+                buf["finish"],
                 put_cstr(item.name),
                 put_cstr(""),
                 put_cstr(item.id_file),
@@ -338,25 +344,33 @@ class Item(EQStruct):
     def _read_item(data: bytes, offset: int, kind: int) -> tuple[Item, int]:
         """Parse one root item (including children), returning the next position."""
         begin = offset
-        offsets: dict[str, int | tuple[int, int]] = {"header": 0}
+        offsets: dict[str, int] = {"header": 0}
 
         offset = advance(data, offset, SECTION_SIZES["header"], "item header")
         if data[begin + offsets["header"] + EVOLVING_FLAG_OFFSET]:
             offset = advance(data, offset, 25, "evolving item")
 
-        for _ in range(2):  # Ornament strings
-            _, offset = cstring(data, offset)
+        ornaments = {}
+        for field_name in ("ornament_mainhand", "ornament_offhand"):
+            offsets[f"{field_name}_start"] = offset - begin
+            value, offset = cstring(data, offset)
+            ornaments[field_name] = value
+            offsets[f"{field_name}_end"] = offset - begin
+
+        offsets["finish"] = offset - begin
         offset = advance(data, offset, SECTION_SIZES["finish"], "item header finish")
 
         name_start = offset
         name, offset = cstring(data, offset)
 
-        offsets["name"] = (name_start - begin, offset - begin)
+        offsets["name_start"] = name_start - begin
+        offsets["name_end"] = offset - begin
         _, offset = cstring(data, offset)  # Lore display string
         id_start = offset
         id_file, offset = cstring(data, offset)
 
-        offsets["id_file"] = (id_start - begin, offset - begin)
+        offsets["id_file_start"] = id_start - begin
+        offsets["id_file_end"] = offset - begin
         _, offset = cstring(data, offset)  # Blank field
 
         offsets["body"] = offset - begin
@@ -379,6 +393,7 @@ class Item(EQStruct):
         offset = advance(data, offset, SECTION_SIZES["quaternary"], "item quaternary body")
         nested_count = read_u32(data, offset)
         offset = advance(data, offset, 4, "item child count")
+
         prefix_end = offset
 
         fields = {
@@ -422,14 +437,25 @@ class Item(EQStruct):
             id_file=id_file,
             address=address,
             augment_slots=augment_slots,
-            **fields,
+            ornament_mainhand=ornaments["ornament_mainhand"],
+            ornament_offhand=ornaments["ornament_offhand"],
+            **fields,  # type: ignore[arg-type]
         )
         item._wire_prefix = bytes(data[begin:prefix_end])
         item._wire_offsets = offsets
-        item._original_fields = {
-            name: getattr(item, name)
-            for name in (*ITEM_FIELD_LAYOUT, "slot", "address", "augment_slots", "name", "id_file")
-        }
+
+        item._original_fields = {}
+        for name in (
+            *ITEM_FIELD_LAYOUT,
+            "slot",
+            "address",
+            "name",
+            "id_file",
+            "ornament_mainhand",
+            "ornament_offhand",
+        ):
+            item._original_fields[name] = getattr(item, name)
+        item._original_fields["augment_slots"] = dict(item.augment_slots)
 
         for _ in range(nested_count):
             entry_index = read_u32(data, offset)
@@ -470,19 +496,22 @@ class Item(EQStruct):
                     address.aug_index,
                 )
 
-            if len(self.augment_slots) > 6:
-                raise ValueError("Expected exactly six augment sockets")
-            if len(self.augment_slots) < 6:
-                for _ in range(6 - len(self.augment_slots)):
-                    self.augment_slots.append(AugmentSocket(type=0, visible=1, unknown=0))
+            if any(not 0 <= idx < 6 for idx in self.augment_slots):
+                raise ValueError("Invalid augment socket index")
 
             if self.augment_slots != original["augment_slots"]:
                 aug_section, aug_fmt, aug_delta = AUGMENT_LAYOUT
-                for index, socket in enumerate(self.augment_slots):
+
+                for idx in range(6):
+                    socket = self.augment_slots.get(
+                        idx,
+                        AugmentSocket(type=0, visible=1, unknown=0),
+                    )
+
                     struct.pack_into(
                         aug_fmt,
                         data,
-                        offsets[aug_section] + aug_delta + index * struct.calcsize(aug_fmt),
+                        offsets[aug_section] + aug_delta + idx * struct.calcsize(aug_fmt),
                         socket.type,
                         socket.visible,
                         socket.unknown,
@@ -491,10 +520,16 @@ class Item(EQStruct):
             # Apply variable-length edits in reverse byte order. Static offsets
             # above refer to the *original* data, before these replacements.
             edits = []
-            for name in ("name", "id_file"):
+            for name in ("name", "id_file", "ornament_mainhand", "ornament_offhand"):
                 if getattr(self, name) != original[name]:
-                    start, end = offsets[name]
-                    edits.append((start, end, put_cstr(getattr(self, name))))
+                    edits.append(
+                        (
+                            offsets[f"{name}_start"],
+                            offsets[f"{name}_end"],
+                            put_cstr(getattr(self, name)),
+                        )
+                    )
+
             for start, end, value in sorted(edits, reverse=True):
                 data[start:end] = value
 
@@ -508,7 +543,7 @@ class Item(EQStruct):
     def serialize(self) -> bytes:
         return u32(self.kind) + self._serialize_body()
 
-    def walk(self):
+    def walk(self) -> Generator[Item, None, None]:
         yield self
         for child in self.children:
             yield from child.walk()
@@ -700,7 +735,7 @@ class OP_LootItem(EQStruct):
 
     @classmethod
     def deserialize(cls, data: bytes) -> OP_LootItem:
-        exact(data, 12, "OP_LootItem")
+        exact(data, 20, "OP_LootItem")
         corpse_id, player_id, slot, unknown10, auto_loot, unknown16 = struct.unpack_from(
             "<IIHHiI", data
         )
@@ -968,12 +1003,6 @@ class OP_TradeSkillCombine(EQStruct):
     guildtribute_type: int = 0
     container_address: InventorySlot | None = field(default=None, repr=False, compare=False)
     guildtribute_address: InventorySlot | None = field(default=None, repr=False, compare=False)
-
-    def serialize(self) -> bytes:
-
-        return pack_inventory_slot(self.container_slot) + pack_inventory_slot(
-            self.guildtribute_slot
-        )
 
     def serialize(self) -> bytes:
         # common/patches/rof2_structs.h:3933 NewCombine_Struct

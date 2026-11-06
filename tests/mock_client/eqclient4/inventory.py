@@ -23,6 +23,8 @@ from eqclient4.structs.items import (
     OP_FinishTrade,
     OP_ItemPacket,
     OP_MoveItem,
+    OP_ShopPlayerBuy,
+    OP_ShopPlayerSell,
 )
 from eqclient4.structs.wire import EQStruct, InventorySlot
 
@@ -312,7 +314,7 @@ class CharacterInventory:
                 return self._received_item(packet.item)
             case OP_MoveItem():
                 return self._move(packet)
-            case OP_DeleteItem():
+            case OP_DeleteItem() | OP_ShopPlayerSell():
                 return self._delete(packet)
             case OP_FinishTrade():
                 return self.clear_trade("trade-cleared")
@@ -321,13 +323,11 @@ class CharacterInventory:
             case _:
                 return self._event("ignored", f"{type(packet).__name__} is not an inventory update")
 
-    def clear_trade(self) -> None:
-        for slot in list(self.slots):
-            if slot.type == 3:
-                del self.slots[slot]
-
     def clear_trade(self, action: str) -> InventoryEvent:
-        removed = [(address, item) for address, item in self.slots.items() if address.type == 3]
+        removed = []
+        for address, item in self.slots.items():
+            if address.type == 3:
+                removed.append((address, item))
 
         for address, _ in removed:
             del self.slots[address]
@@ -375,21 +375,35 @@ class CharacterInventory:
         )
 
     @staticmethod
-    def _packet_address(packet: OP_MoveItem | OP_DeleteItem, side: str) -> InventorySlot:
-        raw = getattr(packet, f"{side}_address", None)
-        if raw:
-            return raw
-        return InventorySlot.for_client(
-            getattr(packet, f"{side}_type"),
-            getattr(packet, f"{side}_slot"),
-        )
+    def _packet_address(
+        packet: OP_MoveItem | OP_DeleteItem | OP_ShopPlayerSell, side: str
+    ) -> InventorySlot:
+        match packet:
+            case OP_MoveItem() | OP_DeleteItem():
+                raw = getattr(packet, f"{side}_address", None)
+                if raw:
+                    return raw
 
-    def _delete(self, packet: OP_DeleteItem) -> InventoryEvent:
+                return InventorySlot.for_client(
+                    getattr(packet, f"{side}_type"),
+                    getattr(packet, f"{side}_slot"),
+                )
+            case OP_ShopPlayerSell():
+                return InventorySlot.for_client(POSSESSIONS_ADDRESS, packet.slot)
+
+    def _delete(self, packet: OP_DeleteItem | OP_ShopPlayerSell) -> InventoryEvent:
         address = self._packet_address(packet, "from")
         item = self.get(address)
         if item is None:
             return self._event("unresolved", f"Unknown {_format_address(address)}", source=address)
-        count = packet.count or 0
+
+        count = 0
+        match packet:
+            case OP_DeleteItem():
+                count = packet.count or 0
+            case OP_ShopPlayerSell():
+                count = packet.quantity
+
         if 0 < count < item.stack:
             item.stack -= count
             return self._event(
@@ -398,6 +412,7 @@ class CharacterInventory:
                 source=address,
                 changed=True,
             )
+
         self._take(address)
         self._relink()
         return self._event(
@@ -651,9 +666,9 @@ class CharacterInventory:
         return pickle.dumps(self.__dict__, protocol=pickle.HIGHEST_PROTOCOL)
 
     @classmethod
-    def restore(pkl: bytes) -> CharacterInventory:
+    def restore(cls, pkl: bytes) -> CharacterInventory:
         """Replace inventory state from a pickle snapshot."""
-        c = CharacterInventory()
+        c = cls()
         state = pickle.loads(pkl)
         if not isinstance(state, dict):
             raise ValueError("Invalid inventory pickle")

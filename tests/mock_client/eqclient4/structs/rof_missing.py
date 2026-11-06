@@ -680,3 +680,51 @@ class OP_Save(EQStruct):
 
     def __repr__(self) -> str:
         return f"OP_Save(size={len(self.payload)}, hex={self.payload[:32].hex(' ')} ...)"
+
+
+@dataclass
+class OP_ItemLinkText(EQStruct):
+    """Legacy EQEmu item-link packet, with optional sender and trailing padding."""
+
+    unknown00: int = 0
+    message_type: int = 0x1D3
+    unknown08: int = 0x11E
+    prefix: bytes = b""
+    link: str = ""
+    trailing: bytes = b""
+
+    def serialize(self) -> bytes:
+        return (
+            struct.pack("<III", self.unknown00, self.message_type, self.unknown08)
+            + self.prefix
+            + self.link.encode("ascii")
+            + self.trailing
+        )
+
+    @classmethod
+    def deserialize(cls, data: bytes) -> "OP_ItemLinkText":
+        need(data, 12, cls.__name__)
+
+        unknown00, message_type, unknown08 = struct.unpack_from("<III", data)
+
+        start = data.find(b"\x12", 12)
+        end = data.find(b"\x12", start + 1) if start >= 0 else -1
+
+        if end < 0:
+            raise ValueError("OP_ItemLinkText: missing link delimiter")
+
+        return cls(
+            unknown00=unknown00,
+            message_type=message_type,
+            unknown08=unknown08,
+            prefix=data[12:start],
+            link=data[start : end + 1].decode("ascii"),
+            trailing=data[end + 1 :],
+        )
+
+    @property
+    def item_id(self) -> int | None:
+        body = self.link[1:-1]
+        if len(body) >= 7 and body[0] == "0" and body[1:7].isdigit():
+            return int(body[1:7])
+        return None

@@ -178,6 +178,28 @@ from eqclient4.structs.rof2_additional import (
     OP_WearChange,
     OP_XTargetResponse,
 )
+from eqclient4.structs.rof_missing import (
+    OP_AAExpUpdate,
+    OP_BlockedBuffs,
+    OP_BuffCreate,
+    OP_ChangeSize,
+    OP_DzCompass,
+    OP_DzExpeditionLockoutTimers,
+    OP_GuildMOTD,
+    OP_ItemLinkText,
+    OP_RequestGuildTributes,
+    OP_Save,
+    OP_SendAATable,
+    OP_SendTributes,
+    OP_SendZonepoints,
+    OP_TaskRequestTimer,
+    OP_TimeOfDay,
+    OP_TributeInfo,
+    OP_TributeTimer,
+    OP_TributeUpdate,
+    OP_UpdateAA,
+    OP_Weather,
+)
 from eqclient4.structs.session import (
     OP_ACK,
     OP_ACK_ID,
@@ -252,28 +274,6 @@ from eqclient4.structs.zone import (
     OP_ZonePlayerToBind,
     OP_ZoneServerInfo,
     OP_ZoneServerReady,
-)
-
-from eqclient4.structs.rof_missing import (
-    OP_TimeOfDay,
-    OP_TributeUpdate,
-    OP_TributeTimer,
-    OP_Weather,
-    OP_SendAATable,
-    OP_UpdateAA,
-    OP_SendTributes,
-    OP_RequestGuildTributes,
-    OP_TributeInfo,
-    OP_SendZonepoints,
-    OP_GuildMOTD,
-    OP_BlockedBuffs,
-    OP_ChangeSize,
-    OP_TaskRequestTimer,
-    OP_DzCompass,
-    OP_DzExpeditionLockoutTimers,
-    OP_BuffCreate,
-    OP_AAExpUpdate,
-    OP_Save,
 )
 
 __all__ = [
@@ -516,4 +516,5 @@ __all__ = [
     "OP_BuffCreate",
     "OP_AAExpUpdate",
     "OP_Save",
+    "OP_ItemLinkText",
 ]

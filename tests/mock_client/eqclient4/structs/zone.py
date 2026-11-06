@@ -83,7 +83,7 @@ class OP_ZoneEntry(EQStruct):
         return bytes(packet)
 
     @classmethod
-    def deserialize(cls, data: bytes) -> EQStruct:
+    def deserialize(cls, data: bytes) -> OP_ZoneEntry | OP_NewSpawn:  # type: ignore[override]
         if len(data) != ZONE_ENTRY_SIZE:
             return OP_NewSpawn.deserialize(data)
 

@@ -454,10 +454,10 @@ class World:
         self.movement = Movement(self)
 
         self.inventory: CharacterInventory = CharacterInventory()
-        self.active_merchants: dict[int, Merchant] = defaultdict(Merchant)
+        self.active_merchants: dict[int, Merchant] = {}
 
     def active_merchant(self) -> Merchant | None:
-        for npc_id, merchant in self.active_merchants.items():
+        for merchant in self.active_merchants.values():
             if merchant.is_open:
                 return merchant
         return None

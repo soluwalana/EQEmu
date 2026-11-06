@@ -413,7 +413,7 @@ class OP_PlayerProfile(EQStruct):
                 raise ValueError("Cannot modify tail fields of a truncated profile")
 
         struct.pack_into("<I", packet, 4, len(packet) - 9)
-        checksum = crc32(packet[8:-1]) ^ 0xFFFFFFFF
+        checksum = crc32(bytes(packet[8:-1])) ^ 0xFFFFFFFF
         struct.pack_into("<I", packet, 0, checksum)
         return bytes(packet)
 

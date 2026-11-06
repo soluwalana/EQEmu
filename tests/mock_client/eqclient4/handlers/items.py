@@ -1,28 +1,22 @@
 """Bags, the cursor token, merchant window, and one assign pass."""
 
-# from eqclient4.actions.cursor import Cursor
-# from eqclient4.actions.sell import Sell
-# from eqclient4.actions.trade import Trade
 from eqclient4.handler import Handler
-from eqclient4.journal import InventorySlot
 from eqclient4.log import log
 from eqclient4.structs import (
-    ITEM_LOOT,
     ITEM_MERCHANT,
     EQStruct,
-    Item,
     OP_CancelTrade,
     OP_CharInventory,
     OP_DeleteItem,
     OP_FinishTrade,
     OP_ItemPacket,
     OP_ShopDelItem,
-    OP_MoneyUpdate,
     OP_ShopEndConfirm,
     OP_ShopPlayerBuy,
     OP_ShopPlayerSell,
     OP_ShopRequest,
 )
+from eqclient4.inventory import Merchant
 
 
 class ItemsHandler(Handler):
@@ -57,7 +51,10 @@ class ItemsHandler(Handler):
                     log.info(f"Inventory: {event}")
 
             case OP_ShopRequest():
-                self.world.active_merchants[payload.npc_id].is_open = True
+                if payload.npc_id not in self.world.active_merchants:
+                    self.world.active_merchants[payload.npc_id] = Merchant(npc_id=payload.npc_id, is_open=True, items={},)
+                else:
+                    self.world.active_merchants[payload.npc_id].is_open = True
 
             case OP_ShopEndConfirm() | OP_ShopDelItem() | OP_ShopPlayerBuy() | OP_ShopPlayerSell():
                 self.manage_shop(payload)
@@ -76,31 +73,15 @@ class ItemsHandler(Handler):
                 active.items[payload.item.slot] = payload.item
 
             case OP_ShopDelItem():
-                active = self.world.active_merchant()
-                if not active:
-                    log.error(f"Shop Del Item arrived for a merchant that is not open {payload}")
-                    return
                 active.items.pop(payload.slot, None)
 
             case OP_ShopPlayerBuy():
-                active = self.world.active_merchant()
-                if not active:
-                    log.error(f"Shop Player Buy arrived for a merchant that is not open {payload}")
-                    return
                 self.world.character.deduct_coins(payload.coins)
 
             case OP_ShopPlayerSell():
-                active = self.world.active_merchant()
-                if not active:
-                    log.error(f"Shop Player Sell arrived for a merchant that is not open {payload}")
-                    return
                 self.world.character.add_coins(payload.coins)
 
             case OP_ShopEndConfirm():
-                active = self.world.active_merchant()
-                if not active:
-                    log.error(f"Shop End Confirm arrived for a merchant that is not open {payload}")
-                    return
                 active.is_open = False
 
             case _:

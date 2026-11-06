@@ -39,6 +39,8 @@ from eqclient4.structs import (
     OP_FinishTrade,
     OP_ItemPacket,
     OP_MoveItem,
+    OP_ShopPlayerBuy,
+    OP_ShopPlayerSell,
 )
 
 FRAME = struct.Struct("<QBBHHI")
@@ -274,6 +276,8 @@ def display_event(
                     | OP_DeleteItem()
                     | OP_FinishTrade()
                     | OP_CancelTrade()
+                    | OP_ShopPlayerSell()
+                    | OP_ShopPlayerBuy()
                 ):
                     inventory = inventories.setdefault(event.source, CharacterInventory())
                     change = inventory.apply(obj)
