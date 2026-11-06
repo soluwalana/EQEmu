@@ -2,7 +2,7 @@
 
 Each character has their own database. From the mock_client directory:
 
-    python -m eqclient3.scripts.journal_queue Mockvthree
+    python -m eqclient4.scripts.journal_queue Mockvthree
 """
 
 from __future__ import annotations
@@ -10,9 +10,9 @@ from __future__ import annotations
 import sys
 from datetime import datetime
 
-from eqclient3.action import Action
-from eqclient3.journal import Journal, characters
-from eqclient3.log import log
+from eqclient4.action import Action
+from eqclient4.journal import Journal, characters
+from eqclient4.log import log
 
 
 def main(argv: list[str] | None = None) -> None:

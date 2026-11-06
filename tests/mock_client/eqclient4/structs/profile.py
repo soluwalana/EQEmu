@@ -1,7 +1,7 @@
 import struct
+from copy import deepcopy
 from dataclasses import dataclass, field
 
-from eqclient4.log import log
 from eqclient4.structs.wire import (
     EQStruct,
     advance,
@@ -14,6 +14,7 @@ from eqclient4.structs.wire import (
     read_u32,
     u32,
 )
+from eqclient4.utils import crc32
 
 GM_TRAINING_SIZE = 448
 GM_SKILL_COUNT = 100
@@ -33,7 +34,17 @@ class SpellBuff(EQStruct):
 
 
 @dataclass
+class ProfileBind:
+    zone_id: int = 0
+    x: float = 0.0
+    y: float = 0.0
+    z: float = 0.0
+    heading: float = 0.0
+
+
+@dataclass
 class OP_PlayerProfile(EQStruct):
+    # Original API, in the same positional order.
     name: str = ""
     gender: int = 0
     race: int = 0
@@ -60,176 +71,351 @@ class OP_PlayerProfile(EQStruct):
     spell_book: dict[int, int] = field(default_factory=dict)
     gems: dict[int, int] = field(default_factory=dict)
 
-    def serialize(self) -> bytes:
-        packet = bytearray(PROFILE_SIZE)
-        packet[16] = self.gender & 0xFF
-        # common/patches/rof2.cpp:2519 PlayerProfile race
-        struct.pack_into("<I", packet, 17, self.race & 0xFFFFFFFF)
-        packet[21] = self.class_id & 0xFF
-        packet[22] = self.level & 0xFF
-        # common/patches/rof2.cpp:2529 PlayerProfile bind zone_id
-        struct.pack_into("<I", packet, 28, self.home_zone_id & 0xFFFFFFFF)
-        # common/patches/rof2.cpp:2536 PlayerProfile deity
-        struct.pack_into("<I", packet, 128, self.deity & 0xFFFFFFFF)
-        # common/patches/rof2.cpp:2630 PlayerProfile points
-        struct.pack_into(
-            "<III",
-            packet,
-            940,
-            self.points & 0xFFFFFFFF,
-            self.mana & 0xFFFFFFFF,
-            self.hp & 0xFFFFFFFF,
-        )
-        # common/patches/rof2.cpp:2634 PlayerProfile STR
-        struct.pack_into(
-            "<IIIIIII",
-            packet,
-            952,
-            self.strength & 0xFFFFFFFF,
-            self.stamina & 0xFFFFFFFF,
-            self.charisma & 0xFFFFFFFF,
-            self.dexterity & 0xFFFFFFFF,
-            self.intelligence & 0xFFFFFFFF,
-            self.agility & 0xFFFFFFFF,
-            self.wisdom & 0xFFFFFFFF,
-        )
-        skills = [0] * 100
-        for index, value in (self.skills or {}).items():
-            if 0 <= int(index) < 100:
-                skills[int(index)] = int(value) & 0xFFFFFFFF
+    # Additional modeled data. Appended to retain positional compatibility.
+    last_name: str = ""
+    binds: list[ProfileBind] = field(default_factory=list)
+    innate_skills: dict[int, int] = field(default_factory=dict)
+    disciplines: dict[int, int] = field(default_factory=dict)
+    recast_timers: dict[int, int] = field(default_factory=dict)
+    aa: dict[int, tuple[int, int, int]] = field(default_factory=dict)
+    buffs: dict[int, SpellBuff] = field(default_factory=dict)
+    cursor_platinum: int = 0
+    cursor_gold: int = 0
+    cursor_silver: int = 0
+    cursor_copper: int = 0
+    aa_points: int = 0
+    aa_points_spent: int = 0
+    endurance: int = 0
+    zone_id: int = 0
+    zone_instance: int = 0
+    x: float = 0.0
+    y: float = 0.0
+    z: float = 0.0
+    heading: float = 0.0
+    experience: int = 0
+    bank_platinum: int = 0
+    bank_gold: int = 0
+    bank_silver: int = 0
+    bank_copper: int = 0
+    shared_platinum: int = 0
+    guild_id: int = 0
+    gm: bool = False
+    pvp: bool = False
 
-        # common/patches/rof2.cpp:2672 PlayerProfile skills
-        struct.pack_into("<100I", packet, 4616, *skills)
-        book = [0xFFFFFFFF] * 720
-        for index, spell in self.spell_book.items():
-            if 0 <= int(index) < 720:
-                book[int(index)] = int(spell) & 0xFFFFFFFF
+    _raw_packet: bytes = field(default=b"", repr=False, compare=False)
+    _original: dict = field(default_factory=dict, repr=False, compare=False)
+    _offsets: dict[str, int] = field(default_factory=dict, repr=False, compare=False)
 
-        # common/patches/rof2.cpp:2719 spell book. The encoder writes 300 discipline slots,
-        # so this is 400 bytes past the 200-slot note in the struct.
-        struct.pack_into("<720I", packet, 6900, *book)
-        gems = [-1] * 16
-        for index, spell in self.gems.items():
-            if 0 <= int(index) < 16:
-                gems[int(index)] = i32(spell)
+    # Packet offsets produced by RoF2's ENCODE(OP_PlayerProfile).
+    # The 300-discipline array shifts offsets +400 from old C++ comments.
+    _SCALARS = {
+        "gender": ("<B", 16),
+        "race": ("<I", 17),
+        "class_id": ("<B", 21),
+        "level": ("<B", 22),
+        "deity": ("<I", 128),
+        "home_zone_id": ("<I", 28),
+        "points": ("<I", 940),
+        "mana": ("<I", 944),
+        "hp": ("<I", 948),
+        "strength": ("<I", 952),
+        "stamina": ("<I", 956),
+        "charisma": ("<I", 960),
+        "dexterity": ("<I", 964),
+        "intelligence": ("<I", 968),
+        "agility": ("<I", 972),
+        "wisdom": ("<I", 976),
+        "platinum": ("<I", 13269),
+        "gold": ("<I", 13273),
+        "silver": ("<I", 13277),
+        "copper": ("<I", 13281),
+        "cursor_platinum": ("<I", 13285),
+        "cursor_gold": ("<I", 13289),
+        "cursor_silver": ("<I", 13293),
+        "cursor_copper": ("<I", 13297),
+        "aa_points_spent": ("<I", 13321),
+        "aa_points": ("<I", 13349),
+    }
 
-        # common/patches/rof2.cpp:2741 mem spells. Empty gems are -1, the same bits as 0xFFFFFFFF.
-        struct.pack_into("<16i", packet, 9784, *gems)
-        if self.coin_known:
-            # common/patches/rof2.cpp:2806 platinum
-            struct.pack_into(
-                "<IIII",
-                packet,
-                13269,
-                self.platinum & 0xFFFFFFFF,
-                self.gold & 0xFFFFFFFF,
-                self.silver & 0xFFFFFFFF,
-                self.copper & 0xFFFFFFFF,
+    @staticmethod
+    def _locate_tail(data: bytes) -> dict[str, int]:
+        """Walk variable-length bandolier and potion strings once."""
+        offset = 13355
+        count = read_u32(data, offset)
+        if count > 64:
+            raise ValueError(f"Implausible bandolier count: {count}")
+        offset += 4
+        for _ in range(count):
+            _, offset = cstring(data, offset)
+            for _ in range(4):
+                _, offset = cstring(data, offset)
+                offset = advance(data, offset, 8, "bandolier item")
+
+        potions = read_u32(data, offset)
+        if potions > 32:
+            raise ValueError(f"Implausible potion belt count: {potions}")
+        offset += 4
+        for _ in range(potions):
+            _, offset = cstring(data, offset)
+            offset = advance(data, offset, 8, "potion belt item")
+
+        name_len = offset + 96
+        need(data, name_len + 4 + 64, "profile name")
+        if read_u32(data, name_len) != 64:
+            raise ValueError("Unexpected RoF2 profile name length")
+        last_name_len = name_len + 4 + 64
+        if len(data) < last_name_len + 4 + 32:
+            # Older/partial captures end just after the first name.
+            return {"name": name_len + 4, "endurance": name_len - 12}
+        if read_u32(data, last_name_len) != 32:
+            raise ValueError("Unexpected RoF2 profile surname length")
+        result = {"name": name_len + 4, "last_name": last_name_len + 4, "endurance": name_len - 12}
+        languages_count_offset = last_name_len + 4 + 32 + 6 * 4
+        if len(data) < languages_count_offset + 4:
+            return result
+        languages_count = read_u32(data, languages_count_offset)
+        if languages_count > 256:
+            raise ValueError(f"Implausible language count: {languages_count}")
+        zone = languages_count_offset + 4 + languages_count
+        if len(data) >= zone + 67:
+            result.update(
+                {
+                    "zone": zone,
+                    "experience": zone + 38,
+                    "bank_coins": zone + 47,
+                    "shared_platinum": zone + 63,
+                    "guild_id": zone + 24,
+                    "pvp": zone + 21,
+                    "gm": zone + 23,
+                }
             )
-        # common/patches/rof2.cpp:2839 bandolier count
-        struct.pack_into("<I", packet, 13355, 20)
-        # common/patches/rof2.cpp:2866 potion belt count. Twenty empty bandoliers are 740 bytes.
-        struct.pack_into("<I", packet, 14099, 5)
-        # common/patches/rof2.cpp:2916 name length
-        struct.pack_into("<I", packet, 14244, 64)
-        # common/patches/rof2.cpp:2920 name. WriteString is then forced out to 64 bytes.
-        put_fixed(packet, 14248, self.name, 64)
-        return bytes(packet)
+        return result
+
+    def _values(self) -> dict:
+        from dataclasses import fields
+
+        return {
+            f.name: deepcopy(getattr(self, f.name))
+            for f in fields(self)
+            if not f.name.startswith("_")
+        }
 
     @classmethod
-    def deserialize(cls, data: bytes) -> OP_PlayerProfile:
-        need(data, 23, "OP_PlayerProfile")
-        gender = data[16]
-        race = read_u32(data, 17)
-        class_id = data[21]
-        level = data[22]
-        home_zone_id = read_u32(data, 28) if len(data) >= 32 else 0
-        deity = read_u32(data, 128) if len(data) >= 132 else 0
-        points = mana = hp = 0
-        strength = stamina = charisma = dexterity = intelligence = agility = wisdom = 0
-        if len(data) >= 980:
-            points, mana, hp = struct.unpack_from("<III", data, 940)
-            strength, stamina, charisma, dexterity, intelligence, agility, wisdom = (
-                struct.unpack_from("<IIIIIII", data, 952)
+    def deserialize(cls, data: bytes) -> "OP_PlayerProfile":
+        need(data, PROFILE_SIZE, "OP_PlayerProfile")
+        offsets = cls._locate_tail(data)
+        kwargs = {
+            name: struct.unpack_from(fmt, data, offset)[0]
+            for name, (fmt, offset) in cls._SCALARS.items()
+        }
+        kwargs["name"] = fixed(data, offsets["name"], 64)
+        kwargs["endurance"] = read_u32(data, offsets["endurance"])
+        kwargs["coin_known"] = True
+        kwargs["skills"] = dict(enumerate(struct.unpack_from("<100I", data, 4616)))
+        kwargs["spell_book"] = {
+            i: spell
+            for i, spell in enumerate(struct.unpack_from("<720I", data, 6900))
+            if spell not in (0, 0xFFFFFFFF)
+        }
+        kwargs["gems"] = {
+            i: spell
+            for i, spell in enumerate(struct.unpack_from("<16i", data, 9784))
+            if spell not in (0, -1)
+        }
+        kwargs["binds"] = [
+            ProfileBind(*struct.unpack_from("<Iffff", data, 28 + i * 20)) for i in range(5)
+        ]
+        kwargs["innate_skills"] = dict(enumerate(struct.unpack_from("<25I", data, 5020)))
+        kwargs["disciplines"] = {
+            i: val
+            for i, val in enumerate(struct.unpack_from("<300I", data, 5124))
+            if val not in (0, 0xFFFFFFFF)
+        }
+        kwargs["recast_timers"] = dict(enumerate(struct.unpack_from("<20I", data, 6412)))
+        kwargs["aa"] = {
+            i: value
+            for i in range(300)
+            if (value := struct.unpack_from("<III", data, 1012 + 12 * i))[0] != 0
+        }
+        buffs = {}
+        for i in range(42):
+            b = 9909 + i * 80
+            spell_id = read_u32(data, b + 19)
+            if spell_id not in (0, 0xFFFF, 0xFFFFFFFF):
+                buffs[i] = SpellBuff(
+                    effect_type=data[b + 23],
+                    level=data[b + 18],
+                    bard_modifier=struct.unpack_from("<f", data, b + 1)[0],
+                    spell_id=spell_id,
+                    duration=read_u32(data, b + 14),
+                    counters=read_u32(data, b + 10),
+                    caster_id=read_u32(data, b + 5),
+                )
+        kwargs["buffs"] = buffs
+        if "last_name" in offsets:
+            kwargs["last_name"] = fixed(data, offsets["last_name"], 32)
+        if "zone" in offsets:
+            z = offsets["zone"]
+            kwargs["zone_id"], kwargs["zone_instance"] = struct.unpack_from("<HH", data, z)
+            kwargs["y"], kwargs["x"], kwargs["z"], kwargs["heading"] = struct.unpack_from(
+                "<ffff", data, z + 4
             )
-        platinum = gold = silver = copper = 0
-        coin_known = False
-        if len(data) >= 13285:
-            platinum, gold, silver, copper = struct.unpack_from("<IIII", data, 13269)
-            coin_known = True
-        skills: dict[int, int] | None = None
-        if len(data) >= 4616 + 400:
-            raw = struct.unpack_from("<100I", data, 4616)
-            skills = {index: int(value) for index, value in enumerate(raw)}
-        book: dict[int, int] = {}
-        gems: dict[int, int] = {}
-        if len(data) >= 6900 + 720 * 4:
-            for index, spell in enumerate(struct.unpack_from("<720I", data, 6900)):
-                if spell not in (0, 0xFFFFFFFF):
-                    book[index] = int(spell)
-        if len(data) >= 9784 + 16 * 4:
-            for index, spell in enumerate(struct.unpack_from("<16i", data, 9784)):
-                if spell not in (0, -1):
-                    gems[index] = int(spell)
-        name = _profile_name(data)
-        return cls(
-            name,
-            int(gender),
-            int(race),
-            int(class_id),
-            int(level),
-            int(deity),
-            int(home_zone_id),
-            int(points),
-            int(hp),
-            int(mana),
-            int(strength),
-            int(stamina),
-            int(charisma),
-            int(dexterity),
-            int(intelligence),
-            int(agility),
-            int(wisdom),
-            int(platinum),
-            int(gold),
-            int(silver),
-            int(copper),
-            coin_known,
-            skills,
-            book,
-            gems,
-        )
+            kwargs["experience"] = struct.unpack_from("<Q", data, offsets["experience"])[0]
+            (
+                kwargs["bank_platinum"],
+                kwargs["bank_gold"],
+                kwargs["bank_silver"],
+                kwargs["bank_copper"],
+            ) = struct.unpack_from("<IIII", data, offsets["bank_coins"])
+            kwargs["shared_platinum"] = read_u32(data, offsets["shared_platinum"])
+            kwargs["guild_id"] = read_u32(data, offsets["guild_id"])
+            kwargs["pvp"] = bool(data[offsets["pvp"]])
+            kwargs["gm"] = bool(data[offsets["gm"]])
+        obj = cls(**kwargs)
+        obj._raw_packet = bytes(data)
+        obj._offsets = offsets
+        obj._original = obj._values()
+        return obj
 
+    def serialize(self) -> bytes:
+        if not self._raw_packet:
+            raise ValueError(
+                "Cannot synthesize a complete RoF2 player profile; deserialize a server packet first"
+            )
+        changes = {k for k, v in self._values().items() if v != self._original.get(k)}
+        if not changes:
+            return self._raw_packet  # Exact round-trip, including original checksum.
 
-def _profile_name(data: bytes) -> str:
-    """Name sits after the bandolier and potion strings, which vary in length.
+        packet = bytearray(self._raw_packet)
+        offsets = self._offsets
+        for name, (fmt, offset) in self._SCALARS.items():
+            if name in changes:
+                if name in {"platinum", "gold", "silver", "copper"} and not self.coin_known:
+                    raise ValueError("Cannot patch coin values when coin_known is false")
+                struct.pack_into(fmt, packet, offset, getattr(self, name))
 
-    The bandolier count is at byte 13355. The struct comment says 12955 because it
-    sizes disciplines at 200; the encoder writes 300, and everything after that moves.
-    """
-    offset = 13355
-    if len(data) < offset + 4:
-        return ""
-    try:
-        count = read_u32(data, offset)
-        offset += 4
-        for _bandolier in range(count):
-            _name, offset = cstring(data, offset)
-            for _item in range(4):
-                _item_name, offset = cstring(data, offset)
-                offset = advance(data, offset, 8, "OP_PlayerProfile")
-        potions = read_u32(data, offset)
-        offset += 4
-        for _potion in range(potions):
-            _potion_name, offset = cstring(data, offset)
-            offset = advance(data, offset, 8, "OP_PlayerProfile")
-        offset = advance(data, offset, 96, "OP_PlayerProfile")
-    except ValueError:
-        log.error("OP_PlayerProfile name walk failed", exc_info=True)
-        return ""
-    if len(data) < offset + 5:
-        return ""
-    return fixed(data, offset + 4, 64)
+        if "endurance" in changes:
+            struct.pack_into("<I", packet, offsets["endurance"], self.endurance)
+        if "name" in changes:
+            packet[offsets["name"] : offsets["name"] + 64] = b"\x00" * 64
+            put_fixed(packet, offsets["name"], self.name, 64)
+        if "last_name" in changes:
+            if "last_name" not in offsets:
+                raise ValueError("Cannot patch last name: source profile is truncated")
+            packet[offsets["last_name"] : offsets["last_name"] + 32] = b"\x00" * 32
+            put_fixed(packet, offsets["last_name"], self.last_name, 32)
+
+        def patch_dict(field_name: str, start: int, count: int, fmt: str, absent: int) -> None:
+            if field_name not in changes:
+                return
+            current = getattr(self, field_name) or {}
+            original = self._original.get(field_name) or {}
+            for i in set(current) | set(original):
+                if not 0 <= i < count:
+                    raise ValueError(f"Invalid {field_name} index: {i}")
+                if current.get(i) != original.get(i):
+                    struct.pack_into(
+                        fmt, packet, start + i * struct.calcsize(fmt), current.get(i, absent)
+                    )
+
+        patch_dict("skills", 4616, 100, "<I", 0)
+        patch_dict("spell_book", 6900, 720, "<I", 0xFFFFFFFF)
+        patch_dict("gems", 9784, 16, "<i", -1)
+        patch_dict("innate_skills", 5020, 25, "<I", 0)
+        patch_dict("disciplines", 5124, 300, "<I", 0)
+        patch_dict("recast_timers", 6412, 20, "<I", 0)
+        if "aa" in changes:
+            for i in set(self.aa) | set(self._original["aa"]):
+                if not 0 <= i < 300:
+                    raise ValueError(f"Invalid AA index: {i}")
+                if self.aa.get(i) != self._original["aa"].get(i):
+                    struct.pack_into("<III", packet, 1012 + i * 12, *(self.aa.get(i, (0, 0, 0))))
+        if "binds" in changes:
+            if len(self.binds) != 5:
+                raise ValueError("RoF2 profiles require exactly 5 bind entries")
+            for i, bind in enumerate(self.binds):
+                struct.pack_into(
+                    "<Iffff",
+                    packet,
+                    28 + i * 20,
+                    self.home_zone_id if i == 0 and "home_zone_id" in changes else bind.zone_id,
+                    bind.x,
+                    bind.y,
+                    bind.z,
+                    bind.heading,
+                )
+            # `home_zone_id` aliases binds[0].zone_id; explicit home_zone_id wins.
+
+        if "buffs" in changes:
+            for i in set(self.buffs) | set(self._original["buffs"]):
+                if not 0 <= i < 42:
+                    raise ValueError(f"Invalid buff index: {i}")
+                if self.buffs.get(i) == self._original["buffs"].get(i):
+                    continue
+                b = 9909 + i * 80
+                buff = self.buffs.get(i)
+                if buff is None:
+                    packet[b : b + 80] = b"\x00" * 80
+                else:
+                    packet[b + 18] = buff.level & 0xFF
+                    packet[b + 23] = buff.effect_type & 0xFF
+                    struct.pack_into("<f", packet, b + 1, buff.bard_modifier)
+                    for off, value in (
+                        (5, buff.caster_id),
+                        (10, buff.counters),
+                        (14, buff.duration),
+                        (19, buff.spell_id),
+                        (32, buff.counters),
+                    ):
+                        struct.pack_into("<I", packet, b + off, value & 0xFFFFFFFF)
+        if "zone" in offsets:
+            z = offsets["zone"]
+            zone_offsets = (
+                ("zone_id", "<H", z),
+                ("zone_instance", "<H", z + 2),
+                ("y", "<f", z + 4),
+                ("x", "<f", z + 8),
+                ("z", "<f", z + 12),
+                ("heading", "<f", z + 16),
+                ("experience", "<Q", offsets["experience"]),
+                ("guild_id", "<I", offsets["guild_id"]),
+                ("shared_platinum", "<I", offsets["shared_platinum"]),
+                ("pvp", "<B", offsets["pvp"]),
+                ("gm", "<B", offsets["gm"]),
+            )
+            for name, fmt, off in zone_offsets:
+                if name in changes:
+                    struct.pack_into(fmt, packet, off, getattr(self, name))
+            for i, name in enumerate(("bank_platinum", "bank_gold", "bank_silver", "bank_copper")):
+                if name in changes:
+                    struct.pack_into(
+                        "<I", packet, offsets["bank_coins"] + 4 * i, getattr(self, name)
+                    )
+        else:
+            missing = {
+                "zone_id",
+                "zone_instance",
+                "x",
+                "y",
+                "z",
+                "heading",
+                "experience",
+                "guild_id",
+                "shared_platinum",
+                "bank_platinum",
+                "bank_gold",
+                "bank_silver",
+                "bank_copper",
+                "gm",
+                "pvp",
+            }
+            if changes & missing:
+                raise ValueError("Cannot modify tail fields of a truncated profile")
+
+        struct.pack_into("<I", packet, 4, len(packet) - 9)
+        checksum = crc32(packet[8:-1]) ^ 0xFFFFFFFF
+        struct.pack_into("<I", packet, 0, checksum)
+        return bytes(packet)
 
 
 @dataclass

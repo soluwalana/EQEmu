@@ -18,7 +18,6 @@ import zlib
 from dataclasses import dataclass, field
 
 from eqclient4.log import log
-from eqclient4.net.crc import crc32
 from eqclient4.structs import OP_ACK as Ack
 from eqclient4.structs import OP_APP_COMBINED as AppCombined
 from eqclient4.structs import OP_COMBINED as Combined
@@ -32,6 +31,7 @@ from eqclient4.structs import OP_SESSION_REQUEST as SessionRequest
 from eqclient4.structs import OP_SESSION_RESPONSE as SessionResponse
 from eqclient4.structs import OP_SESSION_STAT_REQUEST as SessionStatRequest
 from eqclient4.structs import OP_SESSION_STAT_RESPONSE as SessionStatResponse
+from eqclient4.utils import crc32
 
 OP_SESSION_REQUEST = 0x01
 OP_SESSION_RESPONSE = 0x02

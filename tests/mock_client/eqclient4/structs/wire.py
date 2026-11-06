@@ -74,6 +74,12 @@ def put_fixed(buf: bytearray, offset: int, text: str, size: int) -> None:
     buf[offset : offset + len(raw)] = raw
 
 
+def fixed_bytes(value: str, size: int) -> bytes:
+    data = bytearray(size)
+    put_fixed(data, 0, value, size)
+    return bytes(data)
+
+
 def cstring(data: bytes, offset: int) -> tuple[str, int]:
     end = data.find(b"\x00", offset)
     if end < 0:

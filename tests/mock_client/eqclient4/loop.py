@@ -251,9 +251,10 @@ class Loop:
             self._transferred = False
 
         for packet in self.client.pump(PULSE):
+            self.recv_count += 1
+            self.world.inventory.tick(self.recv_count)
             match packet:
                 case (str() as opcode, bytes() as payload):
-                    self.recv_count += 1
                     self.capture.record("recv", opcode, payload)
                     self.bus.publish(opcode, payload)
                 case _:

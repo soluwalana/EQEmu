@@ -24,8 +24,27 @@ class GroundSpot:
     z: float
 
 
-_spots: dict[int, tuple[GroundSpot, ...]] | None = None
-_zones: dict[int, str] | None = None
+@dataclass
+class GroundSpawnBook:
+    spots: dict[int, tuple[GroundSpot, ...]]
+    zones: dict[int, str]
+
+
+_book: GroundSpawnBook | None = None
+
+
+def ensure_ground_spawns() -> GroundSpawnBook:
+    global _book
+    if _book:
+        return _book
+
+    path = peq_path()
+    if not path.is_file():
+        raise FileNotFoundError(f"PEQ file not found: {path}")
+
+    spots, zones = read_ground(lines(path))
+    _book = GroundSpawnBook(spots=spots, zones=zones)
+    return _book
 
 
 def ground_at(item_id: int, zone_id: int, zone: str) -> tuple[tuple[float, float, float], ...]:
@@ -57,19 +76,6 @@ def nearest_spawn(
             best = row
             best_d = dist
     return best
-
-
-def _book() -> tuple[dict[int, tuple[GroundSpot, ...]], dict[int, str]]:
-    global _spots, _zones
-    if _spots is not None and _zones is not None:
-        return _spots, _zones
-    path = peq_path()
-    if not path.is_file():
-        _spots = {}
-        _zones = {}
-        return _spots, _zones
-    _spots, _zones = read_ground(lines(path))
-    return _spots, _zones
 
 
 def read_ground(rows: Iterable[str]) -> tuple[dict[int, tuple[GroundSpot, ...]], dict[int, str]]:

@@ -7,7 +7,7 @@ dependencies = ["pycryptodome"]
 
 [project.optional-dependencies]
 test = ["pytest"]
-lint = ["black>=24", "mypy>=1.13"]
+lint = ["black>=24.10.0", "mypy>=1.13"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

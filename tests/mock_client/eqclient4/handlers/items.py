@@ -11,10 +11,17 @@ from eqclient4.structs import (
     ITEM_MERCHANT,
     EQStruct,
     Item,
+    OP_CancelTrade,
     OP_CharInventory,
     OP_DeleteItem,
+    OP_FinishTrade,
     OP_ItemPacket,
     OP_ShopDelItem,
+    OP_ShopEnd,
+    OP_ShopEndConfirm,
+    OP_ShopPlayerBuy,
+    OP_ShopPlayerSell,
+    OP_ShopRequest,
 )
 
 
@@ -24,126 +31,76 @@ class ItemsHandler(Handler):
         "OP_ItemPacket",
         "OP_DeleteItem",
         "OP_ShopDelItem",
-        "OP_UpdateAugmentSlots",
         "OP_CancelTrade",
         "OP_FinishTrade",
+        "OP_ShopEnd",
+        "OP_ShopEndConfirm",
+        "OP_ShopPlayerBuy",
+        "OP_ShopPlayerSell",
+        "OP_ShopRequest",
     )
 
     def on(self, opcode: str, payload: EQStruct) -> None:
-        wrote_bags = False
         match payload:
-            case OP_CharInventory():
-                # replaces the inventory with a new list of items
-                for item in payload.items:
+            case OP_CharInventory() | OP_DeleteItem() | OP_CancelTrade() | OP_FinishTrade():
+                event = self.world.inventory.apply(payload, True)
+                if event.changed:
+                    log.info(f"Inventory: {event}")
 
-                    if self.remember(item):
-                        wrote_bags = True
-                    if item.slot == CURSOR_SLOT:
-                        release_cursor(self.loop, self.world)
-            case OP_ItemPacket():
-                wrote_bags = self.item(payload)
-            case OP_DeleteItem():
-                slot = payload.from_slot
-                self.bags().pop(slot, None)
-                if slot == CURSOR_SLOT:
-                    self.world.cursor = None
-                wrote_bags = True
-            case OP_ShopDelItem():
-                self.shop_del(payload)
+            case OP_ItemPacket() as item:
+                if item.kind == ITEM_MERCHANT:
+                    self.manage_shop(item)
+                    return
+
+                event = self.world.inventory.apply(payload, False)
+                if event.changed:
+                    log.info(f"Inventory: {event}")
+
+            case OP_ShopRequest():
+                self.world.active_merchants[payload.npc_id].is_open = True
+
+            case OP_ShopEndConfirm() | OP_ShopDelItem() | OP_ShopPlayerBuy() | OP_ShopPlayerSell():
+                self.manage_shop(payload)
+
             case _:
                 log.error("Unknown item opcode: %s", payload)
 
-    def item(self, row: OP_ItemPacket) -> bool:
-        item = row.item
-        if item.kind == ITEM_MERCHANT:
-            for action in self.open_shops():
-                action.slots[item.slot] = (item.item_id, item.price)
-            return False
-        if item.kind == ITEM_LOOT:
-            return False
-        return self.remember(item)
-
-    def remember(self, item: Item) -> bool:
-        slot = item.slot
-        item_id = item.item_id
-        if item_id == TOKEN:
-            self.loop.enqueue_once(Cursor(slot), source=f"cursor:{slot}")
-            return False
-        stack = item.stack if item.stack > 0 else 1
-        self.items()[item_id] = Held(item_id, item.name, item.item_type, stack, item.scroll_effect)
-        if item.kind == ITEM_LOOT:
-            return False
-        self.write_bag(slot, item_id)
-        return True
-
-    def write_bag(self, slot: int, item_id: int) -> None:
-        if slot < 0:
+    def manage_shop(self, payload: EQStruct) -> None:
+        active = self.world.active_merchant()
+        if not active:
+            log.error(f"Shop management arrived for a merchant that is not open {payload}")
             return
-        world = self.world
-        bags = self.bags()
-        previous = bags.get(slot)
-        swap = world.pending_swap
-        if isinstance(swap, (tuple, list)) and len(swap) == 2 and (slot in swap):
-            other = int(swap[0] if int(swap[1]) == slot else swap[1])
-            bags.pop(other, None)
-            world.pending_swap = None
-        elif previous != item_id:
-            if slot != CURSOR_SLOT and bags.get(CURSOR_SLOT) == item_id:
-                bags.pop(CURSOR_SLOT, None)
-                world.cursor = None
-            elif slot == CURSOR_SLOT:
-                for other, held in list(bags.items()):
-                    if other != slot and held == item_id:
-                        bags.pop(other, None)
-                        break
-        if slot == CURSOR_SLOT:
-            world.cursor = item_id
-        else:
-            bags[slot] = item_id
-            if world.cursor == item_id and bags.get(CURSOR_SLOT) != item_id:
-                world.cursor = None
+        match payload:
+            case OP_ItemPacket():
+                active.items[payload.item.slot] = payload.item
 
-    def shop_del(self, row: OP_ShopDelItem) -> None:
-        slot = row.slot
-        for action in self.open_shops():
-            action.slots.pop(slot, None)
+            case OP_ShopDelItem():
+                active = self.world.active_merchant()
+                if not active:
+                    log.error(f"Shop Del Item arrived for a merchant that is not open {payload}")
+                    return
+                active.items.pop(payload.slot, None)
 
-    def open_shops(self) -> list[Trade | Sell]:
-        """Trade and Sell actions that are still open. An empty list means the window is dropped."""
-        opened: list[Trade | Sell] = []
-        for action in self.loop.queue:
-            if action.complete:
-                continue
-            if isinstance(action, (Trade, Sell)):
-                opened.append(action)
-        return opened
+            case OP_ShopPlayerBuy():
+                active = self.world.active_merchant()
+                if not active:
+                    log.error(f"Shop Player Buy arrived for a merchant that is not open {payload}")
+                    return
+                self.world.character.deduct_coins(payload.coins)
 
-    def _save_inventory(self) -> None:
-        journal = self.loop.journal
-        rows: list[InventorySlot] = []
-        seen: set[int] = set()
-        items: dict[int, Held] = {}
-        for key, value in self.items().items():
-            if isinstance(key, int) and isinstance(value, Held):
-                items[key] = value
-        for slot, item_id in self.bags().items():
-            rows.append(_held_slot(int(slot), int(item_id), items))
-            seen.add(int(slot))
-        cursor = self.world.cursor
-        if cursor and CURSOR_SLOT not in seen:
-            rows.append(_held_slot(CURSOR_SLOT, int(cursor), items))
-        journal.replace_inventory(rows)
+            case OP_ShopPlayerSell():
+                active = self.world.active_merchant()
+                if not active:
+                    log.error(f"Shop Player Sell arrived for a merchant that is not open {payload}")
+                    return
+                self.world.character.add_coins(payload.coins)
 
-    def bags(self) -> dict:
-        bags = self.world.bags
-        if not bags:
-            bags = {}
-            self.world.bags = bags
-        return bags
+            case OP_ShopEndConfirm():
+                active = self.world.active_merchant()
+                if not active:
+                    log.error(f"Shop End Confirm arrived for a merchant that is not open {payload}")
+                    return
+                active.is_open = False
 
-    def items(self) -> dict:
-        items = self.world.items
-        if not items:
-            items = {}
-            self.world.items = items
-        return items
+            case _:
+                log.error("Unknown shop opcode: %s", payload)

@@ -15,6 +15,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import IO, Generator
 
+from eqclient4.inventory import CharacterInventory
 from eqclient4.scripts.eq_packet_viewer import (
     hexdump,
     split_patterns,
@@ -30,7 +31,6 @@ from eqclient4.structs import (
     OP_ItemPacket,
     OP_MoveItem,
 )
-from eqclient4.structs.inventory import CharacterInventory
 
 FRAME = struct.Struct(
     "<QBBHHI"

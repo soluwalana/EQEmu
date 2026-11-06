@@ -782,7 +782,7 @@ class OP_ShopRequest(EQStruct):
     player_id: int
     command: int
     rate: float = 0.0
-    unknown16: int = 0
+    tab_display: int = 0
     unknown20: int = 0
 
     def serialize(self) -> bytes:
@@ -793,7 +793,7 @@ class OP_ShopRequest(EQStruct):
             self.player_id & 0xFFFFFFFF,
             self.command & 0xFFFFFFFF,
             self.rate,
-            i32(self.unknown16),
+            i32(self.tab_display),
             i32(self.unknown20),
         )
 
@@ -889,8 +889,18 @@ class OP_ShopDelItem(EQStruct):
 
     @classmethod
     def deserialize(cls, data: bytes) -> OP_ShopDelItem:
+        if len(data) == 12:
+            return cls(*struct.unpack("<3I", data))
         exact(data, 16, "OP_ShopDelItem")
         return cls(*struct.unpack("<4I", data))
+
+
+class OP_ShopEnd(EQStruct):
+    pass
+
+
+class OP_ShopEndConfirm(EQStruct):
+    pass
 
 
 @dataclass

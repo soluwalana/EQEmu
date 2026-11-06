@@ -2,20 +2,20 @@
 
 From the mock_client directory:
 
-    python -m eqclient3.scripts.reset_character Mockvthree
+    python -m eqclient4.scripts.reset_character Mockvthree
 """
 
 from __future__ import annotations
 
 import sys
 
-from eqclient3.journal import Journal
+from eqclient4.journal import Journal
 
 
 def main(argv: list[str] | None = None) -> None:
     args = list(sys.argv[1:] if argv is None else argv)
     if not args:
-        raise SystemExit("python -m eqclient3.reset_character NAME")
+        raise SystemExit("python -m eqclient4.reset_character NAME")
     character = args[0]
     journal = Journal(character=character)
     try:

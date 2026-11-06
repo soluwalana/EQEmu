@@ -1,9 +1,11 @@
 import struct
 from dataclasses import dataclass
 
+from eqclient4.structs.mobs import OP_NewSpawn
 from eqclient4.structs.wire import (
     EQStruct,
     cstring,
+    exact,
     fixed,
     i32,
     need,
@@ -81,8 +83,11 @@ class OP_ZoneEntry(EQStruct):
         return bytes(packet)
 
     @classmethod
-    def deserialize(cls, data: bytes) -> OP_ZoneEntry:
-        need(data, ZONE_ENTRY_SIZE, "OP_ZoneEntry")
+    def deserialize(cls, data: bytes) -> EQStruct:
+        if len(data) != ZONE_ENTRY_SIZE:
+            return OP_NewSpawn.deserialize(data)
+
+        exact(data, ZONE_ENTRY_SIZE, "OP_ZoneEntry")
         unknown = read_u32(data)
         return cls(fixed(data, 4, 64), int(unknown))
 

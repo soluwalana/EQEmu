@@ -55,6 +55,8 @@ from eqclient4.structs.items import (
     OP_MoneyOnCorpse,
     OP_MoveItem,
     OP_ShopDelItem,
+    OP_ShopEnd,
+    OP_ShopEndConfirm,
     OP_ShopPlayerBuy,
     OP_ShopPlayerSell,
     OP_ShopRequest,
@@ -63,7 +65,6 @@ from eqclient4.structs.items import (
     OP_TradeRequestAck,
     OP_TradeSkillCombine,
 )
-
 from eqclient4.structs.login import (
     CHAR_CREATE_SIZE,
     CHAR_SELECT_ENTRY,
@@ -253,6 +254,28 @@ from eqclient4.structs.zone import (
     OP_ZoneServerReady,
 )
 
+from eqclient4.structs.rof_missing import (
+    OP_TimeOfDay,
+    OP_TributeUpdate,
+    OP_TributeTimer,
+    OP_Weather,
+    OP_SendAATable,
+    OP_UpdateAA,
+    OP_SendTributes,
+    OP_RequestGuildTributes,
+    OP_TributeInfo,
+    OP_SendZonepoints,
+    OP_GuildMOTD,
+    OP_BlockedBuffs,
+    OP_ChangeSize,
+    OP_TaskRequestTimer,
+    OP_DzCompass,
+    OP_DzExpeditionLockoutTimers,
+    OP_BuffCreate,
+    OP_AAExpUpdate,
+    OP_Save,
+)
+
 __all__ = [
     "OPERATIONS",
     "EQStruct",
@@ -399,6 +422,8 @@ __all__ = [
     "OP_ShopPlayerBuy",
     "OP_ShopPlayerSell",
     "OP_ShopDelItem",
+    "OP_ShopEnd",
+    "OP_ShopEndConfirm",
     "OP_TradeRequest",
     "OP_TradeRequestAck",
     "OP_CancelTrade",
@@ -472,4 +497,23 @@ __all__ = [
     "channel_bucket",
     "_SAYLINK",
     "_QUEST_ITEM",
+    "OP_TimeOfDay",
+    "OP_TributeUpdate",
+    "OP_TributeTimer",
+    "OP_Weather",
+    "OP_SendAATable",
+    "OP_UpdateAA",
+    "OP_SendTributes",
+    "OP_RequestGuildTributes",
+    "OP_TributeInfo",
+    "OP_SendZonepoints",
+    "OP_GuildMOTD",
+    "OP_BlockedBuffs",
+    "OP_ChangeSize",
+    "OP_TaskRequestTimer",
+    "OP_DzCompass",
+    "OP_DzExpeditionLockoutTimers",
+    "OP_BuffCreate",
+    "OP_AAExpUpdate",
+    "OP_Save",
 ]

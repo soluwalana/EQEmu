@@ -30,7 +30,6 @@ from typing import Any, Mapping
 from urllib.parse import quote
 
 from eqclient4.structs import OPERATIONS
-from eqclient4.structs.inventory import CharacterInventory
 
 # Each end value includes the entire unit the user specified. For instance,
 # --end 2026-11-02T10:30 includes packets up to 10:30:59.999999.

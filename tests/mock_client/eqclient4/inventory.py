@@ -8,6 +8,7 @@ InventorySlot is the wire-address type, *not* eqclient4.journal.InventorySlot.
 Item instances are the existing eqclient4.structs.items.Item objects.
 """
 
+import pickle
 from copy import copy
 from dataclasses import dataclass, field
 from struct import unpack_from
@@ -145,6 +146,19 @@ class CharacterInventory:
         self.slots = {}
         self.changes = []
         self.tick = 0
+        self.dirty_until = 0
+        self.loaded = False
+
+    @property
+    def dirty(self) -> bool:
+        return self.tick < self.dirty_until or not self.loaded
+
+    @dirty.setter
+    def dirty(self, value: bool) -> None:
+        if value:
+            self.dirty_until = self.tick + 10
+        else:
+            self.dirty_until = 0
 
     @classmethod
     def from_packet(cls, packet: OP_CharInventory) -> CharacterInventory:
@@ -279,14 +293,18 @@ class CharacterInventory:
 
     def load(self, packet: OP_CharInventory) -> InventoryEvent:
         """Replace all state from an authoritative OP_CharInventory snapshot."""
+        self.loaded = True
         self.slots.clear()
         for item in packet.items:
             self._index(_item_address(item), item)
         self._relink()
         return self._event("snapshot", f"Loaded {len(self.slots)} items", changed=True)
 
-    def apply(self, packet: EQStruct) -> InventoryEvent:
+    def apply(self, packet: EQStruct, from_server: bool = True) -> InventoryEvent:
         """Apply one packet *now*; scheduling/connection checks belong to caller."""
+        if not from_server:
+            self.dirty = True
+
         match packet:
             case OP_CharInventory():
                 return self.load(packet)
@@ -613,6 +631,36 @@ class CharacterInventory:
     def __str__(self) -> str:
         return self.render()
 
+    def held(self, item_id: int) -> int:
+        """Total quantity held across all indexed inventory locations."""
+        return sum(item.stack for item in self.slots.values() if item.item_id == item_id)
+
+    def find(self, item_id: int) -> InventorySlot | None:
+        """Return the address of the first matching item, or None."""
+        for addr, item in self.slots.items():
+            if item.item_id == item_id:
+                return addr
+        return None
+
+    def cursor(self) -> Item | None:
+        """Item currently on the cursor."""
+        return self.get(self.address(POSSESSIONS_ADDRESS, CURSOR_SLOT))
+
+    def dump(self) -> bytes:
+        """Serialize the complete inventory state."""
+        return pickle.dumps(self.__dict__, protocol=pickle.HIGHEST_PROTOCOL)
+
+    @classmethod
+    def restore(pkl: bytes) -> CharacterInventory:
+        """Replace inventory state from a pickle snapshot."""
+        c = CharacterInventory()
+        state = pickle.loads(pkl)
+        if not isinstance(state, dict):
+            raise ValueError("Invalid inventory pickle")
+        c.__dict__.clear()
+        c.__dict__.update(state)
+        return c
+
 
 def _slot_id(address: InventorySlot) -> str:
     if address.type == 0:
@@ -633,5 +681,19 @@ def _slot_id(address: InventorySlot) -> str:
 @dataclass
 class Merchant:
     npc_id: int
+    is_open: bool
     items: dict[int, Item] = field(default_factory=dict)
-    is_open: bool = False
+
+    def get(self, slot: int) -> Item | None:
+        return self.items.get(slot)
+
+    def find(self, item_id: int) -> int | None:
+        """Find the first merchant slot containing an item ID."""
+        return next(
+            (slot for slot, item in self.items.items() if item.item_id == item_id),
+            None,
+        )
+
+    def find_all(self, item_id: int) -> list[int]:
+        """Find every merchant slot containing an item ID."""
+        return [slot for slot, item in self.items.items() if item.item_id == item_id]

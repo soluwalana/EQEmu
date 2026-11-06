@@ -16,8 +16,10 @@ from collections import defaultdict
 from dataclasses import dataclass
 from typing import Literal
 
+from eqclient4.data.ground import GroundSpawnBook, ensure_ground_spawns
 from eqclient4.data.items import ItemBook, ensure_items
 from eqclient4.data.merchants import MerchantBook, ensure_merchants
+from eqclient4.inventory import CharacterInventory, Merchant
 from eqclient4.log import log
 from eqclient4.nav.maps import ZoneMap, load_map
 from eqclient4.nav.navmesh import NavMesh, load_nav
@@ -49,7 +51,6 @@ from eqclient4.structs import (
     OP_TaskActivity,
     OP_TaskDescription,
 )
-from eqclient4.inventory import CharacterInventory, Merchant
 from eqclient4.utils import eq_heading
 
 RosterMode = Literal["party", "raid"]
@@ -152,35 +153,81 @@ class Character:
         self.wisdom: int = 0
         self.intelligence: int = 0
         self.charisma: int = 0
-        self.coin: tuple[int, int, int, int] | None = None
-        self.inventory: CharacterInventory = CharacterInventory()
-        self.merchants: dict[int, Merchant] = {}
+        self.coin: tuple[int, int, int, int] = (0, 0, 0, 0)
 
     def ability_known(self, skill_id: int) -> bool:
         skills = self.abilities.skills
         return int(skills.get(skill_id, 0)) > 0
 
     @property
-    def coin(self) -> tuple[int, int, int, int] | None:
+    def coin(self) -> tuple[int, int, int, int]:
         return self.coin
 
     @coin.setter
-    def coin(self, value: tuple[int, int, int, int] | None) -> None:
+    def coin(self, value: tuple[int, int, int, int]) -> None:
         self.coin = value
 
     def set_coin(self, platinum: int, gold: int, silver: int, copper: int) -> None:
         """Replace the four denominations. None meant the profile had not arrived."""
         self.coin = (int(platinum), int(gold), int(silver), int(copper))
 
-    def add_coin(self, platinum: int, gold: int, silver: int, copper: int) -> None:
+    def add_coins(self, platinum: int, gold: int, silver: int, copper: int) -> None:
         """Add each denomination. Unknown coin starts at zero."""
-        current = self.coin or (0, 0, 0, 0)
-        self.coin = (
-            current[0] + int(platinum),
-            current[1] + int(gold),
-            current[2] + int(silver),
-            current[3] + int(copper),
-        )
+        self.coin[0] += int(platinum)
+        self.coin[1] += int(gold)
+        self.coin[2] += int(silver)
+        self.coin[3] += int(copper)
+
+    def add_coin(
+        self,
+        coin: int,
+    ) -> None:
+        plat, gold, silver, copper = self.coin
+        p, coin = divmod(coin, 1000)
+        g, coin = divmod(coin, 100)
+        s, c = divmod(coin, 10)
+        self.set_coin(plat + p, gold + g, silver + s, copper + c)
+
+    def deduct_coins(
+        self,
+        price: int,
+    ) -> tuple[int, int, int, int] | None:
+        """Deduct copper-denominated price, matching EQEmu's TakeMoneyFromPP."""
+        plat, gold, silver, copper = self.coin
+
+        if price < 0:
+            raise ValueError("Negative price")
+
+        total = plat * 1000 + gold * 100 + silver * 10 + copper
+        if price > total:
+            return None  # Insufficient funds
+
+        if copper >= price:
+            return plat, gold, silver, copper - price
+
+        price -= copper
+        copper = 0
+
+        if silver * 10 >= price:
+            silver, copper = divmod(silver * 10 - price, 10)
+            return plat, gold, silver, copper
+
+        price -= silver * 10
+        silver = 0
+
+        if gold * 100 >= price:
+            gold, remainder = divmod(gold * 100 - price, 100)
+            silver, copper = divmod(remainder, 10)
+            return plat, gold, silver, copper
+
+        price -= gold * 100
+        gold = 0
+
+        plat, remainder = divmod(plat * 1000 - price, 1000)
+        gold, remainder = divmod(remainder, 100)
+        silver, copper = divmod(remainder, 10)
+
+        return plat, gold, silver, copper
 
 
 class GroupRoster:
@@ -379,6 +426,7 @@ class World:
         self.quest_graph: QuestGraph = _cached_graph()
         self.zone_graph: ZoneGraph = ensure_zone_graph()
         self.merchants: MerchantBook = ensure_merchants()
+        self.ground_book: GroundSpawnBook = ensure_ground_spawns()
         self.mesh: ZoneMap | None = None
         self.exit_doors: dict[str, dict[int, list[int]]] = {}
         self.aggro_mobs: dict[int, Mob] = {}
@@ -404,6 +452,15 @@ class World:
         self.guildmaster = 0
         self.quest_items: set = set()
         self.movement = Movement(self)
+
+        self.inventory: CharacterInventory = CharacterInventory()
+        self.active_merchants: dict[int, Merchant] = defaultdict(Merchant)
+
+    def active_merchant(self) -> Merchant | None:
+        for npc_id, merchant in self.active_merchants.items():
+            if merchant.is_open:
+                return merchant
+        return None
 
     @property
     def self_id(self) -> int:
@@ -485,25 +542,12 @@ class World:
         end = mob.position
         mesh = self.mesh
         if not mesh:
-            mesh = _zone_mesh(self.zone or "")
+            mesh = load_map(self.zone or "")
 
         if not mesh:
             return True
 
         return mesh.clear(start, end)
-
-    def held(self, item_id: int) -> int:
-        """How many bag slots, plus the cursor, hold this item id."""
-        char = self.character
-
-        count = 0
-        for item in char.inventory.values():
-            if item.item_id == item_id:
-                count += item.stack
-        if char.cursor and char.cursor.item_id == item_id:
-            count += char.cursor.stack
-
-        return count
 
     def consider_mobs(self) -> list[Mob]:
         return [mob for mob in self.nearby(NEARBY_YARDS) if not mob.id != self.self_id]
@@ -550,24 +594,6 @@ class World:
             return None
         self.water_maps[zone] = water
         return water
-
-
-_loaded: dict[str, ZoneMap | None] = {}
-
-
-def _zone_mesh(zone: str) -> ZoneMap | None:
-    """The zone mesh, or None when the zone file cannot be read. A miss is tried again later."""
-    if not zone:
-        return None
-    if zone in _loaded:
-        return _loaded[zone]
-    try:
-        mesh = load_map(zone)
-    except (OSError, ValueError):
-        log.error("zone mesh for %s failed to load", zone, exc_info=True)
-        mesh = None
-    _loaded[zone] = mesh
-    return mesh
 
 
 STRIDE_TIMEOUT = 3
