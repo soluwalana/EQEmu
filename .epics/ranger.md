@@ -45,7 +45,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 33. qrg/"Niera Farbreeze", hand "Silver Chained Locket" (20476). Gives "Platinum Speckled Powder" (20456).
 34. Combine in Pottery Wheel (21): "Ancient Pattern" (18960), "Enchanted Clay" (20455), "Platinum Speckled Powder" (20456). Produces "Runecrested Bowl" (20460). Requires Pottery. The combine does not fail.
 35. misty/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
-36. Common item: Spell: Resurrection (15392). Listed in 14 zones.
+36. Buy "Spell: Resurrection" (15392) from "Henlom Visrek" (NPC 2054) in `qeynos2`. Base price: 18,936 copper.
 37. Hand "Spell: Resurrection" (15392) to karnor/"Spirit Of Venril Sathir". Spawns "Venril Sathir" (102126). Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
 38. firiona/"Foloal Stormforest", hand "Pulsing Green Stone" (20461) + "Softly Glowing Stone" (20462). Gives "Warmly Glowing Stone" (20468).
 39. burningwood/"Telin Darkforest", hand "Warmly Glowing Stone" (20468). Gives "Ancient Longsword" (20477).
@@ -111,6 +111,16 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 
 1. Acquisition of "Stone of Winde" (62604) is documented under "Sound Capture Jar" (62637); obtain another copy if needed.
 
+### "Heartwood Blade" (62627)
+
+1. Buy "Planar Fletching Kit" (17762) from "Ellis Cloudchaser" (NPC 202076) in `poknowledge`. Base price: 1,000 copper.
+2. global/"Global Player", combine recipe 13412. Sets `ranger_epic` to `3`.
+3. jaggedpine/"Red Dogwood Treant", say "Hail". Requires `ranger_epic` ==3. Gives "Red Dogwood Heartwood" (62623).
+4. dranik/"Ranger 1 5", hand "Red Dogwood Heartwood" (62623). Requires `ranger_dranik_chest` unset. Gives "Wind-blessed Heartwood" (62626).
+5. jaggedpine/"Red Dogwood Treant", say "Hail". Requires `ranger_epic` ==3. Gives "Spring Dogwood Seed" (62624).
+6. qrg/"Corun Finisc", hand "Spring Dogwood Seed" (62624). Gives "Block of Purest Silver" (62625).
+7. Combine in "Planar Fletching Kit" (17762): "Wind-blessed Heartwood" (62626), "Block of Purest Silver" (62625). Produces "Heartwood Blade" (62627). Requires Fletching. The combine does not fail.
+
 ### "Corun's Notes" (62617)
 
 1. Forage "Sickly Maiden's Hair" (62810) in `rathemtn`.
@@ -125,8 +135,8 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 10. qrg/"Corun Finisc", hand "Tuft of Sickly Maiden's Hair" (62811). Gives "Magical Sample Vial" (62657).
 11. cazicthule/"A Sickly Mosquito", on event hp.
 12. Starts timer `check`.
-13. No quest step gives Planar Fletching Kit (17762). The dump lists it in poknowledge.
-14. Common item: Whittling Knife (62608). Listed in 4 zones.
+13. Acquisition of "Planar Fletching Kit" (17762) is documented under "Heartwood Blade" (62627); obtain another copy if needed.
+14. Buy "Whittling Knife" (62608) from "Yoen Ormard" (NPC 279110) in `abysmal`. Base price: 50 copper.
 15. Forage "Fallen Tree Branch" (62652) in `dranik`.
 16. Forage "Fallen Tree Branch" (62652) in `draniksscar`.
 17. Combine in "Planar Fletching Kit" (17762): "Whittling Knife" (62608), "Fallen Tree Branch" (62652). Produces "Long Net Pole" (62607). Requires Fletching 100. Trivial at 15. The combine does not fail.
@@ -147,9 +157,9 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 32. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Swordfish" (62643). Produces "Twitching Swordfish Blood Sample" (62612). Requires Fletching. The combine does not fail.
 33. chardokb/"A Leprous Chokidai", on event hp.
 34. Starts timer `check`.
-35. Common item: Hinge Mold (12027). Listed in 25 zones.
-36. Common item: Container Base Mold (12062). Listed in 14 zones.
-37. Common item: Container Lid Mold (12069). Listed in 14 zones.
+35. Buy "Hinge Mold" (12027) from "Frannie" (NPC 3020) in `qrg`. Base price: 10 copper.
+36. Buy "Container Base Mold" (12062) from "Tislan" (NPC 10077) in `freporte`. Base price: 110 copper.
+37. Buy "Container Lid Mold" (12069) from "Tislan" (NPC 10077) in `freporte`. Base price: 110 copper.
 38. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
 39. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
 40. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
@@ -157,7 +167,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 42. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
 43. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
 44. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-45. No quest step gives Small Brick of Steel (66168). The dump lists it in qrg.
+45. Buy "Small Brick of Steel" (66168) from "Qaelin Hailstorm" (NPC 3042) in `qrg`. Base price: 5,890 copper.
 46. qrg/"Qaelin Hailstorm", say "Need A Mark". Gives "Mark of Karana" (66172).
 47. Combine in Forge (17): "Hinge Mold" (12027), "Container Base Mold" (12062), "Container Lid Mold" (12069), "Water Flask" (13006), "Small Brick of Steel" (66168), "Mark of Karana" (66172). Hands back "Mark of Karana" (66172). Produces "Surefall Fletching Kit" (66163). Requires Blacksmithing, trivial 163.
 48. Loot "Smithy Hammer" (10489) from "Gliblixl Rocktok" in `bazaar`.
@@ -182,14 +192,11 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 
 ### "Block of Purest Silver" (62625)
 
-1. global/"Global Player", combine recipe 13412. Sets `ranger_epic` to `3`.
-2. jaggedpine/"Red Dogwood Treant", say "Hail". Requires `ranger_epic` ==3. Gives "Spring Dogwood Seed" (62624).
-3. qrg/"Corun Finisc", hand "Spring Dogwood Seed" (62624). Gives "Block of Purest Silver" (62625).
+1. Acquisition of "Block of Purest Silver" (62625) is documented under "Heartwood Blade" (62627); obtain another copy if needed.
 
 ### "Wind-blessed Heartwood" (62626)
 
-1. jaggedpine/"Red Dogwood Treant", say "Hail". Requires `ranger_epic` ==3. Gives "Red Dogwood Heartwood" (62623).
-2. dranik/"Ranger 1 5", hand "Red Dogwood Heartwood" (62623). Requires `ranger_dranik_chest` unset. Gives "Wind-blessed Heartwood" (62626).
+1. Acquisition of "Wind-blessed Heartwood" (62626) is documented under "Heartwood Blade" (62627); obtain another copy if needed.
 
 ### "Heated Loadstone" (62628)
 
@@ -216,13 +223,6 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 15. Spawns "Herrian Warfrost" (300057) in `wallofslaughter` on enter.
 16. Loot "Hoarfrost Wand" (76999) from "Herrian Warfrost".
 17. Combine in "Spirit Cage" (62656): "Ring of Warmth" (11427), "Hoarfrost Wand" (76999). Produces "Elemental Ice Spirit Cage" (62647). The combine does not fail.
-
-### "Heartwood Blade" (62627)
-
-1. Acquisition of "Planar Fletching Kit" (17762) is documented under "Corun's Notes" (62617); obtain another copy if needed.
-2. Acquisition of "Wind-blessed Heartwood" (62626) is documented under "Wind-blessed Heartwood" (62626); obtain another copy if needed.
-3. Acquisition of "Block of Purest Silver" (62625) is documented under "Block of Purest Silver" (62625); obtain another copy if needed.
-4. Combine in "Planar Fletching Kit" (17762): "Wind-blessed Heartwood" (62626), "Block of Purest Silver" (62625). Produces "Heartwood Blade" (62627). Requires Fletching. The combine does not fail.
 
 ### "Senvial's Blessing" (62621)
 
@@ -260,10 +260,9 @@ Zone: `eastkarana`.
 Sets `ranger_epic` to `1`.
 
 - Needs `ranger_epic` unset.
-In script order:
+  In script order:
 
 1. Sets `ranger_epic` to `1`.
-
 
 ### 2. shana liskia — hand 62617
 
@@ -272,11 +271,10 @@ Zones: `freeportwest`, `freportw`.
 Sets `ranger_epic` to `2`.
 
 - Turn in x1: Corun's Notes (62617).
-In script order:
+  In script order:
 
 1. Sets `ranger_epic` to `2`.
 2. Gives Corun's Notes - annotated (62654).
-
 
 How the items are reached:
 
@@ -292,7 +290,6 @@ Sets `ranger_epic` to `3`.
 In script order:
 
 1. Sets `ranger_epic` to `3`.
-
 
 Combine:
 
@@ -319,11 +316,10 @@ In script order:
 
 1. Sets `ranger_epic` to `5`.
 
-
 Combine:
 
 - `recipe:13413` is combined in Planar Fletching Kit (17762).
-  - No quest step gives Planar Fletching Kit (17762). The dump lists it in poknowledge.
+  - Buy "Planar Fletching Kit" (17762) from "Ellis Cloudchaser" (NPC 202076) in `poknowledge`. Base price: 1,000 copper.
   - Put in x1: Wind-blessed Heartwood (62626).
     - Prerequisite: "Wind-blessed Heartwood" (62626). See section 0.
   - Put in x1: Block of Purest Silver (62625).
@@ -340,10 +336,9 @@ Zone: `nedaria`.
 Sets `ranger_epic` to `6`.
 
 - Needs `ranger_epic` ==5.
-In script order:
+  In script order:
 
 1. Sets `ranger_epic` to `6`.
-
 
 ### 7. a wayfarers brotherhood officer — hand 62629
 
@@ -353,10 +348,9 @@ Sets `ranger_epic` to `7`.
 
 - Needs `ranger_epic` ==6.
 - Turn in x1: Traveler's Journal (62629).
-In script order:
+  In script order:
 
 1. Sets `ranger_epic` to `7`.
-
 
 How the items are reached:
 
@@ -530,10 +524,9 @@ Zone: `nedaria`.
 Sets `ranger_epic15_pre` to `1`.
 
 - Needs `ranger_epic15_pre` unset.
-In script order:
+  In script order:
 
 1. Sets `ranger_epic15_pre` to `1`.
-
 
 ### 2. targen stonefall — hand 62601
 
@@ -543,11 +536,10 @@ Sets `ranger_epic15_pre` to `2`.
 
 - Needs `ranger_epic15_pre` ==1.
 - Turn in x1: Blasted Stone (62601).
-In script order:
+  In script order:
 
 1. Sets `ranger_epic15_pre` to `2`.
 2. Gives Washed Blasted Stone (62602).
-
 
 How the items are reached:
 
@@ -563,10 +555,9 @@ Zone: `nedaria`.
 Sets `ranger_epic15_pre` to `3`.
 
 - Needs `ranger_epic15_pre` ==2.
-In script order:
+  In script order:
 
 1. Sets `ranger_epic15_pre` to `3`.
-
 
 ### 4. player — on loot
 
@@ -576,10 +567,9 @@ Sets `ranger_epic15_pre` to `4`.
 
 - Needs `ranger_epic15_pre` ==3.
 - Needs Dusty Stone (62653).
-In script order:
+  In script order:
 
 1. Sets `ranger_epic15_pre` to `4`.
-
 
 How the items are reached:
 
@@ -595,10 +585,9 @@ Sets `ranger_epic15_pre` to `5`.
 
 - Needs `ranger_epic15_pre` ==4.
 - Turn in x1: Closed Sample Cloth (62641).
-In script order:
+  In script order:
 
 1. Sets `ranger_epic15_pre` to `5`.
-
 
 How the items are reached:
 
@@ -614,11 +603,10 @@ Zone: `nedaria`.
 Sets `ranger_epic15_pre` to `6`.
 
 - Needs `ranger_epic15_pre` ==5.
-In script order:
+  In script order:
 
 1. Sets `ranger_epic15_pre` to `6`.
 2. Gives Polished Blasted Stone (62603).
-
 
 ### 7. xanuusus — hand 62603
 
@@ -628,12 +616,11 @@ Sets `ranger_epic15_pre` to `7`.
 
 - Needs `ranger_epic15_pre` ==6.
 - Turn in x1: Polished Blasted Stone (62603).
-In script order:
+  In script order:
 
 1. Sets `ranger_epic15_pre` to `7`.
 2. Gives Polished Blasted Stone (62603).
 3. Gives Poem of the Storms (62632).
-
 
 How the items are reached:
 
@@ -648,10 +635,9 @@ Sets `ranger_epic15_pre` to `8`.
 
 - Needs `ranger_epic15_pre` ==7.
 - Needs Taskmaster's Cutlass (62631).
-In script order:
+  In script order:
 
 1. Sets `ranger_epic15_pre` to `8`.
-
 
 How the items are reached:
 
@@ -666,11 +652,10 @@ Sets `ranger_epic15_pre` to `9`.
 
 - Needs `ranger_epic15_pre` ==8.
 - Turn in x1: Stone of Winde (62604).
-In script order:
+  In script order:
 
 1. Sets `ranger_epic15_pre` to `9`.
 2. Gives Stone of Winde (62604).
-
 
 How the items are reached:
 
@@ -686,10 +671,9 @@ Sets `ranger_epic15_pre` to `10`.
 - Needs `ranger_epic15_pre` ==9.
 - Needs `ranger_epic15_pre` ==10.
 - Turn in x1: Sound Capture Jar (62637).
-In script order:
+  In script order:
 
 1. Sets `ranger_epic15_pre` to `10`.
-
 
 How the items are reached:
 
@@ -705,11 +689,10 @@ Sets `ranger_epic15_pre` to `11`.
 - Needs `ranger_epic15_pre` ==10.
 - Turn in x1: Echoing Jar (62638).
 - Turn in x1: Stone of Winde (62604).
-In script order:
+  In script order:
 
 1. Sets `ranger_epic15_pre` to `11`.
 2. Gives Essence of Earth and Wind (62600).
-
 
 How the items are reached:
 
@@ -749,7 +732,6 @@ In script order:
 
 1. Sets `ranger_epic` to `8`.
 
-
 Combine:
 
 - `recipe:19914` is combined in Crooked Cage (32042).
@@ -784,7 +766,6 @@ Sets `ranger_epic` to `8`.
 In script order:
 
 1. Sets `ranger_epic` to `8`.
-
 
 Combine:
 
@@ -821,11 +802,10 @@ Sets `ranger_epic` to `9`.
 - Turn in x1: Elemental Ice Spirit Cage (62647).
 - Turn in x1: Globe of Discordant Energy (47100).
 - Turn in x1: Heartwood Blade (62627).
-In script order:
+  In script order:
 
 1. Sets `ranger_epic` to `9`.
 2. Gives Aurora, the Heartwood Blade (62649).
-
 
 How the items are reached:
 

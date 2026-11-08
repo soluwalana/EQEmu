@@ -14,7 +14,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 2. bazaar/"Caerlyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
 3. Loot "Metal Pipe" (12979) from "A Drolvarg Pawbuster" in `karnor`.
 4. Loot "Metal Pipe" (12980) from "An Iksar Betrayer" in `chardok`.
-5. No quest step gives King's Court Token (66616). The dump lists it in shadowhaven.
+5. Buy "King's Court Token" (66616) from "Keiya Oakwood" (NPC 150311) in `shadowhaven`. Base price: 95,239 copper.
 6. shadowhaven/"Gralin Silvertooth", hand "King's Court Token" (66616). Gives "Deluxe Sewing Kit" (17966).
 7. Loot "Code of Zan Fi" (12316) from "Targin the Rock" in `soldungb`.
 8. Loot "Blackburrow Gnoll Pelt" (13027) from "Refugee Splitpaw" (NPC 17023) in `blackburrow`. Drop cache: 55% chance per kill.
@@ -41,7 +41,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 29. Loot "The Idol" (12317) from "Raster of Guk" in `gukbottom`.
 30. Loot "Blackened Wand" (13237) from "Priest Amiaz" in `befallen`.
 31. Loot "Blackened Sapphire" (13238) from "Ekeros" in `najena`.
-32. Loot "Greater Lightstone" (10400) from "A Windwillow Wisp" (NPC 397070) in `mesa`. Drop cache: 32.8% chance per kill.
+32. Buy "Greater Lightstone" (10400) from "Gliblixl Rocktok" (NPC 151204) in `bazaar`. Base price: 4,500 copper.
 33. Loot "Cutthroat Insignia Ring" (1903) from "a Dervish Cutthroat" (NPC 457074) in `oldcommons`. Drop cache: 55.56% chance per kill.
 34. Loot "Legionnaire's Bracer" (2299) from "Orc Legionnaire" (NPC 21119) in `commons`. Drop cache: 84% chance per kill.
 35. Loot "Deathfist Pawn Scalp" (13794) from "Orc Pawn" (NPC 415088) in `mistythicket`. Drop cache: 50% chance per kill.
@@ -61,9 +61,9 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 49. freeportwest/"Reyia Beslin", hand "Cutthroat Insignia Ring" (1903) + "Legionnaire's Bracer" (2299) + "Yellow Sash of Order" (10131) + "Greater Lightstone" (10400). Gives "Orange Sash of Order" (10132).
 50. freeportwest/"Reyia Beslin", hand "Orange Sash of Order" (10132) + "Blackened Wand" (13237) + "Blackened Sapphire" (13238). Gives "Red Sash of Order" (10133).
 51. rathemtn/"Brother Zephyl", hand "Red Sash of Order" (10133) + "The Idol" (12317). Gives "Rare Robe Pattern" (12315).
-52. Common item: Song: Jonthan's Whistling Warsong (15734). Listed in 8 zones.
-53. Common item: Needle Mold (12019). Listed in 32 zones.
-54. Common item: Thimble Mold (12057). Listed in 32 zones.
+52. Buy "Song: Jonthan's Whistling Warsong" (15734) from "Lysric Loresinger" (NPC 1035) in `qeynos`. Base price: 43 copper.
+53. Buy "Needle Mold" (12019) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
+54. Buy "Thimble Mold" (12057) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
 55. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
 56. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
 57. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
@@ -83,7 +83,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 71. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
 72. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
 73. Loot "Shadow Wolf Pelt" (13779) from "A Shadow Wolf" (NPC 408093) in `commonlands`. Drop cache: 7.64% chance per kill.
-74. Common item: Spell: Gather Shadows (15522). Listed in 13 zones.
+74. Buy "Spell: Gather Shadows" (15522) from "Tagus Wunne" (NPC 10030) in `freporte`. Base price: 43 copper.
 75. Forage "Spider Silk" (13041) in `mistmoore`.
 76. Forage "Spider Silk" (13041) in `mmca`.
 77. Forage "Spider Silk" (13041) in `mmcb`.
@@ -234,7 +234,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 ### "Silken Tapestry Satchel" (12596)
 
 1. Summon "Collapsible Sewing Kit" (17165) by casting "Unfold Sewing Kit".
-2. Common item: Backpack Pattern (12089). Listed in 40 zones.
+2. Buy "Backpack Pattern" (12089) from "Iala Lenard" (NPC 1141) in `qeynos`. Base price: 500 copper.
 3. Acquisition of "Vale Sewing Kit" (92882) is documented under "Spell: Electrical Charge" (16623); obtain another copy if needed.
 4. **Broken:** no event trigger found for `misty/misty#timer:Spawn`.
 5. Starts timer `Hatch`.

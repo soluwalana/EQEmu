@@ -12,8 +12,8 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 
 1. bazaar/"Eryke Stremstin", hand "Letter to Stremstin" (48128). Sets `monk_epic` to `6`.
 2. Loot "Sunless Nectar" (48117) from "An Ancient Shrieker" (NPC 164049) in `thedeep`. Drop cache: 11.17% chance per kill.
-3. Common item: Spices (13425). Listed in 39 zones.
-4. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
+3. Buy "Spices" (13425) from "Pincia Brownloe" (NPC 9088) in `freportw`. Base price: 7 copper.
+4. Buy "High Quality Firing Sheet" (16908) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 40 copper.
 5. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
 6. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
 7. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
@@ -23,42 +23,42 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 11. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
 12. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
 13. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-14. Common item: Pie Tin Sketch (16958). Listed in 29 zones.
+14. Buy "Pie Tin Sketch" (16958) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 490 copper.
 15. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006), "Pie Tin Sketch" (16958). Produces "Unfired Pie Tin" (16926). Requires Pottery, trivial 115.
 16. Combine in Kiln (22): "High Quality Firing Sheet" (16908), "Unfired Pie Tin" (16926). Produces "Pie Tin" (13438). Requires Pottery, trivial 15.
 17. Combine in Oven (15): "Sunless Nectar" (48117), "Spices" (13425), "Pie Tin" (13438). Produces "Sugar and Spice Nectar Pie" (48119). Requires Baking, trivial 176.
-18. Common item: Spit (17947). Listed in 34 zones.
-19. Common item: Firing Sheet (16906). Listed in 34 zones.
+18. Buy "Spit" (17947) from "Frannie" (NPC 3020) in `qrg`. Base price: 200 copper.
+19. Buy "Firing Sheet" (16906) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 10 copper.
 20. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-21. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
+21. Buy "Large Bowl Sketch" (16963) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 760 copper.
 22. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
 23. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
 24. Spawns "Disciple Okarote" (100133) in `stonebrunt` on event_waypoint_arrive.
 25. Loot "Bottle of Milk" (13087) from "Disciple Okarote".
 26. Loot "Snake Egg" (13088) from "A Female Razorback" (NPC 403032) in `sunderock`. Drop cache: 75.06% chance per kill.
-27. Common item: Cup of Flour (13193). Listed in 39 zones.
+27. Buy "Cup of Flour" (13193) from "Karn Tassen" (NPC 1110) in `qeynos`. Base price: 1 copper.
 28. Combine in "Mixing Bowl" (17906): "Bottle of Milk" (13087), "Snake Egg" (13088), "Cup of Flour" (13193). Produces "Clump of Dough" (13090). Requires Baking, trivial 17.
-29. Common item: Bread Tin Mold (12025). Listed in 23 zones.
+29. Buy "Bread Tin Mold" (12025) from "Frannie" (NPC 3020) in `qrg`. Base price: 400 copper.
 30. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
 31. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
 32. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
 33. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
-34. Common item: Quality Firing Sheet (16907). Listed in 32 zones.
-35. Common item: Ceramic Lining Sketch (16964). Listed in 40 zones.
+34. Buy "Quality Firing Sheet" (16907) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 20 copper.
+35. Buy "Ceramic Lining Sketch" (16964) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 25 copper.
 36. Combine in Pottery Wheel (21): "Water Flask" (13006), "Small Block of Clay" (16900), "Ceramic Lining Sketch" (16964). Produces "Unfired Ceramic Lining" (16946). Requires Pottery, trivial 36.
 37. Combine in Kiln (22): "Quality Firing Sheet" (16907), "Unfired Ceramic Lining" (16946). Produces "Ceramic Lining" (16947). Requires Pottery, trivial 17.
 38. Combine in Forge (17): "Bread Tin Mold" (12025), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Bread Tin" (13440). Requires Blacksmithing, trivial 38.
 39. Combine in "Spit" (17947): "Clump of Dough" (13090), "Bread Tin" (13440). Hands back "Bread Tin" (13440). Produces "Loaf of Bread" (13015). Requires Baking, trivial 115.
-40. Common item: Cheese (8160). Listed in 9 zones.
+40. Buy "Cheese" (8160) from "A Goblin Bartender" (NPC 11071) in `runnyeye`. Base price: 15 copper.
 41. potranquility/"Elder Fuirstel", say "Hail". Sets `pop_cod_final` to `1`.
 42. poknowledge/"Aid Grimel", say "Skill In Brewing". Requires `pop_cod_final` ==1. Requires `pop_cod_final` set. Gives "Portable Drink Barrel" (17179).
-43. Common item: Lettuce (13976). Listed in 16 zones.
+43. Buy "Lettuce" (13976) from "Cleet Miller Jr" (NPC 12029) in `qey2hh1`. Base price: 25 copper.
 44. rivervale/"Ilscent Tagglefoot", say "Jumjum Juice". Gives "Case of Jumjum Juice" (13411).
 45. northkarana/"Xanuusus", hand "Case of Jumjum Juice" (13411). Gives "Carrot" (13977).
-46. Common item: Turnip (13979). Listed in 16 zones.
+46. Buy "Turnip" (13979) from "Cleet Miller Jr" (NPC 12029) in `qey2hh1`. Base price: 25 copper.
 47. Combine in "Mixing Bowl" (17906): "Lettuce" (13976), "Carrot" (13977), "Turnip" (13979). Produces "Vegetables" (13419). Requires Baking, trivial 15. The combine does not fail.
 48. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Vegetables" (13419). Produces "Vegetable Oil" (20386). Requires Brewing, trivial 102.
-49. Common item: Garlic (58280). Listed in 5 zones.
+49. Buy "Garlic" (58280) from "Culkin Ironstove" (NPC 202092) in `poknowledge`. Base price: 10 copper.
 50. Combine in Brew Barrel (19): "Vegetable Oil" (20386), "Garlic" (58280). Produces "Grilling Sauce" (58265). Requires Brewing, trivial 54.
 51. Loot "Aged Piece of Meat" (48118) from "Ancient Nobleman" in `veksar`.
 52. Combine in Oven (15): "Loaf of Bread" (13015), "Cheese" (8160), "Grilling Sauce" (58265), "Aged Piece of Meat" (48118). Produces "Aged Meat and Cheese Sandwich" (48120). Requires Baking, trivial 176.
@@ -90,11 +90,11 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 
 ### "Polished Symbol of Focus" (48129)
 
-1. Common item: Glaze Mortar (17882). Listed in 30 zones.
+1. Buy "Glaze Mortar" (17882) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 1,000 copper.
 2. Acquisition of "Water Flask" (13006) is documented under "Letter to Stremstin" (48128); obtain another copy if needed.
 3. Acquisition of "Mixing Bowl" (17906) is documented under "Letter to Stremstin" (48128); obtain another copy if needed.
-4. Common item: Limestone (16844). Listed in 4 zones.
-5. Common item: Lead Sulphide (16845). Listed in 4 zones.
+4. Buy "Limestone" (16844) from "Myre" (NPC 67016) in `kaladimb`. Base price: 400 copper.
+5. Buy "Lead Sulphide" (16845) from "Myre" (NPC 67016) in `kaladimb`. Base price: 450 copper.
 6. Combine in "Mixing Bowl" (17906): "Limestone" (16844), "Lead Sulphide" (16845). Produces "White Lead" (16558). Requires Baking, trivial 15. The combine does not fail.
 7. Ground spawn of "Permafrost Crystals" (22121) in `permafrost`.
 8. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
@@ -132,7 +132,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 2. Loot "Demon Fangs" (1688) from "Xenevorash".
 3. Loot "Metal Pipe" (12979) from "A Drolvarg Pawbuster" in `karnor`.
 4. Loot "Metal Pipe" (12980) from "An Iksar Betrayer" in `chardok`.
-5. No quest step gives King's Court Token (66616). The dump lists it in shadowhaven.
+5. Buy "King's Court Token" (66616) from "Keiya Oakwood" (NPC 150311) in `shadowhaven`. Base price: 95,239 copper.
 6. shadowhaven/"Gralin Silvertooth", hand "King's Court Token" (66616). Gives "Deluxe Sewing Kit" (17966).
 7. Loot "Code of Zan Fi" (12316) from "Targin the Rock" in `soldungb`.
 8. Loot "Blackburrow Gnoll Pelt" (13027) from "Refugee Splitpaw" (NPC 17023) in `blackburrow`. Drop cache: 55% chance per kill.
@@ -159,7 +159,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 29. Loot "The Idol" (12317) from "Raster of Guk" in `gukbottom`.
 30. Loot "Blackened Wand" (13237) from "Priest Amiaz" in `befallen`.
 31. Loot "Blackened Sapphire" (13238) from "Ekeros" in `najena`.
-32. Loot "Greater Lightstone" (10400) from "A Windwillow Wisp" (NPC 397070) in `mesa`. Drop cache: 32.8% chance per kill.
+32. Buy "Greater Lightstone" (10400) from "Gliblixl Rocktok" (NPC 151204) in `bazaar`. Base price: 4,500 copper.
 33. Loot "Cutthroat Insignia Ring" (1903) from "a Dervish Cutthroat" (NPC 457074) in `oldcommons`. Drop cache: 55.56% chance per kill.
 34. Loot "Legionnaire's Bracer" (2299) from "Orc Legionnaire" (NPC 21119) in `commons`. Drop cache: 84% chance per kill.
 35. Loot "Deathfist Pawn Scalp" (13794) from "Orc Pawn" (NPC 415088) in `mistythicket`. Drop cache: 50% chance per kill.
@@ -176,9 +176,9 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 46. freeportwest/"Reyia Beslin", hand "Cutthroat Insignia Ring" (1903) + "Legionnaire's Bracer" (2299) + "Yellow Sash of Order" (10131) + "Greater Lightstone" (10400). Gives "Orange Sash of Order" (10132).
 47. freeportwest/"Reyia Beslin", hand "Orange Sash of Order" (10132) + "Blackened Wand" (13237) + "Blackened Sapphire" (13238). Gives "Red Sash of Order" (10133).
 48. rathemtn/"Brother Zephyl", hand "Red Sash of Order" (10133) + "The Idol" (12317). Gives "Rare Robe Pattern" (12315).
-49. Common item: Song: Jonthan's Whistling Warsong (15734). Listed in 8 zones.
-50. Common item: Needle Mold (12019). Listed in 32 zones.
-51. Common item: Thimble Mold (12057). Listed in 32 zones.
+49. Buy "Song: Jonthan's Whistling Warsong" (15734) from "Lysric Loresinger" (NPC 1035) in `qeynos`. Base price: 43 copper.
+50. Buy "Needle Mold" (12019) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
+51. Buy "Thimble Mold" (12057) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
 52. Acquisition of "Water Flask" (13006) is documented under "Letter to Stremstin" (48128); obtain another copy if needed.
 53. **Broken:** nothing in the graph gives, loots, spawns, or combines Notice to Cease and Desist (9590).
 54. Hand "Notice to Cease and Desist" (9590) to freeporteast/"Lythe Songbird". Spawns "a Freeport guard" (382255). Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard".
@@ -196,7 +196,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 66. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
 67. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
 68. Loot "Shadow Wolf Pelt" (13779) from "A Shadow Wolf" (NPC 408093) in `commonlands`. Drop cache: 7.64% chance per kill.
-69. Common item: Spell: Gather Shadows (15522). Listed in 13 zones.
+69. Buy "Spell: Gather Shadows" (15522) from "Tagus Wunne" (NPC 10030) in `freporte`. Base price: 43 copper.
 70. Forage "Spider Silk" (13041) in `mistmoore`.
 71. Forage "Spider Silk" (13041) in `mmca`.
 72. Forage "Spider Silk" (13041) in `mmcb`.

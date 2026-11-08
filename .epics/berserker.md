@@ -58,14 +58,14 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 17. Loot "Gnashing Kobold Paw" (60207) from "Gnashing Kobold" in `stonebrunt`.
 18. Loot "Scent Gland" (60208) from "Reeking Skunk" in `tox`.
 19. Loot "Scent Gland" (60208) from "Reeking Skunk" in `toxxulia`.
-20. Common item: Medicine Bag (17901). Listed in 33 zones.
-21. Common item: Handful of Prism Grains (95922). Listed in 6 zones.
+20. Buy "Medicine Bag" (17901) from "Rendallen Ironforge" (NPC 2071) in `qeynos2`. Base price: 1,000 copper.
+21. Buy "Handful of Prism Grains" (95922) from "Murak" (NPC 49085) in `oggok`. Base price: 800 copper.
 22. Loot "Heliotrope" (14242) from "a Di'zok Herbalist" in `chardok`.
 23. Loot "Heliotrope" (14242) from "a Sarnak Herb Collector" in `chardok`.
 24. Loot "Heliotrope" (14242) from "an Apprentice Herbalist" in `chardok`.
-25. Common item: Yebamante (16510). Listed in 12 zones.
-26. Common item: Blade Leaf (22143). Listed in 10 zones.
-27. Common item: Simple Potion Vial (95843). Listed in 11 zones.
+25. Buy "Yebamante" (16510) from "Guri" (NPC 30098) in `everfrost`. Base price: 25,000 copper.
+26. Buy "Blade Leaf" (22143) from "Guri" (NPC 30098) in `everfrost`. Base price: 2,500 copper.
+27. Buy "Simple Potion Vial" (95843) from "Guri" (NPC 30098) in `everfrost`. Base price: 750 copper.
 28. Combine in "Medicine Bag" (17901): "Handful of Prism Grains" (95922), "Heliotrope" (14242), "Yebamante" (16510), "Blade Leaf" (22143), "Simple Potion Vial" (95843). Produces "Philter of Major Translocation" (96467). Requires Alchemy, trivial 131.
 29. Combine in "McArik Reagent Satchel" (60205): "Decaying Liver" (60206), "Gnashing Kobold Paw" (60207), "Scent Gland" (60208), "Philter of Major Translocation" (96467). Produces "Bag of Image Essence Dust" (60209). The combine does not fail.
 30. lakeofillomen/"Keras Mcarik", hand "Medal of Hunting" (60204) + "Bag of Image Essence Dust" (60209). Gives "Medal of Mastery" (60210).

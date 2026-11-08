@@ -108,18 +108,18 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 
 ### "Decorated Statuette of the Feral" (57059)
 
-1. Common item: Large Sewing Kit (17880). Listed in 39 zones.
+1. Buy "Large Sewing Kit" (17880) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 1,000 copper.
 2. Spawns "An Ukun Battlehound" (281128) in `qinimi` on event_signal.
 3. Loot "Ukun Hide" (67424) from "An Ukun Battlehound".
-4. Common item: Firing Sheet (16906). Listed in 34 zones.
+4. Buy "Firing Sheet" (16906) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 10 copper.
 5. Acquisition of "Water Flask" (13006) is documented under "Ale" (13039); obtain another copy if needed.
 6. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
 7. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
 8. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-9. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
+9. Buy "Large Bowl Sketch" (16963) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 760 copper.
 10. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
 11. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-12. Common item: Celestial Solvent (9731). Listed in 13 zones.
+12. Buy "Celestial Solvent" (9731) from "A Goblin Bartender" (NPC 11117) in `runnyeye`. Base price: 120 copper.
 13. Loot "Fetid Skin" (13150) from "A Fetid Fiend" (NPC 72059) in `fearplane`. Drop cache: 35% chance per kill.
 14. Loot "Scare Straw" (13152) from "A Samhain" in `fearplane`.
 15. Loot "Turmoil Warts" (8331) from "A Turmoil Toad" in `fearplane`.
@@ -141,7 +141,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 31. Alternative: Loot "Pearl" (10024) from "A Tar Goo" (NPC 119122) in `wakening`; trigger: wakening/"A Tar Goo", on event_death_complete.
 32. neriaka/"X-Ta Tompi", hand "Turmoil Warts" (8331) + "Pearl" (10024) + "Fetid Skin" (13150) + "Scare Straw" (13152). Gives "Words of Acquisition (Beza)" (11866).
 33. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-34. Common item: Jar of Acid (22133). Listed in 15 zones.
+34. Buy "Jar of Acid" (22133) from "Grahm Embersmith" (NPC 6052) in `highkeep`. Base price: 100 copper.
 35. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
 36. Combine in Brew Barrel (19): "Ukun Hide" (67424), "Acid Wash" (15987). Produces "Tanned Ukun Leather" (52932). Requires Brewing, trivial 100.
 37. Loot "Gem of the Void" (9053) from "Xi Xaui" (NPC 173047) in `maiden`. Drop cache: 6.52% chance per kill.

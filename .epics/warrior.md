@@ -81,13 +81,13 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 13. Acquisition of "Water Flask" (13006) is documented under "Blackfall Blade" (60303); obtain another copy if needed.
 14. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
 15. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
-16. Common item: Gemming Mold (60317). Listed in 4 zones.
+16. Buy "Gemming Mold" (60317) from "Daria Smith" (NPC 10131) in `freporte`. Base price: 2,700 copper.
 17. Combine in Forge (17): "High Quality Metal Bits" (22230), "Water Flask" (13006), "Gemming Mold" (60317). Produces "Gemming Tool" (60316). Requires Blacksmithing, trivial 115.
 
 ### "Nocturnal Mask of Acuity" (60309)
 
-1. Common item: Jeweler's Kit (17912). Listed in 33 zones.
-2. No quest step gives Darkened Star Rose Quartz (60308). The dump lists it in firiona, qeynos2.
+1. Buy "Jeweler's Kit" (17912) from "Svena Ironforge" (NPC 2068) in `qeynos2`. Base price: 1,000 copper.
+2. Buy "Darkened Star Rose Quartz" (60308) from "Pelshia Thuxpire" (NPC 2073) in `qeynos2`. Base price: 3,000 copper.
 3. Summon "Enchanted Electrum Bar" (16505) by casting "Enchant Electrum", "Mass Enchant Electrum", "Greater Mass Enchant Electrum".
 4. Combine in "Jeweler's Kit" (17912): "Darkened Star Rose Quartz" (60308), "Enchanted Electrum Bar" (16505). Produces "Nocturnal Mask of Acuity" (60309). Requires Jewelry Making, trivial 103.
 
@@ -408,7 +408,7 @@ In script order:
 How the items are reached:
 
 - Platinum Bar (16503)
-  - Common item: Platinum Bar (16503). Listed in 30 zones.
+  - Buy "Platinum Bar" (16503) from "Ziska Ironforge" (NPC 2069) in `qeynos2`. Base price: 100,000 copper.
 
 ### 8. corfia nultethen — hand 60309
 
@@ -549,7 +549,7 @@ How the items are reached:
 - Gemming Tool (60316)
   - Prerequisite: "Gemming Tool" (60316). See section 0.
 - Spell: Fire (15433)
-  - Common item: Spell: Fire (15433). Listed in 5 zones.
+  - Buy "Spell: Fire" (15433) from "Tisiana" (NPC 27062) in `lavastorm`. Base price: 20,637 copper.
 
 ### 14. korbuk brimblade — hand 60320
 

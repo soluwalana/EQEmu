@@ -19,11 +19,11 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 7. eastkarana/"Althele", say "Out Of Balance". Sets `druid_epic` to `1`.
 8. Spawns "A Bloodgill Forager" (85234) in `lakeofillomen` on enter.
 9. Loot "Handful of Diseased Maiden's Hair" (62825) from "A Bloodgill Forager".
-10. Common item: Tackle Box (17048). Listed in 11 zones.
+10. Buy "Tackle Box" (17048) from "Misla McMannus" (NPC 12094) in `qey2hh1`. Base price: 1,000 copper.
 11. Spawns "Ulthork Raider" (116608) in `eastwastes` on enter.
 12. Loot "Carved Prexus Totem" (62821) from "Ulthork Raider".
 13. cobaltscar/"Blumblum Swigwater", hand "Carved Prexus Totem" (62821). Gives "Small Trigger Fish" (62820).
-14. Common item: Gutting Knife (62823). Listed in 4 zones.
+14. Buy "Gutting Knife" (62823) from "Tasec Dreeng" (NPC 279113) in `abysmal`. Base price: 40 copper.
 15. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Hands back "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing, trivial 20. The combine does not fail.
 16. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
 17. Loot "Partially Digested Maiden's Hair" (62819) from "spawn #Swamp Terror".
@@ -113,7 +113,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 11. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
 12. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
 13. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-14. Common item: Aerated Pot Sketch (62858). Listed in 4 zones.
+14. Buy "Aerated Pot Sketch" (62858) from "Elisha Dirtyshoes" (NPC 202134) in `poknowledge`. Base price: 300 copper.
 15. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901), "Aerated Pot Sketch" (62858). Produces "Aerated Pot Shell" (62860). Requires Pottery, trivial 68.
 16. Combine in Kiln (22): "Chunk of Energized Clay" (62859), "Aerated Pot Shell" (62860). Produces "Reinforced Aerated Pot" (62861). Requires Pottery, trivial 100. The combine does not fail.
 

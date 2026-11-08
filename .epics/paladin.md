@@ -63,7 +63,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 40. Combine in "Lovine's Potion Bag" (69922): "Ra'Tuk Screambringer's Jaw" (69921), "Noc Fleshfeasters Tail" (69920), "Mastruq Havocblade Blood" (69919), "Potameid Seaweed Strands" (69918). Produces "Lovine's Potion Bag" (69923). The combine does not fail.
 41. abysmal/"Lovine Lemise", hand "Lovine's Potion Bag" (69923). Sets `paladin_epic_reiya` to `1`.
 42. Summon "Foldable Medicine Bag" (17770) by casting "Unfold Medicine Bag".
-43. Common item: Fine Potion Vial (95846). Listed in 15 zones.
+43. Buy "Fine Potion Vial" (95846) from "Dargon" (NPC 29000) in `halas`. Base price: 1,750 copper.
 44. Loot "Robust Shadow Essence" (96911) from "Qua Senshali Xakra" (NPC 158020) in `vexthal`. Drop cache: 28.72% chance per kill.
 45. Loot "Sage Leaf" (14215) from "a Di'zok Herbalist" in `chardok`.
 46. Loot "Sage Leaf" (14215) from "a Sarnak Herb Collector" in `chardok`.
@@ -71,7 +71,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 48. Loot "Valerian Root" (14230) from "a Di'zok Herbalist" in `chardok`.
 49. Loot "Valerian Root" (14230) from "a Sarnak Herb Collector" in `chardok`.
 50. Loot "Valerian Root" (14230) from "an Apprentice Herbalist" in `chardok`.
-51. Common item: Woundwart (16526). Listed in 9 zones.
+51. Buy "Woundwart" (16526) from "Zok Kuluree" (NPC 50164) in `rathemtn`. Base price: 400 copper.
 52. Combine in "Foldable Medicine Bag" (17770): "Fine Potion Vial" (95846), "Robust Shadow Essence" (96911), "Sage Leaf" (14215), "Valerian Root" (14230), "Woundwart" (16526). Produces "Mist of the Breathless" (96937). Requires Alchemy, trivial 224.
 53. abysmal/"Reiya The Pained", hand "Mist of the Breathless" (96937). Requires `paladin_epic_reiya` ==1. Gives "Reiya's Soulstone" (69924).
 54. Spawns "Shade of Reiya the Pained" (284104) in `ferubi` on enter.
@@ -122,16 +122,16 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 17. potranquility/"Elder Fuirstel", say "Hail". Sets `pop_cod_final` to `1`.
 18. poknowledge/"Aid Grimel", say "Skill In Brewing". Requires `pop_cod_final` ==1. Requires `pop_cod_final` set. Gives "Portable Drink Barrel" (17179).
 19. Loot "Cask" (16580) from "Tugog Grigol" in `rathemtn`.
-20. Common item: Hops (16591). Listed in 31 zones.
-21. Common item: Malt (16595). Listed in 30 zones.
-22. Common item: Yeast (16596). Listed in 30 zones.
+20. Buy "Hops" (16591) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 15 copper.
+21. Buy "Malt" (16595) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 15 copper.
+22. Buy "Yeast" (16596) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 15 copper.
 23. Combine in "Portable Drink Barrel" (17179): "Cask" (16580), "Hops" (16591), "Malt" (16595), "Yeast" (16596). Produces "Mead" (13008). Requires Brewing, trivial 41.
 24. erudnext/"Reklon Gnallen", hand "Iron Ration" (13005) + "Mead" (13008). Requires `paladin_epic` ==9. Gives "Erudin Prayer Bead" (69965).
 25. Summon "Quiver of Marr" (17307) by casting "Quiver of Marr".
 26. rathemtn/"Shin Master Grubbus", hand "Quiver of Marr" (17307). Requires `paladin_epic` ==9. Gives "Gukta Prayer Bead" (69964).
-27. Common item: Barley (16590). Listed in 28 zones.
-28. Common item: Bottle (16598). Listed in 70 zones.
-29. Common item: Cork (16851). Listed in 12 zones.
+27. Buy "Barley" (16590) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 15 copper.
+28. Buy "Bottle" (16598) from "Sunsa Jocub" (NPC 1074) in `qeynos`. Base price: 4 copper.
+29. Buy "Cork" (16851) from "Rylin Coil" (NPC 55027) in `akanon`. Base price: 1 copper.
 30. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
 31. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
 32. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
@@ -139,14 +139,14 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 34. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
 35. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
 36. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-37. Common item: Firing Sheet (16906). Listed in 34 zones.
+37. Buy "Firing Sheet" (16906) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 10 copper.
 38. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
 39. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
 40. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-41. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
+41. Buy "Large Bowl Sketch" (16963) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 760 copper.
 42. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
 43. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-44. Common item: Celestial Solvent (9731). Listed in 13 zones.
+44. Buy "Celestial Solvent" (9731) from "A Goblin Bartender" (NPC 11117) in `runnyeye`. Base price: 120 copper.
 45. Loot "Fetid Skin" (13150) from "A Fetid Fiend" (NPC 72059) in `fearplane`. Drop cache: 35% chance per kill.
 46. Loot "Scare Straw" (13152) from "A Samhain" in `fearplane`.
 47. Loot "Turmoil Warts" (8331) from "A Turmoil Toad" in `fearplane`.

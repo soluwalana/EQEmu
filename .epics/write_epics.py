@@ -8,9 +8,11 @@ from collections import defaultdict
 from pathlib import Path
 
 from eqclient4.data.drops import ensure_drops
+from eqclient4.data.merchants import ensure_merchants
 from eqclient4.data.recipes import ensure_recipes
 
 DROP_BOOK = ensure_drops()
+MERCHANT_BOOK = ensure_merchants()
 RECIPE_BOOK = ensure_recipes()
 
 GRAPH = Path.home() / ".eqclient" / "quest_graph.jsonl"
@@ -153,6 +155,23 @@ def fallback_drop(items, item_id: int) -> str | None:
         f"Loot {quoted_item(items, item_id)} from {npc} "
         f"(NPC {dropper.npc_id}){where}. "
         f"Drop cache: {chance}% chance per kill."
+    )
+
+
+
+def fallback_merchant(items, item_id: int) -> str | None:
+    """Buy an otherwise unresolved item from a spawned NPC vendor."""
+    found = MERCHANT_BOOK.best(int(item_id))
+    if found is None:
+        return None
+    seller, copper = found
+    npc = quoted(seller.name) if seller.name else f"NPC {seller.npc_id}"
+    zone = f" in `{seller.zone}`" if seller.zone else ""
+    # Vendor prices change with faction/charisma; the cache has the item's base price.
+    price = f" Base price: {copper:,} copper." if copper > 0 else ""
+    return (
+        f"Buy {quoted_item(items, item_id)} from {npc} "
+        f"(NPC {seller.npc_id}){zone}.{price}"
     )
 
 
@@ -961,6 +980,10 @@ def write_class(name, title, mains, prefixes, ctx):
             bits = leaf_bits(alias)
             if bits and not bits[0].startswith("**Broken:**"):
                 return [f"Same item as {quoted_item(items, alias)}."] + bits
+
+        merchant = fallback_merchant(items, item_id)
+        if merchant:
+            return [merchant]
 
         fallback = fallback_drop(items, item_id)
         if fallback:
