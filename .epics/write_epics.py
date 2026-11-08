@@ -251,6 +251,10 @@ def parse_who(source: str) -> tuple[str, str, str]:
     act = act.split("#holds:")[0]
     if act.startswith("hand:"):
         act = "hand " + act[5:]
+    elif act.startswith("timer:"):
+        act = f"on timer {act[6:]}"
+    elif act.startswith("event:"):
+        act = f"on event {act[6:]}"
     elif act in {"enter", "loot", "kill"} or act.startswith("event_"):
         act = f"on {act}"
     else:
@@ -420,6 +424,8 @@ def write_class(name, title, mains, prefixes, ctx):
             return True
         if any("#timer:" in str(edge.get("from") or "") for edge in loots.get(item_id, [])):
             return True
+        if any("#timer:" in str(edge.get("group") or "") for edge in real_givers(item_id)):
+            return True
         return any(
             handed(edge) or any(
                 row.get("rel") == "needs" and (row.get("flag") or row.get("item"))
@@ -487,6 +493,9 @@ def write_class(name, title, mains, prefixes, ctx):
                 npc = source.rsplit(":", 1)[-1]
                 who, _, zone = parse_who(source)
                 return [f"Encounter starts when NPC {npc} spawns in `{zone}`."]
+            if "#event:" in source:
+                who, action, _zone = parse_who(source)
+                return [f"{quoted_who(who)}, {action}."]
             return [f"**Broken:** no event trigger found for `{source}`."]
 
         # More than one incoming edge means alternative routes, not mandatory steps.
@@ -899,6 +908,11 @@ def write_class(name, title, mains, prefixes, ctx):
                     )
                 elif row.get("item"):
                     expand_item(int(row["item"]))
+                    if row.get("equipped"):
+                        slot = str(row.get("slot") or "specified slot")
+                        steps.append(f"Equip {quoted_item(items, int(row['item']))} in {slot} slot.")
+                elif row.get("state") == "sitting":
+                    steps.append("Sit before the NPC while its timer checks your posture.")
 
             # Alternative requirements are not all mandatory.
             alternatives = [
@@ -920,6 +934,13 @@ def write_class(name, title, mains, prefixes, ctx):
         made_here = False
 
         for edge in real_givers(item_id):
+            group = str(edge.get("group") or edge.get("from") or "")
+            if "#timer:" in group:
+                for description in event_chain(group, expand_item):
+                    key = ("event", group, description)
+                    if key not in seen:
+                        seen.add(key)
+                        steps.append(description)
             expand_action(edge)
 
             key = (

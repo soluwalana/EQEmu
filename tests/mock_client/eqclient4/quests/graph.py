@@ -369,6 +369,21 @@ def _compute_branches(
 
     while index < limit:
         char = text[index]
+        if perl and char == "/" and text[max(0, index - 12):index].rstrip().endswith(("=~", "!~")):
+            # Skip regex bodies: words such as "do" or "end" are not syntax.
+            pos = index + 1
+            while pos < limit:
+                if text[pos] == "\\":
+                    pos += 2
+                elif text[pos] == "/":
+                    pos += 1
+                    while pos < limit and text[pos].isalpha():
+                        pos += 1
+                    break
+                else:
+                    pos += 1
+            index = pos
+            continue
         if char in "\"'":
             index = _skip_quote(text, index)
             continue
@@ -2196,6 +2211,99 @@ def _link_registered_encounter(graph: QuestGraph, npc_id: str, text: str) -> Non
                 seen.add((src, dst))
                 trigger(src, dst, npc=npc)
 
+# Event-timer rewards are distinct from timer spawns.  The generic _other_summons
+# intentionally skips event_timer; capture each reward on its named timer instead.
+_EQUIPPED_ITEM = re.compile(
+    r"GetItemIDAt\s*\(\s*Slot\.([A-Za-z_]+)\s*\)\s*==\s*(\d+)", re.I
+)
+
+
+def _timer_rewards(graph: QuestGraph, npc_id: str, text: str) -> None:
+    """SummonItem in a timer callback, including nested Lua ForeachHateList."""
+    scope = _event_functions(text, "event_timer")
+    if scope is None:
+        return
+    lo, hi = scope
+    branches = _branch_index(text)
+    for pos, item_id in _summon_items(text):
+        if not lo <= pos < hi:
+            continue
+        parents = [branch for branch in branches
+                   if lo <= branch[0] and branch[2] <= pos < branch[3] and branch[3] <= hi]
+        timers = [(branch, timer)
+                  for branch in parents
+                  for timer in _TIMER_IS.findall(text[branch[0]:branch[1]])]
+        if not timers:
+            # No matching named timer: don't pretend this reward is available unconditionally.
+            continue
+        timer = min(timers, key=lambda pair: pair[0][3] - pair[0][0])[1]
+        source = f"{npc_id}#timer:{timer}"
+        graph.edges.append({"kind": "edge", "rel": "gives", "from": npc_id,
+                            "to": f"item:{item_id}", "group": source})
+        conditions = "\n".join(text[b[0]:b[1]] for b in parents)
+        for slot, required in dict.fromkeys(_EQUIPPED_ITEM.findall(conditions)):
+            graph.edges.append({"kind": "edge", "rel": "needs", "from": source,
+                                "to": f"item:{required}", "item": int(required),
+                                "slot": slot.lower(), "equipped": True})
+        if re.search(r"(?:->|:)IsSitting\s*\(\s*\)", conditions, re.I):
+            graph.edges.append({"kind": "edge", "rel": "needs", "from": source,
+                                "to": "state:sitting", "state": "sitting"})
+
+
+def _timer_starters(graph: QuestGraph, npc_id: str, text: str) -> None:
+    """Attribute named set_timer calls to the event or dialogue that starts them."""
+    functions = _functions(text)
+    branches = _branch_index(text)
+    for match in _SET_TIMER.finditer(text):
+        timer = match.group(1)
+        owner = next(((name, lo, hi) for name, lo, hi in functions
+                      if lo <= match.start() < hi), None)
+        if owner is None:
+            continue
+        name, lo, hi = owner
+        if name == 'event_timer':
+            enclosing = sorted((b for b in branches
+                                if lo <= b[0] and b[2] <= match.start() < b[3]),
+                               key=lambda b: b[3] - b[0])
+            running = [timer for b in enclosing
+                       for timer in _TIMER_IS.findall(text[b[0]:b[1]])]
+            if not running:
+                continue
+            origin = f"{npc_id}#timer:{running[0]}"
+        elif name in {'event_say', 'event_trade', 'event_item'}:
+            enclosing = sorted((b for b in branches
+                                if lo <= b[0] and b[2] <= match.start() < b[3]),
+                               key=lambda b: b[3] - b[0])
+            if name == 'event_say':
+                words = [word for b in enclosing
+                         for word in (m.group(1) or m.group(2) for m in _SAY.finditer(text[b[0]:b[1]]))]
+                if not words:
+                    continue
+                origin = f"{npc_id}#{words[-1].lower()}"
+            else:
+                ids = [int(item) for b in enclosing
+                       for item, _count in _HANDIN.findall(text[b[0]:b[1]])]
+                origin = (f"{npc_id}#hand:{'+'.join(map(str, sorted(set(ids))))}"
+                          if ids else f"{npc_id}#{name}")
+        elif name == 'event_signal':
+            enclosing = sorted((b for b in branches
+                                if lo <= b[0] and b[2] <= match.start() < b[3]),
+                               key=lambda b: b[3] - b[0])
+            signals = [value for b in enclosing
+                       for value in _SIGNAL_CONDITION.findall(text[b[0]:b[1]])]
+            if not signals:
+                continue
+            origin = f"{npc_id}#signal:{signals[0]}"
+        else:
+            origin = f"{npc_id}#{name}"
+            if name.startswith('event_'):
+                origin = f"{npc_id}#event:{name[6:]}"
+        destination = f"{npc_id}#timer:{timer}"
+        if origin != destination:
+            graph.edges.append({"kind": "edge", "rel": "triggers",
+                                "from": origin, "to": destination, "timer": timer})
+
+
 def _link_event_causality(graph: QuestGraph, scripts: list[tuple[str, str, str]]) -> None:
     """Resolve per-zone NPC-type signals and named timers across scripts."""
     receivers: dict[tuple[str, int], tuple[str, str]] = {}
@@ -2214,6 +2322,8 @@ def _link_event_causality(graph: QuestGraph, scripts: list[tuple[str, str, str]]
             timer_id = f"{npc_id}#timer:{timer}"
             for npc_type, name in spawns:
                 graph.edges.append(_spawn_edge(timer_id, npc_type, name, timer_id))
+        _timer_rewards(graph, npc_id, text)
+        _timer_starters(graph, npc_id, text)
 
     sent = set()
     for zone, origin_npc, text in scripts:
@@ -2268,6 +2378,10 @@ def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
                     if zone_id not in known:
                         known.append(zone_id)
     _link_event_causality(graph, scripts)
+    # Event-linked rewards are added after per-file link_script(); include them
+    # in the catalog metadata emitted for the graph.
+    item_ids.update(int(str(edge['to']).split(':', 1)[1])
+                    for edge in graph.edges if str(edge.get('to', '')).startswith('item:'))
     _add_spawn_loot(graph, catalog, item_ids)
     _add_recipes(graph, catalog, item_ids)
     ground_zones: dict[int, list[str]] = {}
