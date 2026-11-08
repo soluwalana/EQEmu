@@ -25,113 +25,14 @@ import re
 import sys
 from pathlib import Path
 
+from eqclient4.quests.graph import _lex_mentioned
+
 
 _LIST = re.compile(
     r"(?P<first>\b[\w]+(?:\s+(?:of|the|a|an|to|for|in|on|with)\s+[\w]+)+)"
     r"(?P<rest>(?:\s*,\s*(?!(?:or|and)\b)[\w]+)+(?:\s*,?\s*(?:or|and)\s+[\w]+)?)",
     re.IGNORECASE,
 )
-
-_QUERY_PREFIXES = (
-    ("what",), ("who",), ("where",), ("which",),
-    ("what", "is"), ("what", "are"), ("tell", "me", "about"),
-    ("a",), ("an",), ("the",),
-)
-
-
-def _lex_tokens(value: str) -> list[str]:
-    return re.findall(r"[\w]+", value.casefold().replace("_", " "))
-
-
-def _lex_variants(token: str) -> set[str]:
-    """Small inflection set for singular/plural player triggers.
-
-    This intentionally does not do arbitrary stemming or substring matches.
-    """
-    variants = {token}
-    if len(token) > 4:
-        if token.endswith("ies") and len(token) > 5:
-            variants.add(token[:-3] + "y")
-        if token.endswith("es") and token[-3:-2] in {"s", "x", "z"}:
-            variants.add(token[:-2])
-        if token.endswith("s") and not token.endswith("ss"):
-            variants.add(token[:-1])
-    return variants
-
-
-def _lex_equiv(a: str, b: str) -> bool:
-    return bool(_lex_variants(a) & _lex_variants(b))
-
-
-def _lex_sequence(needle: list[str], haystack: list[str]) -> bool:
-    return any(
-        all(_lex_equiv(a, b) for a, b in zip(needle, haystack[start:start + len(needle)]))
-        for start in range(len(haystack) - len(needle) + 1)
-    )
-
-
-def _lex_queries(value: str) -> list[list[str]]:
-    words = _lex_tokens(value)
-    candidates = [words]
-    for prefix in _QUERY_PREFIXES:
-        if words[:len(prefix)] == list(prefix) and len(words) > len(prefix):
-            candidates.append(words[len(prefix):])
-    # A quest script may test `make the shaft` after the NPC explicitly
-    # lists the weapon's parts as `shaft, blade, fittings, hilt`.
-    if words[:2] == ["make", "the"] and len(words) > 2:
-        candidates.append(words[2:])
-    return candidates
-
-
-def _answer_to_question(phrase: str, reply: str) -> bool:
-    """Ground `am a smith` / `not a smith` in `Are you a smith?`.
-
-    This is a yes/no response to an explicit question, not a generic
-    removal of negation or of the words `am` and `not`.
-    """
-    words = _lex_tokens(phrase)
-    if len(words) < 3 or words[0] not in {"am", "not"} or words[1] not in {"a", "an"}:
-        return False
-    profession = words[2:]
-    for question in re.findall(r"[^?]*\?", reply):
-        tokens = _lex_tokens(question)
-        for i in range(len(tokens) - 2):
-            if tokens[i:i + 3] in (["are", "you", "a"], ["are", "you", "an"]):
-                if _lex_sequence(profession, tokens[i + 3:]):
-                    return True
-    return False
-
-
-def _lex_mentioned(phrase: str, replies: list[str]) -> bool:
-    """Match the player's expression to spoken offers, without lore inference.
-
-    Covers leading player-question words, inflected plural terms, and shared
-    prefixes in comma-separated lists. Checks any earlier reply, not just an
-    adjacent sibling branch.
-    """
-    queries = _lex_queries(phrase)
-    if not queries or not queries[0]:
-        return False
-    for reply in replies:
-        tokens = _lex_tokens(reply)
-        if _answer_to_question(phrase, reply):
-            return True
-        if any(_lex_sequence(query, tokens) for query in queries):
-            return True
-        for match in _LIST.finditer(reply):
-            first = _lex_tokens(match.group("first"))
-            if len(first) < 3:
-                continue
-            for option in _lex_tokens(match.group("rest")):
-                if option in {"and", "or"}:
-                    continue
-                for start in range(len(first) - 1):
-                    expansion = first[start:-1] + [option]
-                    if any(len(query) == len(expansion) and
-                           all(_lex_equiv(a, b) for a, b in zip(query, expansion))
-                           for query in queries):
-                        return True
-    return False
 
 
 def mentioned(phrase: str, replies: list[str]) -> bool:

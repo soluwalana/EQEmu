@@ -748,6 +748,76 @@ def _answer_to_question(phrase: str, reply: str) -> bool:
     return False
 
 
+def _reply_intent(phrase: str, reply: str) -> bool:
+    """Resolve conventional player responses only when NPC wording licenses them.
+
+    Avoid blanket prefix stripping: `I am worthy` should not match a
+    random mention of a worthy object, and `craft coif` must have a
+    crafting instruction in the same utterance.
+    """
+    words = _lex_tokens(phrase)
+    tokens = _lex_tokens(reply)
+    if not words or not tokens:
+        return False
+
+    def adjacent_after(starts: tuple[tuple[str, ...], ...], answer: list[str],
+                       max_gap: int = 0) -> bool:
+        for start in starts:
+            for i in range(len(tokens) - len(start) + 1):
+                if tokens[i:i + len(start)] != list(start):
+                    continue
+                for gap in range(max_gap + 1):
+                    if _lex_sequence(answer, tokens[i + len(start) + gap:
+                                                   i + len(start) + gap + len(answer)]):
+                        return True
+        return False
+
+    # A reply to an explicit second-person question/offer, not an
+    # arbitrary assertion of the same topic.
+    if words[:2] == ['i', 'am'] and len(words) > 2:
+        answer = words[2:]
+        if adjacent_after((('are', 'you'), ('you', 'are'),
+                           ('do', 'you', 'call', 'yourself'),
+                           ('you', 'must', 'be'), ('you', 'happen', 'to', 'be'),
+                           ('if', 'you', 'are')), answer, 2):
+            return True
+        # An explicitly bracketed option can be paraphrased as `I am ...`.
+        for m in re.finditer(r'\[([^]\n]+)\]', reply):
+            if _lex_sequence(answer, _lex_tokens(m.group(1))):
+                return True
+
+    if words[:2] == ['i', 'will'] and len(words) > 2:
+        if adjacent_after((('will', 'you'), ('would', 'you'),
+                           ('can', 'you')), words[2:], 1):
+            return True
+
+    if words[:2] == ['i', 'seek'] and len(words) > 2:
+        answer = words[2:]
+        if adjacent_after((('you', 'seek'), ('seek',), ('seeking',),
+                           ('looking', 'for')), answer, 2):
+            return True
+
+    # EQ mail scripts often split the command between a verb and a city:
+    # `Will you [deliver] mail to [Qeynos] for me?` -> `deliver to qeynos`.
+    if words[:2] == ['deliver', 'to'] and len(words) > 2:
+        destination = words[2:]
+        for i, token in enumerate(tokens):
+            if token != 'deliver':
+                continue
+            for j in range(i + 1, min(i + 7, len(tokens))):
+                if tokens[j] == 'to' and _lex_sequence(destination,
+                             tokens[j + 1:j + 1 + len(destination)]):
+                    return True
+
+    # The menu must explicitly concern crafting, not merely mention armor.
+    offset = 1 if words[:1] == ['i'] else 0
+    if words[offset:offset + 3] == ['want', 'to', 'craft'] and len(words) > offset + 3:
+        item = words[offset + 3:]
+        if any(verb in tokens for verb in ('craft', 'make', 'fashion')) and _lex_sequence(item, tokens):
+            return True
+    return False
+
+
 def _lex_mentioned(phrase: str, replies: list[str]) -> bool:
     """Match the player's expression to spoken offers, without lore inference.
 
@@ -760,7 +830,7 @@ def _lex_mentioned(phrase: str, replies: list[str]) -> bool:
         return False
     for reply in replies:
         tokens = _lex_tokens(reply)
-        if _answer_to_question(phrase, reply):
+        if _answer_to_question(phrase, reply) or _reply_intent(phrase, reply):
             return True
         if any(_lex_sequence(query, tokens) for query in queries):
             return True
