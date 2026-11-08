@@ -18,25 +18,81 @@ OUT = Path("/Users/samo/work/EQEmu/.epics")
 # graph actually names with 20. Where 1.5 and 2.0 share one flag, the values
 # stay in one section and the gaps are marked.
 CLASSES = [
-    ("warrior", "Warrior", ["warrior_pre", "warrior_epic"], ("warr_epic", "warrior_epic_")),
-    ("cleric", "Cleric", ["cleric15pre", "cleric_epic", "cleric20"], ("cleric20_", "cleric_epic_")),
+    (
+        "warrior",
+        "Warrior",
+        ["warrior_pre", "warrior_epic"],
+        ("warr_epic", "warrior_epic_"),
+    ),
+    (
+        "cleric",
+        "Cleric",
+        ["cleric15pre", "cleric_epic", "cleric20"],
+        ("cleric20_", "cleric_epic_"),
+    ),
     ("paladin", "Paladin", ["paladin_epic"], ("paladin_epic_",)),
     # ranger_epic through 7 is the 1.5 chain. Value 8 is where the scripts say 2.0 starts.
-    ("ranger", "Ranger", [("ranger_epic", None, 8, None), "ranger_epic15_pre", ("ranger_epic", 8, None, "2.0")], ("ranger_epic_",)),
-    ("shadowknight", "Shadow Knight", ["shadowknight_pre", "shadowknight_epic"], ("sk_",)),
+    (
+        "ranger",
+        "Ranger",
+        [
+            ("ranger_epic", None, 8, None),
+            "ranger_epic15_pre",
+            ("ranger_epic", 8, None, "2.0"),
+        ],
+        ("ranger_epic_",),
+    ),
+    (
+        "shadowknight",
+        "Shadow Knight",
+        ["shadowknight_pre", "shadowknight_epic"],
+        ("sk_",),
+    ),
     ("druid", "Druid", ["druid_epic"], ("druid_epic_",)),
     ("monk", "Monk", ["MnkPre", "monk_epic", "mnk_epic20"], ("monk_epic_",)),
-    ("bard", "Bard", ["bardPQ", "bard15", "Fatestealer_bard", "bard20"], ("bard15_", "bard20_")),
-    ("rogue", "Rogue", ["roguepre", ("Fatestealer", None, None, "1.5")], ("rogue_epic_", "rogue_", "rog_epic_")),
+    (
+        "bard",
+        "Bard",
+        ["bardPQ", "bard15", "Fatestealer_bard", "bard20"],
+        ("bard15_", "bard20_"),
+    ),
+    (
+        "rogue",
+        "Rogue",
+        ["roguepre", ("Fatestealer", None, None, "1.5")],
+        ("rogue_epic_", "rogue_", "rog_epic_"),
+    ),
     ("shaman", "Shaman", ["shaman_pre", "shaman_epic"], ("shaman_epic_",)),
-    ("necromancer", "Necromancer", ["NecroPre", ("Soulwhisper", None, None, "1.5"), ("necro_epic", None, None, "2.0")], ("nec_epic_",)),
+    (
+        "necromancer",
+        "Necromancer",
+        [
+            "NecroPre",
+            ("Soulwhisper", None, None, "1.5"),
+            ("necro_epic", None, None, "2.0"),
+        ],
+        ("nec_epic_",),
+    ),
     (
         "wizard",
         "Wizard",
-        ["wiz_epic_pre", "wizepic", "wizepicA", "wizepicB", "wizepicK", "wiz_epic", "wiz_epic20"],
+        [
+            "wiz_epic_pre",
+            "wizepic",
+            "wizepicA",
+            "wizepicB",
+            "wizepicK",
+            "wiz_epic",
+            "wiz_epic20",
+        ],
         ("wiz20_", "wiz_epic_s", "wiz_epic_w"),
     ),
-    ("magician", "Magician", [("mage_epic", None, 8, "1.5"), ("mage_epic", 8, None, "2.0")], ("mage_epic_",)),
+    (
+        "magician",
+        "Magician",
+        [("mage_epic", None, 8, "1.5"), ("mage_epic", 8, None, "2.0")],
+        ("mage_epic_",),
+    ),
     ("enchanter", "Enchanter", ["EnchPre", "ench_epic"], ("ench_epic_",)),
     ("beastlord", "Beastlord", ["bstepic", "beast_epic"], ("beast_epic_", "bst_")),
     ("berserker", "Berserker", ["berserk_epic"], ("ber_epic_", "berserk_epic_")),
@@ -56,11 +112,20 @@ def load():
         if kind == "item":
             items[int(row["item"])] = row
         elif kind == "world":
-            world[int(row["id"])] = {"name": row.get("name") or "", "zones": list(row.get("zones") or [])}
+            world[int(row["id"])] = {
+                "name": row.get("name") or "",
+                "zones": list(row.get("zones") or []),
+            }
         elif kind == "edge":
             edges.append(row)
         elif kind == "say":
-            says[(str(row.get("zone", "")).lower(), str(row.get("npc", "")).lower(), str(row.get("word", "")).lower())] = (
+            says[
+                (
+                    str(row.get("zone", "")).lower(),
+                    str(row.get("npc", "")).lower(),
+                    str(row.get("word", "")).lower(),
+                )
+            ] = (
                 row.get("text") or ""
             )
     return items, edges, says, world
@@ -71,12 +136,12 @@ def fallback_drop(items, item_id: int) -> str | None:
     dropper = DROP_BOOK.best(int(item_id))
     if not dropper:
         return None
-    
+
     if dropper.name:
         npc = quoted(dropper.name)
     else:
         npc = f"NPC {dropper.npc_id}"
-    
+
     where = ""
     if dropper.zone:
         where = f" in `{dropper.zone}`"
@@ -97,7 +162,15 @@ def indexes(edges, world):
     loots = defaultdict(list)
     grounds = defaultdict(list)
     produces = defaultdict(list)
-    recipe = defaultdict(lambda: {"consumes": [], "container": 0, "produces": 0, "products": [], "world": None})
+    recipe = defaultdict(
+        lambda: {
+            "consumes": [],
+            "container": 0,
+            "produces": 0,
+            "products": [],
+            "world": None,
+        }
+    )
     for edge in edges:
         by_from[edge.get("from")].append(edge)
         if edge.get("group"):
@@ -109,13 +182,27 @@ def indexes(edges, world):
             sets_of[edge["flag"]].append(edge)
         if source.startswith("recipe:"):
             recipe_id = int(source.split(":", 1)[1])
-            for key in ("skill", "skill_name", "skillneeded", "trivial", "nofail", "must_learn"):
+            for key in (
+                "skill",
+                "skill_name",
+                "skillneeded",
+                "trivial",
+                "nofail",
+                "must_learn",
+            ):
                 if key in edge:
                     recipe[recipe_id][key] = edge[key]
-        if rel == "container" and source.startswith("recipe:") and to.startswith("world:"):
+        if (
+            rel == "container"
+            and source.startswith("recipe:")
+            and to.startswith("world:")
+        ):
             recipe_id = int(source.split(":", 1)[1])
             type_id = int(to.split(":", 1)[1])
-            station = world.get(type_id) or {"name": f"world container {type_id}", "zones": []}
+            station = world.get(type_id) or {
+                "name": f"world container {type_id}",
+                "zones": [],
+            }
             recipe[recipe_id]["world"] = {"id": type_id, **station}
             continue
         if not to.startswith("item:"):
@@ -154,7 +241,10 @@ def _made_by(items, item_id: int) -> list[str]:
     """A spell, a forage, fishing, ground spawn, or dump loot creates the item without a quest script."""
     sources = list((items.get(int(item_id)) or {}).get("sources") or [])
     named = quoted_item(items, item_id)
-    spells = sorted((source.split(":", 1)[1] for source in sources if source.startswith("spell:")), key=len)
+    spells = sorted(
+        (source.split(":", 1)[1] for source in sources if source.startswith("spell:")),
+        key=len,
+    )
     lines = []
     if spells:
         shown = ", ".join(quoted(name) for name in spells[:3])
@@ -319,7 +409,17 @@ def signature(by_from, by_group, edge: dict) -> tuple:
     parts = []
     for row in rows:
         source = re.sub(r"^[^/#]+/", "", str(row.get("from") or ""))
-        parts.append((row.get("rel"), source, row.get("to"), row.get("at"), row.get("value"), row.get("op"), row.get("flag")))
+        parts.append(
+            (
+                row.get("rel"),
+                source,
+                row.get("to"),
+                row.get("at"),
+                row.get("value"),
+                row.get("op"),
+                row.get("flag"),
+            )
+        )
     return tuple(sorted(parts, key=lambda part: tuple(str(bit) for bit in part)))
 
 
@@ -379,14 +479,20 @@ def class_flags(sets_of, mains, prefixes) -> set[str]:
 
 def prefers(by_from, by_group, edge: dict, flags: set[str]) -> bool:
     group = edge.get("group") or ""
-    for row in by_from.get(group, []) + by_from.get(edge.get("from"), []) + by_group.get(group, []):
+    for row in (
+        by_from.get(group, [])
+        + by_from.get(edge.get("from"), [])
+        + by_group.get(group, [])
+    ):
         if row.get("rel") == "needs" and row.get("flag") in flags:
             return True
     return False
 
 
 def write_class(name, title, mains, prefixes, ctx):
-    items, says, by_from, by_group, sets_of, gives, loots, grounds, produces, recipe = ctx
+    items, says, by_from, by_group, sets_of, gives, loots, grounds, produces, recipe = (
+        ctx
+    )
     flags = class_flags(sets_of, mains, prefixes)
     lines: list[str] = []
     seen_flags: set[str] = set()
@@ -396,7 +502,9 @@ def write_class(name, title, mains, prefixes, ctx):
         source = str(edge.get("group") or edge.get("from") or "")
         found: list[int] = []
         for row in by_group.get(source, []) + by_from.get(source, []):
-            if row.get("rel") != "receives" or not str(row.get("to", "")).startswith("item:"):
+            if row.get("rel") != "receives" or not str(row.get("to", "")).startswith(
+                "item:"
+            ):
                 continue
             needed = int(row["to"].split(":", 1)[1])
             if needed not in found:
@@ -442,11 +550,24 @@ def write_class(name, title, mains, prefixes, ctx):
         candidates = gated or givers
         # Prefer actions whose prerequisites are present in the graph; avoid
         # conflating independent reward variants into one linear quest.
-        return sorted(candidates, key=lambda edge: (
-            not bool(handed(edge) or any(row.get("rel") == "needs" for row in
-                bundle(by_from, by_group, edge.get("from", ""), edge.get("group", "")))),
-            str(edge.get("group") or edge.get("from")),
-        ))[:1]
+        return sorted(
+            candidates,
+            key=lambda edge: (
+                not bool(
+                    handed(edge)
+                    or any(
+                        row.get("rel") == "needs"
+                        for row in bundle(
+                            by_from,
+                            by_group,
+                            edge.get("from", ""),
+                            edge.get("group", ""),
+                        )
+                    )
+                ),
+                str(edge.get("group") or edge.get("from")),
+            ),
+        )[:1]
 
     def note_prereq(item_id: int) -> None:
         if item_id and item_id not in prereq_ids:
@@ -456,14 +577,21 @@ def write_class(name, title, mains, prefixes, ctx):
         """A multi-step questline: a combine, or an NPC who needs item turn-ins."""
         if creating(item_id):
             return True
-        if any("#timer:" in str(edge.get("from") or "") for edge in loots.get(item_id, [])):
+        if any(
+            "#timer:" in str(edge.get("from") or "") for edge in loots.get(item_id, [])
+        ):
             return True
-        if any("#timer:" in str(edge.get("group") or "") for edge in real_givers(item_id)):
+        if any(
+            "#timer:" in str(edge.get("group") or "") for edge in real_givers(item_id)
+        ):
             return True
         return any(
-            handed(edge) or any(
+            handed(edge)
+            or any(
                 row.get("rel") == "needs" and (row.get("flag") or row.get("item"))
-                for row in bundle(by_from, by_group, edge.get("from", ""), edge.get("group", ""))
+                for row in bundle(
+                    by_from, by_group, edge.get("from", ""), edge.get("group", "")
+                )
             )
             for edge in real_givers(item_id)
         )
@@ -489,7 +617,9 @@ def write_class(name, title, mains, prefixes, ctx):
             needed_ids = []
             sets = []
             for row in rows + by_from.get(source, []):
-                if row.get("rel") == "receives" and str(row.get("to", "")).startswith("item:"):
+                if row.get("rel") == "receives" and str(row.get("to", "")).startswith(
+                    "item:"
+                ):
                     needed = int(row["to"].split(":", 1)[1])
                     needed_ids.append(needed)
                     turns.append(quoted_item(items, needed))
@@ -519,7 +649,9 @@ def write_class(name, title, mains, prefixes, ctx):
             return [f"**Broken:** cyclic event trigger at `{source}`."]
 
         incoming = [
-            edge for rows in by_from.values() for edge in rows
+            edge
+            for rows in by_from.values()
+            for edge in rows
             if edge.get("rel") == "triggers" and edge.get("to") == source
         ]
         if not incoming:
@@ -533,10 +665,13 @@ def write_class(name, title, mains, prefixes, ctx):
             return [f"**Broken:** no event trigger found for `{source}`."]
 
         # More than one incoming edge means alternative routes, not mandatory steps.
-        edge = sorted(incoming, key=lambda row: (
-            0 if "#event:spawn:" in str(row.get("from", "")) else 1,
-            str(row.get("from", "")),
-        ))[0]
+        edge = sorted(
+            incoming,
+            key=lambda row: (
+                0 if "#event:spawn:" in str(row.get("from", "")) else 1,
+                str(row.get("from", "")),
+            ),
+        )[0]
         parent = str(edge["from"])
         active = visiting | {source}
         if any(mark in parent for mark in ("#signal:", "#timer:", "#event:", "#kill:")):
@@ -574,19 +709,36 @@ def write_class(name, title, mains, prefixes, ctx):
             )
             # new end
         loot_rows = loots.get(item_id, [])
-        gated_loot = [edge for edge in loot_rows if prefers(by_from, by_group, edge, flags)]
+        gated_loot = [
+            edge for edge in loot_rows if prefers(by_from, by_group, edge, flags)
+        ]
         # One loot path is sufficient to acquire an item. The old code emitted
         # up to four routes consecutively, falsely implying four required kills.
         possible_loot = gated_loot or loot_rows
-        unique_loot = list(dict.fromkeys(
-            (str(edge.get("from") or ""), str(edge.get("npc") or ""))
-            for edge in possible_loot
-        ))
-        chosen_loot = next((edge for edge in possible_loot if "#hand:" in str(edge.get("from") or "")), None)
+        unique_loot = list(
+            dict.fromkeys(
+                (str(edge.get("from") or ""), str(edge.get("npc") or ""))
+                for edge in possible_loot
+            )
+        )
+        chosen_loot = next(
+            (edge for edge in possible_loot if "#hand:" in str(edge.get("from") or "")),
+            None,
+        )
         if chosen_loot is None:
-            chosen_loot = next((edge for edge in possible_loot if "#timer:" in str(edge.get("from") or "")), None)
+            chosen_loot = next(
+                (
+                    edge
+                    for edge in possible_loot
+                    if "#timer:" in str(edge.get("from") or "")
+                ),
+                None,
+            )
         if chosen_loot is None:
-            chosen_loot = next((edge for edge in possible_loot if "#" in str(edge.get("from") or "")), None)
+            chosen_loot = next(
+                (edge for edge in possible_loot if "#" in str(edge.get("from") or "")),
+                None,
+            )
         if chosen_loot is None and possible_loot:
             chosen_loot = possible_loot[0]
         for edge in ([chosen_loot] if chosen_loot else []):
@@ -597,10 +749,18 @@ def write_class(name, title, mains, prefixes, ctx):
             spawn = str(edge.get("name") or "")
             if edge.get("npc") and not spawn:
                 for row in by_group.get(source, []) + by_from.get(source, []):
-                    if row.get("rel") == "spawns" and row.get("npc") == edge.get("npc") and row.get("name"):
+                    if (
+                        row.get("rel") == "spawns"
+                        and row.get("npc") == edge.get("npc")
+                        and row.get("name")
+                    ):
                         spawn = str(row["name"])
                         break
-            corpse = quoted(spawn) if spawn else (f"npc {edge['npc']}" if edge.get("npc") else "")
+            corpse = (
+                quoted(spawn)
+                if spawn
+                else (f"npc {edge['npc']}" if edge.get("npc") else "")
+            )
             npc_id = edge.get("npc")
             parts = []
             if "#timer:" in source:
@@ -611,8 +771,12 @@ def write_class(name, title, mains, prefixes, ctx):
                 for bit in action[5:].split("+"):
                     if bit.isdigit():
                         bits.extend(simple_acquire(int(bit)))
-                parts.append(f"Hand {quoted_action(items, action)[5:]} to {quoted_who(who)}.")
-                parts.append(f"Spawns {corpse}" + (f" ({npc_id})" if npc_id else "") + ".")
+                parts.append(
+                    f"Hand {quoted_action(items, action)[5:]} to {quoted_who(who)}."
+                )
+                parts.append(
+                    f"Spawns {corpse}" + (f" ({npc_id})" if npc_id else "") + "."
+                )
                 parts.append(f"Loot {quoted_item(items, item_id)} from {corpse}.")
                 bits.append(" ".join(parts))
             elif action.startswith("on ") and corpse:
@@ -633,11 +797,17 @@ def write_class(name, title, mains, prefixes, ctx):
                 bits.extend(hand_before_loot(zone, spawn))
                 bits.append(f"Loot {quoted_item(items, item_id)} from {corpse}.")
             elif action.startswith("say ") and corpse:
-                bits.append(f'{quoted_action(items, action).replace("say ", "Say ", 1)} to {quoted_who(who)}.')
-                bits.append(f"Spawns {corpse}" + (f" ({npc_id})" if npc_id else "") + ".")
+                bits.append(
+                    f'{quoted_action(items, action).replace("say ", "Say ", 1)} to {quoted_who(who)}.'
+                )
+                bits.append(
+                    f"Spawns {corpse}" + (f" ({npc_id})" if npc_id else "") + "."
+                )
                 bits.append(f"Loot {quoted_item(items, item_id)} from {corpse}.")
             elif corpse:
-                where = f" at {quoted_who(who)}" + (f", {quoted_action(items, action)}" if action else "")
+                where = f" at {quoted_who(who)}" + (
+                    f", {quoted_action(items, action)}" if action else ""
+                )
                 bits.append(
                     f"Loot {quoted_item(items, item_id)} from {corpse}"
                     + (f" ({npc_id})" if npc_id and not spawn else "")
@@ -650,7 +820,9 @@ def write_class(name, title, mains, prefixes, ctx):
                     + "."
                 )
         if len(unique_loot) > 1:
-            bits.append(f"{len(unique_loot) - 1} alternative loot source(s) also yield {item_name(items, item_id)}.")
+            bits.append(
+                f"{len(unique_loot) - 1} alternative loot source(s) also yield {item_name(items, item_id)}."
+            )
         for edge in grounds.get(item_id, [])[:3]:
             bits.append(
                 f"Ground spawn of {quoted_item(items, item_id)} in `{edge.get('zone') or 'an unstated zone'}`."
@@ -669,9 +841,13 @@ def write_class(name, title, mains, prefixes, ctx):
         for rid in made[:2]:
             bits.append(recipe_sentence(rid))
         if len(produces.get(item_id, [])) > 2 and made:
-            extra = len([rid for rid in produces[item_id] if item_id not in recipe_inputs(rid)]) - len(made[:2])
+            extra = len(
+                [rid for rid in produces[item_id] if item_id not in recipe_inputs(rid)]
+            ) - len(made[:2])
             if extra > 0:
-                bits.append(f"{extra} other recipes also produce {item_name(items, item_id)}.")
+                bits.append(
+                    f"{extra} other recipes also produce {item_name(items, item_id)}."
+                )
         if bits:
             return bits
         # Duplicate epic reward ids (Spear of Fate 10651 vs 36223). Prefer the id a script gives.
@@ -680,18 +856,24 @@ def write_class(name, title, mains, prefixes, ctx):
             bits = leaf_bits(alias)
             if bits and not bits[0].startswith("**Broken:**"):
                 return [f"Same item as {quoted_item(items, alias)}."] + bits
-        
+
         fallback = fallback_drop(items, item_id)
         if fallback:
             return [fallback]
-        
+
         zones = (items.get(item_id) or {}).get("zones") or []
         if zones:
             if len(zones) > 3:
-                return [f"Common item: {item_name(items, item_id)}. Listed in {len(zones)} zones."]
+                return [
+                    f"Common item: {item_name(items, item_id)}. Listed in {len(zones)} zones."
+                ]
             shown = ", ".join(zones)
-            return [f"No quest step gives {item_name(items, item_id)}. The dump lists it in {shown}."]
-        return [f"**Broken:** nothing in the graph gives, loots, spawns, or combines {item_name(items, item_id)}."]
+            return [
+                f"No quest step gives {item_name(items, item_id)}. The dump lists it in {shown}."
+            ]
+        return [
+            f"**Broken:** nothing in the graph gives, loots, spawns, or combines {item_name(items, item_id)}."
+        ]
 
     def cite(item_id: int) -> list[str]:
         if is_chain(item_id):
@@ -707,13 +889,21 @@ def write_class(name, title, mains, prefixes, ctx):
             where = quoted_item(items, info["container"])
         else:
             where = "no container"
-        puts = ", ".join(quoted_item(items, comp) for comp, _count in info.get("consumes") or [])
+        puts = ", ".join(
+            quoted_item(items, comp) for comp, _count in info.get("consumes") or []
+        )
         products = list(info.get("products") or [])
         if not products and info.get("produces"):
             products = [(info["produces"], 1)]
         inputs = recipe_inputs(recipe_id)
-        handed_back = [quoted_item(items, comp) for comp, _count in products if comp in inputs]
-        fresh = [quoted_item(items, comp) + (f" x{count}" if count > 1 else "") for comp, count in products if comp not in inputs]
+        handed_back = [
+            quoted_item(items, comp) for comp, _count in products if comp in inputs
+        ]
+        fresh = [
+            quoted_item(items, comp) + (f" x{count}" if count > 1 else "")
+            for comp, count in products
+            if comp not in inputs
+        ]
         text = f"Combine in {where}: {puts or 'nothing'}."
         if handed_back:
             text += " Hands back " + ", ".join(handed_back) + "."
@@ -722,7 +912,7 @@ def write_class(name, title, mains, prefixes, ctx):
         if skill:
             text += f" {skill}"
         return text
-    
+
     # new
     def giver_prereqs(edge: dict) -> list[str]:
         rows = bundle(
@@ -732,11 +922,13 @@ def write_class(name, title, mains, prefixes, ctx):
             edge.get("group", ""),
         )
 
-        return list(dict.fromkeys(
-            f"Requires `{row['flag']}` {row.get('at') or 'set'}"
-            for row in rows
-            if row.get("rel") == "needs" and row.get("flag")
-        ))
+        return list(
+            dict.fromkeys(
+                f"Requires `{row['flag']}` {row.get('at') or 'set'}"
+                for row in rows
+                if row.get("rel") == "needs" and row.get("flag")
+            )
+        )
 
     def giver_sentence(edge: dict, item_id: int) -> str:
         who, action, _zone = parse_who(edge.get("group") or edge.get("from"))
@@ -754,7 +946,7 @@ def write_class(name, title, mains, prefixes, ctx):
 
         text += f". Gives {quoted_item(items, item_id)}."
         return text
-    
+
     # new end
     # def giver_sentence(edge: dict, item_id: int) -> str:
     #     who, action, _zone = parse_who(edge.get("group") or edge.get("from"))
@@ -806,14 +998,30 @@ def write_class(name, title, mains, prefixes, ctx):
                 )
                 if row.get("rel") == "needs"
             ]
-            precise = {str(row["flag"]) for row in rows
-                       if row.get("flag") and str(row.get("at") or "set") != "set"}
-            filtered = [row for row in rows
-                        if not (row.get("flag") in precise and str(row.get("at") or "set") == "set")]
-            return list({(
-                str(row.get("flag")), str(row.get("at")), str(row.get("item")),
-                str(row.get("state")), str(row.get("op"))
-            ): row for row in filtered}.values())
+            precise = {
+                str(row["flag"])
+                for row in rows
+                if row.get("flag") and str(row.get("at") or "set") != "set"
+            }
+            filtered = [
+                row
+                for row in rows
+                if not (
+                    row.get("flag") in precise and str(row.get("at") or "set") == "set"
+                )
+            ]
+            return list(
+                {
+                    (
+                        str(row.get("flag")),
+                        str(row.get("at")),
+                        str(row.get("item")),
+                        str(row.get("state")),
+                        str(row.get("op")),
+                    ): row
+                    for row in filtered
+                }.values()
+            )
 
         def value_matches(value: str, at: str) -> bool:
             if at == "set":
@@ -850,7 +1058,9 @@ def write_class(name, title, mains, prefixes, ctx):
                 flag_trail,
             )
 
-        def expand_flag(flag: str, at: str, active: frozenset[tuple[str, str]] = frozenset()) -> None:
+        def expand_flag(
+            flag: str, at: str, active: frozenset[tuple[str, str]] = frozenset()
+        ) -> None:
             """Resolve an exact quest-global state, including earlier values of the SAME flag.
 
             Different values of Soulwhisper are successive states, not a flag
@@ -861,8 +1071,9 @@ def write_class(name, title, mains, prefixes, ctx):
             state = (flag, predicate)
             # Any concrete, already-active value satisfies a bare `set`
             # requirement. It is not another step of the state machine.
-            if predicate == "set" and any(f == flag and p not in {"set", "unset"}
-                                          for f, p in active):
+            if predicate == "set" and any(
+                f == flag and p not in {"set", "unset"} for f, p in active
+            ):
                 return
             if state in active:
                 steps.append(f"Unresolved cyclic prerequisite: `{flag}` {at}.")
@@ -874,11 +1085,14 @@ def write_class(name, title, mains, prefixes, ctx):
                 return
 
             candidates = [
-                edge for edge in sets_of.get(flag, [])
+                edge
+                for edge in sets_of.get(flag, [])
                 if value_matches(str(edge.get("value", "")), predicate)
             ]
             if not candidates:
-                steps.append(f"Unresolved prerequisite: `{flag}` {at}; no matching setter in graph.")
+                steps.append(
+                    f"Unresolved prerequisite: `{flag}` {at}; no matching setter in graph."
+                )
                 return
 
             def score(edge: dict) -> tuple:
@@ -887,7 +1101,9 @@ def write_class(name, title, mains, prefixes, ctx):
                 same = [row for row in requirements if row.get("flag") == flag]
                 prior = []
                 for row in same:
-                    m = re.fullmatch(r"==(\d+)", str(row.get("at") or "").replace(" ", ""))
+                    m = re.fullmatch(
+                        r"==(\d+)", str(row.get("at") or "").replace(" ", "")
+                    )
                     if m:
                         prior.append(int(m.group(1)))
                 current = int(value) if value.isdigit() else None
@@ -899,7 +1115,13 @@ def write_class(name, title, mains, prefixes, ctx):
                     number = current if current is not None else 999999
                 else:
                     number = 0
-                return (backward, contiguous, number, len(handed(edge)), str(edge.get("group") or edge.get("from")))
+                return (
+                    backward,
+                    contiguous,
+                    number,
+                    len(handed(edge)),
+                    str(edge.get("group") or edge.get("from")),
+                )
 
             setter = min(candidates, key=score)
             source = str(setter.get("group") or setter.get("from") or "")
@@ -915,7 +1137,9 @@ def write_class(name, title, mains, prefixes, ctx):
             # Recursing through a different value of this same flag is allowed.
             for row in mandatory + optional[:1]:
                 if row.get("flag"):
-                    expand_flag(str(row["flag"]), str(row.get("at") or "set"), next_active)
+                    expand_flag(
+                        str(row["flag"]), str(row.get("at") or "set"), next_active
+                    )
                 elif row.get("item"):
                     expand_item(int(row["item"]))
             for needed in handed(setter):
@@ -927,7 +1151,9 @@ def write_class(name, title, mains, prefixes, ctx):
                 description = quoted_who(who)
                 if action:
                     description += f", {quoted_action(items, action)}"
-                steps.append(f"{description}. Sets `{flag}` to `{setter.get('value')}`.")
+                steps.append(
+                    f"{description}. Sets `{flag}` to `{setter.get('value')}`."
+                )
             seen.add(("flag", flag, predicate))
 
         def expand_action(edge: dict) -> None:
@@ -947,14 +1173,16 @@ def write_class(name, title, mains, prefixes, ctx):
                     expand_item(int(row["item"]))
                     if row.get("equipped"):
                         slot = str(row.get("slot") or "specified slot")
-                        steps.append(f"Equip {quoted_item(items, int(row['item']))} in {slot} slot.")
+                        steps.append(
+                            f"Equip {quoted_item(items, int(row['item']))} in {slot} slot."
+                        )
                 elif row.get("state") == "sitting":
-                    steps.append("Sit before the NPC while its timer checks your posture.")
+                    steps.append(
+                        "Sit before the NPC while its timer checks your posture."
+                    )
 
             # Alternative requirements are not all mandatory.
-            alternatives = [
-                row for row in requirements if row.get("op") == "or"
-            ]
+            alternatives = [row for row in requirements if row.get("op") == "or"]
             if alternatives:
                 selected = alternatives[0]
                 if selected.get("flag"):
@@ -1013,11 +1241,14 @@ def write_class(name, title, mains, prefixes, ctx):
         if made_here:
             return
 
-        for bit in leaf_bits(item_id, expand_item=expand_item, expand_action=expand_action):
+        for bit in leaf_bits(
+            item_id, expand_item=expand_item, expand_action=expand_action
+        ):
             key = ("leaf", item_id, bit)
             if key not in seen:
                 seen.add(key)
                 steps.append(bit)
+
     # def forward(item_id: int, trail: set[int], steps: list[str], seen: set, goal: int) -> None:
     #     if item_id in trail or item_id in seen or len(trail) > 12:
     #         return
@@ -1082,7 +1313,9 @@ def write_class(name, title, mains, prefixes, ctx):
             for text in steps:
                 kept.append(text)
                 produced = text.split("Produces ", 1)[-1] if "Produces " in text else ""
-                if f"Gives {name}." in text or (name in produced and "no new item" not in produced):
+                if f"Gives {name}." in text or (
+                    name in produced and "no new item" not in produced
+                ):
                     break
             steps = kept
             if not steps:
@@ -1096,10 +1329,19 @@ def write_class(name, title, mains, prefixes, ctx):
         for flag in flag_set:
             yield from sets_of.get(flag, ())
 
-    def render_recipe(recipe_id: int, depth: int, trail: set[int], spawns: list[dict] | None = None) -> list[str]:
+    def render_recipe(
+        recipe_id: int, depth: int, trail: set[int], spawns: list[dict] | None = None
+    ) -> list[str]:
         info = recipe[recipe_id]
-        if not info["produces"] and not info["consumes"] and not info["container"] and not info.get("products"):
-            return [f"- **Broken:** `recipe:{recipe_id}` is named and has no components in the graph."]
+        if (
+            not info["produces"]
+            and not info["consumes"]
+            and not info["container"]
+            and not info.get("products")
+        ):
+            return [
+                f"- **Broken:** `recipe:{recipe_id}` is named and has no components in the graph."
+            ]
         if recipe_id in seen_recipes and depth > 1:
             return [f"- `recipe:{recipe_id}` is already shown."]
         seen_recipes.add(recipe_id)
@@ -1114,9 +1356,13 @@ def write_class(name, title, mains, prefixes, ctx):
             shown = ", ".join(zones[:6])
             extra = f" and {len(zones) - 6} more" if len(zones) > 6 else ""
             where = f" Placed in {shown}{extra}." if shown else ""
-            out.append(f"{pad}- `recipe:{recipe_id}` is combined in {world['name']} ({world['id']}). A container in the world.{where}")
+            out.append(
+                f"{pad}- `recipe:{recipe_id}` is combined in {world['name']} ({world['id']}). A container in the world.{where}"
+            )
         elif info["container"]:
-            out.append(f"{pad}- `recipe:{recipe_id}` is combined in {item_name(items, info['container'])}.")
+            out.append(
+                f"{pad}- `recipe:{recipe_id}` is combined in {item_name(items, info['container'])}."
+            )
             for line in cite(info["container"]):
                 out.append(f"{pad}  {line}")
         else:
@@ -1127,7 +1373,9 @@ def write_class(name, title, mains, prefixes, ctx):
                 out.append(f"{pad}    {line}")
         if products:
             inputs = recipe_inputs(recipe_id)
-            handed_back = [item_name(items, comp) for comp, _count in products if comp in inputs]
+            handed_back = [
+                item_name(items, comp) for comp, _count in products if comp in inputs
+            ]
             fresh = [
                 item_name(items, comp) + (f" x{count}" if count > 1 else "")
                 for comp, count in products
@@ -1135,7 +1383,9 @@ def write_class(name, title, mains, prefixes, ctx):
             ]
             if handed_back:
                 out.append(f"{pad}  - Hands back {', '.join(handed_back)}.")
-            out.append(f"{pad}  - Produces {', '.join(fresh) if fresh else 'no new item'}.")
+            out.append(
+                f"{pad}  - Produces {', '.join(fresh) if fresh else 'no new item'}."
+            )
         elif spawns:
             for row in spawns:
                 label = row.get("name") or row.get("to")
@@ -1149,7 +1399,13 @@ def write_class(name, title, mains, prefixes, ctx):
             out.append(f"{pad}  - {skill}")
         return out
 
-    def render_flag(flag: str, level: int, lo: int | None = None, hi: int | None = None, era: str | None = None) -> None:
+    def render_flag(
+        flag: str,
+        level: int,
+        lo: int | None = None,
+        hi: int | None = None,
+        era: str | None = None,
+    ) -> None:
         if flag in seen_flags and lo is None and hi is None:
             lines.append(f"{'#' * min(level, 4)} `{flag}`")
             lines.append("")
@@ -1177,33 +1433,60 @@ def write_class(name, title, mains, prefixes, ctx):
             lines.append(f"**Broken:** nothing in the graph sets `{flag}`.")
             lines.append("")
             return
-        numeric = sorted({int(edge["value"]) for edge in sets if str(edge.get("value", "")).isdigit()})
+        numeric = sorted(
+            {
+                int(edge["value"])
+                for edge in sets
+                if str(edge.get("value", "")).isdigit()
+            }
+        )
         if numeric:
-            lines.append(f"Values written: {', '.join(str(number) for number in numeric)}.")
+            lines.append(
+                f"Values written: {', '.join(str(number) for number in numeric)}."
+            )
             lines.append("")
-        odd = sorted({str(edge.get("value")) for edge in sets if not str(edge.get("value", "")).isdigit()})
+        odd = sorted(
+            {
+                str(edge.get("value"))
+                for edge in sets
+                if not str(edge.get("value", "")).isdigit()
+            }
+        )
         if odd:
-            lines.append("**Broken:** these writes are not a plain number, so they cannot be ordered: " + ", ".join(f"`{value}`" for value in odd) + ".")
+            lines.append(
+                "**Broken:** these writes are not a plain number, so they cannot be ordered: "
+                + ", ".join(f"`{value}`" for value in odd)
+                + "."
+            )
             lines.append("")
         groups: dict[tuple, list] = {}
         for edge in sets:
             key = (str(edge.get("value")), signature(by_from, by_group, edge))
             groups.setdefault(key, []).append(edge)
+
         def stage_sort(group):
             edge = group[0]
             value = str(edge.get("value") or "")
             if not value.isdigit():
                 return (1, float("inf"), str(edge.get("from")))
             current = int(value)
-            rows = bundle(by_from, by_group, edge.get("from", ""), edge.get("group", ""))
+            rows = bundle(
+                by_from, by_group, edge.get("from", ""), edge.get("group", "")
+            )
             predecessors = []
             for row in rows:
                 if row.get("rel") == "needs" and row.get("flag") == flag:
-                    match = re.fullmatch(r"==(\d+)", str(row.get("at") or "").replace(" ", ""))
+                    match = re.fullmatch(
+                        r"==(\d+)", str(row.get("at") or "").replace(" ", "")
+                    )
                     if match:
                         predecessors.append(int(match.group(1)))
             rollback_from = max((n for n in predecessors if n > current), default=None)
-            position = float(rollback_from) + 0.5 if rollback_from is not None else float(current)
+            position = (
+                float(rollback_from) + 0.5
+                if rollback_from is not None
+                else float(current)
+            )
             return (0, position, str(edge.get("from")))
 
         ordered = sorted(groups.values(), key=stage_sort)
@@ -1212,7 +1495,9 @@ def write_class(name, title, mains, prefixes, ctx):
         for group in ordered:
             value = str(group[0].get("value") or "")
             if value in shown_values:
-                lines.append(f"Alternative or repeat transition to `{flag}` = `{value}` (not an additional required stage).")
+                lines.append(
+                    f"Alternative or repeat transition to `{flag}` = `{value}` (not an additional required stage)."
+                )
                 lines.append("")
             shown_values.add(value)
             render_step(group, level + 1, flag)
@@ -1267,17 +1552,27 @@ def write_class(name, title, mains, prefixes, ctx):
         if ors:
             lines.append("- One of: " + "; ".join(ors) + ".")
         for row in rows:
-            if row.get("rel") == "receives" and str(row.get("to", "")).startswith("item:"):
+            if row.get("rel") == "receives" and str(row.get("to", "")).startswith(
+                "item:"
+            ):
                 count = row.get("count") or 1
-                lines.append(f"- Turn in x{count}: {item_name(items, int(row['to'].split(':', 1)[1]))}.")
-            elif row.get("rel") == "receives" and str(row.get("to", "")).startswith("coin:"):
-                lines.append(f"- Turn in {row.get('count')} {row['to'].split(':', 1)[1]}.")
+                lines.append(
+                    f"- Turn in x{count}: {item_name(items, int(row['to'].split(':', 1)[1]))}."
+                )
+            elif row.get("rel") == "receives" and str(row.get("to", "")).startswith(
+                "coin:"
+            ):
+                lines.append(
+                    f"- Turn in {row.get('count')} {row['to'].split(':', 1)[1]}."
+                )
         recipe_id = 0
         source = str(edge.get("from") or "")
         if "#recipe:" in source and source.rsplit(":", 1)[-1].isdigit():
             recipe_id = int(source.rsplit(":", 1)[-1])
         recipe_info = recipe.get(recipe_id) if recipe_id else None
-        spawn_is_result = bool(recipe_info) and not (recipe_info.get("products") or recipe_info.get("produces"))
+        spawn_is_result = bool(recipe_info) and not (
+            recipe_info.get("products") or recipe_info.get("produces")
+        )
         actions = []
         for row in rows:
             if row.get("rel") == "gives" and str(row.get("to", "")).startswith("item:"):
@@ -1285,12 +1580,20 @@ def write_class(name, title, mains, prefixes, ctx):
                     continue
             if row.get("rel") == "spawns" and spawn_is_result:
                 continue
-            if row.get("rel") in {"gives", "spawns", "grounds", "sets"} or (row.get("rel") == "loots" and not row.get("npc")):
+            if row.get("rel") in {"gives", "spawns", "grounds", "sets"} or (
+                row.get("rel") == "loots" and not row.get("npc")
+            ):
                 actions.append(row)
-        actions.sort(key=lambda row: (0, int(row["order"])) if "order" in row else (1, 0))
+        actions.sort(
+            key=lambda row: (0, int(row["order"])) if "order" in row else (1, 0)
+        )
         loots_of: dict[int, list] = defaultdict(list)
         for row in rows:
-            if row.get("rel") == "loots" and row.get("npc") and str(row.get("to", "")).startswith("item:"):
+            if (
+                row.get("rel") == "loots"
+                and row.get("npc")
+                and str(row.get("to", "")).startswith("item:")
+            ):
                 loots_of[int(row["npc"])].append(row)
         if actions:
             lines.append("In script order:")
@@ -1298,7 +1601,13 @@ def write_class(name, title, mains, prefixes, ctx):
         seen_action = set()
         number = 0
         for row in actions:
-            ident = (row.get("rel"), row.get("to"), row.get("flag"), row.get("value"), row.get("npc"))
+            ident = (
+                row.get("rel"),
+                row.get("to"),
+                row.get("flag"),
+                row.get("value"),
+                row.get("npc"),
+            )
             if ident in seen_action:
                 continue
             seen_action.add(ident)
@@ -1308,7 +1617,9 @@ def write_class(name, title, mains, prefixes, ctx):
                 label = row.get("name") or row.get("to")
                 text = f"Spawns {label} ({row.get('npc')})."
             elif row.get("rel") == "grounds":
-                text = f"Ground spawn {item_name(items, int(row['to'].split(':', 1)[1]))}."
+                text = (
+                    f"Ground spawn {item_name(items, int(row['to'].split(':', 1)[1]))}."
+                )
             elif row.get("rel") == "sets" and row.get("flag"):
                 text = f"Sets `{row['flag']}` to `{row.get('value')}`."
             elif row.get("rel") == "loots":
@@ -1319,7 +1630,9 @@ def write_class(name, title, mains, prefixes, ctx):
             lines.append(f"{number}. {text}")
             if row.get("rel") == "spawns" and row.get("npc"):
                 for loot in loots_of.get(int(row["npc"]), []):
-                    lines.append(f"   - Loots {item_name(items, int(loot['to'].split(':', 1)[1]))}.")
+                    lines.append(
+                        f"   - Loots {item_name(items, int(loot['to'].split(':', 1)[1]))}."
+                    )
         if actions:
             lines.append("")
         lines.append("")
@@ -1328,15 +1641,21 @@ def write_class(name, title, mains, prefixes, ctx):
             for row in rows:
                 if row.get("rel") != "spawns":
                     continue
-                loots = [
-                    int(loot["to"].split(":", 1)[1])
-                    for loot in loots_of.get(int(row["npc"]), [])
-                    if str(loot.get("to", "")).startswith("item:")
-                ] if row.get("npc") else []
+                loots = (
+                    [
+                        int(loot["to"].split(":", 1)[1])
+                        for loot in loots_of.get(int(row["npc"]), [])
+                        if str(loot.get("to", "")).startswith("item:")
+                    ]
+                    if row.get("npc")
+                    else []
+                )
                 spawned.append({**row, "loots": loots})
             lines.append("Combine:")
             lines.append("")
-            lines.extend(render_recipe(recipe_id, 0, set(), spawned if spawn_is_result else None))
+            lines.extend(
+                render_recipe(recipe_id, 0, set(), spawned if spawn_is_result else None)
+            )
             lines.append("")
         needed_items = []
         needed_flags = []
@@ -1348,7 +1667,9 @@ def write_class(name, title, mains, prefixes, ctx):
             if row.get("flag") and row.get("flag") != flag:
                 needed_flags.append(row["flag"])
         for row in rows:
-            if row.get("rel") == "receives" and str(row.get("to", "")).startswith("item:"):
+            if row.get("rel") == "receives" and str(row.get("to", "")).startswith(
+                "item:"
+            ):
                 needed_items.append(int(row["to"].split(":", 1)[1]))
         shown_items = []
         for item_id in needed_items:
@@ -1375,7 +1696,9 @@ def write_class(name, title, mains, prefixes, ctx):
             lines.append("")
             render_flag(sub, level + 1)
 
-    def render_extras(flag: str, used: set, level: int, lo: int | None = None, hi: int | None = None) -> None:
+    def render_extras(
+        flag: str, used: set, level: int, lo: int | None = None, hi: int | None = None
+    ) -> None:
         found: dict[str, dict] = {}
         for edge in by_from_needs(flag):
             if not _at_fits(edge.get("at"), lo, hi):
@@ -1383,8 +1706,14 @@ def write_class(name, title, mains, prefixes, ctx):
             source = edge.get("group") or edge.get("from")
             if not source or source in used:
                 continue
-            rows = bundle(by_from, by_group, edge.get("from", ""), edge.get("group", ""))
-            if not any(row.get("rel") in {"receives", "gives", "spawns", "loots", "grounds"} or (row.get("rel") == "sets" and row.get("flag") != flag) for row in rows):
+            rows = bundle(
+                by_from, by_group, edge.get("from", ""), edge.get("group", "")
+            )
+            if not any(
+                row.get("rel") in {"receives", "gives", "spawns", "loots", "grounds"}
+                or (row.get("rel") == "sets" and row.get("flag") != flag)
+                for row in rows
+            ):
                 continue
             found.setdefault(str(source), edge)
         if not found:
@@ -1392,19 +1721,41 @@ def write_class(name, title, mains, prefixes, ctx):
         lines.append(f"{'#' * min(level, 6)} Steps on `{flag}` that do not change it")
         lines.append("")
         for source, edge in sorted(found.items()):
-            who, action, zone = parse_who(source if "#" in str(source) else edge.get("from"))
+            who, action, zone = parse_who(
+                source if "#" in str(source) else edge.get("from")
+            )
             npc = who.split("/", 1)[-1]
-            lines.append(f"- `{zone}` {npc}" + (f", {action}" if action else "") + f" needs `{flag}` {edge.get('at')}.")
-            rows = bundle(by_from, by_group, edge.get("from", ""), edge.get("group", ""))
+            lines.append(
+                f"- `{zone}` {npc}"
+                + (f", {action}" if action else "")
+                + f" needs `{flag}` {edge.get('at')}."
+            )
+            rows = bundle(
+                by_from, by_group, edge.get("from", ""), edge.get("group", "")
+            )
             for row in rows:
-                if row.get("rel") == "receives" and str(row.get("to", "")).startswith("item:"):
-                    lines.append(f"  - Turn in {item_name(items, int(row['to'].split(':', 1)[1]))}.")
-                elif row.get("rel") == "gives" and str(row.get("to", "")).startswith("item:"):
-                    lines.append(f"  - Gives {item_name(items, int(row['to'].split(':', 1)[1]))}.")
+                if row.get("rel") == "receives" and str(row.get("to", "")).startswith(
+                    "item:"
+                ):
+                    lines.append(
+                        f"  - Turn in {item_name(items, int(row['to'].split(':', 1)[1]))}."
+                    )
+                elif row.get("rel") == "gives" and str(row.get("to", "")).startswith(
+                    "item:"
+                ):
+                    lines.append(
+                        f"  - Gives {item_name(items, int(row['to'].split(':', 1)[1]))}."
+                    )
                 elif row.get("rel") == "spawns":
-                    lines.append(f"  - Spawns {row.get('name') or row.get('to')} ({row.get('npc')}).")
-                elif row.get("rel") == "loots" and str(row.get("to", "")).startswith("item:"):
-                    lines.append(f"  - Loots {item_name(items, int(row['to'].split(':', 1)[1]))}.")
+                    lines.append(
+                        f"  - Spawns {row.get('name') or row.get('to')} ({row.get('npc')})."
+                    )
+                elif row.get("rel") == "loots" and str(row.get("to", "")).startswith(
+                    "item:"
+                ):
+                    lines.append(
+                        f"  - Loots {item_name(items, int(row['to'].split(':', 1)[1]))}."
+                    )
                 elif row.get("rel") == "sets" and row.get("flag") != flag:
                     lines.append(f"  - Sets `{row['flag']}` to `{row.get('value')}`.")
         lines.append("")
@@ -1416,7 +1767,9 @@ def write_class(name, title, mains, prefixes, ctx):
     mains = sorted(mains, key=_era_rank)
     lines.append(f"# {title}")
     lines.append("")
-    lines.append("Steps taken from the quest graph only. **Broken** means the graph has no edge for that value or that item.")
+    lines.append(
+        "Steps taken from the quest graph only. **Broken** means the graph has no edge for that value or that item."
+    )
     lines.append("")
     main_flags = [_section(entry)[0] for entry in mains]
     present = []
@@ -1424,10 +1777,18 @@ def write_class(name, title, mains, prefixes, ctx):
         if sets_of.get(flag) and flag not in present:
             present.append(flag)
     missing = [flag for flag in main_flags if not sets_of.get(flag)]
-    lines.append("Flags with writes: " + (", ".join(f"`{flag}`" for flag in present) if present else "none") + ".")
+    lines.append(
+        "Flags with writes: "
+        + (", ".join(f"`{flag}`" for flag in present) if present else "none")
+        + "."
+    )
     if missing:
         lines.append("")
-        lines.append("**Broken:** these flags were expected for this class and nothing sets them: " + ", ".join(f"`{flag}`" for flag in missing) + ".")
+        lines.append(
+            "**Broken:** these flags were expected for this class and nothing sets them: "
+            + ", ".join(f"`{flag}`" for flag in missing)
+            + "."
+        )
     lines.append("")
     body_at = len(lines)
     for entry in mains:
@@ -1435,15 +1796,21 @@ def write_class(name, title, mains, prefixes, ctx):
         render_flag(flag, 2, lo, hi, era)
     if prereq_ids:
         lines[body_at:body_at] = render_prereqs()
-    side_flags = { _section(entry)[0] for entry in mains }
-    sides = sorted(flag for flag in flags if flag not in side_flags and flag not in seen_flags)
+    side_flags = {_section(entry)[0] for entry in mains}
+    sides = sorted(
+        flag for flag in flags if flag not in side_flags and flag not in seen_flags
+    )
     if sides:
         lines.append("## Other flags touched along the way")
         lines.append("")
         for flag in sides:
             brief = sorted({str(edge.get("value")) for edge in sets_of.get(flag, ())})
-            where = sorted({parse_who(edge.get("from"))[0] for edge in sets_of.get(flag, ())})
-            lines.append(f"- `{flag}` set to {', '.join(brief) or 'nothing'} at {', '.join(where[:4])}.")
+            where = sorted(
+                {parse_who(edge.get("from"))[0] for edge in sets_of.get(flag, ())}
+            )
+            lines.append(
+                f"- `{flag}` set to {', '.join(brief) or 'nothing'} at {', '.join(where[:4])}."
+            )
         lines.append("")
     path = OUT / f"{name}.md"
     path.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
@@ -1452,13 +1819,26 @@ def write_class(name, title, mains, prefixes, ctx):
 
 def main():
     items, edges, says, world = load()
-    by_from, by_group, sets_of, gives, loots, grounds, produces, recipe = indexes(edges, world)
+    by_from, by_group, sets_of, gives, loots, grounds, produces, recipe = indexes(
+        edges, world
+    )
     global edges_needing
     edges_needing = defaultdict(list)
     for edge in edges:
         if edge.get("rel") == "needs" and edge.get("flag"):
             edges_needing[edge["flag"]].append(edge)
-    ctx = (items, says, by_from, by_group, sets_of, gives, loots, grounds, produces, recipe)
+    ctx = (
+        items,
+        says,
+        by_from,
+        by_group,
+        sets_of,
+        gives,
+        loots,
+        grounds,
+        produces,
+        recipe,
+    )
     OUT.mkdir(parents=True, exist_ok=True)
     for slug, title, mains, prefixes in CLASSES:
         path, count = write_class(slug, title, mains, prefixes, ctx)
