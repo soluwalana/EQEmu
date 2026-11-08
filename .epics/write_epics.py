@@ -718,7 +718,7 @@ def write_class(name, title, mains, prefixes, ctx):
         goal: int,
         flag_trail: frozenset[str] = frozenset(),
     ) -> None:
-        if item_id in trail or item_id in seen or len(trail) > 12:
+        if item_id in trail or item_id in seen:
             return
 
         seen.add(item_id)
