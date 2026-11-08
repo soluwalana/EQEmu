@@ -60,6 +60,7 @@ def _unquote(value: str) -> str:
 # visible label. It contributes ONE visible phrase, not each argument.
 _SAY_LINK = re.compile(r"(?<![\w:])(?:quest::saylink|eq\.say_link|eq\.saylink)\s*\(", re.I)
 _CALL = re.compile(r"[A-Za-z_][\w:]*(?:(?:\.|->|:)[A-Za-z_]\w*)*\s*\(")
+_FORMAT_CALL = re.compile(r"string\.format\s*\(", re.I)
 
 
 def _literal_link(expr: str) -> str:
@@ -84,6 +85,38 @@ def _say_links(expr: str) -> list[dict[str, str]]:
         if target:
             result.append({'target': target, 'label': label or target})
     return result
+
+
+
+def _render_lua_format(expr: str) -> str:
+    """Render a literal Lua string.format template without evaluating code.
+
+    Literal arguments can be inserted; dynamic values are left blank. This
+    recovers dialogue cues while never treating arguments of arbitrary calls
+    (such as GetCleanName()) as NPC speech.
+    """
+    args = _top_level_arguments(expr)
+    if not args or not _STRING.fullmatch(args[0]):
+        return ""
+    template = _unquote(args[0])
+    arg_index = 1
+    conversions = re.compile(r"%([-+ #0]*\d*(?:\.\d+)?)([%a-zA-Z])")
+
+    def substitute(match: re.Match[str]) -> str:
+        nonlocal arg_index
+        spec = match.group(2)
+        if spec == "%":
+            return "%"
+        arg = args[arg_index] if arg_index < len(args) else ""
+        arg_index += 1
+        if spec in {"s", "q"} and _STRING.fullmatch(arg):
+            return _unquote(arg)
+        if spec in {"d", "i", "u"} and re.fullmatch(r"[-+]?\d+", arg):
+            return arg
+        # Unknown variables and calls cannot be statically evaluated.
+        return ""
+
+    return conversions.sub(substitute, template)
 
 
 def _render(expr: str) -> str:
@@ -112,6 +145,13 @@ def _render(expr: str) -> str:
                 if not rendered and arguments:
                     rendered = _literal_link(arguments[0])
                 out.append(rendered)
+                i = close + 1
+                continue
+        formatted = _FORMAT_CALL.match(expr, i)
+        if formatted:
+            close = _end_call(expr, formatted.end() - 1)
+            if close >= 0:
+                out.append(_render_lua_format(expr[formatted.end():close]))
                 i = close + 1
                 continue
         call = _CALL.match(expr, i)
