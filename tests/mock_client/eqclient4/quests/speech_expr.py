@@ -10,7 +10,7 @@ import re
 from collections.abc import Iterator
 
 _SPEECH_CALL = re.compile(
-    r"(?<![\w:])(?P<call>quest::say|quest:say|quest::emote|quest:emote|e\.self:Say|e\.self:Emote|e\.self:QuestSay|eq\.say|eq\.emote|e\.other:Message|\$client->Message)\s*\(",
+    r"(?<![\w:])(?P<call>quest::say|quest:say|quest::emote|quest:emote|e\.self:Say|e\.self:Emote|e\.self:QuestSay|eq\.say|eq\.emote|e\.other:Message|\$client->Message|:MessageClose)\s*\(",
     re.IGNORECASE,
 )
 _STRING = re.compile(r'''"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*' ''', re.X | re.S)
@@ -176,14 +176,21 @@ def iter_speech_calls(text: str, lo: int = 0, hi: int | None = None) -> Iterator
         # $client->Message(15, "NPC says ...")
         # QuestSay(client, text) is another NPC speech API. Its first
         # argument selects the recipient and is not part of the dialogue.
-        if name.endswith('message') or name.endswith('questsay'):
+        if name.endswith('messageclose'):
+            # EntityList:MessageClose(sender, skip_sender, distance, color, text).
+            # Keep only the fifth argument, never the sender/range/color.
+            arguments = _top_level_arguments(expression)
+            if len(arguments) < 5:
+                continue
+            expression = arguments[4]
+        elif name.endswith('message') or name.endswith('questsay'):
             arguments = _top_level_arguments(expression)
             if len(arguments) < 2:
                 continue
             expression = arguments[1]
         
         msg = 'say'
-        if name.endswith('message'):
+        if name.endswith('message') or name.endswith('messageclose'):
             msg = 'message'
         elif name.endswith('emote'):
             msg = 'emote'
