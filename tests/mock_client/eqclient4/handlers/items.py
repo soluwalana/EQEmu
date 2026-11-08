@@ -14,7 +14,6 @@ from eqclient4.structs import (
     OP_ShopDelItem,
     OP_ShopEndConfirm,
     OP_ShopPlayerBuy,
-    OP_ShopPlayerSell,
     OP_ShopRequest,
 )
 
@@ -30,7 +29,6 @@ class ItemsHandler(Handler):
         "OP_ShopEnd",
         "OP_ShopEndConfirm",
         "OP_ShopPlayerBuy",
-        "OP_ShopPlayerSell",
         "OP_ShopRequest",
     )
 
@@ -41,9 +39,9 @@ class ItemsHandler(Handler):
                 if event.changed:
                     log.info(f"Inventory: {event}")
 
-            case OP_ItemPacket() as item:
-                if item.kind == ITEM_MERCHANT:
-                    self.manage_shop(item)
+            case OP_ItemPacket() as payload:
+                if payload.item.kind == ITEM_MERCHANT:
+                    self.manage_shop(payload)
                     return
 
                 event = self.world.inventory.apply(payload, False)
@@ -60,7 +58,7 @@ class ItemsHandler(Handler):
                 else:
                     self.world.active_merchants[payload.npc_id].is_open = True
 
-            case OP_ShopEndConfirm() | OP_ShopDelItem() | OP_ShopPlayerBuy() | OP_ShopPlayerSell():
+            case OP_ShopEndConfirm() | OP_ShopDelItem() | OP_ShopPlayerBuy():
                 self.manage_shop(payload)
 
             case _:
@@ -78,12 +76,6 @@ class ItemsHandler(Handler):
 
             case OP_ShopDelItem():
                 active.items.pop(payload.slot, None)
-
-            case OP_ShopPlayerBuy():
-                self.world.character.deduct_coins(payload.coins)
-
-            case OP_ShopPlayerSell():
-                self.world.character.add_coins(payload.coins)
 
             case OP_ShopEndConfirm():
                 active.is_open = False

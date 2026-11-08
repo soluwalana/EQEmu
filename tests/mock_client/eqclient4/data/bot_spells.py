@@ -511,6 +511,9 @@ def read_bot_spells(path: str | None = None) -> BotSpellBook:
     return book
 
 
+_book: BotSpellBook | None = None
+
+
 def ensure_bot_spells(
     path: str | None = None,
     peq: str | Path | None = None,
@@ -518,19 +521,21 @@ def ensure_bot_spells(
     *,
     rebuild: bool = False,
 ) -> BotSpellBook:
-    """Prefer cache_builders.bot_spells.ensure_bot_spells from agent code."""
-    destination = path or os.environ.get("EQEMU_BOT_SPELLS", DEFAULT_BOT_SPELLS)
-    if not rebuild:
-        existing = read_bot_spells(destination)
-        if existing.rows:
-            return existing
-    try:
-        dump = peq_path(peq)
-        peq_arg: str | Path | None = dump if dump.is_file() else None
-    except Exception:
+    """Load bot_spells.jsonl, or build once from bootstrap + peq."""
+    global _book
+    if _book is not None:
+        return _book
+    path = path or os.environ.get("EQEMU_BOT_SPELLS", DEFAULT_BOT_SPELLS)
+    file = Path(path)
+    if file.is_file() and not rebuild:
+        _book = read_bot_spells(path)
+        return _book
+    dump = peq_path(peq)
+    if not dump.is_file():
         log.error("bot spell dump path failed", exc_info=True)
-        peq_arg = peq
-    book = build_bot_spells(peq_arg, bootstrap)
-    if book.rows:
-        write_bot_spells(book, destination)
-    return book
+        raise RuntimeError("bot spell dump path failed")
+
+    _book = build_bot_spells(dump, bootstrap)
+    if _book.rows:
+        write_bot_spells(_book, path)
+    return _book

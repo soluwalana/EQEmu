@@ -34,7 +34,109 @@ def characters() -> dict[str, dict[str, str]]:
         return json.load(handle)
 
 
-_SCHEMA = "\nCREATE TABLE IF NOT EXISTS says (\n    character TEXT NOT NULL, zone TEXT NOT NULL, npc TEXT NOT NULL, text TEXT NOT NULL,\n    PRIMARY KEY (character, zone, npc, text)\n);\nCREATE TABLE IF NOT EXISTS handins (\n    character TEXT NOT NULL, zone TEXT NOT NULL, npc TEXT NOT NULL,\n    item_id INTEGER NOT NULL, count INTEGER NOT NULL,\n    PRIMARY KEY (character, zone, npc, item_id)\n);\nCREATE TABLE IF NOT EXISTS flags (\n    character TEXT NOT NULL, name TEXT NOT NULL, value INTEGER NOT NULL,\n    PRIMARY KEY (character, name)\n);\nCREATE TABLE IF NOT EXISTS soulbind (\n    character TEXT PRIMARY KEY, zone TEXT NOT NULL\n);\nCREATE TABLE IF NOT EXISTS tutorial (\n    character TEXT PRIMARY KEY\n);\nCREATE TABLE IF NOT EXISTS corpses (\n    character TEXT NOT NULL, corpse_id INTEGER NOT NULL,\n    zone TEXT NOT NULL, x REAL NOT NULL, y REAL NOT NULL, z REAL NOT NULL,\n    collected INTEGER NOT NULL DEFAULT 0,\n    PRIMARY KEY (character, corpse_id)\n);\nCREATE TABLE IF NOT EXISTS goals (\n    character TEXT NOT NULL, position INTEGER NOT NULL,\n    item_id INTEGER NOT NULL, count INTEGER NOT NULL,\n    PRIMARY KEY (character, position)\n);\nCREATE TABLE IF NOT EXISTS actions (\n    character TEXT NOT NULL, position INTEGER NOT NULL,\n    kind TEXT NOT NULL, source TEXT NOT NULL,\n    zone TEXT NOT NULL, priority INTEGER NOT NULL DEFAULT 0,\n    durable INTEGER NOT NULL DEFAULT 0, payload TEXT NOT NULL DEFAULT '{}',\n    resolved INTEGER NOT NULL DEFAULT 0,\n    PRIMARY KEY (character, position)\n);\nCREATE TABLE IF NOT EXISTS bot_worn (\n    character TEXT NOT NULL, bot_name TEXT NOT NULL, slot INTEGER NOT NULL, item_id INTEGER NOT NULL,\n    PRIMARY KEY (character, bot_name, slot)\n);\nCREATE TABLE IF NOT EXISTS bot_settings (\n    character TEXT NOT NULL, bot_name TEXT NOT NULL, kind TEXT NOT NULL, value TEXT NOT NULL,\n    PRIMARY KEY (character, bot_name, kind)\n);\nCREATE TABLE IF NOT EXISTS bots (\n    character TEXT NOT NULL, bot_name TEXT NOT NULL, class_id INTEGER NOT NULL DEFAULT 0,\n    PRIMARY KEY (character, bot_name)\n);\nCREATE TABLE IF NOT EXISTS sell_marks (\n    character TEXT NOT NULL, item_id INTEGER NOT NULL,\n    PRIMARY KEY (character, item_id)\n);\n"
+_SCHEMA = """
+CREATE TABLE IF NOT EXISTS says (
+    character TEXT NOT NULL, 
+    zone TEXT NOT NULL, 
+    npc TEXT NOT NULL, 
+    text TEXT NOT NULL,
+    PRIMARY KEY (character, zone, npc, text)
+);
+
+CREATE TABLE IF NOT EXISTS handins (
+    character TEXT NOT NULL, 
+    zone TEXT NOT NULL, 
+    npc TEXT NOT NULL,
+    item_id INTEGER NOT NULL, 
+    count INTEGER NOT NULL,
+    PRIMARY KEY (character, zone, npc, item_id)
+);
+
+CREATE TABLE IF NOT EXISTS flags (
+    character TEXT NOT NULL, 
+    name TEXT NOT NULL, 
+    value INTEGER NOT NULL,
+    PRIMARY KEY (character, name)
+);
+
+CREATE TABLE IF NOT EXISTS soulbind (
+    character TEXT PRIMARY KEY, 
+    zone TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS tutorial (
+    character TEXT PRIMARY KEY    
+);
+
+CREATE TABLE IF NOT EXISTS corpses (
+    character TEXT NOT NULL, 
+    corpse_id INTEGER NOT NULL,
+    zone TEXT NOT NULL, 
+    x REAL NOT NULL, 
+    y REAL NOT NULL, 
+    z REAL NOT NULL,
+    collected INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (character, corpse_id)
+);
+
+CREATE TABLE IF NOT EXISTS goals (
+    character TEXT NOT NULL, 
+    position INTEGER NOT NULL,
+    item_id INTEGER NOT NULL,
+    count INTEGER NOT NULL,
+    PRIMARY KEY (character, position)
+);
+
+CREATE TABLE IF NOT EXISTS actions (
+    character TEXT NOT NULL, 
+    position INTEGER NOT NULL,
+    kind TEXT NOT NULL, 
+    source TEXT NOT NULL,
+    zone TEXT NOT NULL, 
+    priority INTEGER NOT NULL DEFAULT 0,
+    durable INTEGER NOT NULL DEFAULT 0, 
+    payload TEXT NOT NULL DEFAULT '{}',
+    resolved INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (character, position)
+);
+
+CREATE TABLE IF NOT EXISTS bot_worn (
+    character TEXT NOT NULL, 
+    bot_name TEXT NOT NULL, 
+    slot INTEGER NOT NULL, 
+    item_id INTEGER NOT NULL,
+    PRIMARY KEY (character, bot_name, slot)
+);
+
+CREATE TABLE IF NOT EXISTS bot_settings (
+    character TEXT NOT NULL, 
+    bot_name TEXT NOT NULL, 
+    kind TEXT NOT NULL, 
+    value TEXT NOT NULL,
+    PRIMARY KEY (character, bot_name, kind)
+);
+
+CREATE TABLE IF NOT EXISTS bots (
+    character TEXT NOT NULL, 
+    bot_name TEXT NOT NULL, 
+    class_id INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (character, bot_name)
+);
+
+CREATE TABLE IF NOT EXISTS sell_marks (
+    character TEXT NOT NULL,
+    item_id INTEGER NOT NULL,
+    PRIMARY KEY (character, item_id)
+);
+
+CREATE TABLE IF NOT EXISTS book_texts (
+    character TEXT NOT NULL,
+    book_id INTEGER NOT NULL,
+    text TEXT NOT NULL,
+    PRIMARY KEY (character, book_id)
+);
+
+"""
 
 
 class Journal:

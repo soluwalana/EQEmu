@@ -29,21 +29,17 @@ Each list is the order you obtain that item. Later steps point here instead of r
 17. Loot "Perfect Acrylia Ore" (9052) from "Stonehand".
 18. Spawns "Boulder" (171069) in `thegrey` on enter.
 19. Loot "Perfect Acrylia Ore" (9052) from "Boulder".
-20. Loot "Perfect Acrylia Ore" (9052) from "Boulder" in `thegrey`.
-21. Loot "Perfect Acrylia Ore" (9052) from "Stonehand" in `thegrey`.
-22. Loot "Perfect Acrylia Ore" (9052) from "A Boulder Fiend" in `thegrey`.
-23. Loot "Perfect Acrylia Ore" (9052) from "A Stone Beast" in `thegrey`.
-24. No quest step gives Chunk of Dense Fungal Padding (9054). The dump lists it in thedeep.
-25. Combine in "Rahoul's Collection Box" (17363): "Gem of the Void" (9053), "Perfect Acrylia Ore" (9052), "Chunk of Dense Fungal Padding" (9054). Produces "Sealed Collection Box" (9051). The combine does not fail.
-26. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9055).
-27. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9056).
-28. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Acrylia Gilded Box" (17362).
-29. Hand "Khati Sha Seal of War" (9057) to fungusgrove/"Scout Halmia". Spawns "Draz Nurakk" (157116). Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
-30. Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
-31. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Khati Sha Seal of War" (9057).
-32. fungusgrove/"Scout Halmia", hand "Khati Sha Seal of War" (9057). Gives "Khati Sha Seal of War" (9062).
-33. Combine in "Acrylia Gilded Box" (17362): "Jagged Claw of Rending" (9055), "Jagged Claw of Rending" (9056), "Draz Nurakk's Head" (9059), "Khati Sha Seal of War" (9062). Produces "Sealed Gilded Wooden Chest" (9060). The combine does not fail.
-34. sharvahl/"Elder Animist Dumul", hand "Sealed Gilded Wooden Chest" (9060). Gives "Claw of the Savage Spirit" (8495).
+20. No quest step gives Chunk of Dense Fungal Padding (9054). The dump lists it in thedeep.
+21. Combine in "Rahoul's Collection Box" (17363): "Gem of the Void" (9053), "Perfect Acrylia Ore" (9052), "Chunk of Dense Fungal Padding" (9054). Produces "Sealed Collection Box" (9051). The combine does not fail.
+22. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9055).
+23. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9056).
+24. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Acrylia Gilded Box" (17362).
+25. Hand "Khati Sha Seal of War" (9057) to fungusgrove/"Scout Halmia". Spawns "Draz Nurakk" (157116). Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
+26. Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
+27. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Khati Sha Seal of War" (9057).
+28. fungusgrove/"Scout Halmia", hand "Khati Sha Seal of War" (9057). Gives "Khati Sha Seal of War" (9062).
+29. Combine in "Acrylia Gilded Box" (17362): "Jagged Claw of Rending" (9055), "Jagged Claw of Rending" (9056), "Draz Nurakk's Head" (9059), "Khati Sha Seal of War" (9062). Produces "Sealed Gilded Wooden Chest" (9060). The combine does not fail.
+30. sharvahl/"Elder Animist Dumul", hand "Sealed Gilded Wooden Chest" (9060). Gives "Claw of the Savage Spirit" (8495).
 
 ### "Claw of the Savage Spirit" (8496)
 
@@ -66,21 +62,17 @@ Each list is the order you obtain that item. Later steps point here instead of r
 17. Loot "Perfect Acrylia Ore" (9052) from "Stonehand".
 18. Spawns "Boulder" (171069) in `thegrey` on enter.
 19. Loot "Perfect Acrylia Ore" (9052) from "Boulder".
-20. Loot "Perfect Acrylia Ore" (9052) from "Boulder" in `thegrey`.
-21. Loot "Perfect Acrylia Ore" (9052) from "Stonehand" in `thegrey`.
-22. Loot "Perfect Acrylia Ore" (9052) from "A Boulder Fiend" in `thegrey`.
-23. Loot "Perfect Acrylia Ore" (9052) from "A Stone Beast" in `thegrey`.
-24. No quest step gives Chunk of Dense Fungal Padding (9054). The dump lists it in thedeep.
-25. Combine in "Rahoul's Collection Box" (17363): "Gem of the Void" (9053), "Perfect Acrylia Ore" (9052), "Chunk of Dense Fungal Padding" (9054). Produces "Sealed Collection Box" (9051). The combine does not fail.
-26. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9055).
-27. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9056).
-28. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Acrylia Gilded Box" (17362).
-29. Hand "Khati Sha Seal of War" (9057) to fungusgrove/"Scout Halmia". Spawns "Draz Nurakk" (157116). Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
-30. Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
-31. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Khati Sha Seal of War" (9057).
-32. fungusgrove/"Scout Halmia", hand "Khati Sha Seal of War" (9057). Gives "Khati Sha Seal of War" (9062).
-33. Combine in "Acrylia Gilded Box" (17362): "Jagged Claw of Rending" (9055), "Jagged Claw of Rending" (9056), "Draz Nurakk's Head" (9059), "Khati Sha Seal of War" (9062). Produces "Sealed Gilded Wooden Chest" (9060). The combine does not fail.
-34. sharvahl/"Elder Animist Dumul", hand "Sealed Gilded Wooden Chest" (9060). Gives "Claw of the Savage Spirit" (8496).
+20. No quest step gives Chunk of Dense Fungal Padding (9054). The dump lists it in thedeep.
+21. Combine in "Rahoul's Collection Box" (17363): "Gem of the Void" (9053), "Perfect Acrylia Ore" (9052), "Chunk of Dense Fungal Padding" (9054). Produces "Sealed Collection Box" (9051). The combine does not fail.
+22. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9055).
+23. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9056).
+24. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Acrylia Gilded Box" (17362).
+25. Hand "Khati Sha Seal of War" (9057) to fungusgrove/"Scout Halmia". Spawns "Draz Nurakk" (157116). Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
+26. Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
+27. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Khati Sha Seal of War" (9057).
+28. fungusgrove/"Scout Halmia", hand "Khati Sha Seal of War" (9057). Gives "Khati Sha Seal of War" (9062).
+29. Combine in "Acrylia Gilded Box" (17362): "Jagged Claw of Rending" (9055), "Jagged Claw of Rending" (9056), "Draz Nurakk's Head" (9059), "Khati Sha Seal of War" (9062). Produces "Sealed Gilded Wooden Chest" (9060). The combine does not fail.
+30. sharvahl/"Elder Animist Dumul", hand "Sealed Gilded Wooden Chest" (9060). Gives "Claw of the Savage Spirit" (8496).
 
 ### "Decorated Statuette of the Feral" (57059)
 
@@ -93,10 +85,21 @@ Each list is the order you obtain that item. Later steps point here instead of r
 7. Common item: Jar of Acid (22133). Listed in 15 zones.
 8. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
 9. Combine in Brew Barrel (19): "Ukun Hide" (67424), "Acid Wash" (15987). Produces "Tanned Ukun Leather" (52932). Requires Brewing, trivial 100.
-10. sharvahl/"Weapons Master Rahoul", say "Adornments". Gives "Adornments Pattern" (57056).
-11. Combine in "Large Sewing Kit" (17880): "Tanned Ukun Leather" (52932), "Adornments Pattern" (57056). Produces "Crafted Tassels" (52929). Requires Tailoring, trivial 100.
-12. sharvahl/"Weapons Master Rahoul", hand platinum:2000. Gives "Plain Beastlord Statuette" (52931).
-13. Combine in "Large Sewing Kit" (17880): "Crafted Tassels" (52929), "Plain Beastlord Statuette" (52931). Produces "Decorated Statuette of the Feral" (57059). Requires Tailoring, trivial 100.
+10. No quest step gives Gem of the Void (9053). The dump lists it in maiden.
+11. No quest step gives Chunk of Dense Fungal Padding (9054). The dump lists it in thedeep.
+12. Spawns "A Boulder Fiend" (171063) in `thegrey` on enter.
+13. Loot "Perfect Acrylia Ore" (9052) from "A Boulder Fiend".
+14. Spawns "A Stone Beast" (171051) in `thegrey` on enter.
+15. Loot "Perfect Acrylia Ore" (9052) from "A Stone Beast".
+16. Spawns "Stonehand" (171064) in `thegrey` on enter.
+17. Loot "Perfect Acrylia Ore" (9052) from "Stonehand".
+18. Spawns "Boulder" (171069) in `thegrey` on enter.
+19. Loot "Perfect Acrylia Ore" (9052) from "Boulder".
+20. sharvahl/"Weapons Master Rahoul", hand "Perfect Acrylia Ore" (9052) + "Gem of the Void" (9053) + "Chunk of Dense Fungal Padding" (9054). Sets `beast_turnin` to `1`.
+21. sharvahl/"Weapons Master Rahoul", say "Adornments". Requires `beast_turnin` ==1. Gives "Adornments Pattern" (57056).
+22. Combine in "Large Sewing Kit" (17880): "Tanned Ukun Leather" (52932), "Adornments Pattern" (57056). Produces "Crafted Tassels" (52929). Requires Tailoring, trivial 100.
+23. sharvahl/"Weapons Master Rahoul", hand platinum:2000. Gives "Plain Beastlord Statuette" (52931).
+24. Combine in "Large Sewing Kit" (17880): "Crafted Tassels" (52929), "Plain Beastlord Statuette" (52931). Produces "Decorated Statuette of the Feral" (57059). Requires Tailoring, trivial 100.
 
 ### "Sealed Note for Muada" (52900)
 
@@ -107,36 +110,33 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 1. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
 2. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-3. Kill befallen/"A Skeletal Excavator". Spawns "A Skeletal Foreman" (36092).
-4. Loot "Bone Chips" (13073) from "A Skeletal Foreman".
-5. Kill cauldron/"Bilge Farfathom". Spawns "An Undertow Skeleton" (70062).
-6. Loot "Bone Chips" (13073) from "An Undertow Skeleton".
-7. Kill cauldron/"The Fabled Bilge Farfathom". Spawns "An Undertow Skeleton" (70062).
-8. Kill cauldron/"A Cauldron Rat". Spawns "An Undertow Skeleton" (70062).
-9. 7 other loot steps also yield Bone Chips (13073).
-10. Summon "Bone Chips" (13073) by casting "Boneshear", "GM Summon Bone Chips".
-11. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-12. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-13. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-14. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-15. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-16. Say "Tm Devrak Death" to rujd/"Rujd".
-17. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-18. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-19. Say "Tm Dokorel Death" to rujd/"Rujd".
-20. Say "Tm Velrek Death" to rujd/"Rujd".
-21. Say "Researcher Death" to rujg/"Rujg".
-22. Spawns "A Barrel" (260015).
-23. Loot "Pod of Water" (13044) from "A Barrel".
-24. 3 other loot steps also yield Pod of Water (13044).
-25. Forage "Pod of Water" (13044) in `ruja`.
-26. Forage "Pod of Water" (13044) in `uqua`.
-27. Forage "Pod of Water" (13044) in `yxtta`.
-28. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-29. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-30. 17 other recipes also produce Bottle (16598).
-31. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-32. global/"Familiarbrewworks", hand "Water Flask" (13006). Gives "Ale" (13039).
+3. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+4. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+5. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+6. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+7. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+8. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+9. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+10. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
+11. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
+12. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
+13. Say "Tm Devrak Death" to rujd/"Rujd".
+14. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
+15. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
+16. Say "Tm Dokorel Death" to rujd/"Rujd".
+17. Say "Tm Velrek Death" to rujd/"Rujd".
+18. Say "Researcher Death" to rujg/"Rujg".
+19. Spawns "A Barrel" (260015).
+20. Loot "Pod of Water" (13044) from "A Barrel".
+21. 3 other loot steps also yield Pod of Water (13044).
+22. Forage "Pod of Water" (13044) in `ruja`.
+23. Forage "Pod of Water" (13044) in `uqua`.
+24. Forage "Pod of Water" (13044) in `yxtta`.
+25. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+26. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+27. 17 other recipes also produce Bottle (16598).
+28. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+29. global/"Familiarbrewworks", hand "Water Flask" (13006). Gives "Ale" (13039).
 
 ### "Gift of the Sphinx" (52905)
 
@@ -160,14 +160,14 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Spiritbound Totem" (57027)
 
-1. sharvahl/"Elder Animist Muada", say "Make The Totem". Gives "Elders' Totem Mold" (52930).
-2. sharvahl/"Elder Animist Muada", say "Task". Gives "Peculiar Unshapen Piece of Wood" (57011).
-3. Loot "Fierce Spirit Clay" (57020) from "Spiritfrenzied Phoenix" in `poair`.
-4. Loot "Eerie Medallion" (57025) from "Grimling Colonel" in `grimling`.
-5. Loot "Eerie Medallion" (57025) from "Grimling General".
-6. Say "Hail" to jaggedpine/"Rashara Wrualla".
-7. Spawns "Dismal Darkpaw Mystic" (181225).
-8. Loot "Scalding Blood" (57058) from "Dismal Darkpaw Mystic".
+1. Loot "Eerie Medallion" (57025) from "Grimling Colonel" in `grimling`.
+2. Loot "Eerie Medallion" (57025) from "Grimling General".
+3. Say "Hail" to jaggedpine/"Rashara Wrualla".
+4. Spawns "Dismal Darkpaw Mystic" (181225).
+5. Loot "Scalding Blood" (57058) from "Dismal Darkpaw Mystic".
+6. Loot "Fierce Spirit Clay" (57020) from "Spiritfrenzied Phoenix" in `poair`.
+7. sharvahl/"Elder Animist Muada", say "Make The Totem". Gives "Elders' Totem Mold" (52930).
+8. sharvahl/"Elder Animist Muada", say "Task". Gives "Peculiar Unshapen Piece of Wood" (57011).
 9. Combine in Kiln (22): "Fierce Spirit Clay" (57020), "Eerie Medallion" (57025), "Scalding Blood" (57058). Produces "Gilded Resonating Clay" (57029). Requires Pottery 100. The combine does not fail.
 10. sharvahl/"Elder Animist Muada", say "Make The Totem". Gives "Combined Essence" (52913).
 11. Combine in Oven (15): "Peculiar Unshapen Piece of Wood" (57011), "Gilded Resonating Clay" (57029), "Combined Essence" (52913). Produces "Malleable Glowing Totem" (57050). Requires Baking 100. The combine does not fail.
@@ -191,29 +191,35 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Sealed Letter from Muada" (57053)
 
-1. Say "Check Lorb" to anguish/"Zone Status".
-2. Spawns "Orb of Discordant Energy" (317087).
-3. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-4. Say "Check Uorb" to anguish/"Zone Status".
-5. Say "Check Amv Chest" to anguish/"Zone Status".
-6. Spawns "Ornate Chest" (317112).
-7. Loot "Globe of Discordant Energy" (47100) from "Ornate Chest".
-8. 2 other loot steps also yield Globe of Discordant Energy (47100).
-9. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" in `anguish`.
-10. Loot "Globe of Discordant Energy" (47100) from "Overlords Chest".
-11. sharvahl/"Elder Animist Muada", say "Make The Totem". Gives "Elders' Totem Mold" (52930).
-12. sharvahl/"Elder Animist Muada", say "Task". Gives "Peculiar Unshapen Piece of Wood" (57011).
-13. Loot "Fierce Spirit Clay" (57020) from "Spiritfrenzied Phoenix" in `poair`.
-14. Loot "Eerie Medallion" (57025) from "Grimling Colonel" in `grimling`.
-15. Loot "Eerie Medallion" (57025) from "Grimling General".
-16. Say "Hail" to jaggedpine/"Rashara Wrualla".
-17. Spawns "Dismal Darkpaw Mystic" (181225).
-18. Loot "Scalding Blood" (57058) from "Dismal Darkpaw Mystic".
-19. Combine in Kiln (22): "Fierce Spirit Clay" (57020), "Eerie Medallion" (57025), "Scalding Blood" (57058). Produces "Gilded Resonating Clay" (57029). Requires Pottery 100. The combine does not fail.
-20. sharvahl/"Elder Animist Muada", say "Make The Totem". Gives "Combined Essence" (52913).
-21. Combine in Oven (15): "Peculiar Unshapen Piece of Wood" (57011), "Gilded Resonating Clay" (57029), "Combined Essence" (52913). Produces "Malleable Glowing Totem" (57050). Requires Baking 100. The combine does not fail.
-22. Combine in Forge (17): "Elders' Totem Mold" (52930), "Malleable Glowing Totem" (57050). Produces "Spiritbound Totem" (57027). Requires Blacksmithing 100. The combine does not fail.
-23. sharvahl/"Elder Animist Muada", hand "Globe of Discordant Energy" (47100) + "Spiritbound Totem" (57027). Gives "Sealed Letter from Muada" (57053).
+1. Say "Strong" to bloodfields/"Tormented Scout".
+2. Spawns "DDA" (301069).
+3. Loot "Gemmed Dark Animist Wand" (57014) from "DDA".
+4. Loot "Gemmed Dark Animist Wand" (57014) from "Discordling Dark Animist".
+5. bloodfields/"Tormented Scout", hand "Gemmed Dark Animist Wand" (57014). Gives "Wrapped Gemmed Wand" (57052).
+6. sharvahl/"Elder Animist Muada", hand "Wrapped Gemmed Wand" (57052). Sets `beast_epic` to `21`.
+7. Say "Check Lorb" to anguish/"Zone Status".
+8. Spawns "Orb of Discordant Energy" (317087).
+9. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+10. Say "Check Uorb" to anguish/"Zone Status".
+11. Say "Check Amv Chest" to anguish/"Zone Status".
+12. Spawns "Ornate Chest" (317112).
+13. Loot "Globe of Discordant Energy" (47100) from "Ornate Chest".
+14. 2 other loot steps also yield Globe of Discordant Energy (47100).
+15. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" in `anguish`.
+16. Loot "Globe of Discordant Energy" (47100) from "Overlords Chest".
+17. Loot "Eerie Medallion" (57025) from "Grimling Colonel" in `grimling`.
+18. Loot "Eerie Medallion" (57025) from "Grimling General".
+19. Say "Hail" to jaggedpine/"Rashara Wrualla".
+20. Spawns "Dismal Darkpaw Mystic" (181225).
+21. Loot "Scalding Blood" (57058) from "Dismal Darkpaw Mystic".
+22. Loot "Fierce Spirit Clay" (57020) from "Spiritfrenzied Phoenix" in `poair`.
+23. sharvahl/"Elder Animist Muada", say "Make The Totem". Gives "Elders' Totem Mold" (52930).
+24. sharvahl/"Elder Animist Muada", say "Task". Gives "Peculiar Unshapen Piece of Wood" (57011).
+25. Combine in Kiln (22): "Fierce Spirit Clay" (57020), "Eerie Medallion" (57025), "Scalding Blood" (57058). Produces "Gilded Resonating Clay" (57029). Requires Pottery 100. The combine does not fail.
+26. sharvahl/"Elder Animist Muada", say "Make The Totem". Gives "Combined Essence" (52913).
+27. Combine in Oven (15): "Peculiar Unshapen Piece of Wood" (57011), "Gilded Resonating Clay" (57029), "Combined Essence" (52913). Produces "Malleable Glowing Totem" (57050). Requires Baking 100. The combine does not fail.
+28. Combine in Forge (17): "Elders' Totem Mold" (52930), "Malleable Glowing Totem" (57050). Produces "Spiritbound Totem" (57027). Requires Blacksmithing 100. The combine does not fail.
+29. sharvahl/"Elder Animist Muada", hand "Globe of Discordant Energy" (47100) + "Spiritbound Totem" (57027). Requires `beast_epic` ==21. Gives "Sealed Letter from Muada" (57053).
 
 ## `beast_epic`
 
@@ -277,6 +283,7 @@ In script order:
 How the items are reached:
 
 - Letter from Muada (57008)
+  - Requires `beast_epic` ==2
   - Given by oot/"Marrey Mcgrannel", say "Way".
 
 ### 3. irionu bastun — hand 57008
@@ -294,6 +301,7 @@ In script order:
 How the items are reached:
 
 - Letter from Muada (57008)
+  - Requires `beast_epic` ==2
   - Given by oot/"Marrey Mcgrannel", say "Way".
 
 ### 4. rashara wrualla — hand 57008
@@ -311,6 +319,7 @@ In script order:
 How the items are reached:
 
 - Letter from Muada (57008)
+  - Requires `beast_epic` ==2
   - Given by oot/"Marrey Mcgrannel", say "Way".
 
 ### 5. ikpug giblod — hand 57008
@@ -328,6 +337,7 @@ In script order:
 How the items are reached:
 
 - Letter from Muada (57008)
+  - Requires `beast_epic` ==2
   - Given by oot/"Marrey Mcgrannel", say "Way".
 
 ### 6. diddugu — hand 57008
@@ -345,6 +355,7 @@ In script order:
 How the items are reached:
 
 - Letter from Muada (57008)
+  - Requires `beast_epic` ==2
   - Given by oot/"Marrey Mcgrannel", say "Way".
 
 ### 7. elder animist muada — hand 57009+57995
@@ -597,6 +608,7 @@ In script order:
 How the items are reached:
 
 - Blended Elixir of Fortitude (57051)
+  - Requires `beast_epic` ==19
   - Given by sharvahl/"Elder Animist Muada", say "Agree To Take On This Charge".
 
 ### 21. elder animist muada — hand 57052

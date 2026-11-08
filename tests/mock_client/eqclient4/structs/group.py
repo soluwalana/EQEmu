@@ -66,24 +66,75 @@ class OP_GroupUpdate(EQStruct):
         action, your_name, members, leader, full = _read_group(data, full_opcode=True)
         return cls(action, your_name, members, leader, full)
 
-
 @dataclass
+
 class OP_GroupUpdateB(OP_GroupUpdate):
-    """Full roster. The server sends this instead of the fixed group update."""
+    """RoF2 variable-length group roster."""
+
+    def serialize(self) -> bytes:
+        names = [self.your_name] + list(self.members)
+
+        out = bytearray(struct.pack("<II", 0, len(names)))
+        out += self.leader.encode("latin1", errors="replace") + b"\0"
+
+        for index, name in enumerate(names):
+            out += struct.pack("<I", index)
+            out += name.encode("latin1", errors="replace") + b"\0"
+
+            # Merc owner flag, string marker, level, role flags,
+            # offline flag, timestamp.
+            out += struct.pack(
+                "<H B I BBB II",
+                0,     # merc owner
+                0,     # string marker
+                0x46,  # level
+                0,     # tank
+                0,     # assist
+                0,     # puller
+                0,     # offline
+                0,     # timestamp
+            )
+
+        return bytes(out)
 
     @classmethod
-    def deserialize(cls, data: bytes) -> OP_GroupUpdateB:
-        your_name, members, leader = _read_group_roster(data)
-        return cls(7, your_name, members, leader, True)
+    def deserialize(cls, data: bytes) -> "OP_GroupUpdateB":
+        need(data, 8, cls.__name__)
 
+        count = read_u32(data, 4)
+        leader, offset = cstring(data, 8)
+
+        names = []
+        for _ in range(count):
+            need(data[offset:], 4, cls.__name__)
+            offset += 4  # member index
+
+            name, offset = cstring(data, offset)
+            offset += 18  # fixed member metadata
+
+            names.append(name)
+
+        return cls(
+            action=7,
+            your_name=names[0] if names else "",
+            members=names[1:],
+            leader=leader,
+            full=True,
+        )
 
 @dataclass
 class OP_GroupDisbandYou(EQStruct):
     your_name: str = ""
     member_name: str = ""
 
+    def serialize(self) -> bytes:
+        out = bytearray(128)
+        put_fixed(out, 0, self.your_name, 64)
+        put_fixed(out, 64, self.member_name, 64)
+        return bytes(out)
+
     @classmethod
-    def deserialize(cls, data: bytes) -> OP_GroupDisbandYou:
+    def deserialize(cls, data: bytes) -> "OP_GroupDisbandYou":
         your_name, member_name = two_names(data)
         return cls(your_name, member_name)
 
@@ -93,8 +144,14 @@ class OP_GroupDisbandOther(EQStruct):
     your_name: str = ""
     member_name: str = ""
 
+    def serialize(self) -> bytes:
+        out = bytearray(128)
+        put_fixed(out, 0, self.your_name, 64)
+        put_fixed(out, 64, self.member_name, 64)
+        return bytes(out)
+
     @classmethod
-    def deserialize(cls, data: bytes) -> OP_GroupDisbandOther:
+    def deserialize(cls, data: bytes) -> "OP_GroupDisbandOther":
         your_name, member_name = two_names(data)
         return cls(your_name, member_name)
 

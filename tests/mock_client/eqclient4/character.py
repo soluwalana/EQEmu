@@ -10,6 +10,7 @@ from copy import deepcopy
 from dataclasses import dataclass
 from typing import Self
 
+from eqclient4.log import log
 from eqclient4.structs import (
     BuffIconEntry,
     OP_AAExpUpdate,
@@ -27,11 +28,14 @@ from eqclient4.structs import (
     OP_PlayerProfile,
     OP_RespondAA,
     OP_SendAATable,
+    OP_ShopPlayerBuy,
     OP_SkillUpdate,
     OP_Stamina,
     ProfileBind,
     SpellBuff,
 )
+
+from eqclient4.structs.constants import AASkill, CombatSkill, Skill
 from eqclient4.structs.wire import EQStruct
 
 
@@ -68,9 +72,12 @@ class Abilities:
 
     def __init__(self) -> None:
         self.skills: dict[int, int] = {}
-        self.can_bash: bool = False
-        self.shield: bool = False
-        self.two_hand: bool = False
+
+    def combat_skill_known(self, skill: CombatSkill) -> bool:
+        return self.ability_known(skill.value)
+
+    def ability_known(self, skill_id: int) -> bool:
+        return 0 < int(self.skills.get(int(skill_id), 0)) < 0xFFFFFFFF
 
 
 class Character:
@@ -84,10 +91,8 @@ class Character:
     def __init__(self, name: str = "") -> None:
         self.name: str = name
         self.last_name: str = ""
+
         self.loaded: bool = False
-        self.abilities: Abilities = Abilities()
-        self.tutorial_started: bool = False
-        self.quest_started: bool = False
 
         self.self_id: int = 0
         self.class_id: int = 0
@@ -98,15 +103,20 @@ class Character:
         self.exp: int = 0
         self.training_points: int = 0
         self.points: int = 0
+
         self.hp: int = 0
         self.max_hp: int = 0
         self.hp_percent: int | None = None
+
         self.mana: int = 0
         self.max_mana: int = 0
+
         self.endurance: int = 0
         self.max_endurance: int = 0
+
         self.food: int = 0
         self.water: int = 0
+
         self.strength: int = 0
         self.stamina: int = 0
         self.agility: int = 0
@@ -137,6 +147,8 @@ class Character:
         self.buffs: dict[int, SpellBuff] = {}
         self.buff_icons: dict[int, BuffIconEntry] = {}
 
+        self.abilities: Abilities = Abilities()
+
         # AA snapshots use rank IDs; catalog definitions also expose a distinct
         # ability ID (OP_SendAATable.seq). Do not merge the two namespaces.
         self.aa_owned: dict[int, OwnedAA] = {}  # keyed by rank ID
@@ -155,13 +167,10 @@ class Character:
 
         self.changes: list[CharacterEvent] = []
 
-    def _event(self, action: str, message: str, changed: bool = False) -> CharacterEvent:
+    def event(self, action: str, message: str, changed: bool = False) -> CharacterEvent:
         event = CharacterEvent(action, message, changed)
         self.changes.append(event)
         return event
-
-    def ability_known(self, skill_id: int) -> bool:
-        return 0 < int(self.abilities.skills.get(int(skill_id), 0)) < 0xFFFFFFFF
 
     @property
     def coin(self) -> tuple[int, int, int, int]:
@@ -341,184 +350,10 @@ class Character:
         self.buff_icons.clear()
         self.set_owned_aa(packet.aa)
         # NOTE: packet.x/y/z/heading intentionally belong to Movement, not Character.
-        return self._event("profile", f"Loaded {self.name!r} level {self.level}", True)
+        return self.event("profile", f"Loaded {self.name!r} level {self.level}", True)
 
-    def _is_self(self, entity_id: int) -> bool:
+    def is_self(self, entity_id: int) -> bool:
         return self.self_id != 0 and (int(entity_id) & 0xFFFF) == (self.self_id & 0xFFFF)
-
-    def apply(self, packet: EQStruct, from_server: bool = True) -> CharacterEvent | None:
-        """Apply one already-decoded authoritative update; return a change event.
-
-        Pass from_server=False for client-originated packets. Self-scoped HP,
-        mana, endurance, and buff updates require self_id to have been assigned.
-        """
-        if not from_server:
-            return self._event("ignored", f"Client-originated {type(packet).__name__}")
-
-        match packet:
-
-            case OP_NewSpawn():
-                if packet.spawn.name == self.name and packet.spawn.npc == 0:
-                    self.self_id = packet.spawn.spawn_id
-                    return self._event("new-spawn", f"New spawn {self.self_id}", True)
-
-            case OP_PlayerProfile():
-                return self.load(packet)
-
-            case OP_SkillUpdate():
-                prior = self.abilities.skills.get(packet.skill_id)
-                self.abilities.skills[packet.skill_id] = packet.value
-                return self._event(
-                    "skill",
-                    f"Skill {packet.skill_id}: {prior} -> {packet.value}",
-                    prior != packet.value,
-                )
-
-            case OP_Stamina():
-                changed = (self.food, self.water) != (packet.food, packet.water)
-                self.food, self.water = packet.food, packet.water
-                return self._event("stamina", f"Food {self.food}, water {self.water}", changed)
-
-            case OP_MoneyUpdate():
-                previous_coin = self.coin
-                self.set_coin(packet.platinum, packet.gold, packet.silver, packet.copper)
-                return self._event(
-                    "money",
-                    f"Balance {self.coin} ({self.total_copper} copper)",
-                    previous_coin != self.coin,
-                )
-
-            case OP_ExpUpdate():
-                changed = self.exp != packet.exp
-                self.exp = packet.exp
-                self.aa_experience_from_exp_update = packet.aa_exp
-                return self._event("experience", f"Experience {self.exp}", changed)
-
-            case OP_LevelUpdate():
-                changed = (self.level, self.exp) != (packet.level, packet.exp)
-                self.level, self.exp = packet.level, packet.exp
-                return self._event("level", f"Level {self.level}, experience {self.exp}", changed)
-
-            case OP_HPUpdate():
-                if not self._is_self(packet.spawn_id):
-                    return self._event(
-                        "ignored", "HP update belongs to another spawn (or self_id is unknown)"
-                    )
-                changed = (self.hp, self.max_hp) != (packet.cur_hp, packet.max_hp)
-                self.hp, self.max_hp = packet.cur_hp, packet.max_hp
-                self.hp_percent = round(100 * self.hp / self.max_hp) if self.max_hp > 0 else None
-                return self._event("hp", f"HP {self.hp}/{self.max_hp}", changed)
-
-            case OP_MobHealth():
-                if not self._is_self(packet.spawn_id):
-                    return self._event("ignored", "MobHealth belongs to another spawn")
-                changed = self.hp_percent != packet.percent
-                self.hp_percent = packet.percent
-                return self._event("hp-percent", f"HP {packet.percent}%", changed)
-
-            case OP_ManaUpdate():
-                if not self._is_self(packet.spawn_id):
-                    return self._event("ignored", "ManaUpdate belongs to another spawn")
-                changed = (self.mana, self.max_mana) != (packet.cur_mana, packet.max_mana)
-                self.mana, self.max_mana = packet.cur_mana, packet.max_mana
-                return self._event("mana", f"Mana {self.mana}/{self.max_mana}", changed)
-
-            case OP_EnduranceUpdate():
-                if not self._is_self(packet.spawn_id):
-                    return self._event("ignored", "EnduranceUpdate belongs to another spawn")
-                changed = (self.endurance, self.max_endurance) != (packet.cur_end, packet.max_end)
-                self.endurance, self.max_endurance = packet.cur_end, packet.max_end
-                return self._event(
-                    "endurance", f"Endurance {self.endurance}/{self.max_endurance}", changed
-                )
-
-            case OP_ManaChange():
-                changed = self.mana != packet.new_mana
-                self.mana = packet.new_mana
-                return self._event("mana", f"Mana {self.mana}", changed)
-
-            case OP_Buff():
-                if not self._is_self(packet.entity_id):
-                    return self._event("ignored", "Buff belongs to another entity")
-                before = self.buffs.get(packet.slot_id)
-                if packet.fade or packet.buff.spell_id in (0, 0xFFFF, 0xFFFFFFFF):
-                    self.buffs.pop(packet.slot_id, None)
-                    self.buff_icons.pop(packet.slot_id, None)
-                    return self._event(
-                        "buff-fade", f"Buff slot {packet.slot_id}", before is not None
-                    )
-                self.buffs[packet.slot_id] = deepcopy(packet.buff)
-                return self._event(
-                    "buff",
-                    f"Slot {packet.slot_id}: spell {packet.buff.spell_id}",
-                    before != packet.buff,
-                )
-
-            case OP_BuffCreate():
-                if not self._is_self(packet.entity_id):
-                    return self._event("ignored", "Buff icons belong to another entity")
-
-                previous_buffs = self.buff_icons.copy()
-                if packet.all_buffs:
-                    self.buff_icons.clear()
-                for entry in packet.entries:
-                    if entry.spell_id in (0, 0xFFFF, 0xFFFFFFFF):
-                        self.buff_icons.pop(entry.buff_slot, None)
-                    else:
-                        self.buff_icons[entry.buff_slot] = deepcopy(entry)
-
-                return self._event(
-                    "buff-icons",
-                    f"{len(self.buff_icons)} buff icons",
-                    previous_buffs != self.buff_icons,
-                )
-
-            case OP_RespondAA():
-                previous = (self.aa_slots, self.aa_points_spent)
-                self.set_owned_aa({e.index: (e.aa, e.value, e.charges) for e in packet.entries})
-                self.aa_points_spent = packet.aa_spent
-                self.aa_points_assigned = packet.aapoints_assigned
-                self.aa_spent_general = packet.aa_spent_general
-                self.aa_spent_archetype = packet.aa_spent_archetype
-                self.aa_spent_class = packet.aa_spent_class
-                self.aa_spent_special = packet.aa_spent_special
-                return self._event(
-                    "aa-owned",
-                    f"{len(self.aa_owned)} owned AA ranks, {self.aa_points_spent} points spent",
-                    previous != (self.aa_slots, self.aa_points_spent),
-                )
-
-            case OP_SendAATable():
-                previous_aa_rank = self.aa_ranks.get(packet.aa_id)
-                self.aa_ranks[packet.aa_id] = deepcopy(packet)
-                return self._event(
-                    "aa-catalog",
-                    f"Rank {packet.aa_id}, ability {packet.seq}, cost {packet.cost}",
-                    previous_aa_rank != packet,
-                )
-
-            case OP_AAExpUpdate():
-                prior_aa_exp = (
-                    self.aa_points,
-                    self.aa_experience_scaled,
-                    self.aa_xp_allocation_percent,
-                )
-                self.aa_points = packet.aapoints_unspent
-                self.aa_experience_scaled = packet.unknown00
-                self.aa_xp_allocation_percent = packet.aaxp_percent
-                return self._event(
-                    "aa-experience",
-                    f"AA unspent {self.aa_points}, scaled XP {self.aa_experience_scaled}",
-                    prior_aa_exp
-                    != (self.aa_points, self.aa_experience_scaled, self.aa_xp_allocation_percent),
-                )
-
-            case _:
-                return self._event(
-                    "ignored", f"{type(packet).__name__} is not a character-state update"
-                )
-
-        return None
 
     def render_change(self, event: CharacterEvent) -> str:
         return str(event)
@@ -538,6 +373,221 @@ class Character:
             )
         )
 
+    # Left here instead of handlers because it is used
+    def on(self, opcode: str, payload: EQStruct, notify_unknown: bool = True) -> None:
+        """Apply one already-decoded authoritative update."""
+        char = self
+        match payload:
+            case OP_NewSpawn():
+                if payload.spawn.name == char.name and payload.spawn.npc == 0:
+                    char.self_id = payload.spawn.spawn_id
+                    log.info(char.event("new-spawn", f"New spawn {char.self_id}", True))
+
+                return
+
+            case OP_PlayerProfile():
+                log.info(char.load(payload))
+                log.info(char.render())
+                return
+
+            case OP_SkillUpdate():
+                prior = char.abilities.skills.get(payload.skill_id)
+                char.abilities.skills[payload.skill_id] = payload.value
+                log.info(
+                    char.event(
+                        "skill",
+                        f"Skill {payload.skill_id}: {prior} -> {payload.value}",
+                        prior != payload.value,
+                    )
+                )
+                return
+
+            case OP_Stamina():
+                changed = (char.food, char.water) != (payload.food, payload.water)
+                char.food, char.water = payload.food, payload.water
+                log.info(char.event("stamina", f"Food {char.food}, water {char.water}", changed))
+                return
+
+            case OP_MoneyUpdate():
+                previous_coin = char.coin
+                char.set_coin(payload.platinum, payload.gold, payload.silver, payload.copper)
+                log.info(
+                    char.event(
+                        "money",
+                        f"Balance {char.coin} ({char.total_copper} copper)",
+                        previous_coin != char.coin,
+                    )
+                )
+                return
+
+            case OP_ExpUpdate():
+                changed = char.exp != payload.exp
+                char.exp = payload.exp
+                char.aa_experience_from_exp_update = payload.aa_exp
+                log.info(char.event("experience", f"Experience {char.exp}", changed))
+                return
+
+            case OP_LevelUpdate():
+                changed = (char.level, char.exp) != (payload.level, payload.exp)
+                char.level, char.exp = payload.level, payload.exp
+                log.info(char.event("level", f"Level {char.level}, experience {char.exp}", changed))
+                return
+
+            case OP_HPUpdate():
+                if not char.is_self(payload.spawn_id):
+                    return
+
+                changed = (char.hp, char.max_hp) != (payload.cur_hp, payload.max_hp)
+                char.hp, char.max_hp = payload.cur_hp, payload.max_hp
+                char.hp_percent = round(100 * char.hp / char.max_hp) if char.max_hp > 0 else None
+                log.info(char.event("hp", f"HP {char.hp}/{char.max_hp}", changed))
+                return
+
+            case OP_MobHealth():
+                if not char.is_self(payload.spawn_id):
+                    return
+                changed = char.hp_percent != payload.percent
+                char.hp_percent = payload.percent
+                log.info(char.event("hp-percent", f"HP {payload.percent}%", changed))
+                return
+
+            case OP_ManaUpdate():
+                if not char.is_self(payload.spawn_id):
+                    return
+
+                changed = (char.mana, char.max_mana) != (payload.cur_mana, payload.max_mana)
+                char.mana, char.max_mana = payload.cur_mana, payload.max_mana
+                log.info(char.event("mana", f"Mana {char.mana}/{char.max_mana}", changed))
+                return
+
+            case OP_EnduranceUpdate():
+                if not char.is_self(payload.spawn_id):
+                    return
+
+                changed = (char.endurance, char.max_endurance) != (payload.cur_end, payload.max_end)
+                char.endurance, char.max_endurance = payload.cur_end, payload.max_end
+                log.info(
+                    char.event(
+                        "endurance", f"Endurance {char.endurance}/{char.max_endurance}", changed
+                    )
+                )
+                return
+
+            case OP_ManaChange():
+                changed = char.mana != payload.new_mana
+                char.mana = payload.new_mana
+                log.info(char.event("mana", f"Mana {char.mana}", changed))
+                return
+
+            case OP_Buff():
+                if not char.is_self(payload.entity_id):
+                    return
+
+                before = char.buffs.get(payload.slot_id)
+                if payload.fade or payload.buff.spell_id in (0, 0xFFFF, 0xFFFFFFFF):
+                    char.buffs.pop(payload.slot_id, None)
+                    char.buff_icons.pop(payload.slot_id, None)
+                    log.info(
+                        char.event("buff-fade", f"Buff slot {payload.slot_id}", before is not None)
+                    )
+                    return
+
+                char.buffs[payload.slot_id] = deepcopy(payload.buff)
+                log.info(
+                    char.event(
+                        "buff",
+                        f"Slot {payload.slot_id}: spell {payload.buff.spell_id}",
+                        before != payload.buff,
+                    )
+                )
+                return
+
+            case OP_BuffCreate():
+                if not char.is_self(payload.entity_id):
+                    log.info(char.event("ignored", "Buff icons belong to another entity"))
+                    return
+
+                previous_buffs = char.buff_icons.copy()
+                if payload.all_buffs:
+                    char.buff_icons.clear()
+
+                for entry in payload.entries:
+                    if entry.spell_id in (0, 0xFFFF, 0xFFFFFFFF):
+                        char.buff_icons.pop(entry.buff_slot, None)
+                    else:
+                        char.buff_icons[entry.buff_slot] = deepcopy(entry)
+
+                log.info(
+                    char.event(
+                        "buff-icons",
+                        f"{len(char.buff_icons)} buff icons",
+                        previous_buffs != char.buff_icons,
+                    )
+                )
+                return
+
+            case OP_RespondAA():
+                previous = (char.aa_slots, char.aa_points_spent)
+                char.set_owned_aa({e.index: (e.aa, e.value, e.charges) for e in payload.entries})
+                char.aa_points_spent = payload.aa_spent
+                char.aa_points_assigned = payload.aapoints_assigned
+                char.aa_spent_general = payload.aa_spent_general
+                char.aa_spent_archetype = payload.aa_spent_archetype
+                char.aa_spent_class = payload.aa_spent_class
+                char.aa_spent_special = payload.aa_spent_special
+                log.info(
+                    char.event(
+                        "aa-owned",
+                        f"{len(char.aa_owned)} owned AA ranks, {char.aa_points_spent} points spent",
+                        previous != (char.aa_slots, char.aa_points_spent),
+                    )
+                )
+                return
+
+            case OP_SendAATable():
+                previous_aa_rank = char.aa_ranks.get(payload.aa_id)
+                char.aa_ranks[payload.aa_id] = deepcopy(payload)
+                log.info(
+                    char.event(
+                        "aa-catalog",
+                        f"Rank {payload.aa_id}, ability {payload.seq}, cost {payload.cost}",
+                        previous_aa_rank != payload,
+                    )
+                )
+                return
+
+            case OP_AAExpUpdate():
+                prior_aa_exp = (
+                    char.aa_points,
+                    char.aa_experience_scaled,
+                    char.aa_xp_allocation_percent,
+                )
+                char.aa_points = payload.aapoints_unspent
+                char.aa_experience_scaled = payload.unknown00
+                char.aa_xp_allocation_percent = payload.aaxp_percent
+                log.info(
+                    char.event(
+                        "aa-experience",
+                        f"AA unspent {char.aa_points}, scaled XP {char.aa_experience_scaled}",
+                        prior_aa_exp
+                        != (
+                            char.aa_points,
+                            char.aa_experience_scaled,
+                            char.aa_xp_allocation_percent,
+                        ),
+                    )
+                )
+                return
+
+            case OP_ShopPlayerBuy():
+                char.deduct_coins(payload.price)
+                return
+
+            case _:
+                if notify_unknown:
+                    log.error(f"Unknown profile opcode: {opcode}")
+                return
+
     def __str__(self) -> str:
         return self.render()
 
@@ -552,3 +602,72 @@ class Character:
             raise ValueError("Invalid character state")
         result.__dict__.update(data)
         return result
+
+    def render_json(self) -> str:
+        """LLM-friendly JSON inventory with nested bags and augments."""
+        import json
+
+        def encode(address: InventorySlot, item: Item) -> dict:
+            result = {
+                "slot": _slot_id(address),
+                "name": item.name,
+                "item_id": item.item_id,
+                "quantity": item.stack,
+            }
+
+            if item.bag_slots > 0:
+                result["capacity"] = item.bag_slots
+                contents = []
+                for index in range(item.bag_slots):
+                    child_address = self.cell(address, index)
+                    child = self.get(child_address)
+                    if child is not None:
+                        contents.append(encode(child_address, child))
+                if contents:
+                    result["contents"] = contents
+
+            augments = []
+            for child_address, child in self.items():
+                if (
+                    child_address.type == address.type
+                    and child_address.main_slot == address.main_slot
+                    and child_address.sub_index == address.sub_index
+                    and child_address.aug_index >= 0
+                ):
+                    augments.append(encode(child_address, child))
+
+            if augments:
+                result["augments"] = augments
+
+            return result
+
+        result = {
+            "worn": {},
+            "general": {},
+            "bank": {},
+            "shared_bank": {},
+        }
+
+        for address, item in self.items():
+            if address.sub_index >= 0 or address.aug_index >= 0:
+                continue
+
+            if address.type == POSSESSIONS_ADDRESS:
+                if address.main_slot < len(_WORN):
+                    section = "worn"
+                else:
+                    section = "general"
+            elif address.type == BANK_ADDRESS:
+                section = "bank"
+            elif address.type == SHARED_BANK_ADDRESS:
+                section = "shared_bank"
+            else:
+                continue
+
+            result[section][_format_address(address)] = encode(address, item)
+
+        return json.dumps(
+            {key: value for key, value in result.items() if value},
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )

@@ -11,7 +11,7 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from eqclient4.data.catalog import Catalog, named_items
+from eqclient4.data.catalog import Catalog, named_items, load_catalog
 from eqclient4.log import log
 from eqclient4.nav.travel import ensure_zone_graph
 
@@ -69,6 +69,11 @@ _FLAG_LUA = re.compile(
 )
 _FLAG_PERL = re.compile(
     r"""\$qglobals\{\s*["']?([A-Za-z0-9_]+)["']?\s*\}\s*(==|>=|<=|>|<)\s*["']?(\d+)""",
+)
+_FLAG_DEFINED = re.compile(
+    r"""(?P<neg>!\s*|\bnot\s+)?\bdefined\s*\(?\s*
+        \$qglobals\{\s*["']?(?P<name>[A-Za-z0-9_]+)["']?\s*\}\s*\)?""",
+    re.IGNORECASE | re.VERBOSE,
 )
 _FLAG_GET = re.compile(
     r"""GetGlobal\(\s*["']([A-Za-z0-9_]+)["']\s*\)\s*(==|>=|<=|>|<)\s*(undef|nil|\d+)""",
@@ -652,6 +657,12 @@ def _flags(text: str) -> list[tuple[str, str]]:
         found.append((name, f"{op}{value.strip(chr(34))}"))
     for name, op, value in _FLAG_PERL.findall(text):
         found.append((name, f"{op}{value}"))
+
+    for match in _FLAG_DEFINED.finditer(text):
+        found.append((
+            match.group("name"),
+            "unset" if match.group("neg") else "set",
+        ))
     for name, op, value in _FLAG_GET.findall(text):
         if value.lower() in {"undef", "nil"}:
             if op == "==":
@@ -673,8 +684,8 @@ def _flags(text: str) -> list[tuple[str, str]]:
         negated = match.group(0).lower().lstrip().startswith("not")
         found.append((name, "unset" if negated else "set"))
         seen_zf.add(name)
-    numbered = [item for item in found if item[1] not in {"set", "unset"}]
-    return numbered or found
+
+    return list(dict.fromkeys(found))
 
 
 def _zone_flag_sets(text: str) -> list[tuple[str, str]]:
@@ -2388,22 +2399,30 @@ def read_graph(path: str | os.PathLike) -> QuestGraph:
     return graph
 
 
+_graph: QuestGraph | None = None
+
+
 def ensure_graph(
     root: str | None = None, path: str | None = None, *, rebuild: bool = False
 ) -> QuestGraph:
     """Load quest_graph.jsonl, or build once from EQEMU_QUESTS."""
+    global _graph
+    if _graph:
+        return _graph
     path = path or os.environ.get(
         "EQEMU_GRAPH", str(Path.home() / ".eqclient" / "quest_graph.jsonl")
     )
     file = Path(path)
     if file.is_file() and not rebuild:
-        return read_graph(path)
+        _graph = read_graph(path)
+        return _graph
     source = root or os.environ.get("EQEMU_QUESTS", "")
     if not source:
         raise SystemExit("EQEMU_QUESTS (or --root) is required to build the quest graph")
-    built = build_graph(source)
+    built = build_graph(source, load_catalog("/Users/samo/work/EQEmu/peq-dump/create_tables_content.sql"))
     write_graph(built, path)
-    return built
+    _graph = built
+    return _graph
 
 
 def load_graph(path: str | os.PathLike | None = None) -> QuestGraph:

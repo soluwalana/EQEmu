@@ -300,7 +300,11 @@ class CharacterInventory:
         for item in packet.items:
             self._index(_item_address(item), item)
         self._relink()
-        return self._event("snapshot", f"Loaded {len(self.slots)} items\n{self.render()}\n", changed=True,)
+        return self._event(
+            "snapshot",
+            f"Loaded {len(self.slots)} items\n{self.render()}\n",
+            changed=True,
+        )
 
     def apply(self, packet: EQStruct, from_server: bool = True) -> InventoryEvent:
         """Apply one packet *now*; scheduling/connection checks belong to caller."""
@@ -712,3 +716,48 @@ class Merchant:
     def find_all(self, item_id: int) -> list[int]:
         """Find every merchant slot containing an item ID."""
         return [slot for slot, item in self.items.items() if item.item_id == item_id]
+
+
+    def render_json(self) -> str:
+        """Compact, LLM-friendly inventory snapshot."""
+        import json
+
+        inventory = {
+            "worn": [],
+            "general": [],
+            "bank": [],
+            "shared_bank": [],
+            "other": [],
+        }
+
+        for address, item in self.items():
+            if address.type == 0:
+                if address.main_slot < len(_WORN):
+                    section = "worn"
+                else:
+                    section = "general"
+            elif address.type == BANK_ADDRESS:
+                section = "bank"
+            elif address.type == SHARED_BANK_ADDRESS:
+                section = "shared_bank"
+            else:
+                section = "other"
+
+            entry = {
+                "slot": _slot_id(address),
+                "location": _format_address(address),
+                "item_id": item.item_id,
+                "name": item.name,
+                "quantity": item.stack,
+            }
+
+            if item.bag_slots:
+                entry["bag_slots"] = item.bag_slots
+
+            inventory[section].append(entry)
+
+        return json.dumps(
+            {key: value for key, value in inventory.items() if value},
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )

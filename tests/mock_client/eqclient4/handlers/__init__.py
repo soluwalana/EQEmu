@@ -1,1 +1,6 @@
-MODULES = ("tasks","items","zoning",)
+MODULES = (
+    "tasks",
+    "items",
+    "zoning",
+    "profile",
+)

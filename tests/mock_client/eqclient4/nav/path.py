@@ -282,9 +282,11 @@ def mesh_reaches(
 def iter_doors(doors: dict[int, Door] | list[Door] | None) -> Iterator[Door]:
     if not doors:
         return
+
     if isinstance(doors, dict):
         yield from doors.values()
         return
+
     yield from doors
 
 

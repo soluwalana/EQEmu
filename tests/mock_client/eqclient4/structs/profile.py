@@ -6,13 +6,12 @@ from eqclient4.structs.wire import (
     EQStruct,
     advance,
     cstring,
+    exact,
     fixed,
     i32,
     need,
-    put_cstr,
     put_fixed,
     read_u32,
-    u32,
 )
 from eqclient4.utils import crc32
 
@@ -88,6 +87,7 @@ class OP_PlayerProfile(EQStruct):
     endurance: int = 0
     zone_id: int = 0
     zone_instance: int = 0
+    # Do NOT use the following position for gameplay
     x: float = 0.0
     y: float = 0.0
     z: float = 0.0
@@ -704,27 +704,82 @@ class OP_GMEndTraining(EQStruct):
 
 @dataclass
 class OP_ReadBook(EQStruct):
-    spell_id: int = 0
-    window: int = 0
-    book_type: int = 0
-    text_file: str = ""
+    """RoF2 BookRequest_Struct, used for both requests and responses.
+
+    Client -> Server:
+        txtfile identifies the book record to retrieve.
+
+    Server -> Client:
+        txtfile contains the actual readable book text.
+
+    The internal EQEmu BookRequest_Struct and BookText_Struct have
+    different layouts. This models the RoF2 wire representation.
+    """
+
+    window: int = 0xFFFFFFFF
+
+    # TypelessInventorySlot_Struct (8 bytes)
+    slot: int = -1
+    sub_index: int = -1
+    aug_index: int = -1
+    slot_unknown: int = 0
+
+    type: int = 1
+    target_id: int = 0
+    can_cast: int = 0
+    can_scribe: int = 0
+    txtfile: str = ""
+
+    SIZE = 8216
+    FORMAT = "<I4hIIBB8194s"
 
     def serialize(self) -> bytes:
-        if self.text_file:
-            return bytes((self.window & 0xFF, self.book_type & 0xFF)) + put_cstr(self.text_file)
-        # No RoF2 DECODE accepts a spell id. BookRequest_Struct is 8216 bytes
-        # (common/patches/rof2_structs.h:2899) and the server looks books up by txtfile.
-        # The scribe call site sends these 4 bytes; leave them, do not expand to 8216.
-        return u32(self.spell_id)
+        # Latin-1 preserves individual byte values for round-tripping.
+        encoded = self.txtfile.encode("latin-1")
+
+        if len(encoded) >= 8194:
+            raise ValueError("OP_ReadBook txtfile exceeds 8193 bytes")
+
+        return struct.pack(
+            self.FORMAT,
+            self.window,
+            self.slot,
+            self.sub_index,
+            self.aug_index,
+            self.slot_unknown,
+            self.type,
+            self.target_id,
+            self.can_cast,
+            self.can_scribe,
+            encoded,
+        )
 
     @classmethod
-    def deserialize(cls, data: bytes) -> OP_ReadBook:
-        if len(data) == 4:
-            return cls(read_u32(data))
-        if len(data) >= 3:
-            try:
-                text_file, _end = cstring(data, 2)
-            except ValueError:
-                text_file = ""
-            return cls(0, int(data[0]), int(data[1]), text_file)
-        raise ValueError(f"OP_ReadBook is {len(data)} bytes")
+    def deserialize(cls, data: bytes) -> "OP_ReadBook":
+        exact(data, cls.SIZE, cls.__name__)
+
+        (
+            window,
+            slot,
+            sub_index,
+            aug_index,
+            slot_unknown,
+            type_,
+            target_id,
+            can_cast,
+            can_scribe,
+            txtfile,
+        ) = struct.unpack(cls.FORMAT, data)
+
+        return cls(
+            window=window,
+            slot=slot,
+            sub_index=sub_index,
+            aug_index=aug_index,
+            slot_unknown=slot_unknown,
+            type=type_,
+            target_id=target_id,
+            can_cast=can_cast,
+            can_scribe=can_scribe,
+            txtfile=txtfile.split(b"\x00", 1)[0].decode("latin-1"),
+        )

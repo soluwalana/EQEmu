@@ -20,80 +20,77 @@ Each list is the order you obtain that item. Later steps point here instead of r
 8. Common item: Thimble Mold (12057). Listed in 32 zones.
 9. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
 10. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-11. Kill befallen/"A Skeletal Excavator". Spawns "A Skeletal Foreman" (36092).
-12. Loot "Bone Chips" (13073) from "A Skeletal Foreman".
-13. Kill cauldron/"Bilge Farfathom". Spawns "An Undertow Skeleton" (70062).
-14. Loot "Bone Chips" (13073) from "An Undertow Skeleton".
-15. Kill cauldron/"The Fabled Bilge Farfathom". Spawns "An Undertow Skeleton" (70062).
-16. Kill cauldron/"A Cauldron Rat". Spawns "An Undertow Skeleton" (70062).
-17. 7 other loot steps also yield Bone Chips (13073).
-18. Summon "Bone Chips" (13073) by casting "Boneshear", "GM Summon Bone Chips".
-19. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-20. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-21. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-22. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-23. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-24. Say "Tm Devrak Death" to rujd/"Rujd".
-25. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-26. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-27. Say "Tm Dokorel Death" to rujd/"Rujd".
-28. Say "Tm Velrek Death" to rujd/"Rujd".
-29. Say "Researcher Death" to rujg/"Rujg".
-30. Spawns "A Barrel" (260015).
-31. Loot "Pod of Water" (13044) from "A Barrel".
-32. 3 other loot steps also yield Pod of Water (13044).
-33. Forage "Pod of Water" (13044) in `ruja`.
-34. Forage "Pod of Water" (13044) in `uqua`.
-35. Forage "Pod of Water" (13044) in `yxtta`.
-36. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-37. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-38. 17 other recipes also produce Bottle (16598).
-39. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-40. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
-41. Combine in Forge (17): "Smithing Chisel" (7052), "Small Brick of High Quality Ore" (10468). Hands back "Smithing Chisel" (7052). Produces "Small Piece of High Quality Ore" (22229) x2. Requires Blacksmithing, trivial 27.
-42. 4 other recipes also produce Small Piece of High Quality Ore (22229).
-43. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
-44. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
-45. Say "Deputy Timer" to misty/"Misty".
-46. Spawns "A Vicious Spider" (33167).
-47. Loot "Spiderling Silk" (13099) from "A Vicious Spider".
-48. Forage "Spiderling Silk" (13099) in `mistmoore`.
-49. Forage "Spiderling Silk" (13099) in `mmca`.
-50. Forage "Spiderling Silk" (13099) in `mmcb`.
-51. Forage "Spiderling Silk" (13099) in `mmcc`.
-52. Forage "Spiderling Silk" (13099) in `mmcd`.
-53. Forage "Spiderling Silk" (13099) in `mmce`.
-54. Forage "Spiderling Silk" (13099) in `mmcf`.
-55. Forage "Spiderling Silk" (13099) in `mmcg`.
-56. Forage "Spiderling Silk" (13099) in `mmch`.
-57. Forage "Spiderling Silk" (13099) in `mmci`.
-58. Forage "Spiderling Silk" (13099) in `mmcj`.
-59. Combine in "Vale Sewing Kit" (92882): "Spiderling Silk" (13099). Produces "Silk Thread" (16486). Requires Tailoring, trivial 15. The combine does not fail.
-60. Combine in "Vale Sewing Kit" (92882): "Silk Thread" (16486). Produces "Silk Cord" (16489). Requires Tailoring, trivial 26.
-61. potranquility/"Kalym Rasalan", say "Hail". Gives "Silken Tapestry" (12593).
-62. Combine in "Collapsible Sewing Kit" (17165): "Backpack Pattern" (12089), "Silk Cord" (16489), "Silken Tapestry" (12593). Produces "Silken Tapestry Satchel" (12596). Requires Tailoring 128. The combine does not fail.
-63. Ground spawn of "Prismatic Crystal" (12599) in `veksar`.
-64. Ground spawn of "Prismatic Crystal" (12625) in `timorous`.
-65. Ground spawn of "Prismatic Crystal" (12628) in `twilight`.
-66. Loot "Prismatic Crystal" (12662) from "Treasure Sorter Neiben" in `dulak`.
-67. Spawns "real Xanamech" (206067) in `poinnovation` on event_timer.
-68. Loot "Cohesion Gem" (67022) from "real Xanamech".
-69. Spawns "Mistress of the Darkwater Quest-only" (125075) in `sirens` on enter.
-70. Loot "Shard of Pure Ice" (11599) from "Mistress of the Darkwater Quest-only".
-71. Loot "Shard of Pure Ice" (11599) from "Mistress of the Darkwater".
-72. Loot "Shard of Pure Ice" (11599) from "Mistress of the Darkwater" in `sirens`.
-73. Spawns "Spawn Wiz 1.5; Pure Flame Elemental" (278108) in `soldungc` on event_signal.
-74. Loot "Wisp of Pure Flame" (11619) from "Spawn Wiz 1.5; Pure Flame Elemental".
-75. Loot "Wisp of Pure Flame" (11619) from "Pure Flame Elemental".
-76. Loot "Fluxing Staff" (11445) from "Girplan Guardian" in `wallofslaughter`.
-77. Say "Gem" to scarlet/"The Gem Guardian".
-78. Spawns "Elite Sun Revenant" (175306).
-79. Loot "Fluxing Gem" (11448) from "Elite Sun Revenant".
-80. Loot "Fluxing Rune" (11474) from "Hobgoblin Horrorfiend" in `ponightmare`.
-81. Ground spawn of "Fluxing Chunk of Ore" (11576) in `dranik`.
-82. lavastorm/"Talwyn Flamecaller", hand "Fluxing Staff" (11445) + "Fluxing Gem" (11448) + "Fluxing Rune" (11474) + "Fluxing Chunk of Ore" (11576). Gives "Staff of Fluxing Power" (11596).
-83. Combine in "Silken Tapestry Satchel" (12596): "Prismatic Crystal" (12599), "Prismatic Crystal" (12625), "Prismatic Crystal" (12628), "Prismatic Crystal" (12662), "Cohesion Gem" (67022), "Shard of Pure Ice" (11599), "Wisp of Pure Flame" (11619), "Staff of Fluxing Power" (11596). Produces "Full Tapestry Satchel" (16753). The combine does not fail.
-84. lavastorm/"Talwyn Flamecaller", hand "Full Tapestry Satchel" (16753). Gives "Staff of Prismatic Power" (12665).
+11. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+12. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+13. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+14. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+15. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+16. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+17. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+18. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
+19. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
+20. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
+21. Say "Tm Devrak Death" to rujd/"Rujd".
+22. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
+23. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
+24. Say "Tm Dokorel Death" to rujd/"Rujd".
+25. Say "Tm Velrek Death" to rujd/"Rujd".
+26. Say "Researcher Death" to rujg/"Rujg".
+27. Spawns "A Barrel" (260015).
+28. Loot "Pod of Water" (13044) from "A Barrel".
+29. 3 other loot steps also yield Pod of Water (13044).
+30. Forage "Pod of Water" (13044) in `ruja`.
+31. Forage "Pod of Water" (13044) in `uqua`.
+32. Forage "Pod of Water" (13044) in `yxtta`.
+33. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+34. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+35. 17 other recipes also produce Bottle (16598).
+36. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+37. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
+38. Combine in Forge (17): "Smithing Chisel" (7052), "Small Brick of High Quality Ore" (10468). Hands back "Smithing Chisel" (7052). Produces "Small Piece of High Quality Ore" (22229) x2. Requires Blacksmithing, trivial 27.
+39. 4 other recipes also produce Small Piece of High Quality Ore (22229).
+40. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
+41. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
+42. Say "Deputy Timer" to misty/"Misty".
+43. Spawns "A Vicious Spider" (33167).
+44. Loot "Spiderling Silk" (13099) from "A Vicious Spider".
+45. Forage "Spiderling Silk" (13099) in `mistmoore`.
+46. Forage "Spiderling Silk" (13099) in `mmca`.
+47. Forage "Spiderling Silk" (13099) in `mmcb`.
+48. Forage "Spiderling Silk" (13099) in `mmcc`.
+49. Forage "Spiderling Silk" (13099) in `mmcd`.
+50. Forage "Spiderling Silk" (13099) in `mmce`.
+51. Forage "Spiderling Silk" (13099) in `mmcf`.
+52. Forage "Spiderling Silk" (13099) in `mmcg`.
+53. Forage "Spiderling Silk" (13099) in `mmch`.
+54. Forage "Spiderling Silk" (13099) in `mmci`.
+55. Forage "Spiderling Silk" (13099) in `mmcj`.
+56. Combine in "Vale Sewing Kit" (92882): "Spiderling Silk" (13099). Produces "Silk Thread" (16486). Requires Tailoring, trivial 15. The combine does not fail.
+57. Combine in "Vale Sewing Kit" (92882): "Silk Thread" (16486). Produces "Silk Cord" (16489). Requires Tailoring, trivial 26.
+58. potranquility/"Kalym Rasalan", say "Hail". Gives "Silken Tapestry" (12593).
+59. Combine in "Collapsible Sewing Kit" (17165): "Backpack Pattern" (12089), "Silk Cord" (16489), "Silken Tapestry" (12593). Produces "Silken Tapestry Satchel" (12596). Requires Tailoring 128. The combine does not fail.
+60. Ground spawn of "Prismatic Crystal" (12599) in `veksar`.
+61. Ground spawn of "Prismatic Crystal" (12625) in `timorous`.
+62. Ground spawn of "Prismatic Crystal" (12628) in `twilight`.
+63. Loot "Prismatic Crystal" (12662) from "Treasure Sorter Neiben" in `dulak`.
+64. Spawns "real Xanamech" (206067) in `poinnovation` on event_timer.
+65. Loot "Cohesion Gem" (67022) from "real Xanamech".
+66. Spawns "Mistress of the Darkwater Quest-only" (125075) in `sirens` on enter.
+67. Loot "Shard of Pure Ice" (11599) from "Mistress of the Darkwater Quest-only".
+68. Loot "Shard of Pure Ice" (11599) from "Mistress of the Darkwater".
+69. Loot "Shard of Pure Ice" (11599) from "Mistress of the Darkwater" in `sirens`.
+70. Spawns "Spawn Wiz 1.5; Pure Flame Elemental" (278108) in `soldungc` on event_signal.
+71. Loot "Wisp of Pure Flame" (11619) from "Spawn Wiz 1.5; Pure Flame Elemental".
+72. Loot "Wisp of Pure Flame" (11619) from "Pure Flame Elemental".
+73. Loot "Fluxing Staff" (11445) from "Girplan Guardian" in `wallofslaughter`.
+74. Say "Gem" to scarlet/"The Gem Guardian".
+75. Spawns "Elite Sun Revenant" (175306).
+76. Loot "Fluxing Gem" (11448) from "Elite Sun Revenant".
+77. Loot "Fluxing Rune" (11474) from "Hobgoblin Horrorfiend" in `ponightmare`.
+78. Ground spawn of "Fluxing Chunk of Ore" (11576) in `dranik`.
+79. lavastorm/"Talwyn Flamecaller", hand "Fluxing Staff" (11445) + "Fluxing Gem" (11448) + "Fluxing Rune" (11474) + "Fluxing Chunk of Ore" (11576). Gives "Staff of Fluxing Power" (11596).
+80. Combine in "Silken Tapestry Satchel" (12596): "Prismatic Crystal" (12599), "Prismatic Crystal" (12625), "Prismatic Crystal" (12628), "Prismatic Crystal" (12662), "Cohesion Gem" (67022), "Shard of Pure Ice" (11599), "Wisp of Pure Flame" (11619), "Staff of Fluxing Power" (11596). Produces "Full Tapestry Satchel" (16753). The combine does not fail.
+81. lavastorm/"Talwyn Flamecaller", hand "Full Tapestry Satchel" (16753). Gives "Staff of Prismatic Power" (12665).
 
 ### "Staff of the Four" (14341)
 
@@ -121,58 +118,55 @@ Each list is the order you obtain that item. Later steps point here instead of r
 8. Common item: Thimble Mold (12057). Listed in 32 zones.
 9. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
 10. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-11. Kill befallen/"A Skeletal Excavator". Spawns "A Skeletal Foreman" (36092).
-12. Loot "Bone Chips" (13073) from "A Skeletal Foreman".
-13. Kill cauldron/"Bilge Farfathom". Spawns "An Undertow Skeleton" (70062).
-14. Loot "Bone Chips" (13073) from "An Undertow Skeleton".
-15. Kill cauldron/"The Fabled Bilge Farfathom". Spawns "An Undertow Skeleton" (70062).
-16. Kill cauldron/"A Cauldron Rat". Spawns "An Undertow Skeleton" (70062).
-17. 7 other loot steps also yield Bone Chips (13073).
-18. Summon "Bone Chips" (13073) by casting "Boneshear", "GM Summon Bone Chips".
-19. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-20. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-21. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-22. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-23. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-24. Say "Tm Devrak Death" to rujd/"Rujd".
-25. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-26. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-27. Say "Tm Dokorel Death" to rujd/"Rujd".
-28. Say "Tm Velrek Death" to rujd/"Rujd".
-29. Say "Researcher Death" to rujg/"Rujg".
-30. Spawns "A Barrel" (260015).
-31. Loot "Pod of Water" (13044) from "A Barrel".
-32. 3 other loot steps also yield Pod of Water (13044).
-33. Forage "Pod of Water" (13044) in `ruja`.
-34. Forage "Pod of Water" (13044) in `uqua`.
-35. Forage "Pod of Water" (13044) in `yxtta`.
-36. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-37. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-38. 17 other recipes also produce Bottle (16598).
-39. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-40. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
-41. Combine in Forge (17): "Smithing Chisel" (7052), "Small Brick of High Quality Ore" (10468). Hands back "Smithing Chisel" (7052). Produces "Small Piece of High Quality Ore" (22229) x2. Requires Blacksmithing, trivial 27.
-42. 4 other recipes also produce Small Piece of High Quality Ore (22229).
-43. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
-44. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
-45. Say "Deputy Timer" to misty/"Misty".
-46. Spawns "A Vicious Spider" (33167).
-47. Loot "Spiderling Silk" (13099) from "A Vicious Spider".
-48. Forage "Spiderling Silk" (13099) in `mistmoore`.
-49. Forage "Spiderling Silk" (13099) in `mmca`.
-50. Forage "Spiderling Silk" (13099) in `mmcb`.
-51. Forage "Spiderling Silk" (13099) in `mmcc`.
-52. Forage "Spiderling Silk" (13099) in `mmcd`.
-53. Forage "Spiderling Silk" (13099) in `mmce`.
-54. Forage "Spiderling Silk" (13099) in `mmcf`.
-55. Forage "Spiderling Silk" (13099) in `mmcg`.
-56. Forage "Spiderling Silk" (13099) in `mmch`.
-57. Forage "Spiderling Silk" (13099) in `mmci`.
-58. Forage "Spiderling Silk" (13099) in `mmcj`.
-59. Combine in "Vale Sewing Kit" (92882): "Spiderling Silk" (13099). Produces "Silk Thread" (16486). Requires Tailoring, trivial 15. The combine does not fail.
-60. Combine in "Vale Sewing Kit" (92882): "Silk Thread" (16486). Produces "Silk Cord" (16489). Requires Tailoring, trivial 26.
-61. potranquility/"Kalym Rasalan", say "Hail". Gives "Silken Tapestry" (12593).
-62. Combine in "Collapsible Sewing Kit" (17165): "Backpack Pattern" (12089), "Silk Cord" (16489), "Silken Tapestry" (12593). Produces "Silken Tapestry Satchel" (12596). Requires Tailoring 128. The combine does not fail.
+11. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+12. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+13. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+14. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+15. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+16. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+17. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+18. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
+19. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
+20. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
+21. Say "Tm Devrak Death" to rujd/"Rujd".
+22. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
+23. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
+24. Say "Tm Dokorel Death" to rujd/"Rujd".
+25. Say "Tm Velrek Death" to rujd/"Rujd".
+26. Say "Researcher Death" to rujg/"Rujg".
+27. Spawns "A Barrel" (260015).
+28. Loot "Pod of Water" (13044) from "A Barrel".
+29. 3 other loot steps also yield Pod of Water (13044).
+30. Forage "Pod of Water" (13044) in `ruja`.
+31. Forage "Pod of Water" (13044) in `uqua`.
+32. Forage "Pod of Water" (13044) in `yxtta`.
+33. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+34. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+35. 17 other recipes also produce Bottle (16598).
+36. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+37. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
+38. Combine in Forge (17): "Smithing Chisel" (7052), "Small Brick of High Quality Ore" (10468). Hands back "Smithing Chisel" (7052). Produces "Small Piece of High Quality Ore" (22229) x2. Requires Blacksmithing, trivial 27.
+39. 4 other recipes also produce Small Piece of High Quality Ore (22229).
+40. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
+41. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
+42. Say "Deputy Timer" to misty/"Misty".
+43. Spawns "A Vicious Spider" (33167).
+44. Loot "Spiderling Silk" (13099) from "A Vicious Spider".
+45. Forage "Spiderling Silk" (13099) in `mistmoore`.
+46. Forage "Spiderling Silk" (13099) in `mmca`.
+47. Forage "Spiderling Silk" (13099) in `mmcb`.
+48. Forage "Spiderling Silk" (13099) in `mmcc`.
+49. Forage "Spiderling Silk" (13099) in `mmcd`.
+50. Forage "Spiderling Silk" (13099) in `mmce`.
+51. Forage "Spiderling Silk" (13099) in `mmcf`.
+52. Forage "Spiderling Silk" (13099) in `mmcg`.
+53. Forage "Spiderling Silk" (13099) in `mmch`.
+54. Forage "Spiderling Silk" (13099) in `mmci`.
+55. Forage "Spiderling Silk" (13099) in `mmcj`.
+56. Combine in "Vale Sewing Kit" (92882): "Spiderling Silk" (13099). Produces "Silk Thread" (16486). Requires Tailoring, trivial 15. The combine does not fail.
+57. Combine in "Vale Sewing Kit" (92882): "Silk Thread" (16486). Produces "Silk Cord" (16489). Requires Tailoring, trivial 26.
+58. potranquility/"Kalym Rasalan", say "Hail". Gives "Silken Tapestry" (12593).
+59. Combine in "Collapsible Sewing Kit" (17165): "Backpack Pattern" (12089), "Silk Cord" (16489), "Silken Tapestry" (12593). Produces "Silken Tapestry Satchel" (12596). Requires Tailoring 128. The combine does not fail.
 
 ### "Full Tapestry Satchel" (16753)
 
@@ -186,79 +180,76 @@ Each list is the order you obtain that item. Later steps point here instead of r
 8. Common item: Thimble Mold (12057). Listed in 32 zones.
 9. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
 10. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-11. Kill befallen/"A Skeletal Excavator". Spawns "A Skeletal Foreman" (36092).
-12. Loot "Bone Chips" (13073) from "A Skeletal Foreman".
-13. Kill cauldron/"Bilge Farfathom". Spawns "An Undertow Skeleton" (70062).
-14. Loot "Bone Chips" (13073) from "An Undertow Skeleton".
-15. Kill cauldron/"The Fabled Bilge Farfathom". Spawns "An Undertow Skeleton" (70062).
-16. Kill cauldron/"A Cauldron Rat". Spawns "An Undertow Skeleton" (70062).
-17. 7 other loot steps also yield Bone Chips (13073).
-18. Summon "Bone Chips" (13073) by casting "Boneshear", "GM Summon Bone Chips".
-19. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-20. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-21. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-22. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-23. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-24. Say "Tm Devrak Death" to rujd/"Rujd".
-25. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-26. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-27. Say "Tm Dokorel Death" to rujd/"Rujd".
-28. Say "Tm Velrek Death" to rujd/"Rujd".
-29. Say "Researcher Death" to rujg/"Rujg".
-30. Spawns "A Barrel" (260015).
-31. Loot "Pod of Water" (13044) from "A Barrel".
-32. 3 other loot steps also yield Pod of Water (13044).
-33. Forage "Pod of Water" (13044) in `ruja`.
-34. Forage "Pod of Water" (13044) in `uqua`.
-35. Forage "Pod of Water" (13044) in `yxtta`.
-36. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-37. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-38. 17 other recipes also produce Bottle (16598).
-39. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-40. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
-41. Combine in Forge (17): "Smithing Chisel" (7052), "Small Brick of High Quality Ore" (10468). Hands back "Smithing Chisel" (7052). Produces "Small Piece of High Quality Ore" (22229) x2. Requires Blacksmithing, trivial 27.
-42. 4 other recipes also produce Small Piece of High Quality Ore (22229).
-43. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
-44. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
-45. Say "Deputy Timer" to misty/"Misty".
-46. Spawns "A Vicious Spider" (33167).
-47. Loot "Spiderling Silk" (13099) from "A Vicious Spider".
-48. Forage "Spiderling Silk" (13099) in `mistmoore`.
-49. Forage "Spiderling Silk" (13099) in `mmca`.
-50. Forage "Spiderling Silk" (13099) in `mmcb`.
-51. Forage "Spiderling Silk" (13099) in `mmcc`.
-52. Forage "Spiderling Silk" (13099) in `mmcd`.
-53. Forage "Spiderling Silk" (13099) in `mmce`.
-54. Forage "Spiderling Silk" (13099) in `mmcf`.
-55. Forage "Spiderling Silk" (13099) in `mmcg`.
-56. Forage "Spiderling Silk" (13099) in `mmch`.
-57. Forage "Spiderling Silk" (13099) in `mmci`.
-58. Forage "Spiderling Silk" (13099) in `mmcj`.
-59. Combine in "Vale Sewing Kit" (92882): "Spiderling Silk" (13099). Produces "Silk Thread" (16486). Requires Tailoring, trivial 15. The combine does not fail.
-60. Combine in "Vale Sewing Kit" (92882): "Silk Thread" (16486). Produces "Silk Cord" (16489). Requires Tailoring, trivial 26.
-61. potranquility/"Kalym Rasalan", say "Hail". Gives "Silken Tapestry" (12593).
-62. Combine in "Collapsible Sewing Kit" (17165): "Backpack Pattern" (12089), "Silk Cord" (16489), "Silken Tapestry" (12593). Produces "Silken Tapestry Satchel" (12596). Requires Tailoring 128. The combine does not fail.
-63. Ground spawn of "Prismatic Crystal" (12599) in `veksar`.
-64. Ground spawn of "Prismatic Crystal" (12625) in `timorous`.
-65. Ground spawn of "Prismatic Crystal" (12628) in `twilight`.
-66. Loot "Prismatic Crystal" (12662) from "Treasure Sorter Neiben" in `dulak`.
-67. Spawns "real Xanamech" (206067) in `poinnovation` on event_timer.
-68. Loot "Cohesion Gem" (67022) from "real Xanamech".
-69. Spawns "Mistress of the Darkwater Quest-only" (125075) in `sirens` on enter.
-70. Loot "Shard of Pure Ice" (11599) from "Mistress of the Darkwater Quest-only".
-71. Loot "Shard of Pure Ice" (11599) from "Mistress of the Darkwater".
-72. Loot "Shard of Pure Ice" (11599) from "Mistress of the Darkwater" in `sirens`.
-73. Spawns "Spawn Wiz 1.5; Pure Flame Elemental" (278108) in `soldungc` on event_signal.
-74. Loot "Wisp of Pure Flame" (11619) from "Spawn Wiz 1.5; Pure Flame Elemental".
-75. Loot "Wisp of Pure Flame" (11619) from "Pure Flame Elemental".
-76. Loot "Fluxing Staff" (11445) from "Girplan Guardian" in `wallofslaughter`.
-77. Say "Gem" to scarlet/"The Gem Guardian".
-78. Spawns "Elite Sun Revenant" (175306).
-79. Loot "Fluxing Gem" (11448) from "Elite Sun Revenant".
-80. Loot "Fluxing Rune" (11474) from "Hobgoblin Horrorfiend" in `ponightmare`.
-81. Ground spawn of "Fluxing Chunk of Ore" (11576) in `dranik`.
-82. lavastorm/"Talwyn Flamecaller", hand "Fluxing Staff" (11445) + "Fluxing Gem" (11448) + "Fluxing Rune" (11474) + "Fluxing Chunk of Ore" (11576). Gives "Staff of Fluxing Power" (11596).
-83. Combine in "Silken Tapestry Satchel" (12596): "Prismatic Crystal" (12599), "Prismatic Crystal" (12625), "Prismatic Crystal" (12628), "Prismatic Crystal" (12662), "Cohesion Gem" (67022), "Shard of Pure Ice" (11599), "Wisp of Pure Flame" (11619), "Staff of Fluxing Power" (11596). Produces "Full Tapestry Satchel" (16753). The combine does not fail.
+11. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+12. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+13. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+14. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+15. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+16. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+17. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+18. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
+19. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
+20. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
+21. Say "Tm Devrak Death" to rujd/"Rujd".
+22. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
+23. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
+24. Say "Tm Dokorel Death" to rujd/"Rujd".
+25. Say "Tm Velrek Death" to rujd/"Rujd".
+26. Say "Researcher Death" to rujg/"Rujg".
+27. Spawns "A Barrel" (260015).
+28. Loot "Pod of Water" (13044) from "A Barrel".
+29. 3 other loot steps also yield Pod of Water (13044).
+30. Forage "Pod of Water" (13044) in `ruja`.
+31. Forage "Pod of Water" (13044) in `uqua`.
+32. Forage "Pod of Water" (13044) in `yxtta`.
+33. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+34. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+35. 17 other recipes also produce Bottle (16598).
+36. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+37. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
+38. Combine in Forge (17): "Smithing Chisel" (7052), "Small Brick of High Quality Ore" (10468). Hands back "Smithing Chisel" (7052). Produces "Small Piece of High Quality Ore" (22229) x2. Requires Blacksmithing, trivial 27.
+39. 4 other recipes also produce Small Piece of High Quality Ore (22229).
+40. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
+41. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
+42. Say "Deputy Timer" to misty/"Misty".
+43. Spawns "A Vicious Spider" (33167).
+44. Loot "Spiderling Silk" (13099) from "A Vicious Spider".
+45. Forage "Spiderling Silk" (13099) in `mistmoore`.
+46. Forage "Spiderling Silk" (13099) in `mmca`.
+47. Forage "Spiderling Silk" (13099) in `mmcb`.
+48. Forage "Spiderling Silk" (13099) in `mmcc`.
+49. Forage "Spiderling Silk" (13099) in `mmcd`.
+50. Forage "Spiderling Silk" (13099) in `mmce`.
+51. Forage "Spiderling Silk" (13099) in `mmcf`.
+52. Forage "Spiderling Silk" (13099) in `mmcg`.
+53. Forage "Spiderling Silk" (13099) in `mmch`.
+54. Forage "Spiderling Silk" (13099) in `mmci`.
+55. Forage "Spiderling Silk" (13099) in `mmcj`.
+56. Combine in "Vale Sewing Kit" (92882): "Spiderling Silk" (13099). Produces "Silk Thread" (16486). Requires Tailoring, trivial 15. The combine does not fail.
+57. Combine in "Vale Sewing Kit" (92882): "Silk Thread" (16486). Produces "Silk Cord" (16489). Requires Tailoring, trivial 26.
+58. potranquility/"Kalym Rasalan", say "Hail". Gives "Silken Tapestry" (12593).
+59. Combine in "Collapsible Sewing Kit" (17165): "Backpack Pattern" (12089), "Silk Cord" (16489), "Silken Tapestry" (12593). Produces "Silken Tapestry Satchel" (12596). Requires Tailoring 128. The combine does not fail.
+60. Ground spawn of "Prismatic Crystal" (12599) in `veksar`.
+61. Ground spawn of "Prismatic Crystal" (12625) in `timorous`.
+62. Ground spawn of "Prismatic Crystal" (12628) in `twilight`.
+63. Loot "Prismatic Crystal" (12662) from "Treasure Sorter Neiben" in `dulak`.
+64. Spawns "real Xanamech" (206067) in `poinnovation` on event_timer.
+65. Loot "Cohesion Gem" (67022) from "real Xanamech".
+66. Spawns "Mistress of the Darkwater Quest-only" (125075) in `sirens` on enter.
+67. Loot "Shard of Pure Ice" (11599) from "Mistress of the Darkwater Quest-only".
+68. Loot "Shard of Pure Ice" (11599) from "Mistress of the Darkwater".
+69. Loot "Shard of Pure Ice" (11599) from "Mistress of the Darkwater" in `sirens`.
+70. Spawns "Spawn Wiz 1.5; Pure Flame Elemental" (278108) in `soldungc` on event_signal.
+71. Loot "Wisp of Pure Flame" (11619) from "Spawn Wiz 1.5; Pure Flame Elemental".
+72. Loot "Wisp of Pure Flame" (11619) from "Pure Flame Elemental".
+73. Loot "Fluxing Staff" (11445) from "Girplan Guardian" in `wallofslaughter`.
+74. Say "Gem" to scarlet/"The Gem Guardian".
+75. Spawns "Elite Sun Revenant" (175306).
+76. Loot "Fluxing Gem" (11448) from "Elite Sun Revenant".
+77. Loot "Fluxing Rune" (11474) from "Hobgoblin Horrorfiend" in `ponightmare`.
+78. Ground spawn of "Fluxing Chunk of Ore" (11576) in `dranik`.
+79. lavastorm/"Talwyn Flamecaller", hand "Fluxing Staff" (11445) + "Fluxing Gem" (11448) + "Fluxing Rune" (11474) + "Fluxing Chunk of Ore" (11576). Gives "Staff of Fluxing Power" (11596).
+80. Combine in "Silken Tapestry Satchel" (12596): "Prismatic Crystal" (12599), "Prismatic Crystal" (12625), "Prismatic Crystal" (12628), "Prismatic Crystal" (12662), "Cohesion Gem" (67022), "Shard of Pure Ice" (11599), "Wisp of Pure Flame" (11619), "Staff of Fluxing Power" (11596). Produces "Full Tapestry Satchel" (16753). The combine does not fail.
 
 ### "Spell: Electrical Charge" (16623)
 
@@ -286,51 +277,59 @@ Each list is the order you obtain that item. Later steps point here instead of r
 22. Spawns "An Erratic Arachnid" (215460) in `poair` on event_timer.
 23. Loot "Rune of Flash" (65279) from "An Erratic Arachnid".
 24. 20 other loot steps also yield Rune of Flash (65279).
-25. Ground spawn of "Old Pipe" (11412) in `cauldron`.
-26. lavastorm/"Talwyn Flamecaller", hand "Old Pipe" (11412). Gives "Rune of Greater Desiccation" (11439).
-27. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
-28. Loot "Rune of Glint" (65281) from "A Black Reaver".
-29. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90005).
-30. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90192).
-31. Spawns "A Shadowy Figure" (163190) in `griegsend` on event_combat.
-32. Loot "Rune of Glint" (65281) from "A Shadowy Figure".
-33. 2 other loot steps also yield Rune of Glint (65281).
-34. Spawns "a Tae Ew disciple" (48026) in `cazicthule` on event_combat.
-35. Loot "Rune of Impulse" (65282) from "a Tae Ew disciple".
-36. Hand "Engraved Ring" (1681) to citymist/"Neh-Ashiir". Spawns "Neh'Ashir" (90181). Loot "Rune of Impulse" (65282) from "Neh'Ashir".
-37. Hand "Corrupted Ghoulbane" (14367) + "Heart of the Innocent" (14368) + "Head of the Valiant" (14369) + "Will of Innoruuk" (14370) to citymist/"Lhranc". Spawns "Lhranc" (90187). Loot "Rune of Impulse" (65282) from "Lhranc".
-38. Kill citymist/"90000". Spawns "Neh'Ashir" (90184).
-39. Loot "Rune of Impulse" (65282) from "Neh'Ashir".
-40. 31 other loot steps also yield Rune of Impulse (65282).
-41. Say "Spawn Devastating Pookas" to tipt/"Rikabi The Riddler".
-42. Spawns "A Devastating Pooka" (289037).
-43. Loot "Rune of Synergy" (65289) from "A Devastating Pooka".
-44. Say "Spawn Hatchlings" to tipt/"Cragbeasts".
-45. Spawns "A Cragbeast Hatchling" (289034).
-46. Loot "Rune of Synergy" (65289) from "A Cragbeast Hatchling".
-47. Spawns "a Tae Ew Justicar" (48029) in `cazicthule` on event_spawn.
-48. Loot "Rune of Tempest" (65291) from "a Tae Ew Justicar".
-49. Spawns "A Swirling Ooze" (48001) in `cazicthule` on event_hp.
-50. Loot "Rune of Tempest" (65291) from "A Swirling Ooze".
-51. Spawns "a Tae Ew disciple" (48026) in `cazicthule` on event_combat.
-52. Loot "Rune of Tempest" (65291) from "a Tae Ew disciple".
-53. Spawns "a Tae Ew proselyte" (48007) in `cazicthule` on event_combat.
-54. Loot "Rune of Tempest" (65291) from "a Tae Ew proselyte".
-55. 6 other loot steps also yield Rune of Tempest (65291).
-56. Spawns "An Ooze" (48004) in `cazicthule` on event_hp.
-57. Loot "Rune of Vortex" (65293) from "An Ooze".
-58. Spawns "A Shadowy Figure" (163190) in `griegsend` on event_combat.
-59. Loot "Rune of Vortex" (65293) from "A Shadowy Figure".
-60. Say "Spawn Keyroom" to tipt/"Zone Status".
-61. Spawns "A Ra'Tuk Decimator" (289004).
-62. Loot "Rune of Vortex" (65293) from "A Ra'Tuk Decimator".
-63. Loot "Rune of Greater Conflagration" (11442) from "Shar Vinitras" in `akheva`.
-64. Combine in "Spell Research Kit" (93492): "Rune of Cascade" (65270), "Rune of Coruscation" (16631), "Rune of Flash" (65279), "Rune of Greater Desiccation" (11439), "Rune of Glint" (65281), "Rune of Impulse" (65282), "Rune of Synergy" (65289), "Rune of Tempest" (65291), "Rune of Vortex" (65293), "Rune of Greater Conflagration" (11442). Produces "Spell: Electrical Charge" (16623). Requires Research, trivial 190. The combine does not fail.
+25. Fish "Worn Turban" (11299) in `potranquility`.
+26. lavastorm/"Talwyn Flamecaller", hand "Worn Turban" (11299). Sets `wiz_test_intel` to `10`.
+27. Ground spawn of "Old Pipe" (11412) in `cauldron`.
+28. lavastorm/"Talwyn Flamecaller", hand "Old Pipe" (11412). Requires `wiz_test_intel` ==10. Gives "Rune of Greater Desiccation" (11439).
+29. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
+30. Loot "Rune of Glint" (65281) from "A Black Reaver".
+31. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90005).
+32. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90192).
+33. Spawns "A Shadowy Figure" (163190) in `griegsend` on event_combat.
+34. Loot "Rune of Glint" (65281) from "A Shadowy Figure".
+35. 2 other loot steps also yield Rune of Glint (65281).
+36. Spawns "a Tae Ew disciple" (48026) in `cazicthule` on event_combat.
+37. Loot "Rune of Impulse" (65282) from "a Tae Ew disciple".
+38. Hand "Engraved Ring" (1681) to citymist/"Neh-Ashiir". Spawns "Neh'Ashir" (90181). Loot "Rune of Impulse" (65282) from "Neh'Ashir".
+39. Hand "Corrupted Ghoulbane" (14367) + "Heart of the Innocent" (14368) + "Head of the Valiant" (14369) + "Will of Innoruuk" (14370) to citymist/"Lhranc". Spawns "Lhranc" (90187). Loot "Rune of Impulse" (65282) from "Lhranc".
+40. Kill citymist/"90000". Spawns "Neh'Ashir" (90184).
+41. Loot "Rune of Impulse" (65282) from "Neh'Ashir".
+42. 31 other loot steps also yield Rune of Impulse (65282).
+43. Say "Spawn Devastating Pookas" to tipt/"Rikabi The Riddler".
+44. Spawns "A Devastating Pooka" (289037).
+45. Loot "Rune of Synergy" (65289) from "A Devastating Pooka".
+46. Say "Spawn Hatchlings" to tipt/"Cragbeasts".
+47. Spawns "A Cragbeast Hatchling" (289034).
+48. Loot "Rune of Synergy" (65289) from "A Cragbeast Hatchling".
+49. Spawns "a Tae Ew Justicar" (48029) in `cazicthule` on event_spawn.
+50. Loot "Rune of Tempest" (65291) from "a Tae Ew Justicar".
+51. Spawns "A Swirling Ooze" (48001) in `cazicthule` on event_hp.
+52. Loot "Rune of Tempest" (65291) from "A Swirling Ooze".
+53. Spawns "a Tae Ew disciple" (48026) in `cazicthule` on event_combat.
+54. Loot "Rune of Tempest" (65291) from "a Tae Ew disciple".
+55. Spawns "a Tae Ew proselyte" (48007) in `cazicthule` on event_combat.
+56. Loot "Rune of Tempest" (65291) from "a Tae Ew proselyte".
+57. 6 other loot steps also yield Rune of Tempest (65291).
+58. Spawns "An Ooze" (48004) in `cazicthule` on event_hp.
+59. Loot "Rune of Vortex" (65293) from "An Ooze".
+60. Spawns "A Shadowy Figure" (163190) in `griegsend` on event_combat.
+61. Loot "Rune of Vortex" (65293) from "A Shadowy Figure".
+62. Say "Spawn Keyroom" to tipt/"Zone Status".
+63. Spawns "A Ra'Tuk Decimator" (289004).
+64. Loot "Rune of Vortex" (65293) from "A Ra'Tuk Decimator".
+65. Loot "Rune of Greater Conflagration" (11442) from "Shar Vinitras" in `akheva`.
+66. Combine in "Spell Research Kit" (93492): "Rune of Cascade" (65270), "Rune of Coruscation" (16631), "Rune of Flash" (65279), "Rune of Greater Desiccation" (11439), "Rune of Glint" (65281), "Rune of Impulse" (65282), "Rune of Synergy" (65289), "Rune of Tempest" (65291), "Rune of Vortex" (65293), "Rune of Greater Conflagration" (11442). Produces "Spell: Electrical Charge" (16623). Requires Research, trivial 190. The combine does not fail.
 
 ### "Arantir's Ring" (14335)
 
-1. halas/"Arantir Karondor", say "Hail". Gives "Arantir's Ring" (14334).
-2. felwithea/"Challice", hand "Arantir's Ring" (14334). Gives "Arantir's Ring" (14335).
+1. butcher/"Kandin Firepot", say "What Oil". Gives "Golem Sprocket" (14319).
+2. Hand "Golem Sprocket" (14319) to fearplane/"A Broken Golem". Spawns "An Enraged Golem" (72106). Loot "Green Oil" (14349) from "An Enraged Golem".
+3. Loot "Green Oil" (14349) from "An Enraged Golem".
+4. butcher/"Kandin Firepot", hand "Green Oil" (14349). Gives "Note to Arantir" (18168).
+5. halas/"Arantir Karondor", hand "Note to Arantir" (18168). Sets `wizepicB` to `1`.
+6. halas/"Arantir Karondor", hand "Arantir's Ring" (14335). Sets `wizepicA` to `1`.
+7. halas/"Arantir Karondor", say "Hail". Requires `wizepicB` ==1. Requires `wizepicA` ==1. Gives "Arantir's Ring" (14334).
+8. felwithea/"Challice", hand "Arantir's Ring" (14334). Gives "Arantir's Ring" (14335).
 
 ### "Note to Arantir" (18168)
 
@@ -687,6 +686,7 @@ Zone: `lavastorm`.
 
 Sets `wiz_epic20` to `4`.
 
+- Needs `wiz_epic20` set.
 - Needs `wiz_epic20` >=3.
 - Turn in x1: Globe of Discordant Energy (47100).
 In script order:
@@ -723,7 +723,7 @@ How the items are reached:
   - Turn in Infused Orb of Discordant Energy (16334).
   - Turn in Staff of Prismatic Power (12665).
   - Gives Staff of Phenomenal Power (16576).
-- `provinggrounds` player, on loot needs `wiz_epic20` ==2.
+- `provinggrounds` player, on loot needs `wiz_epic20` set.
   - Sets `cleric20_mpg_chest` to `1`.
   - Spawns a chest (epic 2.0) (893).
   - Sets `wiz20_mpg_chest` to `1`.
@@ -812,6 +812,7 @@ Zone: `lavastorm`.
 Sets `wiz_test_intel` to `1`.
 
 - Needs `wiz_epic_pre` ==1.
+- Needs `wiz_test_intel` unset.
 - Needs `wiz_epic_pre` >1.
 In script order:
 

@@ -12,43 +12,40 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 1. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
 2. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-3. Kill befallen/"A Skeletal Excavator". Spawns "A Skeletal Foreman" (36092).
-4. Loot "Bone Chips" (13073) from "A Skeletal Foreman".
-5. Kill cauldron/"Bilge Farfathom". Spawns "An Undertow Skeleton" (70062).
-6. Loot "Bone Chips" (13073) from "An Undertow Skeleton".
-7. Kill cauldron/"The Fabled Bilge Farfathom". Spawns "An Undertow Skeleton" (70062).
-8. Kill cauldron/"A Cauldron Rat". Spawns "An Undertow Skeleton" (70062).
-9. 7 other loot steps also yield Bone Chips (13073).
-10. Summon "Bone Chips" (13073) by casting "Boneshear", "GM Summon Bone Chips".
-11. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-12. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-13. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-14. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-15. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-16. Say "Tm Devrak Death" to rujd/"Rujd".
-17. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-18. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-19. Say "Tm Dokorel Death" to rujd/"Rujd".
-20. Say "Tm Velrek Death" to rujd/"Rujd".
-21. Say "Researcher Death" to rujg/"Rujg".
-22. Spawns "A Barrel" (260015).
-23. Loot "Pod of Water" (13044) from "A Barrel".
-24. 3 other loot steps also yield Pod of Water (13044).
-25. Forage "Pod of Water" (13044) in `ruja`.
-26. Forage "Pod of Water" (13044) in `uqua`.
-27. Forage "Pod of Water" (13044) in `yxtta`.
-28. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-29. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-30. 17 other recipes also produce Bottle (16598).
-31. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-32. Kill wakening/"Dark Disciple Master". Spawns "A Gilded Chest" (119179).
-33. Loot "Aegis of Chaotic Worship" (9954) from "A Gilded Chest".
-34. Spawns "A Murk Hatchling" (300084) in `wallofslaughter` on event_timer.
-35. Loot "Murkglider Plasma" (13639) from "A Murk Hatchling".
-36. No quest step gives Bazu Plasma (13658). The dump lists it in causeway, wallofslaughter.
-37. Loot "Pyrilen Plasma" (13667) from "A Dragorn Assassin" in `wallofslaughter`.
-38. Combine in Brew Barrel (19): "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing, trivial 100.
-39. Combine in Forge (17): "Water Flask" (13006), "Aegis of Chaotic Worship" (9954), "Soul Temper" (14047). Produces "Harmony of the Soul" (9955). Requires Blacksmithing. The combine does not fail.
+3. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+4. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+5. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+6. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+7. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+8. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+9. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+10. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
+11. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
+12. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
+13. Say "Tm Devrak Death" to rujd/"Rujd".
+14. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
+15. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
+16. Say "Tm Dokorel Death" to rujd/"Rujd".
+17. Say "Tm Velrek Death" to rujd/"Rujd".
+18. Say "Researcher Death" to rujg/"Rujg".
+19. Spawns "A Barrel" (260015).
+20. Loot "Pod of Water" (13044) from "A Barrel".
+21. 3 other loot steps also yield Pod of Water (13044).
+22. Forage "Pod of Water" (13044) in `ruja`.
+23. Forage "Pod of Water" (13044) in `uqua`.
+24. Forage "Pod of Water" (13044) in `yxtta`.
+25. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+26. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+27. 17 other recipes also produce Bottle (16598).
+28. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+29. Kill wakening/"Dark Disciple Master". Spawns "A Gilded Chest" (119179).
+30. Loot "Aegis of Chaotic Worship" (9954) from "A Gilded Chest".
+31. Spawns "A Murk Hatchling" (300084) in `wallofslaughter` on event_timer.
+32. Loot "Murkglider Plasma" (13639) from "A Murk Hatchling".
+33. No quest step gives Bazu Plasma (13658). The dump lists it in causeway, wallofslaughter.
+34. Loot "Pyrilen Plasma" (13667) from "A Dragorn Assassin" in `wallofslaughter`.
+35. Combine in Brew Barrel (19): "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing, trivial 100.
+36. Combine in Forge (17): "Water Flask" (13006), "Aegis of Chaotic Worship" (9954), "Soul Temper" (14047). Produces "Harmony of the Soul" (9955). Requires Blacksmithing. The combine does not fail.
 
 ### "Water Sprinkler of Nem Ankh" (5532)
 
@@ -61,16 +58,16 @@ Each list is the order you obtain that item. Later steps point here instead of r
 7. timorous/"Omat Vastsea", hand "Blood Soaked Plasmatic Priest Robe" (1299). Gives "Orb of Frozen Water" (28049).
 8. Kill skyfire/"Zordak Ragefire". Spawns "Zordakalicus Ragefire" (91090).
 9. Loot "Impure Heart of Zordak Ragefire" (17122) from "Zordakalicus Ragefire".
-10. skyfire/"Warder Cecilia", say "Hail". Gives "Zordak's Box of Bindings" (17175).
-11. Loot "Lord Gimblox's Signet Ring" (28018) from "Lord Gimblox" in `soldunga`.
-12. timorous/"Natasha Whitewater", hand "Lord Gimblox's Signet Ring" (28018). Gives "Ornate Sea Shell" (28056).
-13. burningwood/"Naxot Deepwater", hand "Ornate Sea Shell" (28056). Gives "Message to Natasha" (28052).
-14. timorous/"Natasha Whitewater", hand "Message to Natasha" (28052). Gives "Shimmering Pearl" (28054).
-15. soldungb/"Zordak Ragefire", hand "Shimmering Pearl" (28054). Gives "Zordak's Box of Bindings" (17175).
-16. No quest step gives Pearlescent Fragment (24995). The dump lists it in skyfire, westwastes.
-17. Combine in "Zordak's Box of Bindings" (17175): "Pearlescent Fragment" (24995). Produces "Assembled Pearlescent Shard" (24996). The combine does not fail.
-18. skyfire/"Warder Cecilia", hand "Assembled Pearlescent Shard" (24996). Gives "Pearlescent Seal" (24997).
-19. soldungb/"Zordak Ragefire", hand "Shimmering Pearl" (28054). Gives "Swirling Pearl" (28059).
+10. Loot "Lord Gimblox's Signet Ring" (28018) from "Lord Gimblox" in `soldunga`.
+11. timorous/"Natasha Whitewater", hand "Lord Gimblox's Signet Ring" (28018). Gives "Ornate Sea Shell" (28056).
+12. burningwood/"Naxot Deepwater", hand "Ornate Sea Shell" (28056). Gives "Message to Natasha" (28052).
+13. timorous/"Natasha Whitewater", hand "Message to Natasha" (28052). Gives "Shimmering Pearl" (28054).
+14. soldungb/"Zordak Ragefire", hand "Shimmering Pearl" (28054). Gives "Swirling Pearl" (28059).
+15. skyfire/"Warder Cecilia", say "Hail". Gives "Zordak's Box of Bindings" (17175).
+16. soldungb/"Zordak Ragefire", hand "Shimmering Pearl" (28054). Gives "Zordak's Box of Bindings" (17175).
+17. No quest step gives Pearlescent Fragment (24995). The dump lists it in skyfire, westwastes.
+18. Combine in "Zordak's Box of Bindings" (17175): "Pearlescent Fragment" (24995). Produces "Assembled Pearlescent Shard" (24996). The combine does not fail.
+19. skyfire/"Warder Cecilia", hand "Assembled Pearlescent Shard" (24996). Gives "Pearlescent Seal" (24997).
 20. Combine in "Impure Heart of Zordak Ragefire" (17122): "Pearlescent Seal" (24997), "Swirling Pearl" (28059). Produces "Zordak Ragefire's Heart" (28019). The combine does not fail.
 21. timorous/"Omat Vastsea", hand "Zordak Ragefire's Heart" (28019). Gives "Orb of Vapor" (28050).
 22. timorous/"Jhassad Oceanson", hand "Orb of Clear Water" (28048) + "Orb of Frozen Water" (28049) + "Orb of Vapor" (28050). Gives "Orb of the Triumvirate" (28023).
@@ -89,11 +86,14 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Assembled Map" (56015)
 
-1. No quest step gives Ripped Quarter of a Map (9476). The dump lists it in ferubi.
-2. No quest step gives Shredded Quarter of a Map (9447). The dump lists it in ferubi.
-3. No quest step gives Tattered Quarter of a Map (9477). The dump lists it in ferubi.
-4. No quest step gives Torn Quarter of a Map (8778). The dump lists it in ferubi.
-5. abysmal/"Shav The Cryptologist", hand "Torn Quarter of a Map" (8778) + "Shredded Quarter of a Map" (9447) + "Ripped Quarter of a Map" (9476) + "Tattered Quarter of a Map" (9477). Gives "Assembled Map" (56015).
+1. global/"Global Player", combine recipe 19460. Sets `cleric_epic` to `7`.
+2. No quest step gives Encrypted Note (7135). The dump lists it in barindu.
+3. abysmal/"Shav The Cryptologist", hand "Encrypted Note" (7135). Sets `cleric_epic` to `2`.
+4. No quest step gives Ripped Quarter of a Map (9476). The dump lists it in ferubi.
+5. No quest step gives Shredded Quarter of a Map (9447). The dump lists it in ferubi.
+6. No quest step gives Tattered Quarter of a Map (9477). The dump lists it in ferubi.
+7. No quest step gives Torn Quarter of a Map (8778). The dump lists it in ferubi.
+8. abysmal/"Shav The Cryptologist", hand "Torn Quarter of a Map" (8778) + "Shredded Quarter of a Map" (9447) + "Ripped Quarter of a Map" (9476) + "Tattered Quarter of a Map" (9477). Requires `cleric_epic` set. Requires `cleric_epic` ==2. Gives "Assembled Map" (56015).
 
 ### "Dark Disciples Notice of Service" (9591)
 
@@ -105,16 +105,13 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 1. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
 2. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-3. Kill befallen/"A Skeletal Excavator". Spawns "A Skeletal Foreman" (36092).
-4. Loot "Bone Chips" (13073) from "A Skeletal Foreman".
-5. Kill cauldron/"Bilge Farfathom". Spawns "An Undertow Skeleton" (70062).
-6. Loot "Bone Chips" (13073) from "An Undertow Skeleton".
-7. Kill cauldron/"The Fabled Bilge Farfathom". Spawns "An Undertow Skeleton" (70062).
-8. Kill cauldron/"A Cauldron Rat". Spawns "An Undertow Skeleton" (70062).
-9. 7 other loot steps also yield Bone Chips (13073).
-10. Summon "Bone Chips" (13073) by casting "Boneshear", "GM Summon Bone Chips".
-11. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-12. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+3. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+4. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+5. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+6. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+7. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+8. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+9. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
 
 ### "Soul Temper" (14047)
 
@@ -168,6 +165,7 @@ Zone: `dranik`.
 
 Sets `cleric20` to `1`.
 
+- Needs `cleric_epic` set.
 - Needs `cleric_epic` >=5.
 - Needs Harmony of the Soul (9955).
 - Needs `cleric20` unset.
@@ -280,7 +278,7 @@ How the items are reached:
 
 - `nedaria` tavon vastsea, say hail needs `cleric20` set.
   - Sets `cleric_epic` to `1`.
-- `provinggrounds` player, on loot needs `cleric20` >=2.
+- `provinggrounds` player, on loot needs `cleric20` set.
   - Sets `cleric20_mpg_chest` to `1`.
   - Spawns a chest (epic 2.0) (893).
   - Sets `wiz20_mpg_chest` to `1`.
@@ -338,7 +336,7 @@ How the items are reached:
 - `timorous` omat vastsea, hand 12433 needs `cleric20` >=2.
   - Turn in Dark Red Robe (12433).
   - Gives Robe of Plasmatic Priesthood (12509).
-- `timorous` player, on loot needs `cleric20` >=3.
+- `timorous` player, on loot needs `cleric20` set.
   - Sets `cleric20_td_chest` to `1`.
   - Spawns a chest (epic 2.0) (893).
   - Loots Glyphed Helm of Conflict (71073).
@@ -398,6 +396,7 @@ Zone: `abysmal`.
 
 Sets `cleric_epic` to `2`.
 
+- Needs `cleric_epic` set.
 - Needs `cleric_epic` ==1.
 - Turn in x1: Encrypted Note (7135).
 In script order:
@@ -416,6 +415,7 @@ Zone: `abysmal`.
 
 Sets `cleric_epic` to `3`.
 
+- Needs `cleric_epic` set.
 - Needs `cleric_epic` ==2.
 - Turn in x1: Ripped Quarter of a Map (9476).
 - Turn in x1: Shredded Quarter of a Map (9447).
@@ -444,6 +444,7 @@ Zone: `nedaria`.
 
 Sets `cleric_epic` to `4`.
 
+- Needs `cleric_epic` set.
 - Needs `cleric_epic` >=3.
 - Turn in x1: Assembled Map (56015).
 In script order:
@@ -462,6 +463,7 @@ Zone: `wakening`.
 
 Sets `cleric_epic` to `5`.
 
+- Needs `cleric_epic` set.
 - Needs `cleric_epic` >=4.
 - Turn in x1: Dark Disciples Notice of Service (9591).
 In script order:
@@ -510,7 +512,7 @@ Combine:
   - Loots Raw Indigo Nihilite (37858).
   - Loots Raw Amber Nihilite (37859).
   - Loots Kyv Tongue (67584).
-- `dranik` natvil, say hail needs `cleric_epic` >=5.
+- `dranik` natvil, say hail needs `cleric_epic` set.
   - Sets `cleric20` to `1`.
 - `lfaydark` player, on loot needs `cleric_epic` >=4.
   - Sets `cleric_epic_lfay` to `1`.
@@ -532,9 +534,9 @@ Combine:
   - Loots Muramite Leather Wraps of Conflict (71065).
   - Loots Muramite Silk Sleeves of Contention (71069).
   - Loots Muramite Silk Gloves of Contention (71070).
-- `lfaydark` taskmaster mirot, say hail needs `cleric_epic` >=4.
+- `lfaydark` taskmaster mirot, say hail needs `cleric_epic` set.
   - Spawns a Wayfarer (57153).
-- `wakening` player, on loot needs `cleric_epic` >=5.
+- `wakening` player, on loot needs `cleric_epic` set.
   - Sets `cleric_epic_wakeningchest` to `1`.
   - Spawns a chest (Epic 1.5) (283157).
   - Loots Mud Covered Shoulder Pads (71006).
@@ -554,12 +556,12 @@ Combine:
   - Loots Muramite Leather Wraps of Conflict (71065).
   - Loots Muramite Silk Sleeves of Contention (71069).
   - Loots Muramite Silk Gloves of Contention (71070).
-- `wakening` scout leader plavo, hand 9597+9945+9948 needs `cleric_epic` >=5.
+- `wakening` scout leader plavo, hand 9597+9945+9948 needs `cleric_epic` set.
   - Spawns Dark Disciple Master (119176).
   - Turn in Shissar Cerebral Cortex (9945).
   - Turn in Dragon Cerebrum (9948).
   - Turn in Akhevan Brain Stem (9597).
-- `westwastes` scout pirri, say hail needs `cleric_epic` >=5.
+- `westwastes` scout pirri, say hail needs `cleric_epic` set.
   - Spawns Scout Pirri (120112).
   - Loots Dragon Cerebrum (9948).
   - Loots Curzon (35085).

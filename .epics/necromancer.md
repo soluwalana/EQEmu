@@ -10,12 +10,14 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Soulwhisper" (62581)
 
-1. Say "Hail" to causeway/"Tarlang".
-2. Spawns "Tarlang (Active)" (303083).
-3. Loot "Tarlang's Head" (55855) from "Tarlang (Active)".
-4. Loot "Tarlang's Head" (55855) from "Tarlang".
-5. Loot "Tarlang's Head" (55855) from "Tarlang" in `causeway`.
-6. natimbi/"Whiahdi", hand "Tarlang's Head" (55855). Gives "Soulwhisper" (62581).
+1. causeway/"Tarlang", say "Hail". Sets `Soulwhisper` to `3`.
+2. causeway/"Tarlang", say "Hail". Sets `Soulwhisper` to `3`.
+3. Say "Hail" to causeway/"Tarlang".
+4. Spawns "Tarlang (Active)" (303083).
+5. Loot "Tarlang's Head" (55855) from "Tarlang (Active)".
+6. Loot "Tarlang's Head" (55855) from "Tarlang".
+7. Loot "Tarlang's Head" (55855) from "Tarlang" in `causeway`.
+8. natimbi/"Whiahdi", hand "Tarlang's Head" (55855). Requires `Soulwhisper` ==3. Requires `Soulwhisper` set. Gives "Soulwhisper" (62581).
 
 ## `NecroPre`
 
@@ -51,6 +53,7 @@ Zone: `poknowledge`.
 Sets `NecroPre` to `2`.
 
 - Needs `NecroPre` ==1.
+- Needs `NecroPre` set.
 - Turn in x1: Piece of the Staff (20612).
 In script order:
 
@@ -77,6 +80,8 @@ How the items are reached:
   - Turn in Piece of the Staff (20612).
   - Gives Note to Biddliss (9831).
   - Gives Piece of the Staff (20612).
+- `poknowledge` geboron, say hail needs `NecroPre` unset.
+  - Gives Note to Yuanda (15809).
 
 ## `necro_epic`
 

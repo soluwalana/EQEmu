@@ -695,6 +695,10 @@ class OP_LDoNSenseTraps(_Opaque):
     """Sense traps on targeted chest; not separately mapped in RoF2 conf."""
 
 
+class OP_FinishWindow(_Opaque):
+    """Finish window request."""
+
+
 @dataclass
 class OP_TargetHoTT(EQStruct):
     """Target-of-target id, common ClientTarget_Struct (4 bytes)."""

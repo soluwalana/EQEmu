@@ -11,12 +11,15 @@ Coordinates on these objects are x, y, z. Serialize and deserialize convert
 the y, x, z order used on the wire.
 """
 
+
+
 import re
 import struct
 from dataclasses import dataclass, field
 from typing import ClassVar, TypeAlias, TypeVar
 
 from eqclient4.structs.constants import CURSOR_SLOT, GENERAL_SLOTS
+
 
 OPERATIONS: dict[str, type[EQStruct]] = {}
 

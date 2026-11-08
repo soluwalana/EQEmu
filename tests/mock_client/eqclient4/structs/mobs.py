@@ -38,7 +38,11 @@ def _pack_spawn(spawn: Spawn) -> bytes:
     out += struct.pack(
         "<IBfB", spawn.spawn_id & 0xFFFFFFFF, spawn.level & 0xFF, 0.0, spawn.npc & 0xFF
     )
-    out += b"\x00" * 5
+    other = (
+        (0x10 if spawn.title else 0)
+        | (0x20 if spawn.suffix else 0)
+    )
+    out += bytes(4) + bytes((other,))
     # common/patches/rof2.cpp:4735 unknown3
     out += struct.pack("<ff", -1.0, 0.0)
     # common/patches/rof2.cpp:4771
@@ -67,16 +71,30 @@ def _pack_spawn(spawn: Spawn) -> bytes:
         bitword((0, 10), (pack_eq19(spawn.z), 19), (0, 3)),
         0,
     )
+    if spawn.title:
+        out += put_cstr(spawn.title)
+
+    if spawn.suffix:
+        out += put_cstr(spawn.suffix)
+
+    out += bytes(8)                    # unknown IDs
+    out += b"\x00"                     # IsMercenary
+    out += b"0000000000000000\x00"     # RealEstateItemGuid
+    out += struct.pack("<II", 0xFFFFFFFF, 0xFFFFFFFF)
+    out += bytes(29)
     return bytes(out)
 
 
 def _read_spawn(data: bytes, offset: int) -> tuple[Spawn, int]:
     """Walk the RoF2 OP_ZoneSpawns encode. One spawn, starting at offset."""
+    
     name, offset = cstring(data, offset)
     offset = advance(data, offset, 10, "spawn")
     spawn_id, level, _bounds, npc = struct.unpack_from("<IBfB", data, offset - 10)
     offset = advance(data, offset, 5, "spawn")
     other = data[offset - 1]
+    has_title = bool(other & 0x10)
+    has_suffix = bool(other & 0x20)
     offset = advance(data, offset, 8, "spawn")
     if other & 0xE1 == 0xE1 or other & 0x04:
         for _index in range(3):
@@ -101,6 +119,17 @@ def _read_spawn(data: bytes, offset: int) -> tuple[Spawn, int]:
     offset = advance(data, offset, 216 if _playable_spawn(int(npc), int(race)) else 60, "spawn")
     offset = advance(data, offset, 20, "spawn")
     word_y, _delta, word_x, word_z, _anim = struct.unpack_from("<IIIII", data, offset - 20)
+    # RoF2 spawn data continues after the 20-byte position block.
+    # Titles and suffixes are optional C strings.
+    _title = ""
+    _suffix = ""
+    if has_title:
+        _title, offset = cstring(data, offset)
+
+    if has_suffix:
+        _suffix, offset = cstring(data, offset)
+    offset = advance(data, offset, 63, "spawn trailer")
+
     return (
         Spawn(
             int(spawn_id),
@@ -114,6 +143,8 @@ def _read_spawn(data: bytes, offset: int) -> tuple[Spawn, int]:
             int(class_id),
             int(race),
             _kept_name(last_name),
+            _title,
+            _suffix,
         ),
         offset,
     )
@@ -132,7 +163,9 @@ class Spawn(EQStruct):
     class_id: int
     race: int
     last_name: str = ""
-
+    title: str = ""
+    suffix: str = ""
+    
     def serialize(self) -> bytes:
         return _pack_spawn(self)
 
@@ -271,14 +304,22 @@ class OP_ZoneSpawns(EQStruct):
         return b"".join(spawn.serialize() for spawn in self.spawns)
 
     @classmethod
-    def deserialize(cls, data: bytes) -> OP_ZoneSpawns:
-        if not data:
-            return cls([])
-        try:
-            spawn, _offset = _read_spawn(data, 0)
-        except ValueError:
-            return cls([])
-        return cls([spawn])
+    def deserialize(cls, data: bytes) -> "OP_ZoneSpawns":
+        spawns = []
+        offset = 0
+
+        while offset < len(data):
+            spawn, next_offset = _read_spawn(data, offset)
+
+            if next_offset <= offset:
+                raise ValueError(
+                    f"OP_ZoneSpawns made no progress at offset {offset}"
+                )
+
+            spawns.append(spawn)
+            offset = next_offset
+
+        return cls(spawns)
 
 
 @dataclass
@@ -483,48 +524,76 @@ class OP_Assist(EQStruct):
             return cls(struct.unpack_from("<H", data)[0])
         raise ValueError(f"OP_Assist is {len(data)} bytes")
 
+@dataclass
+class TrackDetails:
+    level: int = 0
+    is_npc: int = 0
+    name: str = ""
+    is_pet: int = 0
+    is_merc: int = 0
+
 
 @dataclass
 class OP_Track(EQStruct):
     entries: list[tuple[int, float]] = field(default_factory=list)
+    details: list[TrackDetails] = field(default_factory=list)
 
     def serialize(self) -> bytes:
-        # common/patches/rof2.cpp:4072 OP_Track entry count
         out = struct.pack("<H", len(self.entries) & 0xFFFF)
-        for entity, distance in self.entries:
-            # common/patches/rof2.cpp:4076 OP_Track entry
-            out += (
-                struct.pack(
-                    "<IfBB",
-                    entity & 0xFFFFFFFF,
-                    float(distance),
-                    0,
-                    0,
-                )
-                + put_cstr("")
-                + b"\x00\x00"
+
+        for index, (entity_id, distance) in enumerate(self.entries):
+
+            if index < len(self.details):
+                info = self.details[index]
+            else:
+                info = TrackDetails()
+
+            out += struct.pack(
+                "<IfBB",
+                entity_id & 0xFFFFFFFF,
+                float(distance),
+                info.level & 0xFF,
+                info.is_npc & 0xFF,
             )
-        return out
+            out += put_cstr(info.name)
+            out += struct.pack("<BB", info.is_pet, info.is_merc)
+
+        return bytes(out)
 
     @classmethod
-    def deserialize(cls, data: bytes) -> OP_Track:
+    def deserialize(cls, data: bytes) -> "OP_Track":
         if len(data) < 2:
-            return cls([])
+            return cls()
+
         count = struct.unpack_from("<H", data)[0]
         offset = 2
-        entries: list[tuple[int, float]] = []
-        for _index in range(count):
-            if offset + 6 > len(data):
-                break
-            entity, distance = struct.unpack_from("<If", data, offset)
+
+        entries = []
+        details = []
+
+        for _ in range(count):
+            entity_id, distance, level, is_npc = struct.unpack_from(
+                "<IfBB", data, offset
+            )
             offset += 10
-            try:
-                _name, offset = cstring(data, offset)
-            except ValueError:
-                break
+
+            name, offset = cstring(data, offset)
+
+            is_pet, is_merc = struct.unpack_from("<BB", data, offset)
             offset += 2
-            entries.append((int(entity), float(distance)))
-        return cls(entries)
+
+            entries.append((int(entity_id), float(distance)))
+            details.append(
+                TrackDetails(
+                    level=int(level),
+                    is_npc=int(is_npc),
+                    name=name,
+                    is_pet=int(is_pet),
+                    is_merc=int(is_merc),
+                )
+            )
+
+        return cls(entries=entries, details=details)
 
 
 @dataclass
@@ -591,6 +660,7 @@ class OP_FindPersonReply(EQStruct):
     def deserialize(cls, data: bytes) -> OP_FindPersonReply:
         if len(data) < 12:
             return cls()
+
         dest_y, dest_x, dest_z = struct.unpack_from("<fff", data)
         points: list[tuple[float, float, float]] = []
         offset = 12

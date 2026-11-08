@@ -25,6 +25,7 @@ from queue import Empty, Full, Queue
 from typing import BinaryIO, Iterator, NamedTuple
 
 from eqclient4.inventory import CharacterInventory
+from eqclient4.character import Character
 from eqclient4.scripts.eq_packet_viewer import (
     hexdump,
     split_patterns,
@@ -239,7 +240,7 @@ def display_event(
     start: str | None,
     end: str | None,
     inventories: dict[Source, CharacterInventory],
-    *,
+    profiles: dict[Source, Character],
     directory_mode: bool,
 ) -> None:
     if isinstance(event, ErrorEvent):
@@ -284,8 +285,12 @@ def display_event(
                     if change.changed:
                         print(inventory.render_change(change), flush=True)
                     print(inventory.render(show_empty=False), flush=True)
+
                 case _:
                     pass
+            profile = profiles.setdefault(event.source, Character())
+            profile.on(opcode, obj, notify_unknown=False)
+
         except Exception as exc:
             print(f"  DECODE FAILED: {type(exc).__name__}: {exc}", flush=True)
             print(hexdump(payload, args.max_bytes), flush=True)
@@ -346,6 +351,7 @@ def main() -> None:
     events: Queue[Event] = Queue(maxsize=args.queue_size)
     watchers: dict[Path, Watcher] = {}
     inventories: dict[Source, CharacterInventory] = {}
+    profiles: dict[Source, Character] = {}
     follow = not args.no_follow
     next_scan = 0.0
     try:
@@ -377,7 +383,8 @@ def main() -> None:
                     start,
                     end,
                     inventories,
-                    directory_mode=directory_mode,
+                    profiles,
+                    directory_mode,
                 )
                 events.task_done()
 

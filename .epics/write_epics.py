@@ -465,7 +465,15 @@ def write_class(name, title, mains, prefixes, ctx):
         bits = []
         for edge in real_givers(item_id):
             who, action, _zone = parse_who(edge.get("group") or edge.get("from"))
-            bits.append(f"Given by {quoted_who(who)}" + (f", {quoted_action(items, action)}" if action else "") + ".")
+            # bits.append(f"Given by {quoted_who(who)}" + (f", {quoted_action(items, action)}" if action else "") + ".")
+            # New
+            bits.extend(giver_prereqs(edge))
+            bits.append(
+                f"Given by {quoted_who(who)}"
+                + (f", {quoted_action(items, action)}" if action else "")
+                + "."
+            )
+            # new end
         loot_rows = loots.get(item_id, [])
         gated_loot = [edge for edge in loot_rows if prefers(by_from, by_group, edge, flags)]
         for edge in (gated_loot or loot_rows)[:4]:
@@ -588,6 +596,21 @@ def write_class(name, title, mains, prefixes, ctx):
         if skill:
             text += f" {skill}"
         return text
+    
+    # new
+    def giver_prereqs(edge: dict) -> list[str]:
+        rows = bundle(
+            by_from,
+            by_group,
+            edge.get("from", ""),
+            edge.get("group", ""),
+        )
+
+        return list(dict.fromkeys(
+            f"Requires `{row['flag']}` {row.get('at') or 'set'}"
+            for row in rows
+            if row.get("rel") == "needs" and row.get("flag")
+        ))
 
     def giver_sentence(edge: dict, item_id: int) -> str:
         who, action, _zone = parse_who(edge.get("group") or edge.get("from"))
@@ -598,8 +621,26 @@ def write_class(name, title, mains, prefixes, ctx):
             turns = ", ".join(quoted_item(items, needed) for needed in handed(edge))
             if turns:
                 text += f". Turn in {turns}"
+
+        prereqs = giver_prereqs(edge)
+        if prereqs:
+            text += ". " + ". ".join(prereqs)
+
         text += f". Gives {quoted_item(items, item_id)}."
         return text
+    
+    # new end
+    # def giver_sentence(edge: dict, item_id: int) -> str:
+    #     who, action, _zone = parse_who(edge.get("group") or edge.get("from"))
+    #     text = quoted_who(who)
+    #     if action:
+    #         text += ", " + quoted_action(items, action)
+    #     if not action.startswith("hand"):
+    #         turns = ", ".join(quoted_item(items, needed) for needed in handed(edge))
+    #         if turns:
+    #             text += f". Turn in {turns}"
+    #     text += f". Gives {quoted_item(items, item_id)}."
+    #     return text
 
     def take_simple(item_id: int, steps: list[str], seen: set) -> None:
         for text in simple_acquire(item_id):
@@ -609,52 +650,302 @@ def write_class(name, title, mains, prefixes, ctx):
             seen.add(key)
             steps.append(text)
 
-    def forward(item_id: int, trail: set[int], steps: list[str], seen: set, goal: int) -> None:
+    def forward(
+        item_id: int,
+        trail: set[int],
+        steps: list[str],
+        seen: set,
+        goal: int,
+        flag_trail: frozenset[str] = frozenset(),
+    ) -> None:
         if item_id in trail or item_id in seen or len(trail) > 12:
             return
-        seen.add(item_id)
-        trail = set(trail)
-        trail.add(item_id)
-        made_here = False
-        def expand_needed(needed: int) -> None:
-            # take_simple and forward both print a hail/buy line. Pick one.
-            # Loot-only items have no simple_acquire text — forward into leaf_bits.
-            if is_chain(needed) or not simple_acquire(needed):
-                forward(needed, trail, steps, seen, goal)
-            else:
-                take_simple(needed, steps, seen)
 
-        # NPC givers first. A split/recombine loop must not hide the hand-in that creates the item.
-        for edge in real_givers(item_id):
+        seen.add(item_id)
+        trail = trail | {item_id}
+
+        def dependencies(edge: dict) -> list[dict]:
+            return [
+                row
+                for row in bundle(
+                    by_from,
+                    by_group,
+                    edge.get("from", ""),
+                    edge.get("group", ""),
+                )
+                if row.get("rel") == "needs"
+            ]
+
+        def value_matches(value: str, at: str) -> bool:
+            if at == "set":
+                return True
+            if at == "unset":
+                return False
+
+            match = re.fullmatch(r"(==|!=|>=|<=|>|<)(-?\d+)", at)
+            if not match:
+                return False
+
+            try:
+                actual = int(value)
+            except (TypeError, ValueError):
+                return False
+
+            op, expected = match.group(1), int(match.group(2))
+            return {
+                "==": actual == expected,
+                "!=": actual != expected,
+                ">=": actual >= expected,
+                "<=": actual <= expected,
+                ">": actual > expected,
+                "<": actual < expected,
+            }[op]
+
+        def expand_item(needed: int) -> None:
+            forward(
+                needed,
+                trail,
+                steps,
+                seen,
+                goal,
+                flag_trail,
+            )
+
+        def expand_flag(flag: str, at: str) -> None:
+            key = ("flag", flag, at)
+
+            if key in seen:
+                return
+
+            if flag in flag_trail:
+                steps.append(f"Unresolved cyclic prerequisite: `{flag}` {at}.")
+                return
+
+            seen.add(key)
+
+            if at == "unset":
+                steps.append(
+                    f"Requires `{flag}` unset; no setter establishes this state."
+                )
+                return
+
+            setters = [
+                edge
+                for edge in sets_of.get(flag, [])
+                if value_matches(str(edge.get("value", "")), at)
+            ]
+
+            if not setters:
+                steps.append(
+                    f"Unresolved prerequisite: `{flag}` {at}; "
+                    "no matching setter in graph."
+                )
+                return
+
+            # Favor direct, inexpensive prerequisites over long hand-in chains.
+            setters.sort(
+                key=lambda edge: (
+                    len(handed(edge)),
+                    str(edge.get("from", "")),
+                )
+            )
+
+            setter = setters[0]
+            source = str(setter.get("group") or setter.get("from") or "")
+            setter_key = ("setter", source, flag, at)
+
+            if setter_key in seen:
+                return
+
+            next_flags = flag_trail | {flag}
+
+            # Resolve prerequisites of the action that sets this flag.
+            for row in dependencies(setter):
+                if row.get("flag"):
+                    forward_flag = row["flag"]
+                    if forward_flag in next_flags:
+                        continue
+
+                    # Recursive flag dependencies use the extended traversal state.
+                    previous = flag_trail
+                    flag_trail_holder[0] = next_flags
+                    try:
+                        resolve_flag(
+                            forward_flag,
+                            str(row.get("at") or "set"),
+                            next_flags,
+                        )
+                    finally:
+                        flag_trail_holder[0] = previous
+
+                elif row.get("item"):
+                    expand_item(int(row["item"]))
+
+            # Acquire items that must be handed in to establish the flag.
+            for needed in handed(setter):
+                expand_item(needed)
+
+            if setter_key not in seen:
+                seen.add(setter_key)
+                who, action, _zone = parse_who(source)
+                description = quoted_who(who)
+
+                if action:
+                    description += f", {quoted_action(items, action)}"
+
+                steps.append(
+                    f"{description}. "
+                    f"Sets `{flag}` to `{setter.get('value')}`."
+                )
+
+        # Explicit flag recursion avoids confusing item and flag cycle detection.
+        flag_trail_holder = [flag_trail]
+
+        def resolve_flag(
+            flag: str,
+            at: str,
+            active: frozenset[str],
+        ) -> None:
+            if flag in active:
+                return
+            forward_flag_dependency(flag, at, active)
+
+        def forward_flag_dependency(
+            flag: str,
+            at: str,
+            active: frozenset[str],
+        ) -> None:
+            # Re-enter the normal dependency resolver with the current flag path.
+            nonlocal flag_trail
+            previous = flag_trail
+            flag_trail = active
+            try:
+                expand_flag(flag, at)
+            finally:
+                flag_trail = previous
+
+        def expand_action(edge: dict) -> None:
+            requirements = dependencies(edge)
+
+            # Ordinary requirements must all be satisfied.
+            for row in requirements:
+                if row.get("op") == "or":
+                    continue
+
+                if row.get("flag"):
+                    expand_flag(
+                        str(row["flag"]),
+                        str(row.get("at") or "set"),
+                    )
+                elif row.get("item"):
+                    expand_item(int(row["item"]))
+
+            # Alternative requirements are not all mandatory.
+            alternatives = [
+                row for row in requirements if row.get("op") == "or"
+            ]
+            if alternatives:
+                selected = alternatives[0]
+                if selected.get("flag"):
+                    expand_flag(
+                        str(selected["flag"]),
+                        str(selected.get("at") or "set"),
+                    )
+                elif selected.get("item"):
+                    expand_item(int(selected["item"]))
+
             for needed in handed(edge):
-                expand_needed(needed)
-            key = ("give", str(edge.get("group") or edge.get("from")), item_id)
+                expand_item(needed)
+
+        made_here = False
+
+        for edge in real_givers(item_id):
+            expand_action(edge)
+
+            key = (
+                "give",
+                str(edge.get("group") or edge.get("from")),
+                item_id,
+            )
             if key not in seen:
                 seen.add(key)
                 steps.append(giver_sentence(edge, item_id))
+
             made_here = True
+
         for rid in creating(item_id):
-            # A combine that consumes the item we are obtaining hands that item back. It is not a source.
             if goal in recipe_inputs(rid):
                 continue
+
             info = recipe[rid]
+
             if info.get("container"):
-                expand_needed(int(info["container"]))
+                expand_item(int(info["container"]))
+
             for comp, _count in info.get("consumes") or []:
-                expand_needed(int(comp))
+                expand_item(int(comp))
+
             key = ("recipe", rid)
             if key not in seen:
                 seen.add(key)
                 steps.append(recipe_sentence(rid))
+
             made_here = True
+
         if made_here:
             return
+
         for bit in leaf_bits(item_id):
             key = ("leaf", item_id, bit)
-            if key in seen:
-                continue
-            seen.add(key)
-            steps.append(bit)
+            if key not in seen:
+                seen.add(key)
+                steps.append(bit)
+    # def forward(item_id: int, trail: set[int], steps: list[str], seen: set, goal: int) -> None:
+    #     if item_id in trail or item_id in seen or len(trail) > 12:
+    #         return
+    #     seen.add(item_id)
+    #     trail = set(trail)
+    #     trail.add(item_id)
+    #     made_here = False
+    #     def expand_needed(needed: int) -> None:
+    #         # take_simple and forward both print a hail/buy line. Pick one.
+    #         # Loot-only items have no simple_acquire text — forward into leaf_bits.
+    #         if is_chain(needed) or not simple_acquire(needed):
+    #             forward(needed, trail, steps, seen, goal)
+    #         else:
+    #             take_simple(needed, steps, seen)
+
+    #     # NPC givers first. A split/recombine loop must not hide the hand-in that creates the item.
+    #     for edge in real_givers(item_id):
+    #         for needed in handed(edge):
+    #             expand_needed(needed)
+    #         key = ("give", str(edge.get("group") or edge.get("from")), item_id)
+    #         if key not in seen:
+    #             seen.add(key)
+    #             steps.append(giver_sentence(edge, item_id))
+    #         made_here = True
+    #     for rid in creating(item_id):
+    #         # A combine that consumes the item we are obtaining hands that item back. It is not a source.
+    #         if goal in recipe_inputs(rid):
+    #             continue
+    #         info = recipe[rid]
+    #         if info.get("container"):
+    #             expand_needed(int(info["container"]))
+    #         for comp, _count in info.get("consumes") or []:
+    #             expand_needed(int(comp))
+    #         key = ("recipe", rid)
+    #         if key not in seen:
+    #             seen.add(key)
+    #             steps.append(recipe_sentence(rid))
+    #         made_here = True
+    #     if made_here:
+    #         return
+    #     for bit in leaf_bits(item_id):
+    #         key = ("leaf", item_id, bit)
+    #         if key in seen:
+    #             continue
+    #         seen.add(key)
+    #         steps.append(bit)
 
     def render_prereqs() -> list[str]:
         block = [

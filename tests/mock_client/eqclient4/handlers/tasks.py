@@ -46,7 +46,9 @@ class TasksHandler(Handler):
         log.error(f"Need to implement ReadTasks(data.task_id) {data.task_id}")
 
     def activity(self, data: OP_TaskActivity) -> None:
-        log.info(f"Setting task activity {data.task_id} {data.activity_id} - {data.description} - {data.done} / {data.goal}")
+        log.info(
+            f"Setting task activity {data.task_id} {data.activity_id} - {data.description} - {data.done} / {data.goal}"
+        )
         activity_map = self.world.tasks.activities[data.task_id]
         activity_map[data.activity_id] = data
 

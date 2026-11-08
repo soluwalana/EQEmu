@@ -10,15 +10,18 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Staff of Elemental Essence" (19092)
 
-1. Hand "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) to cobaltscar/"High Priest Margle". Spawns "Tiknonmanin" (117094). Loot "Elemental Essence of Water" (19086) from "Tiknonmanin".
-2. Loot "Elemental Essence of Water" (19086) from "Tiknonmanin".
-3. Spawns "Elemental Essence of Fire" (214127) in `potactics` on event_waypoint_arrive.
-4. Loot "Elemental Essence of Fire" (16807) from "Elemental Essence of Fire".
-5. Spawns "Elemental Essence of Air" (303100) in `causeway` on enter.
-6. Loot "Elemental Essence of Air" (16773) from "Elemental Essence of Air".
-7. Spawns "Elemental Essence of Earth" (169127) in `letalis` on enter.
-8. Loot "Elemental Essence of Earth" (19087) from "Elemental Essence of Earth".
-9. poknowledge/"Bantil Io'Tuv", hand "Elemental Essence of Air" (16773) + "Elemental Essence of Fire" (16807) + "Elemental Essence of Water" (19086) + "Elemental Essence of Earth" (19087). Gives "Staff of Elemental Essence" (19092).
+1. najena/"Akksstaff'S Minion", on event_death_complete. Sets `ask_minion_dead` to `1`.
+2. najena/"Akksstaff", say "Demise". Requires `ask_minion_dead` set. Gives "Sentience of Elements" (15778).
+3. poknowledge/"Bantil Io'Tuv", hand "Sentience of Elements" (15778). Sets `mage_epic` to `6`.
+4. Hand "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) to cobaltscar/"High Priest Margle". Spawns "Tiknonmanin" (117094). Loot "Elemental Essence of Water" (19086) from "Tiknonmanin".
+5. Loot "Elemental Essence of Water" (19086) from "Tiknonmanin".
+6. Spawns "Elemental Essence of Fire" (214127) in `potactics` on event_waypoint_arrive.
+7. Loot "Elemental Essence of Fire" (16807) from "Elemental Essence of Fire".
+8. Spawns "Elemental Essence of Air" (303100) in `causeway` on enter.
+9. Loot "Elemental Essence of Air" (16773) from "Elemental Essence of Air".
+10. Spawns "Elemental Essence of Earth" (169127) in `letalis` on enter.
+11. Loot "Elemental Essence of Earth" (19087) from "Elemental Essence of Earth".
+12. poknowledge/"Bantil Io'Tuv", hand "Elemental Essence of Air" (16773) + "Elemental Essence of Fire" (16807) + "Elemental Essence of Water" (19086) + "Elemental Essence of Earth" (19087). Requires `mage_epic` ==6. Gives "Staff of Elemental Essence" (19092).
 
 ### "Note from Iilivina" (19438)
 
@@ -125,6 +128,7 @@ In script order:
 How the items are reached:
 
 - Tome of Primal Fires (15769)
+  - Requires `mage_epic` ==2
   - Given by westwastes/"A Lost Tomekeeper", say "Violet Roses".
 
 ### 4. bantil io`tuv — hand 15772
@@ -179,6 +183,7 @@ In script order:
 How the items are reached:
 
 - Sentience of Elements (15778)
+  - Requires `ask_minion_dead` set
   - Given by najena/"Akksstaff", say "Demise".
 
 ### 7. bantil io`tuv — hand 16773+16807+19086+19087
@@ -331,10 +336,10 @@ How the items are reached:
   - Sets `mage_epic_dl` to `1`.
   - Spawns Chaos Elemental (86174).
   - Loots Element of Chaos (19444).
-- `dreadlands` player, on enter needs `mage_epic` ==10.
+- `dreadlands` player, on enter needs `mage_epic` set.
   - Spawns Time Terror (86172).
   - Loots Time Terror Essence (63130).
-- `dreadlands` player, on loot needs `mage_epic` ==10.
+- `dreadlands` player, on loot needs `mage_epic` set.
   - Sets `mage_chest_dl` to `1`.
   - Spawns a chest (epic 2.0) (893).
   - Loots Glyphed Helm of Conflict (71073).
@@ -449,7 +454,7 @@ How the items are reached:
   - Loots Adorned Earring of Hope (71118).
   - Loots Polished Earring of Animosity (71119).
   - Loots Ring of Black Flame (71120).
-- `najena` akksstaff, say bantil sent me needs `mage_epic` >=5.
+- `najena` akksstaff, say bantil sent me needs `mage_epic` set.
   - Spawns Akksstaff`s Minion (44108).
 - `poknowledge` bantil io`tuv, hand 19092+47100 needs `mage_epic` ==11.
   - Turn in Globe of Discordant Energy (47100).

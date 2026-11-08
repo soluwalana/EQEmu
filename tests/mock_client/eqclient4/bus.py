@@ -69,9 +69,6 @@ class Bus:
                 claimed = True
 
         _movement(self.world, opcode, parsed)
-        evt = self.world.character.apply(parsed)
-        if evt and evt.changed:
-            log.info(f"{evt}")
 
         if claimed:
             log.debug(f"Exclusively claimed opcode {opcode}")

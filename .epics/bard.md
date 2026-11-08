@@ -33,19 +33,79 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Fatestealer" (52347)
 
-1. Say "Trash Death" to hateplaneb/"Rogue 1 5".
-2. Spawns "a Teir'Dal guardian" (186190).
-3. Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
-4. nedaria/"Lirprin, Head Of Affairs", hand "Soulstone of Lanys" (52337). Gives "Fatestealer" (52347).
+1. Hand "Sealed Box" (28057) to kithicor/"Adjutant D-Kan". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
+2. Hand "Sealed Box" (28057) to kithicor/"Advisor C-Zatl". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
+3. Hand "Sealed Box" (28057) to kithicor/"Brigadier G-Tav". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
+4. Hand "Sealed Box" (28057) to kithicor/"Coercer Q-Ioul". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
+5. 3 other loot steps also yield General's Pouch (28013).
+6. Loot "General's Pouch" (28013) from "General V'ghera".
+7. Loot "Fleshripper" (5411) from "Solusek kobold king" in `soldungb`.
+8. Loot "Painbringer" (5410) from "Kobold Champion" in `soldungb`.
+9. Loot "Mithril Two-Handed Sword" (5401) from "The Froglok King" in `gukbottom`.
+10. Loot "Gigantic Zweihander" (5308) from "Karg IceBear" in `everfrost`.
+11. qey2hh1/"Vilnius The Small", hand "Gigantic Zweihander" (5308) + "Mithril Two-Handed Sword" (5401) + "Painbringer" (5410) + "Fleshripper" (5411). Gives "Jagged Diamond Dagger" (7506).
+12. Loot "Robe of the Ishva" (1357) from "Coercer Q'ioul" in `kithicor`.
+13. Loot "Robe of the Ishva" (1357) from "Jinalis Andir" in `cauldron`.
+14. Loot "Robe of the Ishva" (1357) from "The Ishva Mal" in `southkarana`.
+15. No quest step gives Robe of the Kedge (1253). The dump lists it in chambersf, kedge, kithicor.
+16. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oceanoftears`.
+17. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oot`.
+18. Common item: Shining Metallic Robes (1360). Listed in 4 zones.
+19. qey2hh1/"Vilnius The Small", hand "Robe of the Kedge" (1253) + "Robe of the Oracle" (1354) + "Robe of the Ishva" (1357) + "Shining Metallic Robes" (1360). Gives "Cazic Quill" (7505).
+20. highpass/"Stanos Herkanor", hand "Cazic Quill" (7505) + "Jagged Diamond Dagger" (7506) + "General's Pouch" (28013). Gives "Ragebringer" (11057).
+21. highpasshold/"Stanos Herkanor", hand "Cazic Quill" (7505) + "Jagged Diamond Dagger" (7506) + "General's Pouch" (28013). Gives "Ragebringer" (11057).
+22. highpass/"Stanos Herkanor", say "Hail". Sets `Fatestealer` to `1`.
+23. Loot "Signed Agreement" (10246) from "Lythe Songbird" in `freeporteast`.
+24. Loot "Signed Agreement" (10246) from "Lythe Songbird" in `freportw`.
+25. overthere/"Inem R'Ker", hand "Signed Agreement" (10246). Sets `Fatestealer_lyt` to `1`.
+26. Loot "Signed Agreement" (10239) from "Seana Marsinger" in `gfaydark`.
+27. Loot "Signed Agreement" (52416) from "Stefan Marsinger" in `gfaydark`.
+28. overthere/"Inem R'Ker", hand "Signed Agreement" (10239) + "Signed Agreement" (52416). Sets `Fatestealer_mar` to `1`.
+29. Loot "Signed Agreement" (10243) from "Galdorin Visigothe" in `abysmal`.
+30. overthere/"Inem R'Ker", hand "Signed Agreement" (10243). Sets `Fatestealer_gal` to `1`.
+31. overthere/"Inem R'Ker", hand "Signed Agreement" (10243). Sets `Fatestealer_bard` to `1`.
+32. Say "Trash Death" to hateplaneb/"Rogue 1 5".
+33. Spawns "a Teir'Dal guardian" (186190).
+34. Loot "Stack of Pages" (52335) from "a Teir'Dal guardian".
+35. steamfont/"Yendar Starpyre", hand "Stack of Pages" (52335). Sets `Fatestealer_page` to `1`.
+36. Hand "Crystallized Shard of Doomfire" (21339) + "Igneous Rock of Doomfire" (21340) + "Pile of Doomfire Ash" (21341) + "Foul Doomfire Brimstone" (21342) to soldungc/"The Firewatcher". Spawns "Culthor the Gatekeeper" (278005). Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper".
+37. Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper" in `soldungc`.
+38. nedaria/"Smith Dandi", hand "Smoldering Embers of Solusek" (52346). Sets `Fatestealer_forge` to `1`.
+39. Say "Trash Death" to hateplaneb/"Rogue 1 5".
+40. Spawns "a Teir'Dal guardian" (186190).
+41. Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
+42. nedaria/"Lirprin, Head Of Affairs", hand "Soulstone of Lanys" (52337). Requires `Fatestealer_bard` ==1. Requires `Fatestealer_page` ==1. Requires `Fatestealer_forge` ==1. Gives "Fatestealer" (52347).
 
 ### "Strongbox Half Full of Velixite" (52342)
 
-1. iceclad/"Lookout Larithim", say "What Happened Then". Gives "Air-Tight Strongbox" (52339).
-2. Say "What Happened Then" to iceclad/"Lookout Larithim".
-3. Spawns "Polar Kraken" (110131).
-4. Loot "Lump of Raw Alloy" (52340) from "Polar Kraken".
-5. Combine in "Air-Tight Strongbox" (52339): "Lump of Raw Alloy" (52340). Produces "Strongbox Full of Alloy" (52341). The combine does not fail.
-6. iceclad/"Lookout Larithim", hand "Strongbox Full of Alloy" (52341). Gives "Strongbox Half Full of Velixite" (52342).
+1. Loot "Signed Agreement" (10246) from "Lythe Songbird" in `freeporteast`.
+2. Loot "Signed Agreement" (10246) from "Lythe Songbird" in `freportw`.
+3. overthere/"Inem R'Ker", hand "Signed Agreement" (10246). Sets `Fatestealer_lyt` to `1`.
+4. Loot "Signed Agreement" (10239) from "Seana Marsinger" in `gfaydark`.
+5. Loot "Signed Agreement" (52416) from "Stefan Marsinger" in `gfaydark`.
+6. overthere/"Inem R'Ker", hand "Signed Agreement" (10239) + "Signed Agreement" (52416). Sets `Fatestealer_mar` to `1`.
+7. Loot "Signed Agreement" (10243) from "Galdorin Visigothe" in `abysmal`.
+8. overthere/"Inem R'Ker", hand "Signed Agreement" (10243). Sets `Fatestealer_gal` to `1`.
+9. overthere/"Inem R'Ker", hand "Signed Agreement" (10243). Sets `Fatestealer_bard` to `1`.
+10. Say "Trash Death" to hateplaneb/"Rogue 1 5".
+11. Spawns "a Teir'Dal guardian" (186190).
+12. Loot "Stack of Pages" (52335) from "a Teir'Dal guardian".
+13. steamfont/"Yendar Starpyre", hand "Stack of Pages" (52335). Sets `Fatestealer_page` to `1`.
+14. Hand "Crystallized Shard of Doomfire" (21339) + "Igneous Rock of Doomfire" (21340) + "Pile of Doomfire Ash" (21341) + "Foul Doomfire Brimstone" (21342) to soldungc/"The Firewatcher". Spawns "Culthor the Gatekeeper" (278005). Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper".
+15. Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper" in `soldungc`.
+16. nedaria/"Smith Dandi", hand "Smoldering Embers of Solusek" (52346). Sets `Fatestealer_forge` to `1`.
+17. Say "Trash Death" to hateplaneb/"Rogue 1 5".
+18. Spawns "a Teir'Dal guardian" (186190).
+19. Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
+20. nedaria/"Lirprin, Head Of Affairs", hand "Soulstone of Lanys" (52337). Requires `Fatestealer_bard` ==1. Requires `Fatestealer_page` ==1. Requires `Fatestealer_forge` ==1. Gives "Fatestealer" (52347).
+21. nedaria/"Lirprin, Head Of Affairs", say "Hail". Sets `Fatestealer` to `3`.
+22. Requires `rogue_epic_iceclad` unset; no setter establishes this state.
+23. iceclad/"Lookout Larithim", say "What Happened Then". Requires `Fatestealer` ==3. Requires `rogue_epic_iceclad` unset. Gives "Air-Tight Strongbox" (52339).
+24. Say "What Happened Then" to iceclad/"Lookout Larithim".
+25. Spawns "Polar Kraken" (110131).
+26. Loot "Lump of Raw Alloy" (52340) from "Polar Kraken".
+27. Combine in "Air-Tight Strongbox" (52339): "Lump of Raw Alloy" (52340). Produces "Strongbox Full of Alloy" (52341). The combine does not fail.
+28. iceclad/"Lookout Larithim", hand "Strongbox Full of Alloy" (52341). Gives "Strongbox Half Full of Velixite" (52342).
 
 ### "Singing Short Sword" (20542)
 
@@ -83,48 +143,45 @@ Each list is the order you obtain that item. Later steps point here instead of r
 32. Loot "Red Dragon Scales" (11622) from "Lord Nagafen" in `soldungb`.
 33. Loot "Red Dragon Scales" (11622) from "Melalafen" in `westwastes`.
 34. Loot "Red Dragon Scales" (11622) from "Talendor" in `skyfire`.
-35. Combine in Forge (17): "Smithing Chisel" (7052), "Small Brick of Ore" (10501). Hands back "Smithing Chisel" (7052). Produces "Small Piece of Ore" (10500) x2. Requires Blacksmithing, trivial 27.
-36. Combine in Forge (17): "Tarnished Axe" (5043), "Water Flask" (13006). Produces "Small Piece of Ore" (10500). Requires Blacksmithing, trivial 21.
-37. 7 other recipes also produce Small Piece of Ore (10500).
+35. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
+36. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
+37. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
 38. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
 39. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-40. Kill befallen/"A Skeletal Excavator". Spawns "A Skeletal Foreman" (36092).
-41. Loot "Bone Chips" (13073) from "A Skeletal Foreman".
-42. Kill cauldron/"Bilge Farfathom". Spawns "An Undertow Skeleton" (70062).
-43. Loot "Bone Chips" (13073) from "An Undertow Skeleton".
-44. Kill cauldron/"The Fabled Bilge Farfathom". Spawns "An Undertow Skeleton" (70062).
-45. Kill cauldron/"A Cauldron Rat". Spawns "An Undertow Skeleton" (70062).
-46. 7 other loot steps also yield Bone Chips (13073).
-47. Summon "Bone Chips" (13073) by casting "Boneshear", "GM Summon Bone Chips".
-48. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-49. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-50. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-51. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-52. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-53. Say "Tm Devrak Death" to rujd/"Rujd".
-54. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-55. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-56. Say "Tm Dokorel Death" to rujd/"Rujd".
-57. Say "Tm Velrek Death" to rujd/"Rujd".
-58. Say "Researcher Death" to rujg/"Rujg".
-59. Spawns "A Barrel" (260015).
-60. Loot "Pod of Water" (13044) from "A Barrel".
-61. 3 other loot steps also yield Pod of Water (13044).
-62. Forage "Pod of Water" (13044) in `ruja`.
-63. Forage "Pod of Water" (13044) in `uqua`.
-64. Forage "Pod of Water" (13044) in `yxtta`.
-65. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-66. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-67. 17 other recipes also produce Bottle (16598).
-68. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-69. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
-70. steamfont/"Forpar Fizfla", hand "White Dragon Scales" (11602) + "Red Dragon Scales" (11622) + "Metal Bits" (16905). Gives "Mystical Lute Body" (20536).
-71. steamfontmts/"Forpar Fizfla", hand "White Dragon Scales" (11602) + "Red Dragon Scales" (11622) + "Metal Bits" (16905). Gives "Mystical Lute Body" (20536).
-72. Kill sebilis/"An Undead Bard". Spawns "Trakanon" (89181).
-73. Loot "Undead Dragongut Strings" (20526) from "Trakanon".
-74. steamfont/"Forpar Fizfla", hand "Undead Dragongut Strings" (20526) + "Mystical Lute Head" (20535) + "Mystical Lute Body" (20536). Gives "Mystical Lute" (20538).
-75. steamfontmts/"Forpar Fizfla", hand "Undead Dragongut Strings" (20526) + "Mystical Lute Head" (20535) + "Mystical Lute Body" (20536). Gives "Mystical Lute" (20538).
-76. dreadlands/"Baldric Slezaf", hand "Maestro's Symphony Page 24 Top" (20376) + "Maestro's Symphony Page 25" (20377) + "Maestro's Symphony Page 24 Bottom" (20383) + "Mystical Lute" (20538). Gives "Singing Short Sword" (20542).
+40. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+41. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+42. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+43. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+44. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+45. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+46. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+47. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
+48. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
+49. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
+50. Say "Tm Devrak Death" to rujd/"Rujd".
+51. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
+52. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
+53. Say "Tm Dokorel Death" to rujd/"Rujd".
+54. Say "Tm Velrek Death" to rujd/"Rujd".
+55. Say "Researcher Death" to rujg/"Rujg".
+56. Spawns "A Barrel" (260015).
+57. Loot "Pod of Water" (13044) from "A Barrel".
+58. 3 other loot steps also yield Pod of Water (13044).
+59. Forage "Pod of Water" (13044) in `ruja`.
+60. Forage "Pod of Water" (13044) in `uqua`.
+61. Forage "Pod of Water" (13044) in `yxtta`.
+62. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+63. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+64. 17 other recipes also produce Bottle (16598).
+65. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+66. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
+67. steamfont/"Forpar Fizfla", hand "White Dragon Scales" (11602) + "Red Dragon Scales" (11622) + "Metal Bits" (16905). Gives "Mystical Lute Body" (20536).
+68. steamfontmts/"Forpar Fizfla", hand "White Dragon Scales" (11602) + "Red Dragon Scales" (11622) + "Metal Bits" (16905). Gives "Mystical Lute Body" (20536).
+69. Kill sebilis/"An Undead Bard". Spawns "Trakanon" (89181).
+70. Loot "Undead Dragongut Strings" (20526) from "Trakanon".
+71. steamfont/"Forpar Fizfla", hand "Undead Dragongut Strings" (20526) + "Mystical Lute Head" (20535) + "Mystical Lute Body" (20536). Gives "Mystical Lute" (20538).
+72. steamfontmts/"Forpar Fizfla", hand "Undead Dragongut Strings" (20526) + "Mystical Lute Head" (20535) + "Mystical Lute Body" (20536). Gives "Mystical Lute" (20538).
+73. dreadlands/"Baldric Slezaf", hand "Maestro's Symphony Page 24 Top" (20376) + "Maestro's Symphony Page 25" (20377) + "Maestro's Symphony Page 24 Bottom" (20383) + "Mystical Lute" (20538). Gives "Singing Short Sword" (20542).
 
 ### "Wind Dragon Prism" (77618)
 
@@ -1255,10 +1312,10 @@ Combine:
 - `necropolis` player, on enter needs `bard15` ==2.
   - Spawns Hsagra`s Shade (123172).
   - Spawns he will spawn the rest (123173).
-- `necropolis` player, on enter needs `bard15` >=3.
+- `necropolis` player, on enter needs `bard15` set.
   - Spawns Hsagra`s Shade (123172).
   - Spawns he will spawn the rest (123173).
-- `necropolis` player, on loot needs `bard15` >=3.
+- `necropolis` player, on loot needs `bard15` set.
   - Sets `bard15_dracchest` to `1`.
   - Spawns a chest (283157).
   - Loots Mud Covered Shoulder Pads (71006).

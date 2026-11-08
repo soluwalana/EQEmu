@@ -201,7 +201,9 @@ class Loop:
             _quiet(load_nav, zone)
             _quiet(load_water, zone)
             _quiet(load_map, zone)
-            log.info(f"loaded {zone}",)
+            log.info(
+                f"loaded {zone}",
+            )
 
         graph = self.world.zone_graph
         self.world.exit_doors = graph.doors

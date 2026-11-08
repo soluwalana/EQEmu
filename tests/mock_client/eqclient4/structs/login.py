@@ -705,3 +705,128 @@ class OP_CharacterCreate(EQStruct):
             int(eye_color2),
             int(tutorial),
         )
+
+
+import struct
+from dataclasses import dataclass, field
+
+
+@dataclass
+class RaceClassAllocation:
+    Index: int
+    BaseStats: tuple[int, ...]
+    DefaultPointAllocation: tuple[int, ...]
+
+    FORMAT = "<15I"
+    SIZE = struct.calcsize(FORMAT)
+
+    def serialize(self) -> bytes:
+        if len(self.BaseStats) != 7 or len(self.DefaultPointAllocation) != 7:
+            raise ValueError("Expected 7 stats and 7 allocations")
+        return struct.pack(
+            self.FORMAT,
+            self.Index,
+            *self.BaseStats,
+            *self.DefaultPointAllocation,
+        )
+
+    @classmethod
+    def deserialize(cls, data: bytes) -> "RaceClassAllocation":
+        values = struct.unpack(cls.FORMAT, data)
+        return cls(
+            Index=values[0],
+            BaseStats=values[1:8],
+            DefaultPointAllocation=values[8:15],
+        )
+
+
+@dataclass
+class RaceClassCombos:
+    ExpansionRequired: int
+    Race: int
+    Class: int
+    Deity: int
+    AllocationIndex: int
+    Zone: int
+
+    FORMAT = "<6I"
+    SIZE = struct.calcsize(FORMAT)
+
+    def serialize(self) -> bytes:
+        return struct.pack(
+            self.FORMAT,
+            self.ExpansionRequired,
+            self.Race,
+            self.Class,
+            self.Deity,
+            self.AllocationIndex,
+            self.Zone,
+        )
+
+    @classmethod
+    def deserialize(cls, data: bytes) -> "RaceClassCombos":
+        return cls(*struct.unpack(cls.FORMAT, data))
+
+
+@dataclass
+class OP_CharacterCreateRequest(EQStruct):
+    unknown: int = 0
+    allocations: list[RaceClassAllocation] = field(default_factory=list)
+    combos: list[RaceClassCombos] = field(default_factory=list)
+
+    def serialize(self) -> bytes:
+        # Empty instance represents the client request
+        if not self.allocations and not self.combos:
+            return b""
+        data = bytearray()
+        data += struct.pack("<BI", self.unknown, len(self.allocations))
+
+        for allocation in self.allocations:
+            data += allocation.serialize()
+
+        data += struct.pack("<I", len(self.combos))
+
+        for combo in self.combos:
+            data += combo.serialize()
+
+        return bytes(data)
+
+    @classmethod
+    def deserialize(cls, data: bytes) -> "OP_CharacterCreateRequest":
+        if not data:
+            return cls()
+
+        if len(data) < 9:
+            raise ValueError("Packet too short")
+
+        unknown, allocation_count = struct.unpack_from("<BI", data, 0)
+        offset = 5
+
+        required = offset + allocation_count * RaceClassAllocation.SIZE + 4
+        if len(data) < required:
+            raise ValueError("Truncated allocation data")
+
+        allocations = []
+        for _ in range(allocation_count):
+            size = RaceClassAllocation.SIZE
+            allocations.append(RaceClassAllocation.deserialize(data[offset : offset + size]))
+            offset += size
+
+        (combo_count,) = struct.unpack_from("<I", data, offset)
+        offset += 4
+
+        expected = offset + combo_count * RaceClassCombos.SIZE
+        if len(data) != expected:
+            raise ValueError(f"Expected {expected} bytes, got {len(data)}")
+
+        combos = []
+        for _ in range(combo_count):
+            size = RaceClassCombos.SIZE
+            combos.append(RaceClassCombos.deserialize(data[offset : offset + size]))
+            offset += size
+
+        return cls(
+            unknown=unknown,
+            allocations=allocations,
+            combos=combos,
+        )

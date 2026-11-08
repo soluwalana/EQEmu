@@ -17,9 +17,15 @@ from dataclasses import dataclass
 from typing import Literal
 
 from eqclient4.character import Character
+from eqclient4.data.bot_spells import BotSpellBook, ensure_bot_spells
+from eqclient4.data.drops import DropBook, MappedDrops, ensure_drops
+from eqclient4.data.factions import FactionBook, ensure_factions
 from eqclient4.data.ground import GroundSpawn, GroundSpawnBook, ensure_ground_spawns
 from eqclient4.data.items import ItemBook, ensure_items
+from eqclient4.data.locations import LocationBook, MappedLocations, ensure_locations
 from eqclient4.data.merchants import MerchantBook, ensure_merchants
+from eqclient4.data.recipes import RecipeBook, ensure_recipes
+from eqclient4.data.spells import SpellBook, ensure_spells
 from eqclient4.inventory import CharacterInventory, Merchant
 from eqclient4.log import log
 from eqclient4.nav.maps import ZoneMap, load_map
@@ -33,12 +39,12 @@ from eqclient4.nav.path import (
     doors_on_stride,
 )
 from eqclient4.nav.path import find as path_find
-from eqclient4.nav.path import is_nearby, mob_point, route
+from eqclient4.nav.path import is_nearby, iter_doors, mob_point, route
 from eqclient4.nav.path import track as path_track
 from eqclient4.nav.path import trim_points
 from eqclient4.nav.travel import ZoneGraph, ensure_zone_graph
 from eqclient4.nav.water import WaterMap, load_water
-from eqclient4.quests.graph import QuestGraph, load_graph
+from eqclient4.quests.graph import QuestGraph, ensure_graph
 from eqclient4.structs import (
     EQStruct,
     OP_ClickDoor,
@@ -172,30 +178,6 @@ class Mob:
         return self.id
 
     @property
-    def x(self) -> float:
-        return self._position[0]
-
-    @x.setter
-    def x(self, value: float) -> None:
-        self.position = (float(value), self._position[1], self._position[2])
-
-    @property
-    def y(self) -> float:
-        return self._position[1]
-
-    @y.setter
-    def y(self, value: float) -> None:
-        self.position = (self._position[0], float(value), self._position[2])
-
-    @property
-    def z(self) -> float:
-        return self._position[2]
-
-    @z.setter
-    def z(self, value: float) -> None:
-        self.position = (self._position[0], self._position[1], float(value))
-
-    @property
     def position(self) -> tuple[float, float, float]:
         return self._position
 
@@ -267,65 +249,69 @@ class TaskBook:
 class World:
 
     def __init__(self, name: str) -> None:
-        self.character = Character(name)
+
         self.self_id = 0
-        self.level = 0
-        self.exp = 0
-        self.training_points = 0
-        self.points = 0
-        self.factions: dict[int, Faction] = {}
-        self.zone: str | None = None
-        self.zone_id = -1
-        self.zone_formed: str | None = None
-        self.home_zone_id = 0
-        self.safe: tuple[float, float, float] | None = None
-        self._x = float(0)
-        self._y = float(0)
-        self._z = float(0)
+
+        # Mobs in the zone
         self.mobs = MobMap(self)
-        self.doors: dict[int, Door] = {}
-        self.ground: dict[int, GroundSpawn] = {}
-        self.water_maps: dict[str, WaterMap] = {}
+        # tracking pending mobs that have attacked us
+        self.aggro_mobs: dict[int, Mob] = {}
+
+        # Group Rosters and Bots
         self.group = GroupRoster("party")
         self.raid = GroupRoster("raid")
         self.bots = Bots()
-        self.spells: dict[int, int] = {}
-        self.gems: dict[int, int] = {}
-        self.buffs: dict[tuple[int, int], object] = {}
+
+        # Inventory Managment
+        self.inventory: CharacterInventory = CharacterInventory()
+
+        # Character Management
+        self.character = Character(name)
+        # Total faction standing isn't knowable,
+        # just what can be gleaned from considerations
+        self.discovered_factions: dict[int, Faction] = {}
+
+        # Caches
         self.tasks: TaskBook = TaskBook()
         self.item_book: ItemBook = ensure_items()
-        self.quest_graph: QuestGraph = _cached_graph()
+        self.quest_graph: QuestGraph = ensure_graph()
         self.zone_graph: ZoneGraph = ensure_zone_graph()
         self.merchants: MerchantBook = ensure_merchants()
         self.ground_book: GroundSpawnBook = ensure_ground_spawns()
-        self.mesh: ZoneMap | None = None
-        self.exit_doors: dict[str, dict[int, list[int]]] = {}
-        self.aggro_mobs: dict[int, Mob] = {}
-        self.spell_book: dict = {}
-        self.spell_info: dict = {}
-        self.spell_names: dict = {}
-        self.scrolls: dict = {}
-        self.tomes: dict = {}
-        self.soulbinder = None
-        self.soulbound = ""
-        self.afflictions: list = []
-        self.at_water = False
-        self.trainer_point: tuple[float, float, float] | None = None
-        self.train_skill = 0
-        self.zone_names: dict = {}
-        self.faction_names: dict = {}
-        self.faction_quests: list = []
-        self.faction_npcs: list = []
-        self.leader_point: tuple[float, float, float] | None = None
-        self.camps: dict = {}
-        self.level_spells: list = []
-        self.level_gear: list = []
-        self.guildmaster = 0
-        self.quest_items: set = set()
-        self.movement = Movement(self)
+        self.faction_hits: FactionBook = ensure_factions()
+        self.recipes: RecipeBook = ensure_recipes()
+        self.item_locations: LocationBook | MappedLocations = ensure_locations()
+        self.spells: SpellBook = ensure_spells()
+        self.bot_spells: BotSpellBook = ensure_bot_spells()
+        self.drops: MappedDrops | DropBook = ensure_drops()
 
-        self.inventory: CharacterInventory = CharacterInventory()
+        # Merchants
         self.active_merchants: dict[int, Merchant] = {}
+
+        # Movement and Position
+        self.movement = Movement(self)
+        #   Current Zone
+        self.zone: str | None = None
+        self.zone_id = -1
+        self.zone_formed: str | None = None
+        #   Water Maps loaded from zoning in this session
+        self.water_maps: dict[str, WaterMap] = {}
+        #   Active mesh
+        self.mesh: ZoneMap | None = None
+        #   Zone in point, considered safe normally
+        self.safe: tuple[float, float, float] | None = None
+        self.exit_doors: dict[str, dict[int, list[int]]] = {}
+        self.at_water = False
+        #   Current Position during Gameplay
+        self._x = float(0)
+        self._y = float(0)
+        self._z = float(0)
+
+        # Doors from the server for this zone
+        self.doors: dict[int, Door] = {}
+
+        # Live Ground Spawns in this Zone
+        self.ground: dict[int, GroundSpawn] = {}
 
     def active_merchant(self) -> Merchant | None:
         for merchant in self.active_merchants.values():
@@ -348,36 +334,6 @@ class World:
     @position.setter
     def position(self, point: tuple[float, float, float]) -> None:
         self._x, self._y, self._z = (float(point[0]), float(point[1]), float(point[2]))
-        for mob in self.mobs.values():
-            self.measure(mob)
-
-    @property
-    def x(self) -> float:
-        return self._x
-
-    @x.setter
-    def x(self, value: float) -> None:
-        self._x = float(value)
-        for mob in self.mobs.values():
-            self.measure(mob)
-
-    @property
-    def y(self) -> float:
-        return self._y
-
-    @y.setter
-    def y(self, value: float) -> None:
-        self._y = float(value)
-        for mob in self.mobs.values():
-            self.measure(mob)
-
-    @property
-    def z(self) -> float:
-        return self._z
-
-    @z.setter
-    def z(self, value: float) -> None:
-        self._z = float(value)
         for mob in self.mobs.values():
             self.measure(mob)
 
@@ -431,10 +387,13 @@ class World:
         sent = mob._consider_sent or mob.faction_last_considered is not None
         if not sent:
             return True
+
         if maxed:
             return False
+
         if changed and not mob._consider_change_sent:
             return True
+
         return amount != mob.faction_last_considered
 
     def remember_consider(self, mob: Mob) -> None:
@@ -446,10 +405,10 @@ class World:
         mob._consider_change_sent = changed
 
     def faction(self, faction_id: int) -> Faction:
-        found = self.factions.get(faction_id)
+        found = self.discovered_factions.get(faction_id)
         if not found:
             found = Faction()
-            self.factions[faction_id] = found
+            self.discovered_factions[faction_id] = found
         return found
 
     def get_water_map(self, zone: str) -> WaterMap | None:
@@ -657,13 +616,14 @@ class Movement:
         here = self.position
         tick = loop.tick
         doors = self._click_doors(path)
-        if self.asked is not None and (not self.committed):
+        if self.asked and not self.committed:
             if tick - self.asked_tick < STRIDE_TIMEOUT:
                 self._click_if_needed(loop, self._blocking(here, self.asked, doors))
                 self._emit(loop, self.asked, self.anim, "stride")
                 return
             self._settle_timeout()
             here = self.position
+
         nxt = self._aim(path, here)
         blocking = self._blocking(here, nxt, doors)
         if blocking:
@@ -674,6 +634,7 @@ class Movement:
                 nxt = self._on_floor(here, spot)
             else:
                 return
+
         log.debug(f"start stride here {here} nxt {nxt} anim {path.anim} tick {tick}")
         log.debug(f"path.points {path.points} - destination {path.destination}")
         self._start_stride(loop, here, nxt, int(path.anim or 0), tick)
@@ -683,6 +644,7 @@ class Movement:
         if self.advanced:
             self.advanced = False
             return
+
         self._emit(loop, self.position, 0, "hold")
 
     def visible_mobs(self, yards: float) -> list[Mob]:
@@ -700,6 +662,7 @@ class Movement:
                 continue
             if _sweep_visible(self.world, origin, mob):
                 seen.append(mob)
+
         return seen
 
     def mobs_on_path(self, mobs: list[Mob]) -> list[MovementAnnotatedMob]:
@@ -755,8 +718,10 @@ class Movement:
         self.asked = None
         if refused or asked is None:
             return
+
         if _horiz(self.position, asked) <= 0.4 and abs(self.position[2] - asked[2]) <= 0.4:
             return
+
         self.position = (float(asked[0]), float(asked[1]), float(asked[2]))
         self.write_world(self.position)
 
@@ -771,21 +736,26 @@ class Movement:
     ) -> Path | None:
         """The polyline already searched for this goal, measured from where we stand now."""
         key = _dest_key(destination)
-        if key is None:
+        if not key:
             return None
+
         found = self._routes.get((zone, key))
-        if found is None:
+        if not found:
             return None
+
         if found.find_waypoints and not _same(found.origin, origin, tol=1.0):
             self._routes.pop((zone, key), None)
             return None
+
         if not _on_polyline(origin, found):
             self._routes.pop((zone, key), None)
             return None
+
         followed = self._follow(found, origin, mode, length, anim)
-        if followed is None:
+        if not followed:
             self._routes.pop((zone, key), None)
             return None
+
         return followed
 
     def _follow(
@@ -803,9 +773,11 @@ class Movement:
         ):
             self.path = found
             return found
+
         ahead = _ahead(origin, found)
-        if ahead is None:
+        if not ahead:
             return None
+
         points, remain = ahead
         found.points = points
         found.origin = origin
@@ -817,10 +789,12 @@ class Movement:
         nxt = along(origin, points or [goal], length)
         doors = self.world.doors
         live = doors_on_stride(origin, nxt, doors)
+
         if live:
             door = live[0]
             found.door = door
             nxt = (float(door.x), float(door.y), float(door.z))
+
         found.next_point = nxt
         self.path = found
         return found
@@ -832,27 +806,34 @@ class Movement:
         path: Path,
     ) -> None:
         key = _dest_key(destination)
-        if key is None:
+        if not key:
             return
+
         self._routes[(zone, key)] = path
 
     def _keep_find_path(self, built: Path) -> Path | None:
         current = self.path
-        if current is None or not current.find_waypoints:
+
+        if not current or not current.find_waypoints:
             return None
+
         if not _same(current.destination, built.destination):
             return None
+
         if not _same(current.origin, self.position, tol=1.0):
             return None
+
         return current
 
     def _drop_find(self, path: Path) -> None:
         mob = self.find_mob
-        if mob is None or not path.find_waypoints:
+        if not mob or not path.find_waypoints:
             return
+
         origin = self.position
         if not (is_nearby(self.world, mob, origin) or self.world.line_of_sight(mob)):
             return
+
         path.find_waypoints = False
         zone = self.world.zone or ""
         fresh = route(
@@ -875,6 +856,7 @@ class Movement:
         if path.z_only:
             target = path.swim_z if path.swim_z is not None else path.destination[2]
             return _z_step(here, target, path.stride_length)
+
         points = trim_points(path.points, here)
         nxt = along(here, points or [path.destination], path.stride_length)
         path.points = cut_to_step(points, nxt) if points else points
@@ -888,8 +870,9 @@ class Movement:
         """Keep the step on the floor. A stride climbs a ramp; it does not teleport in Z."""
         target_z = step[2]
         ground = self._ground((step[0], step[1], here[2]))
-        if ground is not None:
+        if ground:
             target_z = ground
+
         else:
             mesh = self._mesh()
             if mesh:
@@ -900,11 +883,13 @@ class Movement:
                     <= 18.0
                 ):
                     target_z = poly.center[2]
+
         gap = target_z - here[2]
         travel = max(_horiz(here, step), 0.5)
         budget = min(10.0, max(2.0, travel * 1.5))
         if abs(gap) > budget:
             target_z = here[2] + (budget if gap > 0 else -budget)
+
         return (step[0], step[1], target_z)
 
     def _ground(self, point: tuple[float, float, float]) -> float | None:
@@ -913,23 +898,29 @@ class Movement:
         zone = world.zone if world else ""
         if not zone:
             return None
+
         zone_map = load_map(zone)
         if not zone_map:
             return None
+
         return zone_map.ground(point)
 
     def _mesh(self) -> NavMesh | None:
         world = self.world
         zone = world.zone if world is not None else ""
+
         if not zone:
             return None
+
         if self._nav is not None and self._nav_zone == zone:
             return self._nav
+
         try:
             mesh = load_nav(zone)
         except (OSError, ValueError):
             log.error("nav mesh for %s failed to load", zone, exc_info=True)
             mesh = None
+
         self._nav = mesh
         self._nav_zone = zone
         return mesh
@@ -998,11 +989,14 @@ class Movement:
     def _click_if_needed(self, loop: Loop, door: Door | None) -> None:
         if not door:
             return
+
         ident = door.id
         if ident in self.clicked or ident in self.open_ids:
             return
+
         if door.opened:
             return
+
         self.clicked.add(ident)
         loop.send("OP_ClickDoor", OP_ClickDoor(ident).serialize())
 
@@ -1025,25 +1019,29 @@ class Movement:
             if door.opened:
                 continue
             return door
-        roster = doors.values() if isinstance(doors, dict) else doors
-        for door in roster:
+
+        for door in iter_doors(doors):
+
             if door.opened:
                 continue
+
             if door.id in self.open_ids:
                 continue
             spot = (float(door.x), float(door.y), float(door.z))
+
             if (
                 _horiz(here, spot) <= 1.5
                 and abs(here[2] - spot[2]) <= 20.0
                 and (_horiz(here, nxt) > 1.0)
             ):
                 return door
+
         return None
 
     def _send_considers(self, loop: Loop, sender: Action | None = None) -> None:
         if _is_reclaim(loop, sender):
             return
-        origin = self.position
+
         for mob in self.world.consider_mobs():
             if not self.world.line_of_sight(mob):
                 continue
@@ -1056,22 +1054,30 @@ class Movement:
     def _on_position(self, row: OP_ClientUpdate | OP_MobUpdate) -> None:
         spawn_id = int(row.spawn_id)
         x, y, z = float(row.x), float(row.y), float(row.z)
-        heading = row.heading if isinstance(row, OP_ClientUpdate) and not row.server else None
+        heading = None
+
+        if isinstance(row, OP_ClientUpdate) and not row.server:
+            heading = row.heading
+
         if self.world.self_id != spawn_id:
             return
+
         point = (x, y, z)
-        if self.asked is not None and (not self.committed):
+        if self.asked and not self.committed:
             if _same(point, self.asked, tol=_COMMIT_TOLERANCE):
                 self.committed = True
                 self.refused = False
+
             elif _horiz(point, self.position) <= 0.8 and (
                 _horiz(self.position, self.asked) > 0.4
                 or abs(self.position[2] - self.asked[2]) > 0.4
             ):
                 self.refused = True
+
         self.position = point
-        if heading is not None:
+        if heading:
             self.heading = heading
+
         self.write_world(point)
 
     def _on_new_zone(self, row: OP_NewZone) -> None:
@@ -1181,20 +1187,27 @@ def _mob_on_stride(
     here: tuple[float, float, float], end: tuple[float, float, float], mob: Mob
 ) -> bool:
     point = mob_point(mob)
+
     if not point:
         return False
+
     if abs(point[2] - here[2]) > 20.0 and abs(point[2] - end[2]) > 20.0:
         return False
+
     dx, dy = (end[0] - here[0], end[1] - here[1])
     length = dx * dx + dy * dy
+
     if length <= 1e-06:
         return False
+
     tee = ((point[0] - here[0]) * dx + (point[1] - here[1]) * dy) / length
     if tee <= 0.0 or tee > 1.0:
         return False
+
     along_yards = math.sqrt(tee * tee * length)
     if along_yards < 1.0:
         return False
+
     nearest = (here[0] + tee * dx, here[1] + tee * dy)
     return math.hypot(point[0] - nearest[0], point[1] - nearest[1]) <= STRIDE_MOB_RADIUS
 
@@ -1205,13 +1218,16 @@ def _horiz(a: tuple[float, float, float], b: tuple[float, float, float]) -> floa
 
 def _dest_key(destination: tuple[float, float, float] | Mob) -> str | None:
     match destination:
+
         case [float(), float(), float()]:
             return f"p:{round(float(destination[0]), 1)}:{round(float(destination[1]), 1)}:{round(float(destination[2]), 1)}"
+
         case Mob() as mob:
             point = mob_point(mob)
             if point is None:
                 return None
             return f"m:{mob.id}:{round(point[0], 1)}:{round(point[1], 1)}:{round(point[2], 1)}"
+
         case _:
             return None
 
@@ -1228,6 +1244,7 @@ def _ahead(
     chain = [path.origin, *path.points]
     if not chain or _horiz(chain[-1], goal) > 0.5:
         chain.append(goal)
+
     for index in range(1, len(chain)):
         gap, tee = _segment_project(here, chain[index - 1], chain[index])
         if gap > limit:
@@ -1241,6 +1258,7 @@ def _ahead(
         )
         rest = chain[index:]
         return rest, _route_length(proj, rest, goal)
+
     return None
 
 
@@ -1249,9 +1267,11 @@ def _on_polyline(here: tuple[float, float, float], path: Path, limit: float = 18
     points = [path.origin, *path.points]
     if not points or _horiz(points[-1], goal) > 0.5:
         points.append(goal)
+
     for index in range(1, len(points)):
         if _segment_gap(here, points[index - 1], points[index]) <= limit:
             return True
+
     return _horiz(here, goal) <= limit
 
 
@@ -1265,11 +1285,13 @@ def _segment_project(
     length = dx * dx + dy * dy
     if length <= 1e-06:
         return _horiz(here, start), 0.0
+
     tee = ((here[0] - start[0]) * dx + (here[1] - start[1]) * dy) / length
     if tee < 0.0:
         tee = 0.0
     elif tee > 1.0:
         tee = 1.0
+
     nearest = (start[0] + tee * dx, start[1] + tee * dy)
     return math.hypot(here[0] - nearest[0], here[1] - nearest[1]), tee
 
@@ -1293,26 +1315,13 @@ def _route_length(
     chain = list(points)
     if not chain or _horiz(chain[-1], goal) > 0.5:
         chain.append(goal)
+
     for point in chain:
         total += _horiz(prev, point)
         prev = point
+
     return total
 
 
 def _same(a: tuple[float, float, float], b: tuple[float, float, float], tol: float = 0.05) -> bool:
-    if a is None or b is None:
-        return False
     return abs(a[0] - b[0]) <= tol and abs(a[1] - b[1]) <= tol and (abs(a[2] - b[2]) <= tol)
-
-
-def pack_server_position(spawn_id: int, x: float, y: float, z: float) -> bytes:
-    """RoF2 server position, so a test can commit a stride."""
-    return OP_MobUpdate(spawn_id, x, y, z).serialize()
-
-
-def _cached_graph() -> QuestGraph:
-    try:
-        return load_graph()
-    except OSError:
-        log.error("quest graph failed to load", exc_info=True)
-        raise RuntimeError("quest graph failed to load")

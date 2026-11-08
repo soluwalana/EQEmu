@@ -128,10 +128,33 @@ def read_locations(path: str | None = None) -> MappedLocations | LocationBook:
             return MappedLocations(mapped)
         except ValueError:
             log.error("location cache %s failed to open", mapped, exc_info=True)
+
     if not source.is_file():
-        return LocationBook()
+        raise Exception("Failed to generate an item location cache file")
+
     _compile_locations(source, mapped)
     return MappedLocations(mapped)
+
+
+_book: LocationBook | MappedLocations | None = None
+
+
+def ensure_locations(
+    path: str | None = None,
+    rebuild: bool = False,
+) -> LocationBook | MappedLocations:
+    """Load item_locations.jsonl, or build once from the jsonl."""
+    global _book
+    if _book is not None:
+        return _book
+
+    path = path or os.environ.get("EQEMU_ITEM_LOCATIONS", DEFAULT_LOCATIONS)
+    file = Path(path)
+    if file.is_file() and not rebuild:
+        _book = read_locations(path)
+        return _book
+    _book = read_locations(path)
+    return _book
 
 
 def _compile_locations(source: Path, dest: Path) -> None:
