@@ -61,9 +61,11 @@ _ZONE_FLAG_HAS_BARE = re.compile(
     re.IGNORECASE,
 )
 _SPOKEN = re.compile(
-    r"""(?:quest::say|quest::emote|e\.self:Say|e\.self:Emote|eq\.say)\s*\(\s*["']((?:\\.|[^"'\\])*)["']""",
-    re.IGNORECASE,
+    r"""(?:quest::say|quest::emote|e\.self:Say|e\.self:Emote|eq\.say)\s*\(\s*
+        (?:"((?:\\.|[^"\\])*)"|'((?:\\.|[^'\\])*)')""",
+    re.IGNORECASE | re.VERBOSE,
 )
+
 _FLAG_LUA = re.compile(
     r"""qglobals\[\s*["']([A-Za-z0-9_]+)["']\s*\]\s*(~=|==|>=|<=|>|<)\s*(nil|"?\d+"?)""",
 )
@@ -652,7 +654,129 @@ def _spoken(block: str) -> str:
     match = _SPOKEN.search(block)
     if not match:
         return ""
-    return match.group(1).replace('\\"', '"').replace("\\'", "'")
+    return (match.group(1) or match.group(2) or '').replace('\\"', '"').replace("\\'", "'")
+
+
+def _speech_events(text: str, span: tuple[int, int, int, int]) -> list[dict]:
+    """All speech produced by a SAY branch, including nested conditional replies.
+
+    Preserve the original message text and its conditional ancestry. Do not
+    assume that a later SAY keyword was disclosed by an earlier reply.
+    """
+    body_lo, body_hi = span[2], span[3]
+    branches = _branch_index(text)
+    events: list[dict] = []
+    for match in _SPOKEN.finditer(text):
+        if not body_lo <= match.start() < body_hi:
+            continue
+        # The branch body includes nested if bodies; preserve their guards.
+        nested = sorted(
+            (b for b in branches
+             if body_lo <= b[0] and b[0] <= match.start() < b[3]
+             and b != span),
+            key=lambda b: b[0],
+        )
+        prefix = text[max(body_lo, match.start() - 48):match.start()]
+        channel = 'emote' if re.search(r'(?:->|:)Emote\s*\(', match.group(0), re.I) else 'say'
+        events.append({
+            'offset': match.start(),
+            'channel': channel,
+            'text': (match.group(1) or match.group(2) or '').replace('\\"', '"').replace("\\'", "'"),
+            'guards': [text[b[0]:b[1]].strip() for b in nested],
+        })
+    return events
+
+
+def _speech_mentions(word: str, speech: list[dict]) -> bool:
+    """A lexical cue is evidence for a follow-up, not a state prerequisite."""
+    pattern = r'(?<![\w])' + re.escape(word.strip().lower()) + r'(?![\w])'
+    return any(re.search(pattern, event['text'].lower()) for event in speech)
+
+
+# Lore associations are evidence for candidate follow-ups, not hard quest gates.
+# Keep the list deliberately small and extensible for dataset enrichment.
+_DIALOGUE_LORE = {
+    "innoruuk": ("hate", "hatred", "god of hate"),
+}
+
+
+def dialogue_chains(text: str, filename: str, zone: str) -> list[dict]:
+    """Extract complete EVENT_SAY conversations with response-grounded transitions.
+
+    Script order is a potential dialogue path, NOT proof that the player has
+    heard a particular keyword. Explicit and lore-based cues are annotated;
+    other transitions remain candidates for downstream semantic evaluation.
+    """
+    npc = npc_name(filename)
+    home = zone.lower()
+    source = f"{home}/{npc.lower()}"
+    branches = _branch_index(text)
+    chains = []
+    for function_name, lo, hi in _functions(text):
+        if function_name.lower() != "event_say":
+            continue
+        turns = []
+        for match in _SAY.finditer(text, lo, hi):
+            input_text = (match.group(1) or match.group(2) or "").strip()
+            if not input_text:
+                continue
+            span = _chosen_branch(text, match.start())
+            if not span or not (lo <= span[0] and span[3] <= hi):
+                continue
+            # All ancestor conditions apply, including the external faction gate.
+            parents = sorted(
+                (b for b in branches if lo <= b[0] <= span[0]
+                 and span[3] <= b[3] and b != span),
+                key=lambda b: (b[0], -b[3]),
+            )
+            guards = [text[b[0]:b[1]].strip() for b in parents]
+            guards.append(text[span[0]:span[1]].strip())
+            speech = _speech_events(text, span)
+            # Restrict effects to this SAY branch, including any nested guards.
+            branch_events = _body_events(text[span[2]:span[3]], span[2])
+            effects = [dict(event) for _at, event in branch_events
+                       if event['rel'] in {'gives', 'sets', 'spawns'}]
+            turns.append({
+                'input': input_text,
+                'source': f'{source}#{input_text.lower()}',
+                'reply': [{k: event[k] for k in ('channel', 'text', 'guards')}
+                          for event in speech],
+                'guards': guards,
+                'effects': effects,
+                'order': match.start(),
+            })
+        if not turns:
+            continue
+        transitions = []
+        for earlier, later in zip(turns, turns[1:]):
+            utterances = [event['text'] for event in earlier['reply']]
+            target = later['input'].lower()
+            basis = 'conversation_sequence'
+            evidence = ''
+            for utterance in utterances:
+                if re.search(r'(?<!\w)' + re.escape(target) + r'(?!\w)', utterance, re.I):
+                    basis = 'explicit_mention'
+                    evidence = utterance
+                    break
+            if basis != 'explicit_mention':
+                for cue in _DIALOGUE_LORE.get(target, ()):
+                    for utterance in utterances:
+                        if re.search(r'(?<!\w)' + re.escape(cue) + r'(?!\w)', utterance, re.I):
+                            basis = 'lore_association'
+                            evidence = utterance
+                            break
+                    if basis == 'lore_association':
+                        break
+            transitions.append({
+                'from': earlier['input'], 'to': later['input'],
+                'basis': basis, 'evidence': evidence,
+            })
+        chains.append({
+            'kind': 'dialogue', 'zone': home, 'npc': npc,
+            'source': source, 'handler': function_name,
+            'turns': turns, 'transitions': transitions,
+        })
+    return chains
 
 
 def _zoneflag_name(zone_id: int | str) -> str:
@@ -1110,15 +1234,27 @@ def link_script(
             block = _following(text, match.end())
         gate = cond + "\n" + block
         say_id = f"{home}/{npc.lower()}#{word.lower()}"
+        span = _chosen_branch(text, match.start())
+        speech = _speech_events(text, span) if span else []
         if previous:
-            edges.append(
-                {
-                    "kind": "edge",
-                    "rel": "then",
-                    "from": f"{home}/{npc.lower()}#{previous}",
-                    "to": say_id,
-                }
-            )
+            prior = f"{home}/{npc.lower()}#{previous}"
+            # File order is not proof of dialogue causality. Keep the weak
+            # sequence edge, but emit a separate grounded cue when the NPC
+            # actually uttered the next player's keyword.
+            edges.append({
+                "kind": "edge", "rel": "then", "from": prior,
+                "to": say_id, "basis": "script_order",
+            })
+        # The reply is associated with the player input that elicited it.
+        # Include every Emote/Say call, not just the first one.
+        for event in speech:
+            edges.append({
+                "kind": "edge", "rel": "speaks", "from": say_id,
+                "to": f"speech:{say_id}:{event['offset']}",
+                "group": f"{say_id}#branch:{span[0]}",
+                "channel": event['channel'], "text": event['text'],
+                "guards": event['guards'], "order": event['offset'],
+            })
         spoken = _spoken(block)
         if catalog and spoken:
             for item_id in named_items(spoken, catalog):
@@ -1185,6 +1321,26 @@ def link_script(
             )
             _emit_span(edges, text, span, say_id, npc_id, outer)
         previous = word.lower()
+    # Resolve ALL lexical follow-ups in the same event_say function, not
+    # merely adjacent elseif branches. Weak script-order links remain tagged.
+    say_turns = []
+    say_ranges = [span for name, lo, hi in _functions(text) if name == 'event_say'
+                  for span in [(lo, hi)]]
+    for match in _SAY.finditer(text):
+        if say_ranges and not any(lo <= match.start() < hi for lo, hi in say_ranges):
+            continue
+        key = (match.group(1) or match.group(2) or '').strip().lower()
+        branch = _chosen_branch(text, match.start())
+        if key and branch:
+            say_turns.append((key, match.start(), _speech_events(text, branch)))
+    for i, (word, at, speech) in enumerate(say_turns):
+        for later, _other_at, _reply in say_turns[i + 1:]:
+            if _speech_mentions(later, speech):
+                edges.append({
+                    'kind': 'edge', 'rel': 'suggests',
+                    'from': f'{npc_id}#{word}', 'to': f'{npc_id}#{later}',
+                    'word': later, 'basis': 'spoken_text',
+                })
     for turn in turn_ins(text):
         ids = tuple(sorted(item for item, _count in turn["items"]))
         coins = tuple(turn.get("coins") or ())
@@ -1962,6 +2118,7 @@ class QuestGraph:
     nodes: dict[tuple[str, str], list[QuestNode]] = field(default_factory=dict)
     doors: dict[str, dict[int, list[int]]] = field(default_factory=dict)
     edges: list[dict] = field(default_factory=list)
+    dialogues: list[dict] = field(default_factory=list)
     items: dict[int, dict] = field(default_factory=dict)
     world: dict[int, dict] = field(default_factory=dict)
     by_zone: dict[str, dict[str, list[QuestNode]]] = field(default_factory=dict)
@@ -2402,6 +2559,7 @@ def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
         for path in _quest_scripts(folder):
             text = path.read_text(encoding="utf-8", errors="replace")
             scripts.append((zone, f"{zone}/{npc_name(path.name, catalog).lower()}", text))
+            graph.dialogues.extend(dialogue_chains(text, path.name, zone))
             nodes = parse_chain(text, path.name, zone)
             if nodes:
                 graph.nodes[(zone, nodes[0].npc.lower())] = nodes
@@ -2667,6 +2825,8 @@ def write_graph(graph: QuestGraph, path: str) -> None:
             )
     for edge in graph.edges:
         lines.append(json.dumps(edge, ensure_ascii=True))
+    for dialogue in graph.dialogues:
+        lines.append(json.dumps(dialogue, ensure_ascii=True))
     for type_id, info in sorted(graph.world.items()):
         lines.append(
             json.dumps(
@@ -2718,6 +2878,9 @@ def read_graph(path: str | os.PathLike) -> QuestGraph:
         kind = row.get("kind", "")
         if kind == "edge":
             graph.edges.append(row)
+            continue
+        if kind == "dialogue":
+            graph.dialogues.append(row)
             continue
         if kind == "world":
             graph.world[int(row["id"])] = {
