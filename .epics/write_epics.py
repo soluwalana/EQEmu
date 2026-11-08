@@ -916,9 +916,29 @@ def write_class(name, title, mains, prefixes, ctx):
                     + (f", {quoted_action(items, action)}" if action else "")
                     + "."
                 )
-        if len(unique_loot) > 1:
+        # Show every distinct loot source, rather than hiding them behind a count.
+        # Only the selected source expands prerequisites; alternatives are choices,
+        # not additional mandatory encounters.
+        selected_key = (
+            str(chosen_loot.get("from") or ""), str(chosen_loot.get("npc") or "")
+        ) if chosen_loot else None
+        for source, npc in unique_loot:
+            if (source, npc) == selected_key:
+                continue
+            alternate = next(
+                edge for edge in possible_loot
+                if str(edge.get("from") or "") == source
+                and str(edge.get("npc") or "") == npc
+            )
+            who, action, zone = parse_who(source)
+            name = str(alternate.get("name") or "")
+            corpse = quoted(name) if name else (f"NPC {npc}" if npc else quoted_who(who))
+            ident = f" (NPC {npc})" if npc and name else ""
+            where = f" in `{zone}`" if zone else ""
+            trigger = f"; trigger: {quoted_who(who)}, {quoted_action(items, action)}" if action else ""
             bits.append(
-                f"{len(unique_loot) - 1} alternative loot source(s) also yield {item_name(items, item_id)}."
+                f"Alternative: Loot {quoted_item(items, item_id)} "
+                f"from {corpse}{ident}{where}{trigger}."
             )
         for edge in grounds.get(item_id, [])[:3]:
             bits.append(
@@ -1403,8 +1423,27 @@ def write_class(name, title, mains, prefixes, ctx):
             "Shared acquisition steps appear in the first prerequisite chain that needs them. Later sections reference that chain rather than repeating it.",
             "",
         ]
+        # Probe each chain WITHOUT the shared ledger.  The old ordering was the
+        # order render_flag happened to request its inputs, not the order in
+        # which a player begins the quest.  Prefer chains whose initial leaf
+        # is an NPC dialogue/hand-in, then use the earliest starting action as
+        # a stable tie-breaker.  Only the actual rendering mutates shared_seen.
+        def prereq_order(item_id: int) -> tuple:
+            # forward records provenance in first_seen_item; previews must not
+            # claim ownership of a chain that has not been rendered yet.
+            first_seen_item.clear()
+            preview: list[str] = []
+            forward(item_id, set(), preview, set(), item_id)
+            first = next((line for line in preview if not line.startswith("Acquisition of ")), "")
+            # A dialogue usually introduces an epic, whereas forage, loot, and
+            # crafting are subquests discovered after that introduction.
+            opening = bool(re.search(r'\b(?:say|hand)\s+"?[^.]+', first, re.I))
+            return (0 if opening else 1, first.casefold(), item_id)
+
+        order = sorted(prereq_ids, key=prereq_order)
+        first_seen_item.clear()
         shared_seen: set = set()
-        for item_id in list(prereq_ids):
+        for item_id in order:
             block.append(f"### {quoted_item(items, item_id)}")
             block.append("")
             steps: list[str] = []

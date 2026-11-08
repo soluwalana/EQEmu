@@ -8,6 +8,16 @@ Flags with writes: `cleric_epic`, `cleric15pre`, `cleric20`.
 
 Shared acquisition steps appear in the first prerequisite chain that needs them. Later sections reference that chain rather than repeating it.
 
+### "Water Flask" (13006)
+
+1. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+2. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+3. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+4. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+5. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+6. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+7. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+
 ### "Assembled Map" (56015)
 
 1. timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
@@ -27,21 +37,32 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 15. Loot "Torn Quarter of a Map" (8778) from "An Aneuk Bone Binder" (NPC 284035) in `ferubi`. Drop cache: 5.18% chance per kill.
 16. abysmal/"Shav The Cryptologist", hand "Torn Quarter of a Map" (8778) + "Shredded Quarter of a Map" (9447) + "Ripped Quarter of a Map" (9476) + "Tattered Quarter of a Map" (9477). Requires `cleric_epic` set. Requires `cleric_epic` ==2. Gives "Assembled Map" (56015).
 
+### "Ethereal Disciple's Journal" (56013)
+
+1. **Broken:** no event trigger found for `chambersa/mpg fear#timer:minutes`.
+2. Spawns "Shell of the Master" (304013) after `chambersa/mpg fear#timer:minutes`.
+3. Loot "Journal of the Prime Disciple" (56016) from "Shell of the Master".
+4. Alternative: Loot "Journal of the Prime Disciple" (56016) from chambersa/"Mpg Fear" in `chambersa`; trigger: chambersa/"Mpg Fear", say "Chest Spawn".
+5. Alternative: Loot "Journal of the Prime Disciple" (56016) from chambersb/"Mpg Weaponry" in `chambersb`; trigger: chambersb/"Mpg Weaponry", say "Chest Spawn".
+6. Alternative: Loot "Journal of the Prime Disciple" (56016) from chambersc/"Mpg Subversion" in `chambersc`; trigger: chambersc/"Mpg Subversion", say "Chest Spawn".
+7. Alternative: Loot "Journal of the Prime Disciple" (56016) from chambersd/"Mpg Efficiency" in `chambersd`; trigger: chambersd/"Mpg Efficiency", say "Chest Spawn".
+8. Alternative: Loot "Journal of the Prime Disciple" (56016) from chamberse/"Mpg Ingenuity" in `chamberse`; trigger: chamberse/"Mpg Ingenuity", say "Chest Spawn".
+9. Alternative: Loot "Journal of the Prime Disciple" (56016) from chambersf/"Mpg Destruction" in `chambersf`; trigger: chambersf/"Mpg Destruction", say "Chest Spawn".
+10. Alternative: Loot "Journal of the Prime Disciple" (56016) from "Shell of the Master" (NPC 304020) in `chambersa`; trigger: chambersa/"Mpg Hate", on event death_complete:304017.
+11. Alternative: Loot "Journal of the Prime Disciple" (56016) from "Shell of the Master" (NPC 305005) in `chambersb`; trigger: chambersb/"Mpg Weaponry", on event signal:305004.
+12. Alternative: Loot "Journal of the Prime Disciple" (56016) from "Shell of the Master" (NPC 306009) in `chambersc`; trigger: chambersc/"Mpg Subversion", on event death_complete:306001.
+13. Alternative: Loot "Journal of the Prime Disciple" (56016) from "Shell of the Master" (NPC 307005) in `chambersd`; trigger: chambersd/"Mpg Efficiency", on event signal:307000.
+14. Alternative: Loot "Journal of the Prime Disciple" (56016) from "Shell of the Master" (NPC 308004) in `chamberse`; trigger: chamberse/"Mpg Ingenuity", on event death_complete:308007.
+15. Alternative: Loot "Journal of the Prime Disciple" (56016) from "Shell of the Master" (NPC 309068) in `chambersf`; trigger: chambersf/"Mpg Destruction", on event death_complete:309061.
+16. Loot "Torn Journal Page" (56012) from "A Lightning Warrior Staticfist" (NPC 316007) in `provinggrounds`. Drop cache: 5.99% chance per kill.
+17. Loot "Ripped Journal Page" (56011) from "Girplan Scavenger" in `provinggrounds`.
+18. Combine in "Journal of the Prime Disciple" (56016): "Torn Journal Page" (56012), "Ripped Journal Page" (56011). Produces "Ethereal Disciple's Journal" (56013). The combine does not fail.
+
 ### "Dark Disciples Notice of Service" (9591)
 
 1. Spawns "Taskmaster Mirot" (57151) in `lfaydark` on event_signal.
 2. Loot "Magically Sealed Letter" (9585) from "Taskmaster Mirot".
 3. nedaria/"Tavon Vastsea", hand "Magically Sealed Letter" (9585). Gives "Dark Disciples Notice of Service" (9591).
-
-### "Water Flask" (13006)
-
-1. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-2. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-3. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-4. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-5. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-6. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-7. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
 
 ### "Soul Temper" (14047)
 
@@ -52,16 +73,6 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 5. Loot "Bazu Plasma" (13658) from "Bazu Bonesmasher" (NPC 300000) in `wallofslaughter`. Drop cache: 43.09% chance per kill.
 6. Loot "Pyrilen Plasma" (13667) from "A Dragorn Assassin" in `wallofslaughter`.
 7. Combine in Brew Barrel (19): "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing, trivial 100.
-
-### "Ethereal Disciple's Journal" (56013)
-
-1. **Broken:** no event trigger found for `chambersa/mpg fear#timer:minutes`.
-2. Spawns "Shell of the Master" (304013) after `chambersa/mpg fear#timer:minutes`.
-3. Loot "Journal of the Prime Disciple" (56016) from "Shell of the Master".
-4. 12 alternative loot source(s) also yield Journal of the Prime Disciple (56016).
-5. Loot "Torn Journal Page" (56012) from "A Lightning Warrior Staticfist" (NPC 316007) in `provinggrounds`. Drop cache: 5.99% chance per kill.
-6. Loot "Ripped Journal Page" (56011) from "Girplan Scavenger" in `provinggrounds`.
-7. Combine in "Journal of the Prime Disciple" (56016): "Torn Journal Page" (56012), "Ripped Journal Page" (56011). Produces "Ethereal Disciple's Journal" (56013). The combine does not fail.
 
 ## `cleric_epic`
 

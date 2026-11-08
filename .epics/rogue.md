@@ -8,6 +8,17 @@ Flags with writes: `roguepre`, `Fatestealer`.
 
 Shared acquisition steps appear in the first prerequisite chain that needs them. Later sections reference that chain rather than repeating it.
 
+### "Strongbox Half Full of Velixite" (52342)
+
+1. **Broken:** nothing in the graph gives, loots, spawns, or combines Fatestealer (52347).
+2. nedaria/"Lirprin, Head Of Affairs", say "Hail". Sets `Fatestealer` to `3`.
+3. iceclad/"Lookout Larithim", say "What Happened Then". Requires `rogue_epic_iceclad` unset. Requires `Fatestealer` ==3. Gives "Air-Tight Strongbox" (52339).
+4. Say "What Happened Then" to iceclad/"Lookout Larithim".
+5. Spawns "Polar Kraken" (110131).
+6. Loot "Lump of Raw Alloy" (52340) from "Polar Kraken".
+7. Combine in "Air-Tight Strongbox" (52339): "Lump of Raw Alloy" (52340). Produces "Strongbox Full of Alloy" (52341). The combine does not fail.
+8. iceclad/"Lookout Larithim", hand "Strongbox Full of Alloy" (52341). Gives "Strongbox Half Full of Velixite" (52342).
+
 ### "Ragebringer" (11057)
 
 1. Loot "Bayle List I" (18808) from "Mutt Rootlit" in `highpass`.
@@ -19,32 +30,26 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 7. southro/"Rathmana Allin", hand "Bayle List I" (18808) + "Bayle List II" (18809) + "Bayle List III" (18810). Gives "Translated Parchment" (18961).
 8. highpass/"Stanos Herkanor", hand "Translated Parchment" (18961). Gives "Sealed Box" (28057).
 9. Hand "Sealed Box" (28057) to kithicor/"Adjutant D-Kan". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
-10. 6 alternative loot source(s) also yield General's Pouch (28013).
-11. Loot "Fleshripper" (5411) from "Solusek kobold king" in `soldungb`.
-12. Loot "Painbringer" (5410) from "Kobold Champion" in `soldungb`.
-13. Loot "Mithril Two-Handed Sword" (5401) from "The Froglok King" in `gukbottom`.
-14. Loot "Gigantic Zweihander" (5308) from "Karg IceBear" in `everfrost`.
-15. qey2hh1/"Vilnius The Small", hand "Gigantic Zweihander" (5308) + "Mithril Two-Handed Sword" (5401) + "Painbringer" (5410) + "Fleshripper" (5411). Gives "Jagged Diamond Dagger" (7506).
-16. Loot "Robe of the Ishva" (1357) from "Coercer Q'ioul" in `kithicor`.
-17. Loot "Robe of the Ishva" (1357) from "Jinalis Andir" in `cauldron`.
-18. Loot "Robe of the Ishva" (1357) from "The Ishva Mal" in `southkarana`.
-19. Loot "Robe of the Kedge" (1253) from "Kubaria" (NPC 309002) in `chambersf`. Drop cache: 100% chance per kill.
-20. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oceanoftears`.
-21. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oot`.
-22. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
-23. qey2hh1/"Vilnius The Small", hand "Robe of the Kedge" (1253) + "Robe of the Oracle" (1354) + "Robe of the Ishva" (1357) + "Shining Metallic Robes" (1360). Gives "Cazic Quill" (7505).
-24. highpass/"Stanos Herkanor", hand "Cazic Quill" (7505) + "Jagged Diamond Dagger" (7506) + "General's Pouch" (28013). Gives "Ragebringer" (11057).
-
-### "Strongbox Half Full of Velixite" (52342)
-
-1. **Broken:** nothing in the graph gives, loots, spawns, or combines Fatestealer (52347).
-2. nedaria/"Lirprin, Head Of Affairs", say "Hail". Sets `Fatestealer` to `3`.
-3. iceclad/"Lookout Larithim", say "What Happened Then". Requires `rogue_epic_iceclad` unset. Requires `Fatestealer` ==3. Gives "Air-Tight Strongbox" (52339).
-4. Say "What Happened Then" to iceclad/"Lookout Larithim".
-5. Spawns "Polar Kraken" (110131).
-6. Loot "Lump of Raw Alloy" (52340) from "Polar Kraken".
-7. Combine in "Air-Tight Strongbox" (52339): "Lump of Raw Alloy" (52340). Produces "Strongbox Full of Alloy" (52341). The combine does not fail.
-8. iceclad/"Lookout Larithim", hand "Strongbox Full of Alloy" (52341). Gives "Strongbox Half Full of Velixite" (52342).
+10. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Advisor C-Zatl", hand "Sealed Box" (28057).
+11. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Brigadier G-Tav", hand "Sealed Box" (28057).
+12. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Coercer Q-Ioul", hand "Sealed Box" (28057).
+13. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Ioltos V-Ghera", hand "Sealed Box" (28057).
+14. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Tasi V-Ghera", hand "Sealed Box" (28057).
+15. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"War Priestess T-Zan", hand "Sealed Box" (28057).
+16. Loot "Fleshripper" (5411) from "Solusek kobold king" in `soldungb`.
+17. Loot "Painbringer" (5410) from "Kobold Champion" in `soldungb`.
+18. Loot "Mithril Two-Handed Sword" (5401) from "The Froglok King" in `gukbottom`.
+19. Loot "Gigantic Zweihander" (5308) from "Karg IceBear" in `everfrost`.
+20. qey2hh1/"Vilnius The Small", hand "Gigantic Zweihander" (5308) + "Mithril Two-Handed Sword" (5401) + "Painbringer" (5410) + "Fleshripper" (5411). Gives "Jagged Diamond Dagger" (7506).
+21. Loot "Robe of the Ishva" (1357) from "Coercer Q'ioul" in `kithicor`.
+22. Loot "Robe of the Ishva" (1357) from "Jinalis Andir" in `cauldron`.
+23. Loot "Robe of the Ishva" (1357) from "The Ishva Mal" in `southkarana`.
+24. Loot "Robe of the Kedge" (1253) from "Kubaria" (NPC 309002) in `chambersf`. Drop cache: 100% chance per kill.
+25. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oceanoftears`.
+26. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oot`.
+27. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
+28. qey2hh1/"Vilnius The Small", hand "Robe of the Kedge" (1253) + "Robe of the Oracle" (1354) + "Robe of the Ishva" (1357) + "Shining Metallic Robes" (1360). Gives "Cazic Quill" (7505).
+29. highpass/"Stanos Herkanor", hand "Cazic Quill" (7505) + "Jagged Diamond Dagger" (7506) + "General's Pouch" (28013). Gives "Ragebringer" (11057).
 
 ## `roguepre`
 
@@ -113,7 +118,11 @@ How the items are reached:
 - Soulstone of Lanys (52337)
   - Spawns "a Teir'Dal guardian" (186190) in `hateplaneb` on event death_complete:186114.
   - Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
-  - 5 alternative loot source(s) also yield Soulstone of Lanys (52337).
+  - Alternative: Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian" (NPC 186190) in `hateplaneb`; trigger: hateplaneb/"Rogue 1 5", on event death_complete:186100.
+  - Alternative: Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian" (NPC 186190) in `hateplaneb`; trigger: hateplaneb/"Rogue 1 5", on event death_complete:186112.
+  - Alternative: Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian" (NPC 186190) in `hateplaneb`; trigger: hateplaneb/"Rogue 1 5", on event death_complete:186116.
+  - Alternative: Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian" (NPC 186190) in `hateplaneb`; trigger: hateplaneb/"Rogue 1 5", on event death_complete:186098.
+  - Alternative: Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian" (NPC 186190) in `hateplaneb`; trigger: hateplaneb/"Rogue 1 5", on event death_complete:186115.
 
 Subquest `Fatestealer_bard`:
 
@@ -401,7 +410,11 @@ How the items are reached:
 - Stack of Pages (52335)
   - Spawns "a Teir'Dal guardian" (186190) in `hateplaneb` on event death_complete:186114.
   - Loot "Stack of Pages" (52335) from "a Teir'Dal guardian".
-  - 5 alternative loot source(s) also yield Stack of Pages (52335).
+  - Alternative: Loot "Stack of Pages" (52335) from "a Teir'Dal guardian" (NPC 186190) in `hateplaneb`; trigger: hateplaneb/"Rogue 1 5", on event death_complete:186100.
+  - Alternative: Loot "Stack of Pages" (52335) from "a Teir'Dal guardian" (NPC 186190) in `hateplaneb`; trigger: hateplaneb/"Rogue 1 5", on event death_complete:186112.
+  - Alternative: Loot "Stack of Pages" (52335) from "a Teir'Dal guardian" (NPC 186190) in `hateplaneb`; trigger: hateplaneb/"Rogue 1 5", on event death_complete:186116.
+  - Alternative: Loot "Stack of Pages" (52335) from "a Teir'Dal guardian" (NPC 186190) in `hateplaneb`; trigger: hateplaneb/"Rogue 1 5", on event death_complete:186098.
+  - Alternative: Loot "Stack of Pages" (52335) from "a Teir'Dal guardian" (NPC 186190) in `hateplaneb`; trigger: hateplaneb/"Rogue 1 5", on event death_complete:186115.
 
 ##### Steps on `Fatestealer_page` that do not change it
 
@@ -529,7 +542,10 @@ How the items are reached:
   - Say "Check Lorb" to anguish/"Zone Status".
   - Spawns "Orb of Discordant Energy" (317087).
   - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-  - 4 alternative loot source(s) also yield Globe of Discordant Energy (47100).
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
 - Strongbox Half Full of Velixite (52342)
   - Prerequisite: "Strongbox Half Full of Velixite" (52342). See section 0.
 - Wren's Fatestealer (21346)

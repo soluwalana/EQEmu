@@ -8,7 +8,18 @@ Flags with writes: `paladin_epic`.
 
 Shared acquisition steps appear in the first prerequisite chain that needs them. Later sections reference that chain rather than repeating it.
 
-### "Drema's Fingerbone" (69946)
+### "Token of Heroism" (69955)
+
+1. Loot "Valdoon Kel'Novar's Heart" (69981) from "Valdoon Kel'Novar" in `mmcc`.
+2. felwithea/"Galrun Starforge", hand "Valdoon Kel'Novar's Heart" (69981). Gives "Token of Cleansing" (69956).
+3. provinggrounds/"Pashia Clouddancer", say "Note". Gives "Note from Pashia" (69973).
+4. nedaria/"Duram Firechaser", hand "Note from Pashia" (69973). Gives "Token of Heroism" (69955).
+
+### "Token of Cleansing" (69956)
+
+1. Acquisition of "Token of Cleansing" (69956) is documented under "Token of Heroism" (69955); obtain another copy if needed.
+
+### "Redemption" (64031)
 
 1. Spawns "A Corrupted Koalindl" (69141) in `oot` on event_fish_success.
 2. Loot "Corrupted Koalindl's Heart" (69929) from "A Corrupted Koalindl".
@@ -19,88 +30,76 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 7. Spawns "A Corrupted Koalindl" (182150) in `nedaria` on event_fish_success.
 8. Loot "Corrupted Koalindl's Heart" (69932) from "A Corrupted Koalindl".
 9. qeynos2/"Enic Ruklin", hand "Corrupted Koalindl's Heart" (69929) + "Corrupted Koalindl's Heart" (69930) + "Corrupted Koalindl's Heart" (69931) + "Corrupted Koalindl's Heart" (69932). Sets `paladin_epic` to `4`.
-10. dawnshroud/"Mikhal Young", hand "Drema's Fingerbone" (69946). Sets `paladin_epic` to `5`.
-11. dawnshroud/"Mikhal Young", say "Find Anything". Requires `paladin_epic` ==4. Gives "Drema's Locket" (69945).
-12. letalis/"Drema Young", hand "Drema's Locket" (69945). Requires `paladin_epic` set. Requires `paladin_epic` >=4. Gives "Drema's Fingerbone" (69946).
+10. qeynos2/"Enic Ruklin", hand "Corrupted Koalindl's Heart" (69929) + "Corrupted Koalindl's Heart" (69930) + "Corrupted Koalindl's Heart" (69931) + "Corrupted Koalindl's Heart" (69932). Gives "Seal of Enic" (69933).
+11. Say "Hail" to skyfire/"Dry Sapara".
+12. Spawns "Rithnok the Tormented" (91193).
+13. Loot "Rithnok's Soulstone" (69935) from "Rithnok the Tormented".
+14. skyfire/"Dry Sapara", hand "Rithnok's Soulstone" (69935). Gives "Rithnok's Soulstone" (69936).
+15. Ground spawn of "Soulstone Shard" (69937) in `draniksscar`.
+16. Ground spawn of "Soulstone Shard" (69938) in `bloodfields`.
+17. Ground spawn of "Soulstone Shard" (69939) in `causeway`.
+18. Ground spawn of "Soulstone Shard" (69940) in `dranik`.
+19. Combine in "Rithnok's Soulstone" (69936): "Soulstone Shard" (69937), "Soulstone Shard" (69938), "Soulstone Shard" (69939), "Soulstone Shard" (69940). Produces "Rithnok's Soulstone" (69941). The combine does not fail.
+20. dawnshroud/"Mikhal Young", hand "Drema's Fingerbone" (69946). Sets `paladin_epic` to `5`.
+21. dawnshroud/"Mikhal Young", say "Find Anything". Requires `paladin_epic` ==4. Gives "Drema's Locket" (69945).
+22. letalis/"Drema Young", hand "Drema's Locket" (69945). Requires `paladin_epic` set. Requires `paladin_epic` >=4. Gives "Drema's Fingerbone" (69946).
+23. dawnshroud/"Denns Rootenpaw", hand "Drema's Fingerbone" (69946). Requires `paladin_epic` ==5. Gives "Bone Collector's Bag" (69947).
+24. Loot "Dark Skeleton Remains" (69927) from "A Sun Revenant" in `thegrey`.
+25. Loot "Dark Skeleton Remains" (69926) from "Disturbed Elysian Remains" (NPC 176016) in `umbral`. Drop cache: 2.58% chance per kill.
+26. Loot "Dark Skeleton Remains" (69925) from "A Soriz Slave" (NPC 162029) in `ssratemple`. Drop cache: 35% chance per kill.
+27. Combine in "Bone Collector's Bag" (69947): "Dark Skeleton Remains" (69927), "Dark Skeleton Remains" (69926), "Dark Skeleton Remains" (69925). Produces "Bone Collector's Bag" (69948). The combine does not fail.
+28. dawnshroud/"Denns Rootenpaw", hand "Bone Collector's Bag" (69948). Requires `paladin_epic` ==5. Gives "Enchanted Bone Powder" (69949).
+29. Hand "Enchanted Bone Powder" (69949) to letalis/"Drema Young". Spawns "Drema Young" (169128). Loot "Drema's Soulstone" (69928) from "Drema Young".
+30. Loot "Soulstone Shard" (69950) from "Coterie Corruptor" in `tenebrous`.
+31. Spawns "Shade of Mujaki the Devourer" (204081) in `ponightmare` on event death_complete:204080.
+32. Loot "Soulstone Shard" (69951) from "Shade of Mujaki the Devourer".
+33. Combine in "Drema's Soulstone" (69928): "Soulstone Shard" (69950), "Soulstone Shard" (69951). Produces "Drema's Soulstone" (69952). The combine does not fail.
+34. abysmal/"Lovine Lemise", say "Ingredients". Requires `paladin_epic` ==5. Gives "Lovine's Potion Bag" (69922).
+35. Loot "Ra'Tuk Screambringer's Jaw" (69921) from "A Ra'Tuk Screambringer" (NPC 283104) in `barindu`. Drop cache: 4.06% chance per kill.
+36. Loot "Noc Fleshfeasters Tail" (69920) from "A Noc Fleshfeaster" in `riwwi`.
+37. Loot "Mastruq Havocblade Blood" (69919) from "A Mastruq Havocblade" in `qinimi`.
+38. Loot "Mastruq Havocblade Blood" (69919) from "A Mastruq Warfiend" in `qinimi`.
+39. Loot "Potameid Seaweed Strands" (69918) from "An Entrapped Potameid" in `natimbi`.
+40. Combine in "Lovine's Potion Bag" (69922): "Ra'Tuk Screambringer's Jaw" (69921), "Noc Fleshfeasters Tail" (69920), "Mastruq Havocblade Blood" (69919), "Potameid Seaweed Strands" (69918). Produces "Lovine's Potion Bag" (69923). The combine does not fail.
+41. abysmal/"Lovine Lemise", hand "Lovine's Potion Bag" (69923). Sets `paladin_epic_reiya` to `1`.
+42. Summon "Foldable Medicine Bag" (17770) by casting "Unfold Medicine Bag".
+43. Common item: Fine Potion Vial (95846). Listed in 15 zones.
+44. Loot "Robust Shadow Essence" (96911) from "Qua Senshali Xakra" (NPC 158020) in `vexthal`. Drop cache: 28.72% chance per kill.
+45. Loot "Sage Leaf" (14215) from "a Di'zok Herbalist" in `chardok`.
+46. Loot "Sage Leaf" (14215) from "a Sarnak Herb Collector" in `chardok`.
+47. Loot "Sage Leaf" (14215) from "an Apprentice Herbalist" in `chardok`.
+48. Loot "Valerian Root" (14230) from "a Di'zok Herbalist" in `chardok`.
+49. Loot "Valerian Root" (14230) from "a Sarnak Herb Collector" in `chardok`.
+50. Loot "Valerian Root" (14230) from "an Apprentice Herbalist" in `chardok`.
+51. Common item: Woundwart (16526). Listed in 9 zones.
+52. Combine in "Foldable Medicine Bag" (17770): "Fine Potion Vial" (95846), "Robust Shadow Essence" (96911), "Sage Leaf" (14215), "Valerian Root" (14230), "Woundwart" (16526). Produces "Mist of the Breathless" (96937). Requires Alchemy, trivial 224.
+53. abysmal/"Reiya The Pained", hand "Mist of the Breathless" (96937). Requires `paladin_epic_reiya` ==1. Gives "Reiya's Soulstone" (69924).
+54. Spawns "Shade of Reiya the Pained" (284104) in `ferubi` on enter.
+55. Loot "Soulstone Shard" (69943) from "Shade of Reiya the Pained".
+56. Loot "Soulstone Shard" (69944) from "Vuranish Xxuro" in `vxed`.
+57. Combine in "Reiya's Soulstone" (69924): "Soulstone Shard" (69943), "Soulstone Shard" (69944). Produces "Reiya's Soulstone" (69942). The combine does not fail.
+58. hohonora/"Irak Altil", say "Hail". Sets `paladin_epic` to `6`.
+59. Loot "Redis' Soulstone" (69983) from "Shade of Redis Linrok" in `dranikcatacombsa`.
+60. Spawns "Durunal the Cursebearer" (300087) in `wallofslaughter` on enter.
+61. Loot "Dark and Twisted Sword" (69971) from "Durunal the Cursebearer".
+62. hohonora/"Irak Altil", hand "Dark and Twisted Sword" (69971). Requires `paladin_epic` ==6. Gives "Dark and Twisted Sword" (69972).
+63. Combine in "Dark and Twisted Sword" (69972): "Rithnok's Soulstone" (69941), "Drema's Soulstone" (69952), "Reiya's Soulstone" (69942), "Redis' Soulstone" (69983). Produces "Redemption" (64031). The combine does not fail.
 
 ### "Rithnok's Soulstone" (69941)
 
-1. Acquisition of "Corrupted Koalindl's Heart" (69929) is documented under "Drema's Fingerbone" (69946); obtain another copy if needed.
-2. Acquisition of "Corrupted Koalindl's Heart" (69930) is documented under "Drema's Fingerbone" (69946); obtain another copy if needed.
-3. Acquisition of "Corrupted Koalindl's Heart" (69931) is documented under "Drema's Fingerbone" (69946); obtain another copy if needed.
-4. Acquisition of "Corrupted Koalindl's Heart" (69932) is documented under "Drema's Fingerbone" (69946); obtain another copy if needed.
-5. qeynos2/"Enic Ruklin", hand "Corrupted Koalindl's Heart" (69929) + "Corrupted Koalindl's Heart" (69930) + "Corrupted Koalindl's Heart" (69931) + "Corrupted Koalindl's Heart" (69932). Gives "Seal of Enic" (69933).
-6. Say "Hail" to skyfire/"Dry Sapara".
-7. Spawns "Rithnok the Tormented" (91193).
-8. Loot "Rithnok's Soulstone" (69935) from "Rithnok the Tormented".
-9. skyfire/"Dry Sapara", hand "Rithnok's Soulstone" (69935). Gives "Rithnok's Soulstone" (69936).
-10. Ground spawn of "Soulstone Shard" (69937) in `draniksscar`.
-11. Ground spawn of "Soulstone Shard" (69938) in `bloodfields`.
-12. Ground spawn of "Soulstone Shard" (69939) in `causeway`.
-13. Ground spawn of "Soulstone Shard" (69940) in `dranik`.
-14. Combine in "Rithnok's Soulstone" (69936): "Soulstone Shard" (69937), "Soulstone Shard" (69938), "Soulstone Shard" (69939), "Soulstone Shard" (69940). Produces "Rithnok's Soulstone" (69941). The combine does not fail.
-
-### "Drema's Soulstone" (69952)
-
-1. Acquisition of "Drema's Fingerbone" (69946) is documented under "Drema's Fingerbone" (69946); obtain another copy if needed.
-2. dawnshroud/"Denns Rootenpaw", hand "Drema's Fingerbone" (69946). Requires `paladin_epic` ==5. Gives "Bone Collector's Bag" (69947).
-3. Loot "Dark Skeleton Remains" (69927) from "A Sun Revenant" in `thegrey`.
-4. Loot "Dark Skeleton Remains" (69926) from "Disturbed Elysian Remains" (NPC 176016) in `umbral`. Drop cache: 2.58% chance per kill.
-5. Loot "Dark Skeleton Remains" (69925) from "A Soriz Slave" (NPC 162029) in `ssratemple`. Drop cache: 35% chance per kill.
-6. Combine in "Bone Collector's Bag" (69947): "Dark Skeleton Remains" (69927), "Dark Skeleton Remains" (69926), "Dark Skeleton Remains" (69925). Produces "Bone Collector's Bag" (69948). The combine does not fail.
-7. dawnshroud/"Denns Rootenpaw", hand "Bone Collector's Bag" (69948). Requires `paladin_epic` ==5. Gives "Enchanted Bone Powder" (69949).
-8. Hand "Enchanted Bone Powder" (69949) to letalis/"Drema Young". Spawns "Drema Young" (169128). Loot "Drema's Soulstone" (69928) from "Drema Young".
-9. Loot "Soulstone Shard" (69950) from "Coterie Corruptor" in `tenebrous`.
-10. Spawns "Shade of Mujaki the Devourer" (204081) in `ponightmare` on event death_complete:204080.
-11. Loot "Soulstone Shard" (69951) from "Shade of Mujaki the Devourer".
-12. Combine in "Drema's Soulstone" (69928): "Soulstone Shard" (69950), "Soulstone Shard" (69951). Produces "Drema's Soulstone" (69952). The combine does not fail.
+1. Acquisition of "Rithnok's Soulstone" (69941) is documented under "Redemption" (64031); obtain another copy if needed.
 
 ### "Reiya's Soulstone" (69942)
 
-1. abysmal/"Lovine Lemise", say "Ingredients". Requires `paladin_epic` ==5. Gives "Lovine's Potion Bag" (69922).
-2. Loot "Ra'Tuk Screambringer's Jaw" (69921) from "A Ra'Tuk Screambringer" (NPC 283104) in `barindu`. Drop cache: 4.06% chance per kill.
-3. Loot "Noc Fleshfeasters Tail" (69920) from "A Noc Fleshfeaster" in `riwwi`.
-4. Loot "Mastruq Havocblade Blood" (69919) from "A Mastruq Havocblade" in `qinimi`.
-5. Loot "Mastruq Havocblade Blood" (69919) from "A Mastruq Warfiend" in `qinimi`.
-6. Loot "Potameid Seaweed Strands" (69918) from "An Entrapped Potameid" in `natimbi`.
-7. Combine in "Lovine's Potion Bag" (69922): "Ra'Tuk Screambringer's Jaw" (69921), "Noc Fleshfeasters Tail" (69920), "Mastruq Havocblade Blood" (69919), "Potameid Seaweed Strands" (69918). Produces "Lovine's Potion Bag" (69923). The combine does not fail.
-8. abysmal/"Lovine Lemise", hand "Lovine's Potion Bag" (69923). Sets `paladin_epic_reiya` to `1`.
-9. Summon "Foldable Medicine Bag" (17770) by casting "Unfold Medicine Bag".
-10. Common item: Fine Potion Vial (95846). Listed in 15 zones.
-11. Loot "Robust Shadow Essence" (96911) from "Qua Senshali Xakra" (NPC 158020) in `vexthal`. Drop cache: 28.72% chance per kill.
-12. Loot "Sage Leaf" (14215) from "a Di'zok Herbalist" in `chardok`.
-13. Loot "Sage Leaf" (14215) from "a Sarnak Herb Collector" in `chardok`.
-14. Loot "Sage Leaf" (14215) from "an Apprentice Herbalist" in `chardok`.
-15. Loot "Valerian Root" (14230) from "a Di'zok Herbalist" in `chardok`.
-16. Loot "Valerian Root" (14230) from "a Sarnak Herb Collector" in `chardok`.
-17. Loot "Valerian Root" (14230) from "an Apprentice Herbalist" in `chardok`.
-18. Common item: Woundwart (16526). Listed in 9 zones.
-19. Combine in "Foldable Medicine Bag" (17770): "Fine Potion Vial" (95846), "Robust Shadow Essence" (96911), "Sage Leaf" (14215), "Valerian Root" (14230), "Woundwart" (16526). Produces "Mist of the Breathless" (96937). Requires Alchemy, trivial 224.
-20. abysmal/"Reiya The Pained", hand "Mist of the Breathless" (96937). Requires `paladin_epic_reiya` ==1. Gives "Reiya's Soulstone" (69924).
-21. Spawns "Shade of Reiya the Pained" (284104) in `ferubi` on enter.
-22. Loot "Soulstone Shard" (69943) from "Shade of Reiya the Pained".
-23. Loot "Soulstone Shard" (69944) from "Vuranish Xxuro" in `vxed`.
-24. Combine in "Reiya's Soulstone" (69924): "Soulstone Shard" (69943), "Soulstone Shard" (69944). Produces "Reiya's Soulstone" (69942). The combine does not fail.
+1. Acquisition of "Reiya's Soulstone" (69942) is documented under "Redemption" (64031); obtain another copy if needed.
 
-### "Dark and Twisted Sword" (69972)
+### "Drema's Fingerbone" (69946)
 
-1. Acquisition of "Rithnok's Soulstone" (69941) is documented under "Rithnok's Soulstone" (69941); obtain another copy if needed.
-2. Acquisition of "Drema's Soulstone" (69952) is documented under "Drema's Soulstone" (69952); obtain another copy if needed.
-3. Acquisition of "Reiya's Soulstone" (69942) is documented under "Reiya's Soulstone" (69942); obtain another copy if needed.
-4. hohonora/"Irak Altil", say "Hail". Sets `paladin_epic` to `6`.
-5. Loot "Redis' Soulstone" (69983) from "Shade of Redis Linrok" in `dranikcatacombsa`.
-6. Spawns "Durunal the Cursebearer" (300087) in `wallofslaughter` on enter.
-7. Loot "Dark and Twisted Sword" (69971) from "Durunal the Cursebearer".
-8. hohonora/"Irak Altil", hand "Dark and Twisted Sword" (69971). Requires `paladin_epic` ==6. Gives "Dark and Twisted Sword" (69972).
+1. Acquisition of "Drema's Fingerbone" (69946) is documented under "Redemption" (64031); obtain another copy if needed.
 
-### "Redemption" (64031)
+### "Drema's Soulstone" (69952)
 
-1. Acquisition of "Dark and Twisted Sword" (69972) is documented under "Dark and Twisted Sword" (69972); obtain another copy if needed.
-2. Acquisition of "Rithnok's Soulstone" (69941) is documented under "Rithnok's Soulstone" (69941); obtain another copy if needed.
-3. Acquisition of "Drema's Soulstone" (69952) is documented under "Drema's Soulstone" (69952); obtain another copy if needed.
-4. Acquisition of "Reiya's Soulstone" (69942) is documented under "Reiya's Soulstone" (69942); obtain another copy if needed.
-5. Acquisition of "Redis' Soulstone" (69983) is documented under "Dark and Twisted Sword" (69972); obtain another copy if needed.
-6. Combine in "Dark and Twisted Sword" (69972): "Rithnok's Soulstone" (69941), "Drema's Soulstone" (69952), "Reiya's Soulstone" (69942), "Redis' Soulstone" (69983). Produces "Redemption" (64031). The combine does not fail.
+1. Acquisition of "Drema's Soulstone" (69952) is documented under "Redemption" (64031); obtain another copy if needed.
 
 ### "Token of Compassion" (69953)
 
@@ -153,29 +152,42 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 47. Loot "Turmoil Warts" (8331) from "A Turmoil Toad" in `fearplane`.
 48. Spawns "Grimling" (154129) in `acrylia` on event_spawn.
 49. Loot "Pearl" (10024) from "Grimling".
-50. 14 alternative loot source(s) also yield Pearl (10024).
-51. neriaka/"X-Ta Tompi", hand "Turmoil Warts" (8331) + "Pearl" (10024) + "Fetid Skin" (13150) + "Scare Straw" (13152). Gives "Words of Acquisition (Beza)" (11866).
-52. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-53. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Celestial Essence" (9650). Produces "Purified Water" (12607). Requires Brewing, trivial 58.
-54. Forage "Sand Verbena" (65582) in `taka`.
-55. Forage "Sand Verbena" (65582) in `takb`.
-56. Forage "Sand Verbena" (65582) in `takc`.
-57. Forage "Sand Verbena" (65582) in `takd`.
-58. Forage "Sand Verbena" (65582) in `take`.
-59. Forage "Sand Verbena" (65582) in `takf`.
-60. Forage "Sand Verbena" (65582) in `takg`.
-61. Forage "Sand Verbena" (65582) in `takh`.
-62. Forage "Sand Verbena" (65582) in `taki`.
-63. Forage "Sand Verbena" (65582) in `takj`.
-64. Combine in Brew Barrel (19): "Barley" (16590), "Bottle" (16598), "Cork" (16851), "Hops" (16591), "Purified Water" (12607), "Sand Verbena" (65582), "Yeast" (16596). Produces "Bottle of Double Brewed Double Dry Stout" (51157). Requires Brewing, trivial 226.
-65. kaladimb/"Datur Nightseer", hand "Bottle of Double Brewed Double Dry Stout" (51157). Requires `paladin_epic` ==9. Gives "Kaladim Prayer Bead" (69963).
-66. felwithea/"General Jyleel", hand platinum:1000. Requires `paladin_epic` ==9. Gives "Felwithe Prayer Bead" (69962).
-67. Ground spawn of "Freeport Prayer Bead" (69961) in `freeportwest`.
-68. Ground spawn of "Freeport Prayer Bead" (69961) in `freportn`.
-69. qeynos2/"Ziska Ironforge", hand platinum:500. Requires `paladin_epic` ==9. Gives "Qeynos Prayer Bead" (69960).
-70. Combine in "Unfilled Set of Prayer Beads" (69968): "Rivervale Prayer Bead" (69967), "Ak'anon Prayer Bead" (69966), "Erudin Prayer Bead" (69965), "Gukta Prayer Bead" (69964), "Kaladim Prayer Bead" (69963), "Felwithe Prayer Bead" (69962), "Freeport Prayer Bead" (69961), "Qeynos Prayer Bead" (69960). Produces "Set of Prayer Beads" (69969). The combine does not fail.
-71. dranikhollowsc/"Anetal", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `2`.
-72. natimbi/"Kemik Arulon", say "Hail". Requires `paladin_epic_hollowc` ==2. Requires `paladin_epic` ==9. Gives "Token of Compassion" (69953).
+50. Alternative: Loot "Pearl" (10024) from "Grimling" (NPC 154129) in `acrylia`; trigger: acrylia/"Raidman", on event_spawn.
+51. Alternative: Loot "Pearl" (10024) from "Needs Heading Validation" (NPC 154129) in `acrylia`; trigger: acrylia/"Khati Sha The Twisted", on event_signal.
+52. Alternative: Loot "Pearl" (10024) from "a Grelian firelunger" (NPC 337063) in `broodlands`; trigger: broodlands/"Grel Strongboom", on event_spawn.
+53. Alternative: Loot "Pearl" (10024) from "a Grelian woundmender" (NPC 337112) in `broodlands`; trigger: broodlands/"Grel Strongboom", on event_spawn.
+54. Alternative: Loot "Pearl" (10024) from "a Delve spellbinder" (NPC 341091) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
+55. Alternative: Loot "Pearl" (10024) from "a Delve diviner" (NPC 341085) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
+56. Alternative: Loot "Pearl" (10024) from "a Delve evoker" (NPC 341092) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
+57. Alternative: Loot "Pearl" (10024) from "a Delve drake" (NPC 341087) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
+58. Alternative: Loot "Pearl" (10024) from "Drake Matriarch" (NPC 341149) in `delvea`; trigger: delvea/"The Drake Menace", say "Zone Death".
+59. Alternative: Loot "Pearl" (10024) from "a Delve spellbinder" (NPC 341091) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
+60. Alternative: Loot "Pearl" (10024) from "a Delve diviner" (NPC 341085) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
+61. Alternative: Loot "Pearl" (10024) from "a Delve evoker" (NPC 341092) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
+62. Alternative: Loot "Pearl" (10024) from "a Delve drake" (NPC 341087) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
+63. Alternative: Loot "Pearl" (10024) from "A Tar Goo" (NPC 119122) in `wakening`; trigger: wakening/"A Tar Goo", on event_death_complete.
+64. neriaka/"X-Ta Tompi", hand "Turmoil Warts" (8331) + "Pearl" (10024) + "Fetid Skin" (13150) + "Scare Straw" (13152). Gives "Words of Acquisition (Beza)" (11866).
+65. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+66. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Celestial Essence" (9650). Produces "Purified Water" (12607). Requires Brewing, trivial 58.
+67. Forage "Sand Verbena" (65582) in `taka`.
+68. Forage "Sand Verbena" (65582) in `takb`.
+69. Forage "Sand Verbena" (65582) in `takc`.
+70. Forage "Sand Verbena" (65582) in `takd`.
+71. Forage "Sand Verbena" (65582) in `take`.
+72. Forage "Sand Verbena" (65582) in `takf`.
+73. Forage "Sand Verbena" (65582) in `takg`.
+74. Forage "Sand Verbena" (65582) in `takh`.
+75. Forage "Sand Verbena" (65582) in `taki`.
+76. Forage "Sand Verbena" (65582) in `takj`.
+77. Combine in Brew Barrel (19): "Barley" (16590), "Bottle" (16598), "Cork" (16851), "Hops" (16591), "Purified Water" (12607), "Sand Verbena" (65582), "Yeast" (16596). Produces "Bottle of Double Brewed Double Dry Stout" (51157). Requires Brewing, trivial 226.
+78. kaladimb/"Datur Nightseer", hand "Bottle of Double Brewed Double Dry Stout" (51157). Requires `paladin_epic` ==9. Gives "Kaladim Prayer Bead" (69963).
+79. felwithea/"General Jyleel", hand platinum:1000. Requires `paladin_epic` ==9. Gives "Felwithe Prayer Bead" (69962).
+80. Ground spawn of "Freeport Prayer Bead" (69961) in `freeportwest`.
+81. Ground spawn of "Freeport Prayer Bead" (69961) in `freportn`.
+82. qeynos2/"Ziska Ironforge", hand platinum:500. Requires `paladin_epic` ==9. Gives "Qeynos Prayer Bead" (69960).
+83. Combine in "Unfilled Set of Prayer Beads" (69968): "Rivervale Prayer Bead" (69967), "Ak'anon Prayer Bead" (69966), "Erudin Prayer Bead" (69965), "Gukta Prayer Bead" (69964), "Kaladim Prayer Bead" (69963), "Felwithe Prayer Bead" (69962), "Freeport Prayer Bead" (69961), "Qeynos Prayer Bead" (69960). Produces "Set of Prayer Beads" (69969). The combine does not fail.
+84. dranikhollowsc/"Anetal", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `2`.
+85. natimbi/"Kemik Arulon", say "Hail". Requires `paladin_epic_hollowc` ==2. Requires `paladin_epic` ==9. Gives "Token of Compassion" (69953).
 
 ### "Token of Chivalry" (69954)
 
@@ -183,18 +195,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 2. oasis/"Paladin Epic", say "Hail". Gives "Keelee's Brooch" (69982).
 3. sro/"Instructor Maerceci", hand "Keelee's Brooch" (69982). Gives "Token of Chivalry" (69954).
 
-### "Token of Heroism" (69955)
-
-1. Loot "Valdoon Kel'Novar's Heart" (69981) from "Valdoon Kel'Novar" in `mmcc`.
-2. felwithea/"Galrun Starforge", hand "Valdoon Kel'Novar's Heart" (69981). Gives "Token of Cleansing" (69956).
-3. provinggrounds/"Pashia Clouddancer", say "Note". Gives "Note from Pashia" (69973).
-4. nedaria/"Duram Firechaser", hand "Note from Pashia" (69973). Gives "Token of Heroism" (69955).
-
-### "Token of Cleansing" (69956)
-
-1. Acquisition of "Token of Cleansing" (69956) is documented under "Token of Heroism" (69955); obtain another copy if needed.
-
-### "Scabbard of the Righteous" (69959)
+### "Token of Conviction" (69957)
 
 1. Acquisition of "Token of Compassion" (69953) is documented under "Token of Compassion" (69953); obtain another copy if needed.
 2. Acquisition of "Token of Chivalry" (69954) is documented under "Token of Chivalry" (69954); obtain another copy if needed.
@@ -203,8 +204,11 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 5. Say "Check Lorb" to anguish/"Zone Status".
 6. Spawns "Orb of Discordant Energy" (317087).
 7. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-8. 4 alternative loot source(s) also yield Globe of Discordant Energy (47100).
-9. airplane/"Inte Akera", hand "Globe of Discordant Energy" (47100). Gives "Scabbard of the Righteous" (69959).
+8. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+9. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+10. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+11. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+12. airplane/"Inte Akera", hand "Globe of Discordant Energy" (47100). Gives "Token of Conviction" (69957).
 
 ### "Token of Loyalty" (69958)
 
@@ -212,17 +216,21 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 2. Acquisition of "Token of Chivalry" (69954) is documented under "Token of Chivalry" (69954); obtain another copy if needed.
 3. Acquisition of "Token of Heroism" (69955) is documented under "Token of Heroism" (69955); obtain another copy if needed.
 4. Acquisition of "Token of Cleansing" (69956) is documented under "Token of Heroism" (69955); obtain another copy if needed.
-5. Acquisition of "Globe of Discordant Energy" (47100) is documented under "Scabbard of the Righteous" (69959); obtain another copy if needed.
+5. Acquisition of "Globe of Discordant Energy" (47100) is documented under "Token of Conviction" (69957); obtain another copy if needed.
 6. airplane/"Inte Akera", hand "Globe of Discordant Energy" (47100). Gives "Token of Loyalty" (69958).
 
-### "Token of Conviction" (69957)
+### "Scabbard of the Righteous" (69959)
 
 1. Acquisition of "Token of Compassion" (69953) is documented under "Token of Compassion" (69953); obtain another copy if needed.
 2. Acquisition of "Token of Chivalry" (69954) is documented under "Token of Chivalry" (69954); obtain another copy if needed.
 3. Acquisition of "Token of Heroism" (69955) is documented under "Token of Heroism" (69955); obtain another copy if needed.
 4. Acquisition of "Token of Cleansing" (69956) is documented under "Token of Heroism" (69955); obtain another copy if needed.
-5. Acquisition of "Globe of Discordant Energy" (47100) is documented under "Scabbard of the Righteous" (69959); obtain another copy if needed.
-6. airplane/"Inte Akera", hand "Globe of Discordant Energy" (47100). Gives "Token of Conviction" (69957).
+5. Acquisition of "Globe of Discordant Energy" (47100) is documented under "Token of Conviction" (69957); obtain another copy if needed.
+6. airplane/"Inte Akera", hand "Globe of Discordant Energy" (47100). Gives "Scabbard of the Righteous" (69959).
+
+### "Dark and Twisted Sword" (69972)
+
+1. Acquisition of "Dark and Twisted Sword" (69972) is documented under "Redemption" (64031); obtain another copy if needed.
 
 ## `paladin_epic`
 
@@ -444,7 +452,10 @@ How the items are reached:
   - Say "Check Lorb" to anguish/"Zone Status".
   - Spawns "Orb of Discordant Energy" (317087).
   - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-  - 4 alternative loot source(s) also yield Globe of Discordant Energy (47100).
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
 
 ### 11. global player — combine recipe 19925
 

@@ -8,6 +8,124 @@ Flags with writes: `MnkPre`, `monk_epic`, `mnk_epic20`.
 
 Shared acquisition steps appear in the first prerequisite chain that needs them. Later sections reference that chain rather than repeating it.
 
+### "Letter to Stremstin" (48128)
+
+1. bazaar/"Eryke Stremstin", hand "Letter to Stremstin" (48128). Sets `monk_epic` to `6`.
+2. Loot "Sunless Nectar" (48117) from "An Ancient Shrieker" (NPC 164049) in `thedeep`. Drop cache: 11.17% chance per kill.
+3. Common item: Spices (13425). Listed in 39 zones.
+4. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
+5. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+6. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+7. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+8. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+9. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+10. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+11. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+12. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
+13. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
+14. Common item: Pie Tin Sketch (16958). Listed in 29 zones.
+15. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006), "Pie Tin Sketch" (16958). Produces "Unfired Pie Tin" (16926). Requires Pottery, trivial 115.
+16. Combine in Kiln (22): "High Quality Firing Sheet" (16908), "Unfired Pie Tin" (16926). Produces "Pie Tin" (13438). Requires Pottery, trivial 15.
+17. Combine in Oven (15): "Sunless Nectar" (48117), "Spices" (13425), "Pie Tin" (13438). Produces "Sugar and Spice Nectar Pie" (48119). Requires Baking, trivial 176.
+18. Common item: Spit (17947). Listed in 34 zones.
+19. Common item: Firing Sheet (16906). Listed in 34 zones.
+20. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
+21. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
+22. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
+23. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+24. Spawns "Disciple Okarote" (100133) in `stonebrunt` on event_waypoint_arrive.
+25. Loot "Bottle of Milk" (13087) from "Disciple Okarote".
+26. Loot "Snake Egg" (13088) from "A Female Razorback" (NPC 403032) in `sunderock`. Drop cache: 75.06% chance per kill.
+27. Common item: Cup of Flour (13193). Listed in 39 zones.
+28. Combine in "Mixing Bowl" (17906): "Bottle of Milk" (13087), "Snake Egg" (13088), "Cup of Flour" (13193). Produces "Clump of Dough" (13090). Requires Baking, trivial 17.
+29. Common item: Bread Tin Mold (12025). Listed in 23 zones.
+30. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
+31. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
+32. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
+33. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
+34. Common item: Quality Firing Sheet (16907). Listed in 32 zones.
+35. Common item: Ceramic Lining Sketch (16964). Listed in 40 zones.
+36. Combine in Pottery Wheel (21): "Water Flask" (13006), "Small Block of Clay" (16900), "Ceramic Lining Sketch" (16964). Produces "Unfired Ceramic Lining" (16946). Requires Pottery, trivial 36.
+37. Combine in Kiln (22): "Quality Firing Sheet" (16907), "Unfired Ceramic Lining" (16946). Produces "Ceramic Lining" (16947). Requires Pottery, trivial 17.
+38. Combine in Forge (17): "Bread Tin Mold" (12025), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Bread Tin" (13440). Requires Blacksmithing, trivial 38.
+39. Combine in "Spit" (17947): "Clump of Dough" (13090), "Bread Tin" (13440). Hands back "Bread Tin" (13440). Produces "Loaf of Bread" (13015). Requires Baking, trivial 115.
+40. Common item: Cheese (8160). Listed in 9 zones.
+41. potranquility/"Elder Fuirstel", say "Hail". Sets `pop_cod_final` to `1`.
+42. poknowledge/"Aid Grimel", say "Skill In Brewing". Requires `pop_cod_final` ==1. Requires `pop_cod_final` set. Gives "Portable Drink Barrel" (17179).
+43. Common item: Lettuce (13976). Listed in 16 zones.
+44. rivervale/"Ilscent Tagglefoot", say "Jumjum Juice". Gives "Case of Jumjum Juice" (13411).
+45. northkarana/"Xanuusus", hand "Case of Jumjum Juice" (13411). Gives "Carrot" (13977).
+46. Common item: Turnip (13979). Listed in 16 zones.
+47. Combine in "Mixing Bowl" (17906): "Lettuce" (13976), "Carrot" (13977), "Turnip" (13979). Produces "Vegetables" (13419). Requires Baking, trivial 15. The combine does not fail.
+48. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Vegetables" (13419). Produces "Vegetable Oil" (20386). Requires Brewing, trivial 102.
+49. Common item: Garlic (58280). Listed in 5 zones.
+50. Combine in Brew Barrel (19): "Vegetable Oil" (20386), "Garlic" (58280). Produces "Grilling Sauce" (58265). Requires Brewing, trivial 54.
+51. Loot "Aged Piece of Meat" (48118) from "Ancient Nobleman" in `veksar`.
+52. Combine in Oven (15): "Loaf of Bread" (13015), "Cheese" (8160), "Grilling Sauce" (58265), "Aged Piece of Meat" (48118). Produces "Aged Meat and Cheese Sandwich" (48120). Requires Baking, trivial 176.
+53. oceanoftears/"Kaiaren", hand "Sugar and Spice Nectar Pie" (48119) + "Aged Meat and Cheese Sandwich" (48120). Sets `mnk_epic20` to `2`.
+54. potranquility/"Vortix", hand "Initiate's Sash of the Celestial Order" (48127). Sets `monk_epic` to `7`.
+55. Loot "Kaiaren's Mind" (48137) from "Kragsmash" in `bloodfields`.
+56. Loot "Kaiaren's Body" (48138) from "Windrush" in `harbingers`.
+57. potranquility/"Vortix", hand "Kaiaren's Mind" (48137) + "Kaiaren's Body" (48138). Sets `monk_epic` to `8`.
+58. Loot "Scribed Note" (20435) from "The Keeper" in `bloodfields`.
+59. potranquility/"Vortix", hand "Scribed Note" (20435). Sets `monk_epic` to `9`.
+60. Unresolved cyclic prerequisite: `mnk_epic20` >=5.
+61. oceanoftears/"Kaiaren", on event_death_complete. Sets `mnk_epic20` to `5`.
+62. Say "Check Lorb" to anguish/"Zone Status".
+63. Spawns "Orb of Discordant Energy" (317087).
+64. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+65. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+66. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+67. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+68. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+69. potranquility/"Vortix", hand "Globe of Discordant Energy" (47100). Sets `mnk_epic20` to `6`.
+70. oceanoftears/"Kaiaren", say "Choose To Continue". Requires `mnk_epic20` ==2. Requires `mnk_epic20` set. Requires `monk_epic` ==9. Requires `mnk_epic20` >=2. Gives "Initiate's Sash of the Celestial Order" (48127).
+71. lakerathe/"Vortix", say "Diary". Sets `monk_epic` to `4`.
+72. Loot "1/2 of Kaiaren's Diary" (48109) from "Wygrish" in `sirens`.
+73. Loot "1/2 of Kaiaren's Diary" (48110) from "Quigli" in `dulak`.
+74. potranquility/"Vortix", hand "1/2 of Kaiaren's Diary" (48109) + "1/2 of Kaiaren's Diary" (48110). Sets `monk_epic` to `5`.
+75. Spawns "Disciple of Moon" (120138) in `westwastes` on enter.
+76. Loot "Symbol of Moon" (48111) from "Disciple of Moon".
+77. potranquility/"Vortix", say "Hail". Requires `monk_epic` >=5. Gives "Letter to Stremstin" (48128).
+
+### "Polished Symbol of Focus" (48129)
+
+1. Common item: Glaze Mortar (17882). Listed in 30 zones.
+2. Acquisition of "Water Flask" (13006) is documented under "Letter to Stremstin" (48128); obtain another copy if needed.
+3. Acquisition of "Mixing Bowl" (17906) is documented under "Letter to Stremstin" (48128); obtain another copy if needed.
+4. Common item: Limestone (16844). Listed in 4 zones.
+5. Common item: Lead Sulphide (16845). Listed in 4 zones.
+6. Combine in "Mixing Bowl" (17906): "Limestone" (16844), "Lead Sulphide" (16845). Produces "White Lead" (16558). Requires Baking, trivial 15. The combine does not fail.
+7. Ground spawn of "Permafrost Crystals" (22121) in `permafrost`.
+8. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
+9. Loot "Iron Oxide" (22124) from "A Black Reaver".
+10. Alternative: Loot "Iron Oxide" (22124) from "A Black Reaver" (NPC 90005) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
+11. Alternative: Loot "Iron Oxide" (22124) from "A Black Reaver" (NPC 90192) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
+12. Alternative: Loot "Iron Oxide" (22124) from "A Boulder Fiend" (NPC 171063) in `thegrey`; trigger: thegrey/"A Creature", on enter.
+13. Alternative: Loot "Iron Oxide" (22124) from "A Stone Beast" (NPC 171051) in `thegrey`; trigger: thegrey/"A Creature", on enter.
+14. Ground spawn of "Iron Oxide" (22124) in `steamfont`.
+15. Combine in "Glaze Mortar" (17882): "Water Flask" (13006), "White Lead" (16558), "Permafrost Crystals" (22121), "Iron Oxide" (22124). Produces "Divine Crystalline Glaze" (16578). Requires Pottery. The combine does not fail.
+16. Loot "Symbol of Focus" (48115) from "Disciple of Focus" in `tenebrous`.
+17. Combine in Kiln (22): "Divine Crystalline Glaze" (16578), "Symbol of Focus" (48115). Produces "Polished Symbol of Focus" (48129). Requires Pottery, trivial 138.
+
+### "Polished Symbol of Tranquility" (48130)
+
+1. Acquisition of "Divine Crystalline Glaze" (16578) is documented under "Polished Symbol of Focus" (48129); obtain another copy if needed.
+2. Loot "Symbol of Tranquility" (48114) from "Disciple of Tranquility" in `povalor`.
+3. Combine in Kiln (22): "Divine Crystalline Glaze" (16578), "Symbol of Tranquility" (48114). Produces "Polished Symbol of Tranquility" (48130). Requires Pottery, trivial 138.
+
+### "Aged Meat and Cheese Sandwich" (48120)
+
+1. Acquisition of "Aged Meat and Cheese Sandwich" (48120) is documented under "Letter to Stremstin" (48128); obtain another copy if needed.
+
+### "Danl's Missing Book" (48132)
+
+1. Ground spawn of "Section of Parchment" (48104) in `gunthak`.
+2. Ground spawn of "Section of Parchment" (48105) in `hole`.
+3. Ground spawn of "Section of Parchment" (48106) in `charasis`.
+4. Ground spawn of "Section of Parchment" (48107) in `akheva`.
+5. shadowhaven/"Researcher Relreom", hand "Section of Parchment" (48104) + "Section of Parchment" (48105) + "Section of Parchment" (48106) + "Section of Parchment" (48107). Gives "Danl's Missing Book" (48132).
+
 ### "Celestial Fists" (10652)
 
 1. Kill lakeofillomen/"Vorash". Spawns "Xenevorash" (85208).
@@ -46,169 +164,67 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 34. Loot "Legionnaire's Bracer" (2299) from "Orc Legionnaire" (NPC 21119) in `commons`. Drop cache: 84% chance per kill.
 35. Loot "Deathfist Pawn Scalp" (13794) from "Orc Pawn" (NPC 415088) in `mistythicket`. Drop cache: 50% chance per kill.
 36. Loot "Snake Fang" (13067) from "A Giant Briar Snake" (NPC 414061) in `toxxulia`. Drop cache: 58.21% chance per kill.
-37. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-38. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-39. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-40. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-41. freeportwest/"Velan Torresk", hand "Snake Fang" (13067) + "Bone Chips" (13073) + "Deathfist Pawn Scalp" (13794) + "Deathfist Pawn Scalp" (13794). Gives "White Training Sash" (10130).
-42. Loot "Giant Snake Rattle" (13058) from "A Darkweed Snake" (NPC 457018) in `oldcommons`. Drop cache: 43.94% chance per kill.
-43. misty/"Misty", on event signal:33161.
-44. Starts timer `Adds`.
-45. Spawns "A Scarecrow" (33168) after `misty/misty#timer:Adds`.
-46. Loot "Deathfist Slashed Belt" (13916) from "A Scarecrow".
-47. Loot "Desert Tarantula Chitin" (20901) from "A Dune Tarantula" (NPC 392086) in `northro`. Drop cache: 45.56% chance per kill.
-48. freeportwest/"Velan Torresk", hand "White Training Sash" (10130) + "Giant Snake Rattle" (13058) + "Deathfist Slashed Belt" (13916) + "Desert Tarantula Chitin" (20901). Gives "Yellow Sash of Order" (10131).
-49. freeportwest/"Reyia Beslin", hand "Cutthroat Insignia Ring" (1903) + "Legionnaire's Bracer" (2299) + "Yellow Sash of Order" (10131) + "Greater Lightstone" (10400). Gives "Orange Sash of Order" (10132).
-50. freeportwest/"Reyia Beslin", hand "Orange Sash of Order" (10132) + "Blackened Wand" (13237) + "Blackened Sapphire" (13238). Gives "Red Sash of Order" (10133).
-51. rathemtn/"Brother Zephyl", hand "Red Sash of Order" (10133) + "The Idol" (12317). Gives "Rare Robe Pattern" (12315).
-52. Common item: Song: Jonthan's Whistling Warsong (15734). Listed in 8 zones.
-53. Common item: Needle Mold (12019). Listed in 32 zones.
-54. Common item: Thimble Mold (12057). Listed in 32 zones.
-55. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-56. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-57. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-58. **Broken:** nothing in the graph gives, loots, spawns, or combines Notice to Cease and Desist (9590).
-59. Hand "Notice to Cease and Desist" (9590) to freeporteast/"Lythe Songbird". Spawns "a Freeport guard" (382255). Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard".
-60. 10 alternative loot source(s) also yield Fine Steel Two Handed Sword (5351).
-61. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
-62. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
-63. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
-64. Loot "Shadow Wolf Pelt" (13779) from "A Shadow Wolf" (NPC 408093) in `commonlands`. Drop cache: 7.64% chance per kill.
-65. Common item: Spell: Gather Shadows (15522). Listed in 13 zones.
-66. Forage "Spider Silk" (13041) in `mistmoore`.
-67. Forage "Spider Silk" (13041) in `mmca`.
-68. Forage "Spider Silk" (13041) in `mmcb`.
-69. Forage "Spider Silk" (13041) in `mmcc`.
-70. Forage "Spider Silk" (13041) in `mmcd`.
-71. Forage "Spider Silk" (13041) in `mmce`.
-72. Forage "Spider Silk" (13041) in `mmcf`.
-73. Forage "Spider Silk" (13041) in `mmcg`.
-74. Forage "Spider Silk" (13041) in `mmch`.
-75. Forage "Spider Silk" (13041) in `mmci`.
-76. Forage "Spider Silk" (13041) in `mmcj`.
-77. Combine in "Vale Sewing Kit" (92882): "Spider Silk" (13041). Produces "Silk Swatch" (16482). Requires Tailoring, trivial 15. The combine does not fail.
-78. Combine in "Vale Sewing Kit" (92882): "Shadow Wolf Pelt" (13779), "Spell: Gather Shadows" (15522), "Silk Swatch" (16482). Produces "Shadow Silk" (16483). Requires Tailoring, trivial 36.
-79. Combine in "Deluxe Sewing Kit" (17966): "Needle of the Void" (12314), "Rare Robe Pattern" (12315), "Song: Jonthan's Whistling Warsong" (15734), "Shadow Silk" (16483). Produces "Robe of the Lost Circle" (12256). Requires Tailoring. The combine does not fail.
-80. dreadlands/"Brother Balatin", hand "Robe of the Lost Circle" (12256) + "Metal Pipe" (12979) + "Metal Pipe" (12980). Gives "Robe of the Whistling Fists" (12970).
-81. Loot "Immortals" (18195) from "Faerie of Dismay" (NPC 91012) in `skyfire`. Drop cache: 35% chance per kill.
-82. erudnext/"Tomekeeper Danl", hand "Immortals" (18195). Gives "Danl's Reference" (1682).
-83. timorous/"Lheao", hand "Danl's Reference" (1682) + "Robe of the Whistling Fists" (12970). Gives "Celestial Fists" (1683).
-84. trakanon/"Kaiaren", hand "Celestial Fists" (1683). Gives "Book of Celestial Fists" (1689).
-85. trakanon/"Kaiaren", hand "Demon Fangs" (1688) + "Book of Celestial Fists" (1689). Gives "Celestial Fists" (10652).
-
-### "Danl's Missing Book" (48132)
-
-1. Ground spawn of "Section of Parchment" (48104) in `gunthak`.
-2. Ground spawn of "Section of Parchment" (48105) in `hole`.
-3. Ground spawn of "Section of Parchment" (48106) in `charasis`.
-4. Ground spawn of "Section of Parchment" (48107) in `akheva`.
-5. shadowhaven/"Researcher Relreom", hand "Section of Parchment" (48104) + "Section of Parchment" (48105) + "Section of Parchment" (48106) + "Section of Parchment" (48107). Gives "Danl's Missing Book" (48132).
-
-### "Letter to Stremstin" (48128)
-
-1. bazaar/"Eryke Stremstin", hand "Letter to Stremstin" (48128). Sets `monk_epic` to `6`.
-2. Loot "Sunless Nectar" (48117) from "An Ancient Shrieker" (NPC 164049) in `thedeep`. Drop cache: 11.17% chance per kill.
-3. Common item: Spices (13425). Listed in 39 zones.
-4. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
-5. Acquisition of "Water Flask" (13006) is documented under "Celestial Fists" (10652); obtain another copy if needed.
-6. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-7. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-8. Common item: Pie Tin Sketch (16958). Listed in 29 zones.
-9. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006), "Pie Tin Sketch" (16958). Produces "Unfired Pie Tin" (16926). Requires Pottery, trivial 115.
-10. Combine in Kiln (22): "High Quality Firing Sheet" (16908), "Unfired Pie Tin" (16926). Produces "Pie Tin" (13438). Requires Pottery, trivial 15.
-11. Combine in Oven (15): "Sunless Nectar" (48117), "Spices" (13425), "Pie Tin" (13438). Produces "Sugar and Spice Nectar Pie" (48119). Requires Baking, trivial 176.
-12. Common item: Spit (17947). Listed in 34 zones.
-13. Common item: Firing Sheet (16906). Listed in 34 zones.
-14. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-15. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-16. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-17. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-18. Spawns "Disciple Okarote" (100133) in `stonebrunt` on event_waypoint_arrive.
-19. Loot "Bottle of Milk" (13087) from "Disciple Okarote".
-20. Loot "Snake Egg" (13088) from "A Female Razorback" (NPC 403032) in `sunderock`. Drop cache: 75.06% chance per kill.
-21. Common item: Cup of Flour (13193). Listed in 39 zones.
-22. Combine in "Mixing Bowl" (17906): "Bottle of Milk" (13087), "Snake Egg" (13088), "Cup of Flour" (13193). Produces "Clump of Dough" (13090). Requires Baking, trivial 17.
-23. Common item: Bread Tin Mold (12025). Listed in 23 zones.
-24. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
-25. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
-26. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
-27. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
-28. Common item: Quality Firing Sheet (16907). Listed in 32 zones.
-29. Common item: Ceramic Lining Sketch (16964). Listed in 40 zones.
-30. Combine in Pottery Wheel (21): "Water Flask" (13006), "Small Block of Clay" (16900), "Ceramic Lining Sketch" (16964). Produces "Unfired Ceramic Lining" (16946). Requires Pottery, trivial 36.
-31. Combine in Kiln (22): "Quality Firing Sheet" (16907), "Unfired Ceramic Lining" (16946). Produces "Ceramic Lining" (16947). Requires Pottery, trivial 17.
-32. Combine in Forge (17): "Bread Tin Mold" (12025), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Bread Tin" (13440). Requires Blacksmithing, trivial 38.
-33. Combine in "Spit" (17947): "Clump of Dough" (13090), "Bread Tin" (13440). Hands back "Bread Tin" (13440). Produces "Loaf of Bread" (13015). Requires Baking, trivial 115.
-34. Common item: Cheese (8160). Listed in 9 zones.
-35. potranquility/"Elder Fuirstel", say "Hail". Sets `pop_cod_final` to `1`.
-36. poknowledge/"Aid Grimel", say "Skill In Brewing". Requires `pop_cod_final` ==1. Requires `pop_cod_final` set. Gives "Portable Drink Barrel" (17179).
-37. Common item: Lettuce (13976). Listed in 16 zones.
-38. rivervale/"Ilscent Tagglefoot", say "Jumjum Juice". Gives "Case of Jumjum Juice" (13411).
-39. northkarana/"Xanuusus", hand "Case of Jumjum Juice" (13411). Gives "Carrot" (13977).
-40. Common item: Turnip (13979). Listed in 16 zones.
-41. Combine in "Mixing Bowl" (17906): "Lettuce" (13976), "Carrot" (13977), "Turnip" (13979). Produces "Vegetables" (13419). Requires Baking, trivial 15. The combine does not fail.
-42. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Vegetables" (13419). Produces "Vegetable Oil" (20386). Requires Brewing, trivial 102.
-43. Common item: Garlic (58280). Listed in 5 zones.
-44. Combine in Brew Barrel (19): "Vegetable Oil" (20386), "Garlic" (58280). Produces "Grilling Sauce" (58265). Requires Brewing, trivial 54.
-45. Loot "Aged Piece of Meat" (48118) from "Ancient Nobleman" in `veksar`.
-46. Combine in Oven (15): "Loaf of Bread" (13015), "Cheese" (8160), "Grilling Sauce" (58265), "Aged Piece of Meat" (48118). Produces "Aged Meat and Cheese Sandwich" (48120). Requires Baking, trivial 176.
-47. oceanoftears/"Kaiaren", hand "Sugar and Spice Nectar Pie" (48119) + "Aged Meat and Cheese Sandwich" (48120). Sets `mnk_epic20` to `2`.
-48. potranquility/"Vortix", hand "Initiate's Sash of the Celestial Order" (48127). Sets `monk_epic` to `7`.
-49. Loot "Kaiaren's Mind" (48137) from "Kragsmash" in `bloodfields`.
-50. Loot "Kaiaren's Body" (48138) from "Windrush" in `harbingers`.
-51. potranquility/"Vortix", hand "Kaiaren's Mind" (48137) + "Kaiaren's Body" (48138). Sets `monk_epic` to `8`.
-52. Loot "Scribed Note" (20435) from "The Keeper" in `bloodfields`.
-53. potranquility/"Vortix", hand "Scribed Note" (20435). Sets `monk_epic` to `9`.
-54. Unresolved cyclic prerequisite: `mnk_epic20` >=5.
-55. oceanoftears/"Kaiaren", on event_death_complete. Sets `mnk_epic20` to `5`.
-56. Say "Check Lorb" to anguish/"Zone Status".
-57. Spawns "Orb of Discordant Energy" (317087).
-58. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-59. 4 alternative loot source(s) also yield Globe of Discordant Energy (47100).
-60. potranquility/"Vortix", hand "Globe of Discordant Energy" (47100). Sets `mnk_epic20` to `6`.
-61. oceanoftears/"Kaiaren", say "Choose To Continue". Requires `mnk_epic20` ==2. Requires `mnk_epic20` set. Requires `monk_epic` ==9. Requires `mnk_epic20` >=2. Gives "Initiate's Sash of the Celestial Order" (48127).
-62. lakerathe/"Vortix", say "Diary". Sets `monk_epic` to `4`.
-63. Loot "1/2 of Kaiaren's Diary" (48109) from "Wygrish" in `sirens`.
-64. Loot "1/2 of Kaiaren's Diary" (48110) from "Quigli" in `dulak`.
-65. potranquility/"Vortix", hand "1/2 of Kaiaren's Diary" (48109) + "1/2 of Kaiaren's Diary" (48110). Sets `monk_epic` to `5`.
-66. Spawns "Disciple of Moon" (120138) in `westwastes` on enter.
-67. Loot "Symbol of Moon" (48111) from "Disciple of Moon".
-68. potranquility/"Vortix", say "Hail". Requires `monk_epic` >=5. Gives "Letter to Stremstin" (48128).
-
-### "Initiate's Sash of the Celestial Order" (48127)
-
-1. Acquisition of "Initiate's Sash of the Celestial Order" (48127) is documented under "Letter to Stremstin" (48128); obtain another copy if needed.
+37. Acquisition of "Bone Chips" (13073) is documented under "Letter to Stremstin" (48128); obtain another copy if needed.
+38. freeportwest/"Velan Torresk", hand "Snake Fang" (13067) + "Bone Chips" (13073) + "Deathfist Pawn Scalp" (13794) + "Deathfist Pawn Scalp" (13794). Gives "White Training Sash" (10130).
+39. Loot "Giant Snake Rattle" (13058) from "A Darkweed Snake" (NPC 457018) in `oldcommons`. Drop cache: 43.94% chance per kill.
+40. misty/"Misty", on event signal:33161.
+41. Starts timer `Adds`.
+42. Spawns "A Scarecrow" (33168) after `misty/misty#timer:Adds`.
+43. Loot "Deathfist Slashed Belt" (13916) from "A Scarecrow".
+44. Loot "Desert Tarantula Chitin" (20901) from "A Dune Tarantula" (NPC 392086) in `northro`. Drop cache: 45.56% chance per kill.
+45. freeportwest/"Velan Torresk", hand "White Training Sash" (10130) + "Giant Snake Rattle" (13058) + "Deathfist Slashed Belt" (13916) + "Desert Tarantula Chitin" (20901). Gives "Yellow Sash of Order" (10131).
+46. freeportwest/"Reyia Beslin", hand "Cutthroat Insignia Ring" (1903) + "Legionnaire's Bracer" (2299) + "Yellow Sash of Order" (10131) + "Greater Lightstone" (10400). Gives "Orange Sash of Order" (10132).
+47. freeportwest/"Reyia Beslin", hand "Orange Sash of Order" (10132) + "Blackened Wand" (13237) + "Blackened Sapphire" (13238). Gives "Red Sash of Order" (10133).
+48. rathemtn/"Brother Zephyl", hand "Red Sash of Order" (10133) + "The Idol" (12317). Gives "Rare Robe Pattern" (12315).
+49. Common item: Song: Jonthan's Whistling Warsong (15734). Listed in 8 zones.
+50. Common item: Needle Mold (12019). Listed in 32 zones.
+51. Common item: Thimble Mold (12057). Listed in 32 zones.
+52. Acquisition of "Water Flask" (13006) is documented under "Letter to Stremstin" (48128); obtain another copy if needed.
+53. **Broken:** nothing in the graph gives, loots, spawns, or combines Notice to Cease and Desist (9590).
+54. Hand "Notice to Cease and Desist" (9590) to freeporteast/"Lythe Songbird". Spawns "a Freeport guard" (382255). Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard".
+55. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+56. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freportw`; trigger: freportw/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+57. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freportw`; trigger: freportw/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+58. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a minion of Meldrath" (NPC 56173) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "We Shall Never Surrender".
+59. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "Meldrath's melded minions" (NPC 56174) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "Your Forces Are Deafeated".
+60. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "Arnold the Gnomeinator" (NPC 56175) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "You Shall Not Break Our Defense".
+61. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", on timer guard.
+62. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", on timer guard.
+63. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freportw`; trigger: freportw/"Lythe Songbird", on timer guard.
+64. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freportw`; trigger: freportw/"Lythe Songbird", on timer guard.
+65. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
+66. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
+67. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
+68. Loot "Shadow Wolf Pelt" (13779) from "A Shadow Wolf" (NPC 408093) in `commonlands`. Drop cache: 7.64% chance per kill.
+69. Common item: Spell: Gather Shadows (15522). Listed in 13 zones.
+70. Forage "Spider Silk" (13041) in `mistmoore`.
+71. Forage "Spider Silk" (13041) in `mmca`.
+72. Forage "Spider Silk" (13041) in `mmcb`.
+73. Forage "Spider Silk" (13041) in `mmcc`.
+74. Forage "Spider Silk" (13041) in `mmcd`.
+75. Forage "Spider Silk" (13041) in `mmce`.
+76. Forage "Spider Silk" (13041) in `mmcf`.
+77. Forage "Spider Silk" (13041) in `mmcg`.
+78. Forage "Spider Silk" (13041) in `mmch`.
+79. Forage "Spider Silk" (13041) in `mmci`.
+80. Forage "Spider Silk" (13041) in `mmcj`.
+81. Combine in "Vale Sewing Kit" (92882): "Spider Silk" (13041). Produces "Silk Swatch" (16482). Requires Tailoring, trivial 15. The combine does not fail.
+82. Combine in "Vale Sewing Kit" (92882): "Shadow Wolf Pelt" (13779), "Spell: Gather Shadows" (15522), "Silk Swatch" (16482). Produces "Shadow Silk" (16483). Requires Tailoring, trivial 36.
+83. Combine in "Deluxe Sewing Kit" (17966): "Needle of the Void" (12314), "Rare Robe Pattern" (12315), "Song: Jonthan's Whistling Warsong" (15734), "Shadow Silk" (16483). Produces "Robe of the Lost Circle" (12256). Requires Tailoring. The combine does not fail.
+84. dreadlands/"Brother Balatin", hand "Robe of the Lost Circle" (12256) + "Metal Pipe" (12979) + "Metal Pipe" (12980). Gives "Robe of the Whistling Fists" (12970).
+85. Loot "Immortals" (18195) from "Faerie of Dismay" (NPC 91012) in `skyfire`. Drop cache: 35% chance per kill.
+86. erudnext/"Tomekeeper Danl", hand "Immortals" (18195). Gives "Danl's Reference" (1682).
+87. timorous/"Lheao", hand "Danl's Reference" (1682) + "Robe of the Whistling Fists" (12970). Gives "Celestial Fists" (1683).
+88. trakanon/"Kaiaren", hand "Celestial Fists" (1683). Gives "Book of Celestial Fists" (1689).
+89. trakanon/"Kaiaren", hand "Demon Fangs" (1688) + "Book of Celestial Fists" (1689). Gives "Celestial Fists" (10652).
 
 ### "Sugar and Spice Nectar Pie" (48119)
 
 1. Acquisition of "Sugar and Spice Nectar Pie" (48119) is documented under "Letter to Stremstin" (48128); obtain another copy if needed.
 
-### "Aged Meat and Cheese Sandwich" (48120)
+### "Initiate's Sash of the Celestial Order" (48127)
 
-1. Acquisition of "Aged Meat and Cheese Sandwich" (48120) is documented under "Letter to Stremstin" (48128); obtain another copy if needed.
-
-### "Polished Symbol of Focus" (48129)
-
-1. Common item: Glaze Mortar (17882). Listed in 30 zones.
-2. Acquisition of "Water Flask" (13006) is documented under "Celestial Fists" (10652); obtain another copy if needed.
-3. Acquisition of "Mixing Bowl" (17906) is documented under "Letter to Stremstin" (48128); obtain another copy if needed.
-4. Common item: Limestone (16844). Listed in 4 zones.
-5. Common item: Lead Sulphide (16845). Listed in 4 zones.
-6. Combine in "Mixing Bowl" (17906): "Limestone" (16844), "Lead Sulphide" (16845). Produces "White Lead" (16558). Requires Baking, trivial 15. The combine does not fail.
-7. Ground spawn of "Permafrost Crystals" (22121) in `permafrost`.
-8. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
-9. Loot "Iron Oxide" (22124) from "A Black Reaver".
-10. 4 alternative loot source(s) also yield Iron Oxide (22124).
-11. Ground spawn of "Iron Oxide" (22124) in `steamfont`.
-12. Combine in "Glaze Mortar" (17882): "Water Flask" (13006), "White Lead" (16558), "Permafrost Crystals" (22121), "Iron Oxide" (22124). Produces "Divine Crystalline Glaze" (16578). Requires Pottery. The combine does not fail.
-13. Loot "Symbol of Focus" (48115) from "Disciple of Focus" in `tenebrous`.
-14. Combine in Kiln (22): "Divine Crystalline Glaze" (16578), "Symbol of Focus" (48115). Produces "Polished Symbol of Focus" (48129). Requires Pottery, trivial 138.
-
-### "Polished Symbol of Tranquility" (48130)
-
-1. Acquisition of "Divine Crystalline Glaze" (16578) is documented under "Polished Symbol of Focus" (48129); obtain another copy if needed.
-2. Loot "Symbol of Tranquility" (48114) from "Disciple of Tranquility" in `povalor`.
-3. Combine in Kiln (22): "Divine Crystalline Glaze" (16578), "Symbol of Tranquility" (48114). Produces "Polished Symbol of Tranquility" (48130). Requires Pottery, trivial 138.
+1. Acquisition of "Initiate's Sash of the Celestial Order" (48127) is documented under "Letter to Stremstin" (48128); obtain another copy if needed.
 
 ## `MnkPre`
 
@@ -498,7 +514,7 @@ How the items are reached:
   - Say "I Am Ready To Be Tested" to frozenshadow/"You".
   - Spawns "Mirror Reflection" (111190).
   - Loot "Medal of Identity" (48102) from "Mirror Reflection".
-  - 1 alternative loot source(s) also yield Medal of Identity (48102).
+  - Alternative: Loot "Medal of Identity" (48102) from "Mirror Reflection" (NPC 111190) in `frozenshadow`; trigger: frozenshadow/"You", on event_proximity_say.
 
 ### Steps on `MnkPre` that do not change it
 
@@ -674,7 +690,10 @@ How the items are reached:
   - Say "Check Lorb" to anguish/"Zone Status".
   - Spawns "Orb of Discordant Energy" (317087).
   - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-  - 4 alternative loot source(s) also yield Globe of Discordant Energy (47100).
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
 
 ### Steps on `mnk_epic20` that do not change it
 

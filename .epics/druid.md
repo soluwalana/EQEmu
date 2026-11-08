@@ -8,7 +8,7 @@ Flags with writes: `druid_epic`.
 
 Shared acquisition steps appear in the first prerequisite chain that needs them. Later sections reference that chain rather than repeating it.
 
-### "Wrapped Mangled Head" (62848)
+### "Runed Skull" (62838)
 
 1. Forage "Sickly Maiden's Hair" (62810) in `rathemtn`.
 2. eastkarana/"Althele", hand "Sickly Maiden's Hair" (62810). Gives "Tuft of Sickly Maiden's Hair" (62811).
@@ -32,44 +32,49 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 20. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
 21. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
 22. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
+23. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
+24. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
+25. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
+26. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
+27. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
+28. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
+29. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
+30. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
+31. tox/"A Skeleton", say "I Will Do It". Triggers `tox/a skeleton#timer:pathback`.
+32. Starts timer `pathbacktwo`.
+33. Starts timer `pathbackthree`.
+34. Starts timer `giveitem`.
+35. tox/"A Skeleton", on timer giveitem. Gives "Animating Heads" (62828).
+36. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
 
 ### "Healing Plants" (62842)
 
-1. Acquisition of "Wrapped Mangled Head" (62848) is documented under "Wrapped Mangled Head" (62848); obtain another copy if needed.
-2. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
-3. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
-4. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
-5. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
-6. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
-
-### "Runed Skull" (62838)
-
-1. Acquisition of "Wrapped Mangled Head" (62848) is documented under "Wrapped Mangled Head" (62848); obtain another copy if needed.
-2. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
-3. Acquisition of "Healing Plants" (62842) is documented under "Healing Plants" (62842); obtain another copy if needed.
-4. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
-5. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
-6. tox/"A Skeleton", say "I Will Do It". Triggers `tox/a skeleton#timer:pathback`.
-7. Starts timer `pathbacktwo`.
-8. Starts timer `pathbackthree`.
-9. Starts timer `giveitem`.
-10. tox/"A Skeleton", on timer giveitem. Gives "Animating Heads" (62828).
-11. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
-
-### "Niera's Healing Notes" (62849)
-
-1. Acquisition of "Healing Plants" (62842) is documented under "Healing Plants" (62842); obtain another copy if needed.
-2. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
+1. Acquisition of "Healing Plants" (62842) is documented under "Runed Skull" (62838); obtain another copy if needed.
 
 ### "Mind Crystal" (62846)
 
 1. Acquisition of "Runed Skull" (62838) is documented under "Runed Skull" (62838); obtain another copy if needed.
-2. Acquisition of "Niera's Healing Notes" (62849) is documented under "Niera's Healing Notes" (62849); obtain another copy if needed.
-3. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
-4. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
-5. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
-6. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
-7. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Mind Crystal" (62846).
+2. Acquisition of "Healing Plants" (62842) is documented under "Runed Skull" (62838); obtain another copy if needed.
+3. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
+4. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
+5. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
+6. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
+7. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
+8. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Mind Crystal" (62846).
+
+### "Wrapped Mangled Head" (62848)
+
+1. Acquisition of "Wrapped Mangled Head" (62848) is documented under "Runed Skull" (62838); obtain another copy if needed.
+
+### "Niera's Healing Notes" (62849)
+
+1. Acquisition of "Niera's Healing Notes" (62849) is documented under "Mind Crystal" (62846); obtain another copy if needed.
+
+### "Living Brambles Seed" (62850)
+
+1. Acquisition of "Red Dogwood Seed" (62844) is documented under "Mind Crystal" (62846); obtain another copy if needed.
+2. Acquisition of "Living Brambles Seed" (62845) is documented under "Mind Crystal" (62846); obtain another copy if needed.
+3. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62850).
 
 ### "Clear Mind Crystal" (62857)
 
@@ -88,7 +93,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 13. freportw/"Shana Liskia", hand "Full Padded Bag" (62854). Gives "Bowl of Foul-smelling Liquid" (62855).
 14. Spawns "Noc Juggernaut" (280091) in `natimbi` on event spawn:280090.
 15. Loot "Energized Noc Blood" (62889) from "Noc Juggernaut".
-16. 1 alternative loot source(s) also yield Energized Noc Blood (62889).
+16. Alternative: Loot "Energized Noc Blood" (62889) from "Noc Juggernaut" (NPC 280091) in `natimbi`; trigger: natimbi/"Druid 1 5", on event death_complete:280069.
 17. Forage "Emerald Moss" (62856) in `emeraldjungle`.
 18. Acquisition of "Mind Crystal" (62846) is documented under "Mind Crystal" (62846); obtain another copy if needed.
 19. Combine in "Bowl of Foul-smelling Liquid" (62855): "Energized Noc Blood" (62889), "Emerald Moss" (62856), "Mind Crystal" (62846). Produces "Clear Mind Crystal" (62857). The combine does not fail.
@@ -112,13 +117,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 15. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901), "Aerated Pot Sketch" (62858). Produces "Aerated Pot Shell" (62860). Requires Pottery, trivial 68.
 16. Combine in Kiln (22): "Chunk of Energized Clay" (62859), "Aerated Pot Shell" (62860). Produces "Reinforced Aerated Pot" (62861). Requires Pottery, trivial 100. The combine does not fail.
 
-### "Living Brambles Seed" (62850)
-
-1. Acquisition of "Red Dogwood Seed" (62844) is documented under "Mind Crystal" (62846); obtain another copy if needed.
-2. Acquisition of "Living Brambles Seed" (62845) is documented under "Mind Crystal" (62846); obtain another copy if needed.
-3. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62850).
-
-### "Wrapped Cloth Bag" (62882)
+### "Staff of Living Brambles" (62863)
 
 1. Acquisition of "Reinforced Aerated Pot" (62861) is documented under "Reinforced Aerated Pot" (62861); obtain another copy if needed.
 2. Acquisition of "Living Brambles Seed" (62850) is documented under "Living Brambles Seed" (62850); obtain another copy if needed.
@@ -126,27 +125,27 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 4. Kill kithicor/"Blackened Tree Limb". Spawns "Blackened Dryad" (20301).
 5. Loot "Blackened Earth" (62862) from "Blackened Dryad".
 6. Combine in "Reinforced Aerated Pot" (62861): "Living Brambles Seed" (62850), "Clear Mind Crystal" (62857), "Blackened Earth" (62862). Produces "Staff of Living Brambles" (62863). The combine does not fail.
-7. abysmal/"Reyfin Malakwa", say "Hail". Gives "Ragged Cloth Bag" (62881).
-8. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Threadbare Cloth Bag" (62890).
-9. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Undamaged Noc Fang" (62864).
-10. Combine in "Threadbare Cloth Bag" (62890): "Undamaged Noc Fang" (62864). Produces "Closed Cloth Bag" (62891). The combine does not fail.
-11. qinimi/"A Broken Ritesdancer", hand "Closed Cloth Bag" (62891). Gives "Rune Fragment" (62867).
-12. Forage "Rune Fragment" (62866) in `barindu`.
-13. Forage "Rune Fragment" (62866) in `ferubi`.
-14. Forage "Rune Fragment" (62866) in `riwwi`.
-15. Forage "Rune Fragment" (62865) in `barindu`.
-16. Forage "Rune Fragment" (62865) in `ferubi`.
-17. Forage "Rune Fragment" (62865) in `riwwi`.
-18. Combine in "Ragged Cloth Bag" (62881): "Rune Fragment" (62867), "Rune Fragment" (62866), "Rune Fragment" (62865). Produces "Wrapped Cloth Bag" (62882). The combine does not fail.
 
 ### "Rune of Yuisaha" (62868)
 
-1. Acquisition of "Wrapped Cloth Bag" (62882) is documented under "Wrapped Cloth Bag" (62882); obtain another copy if needed.
-2. abysmal/"Reyfin Malakwa", hand "Wrapped Cloth Bag" (62882). Gives "Rune of Yuisaha" (62868).
+1. Acquisition of "Staff of Living Brambles" (62863) is documented under "Staff of Living Brambles" (62863); obtain another copy if needed.
+2. abysmal/"Reyfin Malakwa", say "Hail". Gives "Ragged Cloth Bag" (62881).
+3. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Threadbare Cloth Bag" (62890).
+4. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Undamaged Noc Fang" (62864).
+5. Combine in "Threadbare Cloth Bag" (62890): "Undamaged Noc Fang" (62864). Produces "Closed Cloth Bag" (62891). The combine does not fail.
+6. qinimi/"A Broken Ritesdancer", hand "Closed Cloth Bag" (62891). Gives "Rune Fragment" (62867).
+7. Forage "Rune Fragment" (62866) in `barindu`.
+8. Forage "Rune Fragment" (62866) in `ferubi`.
+9. Forage "Rune Fragment" (62866) in `riwwi`.
+10. Forage "Rune Fragment" (62865) in `barindu`.
+11. Forage "Rune Fragment" (62865) in `ferubi`.
+12. Forage "Rune Fragment" (62865) in `riwwi`.
+13. Combine in "Ragged Cloth Bag" (62881): "Rune Fragment" (62867), "Rune Fragment" (62866), "Rune Fragment" (62865). Produces "Wrapped Cloth Bag" (62882). The combine does not fail.
+14. abysmal/"Reyfin Malakwa", hand "Wrapped Cloth Bag" (62882). Gives "Rune of Yuisaha" (62868).
 
-### "Synched Leather Bag" (62885)
+### "Insulated Container" (62876)
 
-1. Acquisition of "Wrapped Cloth Bag" (62882) is documented under "Wrapped Cloth Bag" (62882); obtain another copy if needed.
+1. Acquisition of "Wrapped Cloth Bag" (62882) is documented under "Rune of Yuisaha" (62868); obtain another copy if needed.
 2. abysmal/"Reyfin Malakwa", hand "Wrapped Cloth Bag" (62882). Sets `druid_epic` to `10`.
 3. nedaria/"Historian Finrazel", say "Plan To Find". Requires `druid_epic` ==10. Gives "Thick Leather Bag" (62884).
 4. Kill wallofslaughter/"A Nervous Guardian". Spawns "Lightning Lord" (300098).
@@ -157,27 +156,32 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 9. Spawns "Tranlinor the Maimed" (302086) in `draniksscar` on enter.
 10. Loot "Wind Shard" (62873) from "Tranlinor the Maimed".
 11. Combine in "Thick Leather Bag" (62884): "Rain Shard" (62872), "Frost Shard" (62871), "Spirit Shard" (62870), "Wind Shard" (62873). Produces "Synched Leather Bag" (62885). The combine does not fail.
+12. abysmal/"Reyfin Malakwa", hand "Synched Leather Bag" (62885). Sets `druid_epic` to `12`.
+13. abysmal/"Silanda Leafdew", hand "Synched Leather Bag" (62885). Requires `druid_epic` set. Requires `druid_epic` ==12. Gives "Insulated Container Sketch" (62875).
+14. Loot "Faded-Glyph Tablet" (60224) from "Pixtt Condemner" in `ikkinz`.
+15. Loot "Runed Glyph: Aktek" (60221) from "Visionary of Glory" in `ikkinz`.
+16. Loot "Runed Glyph: Fexika" (60222) from "Visionary of Glory" in `ikkinz`.
+17. Loot "Runed Glyph: Niliktek" (60223) from "Visionary of Glory" in `ikkinz`.
+18. Combine in "Faded-Glyph Tablet" (60224): "Runed Glyph: Aktek" (60221), "Runed Glyph: Fexika" (60222), "Runed Glyph: Niliktek" (60223). Produces "Axtekilitek" (60225). Requires Research, trivial 100. The combine does not fail.
+19. Loot "Runed Glyph: Kruxek" (60226) from "Sentinel of Glorification" in `ikkinz`.
+20. Combine in "Faded-Glyph Tablet" (60224): "Axtekilitek" (60225), "Runed Glyph: Kruxek" (60226). Produces "Kruxilitek" (60227). Requires Research, trivial 100. The combine does not fail.
+21. Hand "Kruxilitek" (60227) to ikkinz/"Guardian Of Glorification". Spawns "Guardian of Glorification" (294582). Loot "Chunk of Broken Ancient Stone Worker" (58026) from "Guardian of Glorification".
+22. Alternative: Loot "Chunk of Broken Ancient Stone Worker" (58026) from "Guardian of Glorification" (NPC 294583) in `ikkinz`; trigger: ikkinz/"Guardian Of Glorification", on event_hp.
+23. Alternative: Loot "Chunk of Broken Ancient Stone Worker" (58026) from "A Clay Monolith" (NPC 296002) in `inktuta`; trigger: inktuta/"Zone Status", say "Spawn Golems".
+24. Alternative: Loot "Chunk of Broken Ancient Stone Worker" (58026) from "A Clay Monolith" (NPC 296049) in `inktuta`; trigger: inktuta/"Zone Status", say "Spawn Golems".
+25. Alternative: Loot "Chunk of Broken Ancient Stone Worker" (58026) from "A Clay Monolith" (NPC 296050) in `inktuta`; trigger: inktuta/"Zone Status", say "Spawn Golems".
+26. Alternative: Loot "Chunk of Broken Ancient Stone Worker" (58026) from "A Clay Monolith" (NPC 296051) in `inktuta`; trigger: inktuta/"Zone Status", say "Spawn Golems".
+27. Alternative: Loot "Chunk of Broken Ancient Stone Worker" (58026) from "A Freed Rockbearer" (NPC 291131) in `yxtta`; trigger: yxtta/"Player", say "Stone Attack".
+28. abysmal/"Hiloan O-Yviania", hand "Chunk of Broken Ancient Stone Worker" (58026). Gives "Clump of Refined Ancient Taelosian Clay" (58031).
+29. Combine in Kiln (22): "Insulated Container Sketch" (62875), "Clump of Refined Ancient Taelosian Clay" (58031). Produces "Insulated Container" (62876). Requires Pottery 100. The combine does not fail.
 
-### "Insulated Container" (62876)
+### "Wrapped Cloth Bag" (62882)
 
-1. Acquisition of "Synched Leather Bag" (62885) is documented under "Synched Leather Bag" (62885); obtain another copy if needed.
-2. abysmal/"Reyfin Malakwa", hand "Synched Leather Bag" (62885). Sets `druid_epic` to `12`.
-3. abysmal/"Silanda Leafdew", hand "Synched Leather Bag" (62885). Requires `druid_epic` set. Requires `druid_epic` ==12. Gives "Insulated Container Sketch" (62875).
-4. Loot "Faded-Glyph Tablet" (60224) from "Pixtt Condemner" in `ikkinz`.
-5. Loot "Runed Glyph: Aktek" (60221) from "Visionary of Glory" in `ikkinz`.
-6. Loot "Runed Glyph: Fexika" (60222) from "Visionary of Glory" in `ikkinz`.
-7. Loot "Runed Glyph: Niliktek" (60223) from "Visionary of Glory" in `ikkinz`.
-8. Combine in "Faded-Glyph Tablet" (60224): "Runed Glyph: Aktek" (60221), "Runed Glyph: Fexika" (60222), "Runed Glyph: Niliktek" (60223). Produces "Axtekilitek" (60225). Requires Research, trivial 100. The combine does not fail.
-9. Loot "Runed Glyph: Kruxek" (60226) from "Sentinel of Glorification" in `ikkinz`.
-10. Combine in "Faded-Glyph Tablet" (60224): "Axtekilitek" (60225), "Runed Glyph: Kruxek" (60226). Produces "Kruxilitek" (60227). Requires Research, trivial 100. The combine does not fail.
-11. Hand "Kruxilitek" (60227) to ikkinz/"Guardian Of Glorification". Spawns "Guardian of Glorification" (294582). Loot "Chunk of Broken Ancient Stone Worker" (58026) from "Guardian of Glorification".
-12. 6 alternative loot source(s) also yield Chunk of Broken Ancient Stone Worker (58026).
-13. abysmal/"Hiloan O-Yviania", hand "Chunk of Broken Ancient Stone Worker" (58026). Gives "Clump of Refined Ancient Taelosian Clay" (58031).
-14. Combine in Kiln (22): "Insulated Container Sketch" (62875), "Clump of Refined Ancient Taelosian Clay" (58031). Produces "Insulated Container" (62876). Requires Pottery 100. The combine does not fail.
+1. Acquisition of "Wrapped Cloth Bag" (62882) is documented under "Rune of Yuisaha" (62868); obtain another copy if needed.
 
-### "Staff of Living Brambles" (62863)
+### "Synched Leather Bag" (62885)
 
-1. Acquisition of "Staff of Living Brambles" (62863) is documented under "Wrapped Cloth Bag" (62882); obtain another copy if needed.
+1. Acquisition of "Synched Leather Bag" (62885) is documented under "Insulated Container" (62876); obtain another copy if needed.
 
 ## `druid_epic`
 

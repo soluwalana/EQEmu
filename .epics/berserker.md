@@ -8,7 +8,36 @@ Flags with writes: `berserk_epic`.
 
 Shared acquisition steps appear in the first prerequisite chain that needs them. Later sections reference that chain rather than repeating it.
 
-### "Kerasian Axe of Ire" (68299)
+### "Raging Soul Shard" (11999)
+
+1. sebilis/"Berserkerepic 1 5", say "Protector Timer". Gives "Taelosian Alloy Blood Axe" (18976).
+2. sebilis/"Berserkerepic 1 5", say "Protector Timer". Gives "Broken Trial Taelosian Blood Axe" (17833).
+3. sebilis/"Berserkerepic 1 5", say "Protector Timer". Gives "Damaged Trial Taelosian Blood Axe" (17898).
+4. sebilis/"Berserkerepic 1 5", say "Protector Timer". Gives "Damaged Trial Taelosian Blood Axe" (17399).
+5. lakeofillomen/"Keras Mcarik", hand "Damaged Trial Taelosian Blood Axe" (17399) + "Broken Trial Taelosian Blood Axe" (17833) + "Damaged Trial Taelosian Blood Axe" (17898) + "Taelosian Alloy Blood Axe" (18976). Sets `berserk_epic` to `5`.
+6. abysmal/"Teekan Opousbabolaoi", hand "Raging Soul Shard" (11999) + "Taelosian Alloy Blood Axe" (18976). Sets `berserk_epic` to `7`.
+7. Unresolved cyclic prerequisite: `berserk_epic` >=7.
+8. lakeofillomen/"Keras Mcarik", say "Find Out". Sets `berserk_epic` to `8`.
+9. halas/"Shanis Macdarren", say "Hail". Requires `berserk_epic` >=1. Requires `berserk_epic` set. Gives "Raging Soul Shard" (11999).
+
+### "Julei's Twilight Pendant" (17200)
+
+1. hole/"Julei Direaxe", say "Hail". Requires `berserk_epic` ==8. Gives "Julei's Twilight Pendant" (17200).
+
+### "Unhoned Vengeful Taelosian Blood Axe" (20072)
+
+1. Loot "Lightning Core" (72029) from "A Lightning Warrior Stormer" (NPC 317083) in `anguish`. Drop cache: 0.5% chance per kill.
+2. Acquisition of "Taelosian Alloy Blood Axe" (18976) is documented under "Raging Soul Shard" (11999); obtain another copy if needed.
+3. Acquisition of "Raging Soul Shard" (11999) is documented under "Raging Soul Shard" (11999); obtain another copy if needed.
+4. abysmal/"Teekan Opousbabolaoi", hand "Raging Soul Shard" (11999) + "Taelosian Alloy Blood Axe" (18976). Requires `berserk_epic` ==5. Gives "Raging Taelosian Alloy Axe" (18398).
+5. causeway/"Bazu Smasher", on event combat.
+6. Starts timer `wipecheck`.
+7. Spawns "Bazu Smasher" (303081) after `causeway/bazu smasher#timer:wipecheck`.
+8. Loot "Faceted Moonstone" (17349) from "Bazu Smasher".
+9. Loot "Shadowed Bronze Lump" (17137) from "An Ancient Necromantic Shade" in `griegsend`.
+10. lakeofillomen/"Keras Mcarik", hand "Shadowed Bronze Lump" (17137) + "Faceted Moonstone" (17349) + "Raging Taelosian Alloy Axe" (18398) + "Lightning Core" (72029). Gives "Unhoned Vengeful Taelosian Blood Axe" (20072).
+
+### "Medal of Mastery" (60210)
 
 1. Loot "Treanik's Tarnished Axe" (60200) at cauldron/"Praklion Of The Cauldron", on event_hp.
 2. cauldron/"Treanik Ireblade", hand "Treanik's Tarnished Axe" (60200). Gives "Bone Trinket" (60201).
@@ -40,42 +69,13 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 28. Combine in "Medicine Bag" (17901): "Handful of Prism Grains" (95922), "Heliotrope" (14242), "Yebamante" (16510), "Blade Leaf" (22143), "Simple Potion Vial" (95843). Produces "Philter of Major Translocation" (96467). Requires Alchemy, trivial 131.
 29. Combine in "McArik Reagent Satchel" (60205): "Decaying Liver" (60206), "Gnashing Kobold Paw" (60207), "Scent Gland" (60208), "Philter of Major Translocation" (96467). Produces "Bag of Image Essence Dust" (60209). The combine does not fail.
 30. lakeofillomen/"Keras Mcarik", hand "Medal of Hunting" (60204) + "Bag of Image Essence Dust" (60209). Gives "Medal of Mastery" (60210).
-31. Spawns "Raving Goblinmaster - KOS" (79126) in `warslikswood` on event_waypoint_arrive.
-32. Loot "Maniac's Garbled Tome" (60211) from "Raving Goblinmaster - KOS".
-33. lakeofillomen/"Keras Mcarik", hand "Medal of Mastery" (60210) + "Maniac's Garbled Tome" (60211). Gives "Kerasian Axe of Ire" (68299).
 
-### "Medal of Mastery" (60210)
+### "Kerasian Axe of Ire" (68299)
 
-1. Acquisition of "Medal of Mastery" (60210) is documented under "Kerasian Axe of Ire" (68299); obtain another copy if needed.
-
-### "Raging Soul Shard" (11999)
-
-1. sebilis/"Berserkerepic 1 5", say "Protector Timer". Gives "Taelosian Alloy Blood Axe" (18976).
-2. sebilis/"Berserkerepic 1 5", say "Protector Timer". Gives "Broken Trial Taelosian Blood Axe" (17833).
-3. sebilis/"Berserkerepic 1 5", say "Protector Timer". Gives "Damaged Trial Taelosian Blood Axe" (17898).
-4. sebilis/"Berserkerepic 1 5", say "Protector Timer". Gives "Damaged Trial Taelosian Blood Axe" (17399).
-5. lakeofillomen/"Keras Mcarik", hand "Damaged Trial Taelosian Blood Axe" (17399) + "Broken Trial Taelosian Blood Axe" (17833) + "Damaged Trial Taelosian Blood Axe" (17898) + "Taelosian Alloy Blood Axe" (18976). Sets `berserk_epic` to `5`.
-6. abysmal/"Teekan Opousbabolaoi", hand "Raging Soul Shard" (11999) + "Taelosian Alloy Blood Axe" (18976). Sets `berserk_epic` to `7`.
-7. Unresolved cyclic prerequisite: `berserk_epic` >=7.
-8. lakeofillomen/"Keras Mcarik", say "Find Out". Sets `berserk_epic` to `8`.
-9. halas/"Shanis Macdarren", say "Hail". Requires `berserk_epic` >=1. Requires `berserk_epic` set. Gives "Raging Soul Shard" (11999).
-
-### "Julei's Twilight Pendant" (17200)
-
-1. hole/"Julei Direaxe", say "Hail". Requires `berserk_epic` ==8. Gives "Julei's Twilight Pendant" (17200).
-
-### "Unhoned Vengeful Taelosian Blood Axe" (20072)
-
-1. Loot "Lightning Core" (72029) from "A Lightning Warrior Stormer" (NPC 317083) in `anguish`. Drop cache: 0.5% chance per kill.
-2. Acquisition of "Taelosian Alloy Blood Axe" (18976) is documented under "Raging Soul Shard" (11999); obtain another copy if needed.
-3. Acquisition of "Raging Soul Shard" (11999) is documented under "Raging Soul Shard" (11999); obtain another copy if needed.
-4. abysmal/"Teekan Opousbabolaoi", hand "Raging Soul Shard" (11999) + "Taelosian Alloy Blood Axe" (18976). Requires `berserk_epic` ==5. Gives "Raging Taelosian Alloy Axe" (18398).
-5. causeway/"Bazu Smasher", on event combat.
-6. Starts timer `wipecheck`.
-7. Spawns "Bazu Smasher" (303081) after `causeway/bazu smasher#timer:wipecheck`.
-8. Loot "Faceted Moonstone" (17349) from "Bazu Smasher".
-9. Loot "Shadowed Bronze Lump" (17137) from "An Ancient Necromantic Shade" in `griegsend`.
-10. lakeofillomen/"Keras Mcarik", hand "Shadowed Bronze Lump" (17137) + "Faceted Moonstone" (17349) + "Raging Taelosian Alloy Axe" (18398) + "Lightning Core" (72029). Gives "Unhoned Vengeful Taelosian Blood Axe" (20072).
+1. Acquisition of "Medal of Mastery" (60210) is documented under "Medal of Mastery" (60210); obtain another copy if needed.
+2. Spawns "Raving Goblinmaster - KOS" (79126) in `warslikswood` on event_waypoint_arrive.
+3. Loot "Maniac's Garbled Tome" (60211) from "Raving Goblinmaster - KOS".
+4. lakeofillomen/"Keras Mcarik", hand "Medal of Mastery" (60210) + "Maniac's Garbled Tome" (60211). Gives "Kerasian Axe of Ire" (68299).
 
 ## `berserk_epic`
 
@@ -317,7 +317,10 @@ How the items are reached:
   - Say "Check Lorb" to anguish/"Zone Status".
   - Spawns "Orb of Discordant Energy" (317087).
   - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-  - 4 alternative loot source(s) also yield Globe of Discordant Energy (47100).
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
 
 ### Steps on `berserk_epic` that do not change it
 

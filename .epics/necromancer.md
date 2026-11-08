@@ -8,7 +8,7 @@ Flags with writes: `NecroPre`, `Soulwhisper`, `necro_epic`.
 
 Shared acquisition steps appear in the first prerequisite chain that needs them. Later sections reference that chain rather than repeating it.
 
-### "Scythe of the Shadowed Soul" (20544)
+### "Orb of Deathspeaking" (15784)
 
 1. Loot "Silver Disc" (20938) from "An Azarack" in `airplane`.
 2. Loot "Spiroc Feathers" (20782) from "An Avenging Gazer" (NPC 71027) in `airplane`. Drop cache: 10.63% chance per kill.
@@ -28,43 +28,43 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 16. lakerathe/"Kazen Fecae", hand "Prepared Reagent Box" (20653). Gives "Tome of Instruction" (18087).
 17. airplane/"Gkzzallk", hand "Tome of Instruction" (18087). Gives "Gkzzallk in a Box" (20652).
 18. lakerathe/"Kazen Fecae", hand "Gkzzallk in a Box" (20652). Gives "Scythe of the Shadowed Soul" (20544).
+19. lakerathe/"Kazen Fecae", say "Hail". Requires `Soulwhisper` unset. Gives "Note to Biddliss" (9831).
+20. steamfont/"Biddliss Sperandu", hand "Note to Biddliss" (9831). Gives "Gleaming Ore Satchel" (9579).
+21. Loot "Old Waterlogged Lute" (59025) from "A Shady Treasure Sorter" in `dulak`.
+22. Hand "Old Waterlogged Lute" (59025) to torgiran/"A Crazed Miner". Spawns "a crazed miner (KOS)" (226021). Loot "Gleaming Zraxthril Ore" (54006) from "a crazed miner (KOS)".
+23. Alternative: Loot "Gleaming Zraxthril Ore" (54006) from "a Broken Skull hoarder" (NPC 226210) in `torgiran`; trigger: torgiran/"The Room", on event_signal.
+24. Combine in "Gleaming Ore Satchel" (9579): "Gleaming Zraxthril Ore" (54006). Produces "Sealed Ore Satchel" (27982). The combine does not fail. The recipe must be learned first.
+25. steamfont/"Biddliss Sperandu", hand "Sealed Ore Satchel" (27982). Gives "Biddliss's Research Tools" (21799).
+26. lakerathe/"Kazen Fecae", hand "Biddliss's Research Tools" (21799). Gives "Drawing of Rune" (22691).
+27. poknowledge/"Ruandia", hand "Drawing of Rune" (22691). Gives "Ruandia's Instructions" (10138).
+28. poknowledge/"Tebarin", hand "Ruandia's Instructions" (10138). Gives "Intricately Carved Box" (16689).
+29. Spawns "An Earthern Crusader" (218027) in `poeartha` on event_combat.
+30. Loot "Ball of Elemental Clay" (21720) from "An Earthern Crusader".
+31. Alternative: Loot "Ball of Elemental Clay" (21720) from "A Dust Devotee" (NPC 218064) in `poeartha`; trigger: poeartha/"Rings", on event death_complete:218022.
+32. Combine in "Intricately Carved Box" (16689): "Ball of Elemental Clay" (21720). Produces "Sealed Intricately Carved Box" (27282). The combine does not fail. The recipe must be learned first.
+33. poknowledge/"Tebarin", hand "Sealed Intricately Carved Box" (27282). Gives "Strange Smelling Oil" (16799).
+34. Loot "Ancient Tome of Lost Lore" (62285) from "An Old Gargoyle" in `hole`.
+35. Combine in "Intricately Carved Box" (16689): "Strange Smelling Oil" (16799), "Ancient Tome of Lost Lore" (62285). Produces "Protected Tome" (16759). The combine does not fail. The recipe must be learned first.
+36. poknowledge/"Tebarin", hand "Protected Tome" (16759). Gives "Brightly Glowing Tome" (9834).
+37. poknowledge/"Tebarin", hand "Brightly Glowing Tome" (9834). Gives "Rune Covered Insert" (11406).
+38. Loot "Gnarled Wood" (12081) from "A Gnarled Treant" in `ponightmare`.
+39. Loot "Elaborate Hinge" (15835) from "A Scrap Collector" in `poinnovation`.
+40. Combine in Forge (17): "Rune Covered Insert" (11406), "Gnarled Wood" (12081), "Elaborate Hinge" (15835). Produces "Glowing Box of Protection" (13620). Requires Blacksmithing 100. The combine does not fail. The recipe must be learned first.
+41. poknowledge/"Tebarin", hand "Glowing Box of Protection" (13620). Gives "Paladin Headhunting Satchel" (11517).
+42. Loot "Sir Gregon's Head" (11430) from "Sir Gregon Sulltor" in `eastkarana`.
+43. Loot "Sir Gerwin's Head" (14344) from "Sir Gerwin Thunderblade" in `northkarana`.
+44. Loot "Sir Telian's Head" (22892) from "Sir Telian Mottsworth" in `southkarana`.
+45. Loot "Sir Arlindo's Head" (26896) from "Sir Arlindo Goldheart" in `qey2hh1`.
+46. Combine in "Paladin Headhunting Satchel" (11517): "Sir Gregon's Head" (11430), "Sir Gerwin's Head" (14344), "Sir Telian's Head" (22892), "Sir Arlindo's Head" (26896). Produces "Full Paladin Headhunting Satchel" (24630). The combine does not fail.
+47. poknowledge/"Tebarin", hand "Full Paladin Headhunting Satchel" (24630). Gives "Orb of Deathspeaking" (15784).
 
-### "Orb of Deathspeaking" (15784)
+### "Scythe of the Shadowed Soul" (20544)
 
-1. Acquisition of "Scythe of the Shadowed Soul" (20544) is documented under "Scythe of the Shadowed Soul" (20544); obtain another copy if needed.
-2. lakerathe/"Kazen Fecae", say "Hail". Requires `Soulwhisper` unset. Gives "Note to Biddliss" (9831).
-3. steamfont/"Biddliss Sperandu", hand "Note to Biddliss" (9831). Gives "Gleaming Ore Satchel" (9579).
-4. Loot "Old Waterlogged Lute" (59025) from "A Shady Treasure Sorter" in `dulak`.
-5. Hand "Old Waterlogged Lute" (59025) to torgiran/"A Crazed Miner". Spawns "a crazed miner (KOS)" (226021). Loot "Gleaming Zraxthril Ore" (54006) from "a crazed miner (KOS)".
-6. 1 alternative loot source(s) also yield Gleaming Zraxthril Ore (54006).
-7. Combine in "Gleaming Ore Satchel" (9579): "Gleaming Zraxthril Ore" (54006). Produces "Sealed Ore Satchel" (27982). The combine does not fail. The recipe must be learned first.
-8. steamfont/"Biddliss Sperandu", hand "Sealed Ore Satchel" (27982). Gives "Biddliss's Research Tools" (21799).
-9. lakerathe/"Kazen Fecae", hand "Biddliss's Research Tools" (21799). Gives "Drawing of Rune" (22691).
-10. poknowledge/"Ruandia", hand "Drawing of Rune" (22691). Gives "Ruandia's Instructions" (10138).
-11. poknowledge/"Tebarin", hand "Ruandia's Instructions" (10138). Gives "Intricately Carved Box" (16689).
-12. Spawns "An Earthern Crusader" (218027) in `poeartha` on event_combat.
-13. Loot "Ball of Elemental Clay" (21720) from "An Earthern Crusader".
-14. 1 alternative loot source(s) also yield Ball of Elemental Clay (21720).
-15. Combine in "Intricately Carved Box" (16689): "Ball of Elemental Clay" (21720). Produces "Sealed Intricately Carved Box" (27282). The combine does not fail. The recipe must be learned first.
-16. poknowledge/"Tebarin", hand "Sealed Intricately Carved Box" (27282). Gives "Strange Smelling Oil" (16799).
-17. Loot "Ancient Tome of Lost Lore" (62285) from "An Old Gargoyle" in `hole`.
-18. Combine in "Intricately Carved Box" (16689): "Strange Smelling Oil" (16799), "Ancient Tome of Lost Lore" (62285). Produces "Protected Tome" (16759). The combine does not fail. The recipe must be learned first.
-19. poknowledge/"Tebarin", hand "Protected Tome" (16759). Gives "Brightly Glowing Tome" (9834).
-20. poknowledge/"Tebarin", hand "Brightly Glowing Tome" (9834). Gives "Rune Covered Insert" (11406).
-21. Loot "Gnarled Wood" (12081) from "A Gnarled Treant" in `ponightmare`.
-22. Loot "Elaborate Hinge" (15835) from "A Scrap Collector" in `poinnovation`.
-23. Combine in Forge (17): "Rune Covered Insert" (11406), "Gnarled Wood" (12081), "Elaborate Hinge" (15835). Produces "Glowing Box of Protection" (13620). Requires Blacksmithing 100. The combine does not fail. The recipe must be learned first.
-24. poknowledge/"Tebarin", hand "Glowing Box of Protection" (13620). Gives "Paladin Headhunting Satchel" (11517).
-25. Loot "Sir Gregon's Head" (11430) from "Sir Gregon Sulltor" in `eastkarana`.
-26. Loot "Sir Gerwin's Head" (14344) from "Sir Gerwin Thunderblade" in `northkarana`.
-27. Loot "Sir Telian's Head" (22892) from "Sir Telian Mottsworth" in `southkarana`.
-28. Loot "Sir Arlindo's Head" (26896) from "Sir Arlindo Goldheart" in `qey2hh1`.
-29. Combine in "Paladin Headhunting Satchel" (11517): "Sir Gregon's Head" (11430), "Sir Gerwin's Head" (14344), "Sir Telian's Head" (22892), "Sir Arlindo's Head" (26896). Produces "Full Paladin Headhunting Satchel" (24630). The combine does not fail.
-30. poknowledge/"Tebarin", hand "Full Paladin Headhunting Satchel" (24630). Gives "Orb of Deathspeaking" (15784).
+1. Acquisition of "Scythe of the Shadowed Soul" (20544) is documented under "Orb of Deathspeaking" (15784); obtain another copy if needed.
 
 ### "Soulwhisper" (62581)
 
-1. Acquisition of "Scythe of the Shadowed Soul" (20544) is documented under "Scythe of the Shadowed Soul" (20544); obtain another copy if needed.
+1. Acquisition of "Scythe of the Shadowed Soul" (20544) is documented under "Orb of Deathspeaking" (15784); obtain another copy if needed.
 2. lakerathe/"Kazen Fecae", say "Hail". Sets `Soulwhisper` to `1`.
 3. Acquisition of "Orb of Deathspeaking" (15784) is documented under "Orb of Deathspeaking" (15784); obtain another copy if needed.
 4. natimbi/"Whiahdi", say "I Want The Staff". Sets `Soulwhisper` to `2`.
@@ -362,7 +362,10 @@ How the items are reached:
   - Say "Check Lorb" to anguish/"Zone Status".
   - Spawns "Orb of Discordant Energy" (317087).
   - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-  - 4 alternative loot source(s) also yield Globe of Discordant Energy (47100).
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
 - Soulwhisper (62581)
   - Prerequisite: "Soulwhisper" (62581). See section 0.
 

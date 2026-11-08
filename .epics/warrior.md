@@ -64,6 +64,48 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 34. draniksscar/"Korbuk Brimblade", hand "Blackfall Ore" (60301). Requires `warrior_epic` >=2. Gives "Smelting Plans" (60302).
 35. nedaria/"Korezna Orecleaver", hand "Blackfall Ore" (60301) + "Smelting Plans" (60302). Requires `warrior_epic_korezna` ==2. Gives "Blackfall Blade" (60303).
 
+### "Gemming Tool" (60316)
+
+1. **Broken:** nothing in the graph gives, loots, spawns, or combines Notice to Cease and Desist (9590).
+2. Hand "Notice to Cease and Desist" (9590) to freeporteast/"Lythe Songbird". Spawns "a Freeport guard" (382255). Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard".
+3. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+4. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freportw`; trigger: freportw/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+5. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freportw`; trigger: freportw/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+6. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a minion of Meldrath" (NPC 56173) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "We Shall Never Surrender".
+7. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "Meldrath's melded minions" (NPC 56174) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "Your Forces Are Deafeated".
+8. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "Arnold the Gnomeinator" (NPC 56175) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "You Shall Not Break Our Defense".
+9. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", on timer guard.
+10. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", on timer guard.
+11. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freportw`; trigger: freportw/"Lythe Songbird", on timer guard.
+12. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freportw`; trigger: freportw/"Lythe Songbird", on timer guard.
+13. Acquisition of "Water Flask" (13006) is documented under "Blackfall Blade" (60303); obtain another copy if needed.
+14. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
+15. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
+16. Common item: Gemming Mold (60317). Listed in 4 zones.
+17. Combine in Forge (17): "High Quality Metal Bits" (22230), "Water Flask" (13006), "Gemming Mold" (60317). Produces "Gemming Tool" (60316). Requires Blacksmithing, trivial 115.
+
+### "Nocturnal Mask of Acuity" (60309)
+
+1. Common item: Jeweler's Kit (17912). Listed in 33 zones.
+2. No quest step gives Darkened Star Rose Quartz (60308). The dump lists it in firiona, qeynos2.
+3. Summon "Enchanted Electrum Bar" (16505) by casting "Enchant Electrum", "Mass Enchant Electrum", "Greater Mass Enchant Electrum".
+4. Combine in "Jeweler's Kit" (17912): "Darkened Star Rose Quartz" (60308), "Enchanted Electrum Bar" (16505). Produces "Nocturnal Mask of Acuity" (60309). Requires Jewelry Making, trivial 103.
+
+### "Raging Sword of Eternal Power" (60329)
+
+1. global/"Global Player", combine recipe 19902. Sets `warrior_epic` to `21`.
+2. Acquisition of "Champion's Sword of Eternal Power" (60321) is documented under "Blackfall Blade" (60303); obtain another copy if needed.
+3. Loot "Kreljnok's Muddled Rage" (60322) from "Possessed Brute" in `provinggrounds`.
+4. draniksscar/"Korbuk Brimblade", hand "Kreljnok's Muddled Rage" (60322). Sets `warrior_epic` to `17`.
+5. Ground spawn of "Frozen Pestle" (60323) in `iceclad`.
+6. iceclad/"Fazzle Thumpkin", hand "Frozen Pestle" (60323). Sets `warrior_epic` to `18`.
+7. iceclad/"Fazzle Thumpkin", say "Map". Requires `warrior_epic` ==18. Gives "Fazzle's Map of East Wastes" (60324).
+8. Spawns "Larnik the Recluse" (116609) in `eastwastes` on enter.
+9. Loot "Larnik's Locked Purification Kit" (60325) from "Larnik the Recluse".
+10. draniksscar/"Korbuk Brimblade", hand "Larnik's Locked Purification Kit" (60325). Requires `warrior_epic` >=18. Gives "Larnik's Unlocked Purification Kit" (60326).
+11. Combine in "Larnik's Unlocked Purification Kit" (60326): "Kreljnok's Muddled Rage" (60322). Produces "Kreljnok's Focused Rage" (60327). The combine does not fail.
+12. draniksscar/"Korbuk Brimblade", hand "Champion's Sword of Eternal Power" (60321) + "Kreljnok's Focused Rage" (60327). Requires `warrior_epic` >=19. Gives "Raging Sword of Eternal Power" (60329).
+
 ### "Sealed Vial of Blackfall Blood" (60305)
 
 1. Kill vxed/"Blackfall Borerling". Spawns "Blackfall Borer" (290069).
@@ -74,50 +116,17 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 
 1. Acquisition of "Potion of Blackfall Spirit" (60306) is documented under "Blackfall Blade" (60303); obtain another copy if needed.
 
-### "Nocturnal Mask of Acuity" (60309)
-
-1. Common item: Jeweler's Kit (17912). Listed in 33 zones.
-2. No quest step gives Darkened Star Rose Quartz (60308). The dump lists it in firiona, qeynos2.
-3. Summon "Enchanted Electrum Bar" (16505) by casting "Enchant Electrum", "Mass Enchant Electrum", "Greater Mass Enchant Electrum".
-4. Combine in "Jeweler's Kit" (17912): "Darkened Star Rose Quartz" (60308), "Enchanted Electrum Bar" (16505). Produces "Nocturnal Mask of Acuity" (60309). Requires Jewelry Making, trivial 103.
-
 ### "Glistening Hilt" (60311)
 
 1. Acquisition of "Glistening Hilt" (60311) is documented under "Blackfall Blade" (60303); obtain another copy if needed.
 
-### "Gemming Tool" (60316)
+### "Kreljnok's Focused Rage" (60327)
 
-1. **Broken:** nothing in the graph gives, loots, spawns, or combines Notice to Cease and Desist (9590).
-2. Hand "Notice to Cease and Desist" (9590) to freeporteast/"Lythe Songbird". Spawns "a Freeport guard" (382255). Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard".
-3. 10 alternative loot source(s) also yield Fine Steel Two Handed Sword (5351).
-4. Acquisition of "Water Flask" (13006) is documented under "Blackfall Blade" (60303); obtain another copy if needed.
-5. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
-6. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
-7. Common item: Gemming Mold (60317). Listed in 4 zones.
-8. Combine in Forge (17): "High Quality Metal Bits" (22230), "Water Flask" (13006), "Gemming Mold" (60317). Produces "Gemming Tool" (60316). Requires Blacksmithing, trivial 115.
+1. Acquisition of "Kreljnok's Focused Rage" (60327) is documented under "Raging Sword of Eternal Power" (60329); obtain another copy if needed.
 
 ### "Hilt of Eternal Power" (60320)
 
 1. Acquisition of "Hilt of Eternal Power" (60320) is documented under "Blackfall Blade" (60303); obtain another copy if needed.
-
-### "Kreljnok's Focused Rage" (60327)
-
-1. Loot "Kreljnok's Muddled Rage" (60322) from "Possessed Brute" in `provinggrounds`.
-2. draniksscar/"Korbuk Brimblade", hand "Kreljnok's Muddled Rage" (60322). Sets `warrior_epic` to `17`.
-3. Ground spawn of "Frozen Pestle" (60323) in `iceclad`.
-4. iceclad/"Fazzle Thumpkin", hand "Frozen Pestle" (60323). Sets `warrior_epic` to `18`.
-5. iceclad/"Fazzle Thumpkin", say "Map". Requires `warrior_epic` ==18. Gives "Fazzle's Map of East Wastes" (60324).
-6. Spawns "Larnik the Recluse" (116609) in `eastwastes` on enter.
-7. Loot "Larnik's Locked Purification Kit" (60325) from "Larnik the Recluse".
-8. draniksscar/"Korbuk Brimblade", hand "Larnik's Locked Purification Kit" (60325). Requires `warrior_epic` >=18. Gives "Larnik's Unlocked Purification Kit" (60326).
-9. Combine in "Larnik's Unlocked Purification Kit" (60326): "Kreljnok's Muddled Rage" (60322). Produces "Kreljnok's Focused Rage" (60327). The combine does not fail.
-
-### "Raging Sword of Eternal Power" (60329)
-
-1. global/"Global Player", combine recipe 19902. Sets `warrior_epic` to `21`.
-2. Acquisition of "Champion's Sword of Eternal Power" (60321) is documented under "Blackfall Blade" (60303); obtain another copy if needed.
-3. Acquisition of "Kreljnok's Focused Rage" (60327) is documented under "Kreljnok's Focused Rage" (60327); obtain another copy if needed.
-4. draniksscar/"Korbuk Brimblade", hand "Champion's Sword of Eternal Power" (60321) + "Kreljnok's Focused Rage" (60327). Requires `warrior_epic` >=19. Gives "Raging Sword of Eternal Power" (60329).
 
 ## `warrior_pre`
 
@@ -661,7 +670,10 @@ How the items are reached:
   - Say "Check Lorb" to anguish/"Zone Status".
   - Spawns "Orb of Discordant Energy" (317087).
   - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-  - 4 alternative loot source(s) also yield Globe of Discordant Energy (47100).
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+  - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
 
 ### 20. korbuk brimblade — hand 60321+60327
 

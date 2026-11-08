@@ -8,69 +8,21 @@ Flags with writes: `beast_epic`, `bstepic`.
 
 Shared acquisition steps appear in the first prerequisite chain that needs them. Later sections reference that chain rather than repeating it.
 
-### "Decorated Statuette of the Feral" (57059)
-
-1. Common item: Large Sewing Kit (17880). Listed in 39 zones.
-2. Spawns "An Ukun Battlehound" (281128) in `qinimi` on event_signal.
-3. Loot "Ukun Hide" (67424) from "An Ukun Battlehound".
-4. Common item: Firing Sheet (16906). Listed in 34 zones.
-5. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-6. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-7. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-8. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-9. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-10. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-11. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-12. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-13. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-14. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-15. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-16. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-17. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-18. Common item: Celestial Solvent (9731). Listed in 13 zones.
-19. Loot "Fetid Skin" (13150) from "A Fetid Fiend" (NPC 72059) in `fearplane`. Drop cache: 35% chance per kill.
-20. Loot "Scare Straw" (13152) from "A Samhain" in `fearplane`.
-21. Loot "Turmoil Warts" (8331) from "A Turmoil Toad" in `fearplane`.
-22. Spawns "Grimling" (154129) in `acrylia` on event_spawn.
-23. Loot "Pearl" (10024) from "Grimling".
-24. 14 alternative loot source(s) also yield Pearl (10024).
-25. neriaka/"X-Ta Tompi", hand "Turmoil Warts" (8331) + "Pearl" (10024) + "Fetid Skin" (13150) + "Scare Straw" (13152). Gives "Words of Acquisition (Beza)" (11866).
-26. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-27. Common item: Jar of Acid (22133). Listed in 15 zones.
-28. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
-29. Combine in Brew Barrel (19): "Ukun Hide" (67424), "Acid Wash" (15987). Produces "Tanned Ukun Leather" (52932). Requires Brewing, trivial 100.
-30. Loot "Gem of the Void" (9053) from "Xi Xaui" (NPC 173047) in `maiden`. Drop cache: 6.52% chance per kill.
-31. Loot "Chunk of Dense Fungal Padding" (9054) from "A Deepspore Mushroom" (NPC 164041) in `thedeep`. Drop cache: 15.97% chance per kill.
-32. Spawns "A Boulder Fiend" (171063) in `thegrey` on enter.
-33. Loot "Perfect Acrylia Ore" (9052) from "A Boulder Fiend".
-34. 3 alternative loot source(s) also yield Perfect Acrylia Ore (9052).
-35. sharvahl/"Weapons Master Rahoul", hand "Perfect Acrylia Ore" (9052) + "Gem of the Void" (9053) + "Chunk of Dense Fungal Padding" (9054). Sets `beast_turnin` to `1`.
-36. sharvahl/"Weapons Master Rahoul", say "Adornments". Requires `beast_turnin` ==1. Gives "Adornments Pattern" (57056).
-37. Combine in "Large Sewing Kit" (17880): "Tanned Ukun Leather" (52932), "Adornments Pattern" (57056). Produces "Crafted Tassels" (52929). Requires Tailoring, trivial 100.
-38. sharvahl/"Weapons Master Rahoul", hand platinum:2000. Gives "Plain Beastlord Statuette" (52931).
-39. Combine in "Large Sewing Kit" (17880): "Crafted Tassels" (52929), "Plain Beastlord Statuette" (52931). Produces "Decorated Statuette of the Feral" (57059). Requires Tailoring, trivial 100.
-
 ### "Letter from Muada" (57008)
 
 1. cazicthule/"Ikpug Giblod", hand "Letter from Muada" (57008). Sets `beast_epic` to `5`.
 2. cazicthule/"Ikpug Giblod", say "Learning". Requires `beast_epic` ==5. Gives "Letter from Muada" (57008).
 
-### "Note to Irionu" (57996)
-
-1. Loot "Darkened Spirit Essence" (57009) from "Frantic Ravenous Beast" in `maiden`.
-2. Loot "Disturbed Beast Essence" (57995) from "A Ravenous Nightstalker" in `ponightmare`.
-3. sharvahl/"Elder Animist Muada", hand "Darkened Spirit Essence" (57009) + "Disturbed Beast Essence" (57995). Sets `beast_epic` to `7`.
-4. sharvahl/"Elder Animist Muada", say "Greater Calling". Requires `beast_epic` ==7. Gives "Note to Irionu" (57996).
-
-### "Sealed Note for Muada" (52900)
-
-1. Loot "Swirling Feral Essence" (57010) from "Delirious Drogmor" in `gunthak`.
-2. overthere/"Irionu Bastun", hand "Swirling Feral Essence" (57010). Gives "Sealed Note for Muada" (52900).
-
 ### "Ale" (13039)
 
-1. Acquisition of "Water Flask" (13006) is documented under "Decorated Statuette of the Feral" (57059); obtain another copy if needed.
-2. global/"Familiarbrewworks", hand "Water Flask" (13006). Gives "Ale" (13039).
+1. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+2. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+3. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+4. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+5. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+6. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+7. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+8. global/"Familiarbrewworks", hand "Water Flask" (13006). Gives "Ale" (13039).
 
 ### "Gift of the Sphinx" (52905)
 
@@ -89,7 +41,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 4. Hand "Request of the Elders" (52906) to draniksscar/"Yerika Sisslak". Spawns "Girplan Spiritleech" (302085). Loot "Rashara's Warder's Essence" (52907) from "Girplan Spiritleech".
 5. draniksscar/"Yerika Sisslak", hand "Rashara's Warder's Essence" (52907). Gives "Sealed Response to the Elders" (52908).
 
-### "Wrapped Discordant Totem of the Feral" (52914)
+### "Savage Lord's Totem" (52911)
 
 1. Acquisition of "Rashara's Warder's Essence" (52907) is documented under "Sealed Response to the Elders" (52908); obtain another copy if needed.
 2. Acquisition of "Sealed Response to the Elders" (52908) is documented under "Sealed Response to the Elders" (52908); obtain another copy if needed.
@@ -97,15 +49,20 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 4. sharvahl/"Elder Animist Muada", say "Stopped". Requires `beast_epic` ==16. Gives "Elder Cloak of Resilience" (52909).
 5. Hand "Elder Cloak of Resilience" (52909) to dranik/"Erana Farrel". Spawns "Discordling Dark Animist" (336126). Loot "Discordant Totem of the Feral" (52910) from "Discordling Dark Animist".
 6. dranik/"Erana Farrel", hand "Discordant Totem of the Feral" (52910). Gives "Wrapped Discordant Totem of the Feral" (52914).
+7. sharvahl/"Elder Animist Muada", hand "Wrapped Discordant Totem of the Feral" (52914). Gives "Savage Lord's Totem" (52911).
+
+### "Wrapped Discordant Totem of the Feral" (52914)
+
+1. Acquisition of "Wrapped Discordant Totem of the Feral" (52914) is documented under "Savage Lord's Totem" (52911); obtain another copy if needed.
 
 ### "Spiritbound Totem" (57027)
 
-1. Acquisition of "Wrapped Discordant Totem of the Feral" (52914) is documented under "Wrapped Discordant Totem of the Feral" (52914); obtain another copy if needed.
+1. Acquisition of "Wrapped Discordant Totem of the Feral" (52914) is documented under "Savage Lord's Totem" (52911); obtain another copy if needed.
 2. sharvahl/"Elder Animist Muada", hand "Wrapped Discordant Totem of the Feral" (52914). Sets `beast_epic` to `17`.
 3. Say "End The Threat In The Grimling Forest" to grimling/"Scout Husman".
 4. Spawns "Grimling Colonel" (167426).
 5. Loot "Eerie Medallion" (57025) from "Grimling Colonel".
-6. 1 alternative loot source(s) also yield Eerie Medallion (57025).
+6. Alternative: Loot "Eerie Medallion" (57025) from "Grimling General" (NPC 167726) in `grimling`; trigger: grimling/"Scout Husman", say "End The Threat In The Grimling Forest".
 7. Say "Hail" to jaggedpine/"Rashara Wrualla".
 8. Spawns "Dismal Darkpaw Mystic" (181225).
 9. Loot "Scalding Blood" (57058) from "Dismal Darkpaw Mystic".
@@ -135,11 +92,6 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 5. Loot "Gemmed Dark Animist Wand" (57014) from "DDA".
 6. bloodfields/"Tormented Scout", hand "Gemmed Dark Animist Wand" (57014). Gives "Wrapped Gemmed Wand" (57052).
 
-### "Savage Lord's Totem" (52911)
-
-1. Acquisition of "Wrapped Discordant Totem of the Feral" (52914) is documented under "Wrapped Discordant Totem of the Feral" (52914); obtain another copy if needed.
-2. sharvahl/"Elder Animist Muada", hand "Wrapped Discordant Totem of the Feral" (52914). Gives "Savage Lord's Totem" (52911).
-
 ### "Sealed Letter from Muada" (57053)
 
 1. Acquisition of "Wrapped Gemmed Wand" (57052) is documented under "Wrapped Gemmed Wand" (57052); obtain another copy if needed.
@@ -147,9 +99,75 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 3. Say "Check Lorb" to anguish/"Zone Status".
 4. Spawns "Orb of Discordant Energy" (317087).
 5. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-6. 4 alternative loot source(s) also yield Globe of Discordant Energy (47100).
-7. Acquisition of "Spiritbound Totem" (57027) is documented under "Spiritbound Totem" (57027); obtain another copy if needed.
-8. sharvahl/"Elder Animist Muada", hand "Globe of Discordant Energy" (47100) + "Spiritbound Totem" (57027). Requires `beast_epic` ==21. Gives "Sealed Letter from Muada" (57053).
+6. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+7. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+8. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+9. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+10. Acquisition of "Spiritbound Totem" (57027) is documented under "Spiritbound Totem" (57027); obtain another copy if needed.
+11. sharvahl/"Elder Animist Muada", hand "Globe of Discordant Energy" (47100) + "Spiritbound Totem" (57027). Requires `beast_epic` ==21. Gives "Sealed Letter from Muada" (57053).
+
+### "Decorated Statuette of the Feral" (57059)
+
+1. Common item: Large Sewing Kit (17880). Listed in 39 zones.
+2. Spawns "An Ukun Battlehound" (281128) in `qinimi` on event_signal.
+3. Loot "Ukun Hide" (67424) from "An Ukun Battlehound".
+4. Common item: Firing Sheet (16906). Listed in 34 zones.
+5. Acquisition of "Water Flask" (13006) is documented under "Ale" (13039); obtain another copy if needed.
+6. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
+7. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
+8. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
+9. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
+10. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
+11. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+12. Common item: Celestial Solvent (9731). Listed in 13 zones.
+13. Loot "Fetid Skin" (13150) from "A Fetid Fiend" (NPC 72059) in `fearplane`. Drop cache: 35% chance per kill.
+14. Loot "Scare Straw" (13152) from "A Samhain" in `fearplane`.
+15. Loot "Turmoil Warts" (8331) from "A Turmoil Toad" in `fearplane`.
+16. Spawns "Grimling" (154129) in `acrylia` on event_spawn.
+17. Loot "Pearl" (10024) from "Grimling".
+18. Alternative: Loot "Pearl" (10024) from "Grimling" (NPC 154129) in `acrylia`; trigger: acrylia/"Raidman", on event_spawn.
+19. Alternative: Loot "Pearl" (10024) from "Needs Heading Validation" (NPC 154129) in `acrylia`; trigger: acrylia/"Khati Sha The Twisted", on event_signal.
+20. Alternative: Loot "Pearl" (10024) from "a Grelian firelunger" (NPC 337063) in `broodlands`; trigger: broodlands/"Grel Strongboom", on event_spawn.
+21. Alternative: Loot "Pearl" (10024) from "a Grelian woundmender" (NPC 337112) in `broodlands`; trigger: broodlands/"Grel Strongboom", on event_spawn.
+22. Alternative: Loot "Pearl" (10024) from "a Delve spellbinder" (NPC 341091) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
+23. Alternative: Loot "Pearl" (10024) from "a Delve diviner" (NPC 341085) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
+24. Alternative: Loot "Pearl" (10024) from "a Delve evoker" (NPC 341092) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
+25. Alternative: Loot "Pearl" (10024) from "a Delve drake" (NPC 341087) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
+26. Alternative: Loot "Pearl" (10024) from "Drake Matriarch" (NPC 341149) in `delvea`; trigger: delvea/"The Drake Menace", say "Zone Death".
+27. Alternative: Loot "Pearl" (10024) from "a Delve spellbinder" (NPC 341091) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
+28. Alternative: Loot "Pearl" (10024) from "a Delve diviner" (NPC 341085) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
+29. Alternative: Loot "Pearl" (10024) from "a Delve evoker" (NPC 341092) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
+30. Alternative: Loot "Pearl" (10024) from "a Delve drake" (NPC 341087) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
+31. Alternative: Loot "Pearl" (10024) from "A Tar Goo" (NPC 119122) in `wakening`; trigger: wakening/"A Tar Goo", on event_death_complete.
+32. neriaka/"X-Ta Tompi", hand "Turmoil Warts" (8331) + "Pearl" (10024) + "Fetid Skin" (13150) + "Scare Straw" (13152). Gives "Words of Acquisition (Beza)" (11866).
+33. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+34. Common item: Jar of Acid (22133). Listed in 15 zones.
+35. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
+36. Combine in Brew Barrel (19): "Ukun Hide" (67424), "Acid Wash" (15987). Produces "Tanned Ukun Leather" (52932). Requires Brewing, trivial 100.
+37. Loot "Gem of the Void" (9053) from "Xi Xaui" (NPC 173047) in `maiden`. Drop cache: 6.52% chance per kill.
+38. Loot "Chunk of Dense Fungal Padding" (9054) from "A Deepspore Mushroom" (NPC 164041) in `thedeep`. Drop cache: 15.97% chance per kill.
+39. Spawns "A Boulder Fiend" (171063) in `thegrey` on enter.
+40. Loot "Perfect Acrylia Ore" (9052) from "A Boulder Fiend".
+41. Alternative: Loot "Perfect Acrylia Ore" (9052) from "A Stone Beast" (NPC 171051) in `thegrey`; trigger: thegrey/"A Creature", on enter.
+42. Alternative: Loot "Perfect Acrylia Ore" (9052) from "Stonehand" (NPC 171064) in `thegrey`; trigger: thegrey/"A Creature", on enter.
+43. Alternative: Loot "Perfect Acrylia Ore" (9052) from "Boulder" (NPC 171069) in `thegrey`; trigger: thegrey/"A Creature", on enter.
+44. sharvahl/"Weapons Master Rahoul", hand "Perfect Acrylia Ore" (9052) + "Gem of the Void" (9053) + "Chunk of Dense Fungal Padding" (9054). Sets `beast_turnin` to `1`.
+45. sharvahl/"Weapons Master Rahoul", say "Adornments". Requires `beast_turnin` ==1. Gives "Adornments Pattern" (57056).
+46. Combine in "Large Sewing Kit" (17880): "Tanned Ukun Leather" (52932), "Adornments Pattern" (57056). Produces "Crafted Tassels" (52929). Requires Tailoring, trivial 100.
+47. sharvahl/"Weapons Master Rahoul", hand platinum:2000. Gives "Plain Beastlord Statuette" (52931).
+48. Combine in "Large Sewing Kit" (17880): "Crafted Tassels" (52929), "Plain Beastlord Statuette" (52931). Produces "Decorated Statuette of the Feral" (57059). Requires Tailoring, trivial 100.
+
+### "Note to Irionu" (57996)
+
+1. Loot "Darkened Spirit Essence" (57009) from "Frantic Ravenous Beast" in `maiden`.
+2. Loot "Disturbed Beast Essence" (57995) from "A Ravenous Nightstalker" in `ponightmare`.
+3. sharvahl/"Elder Animist Muada", hand "Darkened Spirit Essence" (57009) + "Disturbed Beast Essence" (57995). Sets `beast_epic` to `7`.
+4. sharvahl/"Elder Animist Muada", say "Greater Calling". Requires `beast_epic` ==7. Gives "Note to Irionu" (57996).
+
+### "Sealed Note for Muada" (52900)
+
+1. Loot "Swirling Feral Essence" (57010) from "Delirious Drogmor" in `gunthak`.
+2. overthere/"Irionu Bastun", hand "Swirling Feral Essence" (57010). Gives "Sealed Note for Muada" (52900).
 
 ## `beast_epic`
 
