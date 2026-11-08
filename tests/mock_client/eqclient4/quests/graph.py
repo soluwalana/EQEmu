@@ -14,6 +14,7 @@ from pathlib import Path
 from eqclient4.data.catalog import Catalog, named_items, load_catalog
 from eqclient4.log import log
 from eqclient4.nav.travel import ensure_zone_graph
+from eqclient4.quests.speech_expr import iter_speech_calls
 
 _SAY = re.compile(
     r"""\$text\s*=~\s*/([^/]+)/i|findi\(\s*["']([^"']+)["']\s*\)""",
@@ -651,53 +652,115 @@ def _zone_of(block: str) -> int:
 
 
 def _spoken(block: str) -> str:
-    match = _SPOKEN.search(block)
-    if not match:
-        return ""
-    return (match.group(1) or match.group(2) or '').replace('\\"', '"').replace("\\'", "'")
+    return next((event["text"] for event in iter_speech_calls(block)), "")
 
 
 def _speech_events(text: str, span: tuple[int, int, int, int]) -> list[dict]:
-    """All speech produced by a SAY branch, including nested conditional replies.
-
-    Preserve the original message text and its conditional ancestry. Do not
-    assume that a later SAY keyword was disclosed by an earlier reply.
-    """
+    """Full Say/Emote expressions, including nested saylink labels and guards."""
     body_lo, body_hi = span[2], span[3]
     branches = _branch_index(text)
-    events: list[dict] = []
-    for match in _SPOKEN.finditer(text):
-        if not body_lo <= match.start() < body_hi:
-            continue
-        # The branch body includes nested if bodies; preserve their guards.
+    events = []
+    for event in iter_speech_calls(text, body_lo, body_hi):
+        at = event["offset"]
         nested = sorted(
             (b for b in branches
-             if body_lo <= b[0] and b[0] <= match.start() < b[3]
-             and b != span),
+             if body_lo <= b[0] and b[0] <= at < b[3] and b != span),
             key=lambda b: b[0],
         )
-        prefix = text[max(body_lo, match.start() - 48):match.start()]
-        channel = 'emote' if re.search(r'(?:->|:)Emote\s*\(', match.group(0), re.I) else 'say'
-        events.append({
-            'offset': match.start(),
-            'channel': channel,
-            'text': (match.group(1) or match.group(2) or '').replace('\\"', '"').replace("\\'", "'"),
-            'guards': [text[b[0]:b[1]].strip() for b in nested],
-        })
+        events.append({**event, "guards": [text[b[0]:b[1]].strip() for b in nested]})
     return events
 
 
+_OPTION_LIST = re.compile(
+    r"(?P<first>\b[\w]+(?:\s+(?:of|the|a|an|to|for|in|on|with)\s+[\w]+)+)"
+    r"(?P<rest>(?:\s*,\s*(?!(?:or|and)\b)[\w]+)+(?:\s*,?\s*(?:or|and)\s+[\w]+)?)",
+    re.IGNORECASE,
+)
+
+
+_QUERY_PREFIXES = (
+    ("what",), ("who",), ("where",), ("which",),
+    ("what", "is"), ("what", "are"), ("tell", "me", "about"),
+    ("a",), ("an",), ("the",),
+)
+
+
+def _lex_tokens(value: str) -> list[str]:
+    return re.findall(r"[\w]+", value.casefold().replace("_", " "))
+
+
+def _lex_variants(token: str) -> set[str]:
+    """Small inflection set for singular/plural player triggers.
+
+    This intentionally does not do arbitrary stemming or substring matches.
+    """
+    variants = {token}
+    if len(token) > 4:
+        if token.endswith("ies") and len(token) > 5:
+            variants.add(token[:-3] + "y")
+        if token.endswith("es") and token[-3:-2] in {"s", "x", "z"}:
+            variants.add(token[:-2])
+        if token.endswith("s") and not token.endswith("ss"):
+            variants.add(token[:-1])
+    return variants
+
+
+def _lex_equiv(a: str, b: str) -> bool:
+    return bool(_lex_variants(a) & _lex_variants(b))
+
+
+def _lex_sequence(needle: list[str], haystack: list[str]) -> bool:
+    return any(
+        all(_lex_equiv(a, b) for a, b in zip(needle, haystack[start:start + len(needle)]))
+        for start in range(len(haystack) - len(needle) + 1)
+    )
+
+
+def _lex_queries(value: str) -> list[list[str]]:
+    words = _lex_tokens(value)
+    candidates = [words]
+    for prefix in _QUERY_PREFIXES:
+        if words[:len(prefix)] == list(prefix) and len(words) > len(prefix):
+            candidates.append(words[len(prefix):])
+    return candidates
+
+
+def _lex_mentioned(phrase: str, replies: list[str]) -> bool:
+    """Match the player's expression to spoken offers, without lore inference.
+
+    Covers leading player-question words, inflected plural terms, and shared
+    prefixes in comma-separated lists. Checks any earlier reply, not just an
+    adjacent sibling branch.
+    """
+    queries = _lex_queries(phrase)
+    if not queries or not queries[0]:
+        return False
+    for reply in replies:
+        tokens = _lex_tokens(reply)
+        if any(_lex_sequence(query, tokens) for query in queries):
+            return True
+        for match in _OPTION_LIST.finditer(reply):
+            first = _lex_tokens(match.group("first"))
+            if len(first) < 3:
+                continue
+            for option in _lex_tokens(match.group("rest")):
+                if option in {"and", "or"}:
+                    continue
+                for start in range(len(first) - 1):
+                    expansion = first[start:-1] + [option]
+                    if any(len(query) == len(expansion) and
+                           all(_lex_equiv(a, b) for a, b in zip(query, expansion))
+                           for query in queries):
+                        return True
+    return False
+
+
 def _speech_mentions(word: str, speech: list[dict]) -> bool:
-    """A lexical cue is evidence for a follow-up, not a state prerequisite."""
-    pattern = r'(?<![\w])' + re.escape(word.strip().lower()) + r'(?![\w])'
-    return any(re.search(pattern, event['text'].lower()) for event in speech)
-
-
-# Lore associations are evidence for candidate follow-ups, not hard quest gates.
-# Keep the list deliberately small and extensible for dataset enrichment.
-_DIALOGUE_LORE = {
-    "innoruuk": ("hate", "hatred", "god of hate"),
-}
+    # Link *targets* are executable player inputs, even when the visible
+    # label differs. Also recognize naturally phrased visible options.
+    return (any(_lex_mentioned(word, [str(link.get("target") or "")])
+                for event in speech for link in event.get("links", ()))
+            or _lex_mentioned(word, [str(event.get("text") or "") for event in speech]))
 
 
 def dialogue_chains(text: str, filename: str, zone: str) -> list[dict]:
@@ -739,7 +802,7 @@ def dialogue_chains(text: str, filename: str, zone: str) -> list[dict]:
             turns.append({
                 'input': input_text,
                 'source': f'{source}#{input_text.lower()}',
-                'reply': [{k: event[k] for k in ('channel', 'text', 'guards')}
+                'reply': [{k: event[k] for k in ('channel', 'text', 'guards', 'links')}
                           for event in speech],
                 'guards': guards,
                 'effects': effects,
@@ -748,29 +811,44 @@ def dialogue_chains(text: str, filename: str, zone: str) -> list[dict]:
         if not turns:
             continue
         transitions = []
-        for earlier, later in zip(turns, turns[1:]):
-            utterances = [event['text'] for event in earlier['reply']]
-            target = later['input'].lower()
-            basis = 'conversation_sequence'
-            evidence = ''
-            for utterance in utterances:
-                if re.search(r'(?<!\w)' + re.escape(target) + r'(?!\w)', utterance, re.I):
-                    basis = 'explicit_mention'
-                    evidence = utterance
-                    break
-            if basis != 'explicit_mention':
-                for cue in _DIALOGUE_LORE.get(target, ()):
-                    for utterance in utterances:
-                        if re.search(r'(?<!\w)' + re.escape(cue) + r'(?!\w)', utterance, re.I):
-                            basis = 'lore_association'
-                            evidence = utterance
-                            break
-                    if basis == 'lore_association':
-                        break
-            transitions.append({
-                'from': earlier['input'], 'to': later['input'],
-                'basis': basis, 'evidence': evidence,
-            })
+        # for earlier, later in zip(turns, turns[1:]):
+        #     utterances = [event['text'] for event in earlier['reply']]
+        #     target = later['input'].lower()
+        #     basis = 'conversation_sequence'
+        #     evidence = ''
+        #     for utterance in utterances:
+        #         if re.search(r'(?<!\w)' + re.escape(target) + r'(?!\w)', utterance, re.I):
+        #             basis = 'explicit_mention'
+        #             evidence = utterance
+        #             break
+        #     transitions.append({
+        #         'from': earlier['input'], 'to': later['input'],
+        #         'basis': basis, 'evidence': evidence,
+        #     })
+
+        # A SAY handler is a set of possible choices, not a linear conversation.
+        # Search all earlier replies for an explicit cue. A later sibling is
+        # often prompted by an earlier shared parent (hail -> three tests).
+        for index, target in enumerate(turns):
+            found = False
+
+            for parent_index, parent in enumerate(turns):
+                if parent_index == index:
+                    continue
+                if _speech_mentions(target['input'], parent['reply']):
+                    transitions.append({
+                        'from': parent['input'], 'to': target['input'],
+                        'basis': 'explicit_mention',
+                        'evidence': '\n'.join(r['text'] for r in parent['reply']),
+                        'source_order': 'earlier' if parent_index < index else 'later',
+                    })
+                    found = True
+            if not found and index:
+                transitions.append({
+                    'from': turns[index - 1]['input'], 'to': target['input'],
+                    'basis': 'conversation_sequence', 'evidence': '',
+                })
+
         chains.append({
             'kind': 'dialogue', 'zone': home, 'npc': npc,
             'source': source, 'handler': function_name,
@@ -1253,6 +1331,7 @@ def link_script(
                 "to": f"speech:{say_id}:{event['offset']}",
                 "group": f"{say_id}#branch:{span[0]}",
                 "channel": event['channel'], "text": event['text'],
+                "links": event.get('links', []),
                 "guards": event['guards'], "order": event['offset'],
             })
         spoken = _spoken(block)
@@ -1334,13 +1413,17 @@ def link_script(
         if key and branch:
             say_turns.append((key, match.start(), _speech_events(text, branch)))
     for i, (word, at, speech) in enumerate(say_turns):
-        for later, _other_at, _reply in say_turns[i + 1:]:
-            if _speech_mentions(later, speech):
-                edges.append({
-                    'kind': 'edge', 'rel': 'suggests',
-                    'from': f'{npc_id}#{word}', 'to': f'{npc_id}#{later}',
-                    'word': later, 'basis': 'spoken_text',
-                })
+
+        for j, (other, _other_at, _reply) in enumerate(say_turns):
+            if i == j or not _speech_mentions(other, speech):
+                continue
+            edges.append({
+                'kind': 'edge', 'rel': 'suggests',
+                'from': f'{npc_id}#{word}', 'to': f'{npc_id}#{other}',
+                'word': other, 'basis': 'spoken_text',
+                'source_order': 'earlier' if i < j else 'later',
+            })
+
     for turn in turn_ins(text):
         ids = tuple(sorted(item for item, _count in turn["items"]))
         coins = tuple(turn.get("coins") or ())

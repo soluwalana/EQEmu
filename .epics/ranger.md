@@ -32,7 +32,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
         - NPC emote: looks at you and sighs. 'The lands are changing. Beasts, large and small, have turned upon those who watched over them. Druids and rangers, worshippers of both Karana and Tunare, have reported a feeling of hatred throughout their once peaceful lands.'
         - Condition: `(fac < 4)`
         - Condition: `(e.message:findi("suspect"))`
-      - Player: "Innoruuk" (link: lore association)
+      - Player: "Innoruuk" (link: conversation sequence)
         - NPC emote: raises his eyebrow slightly and a subtle look of surprise creeps across his face. 'Innoruuk? Perhaps. Aye. It must be. Perhaps I knew and didn't want to consider the possibility. It must be this though, and some action will have to be taken.'
         - Condition: `(fac < 4)`
         - Condition: `(e.message:findi("innoruuk"))`
@@ -249,11 +249,11 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 10. steamfont/"Godbin Strumharp", hand platinum:30. Requires `ranger_epic15_pre` ==9. Gives "Sound Capture Jar" (62637).
     - Dialogue with steamfont/"Godbin Strumharp":
       - Player: "Mera"
-        - NPC say: Mera? Sure, I know her. Bright girl. She left here a while ago with one of my new [
+        - NPC say: Mera? Sure, I know her. Bright girl. She left here a while ago with one of my new [sound capture jars]. She helped me design them. Bright girl. She ran off saying that she was going to find a great sound to capture in the jar. She was very excited. I hope she's safe. She said something about howling or something like that. I just didn't hear her properly. She's a very bright girl.
         - Condition: `(e.other:Class() == "Ranger")`
         - Condition: `( qglobals["ranger_epic15_pre"] == "9" )`
         - Condition: `(e.message:findi("mera"))`
-      - Player: "Sound Capture Jars" (link: conversation sequence)
+      - Player: "Sound Capture Jars" (link: explicit mention)
         - NPC say: The sound capture jar does exactly what it sounds like it does. If you use it properly, you can capture a sound in the jar for use later. I haven't worked out the details about how exactly you might use a sound, but I'm sure I'll figure something out. I have a few with me. They aren't part of my regular inventory, but I can sell you one if you need it for something. Seeing as you're a friend of Mera, I'll let you have it for cost, thirty platinum.
         - Condition: `(e.other:Class() == "Ranger")`
         - Condition: `( qglobals["ranger_epic15_pre"] == "9" )`
@@ -283,24 +283,24 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 6. qrg/"Corun Finisc", hand "Spring Dogwood Seed" (62624). Gives "Block of Purest Silver" (62625).
     - Dialogue with qrg/"Corun Finisc":
       - Player: "Hail"
-        - NPC say: Hello. My name is Corun Finisc and I am one of the Jaggedpine Treefolk. It is our divine responsibility to watch over and protect Surefall Glade and its [
+        - NPC say: Hello. My name is Corun Finisc and I am one of the Jaggedpine Treefolk. It is our divine responsibility to watch over and protect Surefall Glade and its [inhabitants] from those who seek to [destroy] them.
         - Condition: `(e.message:findi("hail"))`
-      - Player: "Inhabitants" (link: conversation sequence)
-        - NPC say: The bears of Surefall Glade are our brothers. We are all children of [
+      - Player: "Inhabitants" (link: explicit mention)
+        - NPC say: The bears of Surefall Glade are our brothers. We are all children of [Tunare]. We would gladly die in their defense.
         - Condition: `(e.message:findi("inhabitants"))`
-      - Player: "Tunare" (link: conversation sequence)
+      - Player: "Tunare" (link: explicit mention)
         - NPC say: Tunare is the Mother of All. It is though Her will that we protect this land and its many creatures.
         - Condition: `(e.message:findi("tunare"))`
       - Player: "Destroy" (link: conversation sequence)
-        - NPC say: Poachers in seach of bear skins and [gnolls] who attack us unprovoked. We are doing all we can to stop them. May [
+        - NPC say: Poachers in seach of bear skins and [gnolls] who attack us unprovoked. We are doing all we can to stop them. May [Tunare] give me the strength needed to smite them dead with my [crook].
         - Condition: `(e.message:findi("destroy"))`
-      - Player: "Crook" (link: conversation sequence)
-        - NPC say: My crook? The Jaggedpine crook is an enchanted weapon of the Jaggedpine Treefolk. The [
+      - Player: "Crook" (link: explicit mention)
+        - NPC say: My crook? The Jaggedpine crook is an enchanted weapon of the Jaggedpine Treefolk. The [Sabertooths] take great pleasure in destroying the crooks of any Treefolk they manage to slay. If you were to recover the pieces of a broken crook, I would gladly mend it for you.
         - Condition: `(e.message:findi("crook"))`
-      - Player: "Sabertooths" (link: conversation sequence)
-        - NPC say: The Sabertooths are a vicious band of gnolls who live in Blackburrow, to the east of Surefall Glade. They constantly attack us when we only seek to share this land with them. They also send many patrols out into the Qeynos Hills to the south. We have even seen a Sabertooth skulking about in the caves behind Grizzly Falls. There is a [
+      - Player: "Sabertooths" (link: explicit mention)
+        - NPC say: The Sabertooths are a vicious band of gnolls who live in Blackburrow, to the east of Surefall Glade. They constantly attack us when we only seek to share this land with them. They also send many patrols out into the Qeynos Hills to the south. We have even seen a Sabertooth skulking about in the caves behind Grizzly Falls. There is a [reward] for his hide.
         - Condition: `(e.message:findi("Sabertooths"))`
-      - Player: "Reward" (link: conversation sequence)
+      - Player: "Reward" (link: explicit mention)
         - NPC say: Yes. We are offering a small reward for slaying the skulking gnoll in the bear caves. Bring me his paw to claim your bounty. The Jaggedpine Treefolk remember well those who aid their cause.
         - Condition: `(e.message:findi("reward"))`
       - Player: "Sabertooths" (link: conversation sequence)
@@ -373,7 +373,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 44. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
     - Dialogue with qeynos/"Wolten Grafe":
       - Player: "Hail"
-        - NPC say: Hail, noble
+        - NPC say: Hail, noble . Remember to spread the words of Karana throughout the faraway lands on which you shall tread. We of the Temple of Thunder are looking for new members - good people who [wish to join our cause]. Let the call go out!
         - Condition: `(e.message:findi("hail"))`
       - Player: "Join The Cause" (link: conversation sequence)
         - NPC say: That IS good news! If you walk the righteous path of the Rainkeeper, Karana, then you are truly noble. I have need of someone like that. I must find someone to perform a [dangerous mission] or perhaps you would rather seek out the [Rat King] or [crush the undead].
@@ -504,7 +504,7 @@ Values written: 1, 2, 3, 5, 6, 7.
     - Requires `ranger_epic` unset.
     - Dialogue with eastkarana/"Althele":
       - Player: "Hail"
-        - NPC say: Hello, friend. Beautiful is what I would call such a day normally, but lately? I sense that something is [
+        - NPC say: Hello, friend. Beautiful is what I would call such a day normally, but lately? I sense that something is [out of balance].
           - Reply guard: `($class eq "Ranger" && (plugin::check_hasitem($client, 20488) || plugin::check_hasitem($client, 62600)))`
         - Condition: `($text=~/hail/i)`
         - Sets `ranger_epic` to `1`.
@@ -527,16 +527,16 @@ Values written: 1, 2, 3, 5, 6, 7.
     - Gives "Corun's Notes - annotated" (62654).
     - Dialogue with freeportwest/"Shana Liskia":
       - Player: "Hail"
-        - NPC say: Hail and well met
+        - NPC say: Hail and well met . I am Shana Liskia. Enchantress of Freeport. I have studied my art for years here in our wonderful academy. I am also delighted to meet and teach those that come here to gain knowledge. My specialty however lies in Beguiling so I like to train young newcomers to our academy. Are you studying the ways of a [Magician] an [Enchanter] or a [Wizard]??
         - Condition: `(e.message:findi("hail"))`
-      - Player: "Magician" (link: conversation sequence)
-        - NPC say: Wonderful! Let me be the first to tell you that your training here will be top notch and you will learn all that is to be known about being an enchanter should you put forth the willingness to learn. I will walk you through your early training and assist you in your hunting and gathering skills. I have created a [
+      - Player: "Magician" (link: explicit mention)
+        - NPC say: Wonderful! Let me be the first to tell you that your training here will be top notch and you will learn all that is to be known about being an enchanter should you put forth the willingness to learn. I will walk you through your early training and assist you in your hunting and gathering skills. I have created a [special sewing kit] that I present to all of the new initiates.
         - Condition: `(e.message:findi("magician") or e.message:findi("enchanter") or e.message:findi("wizard"))`
       - Player: "Enchanter" (link: explicit mention)
-        - NPC say: Wonderful! Let me be the first to tell you that your training here will be top notch and you will learn all that is to be known about being an enchanter should you put forth the willingness to learn. I will walk you through your early training and assist you in your hunting and gathering skills. I have created a [
+        - NPC say: Wonderful! Let me be the first to tell you that your training here will be top notch and you will learn all that is to be known about being an enchanter should you put forth the willingness to learn. I will walk you through your early training and assist you in your hunting and gathering skills. I have created a [special sewing kit] that I present to all of the new initiates.
         - Condition: `(e.message:findi("magician") or e.message:findi("enchanter") or e.message:findi("wizard"))`
       - Player: "Wizard" (link: conversation sequence)
-        - NPC say: Wonderful! Let me be the first to tell you that your training here will be top notch and you will learn all that is to be known about being an enchanter should you put forth the willingness to learn. I will walk you through your early training and assist you in your hunting and gathering skills. I have created a [
+        - NPC say: Wonderful! Let me be the first to tell you that your training here will be top notch and you will learn all that is to be known about being an enchanter should you put forth the willingness to learn. I will walk you through your early training and assist you in your hunting and gathering skills. I have created a [special sewing kit] that I present to all of the new initiates.
         - Condition: `(e.message:findi("magician") or e.message:findi("enchanter") or e.message:findi("wizard"))`
       - Player: "Diseases Of The Mind" (link: conversation sequence)
         - NPC say: I study the mind. My most recent research deals with, well, I'd rather not discuss that. Unless you need something specific, I don't really have time for long random conversations right now.
@@ -546,7 +546,7 @@ Values written: 1, 2, 3, 5, 6, 7.
         - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
         - Condition: `(e.message:findi("special sewing kit"))`
       - Player: "Ready To Begin" (link: explicit mention)
-        - NPC say: Very well. Here you are
+        - NPC say: Very well. Here you are . in this box you will combine specific component recipes as I mentioned before. When you are ready to attempt a specific piece you must tell me what piece you [want] to craft. For example if you had intent on crafting a cap you would say. [I want to craft a cap]. I can offer you the recipes for Arcane Scientists [Caps], [Bracers], [Sleeves], [Sandals], [Trousers], [Gloves] and [Robes]. I must also suggest that you attempt your robe last due to the difficult nature of collecting the correct components.
         - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
         - Condition: `(e.message:findi("ready to begin"))`
         - Gives Enchanted Sewing Kit (17260).
@@ -789,28 +789,28 @@ Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11.
     - Requires `ranger_epic15_pre` unset.
     - Dialogue with nedaria/"Targen Stonefall":
       - Player: "Hail"
-        - NPC say: Hello there,
+        - NPC say: Hello there, . I hope you fare well in your travels. I've decided to settle in here, next to the warm fires of the smithy rather than visit the plane of discord again. It's nasty, but is certainly has some [interesting stones].
         - Condition: ``
         - Condition: `( qglobals["ranger_epic15_pre"] == nil )`
         - Condition: `(e.message:findi('hail'))`
-      - Player: "Interesting Stones" (link: conversation sequence)
-        - NPC say: Well, I've been hearing about stones that have inherent power, much like those that we've been calling augmentation stones. These are cruder and you'd have to talk to someone else about exactly how to work with those. I'm more of a geologist myself. I study the way earth and stone are formed. I think there's a lot we can learn about this place from the formation of the [
+      - Player: "Interesting Stones" (link: explicit mention)
+        - NPC say: Well, I've been hearing about stones that have inherent power, much like those that we've been calling augmentation stones. These are cruder and you'd have to talk to someone else about exactly how to work with those. I'm more of a geologist myself. I study the way earth and stone are formed. I think there's a lot we can learn about this place from the formation of the [native stones].
         - Condition: ``
         - Condition: `( qglobals["ranger_epic15_pre"] == nil )`
         - Condition: `(e.message:findi('interesting stones'))`
-      - Player: "Native Stones" (link: conversation sequence)
+      - Player: "Native Stones" (link: explicit mention)
         - NPC say: Just about any of them, really. I've seen most of what can be found, but if you see anything interesting, please let me look at it. You never know what gems you might find! Best of luck to you, my friend.
         - Condition: ``
         - Condition: `( qglobals["ranger_epic15_pre"] == nil )`
         - Condition: `(e.message:findi('native stones'))`
         - Sets `ranger_epic15_pre` to `1`.
       - Player: "Bloodfields" (link: conversation sequence)
-        - NPC say: What? You found this there? Now that is unusual.' Targen pauses a moment to scratch his chin. 'This might bear further investigation. I'll need a sample to compare to this new stone of yours. Maybe you can do me a favor. Gather up a stone from someplace like [
+        - NPC say: What? You found this there? Now that is unusual.' Targen pauses a moment to scratch his chin. 'This might bear further investigation. I'll need a sample to compare to this new stone of yours. Maybe you can do me a favor. Gather up a stone from someplace like [Odus] and bring it to me. I'll be able to compare results from that stones to this one you brought and maybe we can learn something. Here, take this sample cloth and this vial of emulsion. When you find a rock that you think might work, use the emulsion and the cloth. If it reacts you know you've got a good enough sample. Then place it with the blasted stone of yours in the cloth and bind them up. Bring the bundle back to me and I'll take a look at them.
         - Condition: ``
         - Condition: `( qglobals["ranger_epic15_pre"] == "2" and e.message:findi('bloodfields') )`
         - Gives Targen's Emulsion (62639).
         - Gives Sample Cloth (62640).
-      - Player: "Odus" (link: conversation sequence)
+      - Player: "Odus" (link: explicit mention)
         - NPC say: It's pretty obvious where all the good stone on that little rock is.
         - Condition: ``
         - Condition: `( qglobals["ranger_epic15_pre"] == "2" and e.message:findi('odus') )`
@@ -895,11 +895,11 @@ Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11.
     - Prerequisite: "Sound Capture Jar" (62637). See section 0.
     - Dialogue with charasis/"Ghost Of Mera":
       - Player: "Hail"
-        - NPC say: What? Oh, hello. You're . . . you're alive, aren't you. I'm dead, I think. Why can't I leave here? I need to be free so I can continue my [
+        - NPC say: What? Oh, hello. You're . . . you're alive, aren't you. I'm dead, I think. Why can't I leave here? I need to be free so I can continue my [work]. Oh, but I'm dead, I can't.
         - Condition: `(e.other:Class() == "Ranger")`
         - Condition: `( qglobals["ranger_epic15_pre"] == "9" )`
         - Condition: `(e.message:findi("hail"))`
-      - Player: "Work" (link: conversation sequence)
+      - Player: "Work" (link: explicit mention)
         - NPC say: My work . . . I was working with sound, I remember that. I remember hearing all of the wonderful noise that the stones make in the wind. I think I found the perfect sound, but then they killed me. A sacrifice, I think. That makes me sad. I do have one happiness, though. I know the perfect sound. I just wish I could have saved it so that others could hear it. If only they hadn't broken my jars.
         - Condition: `(e.other:Class() == "Ranger")`
         - Condition: `( qglobals["ranger_epic15_pre"] == "9" )`
