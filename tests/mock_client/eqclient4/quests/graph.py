@@ -1714,6 +1714,7 @@ def _other_summons(edges: list[dict], text: str, npc_id: str) -> None:
         "event_enter",
         "event_loot",
         "event_killed_merit",
+        "event_timer",  # linked through named timer triggers instead
     }
     branches = _branch_index(text)
     for name, start, stop in _functions(text):
@@ -2031,6 +2032,119 @@ class QuestGraph:
         return sorted(found, key=lambda node: (node.zone, node.npc, node.word, node.item_id))[0]
 
 
+# Event causality. A direct spawn in EVENT_TIMER is not a quest entry point:
+# find who starts the timer, including signals sent by a different NPC script.
+_NPC_FOOTER = re.compile(r"(?im)^\s*#\s*EOF\s+zone:.*?\bID:\s*(\d+)\s+NPC:")
+_SIGNAL_WITH = re.compile(r"(?:quest::signalwith|eq\.signal)\s*\(\s*(\d+)\s*,\s*(\d+)", re.I)
+_SIGNAL_NPC = re.compile(r"\$(\w+)\s*->\s*SignalNPC\s*\(\s*(\d+)\s*\)", re.I)
+_MOB_LOOKUP = re.compile(r"\$(\w+)\s*=\s*\$entity_list->GetMobByNpcTypeID\s*\(\s*(\d+)\s*\)", re.I)
+_CAST_NPC = re.compile(r"\$(\w+)\s*=\s*\$(\w+)\s*->CastToNPC\s*\(\s*\)", re.I)
+_SIGNAL_CONDITION = re.compile(r"\$signal\s*==\s*(\d+)", re.I)
+
+
+def _event_functions(text: str, name: str) -> tuple[int, int] | None:
+    return next(((lo, hi) for func, lo, hi in _functions(text) if func == name), None)
+
+
+def _signal_origin(text: str, offset: int, npc_id: str) -> str:
+    """Attribute a signal to its enclosing hand-in, if one exists."""
+    function = next(((func, lo, hi) for func, lo, hi in _functions(text)
+                     if lo <= offset < hi), None)
+    if function is None:
+        return npc_id
+    func, lo, _hi = function
+    if func in {"event_item", "event_trade"}:
+        # The innermost hand-in branch contains the signal call.
+        candidates = [branch for branch in _branch_index(text)
+                      if branch[2] <= offset < branch[3] and lo <= branch[0]]
+        for branch in sorted(candidates, key=lambda b: b[3] - b[2]):
+            ids = sorted({int(item) for item, _n in _HANDIN.findall(text[branch[0]:branch[1]])})
+            if ids:
+                return f"{npc_id}#hand:{'+'.join(map(str, ids))}"
+    return f"{npc_id}#{func}"
+
+
+def _outgoing_signals(text: str, npc_id: str) -> list[tuple[str, int, int]]:
+    """(origin group, recipient NPC type, signal value)."""
+    found = []
+    for match in _SIGNAL_WITH.finditer(text):
+        found.append((_signal_origin(text, match.start(), npc_id),
+                      int(match.group(1)), int(match.group(2))))
+    # Resolve $a = GetMobByNpcTypeID(id); $b = $a->CastToNPC(); $b->SignalNPC(n).
+    for match in _SIGNAL_NPC.finditer(text):
+        func = next(((lo, hi) for _name, lo, hi in _functions(text) if lo <= match.start() < hi), None)
+        if func is None:
+            continue
+        prefix = text[func[0]:match.start()]
+        lookup = {name: int(npc) for name, npc in _MOB_LOOKUP.findall(prefix)}
+        aliases = {cast: source for cast, source in _CAST_NPC.findall(prefix)}
+        var = match.group(1)
+        target = lookup.get(var) or lookup.get(aliases.get(var, ""))
+        if target is not None:
+            found.append((_signal_origin(text, match.start(), npc_id), target, int(match.group(2))))
+    return list(dict.fromkeys(found))
+
+
+def _signal_body(text: str, signal: int) -> str:
+    """The matching Perl EVENT_SIGNAL branch, including its final else fallback."""
+    scope = _event_functions(text, "event_signal")
+    if scope is None:
+        return ""
+    lo, hi = scope
+    fragment = text[lo:hi]
+    branches = [b for b in _branch_index(text) if lo <= b[0] and b[3] <= hi]
+    for branch in branches:
+        cond = text[branch[0]:branch[1]]
+        if signal in (int(n) for n in _SIGNAL_CONDITION.findall(cond)):
+            return text[branch[2]:branch[3]]
+    # Only use a fallback if none of the explicit signal comparisons matched.
+    # Perl else after the signal if/elsif chain (not an unrelated nested else).
+    if re.search(r"\$signal\s*==", fragment):
+        matches = list(re.finditer(r"\belse\s*\{", fragment))
+        if matches:
+            open_at = lo + matches[-1].end() - 1
+            return _brace_block(text, open_at + 1)
+    return ""
+
+
+def _link_event_causality(graph: QuestGraph, scripts: list[tuple[str, str, str]]) -> None:
+    """Resolve per-zone NPC-type signals and named timers across scripts."""
+    receivers: dict[tuple[str, int], tuple[str, str]] = {}
+    for zone, npc_id, text in scripts:
+        footer = _NPC_FOOTER.search(text)
+        if footer:
+            receivers[(zone, int(footer.group(1)))] = (npc_id, text)
+
+    # Record each timer's spawns even if the initiating event is unresolved.
+    # An orphan timer is an unresolved event dependency, not a free-world spawn.
+    for _zone, npc_id, text in scripts:
+        for timer, spawns in _timer_spawns(text).items():
+            timer_id = f"{npc_id}#timer:{timer}"
+            for npc_type, name in spawns:
+                graph.edges.append(_spawn_edge(timer_id, npc_type, name, timer_id))
+
+    sent = set()
+    for zone, origin_npc, text in scripts:
+        for source, target, signal in _outgoing_signals(text, origin_npc):
+            receiver = receivers.get((zone, target))
+            if receiver is None:
+                continue
+            npc_id, receiver_text = receiver
+            event = f"{npc_id}#signal:{signal}"
+            sent.add((npc_id, signal))
+            graph.edges.append({"kind": "edge", "rel": "triggers", "from": source,
+                                "to": event, "signal": signal, "npc": target})
+
+    for npc_id, signal in sorted(sent):
+        receiver_text = next(text for _zone, name, text in scripts if name == npc_id)
+        body = _signal_body(receiver_text, signal)
+        for timer in dict.fromkeys(_SET_TIMER.findall(body)):
+            event = f"{npc_id}#signal:{signal}"
+            timer_id = f"{npc_id}#timer:{timer}"
+            graph.edges.append({"kind": "edge", "rel": "triggers", "from": event,
+                                "to": timer_id, "timer": timer})
+
+
 def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
     """Walk every zone folder under projecteqquests. Plugins are not zones."""
     graph = QuestGraph()
@@ -2039,12 +2153,14 @@ def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
         graph.index()
         return graph
     item_ids: set[int] = set()
+    scripts: list[tuple[str, str, str]] = []
     for folder in sorted(
         path for path in base.iterdir() if path.is_dir() and path.name not in _SKIP_DIRS
     ):
         zone = folder.name.lower()
         for path in _quest_scripts(folder):
             text = path.read_text(encoding="utf-8", errors="replace")
+            scripts.append((zone, f"{zone}/{npc_name(path.name, catalog).lower()}", text))
             nodes = parse_chain(text, path.name, zone)
             if nodes:
                 graph.nodes[(zone, nodes[0].npc.lower())] = nodes
@@ -2059,6 +2175,7 @@ def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
                 for zone_id in destinations:
                     if zone_id not in known:
                         known.append(zone_id)
+    _link_event_causality(graph, scripts)
     _add_spawn_loot(graph, catalog, item_ids)
     _add_recipes(graph, catalog, item_ids)
     ground_zones: dict[int, list[str]] = {}

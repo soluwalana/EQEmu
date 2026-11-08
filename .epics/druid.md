@@ -116,48 +116,55 @@ Each list is the order you obtain that item. Later steps point here instead of r
 104. Loot "Ancient Rock" (20688) from "Corrupted Hill Giant".
 105. northkarana/"Withered Treant", hand "Ancient Rock" (20688) + "Clean Lakewater" (20689) + "Chunk of Tundra" (20690). Gives "Warm Pulsing Treant Heart" (20695).
 106. southkarana/"Yeka Ias", hand "Warm Pulsing Treant Heart" (20695). Gives "Cleansed Spirit of Antonica" (20698).
-107. Spawns "Corruptor" (15153) in `eastkarana` on event_timer.
-108. Loot "Fleshbound Tome" (20452) from "Corruptor".
-109. Loot "Fleshbound Tome" (20452) from "Dark Elf Corruptor".
-110. eastkarana/"Althele", hand "Fleshbound Tome" (20452). Gives "Earth Stained Note" (18959).
-111. misty/"Ella Foodcrafter", hand "Earth Stained Note" (18959). Sets `shiny_tin_bowl` to `1`.
-112. misty/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
-113. mistythicket/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
-114. Forage "Ripened Heartfruit" (20464) in `gfaydark`.
-115. Forage "Sweetened Mudroot" (20465) in `misty`.
-116. Forage "Sweetened Mudroot" (20465) in `mistythicket`.
-117. Forage "Speckled Molded Mushroom" (20466) in `innothule`.
-118. Forage "Chilled Tundra Root" (20467) in `everfrost`.
-119. Combine in "Shiny Tin Bowl" (17860): "Ripened Heartfruit" (20464), "Sweetened Mudroot" (20465), "Speckled Molded Mushroom" (20466), "Chilled Tundra Root" (20467). Produces "Hardened Mixture" (20473). Requires Pottery. The combine does not fail.
-120. timorous/"Alrik Farsight", say "Take The Artifact". Gives "Crushed Pot" (20457).
-121. felwitheb/"Farios Elianos", hand "Crushed Pot" (20457). Gives "Grocery List" (20458).
-122. felwithea/"Merchant Nora", hand "Grocery List" (20458). Gives "Bag of Provisions" (20459).
-123. qeynos2/"Tomer Instogle", say "Backpack". Gives "Bag of Provisions" (20459).
-124. felwitheb/"Farios Elianos", hand "Bag of Provisions" (20459). Gives "Receipt" (20474).
-125. kael/"Wenglawks Kkeak", say "Package". Gives "Voucher for Toolset" (25279).
-126. kael/"Kellek Felhammer", hand "Voucher for Toolset" (25279). Gives "Coldain Toolset" (25104).
-127. iceclad/"Sojan The Sleepless", hand "Coldain Toolset" (25104). Gives "Receipt" (20474).
-128. timorous/"Alrik Farsight", hand "Receipt" (20474). Gives "Ancient Pattern" (18960).
-129. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
-130. Loot "Jade Reaver" (5664) from "A Black Reaver".
-131. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90005).
-132. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90192).
-133. Loot "Jade Reaver" (5664) from "Tzirathk" in `citymist`.
-134. Loot "Jade Reaver" (5664) from "A Black Reaver" in `citymist`.
-135. kaladimb/"Kinlo Strongarm", hand "Jade Reaver" (5664). Gives "Enchanted Clay" (20455).
-136. Forage "Rose of Firiona" (12774) in `firiona`.
-137. qrg/"Merdan Fleetfoot", hand "Rose of Firiona" (12774). Gives "Wood Painting" (20475).
-138. frontiermtns/"A Human Skeleton", hand "Wood Painting" (20475). Gives "Silver Chained Locket" (20476).
-139. qrg/"Niera Farbreeze", hand "Silver Chained Locket" (20476). Gives "Platinum Speckled Powder" (20456).
-140. Combine in Pottery Wheel (21): "Ancient Pattern" (18960), "Enchanted Clay" (20455), "Platinum Speckled Powder" (20456). Produces "Runecrested Bowl" (20460). Requires Pottery. The combine does not fail.
-141. misty/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
-142. mistythicket/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
-143. Hand "Spell: Resurrection" (15392) to karnor/"Spirit Of Venril Sathir". Spawns "Venril Sathir" (102126). Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
-144. Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
-145. firiona/"Foloal Stormforest", hand "Pulsing Green Stone" (20461) + "Softly Glowing Stone" (20462). Gives "Warmly Glowing Stone" (20468).
-146. misty/"Ella Foodcrafter", hand "Warmly Glowing Stone" (20468). Gives "Elaborate Scimitar" (20440).
-147. mistythicket/"Ella Foodcrafter", hand "Warmly Glowing Stone" (20468). Gives "Elaborate Scimitar" (20440).
-148. northkarana/"Xanuusus", hand "Elaborate Scimitar" (20440) + "Cleansed Spirit of Faydwer" (20697) + "Cleansed Spirit of Antonica" (20698) + "Cleansed Spirit of Kunark" (20699). Gives "Nature Walkers Scimitar" (20490).
+107. gfaydark/"Faelin Bloodbriar", hand "Worn Note" (20472). Gives "Faelin's Ring" (20446).
+108. kithicor/"Giz X-Tin", hand "Faelin's Ring" (20446). Gives "Dark Metal Coin" (20447).
+109. burningwood/"Telin Darkforest", hand "Dark Metal Coin" (20447). Gives "Worn Dark Metal Coin" (20448).
+110. eastkarana/"Althele", hand "Worn Dark Metal Coin" (20448). Gives "Braided Grass Amulet" (20450).
+111. eastkarana/"Sionae", hand "Braided Grass Amulet" (20450). Gives "Frayed Braided Grass Amulet" (20451).
+112. eastkarana/"Teloa", hand "Frayed Braided Grass Amulet" (20451). Triggers `eastkarana/althele#signal:1`.
+113. Trigger `eastkarana/althele#timer:attack` from `eastkarana/althele#signal:1`.
+114. Spawns "Corruptor" (15153) after `eastkarana/althele#timer:attack`.
+115. Loot "Fleshbound Tome" (20452) from "Corruptor".
+116. Loot "Fleshbound Tome" (20452) from "Dark Elf Corruptor".
+117. eastkarana/"Althele", hand "Fleshbound Tome" (20452). Gives "Earth Stained Note" (18959).
+118. misty/"Ella Foodcrafter", hand "Earth Stained Note" (18959). Sets `shiny_tin_bowl` to `1`.
+119. misty/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
+120. mistythicket/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
+121. Forage "Ripened Heartfruit" (20464) in `gfaydark`.
+122. Forage "Sweetened Mudroot" (20465) in `misty`.
+123. Forage "Sweetened Mudroot" (20465) in `mistythicket`.
+124. Forage "Speckled Molded Mushroom" (20466) in `innothule`.
+125. Forage "Chilled Tundra Root" (20467) in `everfrost`.
+126. Combine in "Shiny Tin Bowl" (17860): "Ripened Heartfruit" (20464), "Sweetened Mudroot" (20465), "Speckled Molded Mushroom" (20466), "Chilled Tundra Root" (20467). Produces "Hardened Mixture" (20473). Requires Pottery. The combine does not fail.
+127. timorous/"Alrik Farsight", say "Take The Artifact". Gives "Crushed Pot" (20457).
+128. felwitheb/"Farios Elianos", hand "Crushed Pot" (20457). Gives "Grocery List" (20458).
+129. felwithea/"Merchant Nora", hand "Grocery List" (20458). Gives "Bag of Provisions" (20459).
+130. qeynos2/"Tomer Instogle", say "Backpack". Gives "Bag of Provisions" (20459).
+131. felwitheb/"Farios Elianos", hand "Bag of Provisions" (20459). Gives "Receipt" (20474).
+132. kael/"Wenglawks Kkeak", say "Package". Gives "Voucher for Toolset" (25279).
+133. kael/"Kellek Felhammer", hand "Voucher for Toolset" (25279). Gives "Coldain Toolset" (25104).
+134. iceclad/"Sojan The Sleepless", hand "Coldain Toolset" (25104). Gives "Receipt" (20474).
+135. timorous/"Alrik Farsight", hand "Receipt" (20474). Gives "Ancient Pattern" (18960).
+136. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
+137. Loot "Jade Reaver" (5664) from "A Black Reaver".
+138. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90005).
+139. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90192).
+140. Loot "Jade Reaver" (5664) from "Tzirathk" in `citymist`.
+141. Loot "Jade Reaver" (5664) from "A Black Reaver" in `citymist`.
+142. kaladimb/"Kinlo Strongarm", hand "Jade Reaver" (5664). Gives "Enchanted Clay" (20455).
+143. Forage "Rose of Firiona" (12774) in `firiona`.
+144. qrg/"Merdan Fleetfoot", hand "Rose of Firiona" (12774). Gives "Wood Painting" (20475).
+145. frontiermtns/"A Human Skeleton", hand "Wood Painting" (20475). Gives "Silver Chained Locket" (20476).
+146. qrg/"Niera Farbreeze", hand "Silver Chained Locket" (20476). Gives "Platinum Speckled Powder" (20456).
+147. Combine in Pottery Wheel (21): "Ancient Pattern" (18960), "Enchanted Clay" (20455), "Platinum Speckled Powder" (20456). Produces "Runecrested Bowl" (20460). Requires Pottery. The combine does not fail.
+148. misty/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
+149. mistythicket/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
+150. Hand "Spell: Resurrection" (15392) to karnor/"Spirit Of Venril Sathir". Spawns "Venril Sathir" (102126). Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
+151. Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
+152. firiona/"Foloal Stormforest", hand "Pulsing Green Stone" (20461) + "Softly Glowing Stone" (20462). Gives "Warmly Glowing Stone" (20468).
+153. misty/"Ella Foodcrafter", hand "Warmly Glowing Stone" (20468). Gives "Elaborate Scimitar" (20440).
+154. mistythicket/"Ella Foodcrafter", hand "Warmly Glowing Stone" (20468). Gives "Elaborate Scimitar" (20440).
+155. northkarana/"Xanuusus", hand "Elaborate Scimitar" (20440) + "Cleansed Spirit of Faydwer" (20697) + "Cleansed Spirit of Antonica" (20698) + "Cleansed Spirit of Kunark" (20699). Gives "Nature Walkers Scimitar" (20490).
 
 ### "Seed of Wrath" (62809)
 
@@ -177,40 +184,41 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Earthcaller" (20488)
 
-1. misty/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
-2. mistythicket/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
-3. Hand "Shiny Tin Bowl" (17860) to hole/"Jaeil The Wretched". Spawns "Jaeil the Insane" (39154). Loot "Soulbound Hammer" (20478) from "Jaeil the Insane".
-4. Loot "Soulbound Hammer" (20478) from "Jaeil the Insane".
-5. erudnint/"Mairee Silentone", hand "Soulbound Hammer" (20478). Gives "Dwarven Smiths Hammer" (20479).
-6. Kill airplane/"An Essence Carrier". Spawns "An Essence Tamer" (71071).
-7. Loot "Swirling Sphere of Color" (20494) from "An Essence Tamer".
-8. erudnint/"Mairee Silentone", hand "Dwarven Smiths Hammer" (20479) + "Swirling Sphere of Color" (20494). Gives "Hammer of the Ancients" (20485).
-9. kaladimb/"Kinlo Strongarm", hand "Hammer of the Ancients" (20485). Gives "Small bit of Mithril Ore" (20482).
-10. kaladimb/"Kinlo Strongarm", hand "Small bit of Mithril Ore" (20482). Gives "Refined Mithril Blade" (20483).
-11. Say "Evangelist Timer" to hateplaneb/"Inny".
-12. Spawns "Innoruuk" (186107).
-13. Loot "Shattered Emerald of Corruption" (20484) from "Innoruuk".
-14. Say "Control Timer" to hateplaneb/"Maestro".
-15. Spawns "Maestro of Rancor" (186111).
-16. Loot "Shattered Emerald of Corruption" (20484) from "Maestro of Rancor".
-17. northkarana/"Xanuusus", hand "Refined Mithril Blade" (20483) + "Shattered Emerald of Corruption" (20484). Gives "Earthcaller" (20488).
+1. Hand "Shiny Tin Bowl" (17860) to hole/"Jaeil The Wretched". Spawns "Jaeil the Insane" (39154). Loot "Soulbound Hammer" (20478) from "Jaeil the Insane".
+2. Loot "Soulbound Hammer" (20478) from "Jaeil the Insane".
+3. erudnint/"Mairee Silentone", hand "Soulbound Hammer" (20478). Gives "Dwarven Smiths Hammer" (20479).
+4. Kill airplane/"An Essence Carrier". Spawns "An Essence Tamer" (71071).
+5. Loot "Swirling Sphere of Color" (20494) from "An Essence Tamer".
+6. erudnint/"Mairee Silentone", hand "Dwarven Smiths Hammer" (20479) + "Swirling Sphere of Color" (20494). Gives "Hammer of the Ancients" (20485).
+7. kaladimb/"Kinlo Strongarm", hand "Hammer of the Ancients" (20485). Gives "Small bit of Mithril Ore" (20482).
+8. kaladimb/"Kinlo Strongarm", hand "Small bit of Mithril Ore" (20482). Gives "Refined Mithril Blade" (20483).
+9. Say "Evangelist Timer" to hateplaneb/"Inny".
+10. Spawns "Innoruuk" (186107).
+11. Loot "Shattered Emerald of Corruption" (20484) from "Innoruuk".
+12. Say "Control Timer" to hateplaneb/"Maestro".
+13. Spawns "Maestro of Rancor" (186111).
+14. Loot "Shattered Emerald of Corruption" (20484) from "Maestro of Rancor".
+15. **Broken:** no event trigger found for `hateplaneb/inny#timer:spawninny`.
+16. Spawns "Innoruuk" (186107) after `hateplaneb/inny#timer:spawninny`.
+17. **Broken:** no event trigger found for `hateplaneb/maestro#timer:popmaestro`.
+18. Spawns "Maestro of Rancor" (186111) after `hateplaneb/maestro#timer:popmaestro`.
+19. northkarana/"Xanuusus", hand "Refined Mithril Blade" (20483) + "Shattered Emerald of Corruption" (20484). Gives "Earthcaller" (20488).
 
 ### "Essence of Earth and Wind" (62600)
 
 1. Say "Ready" to northkarana/"Xanuusus".
 2. Spawns "A Tainted Beast" (13131).
 3. Loot "Stone of Winde" (62604) from "A Tainted Beast".
-4. Spawns "A Tainted Beast" (13131) in `northkarana` on event_timer.
-5. northkarana/"Xanuusus", hand "Stone of Winde" (62604). Sets `ranger_epic15_pre` to `9`.
-6. steamfont/"Godbin Strumharp", hand platinum:30. Requires `ranger_epic15_pre` ==9. Gives "Sound Capture Jar" (62637).
-7. steamfontmts/"Godbin Strumharp", hand platinum:30. Requires `ranger_epic15_pre` ==9. Gives "Sound Capture Jar" (62637).
-8. charasis/"Ghost Of Mera", hand "Sound Capture Jar" (62637). Sets `ranger_epic15_pre` to `10`.
-9. Spawns "Ghost of Mera" (105290) in `charasis` on event_enterzone.
-10. steamfont/"Godbin Strumharp", hand platinum:30. Requires `ranger_epic15_pre` ==9. Gives "Sound Capture Jar" (62637).
-11. steamfontmts/"Godbin Strumharp", hand platinum:30. Requires `ranger_epic15_pre` ==9. Gives "Sound Capture Jar" (62637).
-12. Hand "Sound Capture Jar" (62637) to charasis/"Ghost Of Mera". Sets `ranger_epic15_pre` to `10`.
-13. Loot "Echoing Jar" (62638) from "Ghost of Mera".
-14. erudnint/"Mairee Silentone", hand "Stone of Winde" (62604) + "Echoing Jar" (62638). Requires `ranger_epic15_pre` ==10. Gives "Essence of Earth and Wind" (62600).
+4. **Broken:** no event trigger found for `northkarana/xanuusus#timer:spawn_beast`.
+5. Spawns "A Tainted Beast" (13131) after `northkarana/xanuusus#timer:spawn_beast`.
+6. northkarana/"Xanuusus", hand "Stone of Winde" (62604). Sets `ranger_epic15_pre` to `9`.
+7. steamfont/"Godbin Strumharp", hand platinum:30. Requires `ranger_epic15_pre` ==9. Gives "Sound Capture Jar" (62637).
+8. steamfontmts/"Godbin Strumharp", hand platinum:30. Requires `ranger_epic15_pre` ==9. Gives "Sound Capture Jar" (62637).
+9. charasis/"Ghost Of Mera", hand "Sound Capture Jar" (62637). Sets `ranger_epic15_pre` to `10`.
+10. Spawns "Ghost of Mera" (105290) in `charasis` on event_enterzone.
+11. Hand "Sound Capture Jar" (62637) to charasis/"Ghost Of Mera". Sets `ranger_epic15_pre` to `10`.
+12. Loot "Echoing Jar" (62638) from "Ghost of Mera".
+13. erudnint/"Mairee Silentone", hand "Stone of Winde" (62604) + "Echoing Jar" (62638). Requires `ranger_epic15_pre` ==10. Gives "Essence of Earth and Wind" (62600).
 
 ### "Corun's Notes" (62617)
 
@@ -220,16 +228,16 @@ Each list is the order you obtain that item. Later steps point here instead of r
 4. qrg/"Corun Finisc", hand "Closed Medicine Bag" (62615). Gives "Sickly Mosquito Blood Sample" (62611).
 5. Summon "Collapsible Fletching Kit" (17189) by casting "Unfold Fletching Kit".
 6. qrg/"Corun Finisc", hand "Tuft of Sickly Maiden's Hair" (62811). Gives "Magical Sample Vial" (62657).
-7. cazicthule/"A Sickly Mosquito", on event_timer. Gives "Captured Mosquito" (62642).
+7. **Broken:** nothing in the graph gives, loots, spawns, or combines Captured Mosquito (62642).
 8. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Mosquito" (62642). Produces "Sickly Mosquito Blood Sample" (62611). Requires Fletching. The combine does not fail.
 9. qrg/"Corun Finisc", hand "Closed Medicine Bag" (62615). Gives "Twitching Swordfish Blood Sample" (62612).
-10. sirens/"A Twitching Swordfish", on event_timer. Gives "Captured Swordfish" (62643).
+10. **Broken:** nothing in the graph gives, loots, spawns, or combines Captured Swordfish (62643).
 11. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Swordfish" (62643). Produces "Twitching Swordfish Blood Sample" (62612). Requires Fletching. The combine does not fail.
 12. qrg/"Corun Finisc", hand "Closed Medicine Bag" (62615). Gives "Bloated Drogan Spider Blood Sample" (62613).
-13. droga/"A Bloated Drogan Spider", on event_timer. Gives "Captured Spider" (62644).
+13. **Broken:** nothing in the graph gives, loots, spawns, or combines Captured Spider (62644).
 14. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Spider" (62644). Produces "Bloated Drogan Spider Blood Sample" (62613). Requires Fletching. The combine does not fail.
 15. qrg/"Corun Finisc", hand "Closed Medicine Bag" (62615). Gives "Leprous Chokidai Blood Sample" (62614).
-16. chardokb/"A Leprous Chokidai", on event_timer. Gives "Captured Chokidai" (62645).
+16. **Broken:** nothing in the graph gives, loots, spawns, or combines Captured Chokidai (62645).
 17. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Chokidai" (62645). Produces "Leprous Chokidai Blood Sample" (62614). Requires Fletching. The combine does not fail.
 18. Combine in "Borrowed Medicine Bag" (62605): "Sickly Mosquito Blood Sample" (62611), "Twitching Swordfish Blood Sample" (62612), "Bloated Drogan Spider Blood Sample" (62613), "Leprous Chokidai Blood Sample" (62614). Produces "Closed Medicine Bag" (62615). The combine does not fail.
 19. qrg/"Corun Finisc", hand "Closed Medicine Bag" (62615). Gives "Borrowed Medicine Bag" (62605).
@@ -239,6 +247,90 @@ Each list is the order you obtain that item. Later steps point here instead of r
 23. Loot "Neuralgic Wyvern Blood" (72605) from "A Neuralgic Huntress".
 24. Combine in "Borrowed Medicine Bag" (62605): "Asteatotic Veksar Blood" (35100), "Neuralgic Wyvern Blood" (72605), "Sickly Mosquito Blood Sample" (62611), "Twitching Swordfish Blood Sample" (62612), "Leprous Chokidai Blood Sample" (62614), "Bloated Drogan Spider Blood Sample" (62613). Produces "Full Medicine Bag" (62616). The combine does not fail.
 25. qrg/"Corun Finisc", hand "Full Medicine Bag" (62616). Gives "Corun's Notes" (62617).
+
+### "Senvial's Blessing" (62621)
+
+1. Forage "Sickly Maiden's Hair" (62810) in `rathemtn`.
+2. eastkarana/"Althele", hand "Sickly Maiden's Hair" (62810). Gives "Tuft of Sickly Maiden's Hair" (62811).
+3. qrg/"Niera Farbreeze", hand "Tuft of Sickly Maiden's Hair" (62811). Gives "Waterproof Collection Bag" (62812).
+4. Say "King Timer" to frontiermtns/"Druid 1 5".
+5. Spawns "Goblin Hider" (92202).
+6. Loot "Bag of Diseased Maiden's Hair" (62826) from "Goblin Hider".
+7. Spawns "A Bloodgill Forager" (85234) in `lakeofillomen` on enter.
+8. Loot "Handful of Diseased Maiden's Hair" (62825) from "A Bloodgill Forager".
+9. Common item: Tackle Box (17048). Listed in 11 zones.
+10. Spawns "Ulthork Raider" (116608) in `eastwastes` on enter.
+11. Loot "Carved Prexus Totem" (62821) from "Ulthork Raider".
+12. cobaltscar/"Blumblum Swigwater", hand "Carved Prexus Totem" (62821). Gives "Small Trigger Fish" (62820).
+13. Common item: Gutting Knife (62823). Listed in 4 zones.
+14. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Hands back "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing, trivial 20. The combine does not fail.
+15. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+16. Loot "Partially Digested Maiden's Hair" (62819) from "spawn #Swamp Terror".
+17. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
+18. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
+19. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
+20. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+21. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
+22. Loot "Mangled Head" (62818) from "Swamp Terror".
+23. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
+24. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
+25. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
+26. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
+27. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
+28. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
+29. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
+30. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
+31. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
+32. **Broken:** nothing in the graph gives, loots, spawns, or combines Animating Heads (62828).
+33. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
+34. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
+35. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
+36. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
+37. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
+38. Requires `ranger_natimbi_chest` unset; no setter establishes this state.
+39. natimbi/"Ranger 1 5", say "Hail". Requires `ranger_natimbi_chest` unset. Gives "Senvial's Blessing" (62621).
+
+### "Grinbik's Blessing" (62622)
+
+1. Forage "Sickly Maiden's Hair" (62810) in `rathemtn`.
+2. eastkarana/"Althele", hand "Sickly Maiden's Hair" (62810). Gives "Tuft of Sickly Maiden's Hair" (62811).
+3. qrg/"Niera Farbreeze", hand "Tuft of Sickly Maiden's Hair" (62811). Gives "Waterproof Collection Bag" (62812).
+4. Say "King Timer" to frontiermtns/"Druid 1 5".
+5. Spawns "Goblin Hider" (92202).
+6. Loot "Bag of Diseased Maiden's Hair" (62826) from "Goblin Hider".
+7. Spawns "A Bloodgill Forager" (85234) in `lakeofillomen` on enter.
+8. Loot "Handful of Diseased Maiden's Hair" (62825) from "A Bloodgill Forager".
+9. Common item: Tackle Box (17048). Listed in 11 zones.
+10. Spawns "Ulthork Raider" (116608) in `eastwastes` on enter.
+11. Loot "Carved Prexus Totem" (62821) from "Ulthork Raider".
+12. cobaltscar/"Blumblum Swigwater", hand "Carved Prexus Totem" (62821). Gives "Small Trigger Fish" (62820).
+13. Common item: Gutting Knife (62823). Listed in 4 zones.
+14. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Hands back "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing, trivial 20. The combine does not fail.
+15. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+16. Loot "Partially Digested Maiden's Hair" (62819) from "spawn #Swamp Terror".
+17. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
+18. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
+19. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
+20. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+21. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
+22. Loot "Mangled Head" (62818) from "Swamp Terror".
+23. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
+24. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
+25. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
+26. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
+27. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
+28. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
+29. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
+30. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
+31. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
+32. **Broken:** nothing in the graph gives, loots, spawns, or combines Animating Heads (62828).
+33. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
+34. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
+35. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
+36. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
+37. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
+38. Requires `ranger_bloodfield_chest` unset; no setter establishes this state.
+39. bloodfields/"Ranger 1 5", say "Hail". Requires `ranger_bloodfield_chest` unset. Gives "Grinbik's Blessing" (62622).
 
 ### "Red Dogwood Seed" (62844)
 
@@ -258,29 +350,27 @@ Each list is the order you obtain that item. Later steps point here instead of r
 14. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Hands back "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing, trivial 20. The combine does not fail.
 15. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
 16. Loot "Partially Digested Maiden's Hair" (62819) from "spawn #Swamp Terror".
-17. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-18. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
-19. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
-20. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
-21. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
-22. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
-23. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-24. Loot "Mangled Head" (62818) from "Swamp Terror".
-25. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
-26. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
-27. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
-28. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
-29. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
-30. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
-31. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
-32. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
-33. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
-34. tox/"A Skeleton", on event_timer. Gives "Animating Heads" (62828).
-35. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
-36. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
-37. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
-38. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
-39. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
+17. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
+18. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
+19. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
+20. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+21. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
+22. Loot "Mangled Head" (62818) from "Swamp Terror".
+23. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
+24. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
+25. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
+26. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
+27. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
+28. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
+29. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
+30. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
+31. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
+32. **Broken:** nothing in the graph gives, loots, spawns, or combines Animating Heads (62828).
+33. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
+34. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
+35. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
+36. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
+37. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
 
 ### "Wind-blessed Heartwood" (62626)
 
@@ -297,137 +387,154 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Swiftwind" (20487)
 
-1. Spawns "Corruptor" (15153) in `eastkarana` on event_timer.
-2. Loot "Fleshbound Tome" (20452) from "Corruptor".
-3. Loot "Fleshbound Tome" (20452) from "Dark Elf Corruptor".
-4. eastkarana/"Althele", hand "Fleshbound Tome" (20452). Gives "Earth Stained Note" (18959).
-5. misty/"Ella Foodcrafter", hand "Earth Stained Note" (18959). Sets `shiny_tin_bowl` to `1`.
-6. misty/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
-7. mistythicket/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
-8. Forage "Ripened Heartfruit" (20464) in `gfaydark`.
-9. Forage "Sweetened Mudroot" (20465) in `misty`.
-10. Forage "Sweetened Mudroot" (20465) in `mistythicket`.
-11. Forage "Speckled Molded Mushroom" (20466) in `innothule`.
-12. Forage "Chilled Tundra Root" (20467) in `everfrost`.
-13. Combine in "Shiny Tin Bowl" (17860): "Ripened Heartfruit" (20464), "Sweetened Mudroot" (20465), "Speckled Molded Mushroom" (20466), "Chilled Tundra Root" (20467). Produces "Hardened Mixture" (20473). Requires Pottery. The combine does not fail.
-14. timorous/"Alrik Farsight", say "Take The Artifact". Gives "Crushed Pot" (20457).
-15. felwitheb/"Farios Elianos", hand "Crushed Pot" (20457). Gives "Grocery List" (20458).
-16. felwithea/"Merchant Nora", hand "Grocery List" (20458). Gives "Bag of Provisions" (20459).
-17. qeynos2/"Tomer Instogle", say "Backpack". Gives "Bag of Provisions" (20459).
-18. felwitheb/"Farios Elianos", hand "Bag of Provisions" (20459). Gives "Receipt" (20474).
-19. kael/"Wenglawks Kkeak", say "Package". Gives "Voucher for Toolset" (25279).
-20. kael/"Kellek Felhammer", hand "Voucher for Toolset" (25279). Gives "Coldain Toolset" (25104).
-21. iceclad/"Sojan The Sleepless", hand "Coldain Toolset" (25104). Gives "Receipt" (20474).
-22. timorous/"Alrik Farsight", hand "Receipt" (20474). Gives "Ancient Pattern" (18960).
-23. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
-24. Loot "Jade Reaver" (5664) from "A Black Reaver".
-25. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90005).
-26. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90192).
-27. Loot "Jade Reaver" (5664) from "Tzirathk" in `citymist`.
-28. Loot "Jade Reaver" (5664) from "A Black Reaver" in `citymist`.
-29. kaladimb/"Kinlo Strongarm", hand "Jade Reaver" (5664). Gives "Enchanted Clay" (20455).
-30. Forage "Rose of Firiona" (12774) in `firiona`.
-31. qrg/"Merdan Fleetfoot", hand "Rose of Firiona" (12774). Gives "Wood Painting" (20475).
-32. frontiermtns/"A Human Skeleton", hand "Wood Painting" (20475). Gives "Silver Chained Locket" (20476).
-33. qrg/"Niera Farbreeze", hand "Silver Chained Locket" (20476). Gives "Platinum Speckled Powder" (20456).
-34. Combine in Pottery Wheel (21): "Ancient Pattern" (18960), "Enchanted Clay" (20455), "Platinum Speckled Powder" (20456). Produces "Runecrested Bowl" (20460). Requires Pottery. The combine does not fail.
-35. misty/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
-36. mistythicket/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
-37. Hand "Spell: Resurrection" (15392) to karnor/"Spirit Of Venril Sathir". Spawns "Venril Sathir" (102126). Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
-38. Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
-39. firiona/"Foloal Stormforest", hand "Pulsing Green Stone" (20461) + "Softly Glowing Stone" (20462). Gives "Warmly Glowing Stone" (20468).
-40. burningwood/"Telin Darkforest", hand "Warmly Glowing Stone" (20468). Gives "Ancient Longsword" (20477).
-41. kaladimb/"Usbak The Old", hand "Ancient Longsword" (20477). Gives "Refined Ancient Sword" (20481).
-42. burningwood/"Faelin Bloodbriar", hand "Refined Ancient Sword" (20481). Gives "Swiftwind" (20487).
+1. kithicor/"Giz X-Tin", hand "Faelin's Ring" (20446). Gives "Dark Metal Coin" (20447).
+2. burningwood/"Telin Darkforest", hand "Dark Metal Coin" (20447). Gives "Worn Dark Metal Coin" (20448).
+3. eastkarana/"Althele", hand "Worn Dark Metal Coin" (20448). Gives "Braided Grass Amulet" (20450).
+4. eastkarana/"Sionae", hand "Braided Grass Amulet" (20450). Gives "Frayed Braided Grass Amulet" (20451).
+5. eastkarana/"Teloa", hand "Frayed Braided Grass Amulet" (20451). Triggers `eastkarana/althele#signal:1`.
+6. Trigger `eastkarana/althele#timer:attack` from `eastkarana/althele#signal:1`.
+7. Spawns "Corruptor" (15153) after `eastkarana/althele#timer:attack`.
+8. Loot "Fleshbound Tome" (20452) from "Corruptor".
+9. Loot "Fleshbound Tome" (20452) from "Dark Elf Corruptor".
+10. eastkarana/"Althele", hand "Fleshbound Tome" (20452). Gives "Earth Stained Note" (18959).
+11. misty/"Ella Foodcrafter", hand "Earth Stained Note" (18959). Sets `shiny_tin_bowl` to `1`.
+12. misty/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
+13. mistythicket/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
+14. Forage "Ripened Heartfruit" (20464) in `gfaydark`.
+15. Forage "Sweetened Mudroot" (20465) in `misty`.
+16. Forage "Sweetened Mudroot" (20465) in `mistythicket`.
+17. Forage "Speckled Molded Mushroom" (20466) in `innothule`.
+18. Forage "Chilled Tundra Root" (20467) in `everfrost`.
+19. Combine in "Shiny Tin Bowl" (17860): "Ripened Heartfruit" (20464), "Sweetened Mudroot" (20465), "Speckled Molded Mushroom" (20466), "Chilled Tundra Root" (20467). Produces "Hardened Mixture" (20473). Requires Pottery. The combine does not fail.
+20. timorous/"Alrik Farsight", say "Take The Artifact". Gives "Crushed Pot" (20457).
+21. felwitheb/"Farios Elianos", hand "Crushed Pot" (20457). Gives "Grocery List" (20458).
+22. felwithea/"Merchant Nora", hand "Grocery List" (20458). Gives "Bag of Provisions" (20459).
+23. qeynos2/"Tomer Instogle", say "Backpack". Gives "Bag of Provisions" (20459).
+24. felwitheb/"Farios Elianos", hand "Bag of Provisions" (20459). Gives "Receipt" (20474).
+25. kael/"Wenglawks Kkeak", say "Package". Gives "Voucher for Toolset" (25279).
+26. kael/"Kellek Felhammer", hand "Voucher for Toolset" (25279). Gives "Coldain Toolset" (25104).
+27. iceclad/"Sojan The Sleepless", hand "Coldain Toolset" (25104). Gives "Receipt" (20474).
+28. timorous/"Alrik Farsight", hand "Receipt" (20474). Gives "Ancient Pattern" (18960).
+29. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
+30. Loot "Jade Reaver" (5664) from "A Black Reaver".
+31. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90005).
+32. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90192).
+33. Loot "Jade Reaver" (5664) from "Tzirathk" in `citymist`.
+34. Loot "Jade Reaver" (5664) from "A Black Reaver" in `citymist`.
+35. kaladimb/"Kinlo Strongarm", hand "Jade Reaver" (5664). Gives "Enchanted Clay" (20455).
+36. Forage "Rose of Firiona" (12774) in `firiona`.
+37. qrg/"Merdan Fleetfoot", hand "Rose of Firiona" (12774). Gives "Wood Painting" (20475).
+38. frontiermtns/"A Human Skeleton", hand "Wood Painting" (20475). Gives "Silver Chained Locket" (20476).
+39. qrg/"Niera Farbreeze", hand "Silver Chained Locket" (20476). Gives "Platinum Speckled Powder" (20456).
+40. Combine in Pottery Wheel (21): "Ancient Pattern" (18960), "Enchanted Clay" (20455), "Platinum Speckled Powder" (20456). Produces "Runecrested Bowl" (20460). Requires Pottery. The combine does not fail.
+41. misty/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
+42. mistythicket/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
+43. Hand "Spell: Resurrection" (15392) to karnor/"Spirit Of Venril Sathir". Spawns "Venril Sathir" (102126). Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
+44. Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
+45. firiona/"Foloal Stormforest", hand "Pulsing Green Stone" (20461) + "Softly Glowing Stone" (20462). Gives "Warmly Glowing Stone" (20468).
+46. burningwood/"Telin Darkforest", hand "Warmly Glowing Stone" (20468). Gives "Ancient Longsword" (20477).
+47. kaladimb/"Usbak The Old", hand "Ancient Longsword" (20477). Gives "Refined Ancient Sword" (20481).
+48. burningwood/"Faelin Bloodbriar", hand "Refined Ancient Sword" (20481). Gives "Swiftwind" (20487).
+
+### "Heated Loadstone" (62628)
+
+1. nedaria/"A Wayfarers Brotherhood Officer", say "Hail". Sets `ranger_epic` to `6`.
+2. causeway/"Siflu", say "Adventurers". Requires `ranger_epic` ==6. Gives "Heated Loadstone" (62628).
 
 ### "Elemental Ice Spirit Cage" (62647)
 
 1. Loot "Crooked Cage" (32042) from "a Broken Skull bruiser" in `torgiran`.
-2. misty/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
-3. mistythicket/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
-4. Hand "Shiny Tin Bowl" (17860) to hole/"Jaeil The Wretched". Spawns "Jaeil the Insane" (39154). Loot "Soulbound Hammer" (20478) from "Jaeil the Insane".
-5. Loot "Soulbound Hammer" (20478) from "Jaeil the Insane".
-6. erudnint/"Mairee Silentone", hand "Soulbound Hammer" (20478). Gives "Dwarven Smiths Hammer" (20479).
-7. Kill airplane/"An Essence Carrier". Spawns "An Essence Tamer" (71071).
-8. Loot "Swirling Sphere of Color" (20494) from "An Essence Tamer".
-9. erudnint/"Mairee Silentone", hand "Dwarven Smiths Hammer" (20479) + "Swirling Sphere of Color" (20494). Gives "Hammer of the Ancients" (20485).
-10. kaladimb/"Kinlo Strongarm", hand "Hammer of the Ancients" (20485). Gives "Small bit of Mithril Ore" (20482).
-11. kaladimb/"Kinlo Strongarm", hand "Small bit of Mithril Ore" (20482). Gives "Refined Mithril Blade" (20483).
-12. Say "Evangelist Timer" to hateplaneb/"Inny".
-13. Spawns "Innoruuk" (186107).
-14. Loot "Shattered Emerald of Corruption" (20484) from "Innoruuk".
-15. Say "Control Timer" to hateplaneb/"Maestro".
-16. Spawns "Maestro of Rancor" (186111).
-17. Loot "Shattered Emerald of Corruption" (20484) from "Maestro of Rancor".
-18. northkarana/"Xanuusus", hand "Refined Mithril Blade" (20483) + "Shattered Emerald of Corruption" (20484). Gives "Earthcaller" (20488).
-19. Spawns "Corruptor" (15153) in `eastkarana` on event_timer.
-20. Loot "Fleshbound Tome" (20452) from "Corruptor".
-21. Loot "Fleshbound Tome" (20452) from "Dark Elf Corruptor".
-22. eastkarana/"Althele", hand "Fleshbound Tome" (20452). Gives "Earth Stained Note" (18959).
-23. misty/"Ella Foodcrafter", hand "Earth Stained Note" (18959). Sets `shiny_tin_bowl` to `1`.
-24. misty/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
-25. mistythicket/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
-26. Forage "Ripened Heartfruit" (20464) in `gfaydark`.
-27. Forage "Sweetened Mudroot" (20465) in `misty`.
-28. Forage "Sweetened Mudroot" (20465) in `mistythicket`.
-29. Forage "Speckled Molded Mushroom" (20466) in `innothule`.
-30. Forage "Chilled Tundra Root" (20467) in `everfrost`.
-31. Combine in "Shiny Tin Bowl" (17860): "Ripened Heartfruit" (20464), "Sweetened Mudroot" (20465), "Speckled Molded Mushroom" (20466), "Chilled Tundra Root" (20467). Produces "Hardened Mixture" (20473). Requires Pottery. The combine does not fail.
-32. timorous/"Alrik Farsight", say "Take The Artifact". Gives "Crushed Pot" (20457).
-33. felwitheb/"Farios Elianos", hand "Crushed Pot" (20457). Gives "Grocery List" (20458).
-34. felwithea/"Merchant Nora", hand "Grocery List" (20458). Gives "Bag of Provisions" (20459).
-35. qeynos2/"Tomer Instogle", say "Backpack". Gives "Bag of Provisions" (20459).
-36. felwitheb/"Farios Elianos", hand "Bag of Provisions" (20459). Gives "Receipt" (20474).
-37. kael/"Wenglawks Kkeak", say "Package". Gives "Voucher for Toolset" (25279).
-38. kael/"Kellek Felhammer", hand "Voucher for Toolset" (25279). Gives "Coldain Toolset" (25104).
-39. iceclad/"Sojan The Sleepless", hand "Coldain Toolset" (25104). Gives "Receipt" (20474).
-40. timorous/"Alrik Farsight", hand "Receipt" (20474). Gives "Ancient Pattern" (18960).
-41. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
-42. Loot "Jade Reaver" (5664) from "A Black Reaver".
-43. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90005).
-44. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90192).
-45. Loot "Jade Reaver" (5664) from "Tzirathk" in `citymist`.
-46. Loot "Jade Reaver" (5664) from "A Black Reaver" in `citymist`.
-47. kaladimb/"Kinlo Strongarm", hand "Jade Reaver" (5664). Gives "Enchanted Clay" (20455).
-48. Forage "Rose of Firiona" (12774) in `firiona`.
-49. qrg/"Merdan Fleetfoot", hand "Rose of Firiona" (12774). Gives "Wood Painting" (20475).
-50. frontiermtns/"A Human Skeleton", hand "Wood Painting" (20475). Gives "Silver Chained Locket" (20476).
-51. qrg/"Niera Farbreeze", hand "Silver Chained Locket" (20476). Gives "Platinum Speckled Powder" (20456).
-52. Combine in Pottery Wheel (21): "Ancient Pattern" (18960), "Enchanted Clay" (20455), "Platinum Speckled Powder" (20456). Produces "Runecrested Bowl" (20460). Requires Pottery. The combine does not fail.
-53. misty/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
-54. mistythicket/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
-55. Hand "Spell: Resurrection" (15392) to karnor/"Spirit Of Venril Sathir". Spawns "Venril Sathir" (102126). Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
-56. Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
-57. firiona/"Foloal Stormforest", hand "Pulsing Green Stone" (20461) + "Softly Glowing Stone" (20462). Gives "Warmly Glowing Stone" (20468).
-58. burningwood/"Telin Darkforest", hand "Warmly Glowing Stone" (20468). Gives "Ancient Longsword" (20477).
-59. kaladimb/"Usbak The Old", hand "Ancient Longsword" (20477). Gives "Refined Ancient Sword" (20481).
-60. burningwood/"Faelin Bloodbriar", hand "Refined Ancient Sword" (20481). Gives "Swiftwind" (20487).
-61. No quest step gives Living Fragment of Fire (28294). The dump lists it in pofire.
-62. Loot "Living Fragment of Water" (28293) from "A Triloun Diviner" in `powater`.
-63. Loot "Living Fragment of Water" (28293) from "A Triloun Keeper" in `powater`.
-64. Loot "Living Fragment of Water" (28293) from "A Triloun Water Guardian" in `powater`.
-65. nedaria/"A Wayfarers Brotherhood Officer", say "Hail". Sets `ranger_epic` to `6`.
-66. causeway/"Siflu", say "Adventurers". Requires `ranger_epic` ==6. Gives "Heated Loadstone" (62628).
-67. Spawns "A Mangled Muramite Captain" (300069) in `wallofslaughter` on enter.
-68. Loot "Spirit Manacles" (72340) from "A Mangled Muramite Captain".
-69. Loot "Spirit Manacles" (72340) from "A Mangled Muramite Captain" in `wallofslaughter`.
-70. Combine in "Crooked Cage" (32042): "Earthcaller" (20488), "Swiftwind" (20487), "Living Fragment of Fire" (28294), "Living Fragment of Water" (28293), "Heated Loadstone" (62628), "Spirit Manacles" (72340). Hands back "Earthcaller" (20488), "Swiftwind" (20487). Produces "Spirit Cage" (62656). The combine does not fail.
-71. Spawns "A Vekerchiki Drone" (218047) in `poeartha` on event_combat.
-72. Loot "Living Fragment of Earth" (28295) from "A Vekerchiki Drone".
-73. Spawns "A Vekerchiki Warrior" (218025) in `poeartha` on event_combat.
-74. Loot "Living Fragment of Earth" (28295) from "A Vekerchiki Warrior".
-75. Loot "Living Fragment of Earth" (28295) from "A Vekerchiki Soldier" in `poearthb`.
-76. Loot "Living Fragment of Earth" (28295) from "An Earthcrafted Assassin" in `poeartha`.
-77. Loot "Living Fragment of Air" (28292) from "A Temple Guardian".
-78. Loot "Living Fragment of Air" (28292) from "A Temple Guardian" in `poair`.
-79. Combine in "Crooked Cage" (32042): "Living Fragment of Fire" (28294), "Living Fragment of Water" (28293), "Heated Loadstone" (62628), "Spirit Manacles" (72340), "Living Fragment of Earth" (28295), "Living Fragment of Air" (28292). Produces "Spirit Cage" (62656). The combine does not fail.
-80. Spawns "Craftmaster Tieranu" (334087) in `riftseekers` on enter.
-81. Loot "Ring of Warmth" (11427) from "Craftmaster Tieranu".
-82. Loot "Ring of Warmth" (11427) from "Craftmaster Tieranu" in `riftseekers`.
-83. Spawns "Herrian Warfrost" (300057) in `wallofslaughter` on enter.
-84. Loot "Hoarfrost Wand" (76999) from "Herrian Warfrost".
-85. Loot "Hoarfrost Wand" (76999) from "Herrian Warfrost" in `wallofslaughter`.
-86. Combine in "Spirit Cage" (62656): "Ring of Warmth" (11427), "Hoarfrost Wand" (76999). Produces "Elemental Ice Spirit Cage" (62647). The combine does not fail.
+2. Hand "Shiny Tin Bowl" (17860) to hole/"Jaeil The Wretched". Spawns "Jaeil the Insane" (39154). Loot "Soulbound Hammer" (20478) from "Jaeil the Insane".
+3. Loot "Soulbound Hammer" (20478) from "Jaeil the Insane".
+4. erudnint/"Mairee Silentone", hand "Soulbound Hammer" (20478). Gives "Dwarven Smiths Hammer" (20479).
+5. Kill airplane/"An Essence Carrier". Spawns "An Essence Tamer" (71071).
+6. Loot "Swirling Sphere of Color" (20494) from "An Essence Tamer".
+7. erudnint/"Mairee Silentone", hand "Dwarven Smiths Hammer" (20479) + "Swirling Sphere of Color" (20494). Gives "Hammer of the Ancients" (20485).
+8. kaladimb/"Kinlo Strongarm", hand "Hammer of the Ancients" (20485). Gives "Small bit of Mithril Ore" (20482).
+9. kaladimb/"Kinlo Strongarm", hand "Small bit of Mithril Ore" (20482). Gives "Refined Mithril Blade" (20483).
+10. Say "Evangelist Timer" to hateplaneb/"Inny".
+11. Spawns "Innoruuk" (186107).
+12. Loot "Shattered Emerald of Corruption" (20484) from "Innoruuk".
+13. Say "Control Timer" to hateplaneb/"Maestro".
+14. Spawns "Maestro of Rancor" (186111).
+15. Loot "Shattered Emerald of Corruption" (20484) from "Maestro of Rancor".
+16. **Broken:** no event trigger found for `hateplaneb/inny#timer:spawninny`.
+17. Spawns "Innoruuk" (186107) after `hateplaneb/inny#timer:spawninny`.
+18. **Broken:** no event trigger found for `hateplaneb/maestro#timer:popmaestro`.
+19. Spawns "Maestro of Rancor" (186111) after `hateplaneb/maestro#timer:popmaestro`.
+20. northkarana/"Xanuusus", hand "Refined Mithril Blade" (20483) + "Shattered Emerald of Corruption" (20484). Gives "Earthcaller" (20488).
+21. eastkarana/"Althele", hand "Worn Dark Metal Coin" (20448). Gives "Braided Grass Amulet" (20450).
+22. eastkarana/"Sionae", hand "Braided Grass Amulet" (20450). Gives "Frayed Braided Grass Amulet" (20451).
+23. eastkarana/"Teloa", hand "Frayed Braided Grass Amulet" (20451). Triggers `eastkarana/althele#signal:1`.
+24. Trigger `eastkarana/althele#timer:attack` from `eastkarana/althele#signal:1`.
+25. Spawns "Corruptor" (15153) after `eastkarana/althele#timer:attack`.
+26. Loot "Fleshbound Tome" (20452) from "Corruptor".
+27. Loot "Fleshbound Tome" (20452) from "Dark Elf Corruptor".
+28. eastkarana/"Althele", hand "Fleshbound Tome" (20452). Gives "Earth Stained Note" (18959).
+29. misty/"Ella Foodcrafter", hand "Earth Stained Note" (18959). Sets `shiny_tin_bowl` to `1`.
+30. misty/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
+31. mistythicket/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
+32. Forage "Ripened Heartfruit" (20464) in `gfaydark`.
+33. Forage "Sweetened Mudroot" (20465) in `misty`.
+34. Forage "Sweetened Mudroot" (20465) in `mistythicket`.
+35. Forage "Speckled Molded Mushroom" (20466) in `innothule`.
+36. Forage "Chilled Tundra Root" (20467) in `everfrost`.
+37. Combine in "Shiny Tin Bowl" (17860): "Ripened Heartfruit" (20464), "Sweetened Mudroot" (20465), "Speckled Molded Mushroom" (20466), "Chilled Tundra Root" (20467). Produces "Hardened Mixture" (20473). Requires Pottery. The combine does not fail.
+38. timorous/"Alrik Farsight", say "Take The Artifact". Gives "Crushed Pot" (20457).
+39. felwitheb/"Farios Elianos", hand "Crushed Pot" (20457). Gives "Grocery List" (20458).
+40. felwithea/"Merchant Nora", hand "Grocery List" (20458). Gives "Bag of Provisions" (20459).
+41. qeynos2/"Tomer Instogle", say "Backpack". Gives "Bag of Provisions" (20459).
+42. felwitheb/"Farios Elianos", hand "Bag of Provisions" (20459). Gives "Receipt" (20474).
+43. kael/"Wenglawks Kkeak", say "Package". Gives "Voucher for Toolset" (25279).
+44. kael/"Kellek Felhammer", hand "Voucher for Toolset" (25279). Gives "Coldain Toolset" (25104).
+45. iceclad/"Sojan The Sleepless", hand "Coldain Toolset" (25104). Gives "Receipt" (20474).
+46. timorous/"Alrik Farsight", hand "Receipt" (20474). Gives "Ancient Pattern" (18960).
+47. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
+48. Loot "Jade Reaver" (5664) from "A Black Reaver".
+49. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90005).
+50. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90192).
+51. Loot "Jade Reaver" (5664) from "Tzirathk" in `citymist`.
+52. Loot "Jade Reaver" (5664) from "A Black Reaver" in `citymist`.
+53. kaladimb/"Kinlo Strongarm", hand "Jade Reaver" (5664). Gives "Enchanted Clay" (20455).
+54. Forage "Rose of Firiona" (12774) in `firiona`.
+55. qrg/"Merdan Fleetfoot", hand "Rose of Firiona" (12774). Gives "Wood Painting" (20475).
+56. frontiermtns/"A Human Skeleton", hand "Wood Painting" (20475). Gives "Silver Chained Locket" (20476).
+57. qrg/"Niera Farbreeze", hand "Silver Chained Locket" (20476). Gives "Platinum Speckled Powder" (20456).
+58. Combine in Pottery Wheel (21): "Ancient Pattern" (18960), "Enchanted Clay" (20455), "Platinum Speckled Powder" (20456). Produces "Runecrested Bowl" (20460). Requires Pottery. The combine does not fail.
+59. misty/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
+60. mistythicket/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
+61. Hand "Spell: Resurrection" (15392) to karnor/"Spirit Of Venril Sathir". Spawns "Venril Sathir" (102126). Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
+62. Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
+63. firiona/"Foloal Stormforest", hand "Pulsing Green Stone" (20461) + "Softly Glowing Stone" (20462). Gives "Warmly Glowing Stone" (20468).
+64. burningwood/"Telin Darkforest", hand "Warmly Glowing Stone" (20468). Gives "Ancient Longsword" (20477).
+65. kaladimb/"Usbak The Old", hand "Ancient Longsword" (20477). Gives "Refined Ancient Sword" (20481).
+66. burningwood/"Faelin Bloodbriar", hand "Refined Ancient Sword" (20481). Gives "Swiftwind" (20487).
+67. No quest step gives Living Fragment of Fire (28294). The dump lists it in pofire.
+68. Loot "Living Fragment of Water" (28293) from "A Triloun Diviner" in `powater`.
+69. Loot "Living Fragment of Water" (28293) from "A Triloun Keeper" in `powater`.
+70. Loot "Living Fragment of Water" (28293) from "A Triloun Water Guardian" in `powater`.
+71. nedaria/"A Wayfarers Brotherhood Officer", say "Hail". Sets `ranger_epic` to `6`.
+72. causeway/"Siflu", say "Adventurers". Requires `ranger_epic` ==6. Gives "Heated Loadstone" (62628).
+73. Spawns "A Mangled Muramite Captain" (300069) in `wallofslaughter` on enter.
+74. Loot "Spirit Manacles" (72340) from "A Mangled Muramite Captain".
+75. Loot "Spirit Manacles" (72340) from "A Mangled Muramite Captain" in `wallofslaughter`.
+76. Combine in "Crooked Cage" (32042): "Earthcaller" (20488), "Swiftwind" (20487), "Living Fragment of Fire" (28294), "Living Fragment of Water" (28293), "Heated Loadstone" (62628), "Spirit Manacles" (72340). Hands back "Earthcaller" (20488), "Swiftwind" (20487). Produces "Spirit Cage" (62656). The combine does not fail.
+77. Spawns "A Vekerchiki Drone" (218047) in `poeartha` on event_combat.
+78. Loot "Living Fragment of Earth" (28295) from "A Vekerchiki Drone".
+79. Spawns "A Vekerchiki Warrior" (218025) in `poeartha` on event_combat.
+80. Loot "Living Fragment of Earth" (28295) from "A Vekerchiki Warrior".
+81. Loot "Living Fragment of Earth" (28295) from "A Vekerchiki Soldier" in `poearthb`.
+82. Loot "Living Fragment of Earth" (28295) from "An Earthcrafted Assassin" in `poeartha`.
+83. Loot "Living Fragment of Air" (28292) from "A Temple Guardian".
+84. Loot "Living Fragment of Air" (28292) from "A Temple Guardian" in `poair`.
+85. Combine in "Crooked Cage" (32042): "Living Fragment of Fire" (28294), "Living Fragment of Water" (28293), "Heated Loadstone" (62628), "Spirit Manacles" (72340), "Living Fragment of Earth" (28295), "Living Fragment of Air" (28292). Produces "Spirit Cage" (62656). The combine does not fail.
+86. Spawns "Craftmaster Tieranu" (334087) in `riftseekers` on enter.
+87. Loot "Ring of Warmth" (11427) from "Craftmaster Tieranu".
+88. Loot "Ring of Warmth" (11427) from "Craftmaster Tieranu" in `riftseekers`.
+89. Spawns "Herrian Warfrost" (300057) in `wallofslaughter` on enter.
+90. Loot "Hoarfrost Wand" (76999) from "Herrian Warfrost".
+91. Loot "Hoarfrost Wand" (76999) from "Herrian Warfrost" in `wallofslaughter`.
+92. Combine in "Spirit Cage" (62656): "Ring of Warmth" (11427), "Hoarfrost Wand" (76999). Produces "Elemental Ice Spirit Cage" (62647). The combine does not fail.
 
 ### "Heartwood Blade" (62627)
 
@@ -458,15 +565,13 @@ Each list is the order you obtain that item. Later steps point here instead of r
 14. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Hands back "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing, trivial 20. The combine does not fail.
 15. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
 16. Loot "Partially Digested Maiden's Hair" (62819) from "spawn #Swamp Terror".
-17. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-18. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
-19. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
-20. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
-21. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
-22. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
-23. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-24. Loot "Mangled Head" (62818) from "Swamp Terror".
-25. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
+17. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
+18. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
+19. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
+20. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+21. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
+22. Loot "Mangled Head" (62818) from "Swamp Terror".
+23. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
 
 ### "Healing Plants" (62842)
 
@@ -486,20 +591,18 @@ Each list is the order you obtain that item. Later steps point here instead of r
 14. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Hands back "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing, trivial 20. The combine does not fail.
 15. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
 16. Loot "Partially Digested Maiden's Hair" (62819) from "spawn #Swamp Terror".
-17. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-18. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
-19. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
-20. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
-21. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
-22. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
-23. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-24. Loot "Mangled Head" (62818) from "Swamp Terror".
-25. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
-26. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
-27. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
-28. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
-29. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
-30. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
+17. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
+18. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
+19. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
+20. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+21. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
+22. Loot "Mangled Head" (62818) from "Swamp Terror".
+23. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
+24. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
+25. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
+26. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
+27. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
+28. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
 
 ### "Runed Skull" (62838)
 
@@ -519,25 +622,23 @@ Each list is the order you obtain that item. Later steps point here instead of r
 14. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Hands back "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing, trivial 20. The combine does not fail.
 15. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
 16. Loot "Partially Digested Maiden's Hair" (62819) from "spawn #Swamp Terror".
-17. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-18. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
-19. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
-20. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
-21. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
-22. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
-23. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-24. Loot "Mangled Head" (62818) from "Swamp Terror".
-25. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
-26. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
-27. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
-28. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
-29. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
-30. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
-31. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
-32. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
-33. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
-34. tox/"A Skeleton", on event_timer. Gives "Animating Heads" (62828).
-35. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
+17. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
+18. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
+19. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
+20. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+21. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
+22. Loot "Mangled Head" (62818) from "Swamp Terror".
+23. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
+24. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
+25. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
+26. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
+27. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
+28. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
+29. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
+30. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
+31. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
+32. **Broken:** nothing in the graph gives, loots, spawns, or combines Animating Heads (62828).
+33. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
 
 ### "Niera's Healing Notes" (62849)
 
@@ -557,21 +658,19 @@ Each list is the order you obtain that item. Later steps point here instead of r
 14. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Hands back "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing, trivial 20. The combine does not fail.
 15. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
 16. Loot "Partially Digested Maiden's Hair" (62819) from "spawn #Swamp Terror".
-17. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-18. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
-19. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
-20. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
-21. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
-22. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
-23. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-24. Loot "Mangled Head" (62818) from "Swamp Terror".
-25. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
-26. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
-27. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
-28. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
-29. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
-30. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
-31. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
+17. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
+18. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
+19. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
+20. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+21. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
+22. Loot "Mangled Head" (62818) from "Swamp Terror".
+23. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
+24. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
+25. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
+26. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
+27. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
+28. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
+29. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
 
 ### "Mind Crystal" (62846)
 
@@ -591,31 +690,29 @@ Each list is the order you obtain that item. Later steps point here instead of r
 14. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Hands back "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing, trivial 20. The combine does not fail.
 15. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
 16. Loot "Partially Digested Maiden's Hair" (62819) from "spawn #Swamp Terror".
-17. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-18. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
-19. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
-20. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
-21. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
-22. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
-23. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-24. Loot "Mangled Head" (62818) from "Swamp Terror".
-25. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
-26. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
-27. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
-28. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
-29. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
-30. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
-31. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
-32. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
-33. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
-34. tox/"A Skeleton", on event_timer. Gives "Animating Heads" (62828).
-35. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
-36. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
-37. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
-38. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
-39. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
-40. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
-41. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Mind Crystal" (62846).
+17. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
+18. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
+19. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
+20. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+21. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
+22. Loot "Mangled Head" (62818) from "Swamp Terror".
+23. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
+24. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
+25. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
+26. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
+27. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
+28. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
+29. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
+30. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
+31. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
+32. **Broken:** nothing in the graph gives, loots, spawns, or combines Animating Heads (62828).
+33. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
+34. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
+35. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
+36. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
+37. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
+38. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
+39. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Mind Crystal" (62846).
 
 ### "Clear Mind Crystal" (62857)
 
@@ -652,32 +749,30 @@ Each list is the order you obtain that item. Later steps point here instead of r
 31. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Hands back "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing, trivial 20. The combine does not fail.
 32. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
 33. Loot "Partially Digested Maiden's Hair" (62819) from "spawn #Swamp Terror".
-34. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-35. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
-36. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
-37. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
-38. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
-39. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
-40. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-41. Loot "Mangled Head" (62818) from "Swamp Terror".
-42. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
-43. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
-44. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
-45. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
-46. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
-47. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
-48. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
-49. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
-50. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
-51. tox/"A Skeleton", on event_timer. Gives "Animating Heads" (62828).
-52. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
-53. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
-54. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
-55. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
-56. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
-57. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
-58. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Mind Crystal" (62846).
-59. Combine in "Bowl of Foul-smelling Liquid" (62855): "Energized Noc Blood" (62889), "Emerald Moss" (62856), "Mind Crystal" (62846). Produces "Clear Mind Crystal" (62857). The combine does not fail.
+34. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
+35. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
+36. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
+37. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+38. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
+39. Loot "Mangled Head" (62818) from "Swamp Terror".
+40. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
+41. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
+42. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
+43. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
+44. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
+45. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
+46. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
+47. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
+48. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
+49. **Broken:** nothing in the graph gives, loots, spawns, or combines Animating Heads (62828).
+50. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
+51. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
+52. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
+53. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
+54. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
+55. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
+56. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Mind Crystal" (62846).
+57. Combine in "Bowl of Foul-smelling Liquid" (62855): "Energized Noc Blood" (62889), "Emerald Moss" (62856), "Mind Crystal" (62846). Produces "Clear Mind Crystal" (62857). The combine does not fail.
 
 ### "Reinforced Aerated Pot" (62861)
 
@@ -738,31 +833,29 @@ Each list is the order you obtain that item. Later steps point here instead of r
 14. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Hands back "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing, trivial 20. The combine does not fail.
 15. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
 16. Loot "Partially Digested Maiden's Hair" (62819) from "spawn #Swamp Terror".
-17. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-18. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
-19. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
-20. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
-21. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
-22. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
-23. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-24. Loot "Mangled Head" (62818) from "Swamp Terror".
-25. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
-26. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
-27. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
-28. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
-29. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
-30. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
-31. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
-32. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
-33. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
-34. tox/"A Skeleton", on event_timer. Gives "Animating Heads" (62828).
-35. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
-36. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
-37. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
-38. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
-39. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
-40. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
-41. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62850).
+17. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
+18. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
+19. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
+20. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+21. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
+22. Loot "Mangled Head" (62818) from "Swamp Terror".
+23. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
+24. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
+25. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
+26. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
+27. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
+28. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
+29. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
+30. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
+31. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
+32. **Broken:** nothing in the graph gives, loots, spawns, or combines Animating Heads (62828).
+33. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
+34. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
+35. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
+36. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
+37. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
+38. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
+39. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62850).
 
 ### "Staff of Living Brambles" (62863)
 
@@ -820,53 +913,51 @@ Each list is the order you obtain that item. Later steps point here instead of r
 52. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Hands back "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing, trivial 20. The combine does not fail.
 53. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
 54. Loot "Partially Digested Maiden's Hair" (62819) from "spawn #Swamp Terror".
-55. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-56. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
-57. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
-58. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
-59. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
-60. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
-61. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-62. Loot "Mangled Head" (62818) from "Swamp Terror".
-63. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
-64. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
-65. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
-66. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
-67. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
-68. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
-69. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
-70. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
-71. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
-72. tox/"A Skeleton", on event_timer. Gives "Animating Heads" (62828).
-73. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
-74. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
-75. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
-76. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
-77. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
-78. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
-79. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62850).
-80. Loot "Crystal Fragment" (62852) from "Finnelzi Springworthy" in `southkarana`.
-81. Loot "Crystal Fragment" (62852) from "Rendolf Deathbringer" in `southkarana`.
-82. Loot "Crystal Fragment" (62852) from "Tehana Elsent" in `southkarana`.
-83. freportw/"Shana Liskia", hand "Crystal Fragment" (62852) + "Crystal Fragment" (62852) + "Crystal Fragment" (62852). Gives "Small Padded Bag" (62853).
+55. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
+56. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
+57. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
+58. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+59. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
+60. Loot "Mangled Head" (62818) from "Swamp Terror".
+61. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
+62. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
+63. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
+64. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
+65. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
+66. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
+67. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
+68. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
+69. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
+70. **Broken:** nothing in the graph gives, loots, spawns, or combines Animating Heads (62828).
+71. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
+72. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
+73. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
+74. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
+75. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
+76. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
+77. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62850).
+78. Loot "Crystal Fragment" (62852) from "Finnelzi Springworthy" in `southkarana`.
+79. Loot "Crystal Fragment" (62852) from "Rendolf Deathbringer" in `southkarana`.
+80. Loot "Crystal Fragment" (62852) from "Tehana Elsent" in `southkarana`.
+81. freportw/"Shana Liskia", hand "Crystal Fragment" (62852) + "Crystal Fragment" (62852) + "Crystal Fragment" (62852). Gives "Small Padded Bag" (62853).
+82. Spawns "Azibelle Spavin" (335064) in `harbingers` on enter.
+83. Loot "Bohab's Crystal Fragment" (62886) from "Azibelle Spavin".
 84. Spawns "Azibelle Spavin" (335064) in `harbingers` on enter.
-85. Loot "Bohab's Crystal Fragment" (62886) from "Azibelle Spavin".
-86. Spawns "Azibelle Spavin" (335064) in `harbingers` on enter.
-87. Loot "Azibelle's Crystal Fragment" (62887) from "Azibelle Spavin".
-88. Spawns "Glenfire Telzir" (335065) in `harbingers` on enter.
-89. Loot "Glenfire's Crystal Fragment" (62888) from "Glenfire Telzir".
-90. Combine in "Small Padded Bag" (62853): "Bohab's Crystal Fragment" (62886), "Azibelle's Crystal Fragment" (62887), "Glenfire's Crystal Fragment" (62888), "Crystal Fragment" (62852). Produces "Full Padded Bag" (62854). The combine does not fail.
-91. freportw/"Shana Liskia", hand "Full Padded Bag" (62854). Gives "Bowl of Foul-smelling Liquid" (62855).
-92. Say "Rc Spawn" to natimbi/"Druid 1 5".
-93. Spawns "Noc Juggernaut" (280091).
-94. Loot "Energized Noc Blood" (62889) from "Noc Juggernaut".
-95. Say "Reborn Death" to natimbi/"Druid 1 5".
-96. Forage "Emerald Moss" (62856) in `emeraldjungle`.
-97. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Mind Crystal" (62846).
-98. Combine in "Bowl of Foul-smelling Liquid" (62855): "Energized Noc Blood" (62889), "Emerald Moss" (62856), "Mind Crystal" (62846). Produces "Clear Mind Crystal" (62857). The combine does not fail.
-99. Kill kithicor/"Blackened Tree Limb". Spawns "Blackened Dryad" (20301).
-100. Loot "Blackened Earth" (62862) from "Blackened Dryad".
-101. Combine in "Reinforced Aerated Pot" (62861): "Living Brambles Seed" (62850), "Clear Mind Crystal" (62857), "Blackened Earth" (62862). Produces "Staff of Living Brambles" (62863). The combine does not fail.
+85. Loot "Azibelle's Crystal Fragment" (62887) from "Azibelle Spavin".
+86. Spawns "Glenfire Telzir" (335065) in `harbingers` on enter.
+87. Loot "Glenfire's Crystal Fragment" (62888) from "Glenfire Telzir".
+88. Combine in "Small Padded Bag" (62853): "Bohab's Crystal Fragment" (62886), "Azibelle's Crystal Fragment" (62887), "Glenfire's Crystal Fragment" (62888), "Crystal Fragment" (62852). Produces "Full Padded Bag" (62854). The combine does not fail.
+89. freportw/"Shana Liskia", hand "Full Padded Bag" (62854). Gives "Bowl of Foul-smelling Liquid" (62855).
+90. Say "Rc Spawn" to natimbi/"Druid 1 5".
+91. Spawns "Noc Juggernaut" (280091).
+92. Loot "Energized Noc Blood" (62889) from "Noc Juggernaut".
+93. Say "Reborn Death" to natimbi/"Druid 1 5".
+94. Forage "Emerald Moss" (62856) in `emeraldjungle`.
+95. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Mind Crystal" (62846).
+96. Combine in "Bowl of Foul-smelling Liquid" (62855): "Energized Noc Blood" (62889), "Emerald Moss" (62856), "Mind Crystal" (62846). Produces "Clear Mind Crystal" (62857). The combine does not fail.
+97. Kill kithicor/"Blackened Tree Limb". Spawns "Blackened Dryad" (20301).
+98. Loot "Blackened Earth" (62862) from "Blackened Dryad".
+99. Combine in "Reinforced Aerated Pot" (62861): "Living Brambles Seed" (62850), "Clear Mind Crystal" (62857), "Blackened Earth" (62862). Produces "Staff of Living Brambles" (62863). The combine does not fail.
 
 ### "Wrapped Cloth Bag" (62882)
 
@@ -924,66 +1015,64 @@ Each list is the order you obtain that item. Later steps point here instead of r
 52. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Hands back "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing, trivial 20. The combine does not fail.
 53. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
 54. Loot "Partially Digested Maiden's Hair" (62819) from "spawn #Swamp Terror".
-55. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-56. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
-57. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
-58. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
-59. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
-60. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
-61. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-62. Loot "Mangled Head" (62818) from "Swamp Terror".
-63. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
-64. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
-65. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
-66. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
-67. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
-68. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
-69. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
-70. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
-71. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
-72. tox/"A Skeleton", on event_timer. Gives "Animating Heads" (62828).
-73. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
-74. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
-75. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
-76. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
-77. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
-78. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
-79. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62850).
-80. Loot "Crystal Fragment" (62852) from "Finnelzi Springworthy" in `southkarana`.
-81. Loot "Crystal Fragment" (62852) from "Rendolf Deathbringer" in `southkarana`.
-82. Loot "Crystal Fragment" (62852) from "Tehana Elsent" in `southkarana`.
-83. freportw/"Shana Liskia", hand "Crystal Fragment" (62852) + "Crystal Fragment" (62852) + "Crystal Fragment" (62852). Gives "Small Padded Bag" (62853).
+55. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
+56. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
+57. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
+58. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+59. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
+60. Loot "Mangled Head" (62818) from "Swamp Terror".
+61. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
+62. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
+63. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
+64. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
+65. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
+66. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
+67. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
+68. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
+69. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
+70. **Broken:** nothing in the graph gives, loots, spawns, or combines Animating Heads (62828).
+71. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
+72. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
+73. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
+74. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
+75. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
+76. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
+77. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62850).
+78. Loot "Crystal Fragment" (62852) from "Finnelzi Springworthy" in `southkarana`.
+79. Loot "Crystal Fragment" (62852) from "Rendolf Deathbringer" in `southkarana`.
+80. Loot "Crystal Fragment" (62852) from "Tehana Elsent" in `southkarana`.
+81. freportw/"Shana Liskia", hand "Crystal Fragment" (62852) + "Crystal Fragment" (62852) + "Crystal Fragment" (62852). Gives "Small Padded Bag" (62853).
+82. Spawns "Azibelle Spavin" (335064) in `harbingers` on enter.
+83. Loot "Bohab's Crystal Fragment" (62886) from "Azibelle Spavin".
 84. Spawns "Azibelle Spavin" (335064) in `harbingers` on enter.
-85. Loot "Bohab's Crystal Fragment" (62886) from "Azibelle Spavin".
-86. Spawns "Azibelle Spavin" (335064) in `harbingers` on enter.
-87. Loot "Azibelle's Crystal Fragment" (62887) from "Azibelle Spavin".
-88. Spawns "Glenfire Telzir" (335065) in `harbingers` on enter.
-89. Loot "Glenfire's Crystal Fragment" (62888) from "Glenfire Telzir".
-90. Combine in "Small Padded Bag" (62853): "Bohab's Crystal Fragment" (62886), "Azibelle's Crystal Fragment" (62887), "Glenfire's Crystal Fragment" (62888), "Crystal Fragment" (62852). Produces "Full Padded Bag" (62854). The combine does not fail.
-91. freportw/"Shana Liskia", hand "Full Padded Bag" (62854). Gives "Bowl of Foul-smelling Liquid" (62855).
-92. Say "Rc Spawn" to natimbi/"Druid 1 5".
-93. Spawns "Noc Juggernaut" (280091).
-94. Loot "Energized Noc Blood" (62889) from "Noc Juggernaut".
-95. Say "Reborn Death" to natimbi/"Druid 1 5".
-96. Forage "Emerald Moss" (62856) in `emeraldjungle`.
-97. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Mind Crystal" (62846).
-98. Combine in "Bowl of Foul-smelling Liquid" (62855): "Energized Noc Blood" (62889), "Emerald Moss" (62856), "Mind Crystal" (62846). Produces "Clear Mind Crystal" (62857). The combine does not fail.
-99. Kill kithicor/"Blackened Tree Limb". Spawns "Blackened Dryad" (20301).
-100. Loot "Blackened Earth" (62862) from "Blackened Dryad".
-101. Combine in "Reinforced Aerated Pot" (62861): "Living Brambles Seed" (62850), "Clear Mind Crystal" (62857), "Blackened Earth" (62862). Produces "Staff of Living Brambles" (62863). The combine does not fail.
-102. abysmal/"Reyfin Malakwa", say "Hail". Gives "Ragged Cloth Bag" (62881).
-103. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Rune Fragment" (62867).
-104. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Threadbare Cloth Bag" (62890).
-105. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Undamaged Noc Fang" (62864).
-106. Combine in "Threadbare Cloth Bag" (62890): "Undamaged Noc Fang" (62864). Produces "Closed Cloth Bag" (62891). The combine does not fail.
-107. qinimi/"A Broken Ritesdancer", hand "Closed Cloth Bag" (62891). Gives "Rune Fragment" (62867).
-108. Forage "Rune Fragment" (62866) in `barindu`.
-109. Forage "Rune Fragment" (62866) in `ferubi`.
-110. Forage "Rune Fragment" (62866) in `riwwi`.
-111. Forage "Rune Fragment" (62865) in `barindu`.
-112. Forage "Rune Fragment" (62865) in `ferubi`.
-113. Forage "Rune Fragment" (62865) in `riwwi`.
-114. Combine in "Ragged Cloth Bag" (62881): "Rune Fragment" (62867), "Rune Fragment" (62866), "Rune Fragment" (62865). Produces "Wrapped Cloth Bag" (62882). The combine does not fail.
+85. Loot "Azibelle's Crystal Fragment" (62887) from "Azibelle Spavin".
+86. Spawns "Glenfire Telzir" (335065) in `harbingers` on enter.
+87. Loot "Glenfire's Crystal Fragment" (62888) from "Glenfire Telzir".
+88. Combine in "Small Padded Bag" (62853): "Bohab's Crystal Fragment" (62886), "Azibelle's Crystal Fragment" (62887), "Glenfire's Crystal Fragment" (62888), "Crystal Fragment" (62852). Produces "Full Padded Bag" (62854). The combine does not fail.
+89. freportw/"Shana Liskia", hand "Full Padded Bag" (62854). Gives "Bowl of Foul-smelling Liquid" (62855).
+90. Say "Rc Spawn" to natimbi/"Druid 1 5".
+91. Spawns "Noc Juggernaut" (280091).
+92. Loot "Energized Noc Blood" (62889) from "Noc Juggernaut".
+93. Say "Reborn Death" to natimbi/"Druid 1 5".
+94. Forage "Emerald Moss" (62856) in `emeraldjungle`.
+95. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Mind Crystal" (62846).
+96. Combine in "Bowl of Foul-smelling Liquid" (62855): "Energized Noc Blood" (62889), "Emerald Moss" (62856), "Mind Crystal" (62846). Produces "Clear Mind Crystal" (62857). The combine does not fail.
+97. Kill kithicor/"Blackened Tree Limb". Spawns "Blackened Dryad" (20301).
+98. Loot "Blackened Earth" (62862) from "Blackened Dryad".
+99. Combine in "Reinforced Aerated Pot" (62861): "Living Brambles Seed" (62850), "Clear Mind Crystal" (62857), "Blackened Earth" (62862). Produces "Staff of Living Brambles" (62863). The combine does not fail.
+100. abysmal/"Reyfin Malakwa", say "Hail". Gives "Ragged Cloth Bag" (62881).
+101. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Rune Fragment" (62867).
+102. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Threadbare Cloth Bag" (62890).
+103. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Undamaged Noc Fang" (62864).
+104. Combine in "Threadbare Cloth Bag" (62890): "Undamaged Noc Fang" (62864). Produces "Closed Cloth Bag" (62891). The combine does not fail.
+105. qinimi/"A Broken Ritesdancer", hand "Closed Cloth Bag" (62891). Gives "Rune Fragment" (62867).
+106. Forage "Rune Fragment" (62866) in `barindu`.
+107. Forage "Rune Fragment" (62866) in `ferubi`.
+108. Forage "Rune Fragment" (62866) in `riwwi`.
+109. Forage "Rune Fragment" (62865) in `barindu`.
+110. Forage "Rune Fragment" (62865) in `ferubi`.
+111. Forage "Rune Fragment" (62865) in `riwwi`.
+112. Combine in "Ragged Cloth Bag" (62881): "Rune Fragment" (62867), "Rune Fragment" (62866), "Rune Fragment" (62865). Produces "Wrapped Cloth Bag" (62882). The combine does not fail.
 
 ### "Rune of Yuisaha" (62868)
 
@@ -1041,67 +1130,65 @@ Each list is the order you obtain that item. Later steps point here instead of r
 52. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Hands back "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing, trivial 20. The combine does not fail.
 53. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
 54. Loot "Partially Digested Maiden's Hair" (62819) from "spawn #Swamp Terror".
-55. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-56. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
-57. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
-58. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
-59. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
-60. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
-61. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-62. Loot "Mangled Head" (62818) from "Swamp Terror".
-63. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
-64. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
-65. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
-66. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
-67. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
-68. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
-69. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
-70. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
-71. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
-72. tox/"A Skeleton", on event_timer. Gives "Animating Heads" (62828).
-73. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
-74. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
-75. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
-76. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
-77. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
-78. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
-79. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62850).
-80. Loot "Crystal Fragment" (62852) from "Finnelzi Springworthy" in `southkarana`.
-81. Loot "Crystal Fragment" (62852) from "Rendolf Deathbringer" in `southkarana`.
-82. Loot "Crystal Fragment" (62852) from "Tehana Elsent" in `southkarana`.
-83. freportw/"Shana Liskia", hand "Crystal Fragment" (62852) + "Crystal Fragment" (62852) + "Crystal Fragment" (62852). Gives "Small Padded Bag" (62853).
+55. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
+56. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
+57. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
+58. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+59. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
+60. Loot "Mangled Head" (62818) from "Swamp Terror".
+61. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
+62. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
+63. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
+64. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
+65. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
+66. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
+67. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
+68. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
+69. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
+70. **Broken:** nothing in the graph gives, loots, spawns, or combines Animating Heads (62828).
+71. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
+72. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
+73. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
+74. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
+75. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
+76. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
+77. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62850).
+78. Loot "Crystal Fragment" (62852) from "Finnelzi Springworthy" in `southkarana`.
+79. Loot "Crystal Fragment" (62852) from "Rendolf Deathbringer" in `southkarana`.
+80. Loot "Crystal Fragment" (62852) from "Tehana Elsent" in `southkarana`.
+81. freportw/"Shana Liskia", hand "Crystal Fragment" (62852) + "Crystal Fragment" (62852) + "Crystal Fragment" (62852). Gives "Small Padded Bag" (62853).
+82. Spawns "Azibelle Spavin" (335064) in `harbingers` on enter.
+83. Loot "Bohab's Crystal Fragment" (62886) from "Azibelle Spavin".
 84. Spawns "Azibelle Spavin" (335064) in `harbingers` on enter.
-85. Loot "Bohab's Crystal Fragment" (62886) from "Azibelle Spavin".
-86. Spawns "Azibelle Spavin" (335064) in `harbingers` on enter.
-87. Loot "Azibelle's Crystal Fragment" (62887) from "Azibelle Spavin".
-88. Spawns "Glenfire Telzir" (335065) in `harbingers` on enter.
-89. Loot "Glenfire's Crystal Fragment" (62888) from "Glenfire Telzir".
-90. Combine in "Small Padded Bag" (62853): "Bohab's Crystal Fragment" (62886), "Azibelle's Crystal Fragment" (62887), "Glenfire's Crystal Fragment" (62888), "Crystal Fragment" (62852). Produces "Full Padded Bag" (62854). The combine does not fail.
-91. freportw/"Shana Liskia", hand "Full Padded Bag" (62854). Gives "Bowl of Foul-smelling Liquid" (62855).
-92. Say "Rc Spawn" to natimbi/"Druid 1 5".
-93. Spawns "Noc Juggernaut" (280091).
-94. Loot "Energized Noc Blood" (62889) from "Noc Juggernaut".
-95. Say "Reborn Death" to natimbi/"Druid 1 5".
-96. Forage "Emerald Moss" (62856) in `emeraldjungle`.
-97. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Mind Crystal" (62846).
-98. Combine in "Bowl of Foul-smelling Liquid" (62855): "Energized Noc Blood" (62889), "Emerald Moss" (62856), "Mind Crystal" (62846). Produces "Clear Mind Crystal" (62857). The combine does not fail.
-99. Kill kithicor/"Blackened Tree Limb". Spawns "Blackened Dryad" (20301).
-100. Loot "Blackened Earth" (62862) from "Blackened Dryad".
-101. Combine in "Reinforced Aerated Pot" (62861): "Living Brambles Seed" (62850), "Clear Mind Crystal" (62857), "Blackened Earth" (62862). Produces "Staff of Living Brambles" (62863). The combine does not fail.
-102. abysmal/"Reyfin Malakwa", say "Hail". Gives "Ragged Cloth Bag" (62881).
-103. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Rune Fragment" (62867).
-104. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Threadbare Cloth Bag" (62890).
-105. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Undamaged Noc Fang" (62864).
-106. Combine in "Threadbare Cloth Bag" (62890): "Undamaged Noc Fang" (62864). Produces "Closed Cloth Bag" (62891). The combine does not fail.
-107. qinimi/"A Broken Ritesdancer", hand "Closed Cloth Bag" (62891). Gives "Rune Fragment" (62867).
-108. Forage "Rune Fragment" (62866) in `barindu`.
-109. Forage "Rune Fragment" (62866) in `ferubi`.
-110. Forage "Rune Fragment" (62866) in `riwwi`.
-111. Forage "Rune Fragment" (62865) in `barindu`.
-112. Forage "Rune Fragment" (62865) in `ferubi`.
-113. Forage "Rune Fragment" (62865) in `riwwi`.
-114. Combine in "Ragged Cloth Bag" (62881): "Rune Fragment" (62867), "Rune Fragment" (62866), "Rune Fragment" (62865). Produces "Wrapped Cloth Bag" (62882). The combine does not fail.
-115. abysmal/"Reyfin Malakwa", hand "Wrapped Cloth Bag" (62882). Gives "Rune of Yuisaha" (62868).
+85. Loot "Azibelle's Crystal Fragment" (62887) from "Azibelle Spavin".
+86. Spawns "Glenfire Telzir" (335065) in `harbingers` on enter.
+87. Loot "Glenfire's Crystal Fragment" (62888) from "Glenfire Telzir".
+88. Combine in "Small Padded Bag" (62853): "Bohab's Crystal Fragment" (62886), "Azibelle's Crystal Fragment" (62887), "Glenfire's Crystal Fragment" (62888), "Crystal Fragment" (62852). Produces "Full Padded Bag" (62854). The combine does not fail.
+89. freportw/"Shana Liskia", hand "Full Padded Bag" (62854). Gives "Bowl of Foul-smelling Liquid" (62855).
+90. Say "Rc Spawn" to natimbi/"Druid 1 5".
+91. Spawns "Noc Juggernaut" (280091).
+92. Loot "Energized Noc Blood" (62889) from "Noc Juggernaut".
+93. Say "Reborn Death" to natimbi/"Druid 1 5".
+94. Forage "Emerald Moss" (62856) in `emeraldjungle`.
+95. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Mind Crystal" (62846).
+96. Combine in "Bowl of Foul-smelling Liquid" (62855): "Energized Noc Blood" (62889), "Emerald Moss" (62856), "Mind Crystal" (62846). Produces "Clear Mind Crystal" (62857). The combine does not fail.
+97. Kill kithicor/"Blackened Tree Limb". Spawns "Blackened Dryad" (20301).
+98. Loot "Blackened Earth" (62862) from "Blackened Dryad".
+99. Combine in "Reinforced Aerated Pot" (62861): "Living Brambles Seed" (62850), "Clear Mind Crystal" (62857), "Blackened Earth" (62862). Produces "Staff of Living Brambles" (62863). The combine does not fail.
+100. abysmal/"Reyfin Malakwa", say "Hail". Gives "Ragged Cloth Bag" (62881).
+101. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Rune Fragment" (62867).
+102. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Threadbare Cloth Bag" (62890).
+103. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Undamaged Noc Fang" (62864).
+104. Combine in "Threadbare Cloth Bag" (62890): "Undamaged Noc Fang" (62864). Produces "Closed Cloth Bag" (62891). The combine does not fail.
+105. qinimi/"A Broken Ritesdancer", hand "Closed Cloth Bag" (62891). Gives "Rune Fragment" (62867).
+106. Forage "Rune Fragment" (62866) in `barindu`.
+107. Forage "Rune Fragment" (62866) in `ferubi`.
+108. Forage "Rune Fragment" (62866) in `riwwi`.
+109. Forage "Rune Fragment" (62865) in `barindu`.
+110. Forage "Rune Fragment" (62865) in `ferubi`.
+111. Forage "Rune Fragment" (62865) in `riwwi`.
+112. Combine in "Ragged Cloth Bag" (62881): "Rune Fragment" (62867), "Rune Fragment" (62866), "Rune Fragment" (62865). Produces "Wrapped Cloth Bag" (62882). The combine does not fail.
+113. abysmal/"Reyfin Malakwa", hand "Wrapped Cloth Bag" (62882). Gives "Rune of Yuisaha" (62868).
 
 ### "Synched Leather Bag" (62885)
 
@@ -1156,76 +1243,74 @@ Each list is the order you obtain that item. Later steps point here instead of r
 49. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Hands back "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing, trivial 20. The combine does not fail.
 50. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
 51. Loot "Partially Digested Maiden's Hair" (62819) from "spawn #Swamp Terror".
-52. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-53. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
-54. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
-55. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
-56. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
-57. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
-58. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-59. Loot "Mangled Head" (62818) from "Swamp Terror".
-60. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
-61. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
-62. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
-63. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
-64. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
-65. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
-66. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
-67. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
-68. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
-69. tox/"A Skeleton", on event_timer. Gives "Animating Heads" (62828).
-70. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
-71. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
-72. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
-73. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
-74. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
-75. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
-76. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62850).
-77. Loot "Crystal Fragment" (62852) from "Finnelzi Springworthy" in `southkarana`.
-78. Loot "Crystal Fragment" (62852) from "Rendolf Deathbringer" in `southkarana`.
-79. Loot "Crystal Fragment" (62852) from "Tehana Elsent" in `southkarana`.
-80. freportw/"Shana Liskia", hand "Crystal Fragment" (62852) + "Crystal Fragment" (62852) + "Crystal Fragment" (62852). Gives "Small Padded Bag" (62853).
+52. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
+53. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
+54. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
+55. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+56. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
+57. Loot "Mangled Head" (62818) from "Swamp Terror".
+58. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
+59. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
+60. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
+61. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
+62. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
+63. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
+64. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
+65. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
+66. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
+67. **Broken:** nothing in the graph gives, loots, spawns, or combines Animating Heads (62828).
+68. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
+69. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
+70. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
+71. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
+72. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
+73. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
+74. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62850).
+75. Loot "Crystal Fragment" (62852) from "Finnelzi Springworthy" in `southkarana`.
+76. Loot "Crystal Fragment" (62852) from "Rendolf Deathbringer" in `southkarana`.
+77. Loot "Crystal Fragment" (62852) from "Tehana Elsent" in `southkarana`.
+78. freportw/"Shana Liskia", hand "Crystal Fragment" (62852) + "Crystal Fragment" (62852) + "Crystal Fragment" (62852). Gives "Small Padded Bag" (62853).
+79. Spawns "Azibelle Spavin" (335064) in `harbingers` on enter.
+80. Loot "Bohab's Crystal Fragment" (62886) from "Azibelle Spavin".
 81. Spawns "Azibelle Spavin" (335064) in `harbingers` on enter.
-82. Loot "Bohab's Crystal Fragment" (62886) from "Azibelle Spavin".
-83. Spawns "Azibelle Spavin" (335064) in `harbingers` on enter.
-84. Loot "Azibelle's Crystal Fragment" (62887) from "Azibelle Spavin".
-85. Spawns "Glenfire Telzir" (335065) in `harbingers` on enter.
-86. Loot "Glenfire's Crystal Fragment" (62888) from "Glenfire Telzir".
-87. Combine in "Small Padded Bag" (62853): "Bohab's Crystal Fragment" (62886), "Azibelle's Crystal Fragment" (62887), "Glenfire's Crystal Fragment" (62888), "Crystal Fragment" (62852). Produces "Full Padded Bag" (62854). The combine does not fail.
-88. freportw/"Shana Liskia", hand "Full Padded Bag" (62854). Gives "Bowl of Foul-smelling Liquid" (62855).
-89. Say "Rc Spawn" to natimbi/"Druid 1 5".
-90. Spawns "Noc Juggernaut" (280091).
-91. Loot "Energized Noc Blood" (62889) from "Noc Juggernaut".
-92. Say "Reborn Death" to natimbi/"Druid 1 5".
-93. Forage "Emerald Moss" (62856) in `emeraldjungle`.
-94. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Mind Crystal" (62846).
-95. Combine in "Bowl of Foul-smelling Liquid" (62855): "Energized Noc Blood" (62889), "Emerald Moss" (62856), "Mind Crystal" (62846). Produces "Clear Mind Crystal" (62857). The combine does not fail.
-96. Kill kithicor/"Blackened Tree Limb". Spawns "Blackened Dryad" (20301).
-97. Loot "Blackened Earth" (62862) from "Blackened Dryad".
-98. Combine in "Reinforced Aerated Pot" (62861): "Living Brambles Seed" (62850), "Clear Mind Crystal" (62857), "Blackened Earth" (62862). Produces "Staff of Living Brambles" (62863). The combine does not fail.
-99. abysmal/"Reyfin Malakwa", say "Hail". Gives "Ragged Cloth Bag" (62881).
-100. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Rune Fragment" (62867).
-101. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Threadbare Cloth Bag" (62890).
-102. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Undamaged Noc Fang" (62864).
-103. Combine in "Threadbare Cloth Bag" (62890): "Undamaged Noc Fang" (62864). Produces "Closed Cloth Bag" (62891). The combine does not fail.
-104. qinimi/"A Broken Ritesdancer", hand "Closed Cloth Bag" (62891). Gives "Rune Fragment" (62867).
-105. Forage "Rune Fragment" (62866) in `barindu`.
-106. Forage "Rune Fragment" (62866) in `ferubi`.
-107. Forage "Rune Fragment" (62866) in `riwwi`.
-108. Forage "Rune Fragment" (62865) in `barindu`.
-109. Forage "Rune Fragment" (62865) in `ferubi`.
-110. Forage "Rune Fragment" (62865) in `riwwi`.
-111. Combine in "Ragged Cloth Bag" (62881): "Rune Fragment" (62867), "Rune Fragment" (62866), "Rune Fragment" (62865). Produces "Wrapped Cloth Bag" (62882). The combine does not fail.
-112. abysmal/"Reyfin Malakwa", hand "Wrapped Cloth Bag" (62882). Sets `druid_epic` to `10`.
-113. nedaria/"Historian Finrazel", say "Plan To Find". Requires `druid_epic` ==10. Gives "Thick Leather Bag" (62884).
-114. Kill wallofslaughter/"A Nervous Guardian". Spawns "Lightning Lord" (300098).
-115. Loot "Rain Shard" (62872) from "Lightning Lord".
-116. Loot "Frost Shard" (62871) from "Bazu Scavenger" in `causeway`.
-117. Spawns "Mastruq Commander Gorlakt" (281089) in `qinimi` on enter.
-118. Loot "Spirit Shard" (62870) from "Mastruq Commander Gorlakt".
-119. Spawns "Tranlinor the Maimed" (302086) in `draniksscar` on enter.
-120. Loot "Wind Shard" (62873) from "Tranlinor the Maimed".
-121. Combine in "Thick Leather Bag" (62884): "Rain Shard" (62872), "Frost Shard" (62871), "Spirit Shard" (62870), "Wind Shard" (62873). Produces "Synched Leather Bag" (62885). The combine does not fail.
+82. Loot "Azibelle's Crystal Fragment" (62887) from "Azibelle Spavin".
+83. Spawns "Glenfire Telzir" (335065) in `harbingers` on enter.
+84. Loot "Glenfire's Crystal Fragment" (62888) from "Glenfire Telzir".
+85. Combine in "Small Padded Bag" (62853): "Bohab's Crystal Fragment" (62886), "Azibelle's Crystal Fragment" (62887), "Glenfire's Crystal Fragment" (62888), "Crystal Fragment" (62852). Produces "Full Padded Bag" (62854). The combine does not fail.
+86. freportw/"Shana Liskia", hand "Full Padded Bag" (62854). Gives "Bowl of Foul-smelling Liquid" (62855).
+87. Say "Rc Spawn" to natimbi/"Druid 1 5".
+88. Spawns "Noc Juggernaut" (280091).
+89. Loot "Energized Noc Blood" (62889) from "Noc Juggernaut".
+90. Say "Reborn Death" to natimbi/"Druid 1 5".
+91. Forage "Emerald Moss" (62856) in `emeraldjungle`.
+92. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Mind Crystal" (62846).
+93. Combine in "Bowl of Foul-smelling Liquid" (62855): "Energized Noc Blood" (62889), "Emerald Moss" (62856), "Mind Crystal" (62846). Produces "Clear Mind Crystal" (62857). The combine does not fail.
+94. Kill kithicor/"Blackened Tree Limb". Spawns "Blackened Dryad" (20301).
+95. Loot "Blackened Earth" (62862) from "Blackened Dryad".
+96. Combine in "Reinforced Aerated Pot" (62861): "Living Brambles Seed" (62850), "Clear Mind Crystal" (62857), "Blackened Earth" (62862). Produces "Staff of Living Brambles" (62863). The combine does not fail.
+97. abysmal/"Reyfin Malakwa", say "Hail". Gives "Ragged Cloth Bag" (62881).
+98. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Rune Fragment" (62867).
+99. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Threadbare Cloth Bag" (62890).
+100. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Undamaged Noc Fang" (62864).
+101. Combine in "Threadbare Cloth Bag" (62890): "Undamaged Noc Fang" (62864). Produces "Closed Cloth Bag" (62891). The combine does not fail.
+102. qinimi/"A Broken Ritesdancer", hand "Closed Cloth Bag" (62891). Gives "Rune Fragment" (62867).
+103. Forage "Rune Fragment" (62866) in `barindu`.
+104. Forage "Rune Fragment" (62866) in `ferubi`.
+105. Forage "Rune Fragment" (62866) in `riwwi`.
+106. Forage "Rune Fragment" (62865) in `barindu`.
+107. Forage "Rune Fragment" (62865) in `ferubi`.
+108. Forage "Rune Fragment" (62865) in `riwwi`.
+109. Combine in "Ragged Cloth Bag" (62881): "Rune Fragment" (62867), "Rune Fragment" (62866), "Rune Fragment" (62865). Produces "Wrapped Cloth Bag" (62882). The combine does not fail.
+110. abysmal/"Reyfin Malakwa", hand "Wrapped Cloth Bag" (62882). Sets `druid_epic` to `10`.
+111. nedaria/"Historian Finrazel", say "Plan To Find". Requires `druid_epic` ==10. Gives "Thick Leather Bag" (62884).
+112. Kill wallofslaughter/"A Nervous Guardian". Spawns "Lightning Lord" (300098).
+113. Loot "Rain Shard" (62872) from "Lightning Lord".
+114. Loot "Frost Shard" (62871) from "Bazu Scavenger" in `causeway`.
+115. Spawns "Mastruq Commander Gorlakt" (281089) in `qinimi` on enter.
+116. Loot "Spirit Shard" (62870) from "Mastruq Commander Gorlakt".
+117. Spawns "Tranlinor the Maimed" (302086) in `draniksscar` on enter.
+118. Loot "Wind Shard" (62873) from "Tranlinor the Maimed".
+119. Combine in "Thick Leather Bag" (62884): "Rain Shard" (62872), "Frost Shard" (62871), "Spirit Shard" (62870), "Wind Shard" (62873). Produces "Synched Leather Bag" (62885). The combine does not fail.
 
 ### "Insulated Container" (62876)
 
@@ -1283,91 +1368,89 @@ Each list is the order you obtain that item. Later steps point here instead of r
 52. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Hands back "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing, trivial 20. The combine does not fail.
 53. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
 54. Loot "Partially Digested Maiden's Hair" (62819) from "spawn #Swamp Terror".
-55. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-56. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
-57. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
-58. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
-59. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
-60. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
-61. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on event_timer.
-62. Loot "Mangled Head" (62818) from "Swamp Terror".
-63. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
-64. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
-65. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
-66. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
-67. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
-68. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
-69. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
-70. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
-71. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
-72. tox/"A Skeleton", on event_timer. Gives "Animating Heads" (62828).
-73. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
-74. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
-75. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
-76. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
-77. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
-78. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
-79. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62850).
-80. Loot "Crystal Fragment" (62852) from "Finnelzi Springworthy" in `southkarana`.
-81. Loot "Crystal Fragment" (62852) from "Rendolf Deathbringer" in `southkarana`.
-82. Loot "Crystal Fragment" (62852) from "Tehana Elsent" in `southkarana`.
-83. freportw/"Shana Liskia", hand "Crystal Fragment" (62852) + "Crystal Fragment" (62852) + "Crystal Fragment" (62852). Gives "Small Padded Bag" (62853).
+55. Loot "Partially Digested Maiden's Hair" (62819) from "Swamp Terror".
+56. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
+57. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
+58. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+59. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
+60. Loot "Mangled Head" (62818) from "Swamp Terror".
+61. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
+62. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
+63. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
+64. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
+65. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
+66. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
+67. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
+68. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
+69. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
+70. **Broken:** nothing in the graph gives, loots, spawns, or combines Animating Heads (62828).
+71. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
+72. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
+73. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
+74. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
+75. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
+76. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
+77. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62850).
+78. Loot "Crystal Fragment" (62852) from "Finnelzi Springworthy" in `southkarana`.
+79. Loot "Crystal Fragment" (62852) from "Rendolf Deathbringer" in `southkarana`.
+80. Loot "Crystal Fragment" (62852) from "Tehana Elsent" in `southkarana`.
+81. freportw/"Shana Liskia", hand "Crystal Fragment" (62852) + "Crystal Fragment" (62852) + "Crystal Fragment" (62852). Gives "Small Padded Bag" (62853).
+82. Spawns "Azibelle Spavin" (335064) in `harbingers` on enter.
+83. Loot "Bohab's Crystal Fragment" (62886) from "Azibelle Spavin".
 84. Spawns "Azibelle Spavin" (335064) in `harbingers` on enter.
-85. Loot "Bohab's Crystal Fragment" (62886) from "Azibelle Spavin".
-86. Spawns "Azibelle Spavin" (335064) in `harbingers` on enter.
-87. Loot "Azibelle's Crystal Fragment" (62887) from "Azibelle Spavin".
-88. Spawns "Glenfire Telzir" (335065) in `harbingers` on enter.
-89. Loot "Glenfire's Crystal Fragment" (62888) from "Glenfire Telzir".
-90. Combine in "Small Padded Bag" (62853): "Bohab's Crystal Fragment" (62886), "Azibelle's Crystal Fragment" (62887), "Glenfire's Crystal Fragment" (62888), "Crystal Fragment" (62852). Produces "Full Padded Bag" (62854). The combine does not fail.
-91. freportw/"Shana Liskia", hand "Full Padded Bag" (62854). Gives "Bowl of Foul-smelling Liquid" (62855).
-92. Say "Rc Spawn" to natimbi/"Druid 1 5".
-93. Spawns "Noc Juggernaut" (280091).
-94. Loot "Energized Noc Blood" (62889) from "Noc Juggernaut".
-95. Say "Reborn Death" to natimbi/"Druid 1 5".
-96. Forage "Emerald Moss" (62856) in `emeraldjungle`.
-97. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Mind Crystal" (62846).
-98. Combine in "Bowl of Foul-smelling Liquid" (62855): "Energized Noc Blood" (62889), "Emerald Moss" (62856), "Mind Crystal" (62846). Produces "Clear Mind Crystal" (62857). The combine does not fail.
-99. Kill kithicor/"Blackened Tree Limb". Spawns "Blackened Dryad" (20301).
-100. Loot "Blackened Earth" (62862) from "Blackened Dryad".
-101. Combine in "Reinforced Aerated Pot" (62861): "Living Brambles Seed" (62850), "Clear Mind Crystal" (62857), "Blackened Earth" (62862). Produces "Staff of Living Brambles" (62863). The combine does not fail.
-102. abysmal/"Reyfin Malakwa", say "Hail". Sets `druid_epic` to `9`.
-103. abysmal/"Reyfin Malakwa", say "Hail". Gives "Ragged Cloth Bag" (62881).
-104. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Rune Fragment" (62867).
-105. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Threadbare Cloth Bag" (62890).
-106. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Undamaged Noc Fang" (62864).
-107. Combine in "Threadbare Cloth Bag" (62890): "Undamaged Noc Fang" (62864). Produces "Closed Cloth Bag" (62891). The combine does not fail.
-108. qinimi/"A Broken Ritesdancer", hand "Closed Cloth Bag" (62891). Gives "Rune Fragment" (62867).
-109. Forage "Rune Fragment" (62866) in `barindu`.
-110. Forage "Rune Fragment" (62866) in `ferubi`.
-111. Forage "Rune Fragment" (62866) in `riwwi`.
-112. Forage "Rune Fragment" (62865) in `barindu`.
-113. Forage "Rune Fragment" (62865) in `ferubi`.
-114. Forage "Rune Fragment" (62865) in `riwwi`.
-115. Combine in "Ragged Cloth Bag" (62881): "Rune Fragment" (62867), "Rune Fragment" (62866), "Rune Fragment" (62865). Produces "Wrapped Cloth Bag" (62882). The combine does not fail.
-116. abysmal/"Reyfin Malakwa", hand "Wrapped Cloth Bag" (62882). Sets `druid_epic` to `10`.
-117. nedaria/"Historian Finrazel", say "Plan To Find". Requires `druid_epic` ==10. Gives "Thick Leather Bag" (62884).
-118. Kill wallofslaughter/"A Nervous Guardian". Spawns "Lightning Lord" (300098).
-119. Loot "Rain Shard" (62872) from "Lightning Lord".
-120. Loot "Frost Shard" (62871) from "Bazu Scavenger" in `causeway`.
-121. Spawns "Mastruq Commander Gorlakt" (281089) in `qinimi` on enter.
-122. Loot "Spirit Shard" (62870) from "Mastruq Commander Gorlakt".
-123. Spawns "Tranlinor the Maimed" (302086) in `draniksscar` on enter.
-124. Loot "Wind Shard" (62873) from "Tranlinor the Maimed".
-125. Combine in "Thick Leather Bag" (62884): "Rain Shard" (62872), "Frost Shard" (62871), "Spirit Shard" (62870), "Wind Shard" (62873). Produces "Synched Leather Bag" (62885). The combine does not fail.
-126. abysmal/"Reyfin Malakwa", hand "Synched Leather Bag" (62885). Sets `druid_epic` to `12`.
-127. abysmal/"Silanda Leafdew", hand "Synched Leather Bag" (62885). Requires `druid_epic` set. Requires `druid_epic` ==12. Gives "Insulated Container Sketch" (62875).
-128. Spawns "Guardian of Glorification" (294583) in `ikkinz` on event_hp.
-129. Hand "Kruxilitek" (60227) to ikkinz/"Guardian Of Glorification".
-130. Loot "Chunk of Broken Ancient Stone Worker" (58026) from "Guardian of Glorification".
-131. Hand "Kruxilitek" (60227) to ikkinz/"Guardian Of Glorification". Spawns "Guardian of Glorification" (294582). Loot "Chunk of Broken Ancient Stone Worker" (58026) from "Guardian of Glorification".
-132. Say "Spawn Golems" to inktuta/"Zone Status".
-133. Spawns "A Clay Monolith" (296002).
-134. Loot "Chunk of Broken Ancient Stone Worker" (58026) from "A Clay Monolith".
-135. Spawns "A Clay Monolith" (296049).
-136. 5 other loot steps also yield Chunk of Broken Ancient Stone Worker (58026).
-137. abysmal/"Hiloan O-Yviania", hand "Chunk of Broken Ancient Stone Worker" (58026). Gives "Clump of Refined Ancient Taelosian Clay" (58031).
-138. Combine in Pottery Wheel (21): "Chunk of Broken Ancient Stone Worker" (58026). Produces "Clump of Refined Ancient Taelosian Clay" (58031). Requires Pottery, trivial 15. The combine does not fail. The recipe must be learned first.
-139. Combine in Kiln (22): "Insulated Container Sketch" (62875), "Clump of Refined Ancient Taelosian Clay" (58031). Produces "Insulated Container" (62876). Requires Pottery 100. The combine does not fail.
+85. Loot "Azibelle's Crystal Fragment" (62887) from "Azibelle Spavin".
+86. Spawns "Glenfire Telzir" (335065) in `harbingers` on enter.
+87. Loot "Glenfire's Crystal Fragment" (62888) from "Glenfire Telzir".
+88. Combine in "Small Padded Bag" (62853): "Bohab's Crystal Fragment" (62886), "Azibelle's Crystal Fragment" (62887), "Glenfire's Crystal Fragment" (62888), "Crystal Fragment" (62852). Produces "Full Padded Bag" (62854). The combine does not fail.
+89. freportw/"Shana Liskia", hand "Full Padded Bag" (62854). Gives "Bowl of Foul-smelling Liquid" (62855).
+90. Say "Rc Spawn" to natimbi/"Druid 1 5".
+91. Spawns "Noc Juggernaut" (280091).
+92. Loot "Energized Noc Blood" (62889) from "Noc Juggernaut".
+93. Say "Reborn Death" to natimbi/"Druid 1 5".
+94. Forage "Emerald Moss" (62856) in `emeraldjungle`.
+95. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Mind Crystal" (62846).
+96. Combine in "Bowl of Foul-smelling Liquid" (62855): "Energized Noc Blood" (62889), "Emerald Moss" (62856), "Mind Crystal" (62846). Produces "Clear Mind Crystal" (62857). The combine does not fail.
+97. Kill kithicor/"Blackened Tree Limb". Spawns "Blackened Dryad" (20301).
+98. Loot "Blackened Earth" (62862) from "Blackened Dryad".
+99. Combine in "Reinforced Aerated Pot" (62861): "Living Brambles Seed" (62850), "Clear Mind Crystal" (62857), "Blackened Earth" (62862). Produces "Staff of Living Brambles" (62863). The combine does not fail.
+100. abysmal/"Reyfin Malakwa", say "Hail". Sets `druid_epic` to `9`.
+101. abysmal/"Reyfin Malakwa", say "Hail". Gives "Ragged Cloth Bag" (62881).
+102. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Rune Fragment" (62867).
+103. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Threadbare Cloth Bag" (62890).
+104. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Undamaged Noc Fang" (62864).
+105. Combine in "Threadbare Cloth Bag" (62890): "Undamaged Noc Fang" (62864). Produces "Closed Cloth Bag" (62891). The combine does not fail.
+106. qinimi/"A Broken Ritesdancer", hand "Closed Cloth Bag" (62891). Gives "Rune Fragment" (62867).
+107. Forage "Rune Fragment" (62866) in `barindu`.
+108. Forage "Rune Fragment" (62866) in `ferubi`.
+109. Forage "Rune Fragment" (62866) in `riwwi`.
+110. Forage "Rune Fragment" (62865) in `barindu`.
+111. Forage "Rune Fragment" (62865) in `ferubi`.
+112. Forage "Rune Fragment" (62865) in `riwwi`.
+113. Combine in "Ragged Cloth Bag" (62881): "Rune Fragment" (62867), "Rune Fragment" (62866), "Rune Fragment" (62865). Produces "Wrapped Cloth Bag" (62882). The combine does not fail.
+114. abysmal/"Reyfin Malakwa", hand "Wrapped Cloth Bag" (62882). Sets `druid_epic` to `10`.
+115. nedaria/"Historian Finrazel", say "Plan To Find". Requires `druid_epic` ==10. Gives "Thick Leather Bag" (62884).
+116. Kill wallofslaughter/"A Nervous Guardian". Spawns "Lightning Lord" (300098).
+117. Loot "Rain Shard" (62872) from "Lightning Lord".
+118. Loot "Frost Shard" (62871) from "Bazu Scavenger" in `causeway`.
+119. Spawns "Mastruq Commander Gorlakt" (281089) in `qinimi` on enter.
+120. Loot "Spirit Shard" (62870) from "Mastruq Commander Gorlakt".
+121. Spawns "Tranlinor the Maimed" (302086) in `draniksscar` on enter.
+122. Loot "Wind Shard" (62873) from "Tranlinor the Maimed".
+123. Combine in "Thick Leather Bag" (62884): "Rain Shard" (62872), "Frost Shard" (62871), "Spirit Shard" (62870), "Wind Shard" (62873). Produces "Synched Leather Bag" (62885). The combine does not fail.
+124. abysmal/"Reyfin Malakwa", hand "Synched Leather Bag" (62885). Sets `druid_epic` to `12`.
+125. abysmal/"Silanda Leafdew", hand "Synched Leather Bag" (62885). Requires `druid_epic` set. Requires `druid_epic` ==12. Gives "Insulated Container Sketch" (62875).
+126. Spawns "Guardian of Glorification" (294583) in `ikkinz` on event_hp.
+127. Hand "Kruxilitek" (60227) to ikkinz/"Guardian Of Glorification".
+128. Loot "Chunk of Broken Ancient Stone Worker" (58026) from "Guardian of Glorification".
+129. Hand "Kruxilitek" (60227) to ikkinz/"Guardian Of Glorification". Spawns "Guardian of Glorification" (294582). Loot "Chunk of Broken Ancient Stone Worker" (58026) from "Guardian of Glorification".
+130. Say "Spawn Golems" to inktuta/"Zone Status".
+131. Spawns "A Clay Monolith" (296002).
+132. Loot "Chunk of Broken Ancient Stone Worker" (58026) from "A Clay Monolith".
+133. Spawns "A Clay Monolith" (296049).
+134. 3 other loot steps also yield Chunk of Broken Ancient Stone Worker (58026).
+135. abysmal/"Hiloan O-Yviania", hand "Chunk of Broken Ancient Stone Worker" (58026). Gives "Clump of Refined Ancient Taelosian Clay" (58031).
+136. Combine in Pottery Wheel (21): "Chunk of Broken Ancient Stone Worker" (58026). Produces "Clump of Refined Ancient Taelosian Clay" (58031). Requires Pottery, trivial 15. The combine does not fail. The recipe must be learned first.
+137. Combine in Kiln (22): "Insulated Container Sketch" (62875), "Clump of Refined Ancient Taelosian Clay" (58031). Produces "Insulated Container" (62876). Requires Pottery 100. The combine does not fail.
 
 ## `druid_epic`
 
@@ -1458,13 +1541,9 @@ Combine:
 - `recipe:13412` is combined in Fertile Earth (72091).
   - Ground spawn of "Fertile Earth" (72091) in `jaggedpine`.
   - Put in x1: Senvial's Blessing (62621).
-    - Requires `ranger_natimbi_chest` unset
-    - Given by natimbi/"Ranger 1 5", say "Hail".
-    - Given by natimbi/"Ranger 1 5", say "Senvial Say".
+    - Prerequisite: "Senvial's Blessing" (62621). See section 0.
   - Put in x1: Grinbik's Blessing (62622).
-    - Requires `ranger_bloodfield_chest` unset
-    - Given by bloodfields/"Ranger 1 5", say "Hail".
-    - Given by bloodfields/"Ranger 1 5", say "Grinbik Say".
+    - Prerequisite: "Grinbik's Blessing" (62622). See section 0.
   - Put in x1: Red Dogwood Seed (62844).
     - Prerequisite: "Red Dogwood Seed" (62844). See section 0.
   - Spawns Red Dogwood Treant (181222).
@@ -1554,8 +1633,7 @@ Combine:
     - Loot "Living Fragment of Water" (28293) from "A Triloun Keeper" in `powater`.
     - Loot "Living Fragment of Water" (28293) from "A Triloun Water Guardian" in `powater`.
   - Put in x1: Heated Loadstone (62628).
-    - Requires `ranger_epic` ==6
-    - Given by causeway/"Siflu", say "Adventurers".
+    - Prerequisite: "Heated Loadstone" (62628). See section 0.
   - Put in x1: Spirit Manacles (72340).
     - Spawns "A Mangled Muramite Captain" (300069) in `wallofslaughter` on enter.
     - Loot "Spirit Manacles" (72340) from "A Mangled Muramite Captain".
@@ -1586,8 +1664,7 @@ Combine:
     - Loot "Living Fragment of Water" (28293) from "A Triloun Keeper" in `powater`.
     - Loot "Living Fragment of Water" (28293) from "A Triloun Water Guardian" in `powater`.
   - Put in x1: Heated Loadstone (62628).
-    - Requires `ranger_epic` ==6
-    - Given by causeway/"Siflu", say "Adventurers".
+    - Prerequisite: "Heated Loadstone" (62628). See section 0.
   - Put in x1: Spirit Manacles (72340).
     - Spawns "A Mangled Muramite Captain" (300069) in `wallofslaughter` on enter.
     - Loot "Spirit Manacles" (72340) from "A Mangled Muramite Captain".

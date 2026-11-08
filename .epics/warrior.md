@@ -167,13 +167,13 @@ Each list is the order you obtain that item. Later steps point here instead of r
 155. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
 156. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
 157. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
-158. 42 other loot steps also yield Black Sapphire (10036).
+158. 45 other loot steps also yield Black Sapphire (10036).
 159. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
 160. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
 161. Loot "Jacinth" (10053) from "A Reclusive Girplan".
 162. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
 163. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
-164. 61 other loot steps also yield Jacinth (10053).
+164. 64 other loot steps also yield Jacinth (10053).
 165. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
 166. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
 167. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
@@ -346,13 +346,13 @@ Each list is the order you obtain that item. Later steps point here instead of r
 155. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
 156. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
 157. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
-158. 42 other loot steps also yield Black Sapphire (10036).
+158. 45 other loot steps also yield Black Sapphire (10036).
 159. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
 160. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
 161. Loot "Jacinth" (10053) from "A Reclusive Girplan".
 162. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
 163. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
-164. 61 other loot steps also yield Jacinth (10053).
+164. 64 other loot steps also yield Jacinth (10053).
 165. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
 166. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
 167. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
@@ -520,13 +520,13 @@ Each list is the order you obtain that item. Later steps point here instead of r
 150. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
 151. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
 152. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
-153. 42 other loot steps also yield Black Sapphire (10036).
+153. 45 other loot steps also yield Black Sapphire (10036).
 154. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
 155. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
 156. Loot "Jacinth" (10053) from "A Reclusive Girplan".
 157. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
 158. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
-159. 61 other loot steps also yield Jacinth (10053).
+159. 64 other loot steps also yield Jacinth (10053).
 160. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
 161. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
 162. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
@@ -698,13 +698,13 @@ Each list is the order you obtain that item. Later steps point here instead of r
 150. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
 151. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
 152. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
-153. 42 other loot steps also yield Black Sapphire (10036).
+153. 45 other loot steps also yield Black Sapphire (10036).
 154. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
 155. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
 156. Loot "Jacinth" (10053) from "A Reclusive Girplan".
 157. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
 158. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
-159. 61 other loot steps also yield Jacinth (10053).
+159. 64 other loot steps also yield Jacinth (10053).
 160. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
 161. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
 162. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
@@ -932,13 +932,13 @@ Each list is the order you obtain that item. Later steps point here instead of r
 157. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
 158. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
 159. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
-160. 42 other loot steps also yield Black Sapphire (10036).
+160. 45 other loot steps also yield Black Sapphire (10036).
 161. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
 162. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
 163. Loot "Jacinth" (10053) from "A Reclusive Girplan".
 164. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
 165. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
-166. 61 other loot steps also yield Jacinth (10053).
+166. 64 other loot steps also yield Jacinth (10053).
 167. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
 168. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
 169. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
@@ -983,7 +983,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 27. 17 other recipes also produce Bottle (16598).
 28. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
 29. nedaria/"Korezna Orecleaver", hand "Water Flask" (13006) + "Water Flask" (13006) + "Water Flask" (13006). Sets `warrior_epic_korezna` to `2`.
-30. Ground spawn of "Blackfall Ore" (60301) in `draniksscar`.
+30. **Broken:** nothing in the graph gives, loots, spawns, or combines Blackfall Ore (60301).
 31. global/"Global Player", combine recipe 19902. Sets `warrior_epic` to `21`.
 32. Spawns "Larnik the Recluse" (116609) in `eastwastes` on enter.
 33. Loot "Larnik's Locked Purification Kit" (60325) from "Larnik the Recluse".
@@ -1008,6 +1008,19 @@ Each list is the order you obtain that item. Later steps point here instead of r
 9. Kill vxed/"Blackfall Borerling". Spawns "Blackfall Borer" (290069).
 10. Loot "Vial of Blackfall Blood" (60304) from "Blackfall Borer".
 11. draniksscar/"Korbuk Brimblade", hand "Vial of Blackfall Blood" (60304). Requires `warrior_epic` >=3. Gives "Sealed Vial of Blackfall Blood" (60305).
+
+### "Potion of Blackfall Spirit" (60306)
+
+1. global/"Global Player", combine recipe 19902. Sets `warrior_epic` to `21`.
+2. Spawns "Larnik the Recluse" (116609) in `eastwastes` on enter.
+3. Loot "Larnik's Locked Purification Kit" (60325) from "Larnik the Recluse".
+4. draniksscar/"Korbuk Brimblade", hand "Larnik's Locked Purification Kit" (60325). Requires `warrior_epic` >=18. Gives "Larnik's Unlocked Purification Kit" (60326).
+5. Loot "Kreljnok's Muddled Rage" (60322) from "Possessed Brute" in `provinggrounds`.
+6. Combine in "Larnik's Unlocked Purification Kit" (60326): "Kreljnok's Muddled Rage" (60322). Produces "Kreljnok's Focused Rage" (60327). The combine does not fail.
+7. Loot "Champion's Sword of Eternal Power" (60321) from "Krekk Brimblade" in `dranik`.
+8. draniksscar/"Korbuk Brimblade", say "Hail". Sets `warrior_epic` to `16`.
+9. draniksscar/"Korbuk Brimblade", say "Hail". Sets `warrior_epic` to `16`.
+10. everfrost/"Kimber Whitefoot", say "Hail". Requires `warrior_epic` set. Requires `warrior_epic` >=4. Gives "Potion of Blackfall Spirit" (60306).
 
 ### "Nocturnal Mask of Acuity" (60309)
 
@@ -1268,13 +1281,13 @@ Each list is the order you obtain that item. Later steps point here instead of r
 150. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
 151. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
 152. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
-153. 42 other loot steps also yield Black Sapphire (10036).
+153. 45 other loot steps also yield Black Sapphire (10036).
 154. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
 155. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
 156. Loot "Jacinth" (10053) from "A Reclusive Girplan".
 157. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
 158. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
-159. 61 other loot steps also yield Jacinth (10053).
+159. 64 other loot steps also yield Jacinth (10053).
 160. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
 161. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
 162. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
@@ -1442,13 +1455,13 @@ Each list is the order you obtain that item. Later steps point here instead of r
 139. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
 140. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
 141. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
-142. 42 other loot steps also yield Black Sapphire (10036).
+142. 45 other loot steps also yield Black Sapphire (10036).
 143. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
 144. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
 145. Loot "Jacinth" (10053) from "A Reclusive Girplan".
 146. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
 147. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
-148. 61 other loot steps also yield Jacinth (10053).
+148. 64 other loot steps also yield Jacinth (10053).
 149. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
 150. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
 151. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
@@ -1652,12 +1665,7 @@ In script order:
 How the items are reached:
 
 - Potion of Blackfall Spirit (60306)
-  - Requires `warrior_epic` set
-  - Requires `warrior_epic` >=4
-  - Given by everfrost/"Kimber Whitefoot", say "Hail".
-  - Requires `warrior_epic` set
-  - Requires `warrior_epic` >=4
-  - Given by everfrost/"Kimber Whitefoot", say "Hail".
+  - Prerequisite: "Potion of Blackfall Spirit" (60306). See section 0.
 
 ##### 6. korbuk brimblade — hand 60307
 
@@ -1881,12 +1889,7 @@ How the items are reached:
 - Hilt of Eternal Power (60320)
   - Prerequisite: "Hilt of Eternal Power" (60320). See section 0.
 - Potion of Blackfall Spirit (60306)
-  - Requires `warrior_epic` set
-  - Requires `warrior_epic` >=4
-  - Given by everfrost/"Kimber Whitefoot", say "Hail".
-  - Requires `warrior_epic` set
-  - Requires `warrior_epic` >=4
-  - Given by everfrost/"Kimber Whitefoot", say "Hail".
+  - Prerequisite: "Potion of Blackfall Spirit" (60306). See section 0.
 - Blackfall Blade (60303)
   - Prerequisite: "Blackfall Blade" (60303). See section 0.
 

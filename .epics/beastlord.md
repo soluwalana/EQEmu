@@ -101,6 +101,11 @@ Each list is the order you obtain that item. Later steps point here instead of r
 23. sharvahl/"Weapons Master Rahoul", hand platinum:2000. Gives "Plain Beastlord Statuette" (52931).
 24. Combine in "Large Sewing Kit" (17880): "Crafted Tassels" (52929), "Plain Beastlord Statuette" (52931). Produces "Decorated Statuette of the Feral" (57059). Requires Tailoring, trivial 100.
 
+### "Letter from Muada" (57008)
+
+1. oot/"Marrey Mcgrannel", hand "Letter from Muada" (57008). Sets `beast_epic` to `2`.
+2. oot/"Marrey Mcgrannel", say "Way". Requires `beast_epic` ==2. Gives "Letter from Muada" (57008).
+
 ### "Sealed Note for Muada" (52900)
 
 1. Loot "Swirling Feral Essence" (57010) from "Delirious Drogmor" in `gunthak`.
@@ -172,6 +177,13 @@ Each list is the order you obtain that item. Later steps point here instead of r
 10. sharvahl/"Elder Animist Muada", say "Make The Totem". Gives "Combined Essence" (52913).
 11. Combine in Oven (15): "Peculiar Unshapen Piece of Wood" (57011), "Gilded Resonating Clay" (57029), "Combined Essence" (52913). Produces "Malleable Glowing Totem" (57050). Requires Baking 100. The combine does not fail.
 12. Combine in Forge (17): "Elders' Totem Mold" (52930), "Malleable Glowing Totem" (57050). Produces "Spiritbound Totem" (57027). Requires Blacksmithing 100. The combine does not fail.
+
+### "Blended Elixir of Fortitude" (57051)
+
+1. Kill causeway/"Bazu Terror". Spawns "Discordling Dark Animist" (303094).
+2. Loot "Dark Animist Wand" (57012) from "Discordling Dark Animist".
+3. causeway/"Jillaa Oogblat", hand "Dark Animist Wand" (57012). Sets `beast_epic` to `19`.
+4. sharvahl/"Elder Animist Muada", say "Agree To Take On This Charge". Requires `beast_epic` ==19. Gives "Blended Elixir of Fortitude" (57051).
 
 ### "Wrapped Gemmed Wand" (57052)
 
@@ -283,8 +295,7 @@ In script order:
 How the items are reached:
 
 - Letter from Muada (57008)
-  - Requires `beast_epic` ==2
-  - Given by oot/"Marrey Mcgrannel", say "Way".
+  - Prerequisite: "Letter from Muada" (57008). See section 0.
 
 ### 3. irionu bastun — hand 57008
 
@@ -301,8 +312,7 @@ In script order:
 How the items are reached:
 
 - Letter from Muada (57008)
-  - Requires `beast_epic` ==2
-  - Given by oot/"Marrey Mcgrannel", say "Way".
+  - Prerequisite: "Letter from Muada" (57008). See section 0.
 
 ### 4. rashara wrualla — hand 57008
 
@@ -319,8 +329,7 @@ In script order:
 How the items are reached:
 
 - Letter from Muada (57008)
-  - Requires `beast_epic` ==2
-  - Given by oot/"Marrey Mcgrannel", say "Way".
+  - Prerequisite: "Letter from Muada" (57008). See section 0.
 
 ### 5. ikpug giblod — hand 57008
 
@@ -337,8 +346,7 @@ In script order:
 How the items are reached:
 
 - Letter from Muada (57008)
-  - Requires `beast_epic` ==2
-  - Given by oot/"Marrey Mcgrannel", say "Way".
+  - Prerequisite: "Letter from Muada" (57008). See section 0.
 
 ### 6. diddugu — hand 57008
 
@@ -355,8 +363,7 @@ In script order:
 How the items are reached:
 
 - Letter from Muada (57008)
-  - Requires `beast_epic` ==2
-  - Given by oot/"Marrey Mcgrannel", say "Way".
+  - Prerequisite: "Letter from Muada" (57008). See section 0.
 
 ### 7. elder animist muada — hand 57009+57995
 
@@ -608,8 +615,7 @@ In script order:
 How the items are reached:
 
 - Blended Elixir of Fortitude (57051)
-  - Requires `beast_epic` ==19
-  - Given by sharvahl/"Elder Animist Muada", say "Agree To Take On This Charge".
+  - Prerequisite: "Blended Elixir of Fortitude" (57051). See section 0.
 
 ### 21. elder animist muada — hand 57052
 

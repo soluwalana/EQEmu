@@ -40,12 +40,13 @@ Each list is the order you obtain that item. Later steps point here instead of r
 28. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
 29. Kill wakening/"Dark Disciple Master". Spawns "A Gilded Chest" (119179).
 30. Loot "Aegis of Chaotic Worship" (9954) from "A Gilded Chest".
-31. Spawns "A Murk Hatchling" (300084) in `wallofslaughter` on event_timer.
-32. Loot "Murkglider Plasma" (13639) from "A Murk Hatchling".
-33. No quest step gives Bazu Plasma (13658). The dump lists it in causeway, wallofslaughter.
-34. Loot "Pyrilen Plasma" (13667) from "A Dragorn Assassin" in `wallofslaughter`.
-35. Combine in Brew Barrel (19): "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing, trivial 100.
-36. Combine in Forge (17): "Water Flask" (13006), "Aegis of Chaotic Worship" (9954), "Soul Temper" (14047). Produces "Harmony of the Soul" (9955). Requires Blacksmithing. The combine does not fail.
+31. **Broken:** no event trigger found for `wallofslaughter/a quivering egg#timer:hatch`.
+32. Spawns "A Murk Hatchling" (300084) after `wallofslaughter/a quivering egg#timer:hatch`.
+33. Loot "Murkglider Plasma" (13639) from "A Murk Hatchling".
+34. No quest step gives Bazu Plasma (13658). The dump lists it in causeway, wallofslaughter.
+35. Loot "Pyrilen Plasma" (13667) from "A Dragorn Assassin" in `wallofslaughter`.
+36. Combine in Brew Barrel (19): "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing, trivial 100.
+37. Combine in Forge (17): "Water Flask" (13006), "Aegis of Chaotic Worship" (9954), "Soul Temper" (14047). Produces "Harmony of the Soul" (9955). Requires Blacksmithing. The combine does not fail.
 
 ### "Water Sprinkler of Nem Ankh" (5532)
 
@@ -115,11 +116,12 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Soul Temper" (14047)
 
-1. Spawns "A Murk Hatchling" (300084) in `wallofslaughter` on event_timer.
-2. Loot "Murkglider Plasma" (13639) from "A Murk Hatchling".
-3. No quest step gives Bazu Plasma (13658). The dump lists it in causeway, wallofslaughter.
-4. Loot "Pyrilen Plasma" (13667) from "A Dragorn Assassin" in `wallofslaughter`.
-5. Combine in Brew Barrel (19): "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing, trivial 100.
+1. **Broken:** no event trigger found for `wallofslaughter/a quivering egg#timer:hatch`.
+2. Spawns "A Murk Hatchling" (300084) after `wallofslaughter/a quivering egg#timer:hatch`.
+3. Loot "Murkglider Plasma" (13639) from "A Murk Hatchling".
+4. No quest step gives Bazu Plasma (13658). The dump lists it in causeway, wallofslaughter.
+5. Loot "Pyrilen Plasma" (13667) from "A Dragorn Assassin" in `wallofslaughter`.
+6. Combine in Brew Barrel (19): "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing, trivial 100.
 
 ## `cleric_epic`
 

@@ -8,6 +8,28 @@ Flags with writes: `shaman_pre`, `shaman_epic`.
 
 Each list is the order you obtain that item. Later steps point here instead of repeating the chain.
 
+### "Crafted Talisman of Fates" (57400)
+
+1. Loot "Amulet of the Spiritist" (57087) from "Netherbian Swarmfiend" in `umbral`.
+2. Spawns "Spiritseeker Nadox" (227319) in `nadox` on enter.
+3. Loot "Ring of the Undead Spiritcharmer" (57085) from "Spiritseeker Nadox".
+4. Loot "Ring of the Undead Spiritcharmer" (57085) from "Spiritseeker Nadox" in `nadox`.
+5. shadeweaver/"Wunshi Kashra", hand "Ring of the Undead Spiritcharmer" (57085) + "Amulet of the Spiritist" (57087). Sets `shaman_epic` to `4`.
+6. freeportwest/"Elder Spirit Of Enlightenment", say "Business With Wunshi Is Finished". Requires `shaman_epic` ==4. Gives "Gemmed Bangle of Enlightenment" (57088).
+7. freportn/"Elder Spirit Of Enlightenment", say "Business With Wunshi Is Finished". Requires `shaman_epic` ==4. Gives "Gemmed Bangle of Enlightenment" (57088).
+8. lakerathe/"Kimm Mcshannel", hand "Gemmed Bangle of Enlightenment" (57088). Sets `shaman_epic` to `5`.
+9. lakerathe/"Kimm Mcshannel", say "Break Down". Requires `shaman_epic` ==5. Gives "Heyokah Medicine Bag" (52922).
+10. Loot "Revenant Tooth" (57500) from "A Sun Revenant" in `thegrey`.
+11. Loot "Perfect Marked Ukun Skin" (57701) from "Fang" in `draniksscar`.
+12. Loot "Perfect Marked Ukun Skin" (57701) from "Ukun Gutfeaster" in `draniksscar`.
+13. Loot "Perfect Marked Ukun Skin" (57701) from "Ukun Slavehunter" in `draniksscar`.
+14. Loot "Corrosive Goo" (57100) from "A Pulsating Bile" in `charasis`.
+15. Loot "Corruption Powder" (57520) from "Elite Corrupted Knight" in `codecay`.
+16. Combine in "Heyokah Medicine Bag" (52922): "Revenant Tooth" (57500), "Perfect Marked Ukun Skin" (57701), "Corrosive Goo" (57100), "Corruption Powder" (57520). Produces "Shaman's Precious Diffusing Agent" (57560). Requires Alchemy 100. The combine does not fail.
+17. lakerathe/"Kimm Mcshannel", hand "Shaman's Precious Diffusing Agent" (57560). Gives "Runed Purse of the McShannels" (57614).
+18. freeportwest/"Elder Spirit Of Enlightenment", hand "Runed Purse of the McShannels" (57614). Sets `shaman_epic` to `6`.
+19. freeportwest/"Elder Spirit Of Enlightenment", say "Acknowledge". Requires `shaman_epic` ==6. Gives "Crafted Talisman of Fates" (57400).
+
 ### "Black Fur Boots" (1678)
 
 1. Loot "Black Dire Pelt" (1672) from "Black Dire" in `mistmoore`.
@@ -68,6 +90,15 @@ Each list is the order you obtain that item. Later steps point here instead of r
 22. freeportwest/"Elder Spirit Of Enlightenment", say "Rare Gift". Requires `shaman_epic` ==2. Gives "Potion of Sustenance" (57081).
 23. freportn/"Elder Spirit Of Enlightenment", say "Rare Gift". Requires `shaman_epic` ==2. Gives "Potion of Sustenance" (57081).
 24. airplane/"Eternal Spirit", hand "Potion of Sustenance" (57081). Gives "Blessed Talisman of Wisdom" (57083).
+
+### "Gemmed Bangle of Enlightenment" (57088)
+
+1. Loot "Amulet of the Spiritist" (57087) from "Netherbian Swarmfiend" in `umbral`.
+2. Spawns "Spiritseeker Nadox" (227319) in `nadox` on enter.
+3. Loot "Ring of the Undead Spiritcharmer" (57085) from "Spiritseeker Nadox".
+4. Loot "Ring of the Undead Spiritcharmer" (57085) from "Spiritseeker Nadox" in `nadox`.
+5. shadeweaver/"Wunshi Kashra", hand "Ring of the Undead Spiritcharmer" (57085) + "Amulet of the Spiritist" (57087). Sets `shaman_epic` to `4`.
+6. freeportwest/"Elder Spirit Of Enlightenment", say "Business With Wunshi Is Finished". Requires `shaman_epic` ==4. Gives "Gemmed Bangle of Enlightenment" (57088).
 
 ### "Runed Purse of the McShannels" (57614)
 
@@ -144,10 +175,7 @@ In script order:
 How the items are reached:
 
 - Crafted Talisman of Fates (57400)
-  - Requires `shaman_epic` ==6
-  - Given by freeportwest/"Elder Spirit Of Enlightenment", say "Acknowledge".
-  - Requires `shaman_epic` ==6
-  - Given by freportn/"Elder Spirit Of Enlightenment", say "Acknowledge".
+  - Prerequisite: "Crafted Talisman of Fates" (57400). See section 0.
 
 ### 1. elder spirit of enlightenment — say hail
 
@@ -167,10 +195,7 @@ In script order:
 How the items are reached:
 
 - Crafted Talisman of Fates (57400)
-  - Requires `shaman_epic` ==6
-  - Given by freeportwest/"Elder Spirit Of Enlightenment", say "Acknowledge".
-  - Requires `shaman_epic` ==6
-  - Given by freportn/"Elder Spirit Of Enlightenment", say "Acknowledge".
+  - Prerequisite: "Crafted Talisman of Fates" (57400). See section 0.
 
 ### 2. spirit sentinel — hand 1678
 
@@ -306,8 +331,6 @@ How the items are reached:
 - Blessed Talisman of Wisdom (57083)
   - Prerequisite: "Blessed Talisman of Wisdom" (57083). See section 0.
 - Blessed Talisman of Patience (57084)
-  - Spawns "Punisher Veshtaq" (201455) in `pojustice` on event_timer.
-  - Loot "Blessed Talisman of Patience" (57084) from "Punisher Veshtaq".
   - Loot "Blessed Talisman of Patience" (57084) from "Punisher Veshtaq".
 
 ### 4. wunshi kashra — hand 57085+57087
@@ -349,10 +372,7 @@ In script order:
 How the items are reached:
 
 - Gemmed Bangle of Enlightenment (57088)
-  - Requires `shaman_epic` ==4
-  - Given by freeportwest/"Elder Spirit Of Enlightenment", say "Business With Wunshi Is Finished".
-  - Requires `shaman_epic` ==4
-  - Given by freportn/"Elder Spirit Of Enlightenment", say "Business With Wunshi Is Finished".
+  - Prerequisite: "Gemmed Bangle of Enlightenment" (57088). See section 0.
 
 ### 6. elder spirit of enlightenment — hand 57614
 
@@ -420,10 +440,7 @@ In script order:
 How the items are reached:
 
 - Crafted Talisman of Fates (57400)
-  - Requires `shaman_epic` ==6
-  - Given by freeportwest/"Elder Spirit Of Enlightenment", say "Acknowledge".
-  - Requires `shaman_epic` ==6
-  - Given by freportn/"Elder Spirit Of Enlightenment", say "Acknowledge".
+  - Prerequisite: "Crafted Talisman of Fates" (57400). See section 0.
 
 ### 8. elder spirit of enlightenment — say prepared to carry on
 
@@ -443,10 +460,7 @@ In script order:
 How the items are reached:
 
 - Crafted Talisman of Fates (57400)
-  - Requires `shaman_epic` ==6
-  - Given by freeportwest/"Elder Spirit Of Enlightenment", say "Acknowledge".
-  - Requires `shaman_epic` ==6
-  - Given by freportn/"Elder Spirit Of Enlightenment", say "Acknowledge".
+  - Prerequisite: "Crafted Talisman of Fates" (57400). See section 0.
 
 ### 9. lupot nukla — say taken by force
 
@@ -590,10 +604,7 @@ In script order:
 How the items are reached:
 
 - Crafted Talisman of Fates (57400)
-  - Requires `shaman_epic` ==6
-  - Given by freeportwest/"Elder Spirit Of Enlightenment", say "Acknowledge".
-  - Requires `shaman_epic` ==6
-  - Given by freportn/"Elder Spirit Of Enlightenment", say "Acknowledge".
+  - Prerequisite: "Crafted Talisman of Fates" (57400). See section 0.
 
 ### Steps on `shaman_epic` that do not change it
 

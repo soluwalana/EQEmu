@@ -8,6 +8,12 @@ Flags with writes: `berserk_epic`.
 
 Each list is the order you obtain that item. Later steps point here instead of repeating the chain.
 
+### "Raging Soul Shard" (11999)
+
+1. lakeofillomen/"Keras Mcarik", say "Find Out". Sets `berserk_epic` to `8`.
+2. lakeofillomen/"Keras Mcarik", say "Find Out". Sets `berserk_epic` to `8`.
+3. halas/"Shanis Macdarren", say "Hail". Requires `berserk_epic` >=1. Requires `berserk_epic` set. Gives "Raging Soul Shard" (11999).
+
 ### "Kerasian Axe of Ire" (68299)
 
 1. lakeofillomen/"Keras Mcarik", say "Do". Gives "McArik Reagent Satchel" (60205).
@@ -80,6 +86,11 @@ Each list is the order you obtain that item. Later steps point here instead of r
 30. lakeofillomen/"Keras Mcarik", hand "Medal of Fervid Rage" (60202) + "Burning Essence of Rage" (60203). Gives "Medal of Hunting" (60204).
 31. lakeofillomen/"Keras Mcarik", hand "Medal of Hunting" (60204) + "Bag of Image Essence Dust" (60209). Gives "Medal of Mastery" (60210).
 
+### "Julei's Twilight Pendant" (17200)
+
+1. lakeofillomen/"Keras Mcarik", say "Find Out". Sets `berserk_epic` to `8`.
+2. hole/"Julei Direaxe", say "Hail". Requires `berserk_epic` ==8. Gives "Julei's Twilight Pendant" (17200).
+
 ### "Unhoned Vengeful Taelosian Blood Axe" (20072)
 
 1. No quest step gives Lightning Core (72029). The dump lists it in anguish, provinggrounds.
@@ -95,11 +106,12 @@ Each list is the order you obtain that item. Later steps point here instead of r
 11. oggok/"Baddi Waca", say "Hail". Requires `berserk_epic` >=1. Requires `berserk_epic` set. Gives "Raging Soul Shard" (11999).
 12. sharvahl/"Vrasha Piennsa", say "Hail". Requires `berserk_epic` >=1. Requires `berserk_epic` set. Gives "Raging Soul Shard" (11999).
 13. abysmal/"Teekan Opousbabolaoi", hand "Raging Soul Shard" (11999) + "Taelosian Alloy Blood Axe" (18976). Requires `berserk_epic` ==5. Gives "Raging Taelosian Alloy Axe" (18398).
-14. Spawns "Bazu Smasher" (303081) in `causeway` on event_timer.
-15. Loot "Faceted Moonstone" (17349) from "Bazu Smasher".
-16. Loot "Faceted Moonstone" (17349) from "Bazu Smasher" in `causeway`.
-17. Loot "Shadowed Bronze Lump" (17137) from "An Ancient Necromantic Shade" in `griegsend`.
-18. lakeofillomen/"Keras Mcarik", hand "Shadowed Bronze Lump" (17137) + "Faceted Moonstone" (17349) + "Raging Taelosian Alloy Axe" (18398) + "Lightning Core" (72029). Gives "Unhoned Vengeful Taelosian Blood Axe" (20072).
+14. **Broken:** no event trigger found for `causeway/bazu smasher#timer:wipecheck`.
+15. Spawns "Bazu Smasher" (303081) after `causeway/bazu smasher#timer:wipecheck`.
+16. Loot "Faceted Moonstone" (17349) from "Bazu Smasher".
+17. Loot "Faceted Moonstone" (17349) from "Bazu Smasher" in `causeway`.
+18. Loot "Shadowed Bronze Lump" (17137) from "An Ancient Necromantic Shade" in `griegsend`.
+19. lakeofillomen/"Keras Mcarik", hand "Shadowed Bronze Lump" (17137) + "Faceted Moonstone" (17349) + "Raging Taelosian Alloy Axe" (18398) + "Lightning Core" (72029). Gives "Unhoned Vengeful Taelosian Blood Axe" (20072).
 
 ## `berserk_epic`
 
@@ -127,18 +139,7 @@ In script order:
 How the items are reached:
 
 - Raging Soul Shard (11999)
-  - Requires `berserk_epic` >=1
-  - Requires `berserk_epic` set
-  - Given by halas/"Shanis Macdarren", say "Hail".
-  - Requires `berserk_epic` >=1
-  - Requires `berserk_epic` set
-  - Given by kaladimb/"Dravel Axethrasher", say "Hail".
-  - Requires `berserk_epic` >=1
-  - Requires `berserk_epic` set
-  - Given by oggok/"Baddi Waca", say "Hail".
-  - Requires `berserk_epic` >=1
-  - Requires `berserk_epic` set
-  - Given by sharvahl/"Vrasha Piennsa", say "Hail".
+  - Prerequisite: "Raging Soul Shard" (11999). See section 0.
 - Kerasian Axe of Ire (68299)
   - Prerequisite: "Kerasian Axe of Ire" (68299). See section 0.
 
@@ -215,18 +216,7 @@ In script order:
 How the items are reached:
 
 - Raging Soul Shard (11999)
-  - Requires `berserk_epic` >=1
-  - Requires `berserk_epic` set
-  - Given by halas/"Shanis Macdarren", say "Hail".
-  - Requires `berserk_epic` >=1
-  - Requires `berserk_epic` set
-  - Given by kaladimb/"Dravel Axethrasher", say "Hail".
-  - Requires `berserk_epic` >=1
-  - Requires `berserk_epic` set
-  - Given by oggok/"Baddi Waca", say "Hail".
-  - Requires `berserk_epic` >=1
-  - Requires `berserk_epic` set
-  - Given by sharvahl/"Vrasha Piennsa", say "Hail".
+  - Prerequisite: "Raging Soul Shard" (11999). See section 0.
 - Kerasian Axe of Ire (68299)
   - Prerequisite: "Kerasian Axe of Ire" (68299). See section 0.
 
@@ -330,18 +320,7 @@ How the items are reached:
 - Taelosian Alloy Blood Axe (18976)
   - Given by sebilis/"Berserkerepic 1 5", say "Protector Timer".
 - Raging Soul Shard (11999)
-  - Requires `berserk_epic` >=1
-  - Requires `berserk_epic` set
-  - Given by halas/"Shanis Macdarren", say "Hail".
-  - Requires `berserk_epic` >=1
-  - Requires `berserk_epic` set
-  - Given by kaladimb/"Dravel Axethrasher", say "Hail".
-  - Requires `berserk_epic` >=1
-  - Requires `berserk_epic` set
-  - Given by oggok/"Baddi Waca", say "Hail".
-  - Requires `berserk_epic` >=1
-  - Requires `berserk_epic` set
-  - Given by sharvahl/"Vrasha Piennsa", say "Hail".
+  - Prerequisite: "Raging Soul Shard" (11999). See section 0.
 
 ### 8. keras mcarik — say find out
 
@@ -372,8 +351,7 @@ In script order:
 How the items are reached:
 
 - Julei's Twilight Pendant (17200)
-  - Requires `berserk_epic` ==8
-  - Given by hole/"Julei Direaxe", say "Hail".
+  - Prerequisite: "Julei's Twilight Pendant" (17200). See section 0.
 
 ### 10. grithyank avlonnon — hand 20072+47100
 

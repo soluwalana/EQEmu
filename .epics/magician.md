@@ -8,6 +8,17 @@ Flags with writes: `mage_epic`.
 
 Each list is the order you obtain that item. Later steps point here instead of repeating the chain.
 
+### "Tome of Primal Fires" (15769)
+
+1. No quest step gives Journal of Magus Tvish (15639). The dump lists it in akheva, eastkorlacha.
+2. poknowledge/"Bantil Io'Tuv", hand "Journal of Magus Tvish" (15639). Sets `mage_epic` to `2`.
+3. westwastes/"A Lost Tomekeeper", say "Violet Roses". Requires `mage_epic` ==2. Gives "Tome of Primal Fires" (15769).
+
+### "Sentience of Elements" (15778)
+
+1. najena/"Akksstaff'S Minion", on event_death_complete. Sets `ask_minion_dead` to `1`.
+2. najena/"Akksstaff", say "Demise". Requires `ask_minion_dead` set. Gives "Sentience of Elements" (15778).
+
 ### "Staff of Elemental Essence" (19092)
 
 1. najena/"Akksstaff'S Minion", on event_death_complete. Sets `ask_minion_dead` to `1`.
@@ -128,8 +139,7 @@ In script order:
 How the items are reached:
 
 - Tome of Primal Fires (15769)
-  - Requires `mage_epic` ==2
-  - Given by westwastes/"A Lost Tomekeeper", say "Violet Roses".
+  - Prerequisite: "Tome of Primal Fires" (15769). See section 0.
 
 ### 4. bantil io`tuv — hand 15772
 
@@ -183,8 +193,7 @@ In script order:
 How the items are reached:
 
 - Sentience of Elements (15778)
-  - Requires `ask_minion_dead` set
-  - Given by najena/"Akksstaff", say "Demise".
+  - Prerequisite: "Sentience of Elements" (15778). See section 0.
 
 ### 7. bantil io`tuv — hand 16773+16807+19086+19087
 

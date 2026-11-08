@@ -68,73 +68,75 @@ Each list is the order you obtain that item. Later steps point here instead of r
 56. Loot "Deathfist Slashed Belt" (13916) from "A Ghoulish Guardian".
 57. Spawns "A Ravenous Werewolf" (33170).
 58. Loot "Deathfist Slashed Belt" (13916) from "A Ravenous Werewolf".
-59. Common item: Desert Tarantula Chitin (20901). Listed in 5 zones.
-60. freeportwest/"Velan Torresk", hand "White Training Sash" (10130) + "Giant Snake Rattle" (13058) + "Deathfist Slashed Belt" (13916) + "Desert Tarantula Chitin" (20901). Gives "Yellow Sash of Order" (10131).
-61. freportw/"Velan Torresk", hand "White Training Sash" (10130) + "Giant Snake Rattle" (13058) + "Deathfist Slashed Belt" (13916) + "Desert Tarantula Chitin" (20901). Gives "Yellow Sash of Order" (10131).
-62. freeportwest/"Reyia Beslin", hand "Cutthroat Insignia Ring" (1903) + "Legionnaire's Bracer" (2299) + "Yellow Sash of Order" (10131) + "Greater Lightstone" (10400). Gives "Orange Sash of Order" (10132).
-63. freportw/"Reyia Beslin", hand "Cutthroat Insignia Ring" (1903) + "Legionnaire's Bracer" (2299) + "Yellow Sash of Order" (10131) + "Greater Lightstone" (10400). Gives "Orange Sash of Order" (10132).
-64. freeportwest/"Reyia Beslin", hand "Orange Sash of Order" (10132) + "Blackened Wand" (13237) + "Blackened Sapphire" (13238). Gives "Red Sash of Order" (10133).
-65. freportw/"Reyia Beslin", hand "Orange Sash of Order" (10132) + "Blackened Wand" (13237) + "Blackened Sapphire" (13238). Gives "Red Sash of Order" (10133).
-66. rathemtn/"Brother Zephyl", hand "Rare Robe Pattern" (12315). Gives "Red Sash of Order" (10133).
-67. rathemtn/"Brother Zephyl", hand "Robe of the Lost Circle" (12256). Gives "Red Sash of Order" (10133).
-68. rathemtn/"Brother Zephyl", hand "Red Sash of Order" (10133) + "The Idol" (12317). Gives "Rare Robe Pattern" (12315).
-69. Common item: Song: Jonthan's Whistling Warsong (15734). Listed in 8 zones.
-70. bazaar/"Caerlyna", hand "Vale Sewing Kit" (92882). Gives "Vale Sewing Kit Token" (56884).
-71. crescent/"Realnyna", hand "Vale Sewing Kit" (92882). Gives "Vale Sewing Kit Token" (56884).
-72. bazaar/"Caerlyna", hand "Vale Sewing Kit Token" (56884). Gives "Vale Sewing Kit" (92882).
-73. crescent/"Realnyna", hand "Vale Sewing Kit Token" (56884). Gives "Vale Sewing Kit" (92882).
-74. Common item: Needle Mold (12019). Listed in 32 zones.
-75. Common item: Thimble Mold (12057). Listed in 32 zones.
-76. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-77. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-78. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-79. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-80. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-81. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-82. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-83. Say "Tm Devrak Death" to rujd/"Rujd".
-84. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-85. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-86. Say "Tm Dokorel Death" to rujd/"Rujd".
-87. Say "Tm Velrek Death" to rujd/"Rujd".
-88. Say "Researcher Death" to rujg/"Rujg".
-89. Spawns "A Barrel" (260015).
-90. Loot "Pod of Water" (13044) from "A Barrel".
-91. 3 other loot steps also yield Pod of Water (13044).
-92. Forage "Pod of Water" (13044) in `ruja`.
-93. Forage "Pod of Water" (13044) in `uqua`.
-94. Forage "Pod of Water" (13044) in `yxtta`.
-95. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-96. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-97. 17 other recipes also produce Bottle (16598).
-98. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-99. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
-100. Combine in Forge (17): "Smithing Chisel" (7052), "Small Brick of High Quality Ore" (10468). Hands back "Smithing Chisel" (7052). Produces "Small Piece of High Quality Ore" (22229) x2. Requires Blacksmithing, trivial 27.
-101. 4 other recipes also produce Small Piece of High Quality Ore (22229).
-102. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
-103. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
-104. Common item: Shadow Wolf Pelt (13779). Listed in 10 zones.
-105. Common item: Spell: Gather Shadows (15522). Listed in 13 zones.
-106. Forage "Spider Silk" (13041) in `mistmoore`.
-107. Forage "Spider Silk" (13041) in `mmca`.
-108. Forage "Spider Silk" (13041) in `mmcb`.
-109. Forage "Spider Silk" (13041) in `mmcc`.
-110. Forage "Spider Silk" (13041) in `mmcd`.
-111. Forage "Spider Silk" (13041) in `mmce`.
-112. Forage "Spider Silk" (13041) in `mmcf`.
-113. Forage "Spider Silk" (13041) in `mmcg`.
-114. Forage "Spider Silk" (13041) in `mmch`.
-115. Forage "Spider Silk" (13041) in `mmci`.
-116. Forage "Spider Silk" (13041) in `mmcj`.
-117. Combine in "Vale Sewing Kit" (92882): "Spider Silk" (13041). Produces "Silk Swatch" (16482). Requires Tailoring, trivial 15. The combine does not fail.
-118. Combine in "Vale Sewing Kit" (92882): "Shadow Wolf Pelt" (13779), "Spell: Gather Shadows" (15522), "Silk Swatch" (16482). Produces "Shadow Silk" (16483). Requires Tailoring, trivial 36.
-119. Combine in "Deluxe Sewing Kit" (17966): "Needle of the Void" (12314), "Rare Robe Pattern" (12315), "Song: Jonthan's Whistling Warsong" (15734), "Shadow Silk" (16483). Produces "Robe of the Lost Circle" (12256). Requires Tailoring. The combine does not fail.
-120. dreadlands/"Brother Balatin", hand "Robe of the Lost Circle" (12256) + "Metal Pipe" (12979) + "Metal Pipe" (12980). Gives "Robe of the Whistling Fists" (12970).
-121. No quest step gives Immortals (18195). The dump lists it in skyfire.
-122. erudnext/"Tomekeeper Danl", hand "Immortals" (18195). Gives "Danl's Reference" (1682).
-123. timorous/"Lheao", hand "Danl's Reference" (1682) + "Robe of the Whistling Fists" (12970). Gives "Celestial Fists" (1683).
-124. trakanon/"Kaiaren", hand "Celestial Fists" (1683). Gives "Book of Celestial Fists" (1689).
-125. trakanon/"Kaiaren", hand "Demon Fangs" (1688) + "Book of Celestial Fists" (1689). Gives "Celestial Fists" (10652).
+59. **Broken:** no event trigger found for `misty/misty#timer:Adds`.
+60. Spawns "A Scarecrow" (33168) after `misty/misty#timer:Adds`.
+61. Common item: Desert Tarantula Chitin (20901). Listed in 5 zones.
+62. freeportwest/"Velan Torresk", hand "White Training Sash" (10130) + "Giant Snake Rattle" (13058) + "Deathfist Slashed Belt" (13916) + "Desert Tarantula Chitin" (20901). Gives "Yellow Sash of Order" (10131).
+63. freportw/"Velan Torresk", hand "White Training Sash" (10130) + "Giant Snake Rattle" (13058) + "Deathfist Slashed Belt" (13916) + "Desert Tarantula Chitin" (20901). Gives "Yellow Sash of Order" (10131).
+64. freeportwest/"Reyia Beslin", hand "Cutthroat Insignia Ring" (1903) + "Legionnaire's Bracer" (2299) + "Yellow Sash of Order" (10131) + "Greater Lightstone" (10400). Gives "Orange Sash of Order" (10132).
+65. freportw/"Reyia Beslin", hand "Cutthroat Insignia Ring" (1903) + "Legionnaire's Bracer" (2299) + "Yellow Sash of Order" (10131) + "Greater Lightstone" (10400). Gives "Orange Sash of Order" (10132).
+66. freeportwest/"Reyia Beslin", hand "Orange Sash of Order" (10132) + "Blackened Wand" (13237) + "Blackened Sapphire" (13238). Gives "Red Sash of Order" (10133).
+67. freportw/"Reyia Beslin", hand "Orange Sash of Order" (10132) + "Blackened Wand" (13237) + "Blackened Sapphire" (13238). Gives "Red Sash of Order" (10133).
+68. rathemtn/"Brother Zephyl", hand "Rare Robe Pattern" (12315). Gives "Red Sash of Order" (10133).
+69. rathemtn/"Brother Zephyl", hand "Robe of the Lost Circle" (12256). Gives "Red Sash of Order" (10133).
+70. rathemtn/"Brother Zephyl", hand "Red Sash of Order" (10133) + "The Idol" (12317). Gives "Rare Robe Pattern" (12315).
+71. Common item: Song: Jonthan's Whistling Warsong (15734). Listed in 8 zones.
+72. bazaar/"Caerlyna", hand "Vale Sewing Kit" (92882). Gives "Vale Sewing Kit Token" (56884).
+73. crescent/"Realnyna", hand "Vale Sewing Kit" (92882). Gives "Vale Sewing Kit Token" (56884).
+74. bazaar/"Caerlyna", hand "Vale Sewing Kit Token" (56884). Gives "Vale Sewing Kit" (92882).
+75. crescent/"Realnyna", hand "Vale Sewing Kit Token" (56884). Gives "Vale Sewing Kit" (92882).
+76. Common item: Needle Mold (12019). Listed in 32 zones.
+77. Common item: Thimble Mold (12057). Listed in 32 zones.
+78. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+79. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
+80. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+81. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+82. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
+83. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
+84. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
+85. Say "Tm Devrak Death" to rujd/"Rujd".
+86. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
+87. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
+88. Say "Tm Dokorel Death" to rujd/"Rujd".
+89. Say "Tm Velrek Death" to rujd/"Rujd".
+90. Say "Researcher Death" to rujg/"Rujg".
+91. Spawns "A Barrel" (260015).
+92. Loot "Pod of Water" (13044) from "A Barrel".
+93. 3 other loot steps also yield Pod of Water (13044).
+94. Forage "Pod of Water" (13044) in `ruja`.
+95. Forage "Pod of Water" (13044) in `uqua`.
+96. Forage "Pod of Water" (13044) in `yxtta`.
+97. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+98. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+99. 17 other recipes also produce Bottle (16598).
+100. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+101. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
+102. Combine in Forge (17): "Smithing Chisel" (7052), "Small Brick of High Quality Ore" (10468). Hands back "Smithing Chisel" (7052). Produces "Small Piece of High Quality Ore" (22229) x2. Requires Blacksmithing, trivial 27.
+103. 4 other recipes also produce Small Piece of High Quality Ore (22229).
+104. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
+105. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
+106. Common item: Shadow Wolf Pelt (13779). Listed in 10 zones.
+107. Common item: Spell: Gather Shadows (15522). Listed in 13 zones.
+108. Forage "Spider Silk" (13041) in `mistmoore`.
+109. Forage "Spider Silk" (13041) in `mmca`.
+110. Forage "Spider Silk" (13041) in `mmcb`.
+111. Forage "Spider Silk" (13041) in `mmcc`.
+112. Forage "Spider Silk" (13041) in `mmcd`.
+113. Forage "Spider Silk" (13041) in `mmce`.
+114. Forage "Spider Silk" (13041) in `mmcf`.
+115. Forage "Spider Silk" (13041) in `mmcg`.
+116. Forage "Spider Silk" (13041) in `mmch`.
+117. Forage "Spider Silk" (13041) in `mmci`.
+118. Forage "Spider Silk" (13041) in `mmcj`.
+119. Combine in "Vale Sewing Kit" (92882): "Spider Silk" (13041). Produces "Silk Swatch" (16482). Requires Tailoring, trivial 15. The combine does not fail.
+120. Combine in "Vale Sewing Kit" (92882): "Shadow Wolf Pelt" (13779), "Spell: Gather Shadows" (15522), "Silk Swatch" (16482). Produces "Shadow Silk" (16483). Requires Tailoring, trivial 36.
+121. Combine in "Deluxe Sewing Kit" (17966): "Needle of the Void" (12314), "Rare Robe Pattern" (12315), "Song: Jonthan's Whistling Warsong" (15734), "Shadow Silk" (16483). Produces "Robe of the Lost Circle" (12256). Requires Tailoring. The combine does not fail.
+122. dreadlands/"Brother Balatin", hand "Robe of the Lost Circle" (12256) + "Metal Pipe" (12979) + "Metal Pipe" (12980). Gives "Robe of the Whistling Fists" (12970).
+123. No quest step gives Immortals (18195). The dump lists it in skyfire.
+124. erudnext/"Tomekeeper Danl", hand "Immortals" (18195). Gives "Danl's Reference" (1682).
+125. timorous/"Lheao", hand "Danl's Reference" (1682) + "Robe of the Whistling Fists" (12970). Gives "Celestial Fists" (1683).
+126. trakanon/"Kaiaren", hand "Celestial Fists" (1683). Gives "Book of Celestial Fists" (1689).
+127. trakanon/"Kaiaren", hand "Demon Fangs" (1688) + "Book of Celestial Fists" (1689). Gives "Celestial Fists" (10652).
 
 ### "Danl's Missing Book" (48132)
 
@@ -143,6 +145,13 @@ Each list is the order you obtain that item. Later steps point here instead of r
 3. Ground spawn of "Section of Parchment" (48106) in `charasis`.
 4. Ground spawn of "Section of Parchment" (48107) in `akheva`.
 5. shadowhaven/"Researcher Relreom", hand "Section of Parchment" (48104) + "Section of Parchment" (48105) + "Section of Parchment" (48106) + "Section of Parchment" (48107). Gives "Danl's Missing Book" (48132).
+
+### "Letter to Stremstin" (48128)
+
+1. bazaar/"Eryke Stremstin", hand "Letter to Stremstin" (48128). Sets `monk_epic` to `6`.
+2. Spawns "Disciple of Moon" (120138) in `westwastes` on enter.
+3. Loot "Symbol of Moon" (48111) from "Disciple of Moon".
+4. potranquility/"Vortix", say "Hail". Requires `monk_epic` >=5. Gives "Letter to Stremstin" (48128).
 
 ### "Initiate's Sash of the Celestial Order" (48127)
 
@@ -581,10 +590,7 @@ In script order:
 How the items are reached:
 
 - Letter to Stremstin (48128)
-  - Requires `monk_epic` >=5
-  - Given by potranquility/"Vortix", say "Hail".
-  - Requires `monk_epic` >=5
-  - Given by potranquility/"Vortix", say "Hail".
+  - Prerequisite: "Letter to Stremstin" (48128). See section 0.
 
 ##### 7. vortix — hand 48127
 

@@ -418,7 +418,15 @@ def write_class(name, title, mains, prefixes, ctx):
         """A multi-step questline: a combine, or an NPC who needs item turn-ins."""
         if creating(item_id):
             return True
-        return any(handed(edge) for edge in real_givers(item_id))
+        if any("#timer:" in str(edge.get("from") or "") for edge in loots.get(item_id, [])):
+            return True
+        return any(
+            handed(edge) or any(
+                row.get("rel") == "needs" and (row.get("flag") or row.get("item"))
+                for row in bundle(by_from, by_group, edge.get("from", ""), edge.get("group", ""))
+            )
+            for edge in real_givers(item_id)
+        )
 
     def simple_acquire(item_id: int) -> list[str]:
         """Buy it, say a word, or take a coin hand-in. Not its own questline section."""
@@ -461,7 +469,55 @@ def write_class(name, title, mains, prefixes, ctx):
             found.append(text)
         return found[:6]
 
-    def leaf_bits(item_id: int) -> list[str]:
+    def event_chain(
+        source: str,
+        expand_item=None,
+        visiting: frozenset[str] = frozenset(),
+    ) -> list[str]:
+        """Follow triggers backward from a timer to its initiating hand-in.
+
+        The graph stores `source -> event` triggers. Render prerequisites in
+        execution order; use the caller's item traversal for hand-in inputs.
+        """
+        if source in visiting:
+            return [f"**Broken:** cyclic event trigger at `{source}`."]
+
+        incoming = [
+            edge
+            for rows in by_from.values()
+            for edge in rows
+            if edge.get("rel") == "triggers" and edge.get("to") == source
+        ]
+        if not incoming:
+            return [f"**Broken:** no event trigger found for `{source}`."]
+
+        # More than one incoming trigger denotes alternative ways to reach an
+        # event, not a requirement to perform every trigger.
+        edge = sorted(incoming, key=lambda row: str(row.get("from", "")))[0]
+        parent = str(edge["from"])
+        active = visiting | {source}
+
+        if "#signal:" in parent or "#timer:" in parent:
+            return event_chain(parent, expand_item, active) + [
+                f"Trigger `{source}` from `{parent}`."
+            ]
+
+        who, action, _zone = parse_who(parent)
+        steps: list[str] = []
+        requirements = handed({"from": parent, "group": parent})
+        for needed in requirements:
+            if expand_item is not None:
+                expand_item(needed)
+            else:
+                steps.append(f"Acquire {quoted_item(items, needed)}.")
+
+        description = quoted_who(who)
+        if action:
+            description += f", {quoted_action(items, action)}"
+        steps.append(f"{description}. Triggers `{source}`.")
+        return steps
+
+    def leaf_bits(item_id: int, expand_item=None) -> list[str]:
         bits = []
         for edge in real_givers(item_id):
             who, action, _zone = parse_who(edge.get("group") or edge.get("from"))
@@ -488,7 +544,11 @@ def write_class(name, title, mains, prefixes, ctx):
             corpse = quoted(spawn) if spawn else (f"npc {edge['npc']}" if edge.get("npc") else "")
             npc_id = edge.get("npc")
             parts = []
-            if action.startswith("hand ") and corpse:
+            if "#timer:" in source:
+                bits.extend(event_chain(source, expand_item))
+                bits.append(f"Spawns {corpse} ({npc_id}) after `{source}`.")
+                bits.append(f"Loot {quoted_item(items, item_id)} from {corpse}.")
+            elif action.startswith("hand ") and corpse:
                 for bit in action[5:].split("+"):
                     if bit.isdigit():
                         bits.extend(simple_acquire(int(bit)))
@@ -895,7 +955,7 @@ def write_class(name, title, mains, prefixes, ctx):
         if made_here:
             return
 
-        for bit in leaf_bits(item_id):
+        for bit in leaf_bits(item_id, expand_item=expand_item):
             key = ("leaf", item_id, bit)
             if key not in seen:
                 seen.add(key)
