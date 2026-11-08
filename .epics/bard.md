@@ -6,7 +6,7 @@ Flags with writes: `bardPQ`, `Fatestealer_bard`, `bard15`, `bard20`.
 
 ## 0. Prerequisites
 
-Each list is the order you obtain that item. Later steps point here instead of repeating the chain.
+Shared acquisition steps appear in the first prerequisite chain that needs them. Later sections reference that chain rather than repeating it.
 
 ### "Ragebringer" (11057)
 
@@ -75,126 +75,6 @@ Each list is the order you obtain that item. Later steps point here instead of r
 2. No quest step gives Lump of Raw Alloy (52340). The dump lists it in iceclad.
 3. Combine in "Air-Tight Strongbox" (52339): "Lump of Raw Alloy" (52340). Produces "Strongbox Full of Alloy" (52341). The combine does not fail.
 4. iceclad/"Lookout Larithim", hand "Strongbox Full of Alloy" (52341). Gives "Strongbox Half Full of Velixite" (52342).
-
-### "Singing Short Sword" (20542)
-
-1. qey2hh1/"Konia Swiftfoot", say "Ready". Gives "Torch of Misty" (20532).
-2. misty/"Fajio Knejo", hand "Torch of Misty" (20532). Gives "Torch of Ro" (20533).
-3. southro/"Andad Filla", hand "Torch of Ro" (20533). Gives "Torch of Rathe" (20534).
-4. lakerathe/"Misty Tekcihta", hand "Torch of Rathe" (20534). Gives "Proof of Speed" (20379).
-5. qey2hh1/"Konia Swiftfoot", hand "Proof of Speed" (20379). Gives "Maestro's Symphony Page 24 Top" (20376).
-6. southkarana/"Baenar Swiftsong", say "Doll". Gives "Solusek Mining Company Invoice" (20372).
-7. soldunga/"Marfen Binkdirple", hand "Solusek Mining Company Invoice" (20372). Gives "Mechanical Doll" (20370).
-8. unrest/"Serra", hand "Mechanical Doll" (20370). Gives "Note for Baenar" (20371).
-9. southkarana/"Baenar Swiftsong", hand "Note for Baenar" (20371). Gives "Note to Maligar" (20368).
-10. Hand "Note to Maligar" (20368) to qey2hh1/"Maligar". Spawns "Maligars Enraged Doppleganger" (12173). Loot "Maligar's Head" (20367) from "Maligars Enraged Doppleganger".
-11. southkarana/"Baenar Swiftsong", hand "Maligar's Head" (20367). Gives "Mahlin's Mystical Bongos" (20366).
-12. qey2hh1/"Konia Swiftfoot", hand "Mahlin's Mystical Bongos" (20366). Gives "Maestro's Symphony Page 24 Bottom" (20383).
-13. Loot "Chromodrac Gut" (20527) from "Eldrig the Old" in `skyfire`.
-14. Loot "Red Wurm Gut" (20528) from "Nezekezena" in `burningwood`.
-15. Loot "Onyx Drake Gut" (20529) from "Blackwing".
-16. Loot "Onyx Drake Gut" (20529) from "Blackwing" in `rathemtn`.
-17. southkarana/"Kelkim Menkia", hand "Chromodrac Gut" (20527) + "Red Wurm Gut" (20528) + "Onyx Drake Gut" (20529). Gives "Maestro's Symphony Page 25" (20377).
-18. Loot "Alluring Horn" (20530) from "Quag Maelstrom" in `oceanoftears`.
-19. Loot "Alluring Horn" (20530) from "Quag Maelstrom" in `oot`.
-20. butcher/"Vedico Windwisper", hand "Alluring Horn" (20530). Gives "Note to Forpar Fizfla" (20378).
-21. steamfont/"Forpar Fizfla", hand "Note to Forpar Fizfla" (20378). Gives "Forpar's Note to Himself" (20380).
-22. Loot "Kedge Backbone" (20524) from "Phinigel Autropos" in `kedge`.
-23. Loot "Petrified Werewolf Skull" (20525) from "The Fabled Drolvarg Warlord".
-24. Loot "Petrified Werewolf Skull" (20525) from "a Drolvarg warlord" in `karnor`.
-25. Loot "Amygdalan Tendril" (5520) from "Amygdalan warrior" (NPC 72015) in `fearplane`. Drop cache: 8.14% chance per kill.
-26. steamfont/"Forpar Fizfla", hand "Amygdalan Tendril" (5520) + "Forpar's Note to Himself" (20380) + "Kedge Backbone" (20524) + "Petrified Werewolf Skull" (20525). Gives "Mystical Lute Head" (20535).
-27. Loot "White Dragon Scales" (11602) from "Gorenaire" in `dreadlands`.
-28. Loot "White Dragon Scales" (11602) from "Lady Vox" in `permafrost`.
-29. Loot "White Dragon Scales" (11602) from "The Fabled Gorenaire".
-30. Loot "Red Dragon Scales" (11622) from "Echo of Nortlav" in `hole`.
-31. Loot "Red Dragon Scales" (11622) from "Lord Nagafen" in `soldungb`.
-32. Loot "Red Dragon Scales" (11622) from "Melalafen" in `westwastes`.
-33. Loot "Red Dragon Scales" (11622) from "Talendor" in `skyfire`.
-34. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
-35. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
-36. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
-37. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-38. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-39. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-40. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-41. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-42. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-43. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-44. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
-45. steamfont/"Forpar Fizfla", hand "White Dragon Scales" (11602) + "Red Dragon Scales" (11622) + "Metal Bits" (16905). Gives "Mystical Lute Body" (20536).
-46. Kill sebilis/"An Undead Bard". Spawns "Trakanon" (89181).
-47. Loot "Undead Dragongut Strings" (20526) from "Trakanon".
-48. steamfont/"Forpar Fizfla", hand "Undead Dragongut Strings" (20526) + "Mystical Lute Head" (20535) + "Mystical Lute Body" (20536). Gives "Mystical Lute" (20538).
-49. dreadlands/"Baldric Slezaf", hand "Maestro's Symphony Page 24 Top" (20376) + "Maestro's Symphony Page 25" (20377) + "Maestro's Symphony Page 24 Bottom" (20383) + "Mystical Lute" (20538). Gives "Singing Short Sword" (20542).
-
-### "Wind Dragon Prism" (77618)
-
-1. Loot "Dragorn Blood" (77639) from "A Dragorn Serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.52% chance per kill.
-2. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
-3. Summon "Cloudy Diamond of Air" (29989) by casting "Imbue Air".
-4. Forage "Wind Dragon Crystal" (12783) in `skyfire`.
-5. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Cloudy Diamond of Air" (29989), "Wind Dragon Crystal" (12783). Produces "Wind Dragon Prism" (77618). Requires Jewelry Making. The combine does not fail.
-
-### "Fire Dragon Prism" (77619)
-
-1. Loot "Dragorn Blood" (77639) from "A Dragorn Serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.52% chance per kill.
-2. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
-3. Summon "Red Diamond of Fire" (29986) by casting "Imbue Fire".
-4. Forage "Fire Dragon Crystal" (12487) in `skyfire`.
-5. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Red Diamond of Fire" (29986), "Fire Dragon Crystal" (12487). Produces "Fire Dragon Prism" (77619). Requires Jewelry Making. The combine does not fail.
-
-### "Water Dragon Prism" (77620)
-
-1. Loot "Dragorn Blood" (77639) from "A Dragorn Serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.52% chance per kill.
-2. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
-3. Summon "Aqua Diamond of Water" (29987) by casting "Imbue Water".
-4. Forage "Ice Dragon Crystal" (12781) in `skyfire`.
-5. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Aqua Diamond of Water" (29987), "Ice Dragon Crystal" (12781). Produces "Water Dragon Prism" (77620). Requires Jewelry Making. The combine does not fail.
-
-### "Earth Dragon Prism" (77621)
-
-1. Loot "Dragorn Blood" (77639) from "A Dragorn Serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.52% chance per kill.
-2. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
-3. Summon "Brown Diamond of Earth" (29988) by casting "Imbue Earth".
-4. Forage "Earth Dragon Crystal" (12782) in `skyfire`.
-5. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Brown Diamond of Earth" (29988), "Earth Dragon Crystal" (12782). Produces "Earth Dragon Prism" (77621). Requires Jewelry Making. The combine does not fail.
-
-### "Swamp Dragon Prism" (77622)
-
-1. Loot "Dragorn Blood" (77639) from "A Dragorn Serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.52% chance per kill.
-2. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
-3. Summon "Green Diamond of Disease" (30118) by casting "Imbue Disease".
-4. Spawns "A Swamp Dragon" (83249) in `swampofnohope` on event_hp.
-5. Loot "Swamp Dragon Crystal" (77614) from "A Swamp Dragon".
-6. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Green Diamond of Disease" (30118), "Swamp Dragon Crystal" (77614). Produces "Swamp Dragon Prism" (77622). Requires Jewelry Making. The combine does not fail.
-
-### "Plains Dragon Prism" (77623)
-
-1. Loot "Dragorn Blood" (77639) from "A Dragorn Serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.52% chance per kill.
-2. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
-3. Summon "Gray Diamond of Storms" (29991) by casting "Imbue Storm".
-4. Spawns "A Plains Dragon" (13130) in `northkarana` on event_hp.
-5. Loot "Plains Dragon Crystal" (77615) from "A Plains Dragon".
-6. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Gray Diamond of Storms" (29991), "Plains Dragon Crystal" (77615). Produces "Plains Dragon Prism" (77623). Requires Jewelry Making. The combine does not fail.
-
-### "Forest Dragon Prism" (77624)
-
-1. Loot "Dragorn Blood" (77639) from "A Dragorn Serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.52% chance per kill.
-2. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
-3. Summon "Yellow Diamond of Valor" (30489) by casting "Imbue Valor".
-4. Spawns "A Forest Dragon" (181224) in `jaggedpine` on event_hp.
-5. Loot "Forest Dragon Crystal" (77616) from "A Forest Dragon".
-6. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Yellow Diamond of Valor" (30489), "Forest Dragon Crystal" (77616). Produces "Forest Dragon Prism" (77624). Requires Jewelry Making. The combine does not fail.
-
-### "Mountain Dragon Prism" (77625)
-
-1. Loot "Dragorn Blood" (77639) from "A Dragorn Serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.52% chance per kill.
-2. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
-3. Summon "White Diamond of Justice" (29494) by casting "Imbue Justice".
-4. Spawns "A Mountain Dragon" (100227) in `stonebrunt` on event_hp.
-5. Loot "Mountain Dragon Crystal" (77617) from "A Mountain Dragon".
-6. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "White Diamond of Justice" (29494), "Mountain Dragon Crystal" (77617). Produces "Mountain Dragon Prism" (77625). Requires Jewelry Making. The combine does not fail.
 
 ### "Draconic Prism" (77628)
 
@@ -372,28 +252,7 @@ Values written: 1, 2, 3, 4.
 
 ##### 1. stanos herkanor — say hail
 
-Zone: `highpass`.
-
-> Ah, the pouch. This is the first step. The Circle has to be upset having this taken right out from under them. That speaks well of the person who did the tak...
-
-Sets `Fatestealer` to `1`.
-
-- Needs Ragebringer (11057).
-In script order:
-
-1. Sets `Fatestealer` to `1`.
-
-
-How the items are reached:
-
-- Ragebringer (11057)
-  - Prerequisite: "Ragebringer" (11057). See section 0.
-
-Alternative or repeat transition to `Fatestealer` = `1` (not an additional required stage).
-
-##### 1. stanos herkanor — say hail
-
-Zone: `highpasshold`.
+Zones: `highpass`, `highpasshold`.
 
 > Ah, the pouch. This is the first step. The Circle has to be upset having this taken right out from under them. That speaks well of the person who did the tak...
 
@@ -466,8 +325,6 @@ How the items are reached:
   - Sets `Fatestealer` to `2`.
   - Turn in Soulstone of Lanys (52337).
   - Gives Fatestealer (52347).
-- `nedaria` smith dandi, say hail needs `Fatestealer_page` ==1.
-  - Sets `Fatestealer_culth` to `1`.
 
 Subquest `Fatestealer_forge`:
 
@@ -501,8 +358,6 @@ This step also depends on `Fatestealer_bard`, shown above.
   - Sets `Fatestealer` to `2`.
   - Turn in Soulstone of Lanys (52337).
   - Gives Fatestealer (52347).
-- `nedaria` smith dandi, say hail needs `Fatestealer_forge` ==1.
-  - Sets `Fatestealer_culth` to `1`.
 - `steamfont` findleznax grimblewimbus, say help needs `Fatestealer_forge` ==1.
   - Spawns a decomposing body (448203).
 - `steamfont` player, on loot needs `Fatestealer_forge` ==1.
@@ -556,8 +411,6 @@ Zone: `nedaria`.
 
 Sets `Fatestealer` to `3`.
 
-- Needs `Fatestealer` ==1.
-- Needs `Fatestealer_bard` ==1.
 - Needs Fatestealer (52347).
 In script order:
 
@@ -568,8 +421,6 @@ How the items are reached:
 
 - Fatestealer (52347)
   - Prerequisite: "Fatestealer" (52347). See section 0.
-
-This step also depends on `Fatestealer_bard`, shown above.
 
 ##### 4. lirprin, head of affairs — hand 21346+47100+52342+52347
 
@@ -725,6 +576,7 @@ How the items are reached:
   - Gives Test of Smithing (52331).
 - `mirb` durgin skell, say lirprin sent me needs `Fatestealer` ==3.
   - Sets `rogue_epic_durgin` to `1`.
+- `mirb` durgin skell, say lirprin sent me needs `Fatestealer` ==3.
   - Sets `rogue_chest_mira` to `1`.
   - Spawns a chest (893).
   - Loots Glyphed Helm of Conflict (71073).
@@ -775,8 +627,6 @@ How the items are reached:
   - Loots Adorned Earring of Hope (71118).
   - Loots Polished Earring of Animosity (71119).
   - Loots Ring of Black Flame (71120).
-- `nedaria` smith dandi, say hail needs `Fatestealer` ==3.
-  - Sets `Fatestealer_culth` to `1`.
 - `oasis` a wayward kiraikuei, hand 9599 needs `Fatestealer` ==1.
   - Turn in Pulsating Blue Metal Sphere (9599).
   - Gives Pulsating Blue Metal Sphere (9599).
@@ -1043,8 +893,6 @@ This step also depends on `Fatestealer_lyt`, shown above.
 
 ### Steps on `Fatestealer_bard` that do not change it
 
-- `nedaria` lirprin, head of affairs, say hail needs `Fatestealer_bard` ==1.
-  - Sets `Fatestealer` to `3`.
 - `nedaria` lirprin, head of affairs, hand 52337 needs `Fatestealer_bard` ==1.
   - Sets `Fatestealer` to `2`.
   - Turn in Soulstone of Lanys (52337).
@@ -1065,17 +913,11 @@ Zone: `wakening`.
 
 Sets `bard15` to `1`.
 
-- Needs Singing Short Sword (20542).
 - Needs `bard15` unset.
 In script order:
 
 1. Sets `bard15` to `1`.
 
-
-How the items are reached:
-
-- Singing Short Sword (20542)
-  - Prerequisite: "Singing Short Sword" (20542). See section 0.
 
 Alternative or repeat transition to `bard15` = `1` (not an additional required stage).
 
@@ -1183,38 +1025,11 @@ Zone: `soltemple`.
 
 Sets `bard15` to `5`.
 
-- Needs Wind Dragon Prism (77618).
-- Needs Fire Dragon Prism (77619).
-- Needs Water Dragon Prism (77620).
-- Needs Earth Dragon Prism (77621).
-- Needs Swamp Dragon Prism (77622).
-- Needs Plains Dragon Prism (77623).
-- Needs Forest Dragon Prism (77624).
-- Needs Mountain Dragon Prism (77625).
 - Needs `bard15` ==4.
 In script order:
 
 1. Sets `bard15` to `5`.
 
-
-How the items are reached:
-
-- Wind Dragon Prism (77618)
-  - Prerequisite: "Wind Dragon Prism" (77618). See section 0.
-- Fire Dragon Prism (77619)
-  - Prerequisite: "Fire Dragon Prism" (77619). See section 0.
-- Water Dragon Prism (77620)
-  - Prerequisite: "Water Dragon Prism" (77620). See section 0.
-- Earth Dragon Prism (77621)
-  - Prerequisite: "Earth Dragon Prism" (77621). See section 0.
-- Swamp Dragon Prism (77622)
-  - Prerequisite: "Swamp Dragon Prism" (77622). See section 0.
-- Plains Dragon Prism (77623)
-  - Prerequisite: "Plains Dragon Prism" (77623). See section 0.
-- Forest Dragon Prism (77624)
-  - Prerequisite: "Forest Dragon Prism" (77624). See section 0.
-- Mountain Dragon Prism (77625)
-  - Prerequisite: "Mountain Dragon Prism" (77625). See section 0.
 
 ### 6. global player — combine recipe 19882
 
@@ -1240,13 +1055,10 @@ Combine:
 
 - `kithicor` player, on enter needs `bard15` ==5.
   - Spawns a cloaked figure (20290).
-  - Spawns Blackened Treant (20299).
+- `necropolis` player, on enter needs `bard15` set.
+  - Spawns he will spawn the rest (123173).
 - `necropolis` player, on enter needs `bard15` ==2.
   - Spawns Hsagra`s Shade (123172).
-  - Spawns he will spawn the rest (123173).
-- `necropolis` player, on enter needs `bard15` set.
-  - Spawns Hsagra`s Shade (123172).
-  - Spawns he will spawn the rest (123173).
 - `necropolis` player, on loot needs `bard15` set.
   - Sets `bard15_dracchest` to `1`.
   - Spawns a chest (283157).
@@ -1323,31 +1135,8 @@ How the items are reached:
   - Spawns Oshiruk (303125).
   - Loots Dragorn Essence (77644).
 - `causeway` player, on loot needs `bard20` ==1.
-  - Sets `mage_epic_causeway` to `1`.
-  - Spawns a chest (Epic 1.5) (283157).
-  - Sets `nec_epic_causeway` to `1`.
   - Sets `bard20_chest` to `1`.
   - Spawns a chest (epic 2.0) (893).
-  - Sets `warr_chest_causeway` to `1`.
-  - Sets `ber_chest_causeway` to `1`.
-  - Sets `ench_chest_causeway` to `1`.
-  - Loots Mud Covered Shoulder Pads (71006).
-  - Loots Dented Steel Face Guard (71013).
-  - Loots Hollowed Bone Plated Mask (71014).
-  - Loots Ragged Ruby Veil (71015).
-  - Loots Rugged Iron Battle Mask (71016).
-  - Loots Slender White Silk Cape (71018).
-  - Loots Gleaming Crystal Band (71047).
-  - Loots Shattered Bone Stud (71048).
-  - Loots Aged Hoop of Battle (71049).
-  - Loots Muramite Plate Gloves of War (71055).
-  - Loots Muramite Chain Armguards of Battle (71059).
-  - Loots Muramite Chain Boots of Battle (71061).
-  - Loots Muramite Leather Band of Conflict (71063).
-  - Loots Muramite Leather Sleeves of Conflict (71064).
-  - Loots Muramite Leather Wraps of Conflict (71065).
-  - Loots Muramite Silk Sleeves of Contention (71069).
-  - Loots Muramite Silk Gloves of Contention (71070).
   - Loots Glyphed Helm of Conflict (71073).
   - Loots Glyphed Vambraces of Conflict (71074).
   - Loots Glyphed Gauntlets of Conflict (71075).

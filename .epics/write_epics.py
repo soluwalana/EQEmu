@@ -8,8 +8,10 @@ from collections import defaultdict
 from pathlib import Path
 
 from eqclient4.data.drops import ensure_drops
+from eqclient4.data.recipes import ensure_recipes
 
 DROP_BOOK = ensure_drops()
+RECIPE_BOOK = ensure_recipes()
 
 GRAPH = Path.home() / ".eqclient" / "quest_graph.jsonl"
 OUT = Path("/Users/samo/work/EQEmu/.epics")
@@ -365,7 +367,7 @@ def parse_who(source: str) -> tuple[str, str, str]:
         zone = source.split("/", 1)[0]
         return source, "", zone
     who, act = source.split("#", 1)
-    act = act.split("#holds:")[0]
+    act = act.split("#holds:")[0].split("#branch:")[0]
     if act.startswith("hand:"):
         act = "hand " + act[5:]
     elif act.startswith("timer:"):
@@ -382,10 +384,20 @@ def parse_who(source: str) -> tuple[str, str, str]:
 def bundle(by_from, by_group, source: str, group: str) -> list[dict]:
     rows = []
     seen = set()
-    for key in (source, group):
+    scoped = bool(group and group != source)
+    for key in dict.fromkeys((source, group)):
         if not key:
             continue
-        for edge in by_from.get(key, []) + by_group.get(key, []):
+        # Source-level lookup must not import the requirements of another
+        # branch in the same callback. The selected group is authoritative.
+        candidates = by_from.get(key, []) + by_group.get(key, [])
+        for edge in candidates:
+            if scoped and edge.get("group") not in (group, None, ""):
+                continue
+            if scoped and key == source and edge.get("group") in (None, ""):
+                # Ungrouped legacy edges may describe another sibling too;
+                # only the selected branch is usable for its prerequisites.
+                continue
             ident = (
                 edge.get("rel"),
                 edge.get("from"),
@@ -539,6 +551,7 @@ def write_class(name, title, mains, prefixes, ctx):
         return found
 
     prereq_ids: list[int] = []
+    first_seen_item: dict[int, int] = {}
 
     def recipe_inputs(recipe_id: int) -> set[int]:
         info = recipe.get(recipe_id) or {}
@@ -562,9 +575,20 @@ def write_class(name, title, mains, prefixes, ctx):
                     linked.append(rid)
                     break
         if linked:
-            return linked
+            return linked[:1]
+        # Generic PEQ recipes may produce one item through dozens of unrelated
+        # combines. RecipeBook.for_item chooses one enabled, non-refunding,
+        # low-component recipe, avoiding sprawling branches (e.g. Bottle).
+        preferred = RECIPE_BOOK.for_item(int(item_id))
+        # If an item is available in many zones, generic brewing/crafting
+        # variants are not evidence that an epic must execute one of them.
+        widely_available = len((items.get(int(item_id)) or {}).get("zones") or []) >= 4
+        if len(made) > 2 and widely_available:
+            return []
+        if preferred is not None and preferred.id in made:
+            return [preferred.id]
         if len(made) <= 2:
-            return made
+            return made[:1]
         return []
 
     def real_givers(item_id: int) -> list[dict]:
@@ -904,23 +928,11 @@ def write_class(name, title, mains, prefixes, ctx):
             if loot_rows and line.startswith("- Loot "):
                 continue
             bits.append(line[2:] if line.startswith("- ") else line)
-        made = creating(item_id)
-        if not made:
-            made = [
-                rid
-                for rid in produces.get(item_id, [])
-                if item_id not in recipe_inputs(rid)
-            ][:2]
-        for rid in made[:2]:
-            bits.append(recipe_sentence(rid))
-        if len(produces.get(item_id, [])) > 2 and made:
-            extra = len(
-                [rid for rid in produces[item_id] if item_id not in recipe_inputs(rid)]
-            ) - len(made[:2])
-            if extra > 0:
-                bits.append(
-                    f"{extra} other recipes also produce {item_name(items, item_id)}."
-                )
+        # The selected recipe is already emitted by forward(); don't expand
+        # alternate unrelated generic recipes as mandatory sources in a leaf.
+        if expand_item is None:
+            for rid in creating(item_id):
+                bits.append(recipe_sentence(rid))
         if bits:
             return bits
         # Duplicate epic reward ids (Spear of Fate 10651 vs 36223). Prefer the id a script gives.
@@ -1051,10 +1063,22 @@ def write_class(name, title, mains, prefixes, ctx):
         goal: int,
         flag_trail: frozenset[str] = frozenset(),
     ) -> None:
-        if item_id in trail or item_id in seen:
+        if item_id in trail:
+            return
+        if item_id in seen:
+            earlier = first_seen_item.get(item_id)
+            if earlier and earlier != goal:
+                ref_key = ("already-documented", goal, item_id)
+                if ref_key not in seen:
+                    seen.add(ref_key)
+                    steps.append(
+                        f"Acquisition of {quoted_item(items, item_id)} is documented "
+                        f"under {quoted_item(items, earlier)}; obtain another copy if needed."
+                    )
             return
 
         seen.add(item_id)
+        first_seen_item[item_id] = goal
         trail = trail | {item_id}
 
         def dependencies(edge: dict) -> list[dict]:
@@ -1376,14 +1400,15 @@ def write_class(name, title, mains, prefixes, ctx):
         block = [
             "## 0. Prerequisites",
             "",
-            "Each list is the order you obtain that item. Later steps point here instead of repeating the chain.",
+            "Shared acquisition steps appear in the first prerequisite chain that needs them. Later sections reference that chain rather than repeating it.",
             "",
         ]
+        shared_seen: set = set()
         for item_id in list(prereq_ids):
             block.append(f"### {quoted_item(items, item_id)}")
             block.append("")
             steps: list[str] = []
-            forward(item_id, set(), steps, set(), item_id)
+            forward(item_id, set(), steps, shared_seen, item_id)
             name = quoted_item(items, item_id)
             kept: list[str] = []
             for text in steps:

@@ -6,102 +6,26 @@ Flags with writes: `cleric_epic`, `cleric15pre`, `cleric20`.
 
 ## 0. Prerequisites
 
-Each list is the order you obtain that item. Later steps point here instead of repeating the chain.
-
-### "Harmony of the Soul" (9955)
-
-1. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-2. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-3. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-4. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-5. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-6. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-7. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-8. Kill wakening/"Dark Disciple Master". Spawns "A Gilded Chest" (119179).
-9. Loot "Aegis of Chaotic Worship" (9954) from "A Gilded Chest".
-10. wallofslaughter/"A Quivering Egg", on event spawn.
-11. Starts timer `hatch`.
-12. Spawns "A Murk Hatchling" (300084) after `wallofslaughter/a quivering egg#timer:hatch`.
-13. Loot "Murkglider Plasma" (13639) from "A Murk Hatchling".
-14. Loot "Bazu Plasma" (13658) from "Bazu Bonesmasher" (NPC 300000) in `wallofslaughter`. Drop cache: 43.09% chance per kill.
-15. Loot "Pyrilen Plasma" (13667) from "A Dragorn Assassin" in `wallofslaughter`.
-16. Combine in Brew Barrel (19): "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing, trivial 100.
-17. Combine in Forge (17): "Water Flask" (13006), "Aegis of Chaotic Worship" (9954), "Soul Temper" (14047). Produces "Harmony of the Soul" (9955). Requires Blacksmithing. The combine does not fail.
-
-### "Water Sprinkler of Nem Ankh" (5532)
-
-1. Loot "Singed Scroll" (18170) from "Overking Bathezid" in `chardok`.
-2. Loot "Lord Gimblox's Signet Ring" (28018) from "Lord Gimblox" in `soldunga`.
-3. timorous/"Natasha Whitewater", hand "Lord Gimblox's Signet Ring" (28018). Gives "Ornate Sea Shell" (28056).
-4. Hand "Ornate Sea Shell" (28056) to burningwood/"Naxot Deepwater". Spawns "Ixiblat Fer, kill him, loot scepter of I.F." (87151). Loot "Sceptre of Ixiblat Fer" (28017) from "Ixiblat Fer, kill him, loot scepter of I.F.".
-5. timorous/"Omat Vastsea", hand "Singed Scroll" (18170) + "Sceptre of Ixiblat Fer" (28017). Gives "Orb of Clear Water" (28048).
-6. Spawns "A Spirit Of Flame" (51145) in `lakerathe` on event_signal.
-7. Loot "Damaged Goblin Crown" (28046) from "A Spirit Of Flame".
-8. lakerathe/"Natasha Whitewater", hand "Damaged Goblin Crown" (28046). Gives "Ornate Sea Shell" (28047).
-9. timorous/"Omat Vastsea", hand "Ornate Sea Shell" (28047). Gives "Coral Statue of Tarew" (28051).
-10. Hand "Coral Statue of Tarew" (28051) to soltemple/"A Seeker". Spawns "A Plasmatic Priest" (80042). Loot "Blood Soaked Plasmatic Priest Robe" (1299) from "A Plasmatic Priest".
-11. timorous/"Omat Vastsea", hand "Blood Soaked Plasmatic Priest Robe" (1299). Gives "Orb of Frozen Water" (28049).
-12. Kill skyfire/"Zordak Ragefire". Spawns "Zordakalicus Ragefire" (91090).
-13. Loot "Impure Heart of Zordak Ragefire" (17122) from "Zordakalicus Ragefire".
-14. burningwood/"Naxot Deepwater", hand "Ornate Sea Shell" (28056). Gives "Message to Natasha" (28052).
-15. timorous/"Natasha Whitewater", hand "Message to Natasha" (28052). Gives "Shimmering Pearl" (28054).
-16. soldungb/"Zordak Ragefire", hand "Shimmering Pearl" (28054). Gives "Swirling Pearl" (28059).
-17. skyfire/"Warder Cecilia", say "Hail". Gives "Zordak's Box of Bindings" (17175).
-18. Loot "Pearlescent Fragment" (24995) from "A Skyfire Drake" (NPC 91038) in `skyfire`. Drop cache: 1.12% chance per kill.
-19. Combine in "Zordak's Box of Bindings" (17175): "Pearlescent Fragment" (24995). Produces "Assembled Pearlescent Shard" (24996). The combine does not fail.
-20. skyfire/"Warder Cecilia", hand "Assembled Pearlescent Shard" (24996). Gives "Pearlescent Seal" (24997).
-21. Combine in "Impure Heart of Zordak Ragefire" (17122): "Pearlescent Seal" (24997), "Swirling Pearl" (28059). Produces "Zordak Ragefire's Heart" (28019). The combine does not fail.
-22. timorous/"Omat Vastsea", hand "Zordak Ragefire's Heart" (28019). Gives "Orb of Vapor" (28050).
-23. timorous/"Jhassad Oceanson", hand "Orb of Clear Water" (28048) + "Orb of Frozen Water" (28049) + "Orb of Vapor" (28050). Gives "Orb of the Triumvirate" (28023).
-24. timorous/"Avatar Of Water", hand "Orb of the Triumvirate" (28023). Gives "Water Sprinkler of Nem Ankh" (5532).
-
-### "Ethereal Disciple's Journal" (56013)
-
-1. **Broken:** no event trigger found for `chambersa/mpg fear#timer:minutes`.
-2. Spawns "Shell of the Master" (304013) after `chambersa/mpg fear#timer:minutes`.
-3. Loot "Journal of the Prime Disciple" (56016) from "Shell of the Master".
-4. 12 alternative loot source(s) also yield Journal of the Prime Disciple (56016).
-5. Loot "Torn Journal Page" (56012) from "A Lightning Warrior Staticfist" (NPC 316007) in `provinggrounds`. Drop cache: 5.99% chance per kill.
-6. Loot "Ripped Journal Page" (56011) from "Girplan Scavenger" in `provinggrounds`.
-7. Combine in "Journal of the Prime Disciple" (56016): "Torn Journal Page" (56012), "Ripped Journal Page" (56011). Produces "Ethereal Disciple's Journal" (56013). The combine does not fail.
+Shared acquisition steps appear in the first prerequisite chain that needs them. Later sections reference that chain rather than repeating it.
 
 ### "Assembled Map" (56015)
 
-1. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-2. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-3. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-4. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-5. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-6. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-7. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-8. Kill wakening/"Dark Disciple Master". Spawns "A Gilded Chest" (119179).
-9. Loot "Aegis of Chaotic Worship" (9954) from "A Gilded Chest".
-10. wallofslaughter/"A Quivering Egg", on event spawn.
-11. Starts timer `hatch`.
-12. Spawns "A Murk Hatchling" (300084) after `wallofslaughter/a quivering egg#timer:hatch`.
-13. Loot "Murkglider Plasma" (13639) from "A Murk Hatchling".
-14. Loot "Bazu Plasma" (13658) from "Bazu Bonesmasher" (NPC 300000) in `wallofslaughter`. Drop cache: 43.09% chance per kill.
-15. Loot "Pyrilen Plasma" (13667) from "A Dragorn Assassin" in `wallofslaughter`.
-16. Combine in Brew Barrel (19): "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing, trivial 100.
-17. Combine in Forge (17): "Water Flask" (13006), "Aegis of Chaotic Worship" (9954), "Soul Temper" (14047). Produces "Harmony of the Soul" (9955). Requires Blacksmithing. The combine does not fail.
-18. global/"Global Player", combine recipe 19460. Sets `cleric_epic` to `7`.
-19. dranik/"Natvil", say "Hail". Sets `cleric20` to `1`.
-20. timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
-21. timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
-22. Hand "Talisman of the Plasmatic Priests" (56010) to lavastorm/"Laura Rako". Spawns "High Priestess Shima" (27128). Loot "Head of High Priestess Shima" (5768) from "High Priestess Shima".
-23. timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
-24. Hand "Talisman of the Plasmatic Priests" (56010) to greatdivide/"Gavon Morant". Spawns "High Priest Maltan" (118211). Loot "Head of High Priest Maltan" (6505) from "High Priest Maltan".
-25. timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
-26. Hand "Talisman of the Plasmatic Priests" (56010) to scarlet/"Jimmic Adle". Spawns "High Priest Valon" (175308). Loot "Head of High Priest Valon" (6506) from "High Priest Valon".
-27. timorous/"Omat Vastsea", hand "Head of High Priestess Shima" (5768) + "Head of High Priest Maltan" (6505) + "Head of High Priest Valon" (6506) + "Talisman of the Plasmatic Priests" (56010). Sets `cleric15pre` to `1`.
-28. nedaria/"Tavon Vastsea", say "Hail". Sets `cleric_epic` to `1`.
-29. Loot "Encrypted Note" (7135) from "A Noc Bloodluster" (NPC 283111) in `barindu`. Drop cache: 1.58% chance per kill.
-30. abysmal/"Shav The Cryptologist", hand "Encrypted Note" (7135). Sets `cleric_epic` to `2`.
-31. Loot "Ripped Quarter of a Map" (9476) from "A Ra'Tuk Bonebreaker" (NPC 284032) in `ferubi`. Drop cache: 5.6% chance per kill.
-32. Loot "Shredded Quarter of a Map" (9447) from "A Kyv Eyecollector" (NPC 284052) in `ferubi`. Drop cache: 5.09% chance per kill.
-33. Loot "Tattered Quarter of a Map" (9477) from "A Mastruq Warfiend" (NPC 284003) in `ferubi`. Drop cache: 5.33% chance per kill.
-34. Loot "Torn Quarter of a Map" (8778) from "An Aneuk Bone Binder" (NPC 284035) in `ferubi`. Drop cache: 5.18% chance per kill.
-35. abysmal/"Shav The Cryptologist", hand "Torn Quarter of a Map" (8778) + "Shredded Quarter of a Map" (9447) + "Ripped Quarter of a Map" (9476) + "Tattered Quarter of a Map" (9477). Requires `cleric_epic` set. Requires `cleric_epic` ==2. Gives "Assembled Map" (56015).
+1. timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
+2. timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
+3. Hand "Talisman of the Plasmatic Priests" (56010) to lavastorm/"Laura Rako". Spawns "High Priestess Shima" (27128). Loot "Head of High Priestess Shima" (5768) from "High Priestess Shima".
+4. timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
+5. Hand "Talisman of the Plasmatic Priests" (56010) to greatdivide/"Gavon Morant". Spawns "High Priest Maltan" (118211). Loot "Head of High Priest Maltan" (6505) from "High Priest Maltan".
+6. timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
+7. Hand "Talisman of the Plasmatic Priests" (56010) to scarlet/"Jimmic Adle". Spawns "High Priest Valon" (175308). Loot "Head of High Priest Valon" (6506) from "High Priest Valon".
+8. timorous/"Omat Vastsea", hand "Head of High Priestess Shima" (5768) + "Head of High Priest Maltan" (6505) + "Head of High Priest Valon" (6506) + "Talisman of the Plasmatic Priests" (56010). Sets `cleric15pre` to `1`.
+9. nedaria/"Tavon Vastsea", say "Hail". Sets `cleric_epic` to `1`.
+10. Loot "Encrypted Note" (7135) from "A Noc Bloodluster" (NPC 283111) in `barindu`. Drop cache: 1.58% chance per kill.
+11. abysmal/"Shav The Cryptologist", hand "Encrypted Note" (7135). Sets `cleric_epic` to `2`.
+12. Loot "Ripped Quarter of a Map" (9476) from "A Ra'Tuk Bonebreaker" (NPC 284032) in `ferubi`. Drop cache: 5.6% chance per kill.
+13. Loot "Shredded Quarter of a Map" (9447) from "A Kyv Eyecollector" (NPC 284052) in `ferubi`. Drop cache: 5.09% chance per kill.
+14. Loot "Tattered Quarter of a Map" (9477) from "A Mastruq Warfiend" (NPC 284003) in `ferubi`. Drop cache: 5.33% chance per kill.
+15. Loot "Torn Quarter of a Map" (8778) from "An Aneuk Bone Binder" (NPC 284035) in `ferubi`. Drop cache: 5.18% chance per kill.
+16. abysmal/"Shav The Cryptologist", hand "Torn Quarter of a Map" (8778) + "Shredded Quarter of a Map" (9447) + "Ripped Quarter of a Map" (9476) + "Tattered Quarter of a Map" (9477). Requires `cleric_epic` set. Requires `cleric_epic` ==2. Gives "Assembled Map" (56015).
 
 ### "Dark Disciples Notice of Service" (9591)
 
@@ -129,6 +53,16 @@ Each list is the order you obtain that item. Later steps point here instead of r
 6. Loot "Pyrilen Plasma" (13667) from "A Dragorn Assassin" in `wallofslaughter`.
 7. Combine in Brew Barrel (19): "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing, trivial 100.
 
+### "Ethereal Disciple's Journal" (56013)
+
+1. **Broken:** no event trigger found for `chambersa/mpg fear#timer:minutes`.
+2. Spawns "Shell of the Master" (304013) after `chambersa/mpg fear#timer:minutes`.
+3. Loot "Journal of the Prime Disciple" (56016) from "Shell of the Master".
+4. 12 alternative loot source(s) also yield Journal of the Prime Disciple (56016).
+5. Loot "Torn Journal Page" (56012) from "A Lightning Warrior Staticfist" (NPC 316007) in `provinggrounds`. Drop cache: 5.99% chance per kill.
+6. Loot "Ripped Journal Page" (56011) from "Girplan Scavenger" in `provinggrounds`.
+7. Combine in "Journal of the Prime Disciple" (56016): "Torn Journal Page" (56012), "Ripped Journal Page" (56011). Produces "Ethereal Disciple's Journal" (56013). The combine does not fail.
+
 ## `cleric_epic`
 
 Values written: 1, 2, 3, 4, 5, 7.
@@ -141,81 +75,12 @@ Zone: `nedaria`.
 
 Sets `cleric_epic` to `1`.
 
-- Needs `cleric20` set.
-- Needs Harmony of the Soul (9955).
-- Needs `cleric20` ==1.
 - Needs `cleric_epic` unset.
 - Needs `cleric15pre` ==1.
-- One of: `cleric15pre` ==1; Water Sprinkler of Nem Ankh (5532).
 In script order:
 
-1. Sets `cleric20` to `2`.
-2. Sets `cleric_epic` to `1`.
+1. Sets `cleric_epic` to `1`.
 
-
-How the items are reached:
-
-- Harmony of the Soul (9955)
-  - Prerequisite: "Harmony of the Soul" (9955). See section 0.
-- Water Sprinkler of Nem Ankh (5532)
-  - Prerequisite: "Water Sprinkler of Nem Ankh" (5532). See section 0.
-
-Subquest `cleric20`:
-
-#### `cleric20`
-
-Values written: 1, 2, 3.
-
-##### 1. natvil — say hail
-
-Zone: `dranik`.
-
-> examines your craftsmanship.
-
-Sets `cleric20` to `1`.
-
-- Needs `cleric_epic` set.
-- Needs `cleric_epic` >=5.
-- Needs Harmony of the Soul (9955).
-- Needs `cleric20` unset.
-In script order:
-
-1. Sets `cleric20` to `1`.
-
-
-How the items are reached:
-
-- Harmony of the Soul (9955)
-  - Prerequisite: "Harmony of the Soul" (9955). See section 0.
-
-This step also depends on `cleric_epic`, shown above.
-
-##### 2. tavon vastsea — say hail
-
-Zone: `nedaria`.
-
-> I hear you were able to put that shield to some use. That is good to hear. I was able to find some news on the leader, someone matching his description has b...
-
-Sets `cleric20` to `2`.
-
-- Needs `cleric20` set.
-- Needs Harmony of the Soul (9955).
-- Needs `cleric20` ==1.
-- Needs `cleric_epic` unset.
-- Needs `cleric15pre` ==1.
-- One of: `cleric15pre` ==1; Water Sprinkler of Nem Ankh (5532).
-In script order:
-
-1. Sets `cleric20` to `2`.
-2. Sets `cleric_epic` to `1`.
-
-
-How the items are reached:
-
-- Harmony of the Soul (9955)
-  - Prerequisite: "Harmony of the Soul" (9955). See section 0.
-- Water Sprinkler of Nem Ankh (5532)
-  - Prerequisite: "Water Sprinkler of Nem Ankh" (5532). See section 0.
 
 Subquest `cleric15pre`:
 
@@ -223,7 +88,7 @@ Subquest `cleric15pre`:
 
 Values written: 1.
 
-###### 1. omat vastsea — hand 5768+6505+6506+56010
+##### 1. omat vastsea — hand 5768+6505+6506+56010
 
 Zone: `timorous`.
 
@@ -252,153 +117,10 @@ How the items are reached:
 - Talisman of the Plasmatic Priests (56010)
   - Given by timorous/"Omat Vastsea", say "Destruction".
 
-###### Steps on `cleric15pre` that do not change it
+##### Steps on `cleric15pre` that do not change it
 
 - `nedaria` tavon vastsea, say hail needs `cleric15pre` ==1.
-  - Sets `cleric20` to `2`.
   - Sets `cleric_epic` to `1`.
-- `nedaria` tavon vastsea, say hail needs `cleric15pre` ==1.
-  - Sets `cleric20` to `2`.
-  - Sets `cleric_epic` to `1`.
-
-This step also depends on `cleric_epic`, shown above.
-
-##### 3. omat vastsea — hand 56013
-
-Zone: `timorous`.
-
-Sets `cleric20` to `3`.
-
-- Needs `cleric20` >=2.
-- Turn in x1: Ethereal Disciple's Journal (56013).
-In script order:
-
-1. Sets `cleric20` to `3`.
-2. Spawns Gefaari Drokaz (96368).
-   - Loots Soulshard of Zordak (56014).
-3. Gives Ethereal Disciple's Journal (56013).
-
-
-How the items are reached:
-
-- Ethereal Disciple's Journal (56013)
-  - Prerequisite: "Ethereal Disciple's Journal" (56013). See section 0.
-
-##### Steps on `cleric20` that do not change it
-
-- `nedaria` tavon vastsea, say hail needs `cleric20` set.
-  - Sets `cleric_epic` to `1`.
-- `provinggrounds` player, on loot needs `cleric20` set.
-  - Sets `cleric20_mpg_chest` to `1`.
-  - Spawns a chest (epic 2.0) (893).
-  - Sets `wiz20_mpg_chest` to `1`.
-  - Loots Glyphed Helm of Conflict (71073).
-  - Loots Glyphed Vambraces of Conflict (71074).
-  - Loots Glyphed Gauntlets of Conflict (71075).
-  - Loots Glyphed Boots of Conflict (71076).
-  - Loots Glyphed Bracer of Conflict (71077).
-  - Loots Lightning Blackened Chain Coif (71078).
-  - Loots Lightning Blackened Chain Vambraces (71079).
-  - Loots Lightning Blackened Chain Gloves (71080).
-  - Loots Lightning Blackened Chain Boots (71081).
-  - Loots Lightning Blackened Chain Bracer (71082).
-  - Loots Chaos-Imbued Leather Skullcap (71083).
-  - Loots Chaos-Imbued Leather Sleeves (71084).
-  - Loots Chaos-Imbued Leather Gloves (71085).
-  - Loots Chaos-Imbued Leather Boots (71086).
-  - Loots Chaos-Imbued Leather Bracer (71087).
-  - Loots Discordant Cap of Betrayal (71088).
-  - Loots Discordant Sleeves of Betrayal (71089).
-  - Loots Discordant Gloves of Betrayal (71090).
-  - Loots Discordant Sandals of Betrayal (71091).
-  - Loots Discordant Bracer of Betrayal (71092).
-  - Loots Glyphed Breastplate of Conflict (71093).
-  - Loots Glyphed Greaves of Conflict (71094).
-  - Loots Lightning Blackened Chain Links (71095).
-  - Loots Lightning Blackened Chain Greaves (71096).
-  - Loots Chaos-Imbued Leather Tunic (71097).
-  - Loots Chaos-Imbued Leather Leggings (71098).
-  - Loots Discordant Robe of Betrayal (71099).
-  - Loots Discordant Leggings of Betrayal (71100).
-  - Loots Razor-Edged Shield of War (71101).
-  - Loots Cracked Shield of Discipline (71102).
-  - Loots Chipped Talisman of Peace (71103).
-  - Loots Blood-Soaked Champions Scroll (71104).
-  - Loots Pitted Shoulderpads of Stone (71105).
-  - Loots Mask of Reckless Flame (71106).
-  - Loots Cloak of the Corrupted Curate (71107).
-  - Loots Belt of Twisted Iron (71108).
-  - Loots Mask of Dark Horror (71109).
-  - Loots Black Web Mantle (71110).
-  - Loots Herb-Wrapped Silk Sash (71111).
-  - Loots Dragorn Scale Cloak (71112).
-  - Loots Fused Bone Collar (71113).
-  - Loots Pauldrons of the Fallen Crusader (71114).
-  - Loots Visor of Distorted Vision (71115).
-  - Loots Shadowed Amulet of Anarchy (71116).
-  - Loots Fractured Champion's Ring (71117).
-  - Loots Adorned Earring of Hope (71118).
-  - Loots Polished Earring of Animosity (71119).
-  - Loots Ring of Black Flame (71120).
-- `skyfire` warder cecilia, hand 12509 needs `cleric20` >=2.
-  - Sets `cleric20_mpg_drop` to `1`.
-  - Turn in Robe of Plasmatic Priesthood (12509).
-- `timorous` omat vastsea, hand 12433 needs `cleric20` >=2.
-  - Turn in Dark Red Robe (12433).
-  - Gives Robe of Plasmatic Priesthood (12509).
-- `timorous` player, on loot needs `cleric20` set.
-  - Sets `cleric20_td_chest` to `1`.
-  - Spawns a chest (epic 2.0) (893).
-  - Loots Glyphed Helm of Conflict (71073).
-  - Loots Glyphed Vambraces of Conflict (71074).
-  - Loots Glyphed Gauntlets of Conflict (71075).
-  - Loots Glyphed Boots of Conflict (71076).
-  - Loots Glyphed Bracer of Conflict (71077).
-  - Loots Lightning Blackened Chain Coif (71078).
-  - Loots Lightning Blackened Chain Vambraces (71079).
-  - Loots Lightning Blackened Chain Gloves (71080).
-  - Loots Lightning Blackened Chain Boots (71081).
-  - Loots Lightning Blackened Chain Bracer (71082).
-  - Loots Chaos-Imbued Leather Skullcap (71083).
-  - Loots Chaos-Imbued Leather Sleeves (71084).
-  - Loots Chaos-Imbued Leather Gloves (71085).
-  - Loots Chaos-Imbued Leather Boots (71086).
-  - Loots Chaos-Imbued Leather Bracer (71087).
-  - Loots Discordant Cap of Betrayal (71088).
-  - Loots Discordant Sleeves of Betrayal (71089).
-  - Loots Discordant Gloves of Betrayal (71090).
-  - Loots Discordant Sandals of Betrayal (71091).
-  - Loots Discordant Bracer of Betrayal (71092).
-  - Loots Glyphed Breastplate of Conflict (71093).
-  - Loots Glyphed Greaves of Conflict (71094).
-  - Loots Lightning Blackened Chain Links (71095).
-  - Loots Lightning Blackened Chain Greaves (71096).
-  - Loots Chaos-Imbued Leather Tunic (71097).
-  - Loots Chaos-Imbued Leather Leggings (71098).
-  - Loots Discordant Robe of Betrayal (71099).
-  - Loots Discordant Leggings of Betrayal (71100).
-  - Loots Razor-Edged Shield of War (71101).
-  - Loots Cracked Shield of Discipline (71102).
-  - Loots Chipped Talisman of Peace (71103).
-  - Loots Blood-Soaked Champions Scroll (71104).
-  - Loots Pitted Shoulderpads of Stone (71105).
-  - Loots Mask of Reckless Flame (71106).
-  - Loots Cloak of the Corrupted Curate (71107).
-  - Loots Belt of Twisted Iron (71108).
-  - Loots Mask of Dark Horror (71109).
-  - Loots Black Web Mantle (71110).
-  - Loots Herb-Wrapped Silk Sash (71111).
-  - Loots Dragorn Scale Cloak (71112).
-  - Loots Fused Bone Collar (71113).
-  - Loots Pauldrons of the Fallen Crusader (71114).
-  - Loots Visor of Distorted Vision (71115).
-  - Loots Shadowed Amulet of Anarchy (71116).
-  - Loots Fractured Champion's Ring (71117).
-  - Loots Adorned Earring of Hope (71118).
-  - Loots Polished Earring of Animosity (71119).
-  - Loots Ring of Black Flame (71120).
-
-This step also depends on `cleric15pre`, shown above.
 
 ### 2. shav the cryptologist — hand 7135
 
@@ -583,7 +305,172 @@ See `cleric15pre` earlier in this file.
 
 ## `cleric20`
 
-See `cleric20` earlier in this file.
+Values written: 1, 2, 3.
+
+### 1. natvil — say hail
+
+Zone: `dranik`.
+
+> examines your craftsmanship.
+
+Sets `cleric20` to `1`.
+
+- Needs `cleric20` unset.
+- Needs `cleric_epic` set.
+- Needs `cleric_epic` >=5.
+In script order:
+
+1. Sets `cleric20` to `1`.
+
+
+This step also depends on `cleric_epic`, shown above.
+
+### 2. tavon vastsea — say hail
+
+Zone: `nedaria`.
+
+> I hear you were able to put that shield to some use. That is good to hear. I was able to find some news on the leader, someone matching his description has b...
+
+Sets `cleric20` to `2`.
+
+- Needs `cleric20` ==1.
+- Needs `cleric20` set.
+In script order:
+
+1. Sets `cleric20` to `2`.
+
+
+### 3. omat vastsea — hand 56013
+
+Zone: `timorous`.
+
+Sets `cleric20` to `3`.
+
+- Needs `cleric20` >=2.
+- Turn in x1: Ethereal Disciple's Journal (56013).
+In script order:
+
+1. Sets `cleric20` to `3`.
+2. Spawns Gefaari Drokaz (96368).
+   - Loots Soulshard of Zordak (56014).
+3. Gives Ethereal Disciple's Journal (56013).
+
+
+How the items are reached:
+
+- Ethereal Disciple's Journal (56013)
+  - Prerequisite: "Ethereal Disciple's Journal" (56013). See section 0.
+
+### Steps on `cleric20` that do not change it
+
+- `provinggrounds` player, on loot needs `cleric20` set.
+  - Sets `cleric20_mpg_chest` to `1`.
+  - Spawns a chest (epic 2.0) (893).
+  - Loots Glyphed Helm of Conflict (71073).
+  - Loots Glyphed Vambraces of Conflict (71074).
+  - Loots Glyphed Gauntlets of Conflict (71075).
+  - Loots Glyphed Boots of Conflict (71076).
+  - Loots Glyphed Bracer of Conflict (71077).
+  - Loots Lightning Blackened Chain Coif (71078).
+  - Loots Lightning Blackened Chain Vambraces (71079).
+  - Loots Lightning Blackened Chain Gloves (71080).
+  - Loots Lightning Blackened Chain Boots (71081).
+  - Loots Lightning Blackened Chain Bracer (71082).
+  - Loots Chaos-Imbued Leather Skullcap (71083).
+  - Loots Chaos-Imbued Leather Sleeves (71084).
+  - Loots Chaos-Imbued Leather Gloves (71085).
+  - Loots Chaos-Imbued Leather Boots (71086).
+  - Loots Chaos-Imbued Leather Bracer (71087).
+  - Loots Discordant Cap of Betrayal (71088).
+  - Loots Discordant Sleeves of Betrayal (71089).
+  - Loots Discordant Gloves of Betrayal (71090).
+  - Loots Discordant Sandals of Betrayal (71091).
+  - Loots Discordant Bracer of Betrayal (71092).
+  - Loots Glyphed Breastplate of Conflict (71093).
+  - Loots Glyphed Greaves of Conflict (71094).
+  - Loots Lightning Blackened Chain Links (71095).
+  - Loots Lightning Blackened Chain Greaves (71096).
+  - Loots Chaos-Imbued Leather Tunic (71097).
+  - Loots Chaos-Imbued Leather Leggings (71098).
+  - Loots Discordant Robe of Betrayal (71099).
+  - Loots Discordant Leggings of Betrayal (71100).
+  - Loots Razor-Edged Shield of War (71101).
+  - Loots Cracked Shield of Discipline (71102).
+  - Loots Chipped Talisman of Peace (71103).
+  - Loots Blood-Soaked Champions Scroll (71104).
+  - Loots Pitted Shoulderpads of Stone (71105).
+  - Loots Mask of Reckless Flame (71106).
+  - Loots Cloak of the Corrupted Curate (71107).
+  - Loots Belt of Twisted Iron (71108).
+  - Loots Mask of Dark Horror (71109).
+  - Loots Black Web Mantle (71110).
+  - Loots Herb-Wrapped Silk Sash (71111).
+  - Loots Dragorn Scale Cloak (71112).
+  - Loots Fused Bone Collar (71113).
+  - Loots Pauldrons of the Fallen Crusader (71114).
+  - Loots Visor of Distorted Vision (71115).
+  - Loots Shadowed Amulet of Anarchy (71116).
+  - Loots Fractured Champion's Ring (71117).
+  - Loots Adorned Earring of Hope (71118).
+  - Loots Polished Earring of Animosity (71119).
+  - Loots Ring of Black Flame (71120).
+- `skyfire` warder cecilia, hand 12509 needs `cleric20` >=2.
+  - Sets `cleric20_mpg_drop` to `1`.
+  - Turn in Robe of Plasmatic Priesthood (12509).
+- `timorous` omat vastsea, hand 12433 needs `cleric20` >=2.
+  - Turn in Dark Red Robe (12433).
+  - Gives Robe of Plasmatic Priesthood (12509).
+- `timorous` player, on loot needs `cleric20` set.
+  - Sets `cleric20_td_chest` to `1`.
+  - Spawns a chest (epic 2.0) (893).
+  - Loots Glyphed Helm of Conflict (71073).
+  - Loots Glyphed Vambraces of Conflict (71074).
+  - Loots Glyphed Gauntlets of Conflict (71075).
+  - Loots Glyphed Boots of Conflict (71076).
+  - Loots Glyphed Bracer of Conflict (71077).
+  - Loots Lightning Blackened Chain Coif (71078).
+  - Loots Lightning Blackened Chain Vambraces (71079).
+  - Loots Lightning Blackened Chain Gloves (71080).
+  - Loots Lightning Blackened Chain Boots (71081).
+  - Loots Lightning Blackened Chain Bracer (71082).
+  - Loots Chaos-Imbued Leather Skullcap (71083).
+  - Loots Chaos-Imbued Leather Sleeves (71084).
+  - Loots Chaos-Imbued Leather Gloves (71085).
+  - Loots Chaos-Imbued Leather Boots (71086).
+  - Loots Chaos-Imbued Leather Bracer (71087).
+  - Loots Discordant Cap of Betrayal (71088).
+  - Loots Discordant Sleeves of Betrayal (71089).
+  - Loots Discordant Gloves of Betrayal (71090).
+  - Loots Discordant Sandals of Betrayal (71091).
+  - Loots Discordant Bracer of Betrayal (71092).
+  - Loots Glyphed Breastplate of Conflict (71093).
+  - Loots Glyphed Greaves of Conflict (71094).
+  - Loots Lightning Blackened Chain Links (71095).
+  - Loots Lightning Blackened Chain Greaves (71096).
+  - Loots Chaos-Imbued Leather Tunic (71097).
+  - Loots Chaos-Imbued Leather Leggings (71098).
+  - Loots Discordant Robe of Betrayal (71099).
+  - Loots Discordant Leggings of Betrayal (71100).
+  - Loots Razor-Edged Shield of War (71101).
+  - Loots Cracked Shield of Discipline (71102).
+  - Loots Chipped Talisman of Peace (71103).
+  - Loots Blood-Soaked Champions Scroll (71104).
+  - Loots Pitted Shoulderpads of Stone (71105).
+  - Loots Mask of Reckless Flame (71106).
+  - Loots Cloak of the Corrupted Curate (71107).
+  - Loots Belt of Twisted Iron (71108).
+  - Loots Mask of Dark Horror (71109).
+  - Loots Black Web Mantle (71110).
+  - Loots Herb-Wrapped Silk Sash (71111).
+  - Loots Dragorn Scale Cloak (71112).
+  - Loots Fused Bone Collar (71113).
+  - Loots Pauldrons of the Fallen Crusader (71114).
+  - Loots Visor of Distorted Vision (71115).
+  - Loots Shadowed Amulet of Anarchy (71116).
+  - Loots Fractured Champion's Ring (71117).
+  - Loots Adorned Earring of Hope (71118).
+  - Loots Polished Earring of Animosity (71119).
+  - Loots Ring of Black Flame (71120).
 
 ## Other flags touched along the way
 

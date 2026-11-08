@@ -1355,9 +1355,7 @@ def _emit_span(
     holds = _item_gates(cond)
     flags = _flags(cond)
     either = bool(_OR.search(cond) and not _AND.search(cond) and (holds or len(flags) > 1))
-    group = say_id
-    if holds:
-        group = say_id + "#holds:" + "+".join(str(item_id) for item_id, _op in holds)
+    group = f"{say_id}#branch:{span[0]}"
     for name, at in flags:
         edge: dict[str, object] = {
             "kind": "edge",
@@ -1367,8 +1365,7 @@ def _emit_span(
             "flag": name,
             "at": at,
         }
-        if holds or either:
-            edge["group"] = group
+        edge["group"] = group
         if either:
             edge["op"] = "or"
         edges.append(edge)
@@ -1457,8 +1454,7 @@ def _emit_span(
                     "flag": name,
                     "at": at,
                 }
-                if holds:
-                    edge["group"] = group
+                edge["group"] = group
                 edges.append(edge)
     for match in sets_here:
         edge = {
@@ -1468,12 +1464,11 @@ def _emit_span(
             "to": f"flag:{match.group(1)}",
             "flag": match.group(1),
             "value": match.group(2),
+            "group": group,
         }
-        if holds:
-            edge["group"] = group
         edges.append(edge)
     body = text[span[2] : span[3]]
-    _emit_faction_gains(edges, say_id, body, group if holds else say_id)
+    _emit_faction_gains(edges, say_id, body, group)
     for _pos, item_id in summoned:
         edges.append(
             {
@@ -1504,12 +1499,13 @@ def _emit_span(
                 "rel": "grounds",
                 "from": say_id,
                 "to": f"item:{int(match.group(1))}",
+                "group": group,
                 "zone": say_id.split("/", 1)[0],
             }
         )
     direct = _without(text, span[2], span[3], holes)
     for npc_type, name in _caused_spawns(text, direct):
-        edges.append(_spawn_edge(say_id, npc_type, name, group if holds else ""))
+        edges.append(_spawn_edge(say_id, npc_type, name, group))
     for child in children:
         _emit_span(edges, text, child, say_id, npc_id, ancestors + (span,))
 
@@ -1557,9 +1553,10 @@ def _zone_events(edges: list[dict], text: str, npc_id: str) -> None:
             sets = _all_flag_sets(body)
             if not holds and not flags and not loot_ids and not spawns and not added and not sets:
                 continue
-            group = source
-            if holds:
-                group = source + "#holds:" + "+".join(str(item_id) for item_id, _op in holds)
+            # A single Player event may contain independent Warrior, Ranger,
+            # etc. branches. The source identifies the callback, while group
+            # identifies the actual condition/effect branch.
+            group = f"{source}#branch:{span[0]}"
             for item_id, op in holds:
                 edge = {
                     "kind": "edge",
@@ -1580,9 +1577,8 @@ def _zone_events(edges: list[dict], text: str, npc_id: str) -> None:
                     "to": f"flag:{flag}",
                     "flag": flag,
                     "at": at,
+                    "group": group,
                 }
-                if holds:
-                    edge["group"] = group
                 edges.append(edge)
             # GetID() == N on event_loot means the player already looted N (a gate), not a source.
             for item_id in loot_ids:

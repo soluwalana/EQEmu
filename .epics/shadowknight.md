@@ -6,49 +6,7 @@ Flags with writes: `shadowknight_pre`, `shadowknight_epic`.
 
 ## 0. Prerequisites
 
-Each list is the order you obtain that item. Later steps point here instead of repeating the chain.
-
-### "Innoruuk's Curse" (14383)
-
-1. neriakc/"Selzar L-Crit", say "Armor". Gives "Note to Kanthuk" (2416).
-2. butcher/"Kanthuk Ogrebane", hand "Note to Kanthuk" (2416). Sets `Kanthuk` to `ghoul`.
-3. butcher/"Kanthuk Ogrebane", say "Strange Image". Requires `Kanthuk` set. Gives "Pendant" (2414).
-4. cauldron/"Llara", hand "Pendant" (2414). Sets `Llara` to `ghoul`.
-5. cauldron/"Llara", say "Ruathey". Requires `Llara` set. Gives "Note to Ruathey" (2417).
-6. lavastorm/"Ruathey", hand "Note to Ruathey" (2417). Sets `Ruathey` to `ghoul`.
-7. lavastorm/"Ruathey", hand "Note to Ruathey" (2417). Sets `ruathey_note` to `1`.
-8. lavastorm/"Ruathey", say "Bag". Requires `Ruathey` set. Requires `ruathey_note` ==1. Requires `ruathey_note` set. Gives "Nobleman's Bag" (17878).
-9. Loot "Ghoul's Heart" (2410) from "A Ghoul" (NPC 63011) in `unrest`. Drop cache: 25% chance per kill.
-10. Loot "Amstaf's Scroll" (2411) from "A Goblin Thief" (NPC 6150) in `highkeep`. Drop cache: 35% chance per kill.
-11. Loot "Blade of Nobility" (2412) from "A Crazed Goblin" (NPC 68162) in `butcher`. Drop cache: 10.57% chance per kill.
-12. Loot "Hilt of the Nobleman" (2413) from "Ekeros" in `najena`.
-13. Loot "Hilt of the Nobleman" (2413) from "A Skeleton" in `najena`.
-14. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). The combine does not fail.
-15. Loot "Soul Leech, Dark Sword of Blood" (11609) from "Dread" in `fearplane`.
-16. Loot "Soul Leech, Dark Sword of Blood" (11609) from "Fright" in `fearplane`.
-17. Loot "Soul Leech, Dark Sword of Blood" (11609) from "Terror" in `fearplane`.
-18. airplane/"A Soul Carrier", on event_death_complete. Triggers `airplane/key master#signal:2`.
-19. Starts timer `87`.
-20. Spawns "Keeper of Souls" (71075) after `airplane/key master#timer:87`.
-21. Loot "Blade of Abrogation" (5430) from "Keeper of Souls".
-22. 12 alternative loot source(s) also yield Blade of Abrogation (5430).
-23. Loot "Drake Spine" (14372) from "Rharzar" in `rathemtn`.
-24. Loot "Decrepit Hide" (14371) from "An Ashenbone Drake" (NPC 186049) in `hateplaneb`. Drop cache: 11.2% chance per kill.
-25. Summon "Enchanted Platinum Bar" (16507) by casting "Enchant Platinum", "Mass Enchant Platinum", "Greater Mass Enchant Platinum".
-26. qcat/"Teydar", hand "Decrepit Hide" (14371) + "Drake Spine" (14372) + "Enchanted Platinum Bar" (16507). Gives "Decrepit Sheath" (14366).
-27. paineel/"Duriek Bloodpool", hand "Ghoulbane" (5403) + "Blade of Abrogation" (5430) + "Soul Leech, Dark Sword of Blood" (11609) + "Decrepit Sheath" (14366). Gives "Corrupted Ghoulbane" (14367).
-28. tox/"Knarthenne Skurl", say "Heart Of An Innocent". Gives "Soulcase" (17051).
-29. Loot "Cell Key" (14373) from "A Chest" in `hole`.
-30. Hand "Cell Key" (14373) to hole/"Caradon". Spawns "Kyrenna" (39155). Loot "Heart of Kyrenna" (14380) from "Kyrenna".
-31. Combine in "Soulcase" (17051): "Heart of Kyrenna" (14380). Produces "Heart of the Innocent" (14368). The combine does not fail.
-32. Hand "Cell Key" (14373) to hole/"Caradon". Spawns "Kyrenna" (39155). Loot "Blood of Kyrenna" (14381) from "Kyrenna".
-33. kerraridge/"Marl Kastane", hand "Blood of Kyrenna" (14381). Gives "Dark Shroud" (14377).
-34. Hand "Dark Shroud" (14377) to hole/"Ghost Of Glohnor". Spawns "Mummy of Glohnor" (39165). Loot "Head of Glohnor" (14378) from "Mummy of Glohnor".
-35. paineel/"Gerot Kastane", hand "Head of Glohnor" (14378). Gives "Head of the Valiant" (14369).
-36. Hand "Dark Shroud" (14377) to hole/"Ghost Of Glohnor". Spawns "Mummy of Glohnor" (39165). Loot "Glohnor wrappings" (14379) from "Mummy of Glohnor".
-37. kerraridge/"Marl Kastane", hand "Glohnor wrappings" (14379). Gives "Will of Innoruuk" (14370).
-38. citymist/"Lhranc", hand "Corrupted Ghoulbane" (14367) + "Heart of the Innocent" (14368) + "Head of the Valiant" (14369) + "Will of Innoruuk" (14370). Gives "Lhranc's Token" (14384).
-39. citymist/"Marl Kastane", hand "Lhranc's Token" (14384). Gives "Innoruuk's Curse" (14383).
+Shared acquisition steps appear in the first prerequisite chain that needs them. Later sections reference that chain rather than repeating it.
 
 ### "Innoruuk's Voice" (22944)
 
@@ -61,16 +19,13 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "The Silent Gods" (20520)
 
-1. dulak/"Ritald", say "Hail". Sets `shadowknight_pre` to `1`.
-2. Loot "Ancient Flamberge of Hatred" (55902) from "Captain Varns" in `dulak`.
-3. Loot "Essence of Hate" (21870) from "Mistress of Malevolence" in `hateplaneb`.
-4. Loot "Essence of Hate" (21870) from "Overlord R'Gahbsa" in `hateplaneb`.
-5. Loot "Stormborn Phylactery" (21782) from "Olidan" in `postorms`.
-6. dulak/"Ritald", hand "Stormborn Phylactery" (21782) + "Essence of Hate" (21870) + "Ancient Flamberge of Hatred" (55902). Sets `shadowknight_pre` to `2`.
-7. Unresolved cyclic prerequisite: `shadowknight_epic` ==1.
-8. poknowledge/"Sienn Kastane", say "Hail". Sets `shadowknight_epic` to `1`.
-9. Loot "Gelatinous Murkglider Egg" (55900) from "Murkglider Breeder" in `dranik`.
-10. poknowledge/"Grand Librarian Maelin", hand "Gelatinous Murkglider Egg" (55900). Requires `shadowknight_epic` ==1. Gives "The Silent Gods" (20520).
+1. Acquisition of "Ancient Flamberge of Hatred" (55902) is documented under "Innoruuk's Voice" (22944); obtain another copy if needed.
+2. Acquisition of "Essence of Hate" (21870) is documented under "Innoruuk's Voice" (22944); obtain another copy if needed.
+3. Acquisition of "Stormborn Phylactery" (21782) is documented under "Innoruuk's Voice" (22944); obtain another copy if needed.
+4. dulak/"Ritald", hand "Stormborn Phylactery" (21782) + "Essence of Hate" (21870) + "Ancient Flamberge of Hatred" (55902). Sets `shadowknight_pre` to `2`.
+5. poknowledge/"Sienn Kastane", say "Hail". Sets `shadowknight_epic` to `1`.
+6. Loot "Gelatinous Murkglider Egg" (55900) from "Murkglider Breeder" in `dranik`.
+7. poknowledge/"Grand Librarian Maelin", hand "Gelatinous Murkglider Egg" (55900). Requires `shadowknight_epic` ==1. Gives "The Silent Gods" (20520).
 
 ### "Sheath of Darktidings" (20426)
 
@@ -82,152 +37,57 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Sheathed Innoruuk's Voice" (11407)
 
-1. dulak/"Ritald", say "Hail". Sets `shadowknight_pre` to `1`.
-2. Loot "Ancient Flamberge of Hatred" (55902) from "Captain Varns" in `dulak`.
-3. Loot "Essence of Hate" (21870) from "Mistress of Malevolence" in `hateplaneb`.
-4. Loot "Essence of Hate" (21870) from "Overlord R'Gahbsa" in `hateplaneb`.
-5. Loot "Stormborn Phylactery" (21782) from "Olidan" in `postorms`.
-6. dulak/"Ritald", hand "Stormborn Phylactery" (21782) + "Essence of Hate" (21870) + "Ancient Flamberge of Hatred" (55902). Sets `shadowknight_pre` to `2`.
-7. Unresolved cyclic prerequisite: `shadowknight_epic` ==1.
-8. poknowledge/"Sienn Kastane", say "Hail". Sets `shadowknight_epic` to `1`.
-9. Loot "Gelatinous Murkglider Egg" (55900) from "Murkglider Breeder" in `dranik`.
-10. poknowledge/"Grand Librarian Maelin", hand "Gelatinous Murkglider Egg" (55900). Requires `shadowknight_epic` ==1. Gives "The Silent Gods" (20520).
-11. poknowledge/"Sienn Kastane", hand "The Silent Gods" (20520). Sets `shadowknight_epic` to `2`.
-12. Summon "Collapsible Sewing Kit" (17165) by casting "Unfold Sewing Kit".
-13. Loot "Eye of the Dark God" (21675) from "Amygdalan warrior" (NPC 72015) in `fearplane`. Drop cache: 18.32% chance per kill.
-14. Loot "Gloom Nightmare Hide" (20622) from "A Gloom Nightmare" in `ponightmare`.
-15. Loot "Lock of Blessed Unicorn Hair" (21496) from "A Rolling Plains Steed" (NPC 127084) in `growthplane`. Drop cache: 11% chance per kill.
-16. Combine in "Collapsible Sewing Kit" (17165): "Eye of the Dark God" (21675), "Gloom Nightmare Hide" (20622), "Lock of Blessed Unicorn Hair" (21496). Produces "Sheath of Darktidings" (20426). Requires Tailoring 100. Trivial at 15. The combine does not fail.
-17. poknowledge/"Sienn Kastane", hand "Sheath of Darktidings" (20426). Sets `shadowknight_epic` to `3`.
-18. Loot "Fraga's Parchment" (23492) from "Fraga" in `povalor`.
-19. poknowledge/"Sienn Kastane", hand "Fraga's Parchment" (23492). Sets `shadowknight_epic` to `4`.
-20. Loot "Wailing Sister Blood" (20497) from "The Wailing Sister" in `ponightmare`.
-21. Loot "Wailing Rune" (19025) from "The Wailing Sister" in `ponightmare`.
-22. poknowledge/"Sienn Kastane", hand "Wailing Rune" (19025) + "Wailing Sister Blood" (20497). Requires `shadowknight_epic` ==4. Gives "Sheathed Innoruuk's Voice" (11407).
+1. Acquisition of "The Silent Gods" (20520) is documented under "The Silent Gods" (20520); obtain another copy if needed.
+2. poknowledge/"Sienn Kastane", hand "The Silent Gods" (20520). Sets `shadowknight_epic` to `2`.
+3. Acquisition of "Sheath of Darktidings" (20426) is documented under "Sheath of Darktidings" (20426); obtain another copy if needed.
+4. poknowledge/"Sienn Kastane", hand "Sheath of Darktidings" (20426). Sets `shadowknight_epic` to `3`.
+5. Loot "Fraga's Parchment" (23492) from "Fraga" in `povalor`.
+6. poknowledge/"Sienn Kastane", hand "Fraga's Parchment" (23492). Sets `shadowknight_epic` to `4`.
+7. Loot "Wailing Sister Blood" (20497) from "The Wailing Sister" in `ponightmare`.
+8. Loot "Wailing Rune" (19025) from "The Wailing Sister" in `ponightmare`.
+9. poknowledge/"Sienn Kastane", hand "Wailing Rune" (19025) + "Wailing Sister Blood" (20497). Requires `shadowknight_epic` ==4. Gives "Sheathed Innoruuk's Voice" (11407).
 
 ### "Sheathed Innoruuk's Voice" (22199)
 
-1. dulak/"Ritald", say "Hail". Sets `shadowknight_pre` to `1`.
-2. Loot "Ancient Flamberge of Hatred" (55902) from "Captain Varns" in `dulak`.
-3. Loot "Essence of Hate" (21870) from "Mistress of Malevolence" in `hateplaneb`.
-4. Loot "Essence of Hate" (21870) from "Overlord R'Gahbsa" in `hateplaneb`.
-5. Loot "Stormborn Phylactery" (21782) from "Olidan" in `postorms`.
-6. dulak/"Ritald", hand "Stormborn Phylactery" (21782) + "Essence of Hate" (21870) + "Ancient Flamberge of Hatred" (55902). Sets `shadowknight_pre` to `2`.
-7. Unresolved cyclic prerequisite: `shadowknight_epic` ==1.
-8. poknowledge/"Sienn Kastane", say "Hail". Sets `shadowknight_epic` to `1`.
-9. Loot "Gelatinous Murkglider Egg" (55900) from "Murkglider Breeder" in `dranik`.
-10. poknowledge/"Grand Librarian Maelin", hand "Gelatinous Murkglider Egg" (55900). Requires `shadowknight_epic` ==1. Gives "The Silent Gods" (20520).
-11. poknowledge/"Sienn Kastane", hand "The Silent Gods" (20520). Sets `shadowknight_epic` to `2`.
-12. Summon "Collapsible Sewing Kit" (17165) by casting "Unfold Sewing Kit".
-13. Loot "Eye of the Dark God" (21675) from "Amygdalan warrior" (NPC 72015) in `fearplane`. Drop cache: 18.32% chance per kill.
-14. Loot "Gloom Nightmare Hide" (20622) from "A Gloom Nightmare" in `ponightmare`.
-15. Loot "Lock of Blessed Unicorn Hair" (21496) from "A Rolling Plains Steed" (NPC 127084) in `growthplane`. Drop cache: 11% chance per kill.
-16. Combine in "Collapsible Sewing Kit" (17165): "Eye of the Dark God" (21675), "Gloom Nightmare Hide" (20622), "Lock of Blessed Unicorn Hair" (21496). Produces "Sheath of Darktidings" (20426). Requires Tailoring 100. Trivial at 15. The combine does not fail.
-17. poknowledge/"Sienn Kastane", hand "Sheath of Darktidings" (20426). Sets `shadowknight_epic` to `3`.
-18. Loot "Fraga's Parchment" (23492) from "Fraga" in `povalor`.
-19. poknowledge/"Sienn Kastane", hand "Fraga's Parchment" (23492). Sets `shadowknight_epic` to `4`.
-20. Loot "Wailing Sister Blood" (20497) from "The Wailing Sister" in `ponightmare`.
-21. Loot "Wailing Rune" (19025) from "The Wailing Sister" in `ponightmare`.
-22. poknowledge/"Sienn Kastane", hand "Wailing Rune" (19025) + "Wailing Sister Blood" (20497). Sets `shadowknight_epic` to `5`.
-23. poknowledge/"Sienn Kastane", hand "Wailing Rune" (19025) + "Wailing Sister Blood" (20497). Requires `shadowknight_epic` ==4. Gives "Sheathed Innoruuk's Voice" (11407).
-24. poknowledge/"Gilina Yilzior", hand "Sheathed Innoruuk's Voice" (11407). Sets `shadowknight_epic` to `6`.
-25. Loot "Skurza's Head" (20899) from "Skurza Slicekutt" in `swampofnohope`.
-26. Loot "Silithis's Head" (16813) from "Silithis Sisnta" in `timorous`.
-27. Loot "Gubblegrot's Head" (16793) from "Gubblegrot Smashfist" in `oceanoftears`.
-28. Loot "Gubblegrot's Head" (16793) from "Gubblegrot Smashfist" in `oot`.
-29. Loot "Giligatabbus's Head" (20079) from "Giligatabbus Igglebix" in `iceclad`.
-30. poknowledge/"Gilina Yilzior", hand "Gubblegrot's Head" (16793) + "Silithis's Head" (16813) + "Giligatabbus's Head" (20079) + "Skurza's Head" (20899). Requires `shadowknight_epic` ==6. Gives "Sheathed Innoruuk's Voice" (22199).
-
-### "Innoruuk's Voice" (50003)
-
-1. dulak/"Ritald", say "Hail". Sets `shadowknight_pre` to `1`.
-2. Loot "Ancient Flamberge of Hatred" (55902) from "Captain Varns" in `dulak`.
-3. Loot "Essence of Hate" (21870) from "Mistress of Malevolence" in `hateplaneb`.
-4. Loot "Essence of Hate" (21870) from "Overlord R'Gahbsa" in `hateplaneb`.
-5. Loot "Stormborn Phylactery" (21782) from "Olidan" in `postorms`.
-6. dulak/"Ritald", hand "Stormborn Phylactery" (21782) + "Essence of Hate" (21870) + "Ancient Flamberge of Hatred" (55902). Sets `shadowknight_pre` to `2`.
-7. Unresolved cyclic prerequisite: `shadowknight_epic` ==1.
-8. poknowledge/"Sienn Kastane", say "Hail". Sets `shadowknight_epic` to `1`.
-9. Loot "Gelatinous Murkglider Egg" (55900) from "Murkglider Breeder" in `dranik`.
-10. poknowledge/"Grand Librarian Maelin", hand "Gelatinous Murkglider Egg" (55900). Requires `shadowknight_epic` ==1. Gives "The Silent Gods" (20520).
-11. poknowledge/"Sienn Kastane", hand "The Silent Gods" (20520). Sets `shadowknight_epic` to `2`.
-12. Summon "Collapsible Sewing Kit" (17165) by casting "Unfold Sewing Kit".
-13. Loot "Eye of the Dark God" (21675) from "Amygdalan warrior" (NPC 72015) in `fearplane`. Drop cache: 18.32% chance per kill.
-14. Loot "Gloom Nightmare Hide" (20622) from "A Gloom Nightmare" in `ponightmare`.
-15. Loot "Lock of Blessed Unicorn Hair" (21496) from "A Rolling Plains Steed" (NPC 127084) in `growthplane`. Drop cache: 11% chance per kill.
-16. Combine in "Collapsible Sewing Kit" (17165): "Eye of the Dark God" (21675), "Gloom Nightmare Hide" (20622), "Lock of Blessed Unicorn Hair" (21496). Produces "Sheath of Darktidings" (20426). Requires Tailoring 100. Trivial at 15. The combine does not fail.
-17. poknowledge/"Sienn Kastane", hand "Sheath of Darktidings" (20426). Sets `shadowknight_epic` to `3`.
-18. Loot "Fraga's Parchment" (23492) from "Fraga" in `povalor`.
-19. poknowledge/"Sienn Kastane", hand "Fraga's Parchment" (23492). Sets `shadowknight_epic` to `4`.
-20. Loot "Wailing Sister Blood" (20497) from "The Wailing Sister" in `ponightmare`.
-21. Loot "Wailing Rune" (19025) from "The Wailing Sister" in `ponightmare`.
-22. poknowledge/"Sienn Kastane", hand "Wailing Rune" (19025) + "Wailing Sister Blood" (20497). Sets `shadowknight_epic` to `5`.
-23. poknowledge/"Sienn Kastane", hand "Wailing Rune" (19025) + "Wailing Sister Blood" (20497). Requires `shadowknight_epic` ==4. Gives "Sheathed Innoruuk's Voice" (11407).
-24. poknowledge/"Gilina Yilzior", hand "Sheathed Innoruuk's Voice" (11407). Sets `shadowknight_epic` to `6`.
-25. Loot "Skurza's Head" (20899) from "Skurza Slicekutt" in `swampofnohope`.
-26. Loot "Silithis's Head" (16813) from "Silithis Sisnta" in `timorous`.
-27. Loot "Gubblegrot's Head" (16793) from "Gubblegrot Smashfist" in `oceanoftears`.
-28. Loot "Gubblegrot's Head" (16793) from "Gubblegrot Smashfist" in `oot`.
-29. Loot "Giligatabbus's Head" (20079) from "Giligatabbus Igglebix" in `iceclad`.
-30. poknowledge/"Gilina Yilzior", hand "Gubblegrot's Head" (16793) + "Silithis's Head" (16813) + "Giligatabbus's Head" (20079) + "Skurza's Head" (20899). Sets `shadowknight_epic` to `7`.
-31. Say "Hail" to kithicor/"Tarnamil".
-32. Spawns "Uglib Gaibido" (20293).
-33. Loot "Paladin Blood Sample" (20904) from "Uglib Gaibido".
-34. 2 alternative loot source(s) also yield Paladin Blood Sample (20904).
-35. poknowledge/"Gilina Yilzior", hand "Gubblegrot's Head" (16793) + "Silithis's Head" (16813) + "Giligatabbus's Head" (20079) + "Skurza's Head" (20899). Requires `shadowknight_epic` ==6. Gives "Sheathed Innoruuk's Voice" (22199).
-36. poknowledge/"Gilina Yilzior", hand "Paladin Blood Sample" (20904) + "Paladin Blood Sample" (20904) + "Paladin Blood Sample" (20904) + "Sheathed Innoruuk's Voice" (22199). Sets `shadowknight_epic` to `8`.
-37. Loot "Sir Elmonious's Holy Symbol" (55901) from "Sir Elmonious Falmont" in `westwastes`.
-38. poknowledge/"Gilina Yilzior", hand "Sir Elmonious's Holy Symbol" (55901). Requires `shadowknight_epic` ==8. Gives "Innoruuk's Voice" (50003).
+1. Acquisition of "Wailing Sister Blood" (20497) is documented under "Sheathed Innoruuk's Voice" (11407); obtain another copy if needed.
+2. Acquisition of "Wailing Rune" (19025) is documented under "Sheathed Innoruuk's Voice" (11407); obtain another copy if needed.
+3. poknowledge/"Sienn Kastane", hand "Wailing Rune" (19025) + "Wailing Sister Blood" (20497). Sets `shadowknight_epic` to `5`.
+4. Acquisition of "Sheathed Innoruuk's Voice" (11407) is documented under "Sheathed Innoruuk's Voice" (11407); obtain another copy if needed.
+5. poknowledge/"Gilina Yilzior", hand "Sheathed Innoruuk's Voice" (11407). Sets `shadowknight_epic` to `6`.
+6. Loot "Skurza's Head" (20899) from "Skurza Slicekutt" in `swampofnohope`.
+7. Loot "Silithis's Head" (16813) from "Silithis Sisnta" in `timorous`.
+8. Loot "Gubblegrot's Head" (16793) from "Gubblegrot Smashfist" in `oceanoftears`.
+9. Loot "Gubblegrot's Head" (16793) from "Gubblegrot Smashfist" in `oot`.
+10. Loot "Giligatabbus's Head" (20079) from "Giligatabbus Igglebix" in `iceclad`.
+11. poknowledge/"Gilina Yilzior", hand "Gubblegrot's Head" (16793) + "Silithis's Head" (16813) + "Giligatabbus's Head" (20079) + "Skurza's Head" (20899). Requires `shadowknight_epic` ==6. Gives "Sheathed Innoruuk's Voice" (22199).
 
 ### "Lhranc's Earthly Anchor" (24584)
 
-1. dulak/"Ritald", say "Hail". Sets `shadowknight_pre` to `1`.
-2. Loot "Ancient Flamberge of Hatred" (55902) from "Captain Varns" in `dulak`.
-3. Loot "Essence of Hate" (21870) from "Mistress of Malevolence" in `hateplaneb`.
-4. Loot "Essence of Hate" (21870) from "Overlord R'Gahbsa" in `hateplaneb`.
-5. Loot "Stormborn Phylactery" (21782) from "Olidan" in `postorms`.
-6. dulak/"Ritald", hand "Stormborn Phylactery" (21782) + "Essence of Hate" (21870) + "Ancient Flamberge of Hatred" (55902). Sets `shadowknight_pre` to `2`.
-7. Unresolved cyclic prerequisite: `shadowknight_epic` ==1.
-8. poknowledge/"Sienn Kastane", say "Hail". Sets `shadowknight_epic` to `1`.
-9. Loot "Gelatinous Murkglider Egg" (55900) from "Murkglider Breeder" in `dranik`.
-10. poknowledge/"Grand Librarian Maelin", hand "Gelatinous Murkglider Egg" (55900). Requires `shadowknight_epic` ==1. Gives "The Silent Gods" (20520).
-11. poknowledge/"Sienn Kastane", hand "The Silent Gods" (20520). Sets `shadowknight_epic` to `2`.
-12. Summon "Collapsible Sewing Kit" (17165) by casting "Unfold Sewing Kit".
-13. Loot "Eye of the Dark God" (21675) from "Amygdalan warrior" (NPC 72015) in `fearplane`. Drop cache: 18.32% chance per kill.
-14. Loot "Gloom Nightmare Hide" (20622) from "A Gloom Nightmare" in `ponightmare`.
-15. Loot "Lock of Blessed Unicorn Hair" (21496) from "A Rolling Plains Steed" (NPC 127084) in `growthplane`. Drop cache: 11% chance per kill.
-16. Combine in "Collapsible Sewing Kit" (17165): "Eye of the Dark God" (21675), "Gloom Nightmare Hide" (20622), "Lock of Blessed Unicorn Hair" (21496). Produces "Sheath of Darktidings" (20426). Requires Tailoring 100. Trivial at 15. The combine does not fail.
-17. poknowledge/"Sienn Kastane", hand "Sheath of Darktidings" (20426). Sets `shadowknight_epic` to `3`.
-18. Loot "Fraga's Parchment" (23492) from "Fraga" in `povalor`.
-19. poknowledge/"Sienn Kastane", hand "Fraga's Parchment" (23492). Sets `shadowknight_epic` to `4`.
-20. Loot "Wailing Sister Blood" (20497) from "The Wailing Sister" in `ponightmare`.
-21. Loot "Wailing Rune" (19025) from "The Wailing Sister" in `ponightmare`.
-22. poknowledge/"Sienn Kastane", hand "Wailing Rune" (19025) + "Wailing Sister Blood" (20497). Sets `shadowknight_epic` to `5`.
-23. poknowledge/"Sienn Kastane", hand "Wailing Rune" (19025) + "Wailing Sister Blood" (20497). Requires `shadowknight_epic` ==4. Gives "Sheathed Innoruuk's Voice" (11407).
-24. poknowledge/"Gilina Yilzior", hand "Sheathed Innoruuk's Voice" (11407). Sets `shadowknight_epic` to `6`.
-25. Loot "Skurza's Head" (20899) from "Skurza Slicekutt" in `swampofnohope`.
-26. Loot "Silithis's Head" (16813) from "Silithis Sisnta" in `timorous`.
-27. Loot "Gubblegrot's Head" (16793) from "Gubblegrot Smashfist" in `oceanoftears`.
-28. Loot "Gubblegrot's Head" (16793) from "Gubblegrot Smashfist" in `oot`.
-29. Loot "Giligatabbus's Head" (20079) from "Giligatabbus Igglebix" in `iceclad`.
-30. poknowledge/"Gilina Yilzior", hand "Gubblegrot's Head" (16793) + "Silithis's Head" (16813) + "Giligatabbus's Head" (20079) + "Skurza's Head" (20899). Sets `shadowknight_epic` to `7`.
-31. Say "Hail" to kithicor/"Tarnamil".
-32. Spawns "Uglib Gaibido" (20293).
-33. Loot "Paladin Blood Sample" (20904) from "Uglib Gaibido".
-34. 2 alternative loot source(s) also yield Paladin Blood Sample (20904).
-35. poknowledge/"Gilina Yilzior", hand "Gubblegrot's Head" (16793) + "Silithis's Head" (16813) + "Giligatabbus's Head" (20079) + "Skurza's Head" (20899). Requires `shadowknight_epic` ==6. Gives "Sheathed Innoruuk's Voice" (22199).
-36. poknowledge/"Gilina Yilzior", hand "Paladin Blood Sample" (20904) + "Paladin Blood Sample" (20904) + "Paladin Blood Sample" (20904) + "Sheathed Innoruuk's Voice" (22199). Sets `shadowknight_epic` to `8`.
-37. Loot "Sir Elmonious's Holy Symbol" (55901) from "Sir Elmonious Falmont" in `westwastes`.
-38. poknowledge/"Gilina Yilzior", hand "Sir Elmonious's Holy Symbol" (55901). Requires `shadowknight_epic` ==8. Gives "Innoruuk's Voice" (50003).
-39. poknowledge/"Gilina Yilzior", say "Vision". Sets `shadowknight_epic` to `9`.
-40. Loot "Kilidna's Head" (19098) from "Kilidna" in `citymist`.
-41. poknowledge/"Gilina Yilzior", hand "Kilidna's Head" (19098). Sets `shadowknight_epic` to `10`.
-42. Loot "Lhranc's Corroded Bracer" (24612) from "A Mortiferous Golem" in `charasis`.
-43. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
-44. Loot "Lhranc's Pendant" (23489) from "A Black Reaver".
-45. 2 alternative loot source(s) also yield Lhranc's Pendant (23489).
-46. Loot "Lhranc's Ring" (24632) from "Risen Corporal" (NPC 20107) in `kithicor`. Drop cache: 19.56% chance per kill.
-47. poknowledge/"Gilina Yilzior", hand "Lhranc's Pendant" (23489) + "Lhranc's Corroded Bracer" (24612) + "Lhranc's Ring" (24632). Requires `shadowknight_epic` ==10. Gives "Lhranc's Earthly Anchor" (24584).
+1. poknowledge/"Gilina Yilzior", say "Vision". Sets `shadowknight_epic` to `9`.
+2. Loot "Kilidna's Head" (19098) from "Kilidna" in `citymist`.
+3. poknowledge/"Gilina Yilzior", hand "Kilidna's Head" (19098). Sets `shadowknight_epic` to `10`.
+4. Loot "Lhranc's Corroded Bracer" (24612) from "A Mortiferous Golem" in `charasis`.
+5. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
+6. Loot "Lhranc's Pendant" (23489) from "A Black Reaver".
+7. 2 alternative loot source(s) also yield Lhranc's Pendant (23489).
+8. Loot "Lhranc's Ring" (24632) from "Risen Corporal" (NPC 20107) in `kithicor`. Drop cache: 19.56% chance per kill.
+9. poknowledge/"Gilina Yilzior", hand "Lhranc's Pendant" (23489) + "Lhranc's Corroded Bracer" (24612) + "Lhranc's Ring" (24632). Requires `shadowknight_epic` ==10. Gives "Lhranc's Earthly Anchor" (24584).
+
+### "Innoruuk's Voice" (50003)
+
+1. Acquisition of "Skurza's Head" (20899) is documented under "Sheathed Innoruuk's Voice" (22199); obtain another copy if needed.
+2. Acquisition of "Silithis's Head" (16813) is documented under "Sheathed Innoruuk's Voice" (22199); obtain another copy if needed.
+3. Acquisition of "Gubblegrot's Head" (16793) is documented under "Sheathed Innoruuk's Voice" (22199); obtain another copy if needed.
+4. Acquisition of "Giligatabbus's Head" (20079) is documented under "Sheathed Innoruuk's Voice" (22199); obtain another copy if needed.
+5. poknowledge/"Gilina Yilzior", hand "Gubblegrot's Head" (16793) + "Silithis's Head" (16813) + "Giligatabbus's Head" (20079) + "Skurza's Head" (20899). Sets `shadowknight_epic` to `7`.
+6. Say "Hail" to kithicor/"Tarnamil".
+7. Spawns "Uglib Gaibido" (20293).
+8. Loot "Paladin Blood Sample" (20904) from "Uglib Gaibido".
+9. 2 alternative loot source(s) also yield Paladin Blood Sample (20904).
+10. Acquisition of "Sheathed Innoruuk's Voice" (22199) is documented under "Sheathed Innoruuk's Voice" (22199); obtain another copy if needed.
+11. poknowledge/"Gilina Yilzior", hand "Paladin Blood Sample" (20904) + "Paladin Blood Sample" (20904) + "Paladin Blood Sample" (20904) + "Sheathed Innoruuk's Voice" (22199). Sets `shadowknight_epic` to `8`.
+12. Loot "Sir Elmonious's Holy Symbol" (55901) from "Sir Elmonious Falmont" in `westwastes`.
+13. poknowledge/"Gilina Yilzior", hand "Sir Elmonious's Holy Symbol" (55901). Requires `shadowknight_epic` ==8. Gives "Innoruuk's Voice" (50003).
 
 ## `shadowknight_pre`
 
@@ -277,8 +137,6 @@ How the items are reached:
 
 - `poknowledge` sienn kastane, say hail needs `shadowknight_pre` ==2.
   - Sets `shadowknight_epic` to `1`.
-- `poknowledge` sienn kastane, say hail needs `shadowknight_pre` ==2.
-  - Sets `shadowknight_epic` to `1`.
 
 ## `shadowknight_epic`
 
@@ -294,17 +152,10 @@ Sets `shadowknight_epic` to `1`.
 
 - Needs `shadowknight_epic` unset.
 - Needs `shadowknight_pre` ==2.
-- Needs `shadowknight_epic` ==1.
-- One of: `shadowknight_pre` ==2; Innoruuk's Curse (14383).
 In script order:
 
 1. Sets `shadowknight_epic` to `1`.
 
-
-How the items are reached:
-
-- Innoruuk's Curse (14383)
-  - Prerequisite: "Innoruuk's Curse" (14383). See section 0.
 
 This step also depends on `shadowknight_pre`, shown above.
 
@@ -483,17 +334,11 @@ Zone: `poknowledge`.
 
 Sets `shadowknight_epic` to `9`.
 
-- Needs Innoruuk's Voice (50003).
 - Needs `shadowknight_epic` unset.
 In script order:
 
 1. Sets `shadowknight_epic` to `9`.
 
-
-How the items are reached:
-
-- Innoruuk's Voice (50003)
-  - Prerequisite: "Innoruuk's Voice" (50003). See section 0.
 
 ### 10. gilina yilzior — hand 19098
 
@@ -565,79 +410,8 @@ How the items are reached:
 - `dranik` filligno the slayer, say ready needs `shadowknight_epic` ==11.
   - Spawns a Minion of Lhranc (336251).
 - `dranik` player, on loot needs `shadowknight_epic` ==11.
-  - Sets `warrior_epic_dranik` to `1`.
-  - Spawns a chest (Epic 1.5) (283157).
-  - Sets `beast_epic_dran` to `1`.
-  - Sets `druid_chest_dranik` to `1`.
-  - Sets `shaman_chest_dranik` to `1`.
-  - Spawns a chest (Epic 2.0) (893).
-  - Sets `nec_chest_dranik` to `1`.
   - Sets `sk_chest_dranik` to `1`.
-  - Loots Mud Covered Shoulder Pads (71006).
-  - Loots Dented Steel Face Guard (71013).
-  - Loots Hollowed Bone Plated Mask (71014).
-  - Loots Ragged Ruby Veil (71015).
-  - Loots Rugged Iron Battle Mask (71016).
-  - Loots Slender White Silk Cape (71018).
-  - Loots Gleaming Crystal Band (71047).
-  - Loots Shattered Bone Stud (71048).
-  - Loots Aged Hoop of Battle (71049).
-  - Loots Muramite Plate Gloves of War (71055).
-  - Loots Muramite Chain Armguards of Battle (71059).
-  - Loots Muramite Chain Boots of Battle (71061).
-  - Loots Muramite Leather Band of Conflict (71063).
-  - Loots Muramite Leather Sleeves of Conflict (71064).
-  - Loots Muramite Leather Wraps of Conflict (71065).
-  - Loots Muramite Silk Sleeves of Contention (71069).
-  - Loots Muramite Silk Gloves of Contention (71070).
-  - Loots Glyphed Helm of Conflict (71073).
-  - Loots Glyphed Vambraces of Conflict (71074).
-  - Loots Glyphed Gauntlets of Conflict (71075).
-  - Loots Glyphed Boots of Conflict (71076).
-  - Loots Glyphed Bracer of Conflict (71077).
-  - Loots Lightning Blackened Chain Coif (71078).
-  - Loots Lightning Blackened Chain Vambraces (71079).
-  - Loots Lightning Blackened Chain Gloves (71080).
-  - Loots Lightning Blackened Chain Boots (71081).
-  - Loots Lightning Blackened Chain Bracer (71082).
-  - Loots Chaos-Imbued Leather Skullcap (71083).
-  - Loots Chaos-Imbued Leather Sleeves (71084).
-  - Loots Chaos-Imbued Leather Gloves (71085).
-  - Loots Chaos-Imbued Leather Boots (71086).
-  - Loots Chaos-Imbued Leather Bracer (71087).
-  - Loots Discordant Cap of Betrayal (71088).
-  - Loots Discordant Sleeves of Betrayal (71089).
-  - Loots Discordant Gloves of Betrayal (71090).
-  - Loots Discordant Sandals of Betrayal (71091).
-  - Loots Discordant Bracer of Betrayal (71092).
-  - Loots Glyphed Breastplate of Conflict (71093).
-  - Loots Glyphed Greaves of Conflict (71094).
-  - Loots Lightning Blackened Chain Links (71095).
-  - Loots Lightning Blackened Chain Greaves (71096).
-  - Loots Chaos-Imbued Leather Tunic (71097).
-  - Loots Chaos-Imbued Leather Leggings (71098).
-  - Loots Discordant Robe of Betrayal (71099).
-  - Loots Discordant Leggings of Betrayal (71100).
-  - Loots Razor-Edged Shield of War (71101).
-  - Loots Cracked Shield of Discipline (71102).
-  - Loots Chipped Talisman of Peace (71103).
-  - Loots Blood-Soaked Champions Scroll (71104).
-  - Loots Pitted Shoulderpads of Stone (71105).
-  - Loots Mask of Reckless Flame (71106).
-  - Loots Cloak of the Corrupted Curate (71107).
-  - Loots Belt of Twisted Iron (71108).
-  - Loots Mask of Dark Horror (71109).
-  - Loots Black Web Mantle (71110).
-  - Loots Herb-Wrapped Silk Sash (71111).
-  - Loots Dragorn Scale Cloak (71112).
-  - Loots Fused Bone Collar (71113).
-  - Loots Pauldrons of the Fallen Crusader (71114).
-  - Loots Visor of Distorted Vision (71115).
-  - Loots Shadowed Amulet of Anarchy (71116).
-  - Loots Fractured Champion's Ring (71117).
-  - Loots Adorned Earring of Hope (71118).
-  - Loots Polished Earring of Animosity (71119).
-  - Loots Ring of Black Flame (71120).
+  - Spawns a chest (Epic 2.0) (893).
 - `kithicor` tarnamil, say hail needs `shadowknight_epic` ==7.
   - Spawns Uglib Gaibido (20293).
   - Spawns Xotmidd Ferlop (20294).

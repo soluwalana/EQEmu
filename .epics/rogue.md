@@ -6,7 +6,7 @@ Flags with writes: `roguepre`, `Fatestealer`.
 
 ## 0. Prerequisites
 
-Each list is the order you obtain that item. Later steps point here instead of repeating the chain.
+Shared acquisition steps appear in the first prerequisite chain that needs them. Later sections reference that chain rather than repeating it.
 
 ### "Ragebringer" (11057)
 
@@ -37,39 +37,14 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Strongbox Half Full of Velixite" (52342)
 
-1. Loot "Bayle List I" (18808) from "Mutt Rootlit" in `highpass`.
-2. qrg/"Gerael Woodone", say "Deliver A Flask". Gives "Flask of Nitrates" (13945).
-3. akanon/"Kimble Nogflop", hand "Flask of Nitrates" (13945). Gives "Regurgitonic" (12140).
-4. qrg/"Mammoth", hand "Regurgitonic" (12140). Gives "Bayle List II" (18809).
-5. Loot "Bayle List III" (18810) from "Dyllin Starsine" in `highpass`.
-6. Loot "Bayle List III" (18810) from "Dyllin Starsine" in `highpasshold`.
-7. southro/"Rathmana Allin", hand "Bayle List I" (18808) + "Bayle List II" (18809) + "Bayle List III" (18810). Gives "Translated Parchment" (18961).
-8. highpass/"Stanos Herkanor", hand "Translated Parchment" (18961). Gives "Sealed Box" (28057).
-9. Hand "Sealed Box" (28057) to kithicor/"Adjutant D-Kan". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
-10. 6 alternative loot source(s) also yield General's Pouch (28013).
-11. Loot "Fleshripper" (5411) from "Solusek kobold king" in `soldungb`.
-12. Loot "Painbringer" (5410) from "Kobold Champion" in `soldungb`.
-13. Loot "Mithril Two-Handed Sword" (5401) from "The Froglok King" in `gukbottom`.
-14. Loot "Gigantic Zweihander" (5308) from "Karg IceBear" in `everfrost`.
-15. qey2hh1/"Vilnius The Small", hand "Gigantic Zweihander" (5308) + "Mithril Two-Handed Sword" (5401) + "Painbringer" (5410) + "Fleshripper" (5411). Gives "Jagged Diamond Dagger" (7506).
-16. Loot "Robe of the Ishva" (1357) from "Coercer Q'ioul" in `kithicor`.
-17. Loot "Robe of the Ishva" (1357) from "Jinalis Andir" in `cauldron`.
-18. Loot "Robe of the Ishva" (1357) from "The Ishva Mal" in `southkarana`.
-19. Loot "Robe of the Kedge" (1253) from "Kubaria" (NPC 309002) in `chambersf`. Drop cache: 100% chance per kill.
-20. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oceanoftears`.
-21. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oot`.
-22. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
-23. qey2hh1/"Vilnius The Small", hand "Robe of the Kedge" (1253) + "Robe of the Oracle" (1354) + "Robe of the Ishva" (1357) + "Shining Metallic Robes" (1360). Gives "Cazic Quill" (7505).
-24. highpass/"Stanos Herkanor", hand "Cazic Quill" (7505) + "Jagged Diamond Dagger" (7506) + "General's Pouch" (28013). Gives "Ragebringer" (11057).
-25. highpass/"Stanos Herkanor", say "Hail". Sets `Fatestealer` to `1`.
-26. **Broken:** nothing in the graph gives, loots, spawns, or combines Fatestealer (52347).
-27. nedaria/"Lirprin, Head Of Affairs", say "Hail". Sets `Fatestealer` to `3`.
-28. iceclad/"Lookout Larithim", say "What Happened Then". Requires `Fatestealer` ==3. Requires `rogue_epic_iceclad` unset. Gives "Air-Tight Strongbox" (52339).
-29. Say "What Happened Then" to iceclad/"Lookout Larithim".
-30. Spawns "Polar Kraken" (110131).
-31. Loot "Lump of Raw Alloy" (52340) from "Polar Kraken".
-32. Combine in "Air-Tight Strongbox" (52339): "Lump of Raw Alloy" (52340). Produces "Strongbox Full of Alloy" (52341). The combine does not fail.
-33. iceclad/"Lookout Larithim", hand "Strongbox Full of Alloy" (52341). Gives "Strongbox Half Full of Velixite" (52342).
+1. **Broken:** nothing in the graph gives, loots, spawns, or combines Fatestealer (52347).
+2. nedaria/"Lirprin, Head Of Affairs", say "Hail". Sets `Fatestealer` to `3`.
+3. iceclad/"Lookout Larithim", say "What Happened Then". Requires `rogue_epic_iceclad` unset. Requires `Fatestealer` ==3. Gives "Air-Tight Strongbox" (52339).
+4. Say "What Happened Then" to iceclad/"Lookout Larithim".
+5. Spawns "Polar Kraken" (110131).
+6. Loot "Lump of Raw Alloy" (52340) from "Polar Kraken".
+7. Combine in "Air-Tight Strongbox" (52339): "Lump of Raw Alloy" (52340). Produces "Strongbox Full of Alloy" (52341). The combine does not fail.
+8. iceclad/"Lookout Larithim", hand "Strongbox Full of Alloy" (52341). Gives "Strongbox Half Full of Velixite" (52342).
 
 ## `roguepre`
 
@@ -100,28 +75,7 @@ Values written: 1, 2, 3, 4.
 
 ### 1. stanos herkanor — say hail
 
-Zone: `highpass`.
-
-> Ah, the pouch. This is the first step. The Circle has to be upset having this taken right out from under them. That speaks well of the person who did the tak...
-
-Sets `Fatestealer` to `1`.
-
-- Needs Ragebringer (11057).
-In script order:
-
-1. Sets `Fatestealer` to `1`.
-
-
-How the items are reached:
-
-- Ragebringer (11057)
-  - Prerequisite: "Ragebringer" (11057). See section 0.
-
-Alternative or repeat transition to `Fatestealer` = `1` (not an additional required stage).
-
-### 1. stanos herkanor — say hail
-
-Zone: `highpasshold`.
+Zones: `highpass`, `highpasshold`.
 
 > Ah, the pouch. This is the first step. The Circle has to be upset having this taken right out from under them. That speaks well of the person who did the tak...
 
@@ -414,8 +368,6 @@ This step also depends on `Fatestealer_lyt`, shown above.
 
 ##### Steps on `Fatestealer_bard` that do not change it
 
-- `nedaria` lirprin, head of affairs, say hail needs `Fatestealer_bard` ==1.
-  - Sets `Fatestealer` to `3`.
 - `nedaria` lirprin, head of affairs, hand 52337 needs `Fatestealer_bard` ==1.
   - Sets `Fatestealer` to `2`.
   - Turn in Soulstone of Lanys (52337).
@@ -457,8 +409,6 @@ How the items are reached:
   - Sets `Fatestealer` to `2`.
   - Turn in Soulstone of Lanys (52337).
   - Gives Fatestealer (52347).
-- `nedaria` smith dandi, say hail needs `Fatestealer_page` ==1.
-  - Sets `Fatestealer_culth` to `1`.
 
 Subquest `Fatestealer_forge`:
 
@@ -492,8 +442,6 @@ This step also depends on `Fatestealer_bard`, shown above.
   - Sets `Fatestealer` to `2`.
   - Turn in Soulstone of Lanys (52337).
   - Gives Fatestealer (52347).
-- `nedaria` smith dandi, say hail needs `Fatestealer_forge` ==1.
-  - Sets `Fatestealer_culth` to `1`.
 - `steamfont` findleznax grimblewimbus, say help needs `Fatestealer_forge` ==1.
   - Spawns a decomposing body (448203).
 - `steamfont` player, on loot needs `Fatestealer_forge` ==1.
@@ -547,8 +495,6 @@ Zone: `nedaria`.
 
 Sets `Fatestealer` to `3`.
 
-- Needs `Fatestealer` ==1.
-- Needs `Fatestealer_bard` ==1.
 - Needs Fatestealer (52347).
 In script order:
 
@@ -559,8 +505,6 @@ How the items are reached:
 
 - Fatestealer (52347)
   - **Broken:** nothing in the graph gives, loots, spawns, or combines Fatestealer (52347).
-
-This step also depends on `Fatestealer_bard`, shown above.
 
 ### 4. lirprin, head of affairs — hand 21346+47100+52342+52347
 
@@ -717,6 +661,7 @@ How the items are reached:
   - Gives Test of Smithing (52331).
 - `mirb` durgin skell, say lirprin sent me needs `Fatestealer` ==3.
   - Sets `rogue_epic_durgin` to `1`.
+- `mirb` durgin skell, say lirprin sent me needs `Fatestealer` ==3.
   - Sets `rogue_chest_mira` to `1`.
   - Spawns a chest (893).
   - Loots Glyphed Helm of Conflict (71073).
@@ -767,8 +712,6 @@ How the items are reached:
   - Loots Adorned Earring of Hope (71118).
   - Loots Polished Earring of Animosity (71119).
   - Loots Ring of Black Flame (71120).
-- `nedaria` smith dandi, say hail needs `Fatestealer` ==3.
-  - Sets `Fatestealer_culth` to `1`.
 - `oasis` a wayward kiraikuei, hand 9599 needs `Fatestealer` ==1.
   - Turn in Pulsating Blue Metal Sphere (9599).
   - Gives Pulsating Blue Metal Sphere (9599).

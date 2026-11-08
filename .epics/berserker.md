@@ -6,52 +6,7 @@ Flags with writes: `berserk_epic`.
 
 ## 0. Prerequisites
 
-Each list is the order you obtain that item. Later steps point here instead of repeating the chain.
-
-### "Medal of Mastery" (60210)
-
-1. Loot "Treanik's Tarnished Axe" (60200) at cauldron/"Praklion Of The Cauldron", on event_hp.
-2. cauldron/"Treanik Ireblade", hand "Treanik's Tarnished Axe" (60200). Gives "Bone Trinket" (60201).
-3. fieldofbone/"Berserker-S Image", on event_death_complete. Sets `bersolo` to `1`.
-4. fieldofbone/"Mardic Crimsonsteel", say "Hail". Requires `bersolo` ==1. Gives "Image Essence" (60196).
-5. Say "Defeat" to lakeofillomen/"Lingering Axefall".
-6. Spawns "An Impervious Bloodbeast" (85225).
-7. Loot "Bloodbeast Tooth" (60192) from "An Impervious Bloodbeast".
-8. lakeofillomen/"Keras Mcarik", say "Great Stride". Gives "Medal of Blood" (60190).
-9. lakeofillomen/"Keras Mcarik", hand "Medal of Blood" (60190) + "Bloodbeast Tooth" (60192). Gives "Medal of Mirages" (60194).
-10. lakeofillomen/"Keras Mcarik", hand "Medal of Mirages" (60194) + "Image Essence" (60196). Gives "Medal of Strategy" (60198).
-11. lakeofillomen/"Keras Mcarik", hand "Medal of Strategy" (60198) + "Bone Trinket" (60201). Gives "Medal of Fervid Rage" (60202).
-12. Kill fearplane/"Enraged Imp". Spawns "Ireblind Imp" (72069).
-13. Loot "Burning Essence of Rage" (60203) from "Ireblind Imp".
-14. lakeofillomen/"Keras Mcarik", hand "Medal of Fervid Rage" (60202) + "Burning Essence of Rage" (60203). Gives "Medal of Hunting" (60204).
-15. lakeofillomen/"Keras Mcarik", say "Do". Gives "McArik Reagent Satchel" (60205).
-16. Loot "Decaying Liver" (60206) from "Disease-Ridden Gorilla" in `emeraldjungle`.
-17. Loot "Gnashing Kobold Paw" (60207) from "Gnashing Kobold" in `stonebrunt`.
-18. Loot "Scent Gland" (60208) from "Reeking Skunk" in `tox`.
-19. Loot "Scent Gland" (60208) from "Reeking Skunk" in `toxxulia`.
-20. Common item: Medicine Bag (17901). Listed in 33 zones.
-21. Common item: Handful of Prism Grains (95922). Listed in 6 zones.
-22. Loot "Heliotrope" (14242) from "a Di'zok Herbalist" in `chardok`.
-23. Loot "Heliotrope" (14242) from "a Sarnak Herb Collector" in `chardok`.
-24. Loot "Heliotrope" (14242) from "an Apprentice Herbalist" in `chardok`.
-25. Common item: Yebamante (16510). Listed in 12 zones.
-26. Common item: Blade Leaf (22143). Listed in 10 zones.
-27. Common item: Simple Potion Vial (95843). Listed in 11 zones.
-28. Combine in "Medicine Bag" (17901): "Handful of Prism Grains" (95922), "Heliotrope" (14242), "Yebamante" (16510), "Blade Leaf" (22143), "Simple Potion Vial" (95843). Produces "Philter of Major Translocation" (96467). Requires Alchemy, trivial 131.
-29. Combine in "McArik Reagent Satchel" (60205): "Decaying Liver" (60206), "Gnashing Kobold Paw" (60207), "Scent Gland" (60208), "Philter of Major Translocation" (96467). Produces "Bag of Image Essence Dust" (60209). The combine does not fail.
-30. lakeofillomen/"Keras Mcarik", hand "Medal of Hunting" (60204) + "Bag of Image Essence Dust" (60209). Gives "Medal of Mastery" (60210).
-
-### "Raging Soul Shard" (11999)
-
-1. sebilis/"Berserkerepic 1 5", say "Protector Timer". Gives "Taelosian Alloy Blood Axe" (18976).
-2. sebilis/"Berserkerepic 1 5", say "Protector Timer". Gives "Broken Trial Taelosian Blood Axe" (17833).
-3. sebilis/"Berserkerepic 1 5", say "Protector Timer". Gives "Damaged Trial Taelosian Blood Axe" (17898).
-4. sebilis/"Berserkerepic 1 5", say "Protector Timer". Gives "Damaged Trial Taelosian Blood Axe" (17399).
-5. lakeofillomen/"Keras Mcarik", hand "Damaged Trial Taelosian Blood Axe" (17399) + "Broken Trial Taelosian Blood Axe" (17833) + "Damaged Trial Taelosian Blood Axe" (17898) + "Taelosian Alloy Blood Axe" (18976). Sets `berserk_epic` to `5`.
-6. abysmal/"Teekan Opousbabolaoi", hand "Raging Soul Shard" (11999) + "Taelosian Alloy Blood Axe" (18976). Sets `berserk_epic` to `7`.
-7. Unresolved cyclic prerequisite: `berserk_epic` >=7.
-8. lakeofillomen/"Keras Mcarik", say "Find Out". Sets `berserk_epic` to `8`.
-9. halas/"Shanis Macdarren", say "Hail". Requires `berserk_epic` >=1. Requires `berserk_epic` set. Gives "Raging Soul Shard" (11999).
+Shared acquisition steps appear in the first prerequisite chain that needs them. Later sections reference that chain rather than repeating it.
 
 ### "Kerasian Axe of Ire" (68299)
 
@@ -89,7 +44,11 @@ Each list is the order you obtain that item. Later steps point here instead of r
 32. Loot "Maniac's Garbled Tome" (60211) from "Raving Goblinmaster - KOS".
 33. lakeofillomen/"Keras Mcarik", hand "Medal of Mastery" (60210) + "Maniac's Garbled Tome" (60211). Gives "Kerasian Axe of Ire" (68299).
 
-### "Julei's Twilight Pendant" (17200)
+### "Medal of Mastery" (60210)
+
+1. Acquisition of "Medal of Mastery" (60210) is documented under "Kerasian Axe of Ire" (68299); obtain another copy if needed.
+
+### "Raging Soul Shard" (11999)
 
 1. sebilis/"Berserkerepic 1 5", say "Protector Timer". Gives "Taelosian Alloy Blood Axe" (18976).
 2. sebilis/"Berserkerepic 1 5", say "Protector Timer". Gives "Broken Trial Taelosian Blood Axe" (17833).
@@ -100,31 +59,48 @@ Each list is the order you obtain that item. Later steps point here instead of r
 7. Unresolved cyclic prerequisite: `berserk_epic` >=7.
 8. lakeofillomen/"Keras Mcarik", say "Find Out". Sets `berserk_epic` to `8`.
 9. halas/"Shanis Macdarren", say "Hail". Requires `berserk_epic` >=1. Requires `berserk_epic` set. Gives "Raging Soul Shard" (11999).
-10. hole/"Julei Direaxe", say "Hail". Requires `berserk_epic` ==8. Gives "Julei's Twilight Pendant" (17200).
+
+### "Julei's Twilight Pendant" (17200)
+
+1. hole/"Julei Direaxe", say "Hail". Requires `berserk_epic` ==8. Gives "Julei's Twilight Pendant" (17200).
 
 ### "Unhoned Vengeful Taelosian Blood Axe" (20072)
 
 1. Loot "Lightning Core" (72029) from "A Lightning Warrior Stormer" (NPC 317083) in `anguish`. Drop cache: 0.5% chance per kill.
-2. sebilis/"Berserkerepic 1 5", say "Protector Timer". Gives "Taelosian Alloy Blood Axe" (18976).
-3. sebilis/"Berserkerepic 1 5", say "Protector Timer". Gives "Broken Trial Taelosian Blood Axe" (17833).
-4. sebilis/"Berserkerepic 1 5", say "Protector Timer". Gives "Damaged Trial Taelosian Blood Axe" (17898).
-5. sebilis/"Berserkerepic 1 5", say "Protector Timer". Gives "Damaged Trial Taelosian Blood Axe" (17399).
-6. lakeofillomen/"Keras Mcarik", hand "Damaged Trial Taelosian Blood Axe" (17399) + "Broken Trial Taelosian Blood Axe" (17833) + "Damaged Trial Taelosian Blood Axe" (17898) + "Taelosian Alloy Blood Axe" (18976). Sets `berserk_epic` to `5`.
-7. abysmal/"Teekan Opousbabolaoi", hand "Raging Soul Shard" (11999) + "Taelosian Alloy Blood Axe" (18976). Sets `berserk_epic` to `7`.
-8. Unresolved cyclic prerequisite: `berserk_epic` >=7.
-9. lakeofillomen/"Keras Mcarik", say "Find Out". Sets `berserk_epic` to `8`.
-10. halas/"Shanis Macdarren", say "Hail". Requires `berserk_epic` >=1. Requires `berserk_epic` set. Gives "Raging Soul Shard" (11999).
-11. abysmal/"Teekan Opousbabolaoi", hand "Raging Soul Shard" (11999) + "Taelosian Alloy Blood Axe" (18976). Requires `berserk_epic` ==5. Gives "Raging Taelosian Alloy Axe" (18398).
-12. causeway/"Bazu Smasher", on event combat.
-13. Starts timer `wipecheck`.
-14. Spawns "Bazu Smasher" (303081) after `causeway/bazu smasher#timer:wipecheck`.
-15. Loot "Faceted Moonstone" (17349) from "Bazu Smasher".
-16. Loot "Shadowed Bronze Lump" (17137) from "An Ancient Necromantic Shade" in `griegsend`.
-17. lakeofillomen/"Keras Mcarik", hand "Shadowed Bronze Lump" (17137) + "Faceted Moonstone" (17349) + "Raging Taelosian Alloy Axe" (18398) + "Lightning Core" (72029). Gives "Unhoned Vengeful Taelosian Blood Axe" (20072).
+2. Acquisition of "Taelosian Alloy Blood Axe" (18976) is documented under "Raging Soul Shard" (11999); obtain another copy if needed.
+3. Acquisition of "Raging Soul Shard" (11999) is documented under "Raging Soul Shard" (11999); obtain another copy if needed.
+4. abysmal/"Teekan Opousbabolaoi", hand "Raging Soul Shard" (11999) + "Taelosian Alloy Blood Axe" (18976). Requires `berserk_epic` ==5. Gives "Raging Taelosian Alloy Axe" (18398).
+5. causeway/"Bazu Smasher", on event combat.
+6. Starts timer `wipecheck`.
+7. Spawns "Bazu Smasher" (303081) after `causeway/bazu smasher#timer:wipecheck`.
+8. Loot "Faceted Moonstone" (17349) from "Bazu Smasher".
+9. Loot "Shadowed Bronze Lump" (17137) from "An Ancient Necromantic Shade" in `griegsend`.
+10. lakeofillomen/"Keras Mcarik", hand "Shadowed Bronze Lump" (17137) + "Faceted Moonstone" (17349) + "Raging Taelosian Alloy Axe" (18398) + "Lightning Core" (72029). Gives "Unhoned Vengeful Taelosian Blood Axe" (20072).
 
 ## `berserk_epic`
 
 Values written: 1, 2, 3, 4, 5, 7, 8, 9, 10.
+
+### 1. keras mcarik — say hail
+
+Zone: `lakeofillomen`.
+
+> Return once you have trained more, young Berserker.
+
+Sets `berserk_epic` to `1`.
+
+- Needs Kerasian Axe of Ire (68299).
+In script order:
+
+1. Sets `berserk_epic` to `1`.
+
+
+How the items are reached:
+
+- Kerasian Axe of Ire (68299)
+  - Prerequisite: "Kerasian Axe of Ire" (68299). See section 0.
+
+Alternative or repeat transition to `berserk_epic` = `1` (not an additional required stage).
 
 ### 1. keras mcarik — hand 60210+60211
 
@@ -176,6 +152,31 @@ How the items are reached:
 - Taelosian Tempered Ore (17496)
   - Given by lakeofillomen/"Keras Mcarik", say "Check5Globalserk".
 
+### 3. keras mcarik — say hail
+
+Zone: `lakeofillomen`.
+
+> Return once you have trained more, young Berserker.
+
+Sets `berserk_epic` to `3`.
+
+- Needs `berserk_epic` ==1.
+- Needs `berserk_epic` ==2.
+- Needs Raging Soul Shard (11999).
+- Needs `berserk_epic` >=1.
+- Needs `berserk_epic` set.
+In script order:
+
+1. Sets `berserk_epic` to `3`.
+
+
+How the items are reached:
+
+- Raging Soul Shard (11999)
+  - Prerequisite: "Raging Soul Shard" (11999). See section 0.
+
+Alternative or repeat transition to `berserk_epic` = `3` (not an additional required stage).
+
 ### 3. baeldarr hawkeye — hand 17286+17286+17286+17286
 
 Zone: `poknowledge`.
@@ -210,66 +211,6 @@ In script order:
 1. Sets `berserk_epic_sebchest` to `1`.
 2. Sets `berserk_epic` to `4`.
 
-
-Alternative or repeat transition to `berserk_epic` = `3` (not an additional required stage).
-
-### 3. keras mcarik — say hail
-
-Zone: `lakeofillomen`.
-
-> Return once you have trained more, young Berserker.
-
-Sets `berserk_epic` to `3`.
-
-- Needs `berserk_epic` ==1.
-- Needs `berserk_epic` ==2.
-- Needs Raging Soul Shard (11999).
-- Needs `berserk_epic` >=1.
-- Needs `berserk_epic` set.
-- Needs `berserk_epic` ==4.
-- Needs Kerasian Axe of Ire (68299).
-In script order:
-
-1. Sets `berserk_epic` to `3`.
-2. Sets `berserk_epic` to `1`.
-
-
-How the items are reached:
-
-- Raging Soul Shard (11999)
-  - Prerequisite: "Raging Soul Shard" (11999). See section 0.
-- Kerasian Axe of Ire (68299)
-  - Prerequisite: "Kerasian Axe of Ire" (68299). See section 0.
-
-Alternative or repeat transition to `berserk_epic` = `1` (not an additional required stage).
-
-### 1. keras mcarik — say hail
-
-Zone: `lakeofillomen`.
-
-> Return once you have trained more, young Berserker.
-
-Sets `berserk_epic` to `1`.
-
-- Needs `berserk_epic` ==1.
-- Needs `berserk_epic` ==2.
-- Needs Raging Soul Shard (11999).
-- Needs `berserk_epic` >=1.
-- Needs `berserk_epic` set.
-- Needs `berserk_epic` ==4.
-- Needs Kerasian Axe of Ire (68299).
-In script order:
-
-1. Sets `berserk_epic` to `3`.
-2. Sets `berserk_epic` to `1`.
-
-
-How the items are reached:
-
-- Raging Soul Shard (11999)
-  - Prerequisite: "Raging Soul Shard" (11999). See section 0.
-- Kerasian Axe of Ire (68299)
-  - Prerequisite: "Kerasian Axe of Ire" (68299). See section 0.
 
 ### 5. keras mcarik — hand 17399+17833+17898+18976
 
@@ -383,79 +324,8 @@ How the items are reached:
 - `bloodfields` tarvash scriller, hand gold:50 needs `berserk_epic` ==9.
 - `bloodfields` tarvash scriller, hand platinum:50 needs `berserk_epic` ==9.
 - `causeway` player, on loot needs `berserk_epic` ==9.
-  - Sets `mage_epic_causeway` to `1`.
-  - Spawns a chest (Epic 1.5) (283157).
-  - Sets `nec_epic_causeway` to `1`.
-  - Sets `bard20_chest` to `1`.
-  - Spawns a chest (epic 2.0) (893).
-  - Sets `warr_chest_causeway` to `1`.
   - Sets `ber_chest_causeway` to `1`.
-  - Sets `ench_chest_causeway` to `1`.
-  - Loots Mud Covered Shoulder Pads (71006).
-  - Loots Dented Steel Face Guard (71013).
-  - Loots Hollowed Bone Plated Mask (71014).
-  - Loots Ragged Ruby Veil (71015).
-  - Loots Rugged Iron Battle Mask (71016).
-  - Loots Slender White Silk Cape (71018).
-  - Loots Gleaming Crystal Band (71047).
-  - Loots Shattered Bone Stud (71048).
-  - Loots Aged Hoop of Battle (71049).
-  - Loots Muramite Plate Gloves of War (71055).
-  - Loots Muramite Chain Armguards of Battle (71059).
-  - Loots Muramite Chain Boots of Battle (71061).
-  - Loots Muramite Leather Band of Conflict (71063).
-  - Loots Muramite Leather Sleeves of Conflict (71064).
-  - Loots Muramite Leather Wraps of Conflict (71065).
-  - Loots Muramite Silk Sleeves of Contention (71069).
-  - Loots Muramite Silk Gloves of Contention (71070).
-  - Loots Glyphed Helm of Conflict (71073).
-  - Loots Glyphed Vambraces of Conflict (71074).
-  - Loots Glyphed Gauntlets of Conflict (71075).
-  - Loots Glyphed Boots of Conflict (71076).
-  - Loots Glyphed Bracer of Conflict (71077).
-  - Loots Lightning Blackened Chain Coif (71078).
-  - Loots Lightning Blackened Chain Vambraces (71079).
-  - Loots Lightning Blackened Chain Gloves (71080).
-  - Loots Lightning Blackened Chain Boots (71081).
-  - Loots Lightning Blackened Chain Bracer (71082).
-  - Loots Chaos-Imbued Leather Skullcap (71083).
-  - Loots Chaos-Imbued Leather Sleeves (71084).
-  - Loots Chaos-Imbued Leather Gloves (71085).
-  - Loots Chaos-Imbued Leather Boots (71086).
-  - Loots Chaos-Imbued Leather Bracer (71087).
-  - Loots Discordant Cap of Betrayal (71088).
-  - Loots Discordant Sleeves of Betrayal (71089).
-  - Loots Discordant Gloves of Betrayal (71090).
-  - Loots Discordant Sandals of Betrayal (71091).
-  - Loots Discordant Bracer of Betrayal (71092).
-  - Loots Glyphed Breastplate of Conflict (71093).
-  - Loots Glyphed Greaves of Conflict (71094).
-  - Loots Lightning Blackened Chain Links (71095).
-  - Loots Lightning Blackened Chain Greaves (71096).
-  - Loots Chaos-Imbued Leather Tunic (71097).
-  - Loots Chaos-Imbued Leather Leggings (71098).
-  - Loots Discordant Robe of Betrayal (71099).
-  - Loots Discordant Leggings of Betrayal (71100).
-  - Loots Razor-Edged Shield of War (71101).
-  - Loots Cracked Shield of Discipline (71102).
-  - Loots Chipped Talisman of Peace (71103).
-  - Loots Blood-Soaked Champions Scroll (71104).
-  - Loots Pitted Shoulderpads of Stone (71105).
-  - Loots Mask of Reckless Flame (71106).
-  - Loots Cloak of the Corrupted Curate (71107).
-  - Loots Belt of Twisted Iron (71108).
-  - Loots Mask of Dark Horror (71109).
-  - Loots Black Web Mantle (71110).
-  - Loots Herb-Wrapped Silk Sash (71111).
-  - Loots Dragorn Scale Cloak (71112).
-  - Loots Fused Bone Collar (71113).
-  - Loots Pauldrons of the Fallen Crusader (71114).
-  - Loots Visor of Distorted Vision (71115).
-  - Loots Shadowed Amulet of Anarchy (71116).
-  - Loots Fractured Champion's Ring (71117).
-  - Loots Adorned Earring of Hope (71118).
-  - Loots Polished Earring of Animosity (71119).
-  - Loots Ring of Black Flame (71120).
+  - Spawns a chest (epic 2.0) (893).
 - `griegsend` player, on loot needs `berserk_epic` ==9.
   - Sets `ber_epic_ge` to `1`.
   - Spawns a chest (Epic 2.0) (893).

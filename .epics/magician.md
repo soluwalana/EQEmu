@@ -6,7 +6,7 @@ Flags with writes: `mage_epic`.
 
 ## 0. Prerequisites
 
-Each list is the order you obtain that item. Later steps point here instead of repeating the chain.
+Shared acquisition steps appear in the first prerequisite chain that needs them. Later sections reference that chain rather than repeating it.
 
 ### "Tome of Primal Fires" (15769)
 
@@ -21,29 +21,26 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Staff of Elemental Essence" (19092)
 
-1. Loot "Journal of Magus Tvish" (15639) from "Danvi's Corpse" (NPC 179132) in `akheva`. Drop cache: 100% chance per kill.
-2. poknowledge/"Bantil Io'Tuv", hand "Journal of Magus Tvish" (15639). Sets `mage_epic` to `2`.
-3. westwastes/"A Lost Tomekeeper", say "Violet Roses". Requires `mage_epic` ==2. Gives "Tome of Primal Fires" (15769).
-4. poknowledge/"Bantil Io'Tuv", hand "Tome of Primal Fires" (15769). Sets `mage_epic` to `3`.
-5. Ground spawn of "Book of Bindings and Incantations" (15772) in `charasis`.
-6. poknowledge/"Bantil Io'Tuv", hand "Book of Bindings and Incantations" (15772). Sets `mage_epic` to `4`.
-7. Loot "Codex of Ice and Ether" (15775) from "Grigor Rojha" in `thedeep`.
-8. poknowledge/"Bantil Io'Tuv", hand "Codex of Ice and Ether" (15775). Sets `mage_epic` to `5`.
-9. najena/"Akksstaff'S Minion", on event_death_complete. Sets `ask_minion_dead` to `1`.
-10. najena/"Akksstaff", say "Demise". Requires `ask_minion_dead` set. Gives "Sentience of Elements" (15778).
-11. poknowledge/"Bantil Io'Tuv", hand "Sentience of Elements" (15778). Sets `mage_epic` to `6`.
-12. potranquility/"Jurmak The Undertow", say "Elemental Essences". Sets `mage_epic_water1` to `1`.
-13. Loot "Ice Burrower Meat" (19022) from "An Ice Burrower" in `westwastes`.
-14. Hand "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) to cobaltscar/"High Priest Margle". Spawns "Tiknonmanin" (117094). Loot "Elemental Essence of Water" (19086) from "Tiknonmanin".
-15. Spawns "Elemental Essence of Fire" (214127) in `potactics` on event_waypoint_arrive.
-16. Loot "Elemental Essence of Fire" (16807) from "Elemental Essence of Fire".
-17. potranquility/"Sarhya The Dawnbreeze", say "Elemental Essences". Sets `mage_epic_air1` to `1`.
-18. Spawns "Elemental Essence of Air" (303100) in `causeway` on enter.
-19. Loot "Elemental Essence of Air" (16773) from "Elemental Essence of Air".
-20. potranquility/"Taq'Aal Emeraldshard", say "Elemental Essences". Sets `mage_epic_earth1` to `1`.
-21. Spawns "Elemental Essence of Earth" (169127) in `letalis` on enter.
-22. Loot "Elemental Essence of Earth" (19087) from "Elemental Essence of Earth".
-23. poknowledge/"Bantil Io'Tuv", hand "Elemental Essence of Air" (16773) + "Elemental Essence of Fire" (16807) + "Elemental Essence of Water" (19086) + "Elemental Essence of Earth" (19087). Requires `mage_epic` ==6. Gives "Staff of Elemental Essence" (19092).
+1. Acquisition of "Tome of Primal Fires" (15769) is documented under "Tome of Primal Fires" (15769); obtain another copy if needed.
+2. poknowledge/"Bantil Io'Tuv", hand "Tome of Primal Fires" (15769). Sets `mage_epic` to `3`.
+3. Ground spawn of "Book of Bindings and Incantations" (15772) in `charasis`.
+4. poknowledge/"Bantil Io'Tuv", hand "Book of Bindings and Incantations" (15772). Sets `mage_epic` to `4`.
+5. Loot "Codex of Ice and Ether" (15775) from "Grigor Rojha" in `thedeep`.
+6. poknowledge/"Bantil Io'Tuv", hand "Codex of Ice and Ether" (15775). Sets `mage_epic` to `5`.
+7. Acquisition of "Sentience of Elements" (15778) is documented under "Sentience of Elements" (15778); obtain another copy if needed.
+8. poknowledge/"Bantil Io'Tuv", hand "Sentience of Elements" (15778). Sets `mage_epic` to `6`.
+9. potranquility/"Jurmak The Undertow", say "Elemental Essences". Sets `mage_epic_water1` to `1`.
+10. Loot "Ice Burrower Meat" (19022) from "An Ice Burrower" in `westwastes`.
+11. Hand "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) to cobaltscar/"High Priest Margle". Spawns "Tiknonmanin" (117094). Loot "Elemental Essence of Water" (19086) from "Tiknonmanin".
+12. Spawns "Elemental Essence of Fire" (214127) in `potactics` on event_waypoint_arrive.
+13. Loot "Elemental Essence of Fire" (16807) from "Elemental Essence of Fire".
+14. potranquility/"Sarhya The Dawnbreeze", say "Elemental Essences". Sets `mage_epic_air1` to `1`.
+15. Spawns "Elemental Essence of Air" (303100) in `causeway` on enter.
+16. Loot "Elemental Essence of Air" (16773) from "Elemental Essence of Air".
+17. potranquility/"Taq'Aal Emeraldshard", say "Elemental Essences". Sets `mage_epic_earth1` to `1`.
+18. Spawns "Elemental Essence of Earth" (169127) in `letalis` on enter.
+19. Loot "Elemental Essence of Earth" (19087) from "Elemental Essence of Earth".
+20. poknowledge/"Bantil Io'Tuv", hand "Elemental Essence of Air" (16773) + "Elemental Essence of Fire" (16807) + "Elemental Essence of Water" (19086) + "Elemental Essence of Earth" (19087). Requires `mage_epic` ==6. Gives "Staff of Elemental Essence" (19092).
 
 ### "Note from Iilivina" (19438)
 
@@ -53,17 +50,15 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Pouch of Powdered Riftseeker Essence" (19149)
 
-1. Loot "Gelidran Essence" (19099) from "A Gelidran Flamefreeze" (NPC 334016) in `riftseekers`. Drop cache: 8.79% chance per kill.
-2. Loot "Pyrilen Essence" (19093) from "A Pyrilen Firecharmer" (NPC 334010) in `riftseekers`. Drop cache: 8.75% chance per kill.
+1. Acquisition of "Gelidran Essence" (19099) is documented under "Note from Iilivina" (19438); obtain another copy if needed.
+2. Acquisition of "Pyrilen Essence" (19093) is documented under "Note from Iilivina" (19438); obtain another copy if needed.
 3. draniksscar/"Iilivina", hand "Pyrilen Essence" (19093) + "Pyrilen Essence" (19093) + "Gelidran Essence" (19099) + "Gelidran Essence" (19099). Gives "Pouch of Powdered Riftseeker Essence" (19149).
 
 ### "Small pouch of Riftseeker Essence" (19441)
 
-1. Loot "Gelidran Essence" (19099) from "A Gelidran Flamefreeze" (NPC 334016) in `riftseekers`. Drop cache: 8.79% chance per kill.
-2. Loot "Pyrilen Essence" (19093) from "A Pyrilen Firecharmer" (NPC 334010) in `riftseekers`. Drop cache: 8.75% chance per kill.
-3. draniksscar/"Iilivina", hand "Pyrilen Essence" (19093) + "Pyrilen Essence" (19093) + "Gelidran Essence" (19099) + "Gelidran Essence" (19099). Gives "Note from Iilivina" (19438).
-4. draniksscar/"Iilivina", hand "Pyrilen Essence" (19093) + "Pyrilen Essence" (19093) + "Gelidran Essence" (19099) + "Gelidran Essence" (19099). Gives "Pouch of Powdered Riftseeker Essence" (19149).
-5. poknowledge/"Bantil Io'Tuv", hand "Pouch of Powdered Riftseeker Essence" (19149) + "Note from Iilivina" (19438). Gives "Small pouch of Riftseeker Essence" (19441).
+1. Acquisition of "Note from Iilivina" (19438) is documented under "Note from Iilivina" (19438); obtain another copy if needed.
+2. Acquisition of "Pouch of Powdered Riftseeker Essence" (19149) is documented under "Pouch of Powdered Riftseeker Essence" (19149); obtain another copy if needed.
+3. poknowledge/"Bantil Io'Tuv", hand "Pouch of Powdered Riftseeker Essence" (19149) + "Note from Iilivina" (19438). Gives "Small pouch of Riftseeker Essence" (19441).
 
 ## `mage_epic` 1.5
 
@@ -75,22 +70,11 @@ Zone: `poknowledge`.
 
 Sets `mage_epic` to `1`.
 
-- Needs Orb of Mastery (28034).
 - Needs `mage_epic` unset.
 In script order:
 
 1. Sets `mage_epic` to `1`.
 
-
-How the items are reached:
-
-- Orb of Mastery (28034)
-  - Summon "Orb of Mastery" (28034) by casting "Summon Orb".
-  - Loot "Orb of Mastery" (28034) from "Carreenu Opulaae" in `chambersf`.
-  - Loot "Orb of Mastery" (28034) from "Gaelin" in `chambersf`.
-  - Loot "Orb of Mastery" (28034) from "Ipputs Dagglebrap" in `chambersf`.
-  - Loot "Orb of Mastery" (28034) from "Melodite Arinal" in `chambersf`.
-  - Loot "Orb of Mastery" (28034) from "Nakert Grimmagus" in `chambersf`.
 
 Alternative or repeat transition to `mage_epic` = `1` (not an additional required stage).
 
@@ -244,9 +228,6 @@ How the items are reached:
 - `draniksscar` iilivina, hand 19092 needs `mage_epic` ==7.
   - Turn in Staff of Elemental Essence (19092).
   - Gives Staff of Elemental Essence (19092).
-- `dreadlands` player, on enter needs `mage_epic` set.
-  - Spawns Time Terror (86172).
-  - Loots Time Terror Essence (63130).
 - `dreadlands` player, on loot needs `mage_epic` set.
   - Sets `mage_chest_dl` to `1`.
   - Spawns a chest (epic 2.0) (893).
@@ -481,9 +462,6 @@ How the items are reached:
   - Sets `mage_epic_dl` to `1`.
   - Spawns Chaos Elemental (86174).
   - Loots Element of Chaos (19444).
-- `dreadlands` player, on enter needs `mage_epic` ==10.
-  - Spawns Time Terror (86172).
-  - Loots Time Terror Essence (63130).
 - `dreadlands` player, on loot needs `mage_epic` ==10.
   - Sets `mage_chest_dl` to `1`.
   - Spawns a chest (epic 2.0) (893).
@@ -540,10 +518,6 @@ How the items are reached:
   - Spawns Body Elemental (284105).
   - Loots Element of Body (19447).
   - Loots Lucidem (35084).
-- `ferubi` player, on enter needs `mage_epic` ==10.
-  - Sets `paladin_epic_ferubi` to `1`.
-  - Spawns Shade of Reiya the Pained (284104).
-  - Loots Soulstone Shard (69943).
 - `hohonora` mage trap, on enter needs `mage_epic` ==10.
   - Sets `mage_epic_hoh` to `1`.
   - Spawns Order Elemental (211057).
