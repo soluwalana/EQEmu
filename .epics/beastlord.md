@@ -10,111 +10,69 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Claw of the Savage Spirit" (8495)
 
-1. Spawns "Arcanist Ukigit" (167661) in `grimling` on event_signal.
-2. Loot "Copper Medal of War" (4393) from "Arcanist Ukigit".
-3. sharvahl/"Elder Animist Dumul", hand "Copper Medal of War" (4393). Gives "Carved Wooden Chest" (17361).
-4. Hand "Official Seal of the Khati Sha" (9031) to feerrott/"Scout Ahlikal". Spawns "The Spirit of Decay" (47205). Loot "Totem of the Spider" (9032) from "The Spirit of Decay".
-5. Loot "Totem of the Spider" (9032) from "The Spirit of Decay".
-6. feerrott/"Scout Ahlikal", hand "Totem of the Spider" (9032). Gives "Wrapped Spider Totem" (9033).
-7. Hand "Official Seal of the Khati Sha" (9031) to lfaydark/"Scout Rahjiq". Spawns "The Spirit of Malevolence" (57119). Loot "Totem of the Wolf" (9034) from "The Spirit of Malevolence".
-8. Loot "Totem of the Wolf" (9034) from "The Spirit of Malevolence".
-9. lfaydark/"Scout Rahjiq", hand "Totem of the Wolf" (9034). Gives "Wrapped Wolf Totem" (9035).
-10. Hand "Official Seal of the Khati Sha" (9031) to permafrost/"Scout Janomin". Spawns "The Icebound Spirit" (73107). Loot "Totem of the Ice Bear" (9036) from "The Icebound Spirit".
-11. Loot "Totem of the Ice Bear" (9036) from "The Icebound Spirit".
-12. permafrost/"Scout Janomin", hand "Totem of the Ice Bear" (9036). Gives "Wrapped Ice Bear Totem" (9037).
-13. Hand "Official Seal of the Khati Sha" (9031) to emeraldjungle/"Scout Vyrak". Spawns "The Spirit of Rage" (94126). Loot "Totem of the Gorilla" (9038) from "The Spirit of Rage".
-14. Loot "Totem of the Gorilla" (9038) from "The Spirit of Rage".
-15. emeraldjungle/"Scout Vyrak", hand "Totem of the Gorilla" (9038). Gives "Wrapped Gorilla Totem" (9039).
-16. Hand "Official Seal of the Khati Sha" (9031) to stonebrunt/"Scout Malom". Spawns "The Spirit of Torment" (100220). Loot "Totem of the Watcher" (9040) from "The Spirit of Torment".
-17. Loot "Totem of the Watcher" (9040) from "The Spirit of Torment".
-18. stonebrunt/"Scout Malom", hand "Totem of the Watcher" (9040). Gives "Wrapped Watcher Totem" (9041).
-19. Hand "Official Seal of the Khati Sha" (9031) to swampofnohope/"Scout Eyru". Spawns "The Spirit of Sorrow" (83244). Loot "Totem of the Alligator" (9042) from "The Spirit of Sorrow".
-20. Loot "Totem of the Alligator" (9042) from "The Spirit of Sorrow".
-21. swampofnohope/"Scout Eyru", hand "Totem of the Alligator" (9042). Gives "Wrapped Alligator Totem" (9043).
-22. Combine in "Carved Wooden Chest" (17361): "Wrapped Spider Totem" (9033), "Wrapped Wolf Totem" (9035), "Wrapped Ice Bear Totem" (9037), "Wrapped Gorilla Totem" (9039), "Wrapped Watcher Totem" (9041), "Wrapped Alligator Totem" (9043). Produces "Sealed Box of Totems" (9044). The combine does not fail.
-23. sharvahl/"Elder Animist Dumul", hand "Sealed Box of Totems" (9044). Gives "Seal of Elder Dumul" (9045).
-24. timorous/"Scout Sihmoj", hand "Seal of Elder Dumul" (9045). Gives "Black Silk Sack" (17360).
-25. Kill timorous/"Draz Nurakk". Spawns "Draz Nurakks Image" (96322).
-26. Loot "Shards of Broken Glass" (9046) from "Draz Nurakks Image".
-27. Combine in "Black Silk Sack" (17360): "Shards of Broken Glass" (9046). Produces "Sack of Broken Glass" (9047). The combine does not fail.
-28. timorous/"Scout Sihmoj", hand "Sack of Broken Glass" (9047). Gives "Sack of Broken Glass" (9048).
-29. sharvahl/"Elder Animist Dumul", hand "Sack of Broken Glass" (9048). Gives "Note for Historian Qua" (9049).
-30. sharvahl/"Arms Historian Qua", hand "Note for Historian Qua" (9049). Gives "Qua's Receipt" (9050).
-31. sharvahl/"Weapons Master Rahoul", hand "Qua's Receipt" (9050). Gives "Rahoul's Collection Box" (17363).
-32. No quest step gives Gem of the Void (9053). The dump lists it in maiden.
-33. Spawns "A Boulder Fiend" (171063) in `thegrey` on enter.
-34. Loot "Perfect Acrylia Ore" (9052) from "A Boulder Fiend".
-35. Spawns "A Stone Beast" (171051) in `thegrey` on enter.
-36. Loot "Perfect Acrylia Ore" (9052) from "A Stone Beast".
-37. Spawns "Stonehand" (171064) in `thegrey` on enter.
-38. Loot "Perfect Acrylia Ore" (9052) from "Stonehand".
-39. Spawns "Boulder" (171069) in `thegrey` on enter.
-40. Loot "Perfect Acrylia Ore" (9052) from "Boulder".
-41. No quest step gives Chunk of Dense Fungal Padding (9054). The dump lists it in thedeep.
-42. Combine in "Rahoul's Collection Box" (17363): "Gem of the Void" (9053), "Perfect Acrylia Ore" (9052), "Chunk of Dense Fungal Padding" (9054). Produces "Sealed Collection Box" (9051). The combine does not fail.
-43. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9055).
-44. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9056).
-45. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Acrylia Gilded Box" (17362).
-46. Hand "Khati Sha Seal of War" (9057) to fungusgrove/"Scout Halmia". Spawns "Draz Nurakk" (157116). Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
-47. Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
-48. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Khati Sha Seal of War" (9057).
-49. fungusgrove/"Scout Halmia", hand "Khati Sha Seal of War" (9057). Gives "Khati Sha Seal of War" (9062).
-50. Combine in "Acrylia Gilded Box" (17362): "Jagged Claw of Rending" (9055), "Jagged Claw of Rending" (9056), "Draz Nurakk's Head" (9059), "Khati Sha Seal of War" (9062). Produces "Sealed Gilded Wooden Chest" (9060). The combine does not fail.
-51. sharvahl/"Elder Animist Dumul", hand "Sealed Gilded Wooden Chest" (9060). Gives "Claw of the Savage Spirit" (8495).
+1. Combine in "Carved Wooden Chest" (17361): "Wrapped Spider Totem" (9033), "Wrapped Wolf Totem" (9035), "Wrapped Ice Bear Totem" (9037), "Wrapped Gorilla Totem" (9039), "Wrapped Watcher Totem" (9041), "Wrapped Alligator Totem" (9043). Produces "Sealed Box of Totems" (9044). The combine does not fail.
+2. sharvahl/"Elder Animist Dumul", hand "Sealed Box of Totems" (9044). Gives "Seal of Elder Dumul" (9045).
+3. timorous/"Scout Sihmoj", hand "Seal of Elder Dumul" (9045). Gives "Black Silk Sack" (17360).
+4. Kill timorous/"Draz Nurakk". Spawns "Draz Nurakks Image" (96322).
+5. Loot "Shards of Broken Glass" (9046) from "Draz Nurakks Image".
+6. Combine in "Black Silk Sack" (17360): "Shards of Broken Glass" (9046). Produces "Sack of Broken Glass" (9047). The combine does not fail.
+7. timorous/"Scout Sihmoj", hand "Sack of Broken Glass" (9047). Gives "Sack of Broken Glass" (9048).
+8. sharvahl/"Elder Animist Dumul", hand "Sack of Broken Glass" (9048). Gives "Note for Historian Qua" (9049).
+9. sharvahl/"Arms Historian Qua", hand "Note for Historian Qua" (9049). Gives "Qua's Receipt" (9050).
+10. sharvahl/"Weapons Master Rahoul", hand "Qua's Receipt" (9050). Gives "Rahoul's Collection Box" (17363).
+11. No quest step gives Gem of the Void (9053). The dump lists it in maiden.
+12. Spawns "A Boulder Fiend" (171063) in `thegrey` on enter.
+13. Loot "Perfect Acrylia Ore" (9052) from "A Boulder Fiend".
+14. Spawns "A Stone Beast" (171051) in `thegrey` on enter.
+15. Loot "Perfect Acrylia Ore" (9052) from "A Stone Beast".
+16. Spawns "Stonehand" (171064) in `thegrey` on enter.
+17. Loot "Perfect Acrylia Ore" (9052) from "Stonehand".
+18. Spawns "Boulder" (171069) in `thegrey` on enter.
+19. Loot "Perfect Acrylia Ore" (9052) from "Boulder".
+20. No quest step gives Chunk of Dense Fungal Padding (9054). The dump lists it in thedeep.
+21. Combine in "Rahoul's Collection Box" (17363): "Gem of the Void" (9053), "Perfect Acrylia Ore" (9052), "Chunk of Dense Fungal Padding" (9054). Produces "Sealed Collection Box" (9051). The combine does not fail.
+22. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9055).
+23. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9056).
+24. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Acrylia Gilded Box" (17362).
+25. Hand "Khati Sha Seal of War" (9057) to fungusgrove/"Scout Halmia". Spawns "Draz Nurakk" (157116). Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
+26. Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
+27. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Khati Sha Seal of War" (9057).
+28. fungusgrove/"Scout Halmia", hand "Khati Sha Seal of War" (9057). Gives "Khati Sha Seal of War" (9062).
+29. Combine in "Acrylia Gilded Box" (17362): "Jagged Claw of Rending" (9055), "Jagged Claw of Rending" (9056), "Draz Nurakk's Head" (9059), "Khati Sha Seal of War" (9062). Produces "Sealed Gilded Wooden Chest" (9060). The combine does not fail.
+30. sharvahl/"Elder Animist Dumul", hand "Sealed Gilded Wooden Chest" (9060). Gives "Claw of the Savage Spirit" (8495).
 
 ### "Claw of the Savage Spirit" (8496)
 
-1. Spawns "Arcanist Ukigit" (167661) in `grimling` on event_signal.
-2. Loot "Copper Medal of War" (4393) from "Arcanist Ukigit".
-3. sharvahl/"Elder Animist Dumul", hand "Copper Medal of War" (4393). Gives "Carved Wooden Chest" (17361).
-4. Hand "Official Seal of the Khati Sha" (9031) to feerrott/"Scout Ahlikal". Spawns "The Spirit of Decay" (47205). Loot "Totem of the Spider" (9032) from "The Spirit of Decay".
-5. Loot "Totem of the Spider" (9032) from "The Spirit of Decay".
-6. feerrott/"Scout Ahlikal", hand "Totem of the Spider" (9032). Gives "Wrapped Spider Totem" (9033).
-7. Hand "Official Seal of the Khati Sha" (9031) to lfaydark/"Scout Rahjiq". Spawns "The Spirit of Malevolence" (57119). Loot "Totem of the Wolf" (9034) from "The Spirit of Malevolence".
-8. Loot "Totem of the Wolf" (9034) from "The Spirit of Malevolence".
-9. lfaydark/"Scout Rahjiq", hand "Totem of the Wolf" (9034). Gives "Wrapped Wolf Totem" (9035).
-10. Hand "Official Seal of the Khati Sha" (9031) to permafrost/"Scout Janomin". Spawns "The Icebound Spirit" (73107). Loot "Totem of the Ice Bear" (9036) from "The Icebound Spirit".
-11. Loot "Totem of the Ice Bear" (9036) from "The Icebound Spirit".
-12. permafrost/"Scout Janomin", hand "Totem of the Ice Bear" (9036). Gives "Wrapped Ice Bear Totem" (9037).
-13. Hand "Official Seal of the Khati Sha" (9031) to emeraldjungle/"Scout Vyrak". Spawns "The Spirit of Rage" (94126). Loot "Totem of the Gorilla" (9038) from "The Spirit of Rage".
-14. Loot "Totem of the Gorilla" (9038) from "The Spirit of Rage".
-15. emeraldjungle/"Scout Vyrak", hand "Totem of the Gorilla" (9038). Gives "Wrapped Gorilla Totem" (9039).
-16. Hand "Official Seal of the Khati Sha" (9031) to stonebrunt/"Scout Malom". Spawns "The Spirit of Torment" (100220). Loot "Totem of the Watcher" (9040) from "The Spirit of Torment".
-17. Loot "Totem of the Watcher" (9040) from "The Spirit of Torment".
-18. stonebrunt/"Scout Malom", hand "Totem of the Watcher" (9040). Gives "Wrapped Watcher Totem" (9041).
-19. Hand "Official Seal of the Khati Sha" (9031) to swampofnohope/"Scout Eyru". Spawns "The Spirit of Sorrow" (83244). Loot "Totem of the Alligator" (9042) from "The Spirit of Sorrow".
-20. Loot "Totem of the Alligator" (9042) from "The Spirit of Sorrow".
-21. swampofnohope/"Scout Eyru", hand "Totem of the Alligator" (9042). Gives "Wrapped Alligator Totem" (9043).
-22. Combine in "Carved Wooden Chest" (17361): "Wrapped Spider Totem" (9033), "Wrapped Wolf Totem" (9035), "Wrapped Ice Bear Totem" (9037), "Wrapped Gorilla Totem" (9039), "Wrapped Watcher Totem" (9041), "Wrapped Alligator Totem" (9043). Produces "Sealed Box of Totems" (9044). The combine does not fail.
-23. sharvahl/"Elder Animist Dumul", hand "Sealed Box of Totems" (9044). Gives "Seal of Elder Dumul" (9045).
-24. timorous/"Scout Sihmoj", hand "Seal of Elder Dumul" (9045). Gives "Black Silk Sack" (17360).
-25. Kill timorous/"Draz Nurakk". Spawns "Draz Nurakks Image" (96322).
-26. Loot "Shards of Broken Glass" (9046) from "Draz Nurakks Image".
-27. Combine in "Black Silk Sack" (17360): "Shards of Broken Glass" (9046). Produces "Sack of Broken Glass" (9047). The combine does not fail.
-28. timorous/"Scout Sihmoj", hand "Sack of Broken Glass" (9047). Gives "Sack of Broken Glass" (9048).
-29. sharvahl/"Elder Animist Dumul", hand "Sack of Broken Glass" (9048). Gives "Note for Historian Qua" (9049).
-30. sharvahl/"Arms Historian Qua", hand "Note for Historian Qua" (9049). Gives "Qua's Receipt" (9050).
-31. sharvahl/"Weapons Master Rahoul", hand "Qua's Receipt" (9050). Gives "Rahoul's Collection Box" (17363).
-32. No quest step gives Gem of the Void (9053). The dump lists it in maiden.
-33. Spawns "A Boulder Fiend" (171063) in `thegrey` on enter.
-34. Loot "Perfect Acrylia Ore" (9052) from "A Boulder Fiend".
-35. Spawns "A Stone Beast" (171051) in `thegrey` on enter.
-36. Loot "Perfect Acrylia Ore" (9052) from "A Stone Beast".
-37. Spawns "Stonehand" (171064) in `thegrey` on enter.
-38. Loot "Perfect Acrylia Ore" (9052) from "Stonehand".
-39. Spawns "Boulder" (171069) in `thegrey` on enter.
-40. Loot "Perfect Acrylia Ore" (9052) from "Boulder".
-41. No quest step gives Chunk of Dense Fungal Padding (9054). The dump lists it in thedeep.
-42. Combine in "Rahoul's Collection Box" (17363): "Gem of the Void" (9053), "Perfect Acrylia Ore" (9052), "Chunk of Dense Fungal Padding" (9054). Produces "Sealed Collection Box" (9051). The combine does not fail.
-43. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9055).
-44. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9056).
-45. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Acrylia Gilded Box" (17362).
-46. Hand "Khati Sha Seal of War" (9057) to fungusgrove/"Scout Halmia". Spawns "Draz Nurakk" (157116). Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
-47. Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
-48. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Khati Sha Seal of War" (9057).
-49. fungusgrove/"Scout Halmia", hand "Khati Sha Seal of War" (9057). Gives "Khati Sha Seal of War" (9062).
-50. Combine in "Acrylia Gilded Box" (17362): "Jagged Claw of Rending" (9055), "Jagged Claw of Rending" (9056), "Draz Nurakk's Head" (9059), "Khati Sha Seal of War" (9062). Produces "Sealed Gilded Wooden Chest" (9060). The combine does not fail.
-51. sharvahl/"Elder Animist Dumul", hand "Sealed Gilded Wooden Chest" (9060). Gives "Claw of the Savage Spirit" (8496).
+1. Combine in "Carved Wooden Chest" (17361): "Wrapped Spider Totem" (9033), "Wrapped Wolf Totem" (9035), "Wrapped Ice Bear Totem" (9037), "Wrapped Gorilla Totem" (9039), "Wrapped Watcher Totem" (9041), "Wrapped Alligator Totem" (9043). Produces "Sealed Box of Totems" (9044). The combine does not fail.
+2. sharvahl/"Elder Animist Dumul", hand "Sealed Box of Totems" (9044). Gives "Seal of Elder Dumul" (9045).
+3. timorous/"Scout Sihmoj", hand "Seal of Elder Dumul" (9045). Gives "Black Silk Sack" (17360).
+4. Kill timorous/"Draz Nurakk". Spawns "Draz Nurakks Image" (96322).
+5. Loot "Shards of Broken Glass" (9046) from "Draz Nurakks Image".
+6. Combine in "Black Silk Sack" (17360): "Shards of Broken Glass" (9046). Produces "Sack of Broken Glass" (9047). The combine does not fail.
+7. timorous/"Scout Sihmoj", hand "Sack of Broken Glass" (9047). Gives "Sack of Broken Glass" (9048).
+8. sharvahl/"Elder Animist Dumul", hand "Sack of Broken Glass" (9048). Gives "Note for Historian Qua" (9049).
+9. sharvahl/"Arms Historian Qua", hand "Note for Historian Qua" (9049). Gives "Qua's Receipt" (9050).
+10. sharvahl/"Weapons Master Rahoul", hand "Qua's Receipt" (9050). Gives "Rahoul's Collection Box" (17363).
+11. No quest step gives Gem of the Void (9053). The dump lists it in maiden.
+12. Spawns "A Boulder Fiend" (171063) in `thegrey` on enter.
+13. Loot "Perfect Acrylia Ore" (9052) from "A Boulder Fiend".
+14. Spawns "A Stone Beast" (171051) in `thegrey` on enter.
+15. Loot "Perfect Acrylia Ore" (9052) from "A Stone Beast".
+16. Spawns "Stonehand" (171064) in `thegrey` on enter.
+17. Loot "Perfect Acrylia Ore" (9052) from "Stonehand".
+18. Spawns "Boulder" (171069) in `thegrey` on enter.
+19. Loot "Perfect Acrylia Ore" (9052) from "Boulder".
+20. No quest step gives Chunk of Dense Fungal Padding (9054). The dump lists it in thedeep.
+21. Combine in "Rahoul's Collection Box" (17363): "Gem of the Void" (9053), "Perfect Acrylia Ore" (9052), "Chunk of Dense Fungal Padding" (9054). Produces "Sealed Collection Box" (9051). The combine does not fail.
+22. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9055).
+23. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9056).
+24. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Acrylia Gilded Box" (17362).
+25. Hand "Khati Sha Seal of War" (9057) to fungusgrove/"Scout Halmia". Spawns "Draz Nurakk" (157116). Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
+26. Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
+27. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Khati Sha Seal of War" (9057).
+28. fungusgrove/"Scout Halmia", hand "Khati Sha Seal of War" (9057). Gives "Khati Sha Seal of War" (9062).
+29. Combine in "Acrylia Gilded Box" (17362): "Jagged Claw of Rending" (9055), "Jagged Claw of Rending" (9056), "Draz Nurakk's Head" (9059), "Khati Sha Seal of War" (9062). Produces "Sealed Gilded Wooden Chest" (9060). The combine does not fail.
+30. sharvahl/"Elder Animist Dumul", hand "Sealed Gilded Wooden Chest" (9060). Gives "Claw of the Savage Spirit" (8496).
 
 ### "Decorated Statuette of the Feral" (57059)
 
@@ -172,7 +130,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 15. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
 16. Say "Tm Dokorel Death" to rujd/"Rujd".
 17. Say "Tm Velrek Death" to rujd/"Rujd".
-18. Say "Researcher Death" to rujg/"Rujg".
+18. Say "Event:Death Complete:260061" to rujg/"Rujg".
 19. Spawns "A Barrel" (260015).
 20. Loot "Pod of Water" (13044) from "A Barrel".
 21. 3 other loot steps also yield Pod of Water (13044).

@@ -251,26 +251,8 @@ Sets `berserk_epic` to `4`.
 
 In script order:
 
-1. Spawns a chest (Epic 1.5) (283157).
-   - Loots Mud Covered Shoulder Pads (71006).
-   - Loots Dented Steel Face Guard (71013).
-   - Loots Hollowed Bone Plated Mask (71014).
-   - Loots Ragged Ruby Veil (71015).
-   - Loots Rugged Iron Battle Mask (71016).
-   - Loots Slender White Silk Cape (71018).
-   - Loots Gleaming Crystal Band (71047).
-   - Loots Shattered Bone Stud (71048).
-   - Loots Aged Hoop of Battle (71049).
-   - Loots Muramite Plate Gloves of War (71055).
-   - Loots Muramite Chain Armguards of Battle (71059).
-   - Loots Muramite Chain Boots of Battle (71061).
-   - Loots Muramite Leather Band of Conflict (71063).
-   - Loots Muramite Leather Sleeves of Conflict (71064).
-   - Loots Muramite Leather Wraps of Conflict (71065).
-   - Loots Muramite Silk Sleeves of Contention (71069).
-   - Loots Muramite Silk Gloves of Contention (71070).
-2. Sets `berserk_epic_sebchest` to `1`.
-3. Sets `berserk_epic` to `4`.
+1. Sets `berserk_epic_sebchest` to `1`.
+2. Sets `berserk_epic` to `4`.
 
 
 ### 5. keras mcarik — hand 17399+17833+17898+18976

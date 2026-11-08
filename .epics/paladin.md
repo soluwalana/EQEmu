@@ -26,7 +26,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 2. Loot "Drema's Soulstone" (69928) from "Drema Young".
 3. Loot "Drema's Soulstone" (69928) from "Drema Young" in `letalis`.
 4. Loot "Soulstone Shard" (69950) from "Coterie Corruptor" in `tenebrous`.
-5. Say "Mujaki Death" to ponightmare/"Mujaki".
+5. Say "Event:Death Complete:204080" to ponightmare/"Mujaki".
 6. Spawns "Shade of Mujaki the Devourer" (204081).
 7. Loot "Soulstone Shard" (69951) from "Shade of Mujaki the Devourer".
 8. Combine in "Drema's Soulstone" (69928): "Soulstone Shard" (69950), "Soulstone Shard" (69951). Produces "Drema's Soulstone" (69952). The combine does not fail.
@@ -92,108 +92,83 @@ Each list is the order you obtain that item. Later steps point here instead of r
 16. freeporteast/"Tykar Renlin", hand "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829). Gives "Bunker Cell #1" (12196).
 17. freporte/"Tykar Renlin", hand "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829). Gives "Bunker Cell #1" (12196).
 18. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
-19. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
-20. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-21. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-22. 67 other recipes also produce Celestial Essence (9650).
-23. Common item: Jar of Acid (22133). Listed in 15 zones.
-24. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
-25. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
-26. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-27. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
-28. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-29. Common item: Firing Sheet (16906). Listed in 34 zones.
-30. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-31. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-32. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-33. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-34. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-35. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-36. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-37. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-38. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-39. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-40. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-41. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-42. Say "Tm Devrak Death" to rujd/"Rujd".
-43. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-44. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-45. Say "Tm Dokorel Death" to rujd/"Rujd".
-46. Say "Tm Velrek Death" to rujd/"Rujd".
-47. Say "Researcher Death" to rujg/"Rujg".
-48. Spawns "A Barrel" (260015).
-49. Loot "Pod of Water" (13044) from "A Barrel".
-50. 3 other loot steps also yield Pod of Water (13044).
-51. Forage "Pod of Water" (13044) in `ruja`.
-52. Forage "Pod of Water" (13044) in `uqua`.
-53. Forage "Pod of Water" (13044) in `yxtta`.
-54. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-55. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-56. 17 other recipes also produce Bottle (16598).
-57. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-58. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-59. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-60. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-61. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-62. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-63. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-64. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-65. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-66. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-67. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-68. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-69. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-70. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-71. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-72. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-73. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-74. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-75. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-76. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-77. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-78. Common item: Snake Scales (13070). Listed in 56 zones.
-79. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Snake Scales" (13070), "Bottle" (16598). Produces "Bog Juice" (16581). Requires Brewing, trivial 21.
-80. Common item: Spit (17947). Listed in 34 zones.
-81. Common item: Fire Beetle Eye (10307). Listed in 24 zones.
-82. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
-83. Loot "Rat Ears" (13072) from "Sepsis Rat".
-84. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
-85. Loot "Rat Ears" (13072) from "A Young Plague Rat".
-86. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
-87. Combine in "Spit" (17947): "Fire Beetle Eye" (10307), "Rat Ears" (13072). Produces "Edible Goo" (13498). Requires Baking, trivial 21.
-88. freeporteast/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
-89. freportw/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
-90. highkeep/"Assistant Kiolna", hand "H. K. 102" (12143). Gives "Sealed Note" (18936).
-91. paw/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
-92. southkarana/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
-93. Kill freportw/"Sir Lucan D-Lere". Spawns "Sir Lucan D'Lere" (9147).
-94. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere".
-95. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere" in `freeporteast`.
-96. freeportwest/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
-97. freportn/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
-98. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freeportwest/"Merko Quetalis". Spawns "spawns Guard Willia" (383270). Loot "Token of Truth" (13866) from "spawns Guard Willia".
-99. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freportn/"Merko Quetalis". Spawns "spawns Guard Willia" (8110). Loot "Token of Truth" (13866) from "spawns Guard Willia".
-100. Loot "Token of Truth" (13866) from "Guard Willia".
-101. freeportwest/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
-102. freportn/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
-103. Loot "Glowing Sword Hilt" (12197) from "Xicotl" in `mistmoore`.
-104. paw/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
-105. southkarana/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
-106. airplane/"Inte Akera", hand "SoulFire" (5504). Gives "Inte's First Blessing" (18033).
-107. lavastorm/"Ruathey", say "Bag". Gives "Nobleman's Bag" (17878).
-108. Common item: Ghoul's Heart (2410). Listed in 8 zones.
-109. No quest step gives Amstaf's Scroll (2411). The dump lists it in highkeep.
-110. No quest step gives Blade of Nobility (2412). The dump lists it in butcher.
-111. Loot "Hilt of the Nobleman" (2413) from "Ekeros" in `najena`.
-112. Loot "Hilt of the Nobleman" (2413) from "A Skeleton" in `najena`.
-113. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). The combine does not fail.
-114. airplane/"Inte Akera", hand "Ghoulbane" (5403). Gives "Inte's Second Blessing" (18034).
-115. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Head" (19073) from "Spawn Miragul".
-116. Loot "Miragul's Head" (19073) from "Miragul".
-117. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Robe" (1254) from "Spawn Miragul".
-118. Loot "Miragul's Robe" (1254) from "Miragul".
-119. airplane/"Inte Akera", hand "Miragul's Robe" (1254) + "Inte's First Blessing" (18033) + "Inte's Second Blessing" (18034) + "Miragul's Head" (19073). Gives "Fiery Avenger" (11050).
-120. fearplane/"Irak Altil", hand "Fiery Avenger" (11050) + "Mark of Atonement" (29010). Gives "Fiery Defender" (10099).
+19. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
+20. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
+21. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+22. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+23. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+24. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
+25. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+26. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
+27. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+28. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+29. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+30. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+31. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+32. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+33. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+34. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
+35. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
+36. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
+37. Say "Tm Devrak Death" to rujd/"Rujd".
+38. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
+39. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
+40. Say "Tm Dokorel Death" to rujd/"Rujd".
+41. Say "Tm Velrek Death" to rujd/"Rujd".
+42. Say "Event:Death Complete:260061" to rujg/"Rujg".
+43. Spawns "A Barrel" (260015).
+44. Loot "Pod of Water" (13044) from "A Barrel".
+45. 3 other loot steps also yield Pod of Water (13044).
+46. Forage "Pod of Water" (13044) in `ruja`.
+47. Forage "Pod of Water" (13044) in `uqua`.
+48. Forage "Pod of Water" (13044) in `yxtta`.
+49. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+50. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+51. 17 other recipes also produce Bottle (16598).
+52. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+53. Common item: Snake Scales (13070). Listed in 56 zones.
+54. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Snake Scales" (13070), "Bottle" (16598). Produces "Bog Juice" (16581). Requires Brewing, trivial 21.
+55. Common item: Spit (17947). Listed in 34 zones.
+56. Common item: Fire Beetle Eye (10307). Listed in 24 zones.
+57. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
+58. Loot "Rat Ears" (13072) from "Sepsis Rat".
+59. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
+60. Loot "Rat Ears" (13072) from "A Young Plague Rat".
+61. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
+62. Combine in "Spit" (17947): "Fire Beetle Eye" (10307), "Rat Ears" (13072). Produces "Edible Goo" (13498). Requires Baking, trivial 21.
+63. freeporteast/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
+64. freportw/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
+65. highkeep/"Assistant Kiolna", hand "H. K. 102" (12143). Gives "Sealed Note" (18936).
+66. paw/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
+67. southkarana/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
+68. Kill freportw/"Sir Lucan D-Lere". Spawns "Sir Lucan D'Lere" (9147).
+69. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere".
+70. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere" in `freeporteast`.
+71. freeportwest/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
+72. freportn/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
+73. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freeportwest/"Merko Quetalis". Spawns "spawns Guard Willia" (383270). Loot "Token of Truth" (13866) from "spawns Guard Willia".
+74. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freportn/"Merko Quetalis". Spawns "spawns Guard Willia" (8110). Loot "Token of Truth" (13866) from "spawns Guard Willia".
+75. Loot "Token of Truth" (13866) from "Guard Willia".
+76. freeportwest/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
+77. freportn/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
+78. Loot "Glowing Sword Hilt" (12197) from "Xicotl" in `mistmoore`.
+79. paw/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
+80. southkarana/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
+81. airplane/"Inte Akera", hand "SoulFire" (5504). Gives "Inte's First Blessing" (18033).
+82. lavastorm/"Ruathey", say "Bag". Gives "Nobleman's Bag" (17878).
+83. Common item: Ghoul's Heart (2410). Listed in 8 zones.
+84. No quest step gives Amstaf's Scroll (2411). The dump lists it in highkeep.
+85. No quest step gives Blade of Nobility (2412). The dump lists it in butcher.
+86. Loot "Hilt of the Nobleman" (2413) from "Ekeros" in `najena`.
+87. Loot "Hilt of the Nobleman" (2413) from "A Skeleton" in `najena`.
+88. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). The combine does not fail.
+89. airplane/"Inte Akera", hand "Ghoulbane" (5403). Gives "Inte's Second Blessing" (18034).
+90. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Head" (19073) from "Spawn Miragul".
+91. Loot "Miragul's Head" (19073) from "Miragul".
+92. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Robe" (1254) from "Spawn Miragul".
+93. Loot "Miragul's Robe" (1254) from "Miragul".
+94. airplane/"Inte Akera", hand "Miragul's Robe" (1254) + "Inte's First Blessing" (18033) + "Inte's Second Blessing" (18034) + "Miragul's Head" (19073). Gives "Fiery Avenger" (11050).
+95. fearplane/"Irak Altil", hand "Fiery Avenger" (11050) + "Mark of Atonement" (29010). Gives "Fiery Defender" (10099).
 
 ### "Couragebringer" (69913)
 
@@ -204,23 +179,22 @@ Each list is the order you obtain that item. Later steps point here instead of r
 5. Spawns "Neffiken Lord Kelek-Vor" (210229) in `postorms` on event_signal.
 6. Loot "Broken Sword Piece" (69903) from "Neffiken Lord Kelek-Vor".
 7. Loot "Broken Sword Piece" (69903) from "Neffiken Lord of Kelek'Vor".
-8. Say "Control Timer" to hateplaneb/"Maestro".
-9. Spawns "Maestro of Rancor" (186111).
-10. Loot "Broken Sword Piece" (69904) from "Maestro of Rancor".
-11. **Broken:** no event trigger found for `hateplaneb/maestro#timer:popmaestro`.
-12. Spawns "Maestro of Rancor" (186111) after `hateplaneb/maestro#timer:popmaestro`.
-13. Loot "Broken Sword Piece" (69905) from "Kaniz Painbringer" in `potorment`.
-14. sro/"Gilfal", hand "Baltron's Solvent" (69901). Sets `pre_pal` to `2`.
-15. Ground spawn of "Rune of Xor" (69909) in `potranquility`.
-16. Ground spawn of "Rune of Yirno" (69908) in `mistmoore`.
-17. Ground spawn of "Rune of Zota" (69907) in `scarlet`.
-18. Ground spawn of "Rune Wilun" (69910) in `gunthak`.
-19. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Requires `pre_pal` ==2. Gives "Broken Sword Piece" (69906).
-20. Combine in "Gilfal's Scabbard" (69902): "Broken Sword Piece" (69903), "Broken Sword Piece" (69904), "Broken Sword Piece" (69905), "Broken Sword Piece" (69906). Produces "Fractured Couragebringer" (69911). The combine does not fail.
-21. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Sets `pre_pal` to `4`.
-22. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Sets `pre_pal` to `3`.
-23. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Requires `pre_pal` ==3. Gives "Fractured Couragebringer" (69912).
-24. povalor/"Baltron Werters", hand "Fractured Couragebringer" (69912). Requires `pre_pal` ==4. Gives "Couragebringer" (69913).
+8. Encounter starts when NPC 186196 spawns in `hateplaneb`.
+9. Starts timer `popmaestro`.
+10. Spawns "Maestro of Rancor" (186111) after `hateplaneb/maestro#timer:popmaestro`.
+11. Loot "Broken Sword Piece" (69904) from "Maestro of Rancor".
+12. Loot "Broken Sword Piece" (69905) from "Kaniz Painbringer" in `potorment`.
+13. sro/"Gilfal", hand "Baltron's Solvent" (69901). Sets `pre_pal` to `2`.
+14. Ground spawn of "Rune of Xor" (69909) in `potranquility`.
+15. Ground spawn of "Rune of Yirno" (69908) in `mistmoore`.
+16. Ground spawn of "Rune of Zota" (69907) in `scarlet`.
+17. Ground spawn of "Rune Wilun" (69910) in `gunthak`.
+18. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Requires `pre_pal` ==2. Gives "Broken Sword Piece" (69906).
+19. Combine in "Gilfal's Scabbard" (69902): "Broken Sword Piece" (69903), "Broken Sword Piece" (69904), "Broken Sword Piece" (69905), "Broken Sword Piece" (69906). Produces "Fractured Couragebringer" (69911). The combine does not fail.
+20. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Sets `pre_pal` to `4`.
+21. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Sets `pre_pal` to `3`.
+22. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Requires `pre_pal` ==3. Gives "Fractured Couragebringer" (69912).
+23. povalor/"Baltron Werters", hand "Fractured Couragebringer" (69912). Requires `pre_pal` ==4. Gives "Couragebringer" (69913).
 
 ### "Drema's Fingerbone" (69946)
 
@@ -253,7 +227,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 11. Loot "Drema's Soulstone" (69928) from "Drema Young".
 12. Loot "Drema's Soulstone" (69928) from "Drema Young" in `letalis`.
 13. Loot "Soulstone Shard" (69950) from "Coterie Corruptor" in `tenebrous`.
-14. Say "Mujaki Death" to ponightmare/"Mujaki".
+14. Say "Event:Death Complete:204080" to ponightmare/"Mujaki".
 15. Spawns "Shade of Mujaki the Devourer" (204081).
 16. Loot "Soulstone Shard" (69951) from "Shade of Mujaki the Devourer".
 17. Combine in "Drema's Soulstone" (69928): "Soulstone Shard" (69950), "Soulstone Shard" (69951). Produces "Drema's Soulstone" (69952). The combine does not fail.
@@ -313,136 +287,108 @@ Each list is the order you obtain that item. Later steps point here instead of r
 71. freeporteast/"Tykar Renlin", hand "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829). Gives "Bunker Cell #1" (12196).
 72. freporte/"Tykar Renlin", hand "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829). Gives "Bunker Cell #1" (12196).
 73. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
-74. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
-75. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-76. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-77. 67 other recipes also produce Celestial Essence (9650).
-78. Common item: Jar of Acid (22133). Listed in 15 zones.
-79. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
-80. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
-81. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-82. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
-83. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-84. Common item: Firing Sheet (16906). Listed in 34 zones.
-85. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-86. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-87. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-88. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-89. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-90. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-91. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-92. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-93. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-94. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-95. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-96. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-97. Say "Tm Devrak Death" to rujd/"Rujd".
-98. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-99. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-100. Say "Tm Dokorel Death" to rujd/"Rujd".
-101. Say "Tm Velrek Death" to rujd/"Rujd".
-102. Say "Researcher Death" to rujg/"Rujg".
-103. Spawns "A Barrel" (260015).
-104. Loot "Pod of Water" (13044) from "A Barrel".
-105. 3 other loot steps also yield Pod of Water (13044).
-106. Forage "Pod of Water" (13044) in `ruja`.
-107. Forage "Pod of Water" (13044) in `uqua`.
-108. Forage "Pod of Water" (13044) in `yxtta`.
-109. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-110. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-111. 17 other recipes also produce Bottle (16598).
-112. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-113. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-114. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-115. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-116. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-117. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-118. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-119. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-120. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-121. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-122. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-123. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-124. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-125. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-126. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-127. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-128. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-129. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-130. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-131. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-132. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-133. Common item: Snake Scales (13070). Listed in 56 zones.
-134. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Snake Scales" (13070), "Bottle" (16598). Produces "Bog Juice" (16581). Requires Brewing, trivial 21.
-135. Common item: Spit (17947). Listed in 34 zones.
-136. Common item: Fire Beetle Eye (10307). Listed in 24 zones.
-137. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
-138. Loot "Rat Ears" (13072) from "Sepsis Rat".
-139. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
-140. Loot "Rat Ears" (13072) from "A Young Plague Rat".
-141. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
-142. Combine in "Spit" (17947): "Fire Beetle Eye" (10307), "Rat Ears" (13072). Produces "Edible Goo" (13498). Requires Baking, trivial 21.
-143. freeporteast/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
-144. freportw/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
-145. highkeep/"Assistant Kiolna", hand "H. K. 102" (12143). Gives "Sealed Note" (18936).
-146. paw/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
-147. southkarana/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
-148. Kill freportw/"Sir Lucan D-Lere". Spawns "Sir Lucan D'Lere" (9147).
-149. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere".
-150. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere" in `freeporteast`.
-151. freeportwest/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
-152. freportn/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
-153. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freeportwest/"Merko Quetalis". Spawns "spawns Guard Willia" (383270). Loot "Token of Truth" (13866) from "spawns Guard Willia".
-154. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freportn/"Merko Quetalis". Spawns "spawns Guard Willia" (8110). Loot "Token of Truth" (13866) from "spawns Guard Willia".
-155. Loot "Token of Truth" (13866) from "Guard Willia".
-156. freeportwest/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
-157. freportn/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
-158. Loot "Glowing Sword Hilt" (12197) from "Xicotl" in `mistmoore`.
-159. paw/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
-160. southkarana/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
-161. airplane/"Inte Akera", hand "SoulFire" (5504). Gives "Inte's First Blessing" (18033).
-162. lavastorm/"Ruathey", say "Bag". Gives "Nobleman's Bag" (17878).
-163. Common item: Ghoul's Heart (2410). Listed in 8 zones.
-164. No quest step gives Amstaf's Scroll (2411). The dump lists it in highkeep.
-165. No quest step gives Blade of Nobility (2412). The dump lists it in butcher.
-166. Loot "Hilt of the Nobleman" (2413) from "Ekeros" in `najena`.
-167. Loot "Hilt of the Nobleman" (2413) from "A Skeleton" in `najena`.
-168. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). The combine does not fail.
-169. airplane/"Inte Akera", hand "Ghoulbane" (5403). Gives "Inte's Second Blessing" (18034).
-170. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Head" (19073) from "Spawn Miragul".
-171. Loot "Miragul's Head" (19073) from "Miragul".
-172. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Robe" (1254) from "Spawn Miragul".
-173. Loot "Miragul's Robe" (1254) from "Miragul".
-174. airplane/"Inte Akera", hand "Miragul's Robe" (1254) + "Inte's First Blessing" (18033) + "Inte's Second Blessing" (18034) + "Miragul's Head" (19073). Gives "Fiery Avenger" (11050).
-175. fearplane/"Irak Altil", hand "Fiery Avenger" (11050) + "Mark of Atonement" (29010). Gives "Fiery Defender" (10099).
-176. povalor/"Baltron Werters", say "Couragebringer". Sets `pre_pal` to `1`.
-177. Requires `pre_pal` unset; no setter establishes this state.
-178. povalor/"Baltron Werters", say "Couragebringer". Requires `pre_pal` unset. Gives "Baltron's Solvent" (69901).
-179. sro/"Gilfal", hand "Baltron's Solvent" (69901). Requires `pre_pal` ==1. Gives "Gilfal's Scabbard" (69902).
-180. Spawns "Neffiken Lord Kelek-Vor" (210229) in `postorms` on event_signal.
-181. Loot "Broken Sword Piece" (69903) from "Neffiken Lord Kelek-Vor".
-182. Loot "Broken Sword Piece" (69903) from "Neffiken Lord of Kelek'Vor".
-183. Say "Control Timer" to hateplaneb/"Maestro".
-184. Spawns "Maestro of Rancor" (186111).
-185. Loot "Broken Sword Piece" (69904) from "Maestro of Rancor".
-186. **Broken:** no event trigger found for `hateplaneb/maestro#timer:popmaestro`.
-187. Spawns "Maestro of Rancor" (186111) after `hateplaneb/maestro#timer:popmaestro`.
-188. Loot "Broken Sword Piece" (69905) from "Kaniz Painbringer" in `potorment`.
-189. sro/"Gilfal", hand "Baltron's Solvent" (69901). Sets `pre_pal` to `2`.
-190. Ground spawn of "Rune of Xor" (69909) in `potranquility`.
-191. Ground spawn of "Rune of Yirno" (69908) in `mistmoore`.
-192. Ground spawn of "Rune of Zota" (69907) in `scarlet`.
-193. Ground spawn of "Rune Wilun" (69910) in `gunthak`.
-194. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Requires `pre_pal` ==2. Gives "Broken Sword Piece" (69906).
-195. Combine in "Gilfal's Scabbard" (69902): "Broken Sword Piece" (69903), "Broken Sword Piece" (69904), "Broken Sword Piece" (69905), "Broken Sword Piece" (69906). Produces "Fractured Couragebringer" (69911). The combine does not fail.
-196. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Sets `pre_pal` to `4`.
-197. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Sets `pre_pal` to `3`.
-198. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Requires `pre_pal` ==3. Gives "Fractured Couragebringer" (69912).
-199. povalor/"Baltron Werters", hand "Fractured Couragebringer" (69912). Requires `pre_pal` ==4. Gives "Couragebringer" (69913).
-200. hohonora/"Irak Altil", say "Hail". Sets `paladin_epic` to `6`.
-201. Spawns "Durunal the Cursebearer" (300087) in `wallofslaughter` on enter.
-202. Loot "Dark and Twisted Sword" (69971) from "Durunal the Cursebearer".
-203. hohonora/"Irak Altil", hand "Dark and Twisted Sword" (69971). Requires `paladin_epic` ==6. Gives "Dark and Twisted Sword" (69972).
+74. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+75. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+76. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+77. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
+78. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+79. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
+80. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+81. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+82. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+83. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+84. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+85. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+86. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+87. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
+88. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
+89. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
+90. Say "Tm Devrak Death" to rujd/"Rujd".
+91. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
+92. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
+93. Say "Tm Dokorel Death" to rujd/"Rujd".
+94. Say "Tm Velrek Death" to rujd/"Rujd".
+95. Say "Event:Death Complete:260061" to rujg/"Rujg".
+96. Spawns "A Barrel" (260015).
+97. Loot "Pod of Water" (13044) from "A Barrel".
+98. 3 other loot steps also yield Pod of Water (13044).
+99. Forage "Pod of Water" (13044) in `ruja`.
+100. Forage "Pod of Water" (13044) in `uqua`.
+101. Forage "Pod of Water" (13044) in `yxtta`.
+102. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+103. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+104. 17 other recipes also produce Bottle (16598).
+105. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+106. Common item: Snake Scales (13070). Listed in 56 zones.
+107. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Snake Scales" (13070), "Bottle" (16598). Produces "Bog Juice" (16581). Requires Brewing, trivial 21.
+108. Common item: Spit (17947). Listed in 34 zones.
+109. Common item: Fire Beetle Eye (10307). Listed in 24 zones.
+110. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
+111. Loot "Rat Ears" (13072) from "Sepsis Rat".
+112. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
+113. Loot "Rat Ears" (13072) from "A Young Plague Rat".
+114. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
+115. Combine in "Spit" (17947): "Fire Beetle Eye" (10307), "Rat Ears" (13072). Produces "Edible Goo" (13498). Requires Baking, trivial 21.
+116. freeporteast/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
+117. freportw/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
+118. highkeep/"Assistant Kiolna", hand "H. K. 102" (12143). Gives "Sealed Note" (18936).
+119. paw/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
+120. southkarana/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
+121. Kill freportw/"Sir Lucan D-Lere". Spawns "Sir Lucan D'Lere" (9147).
+122. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere".
+123. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere" in `freeporteast`.
+124. freeportwest/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
+125. freportn/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
+126. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freeportwest/"Merko Quetalis". Spawns "spawns Guard Willia" (383270). Loot "Token of Truth" (13866) from "spawns Guard Willia".
+127. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freportn/"Merko Quetalis". Spawns "spawns Guard Willia" (8110). Loot "Token of Truth" (13866) from "spawns Guard Willia".
+128. Loot "Token of Truth" (13866) from "Guard Willia".
+129. freeportwest/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
+130. freportn/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
+131. Loot "Glowing Sword Hilt" (12197) from "Xicotl" in `mistmoore`.
+132. paw/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
+133. southkarana/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
+134. airplane/"Inte Akera", hand "SoulFire" (5504). Gives "Inte's First Blessing" (18033).
+135. lavastorm/"Ruathey", say "Bag". Gives "Nobleman's Bag" (17878).
+136. Common item: Ghoul's Heart (2410). Listed in 8 zones.
+137. No quest step gives Amstaf's Scroll (2411). The dump lists it in highkeep.
+138. No quest step gives Blade of Nobility (2412). The dump lists it in butcher.
+139. Loot "Hilt of the Nobleman" (2413) from "Ekeros" in `najena`.
+140. Loot "Hilt of the Nobleman" (2413) from "A Skeleton" in `najena`.
+141. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). The combine does not fail.
+142. airplane/"Inte Akera", hand "Ghoulbane" (5403). Gives "Inte's Second Blessing" (18034).
+143. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Head" (19073) from "Spawn Miragul".
+144. Loot "Miragul's Head" (19073) from "Miragul".
+145. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Robe" (1254) from "Spawn Miragul".
+146. Loot "Miragul's Robe" (1254) from "Miragul".
+147. airplane/"Inte Akera", hand "Miragul's Robe" (1254) + "Inte's First Blessing" (18033) + "Inte's Second Blessing" (18034) + "Miragul's Head" (19073). Gives "Fiery Avenger" (11050).
+148. fearplane/"Irak Altil", hand "Fiery Avenger" (11050) + "Mark of Atonement" (29010). Gives "Fiery Defender" (10099).
+149. povalor/"Baltron Werters", say "Couragebringer". Sets `pre_pal` to `1`.
+150. Requires `pre_pal` unset; no setter establishes this state.
+151. povalor/"Baltron Werters", say "Couragebringer". Requires `pre_pal` unset. Gives "Baltron's Solvent" (69901).
+152. sro/"Gilfal", hand "Baltron's Solvent" (69901). Requires `pre_pal` ==1. Gives "Gilfal's Scabbard" (69902).
+153. Spawns "Neffiken Lord Kelek-Vor" (210229) in `postorms` on event_signal.
+154. Loot "Broken Sword Piece" (69903) from "Neffiken Lord Kelek-Vor".
+155. Loot "Broken Sword Piece" (69903) from "Neffiken Lord of Kelek'Vor".
+156. Encounter starts when NPC 186196 spawns in `hateplaneb`.
+157. Starts timer `popmaestro`.
+158. Spawns "Maestro of Rancor" (186111) after `hateplaneb/maestro#timer:popmaestro`.
+159. Loot "Broken Sword Piece" (69904) from "Maestro of Rancor".
+160. Loot "Broken Sword Piece" (69905) from "Kaniz Painbringer" in `potorment`.
+161. sro/"Gilfal", hand "Baltron's Solvent" (69901). Sets `pre_pal` to `2`.
+162. Ground spawn of "Rune of Xor" (69909) in `potranquility`.
+163. Ground spawn of "Rune of Yirno" (69908) in `mistmoore`.
+164. Ground spawn of "Rune of Zota" (69907) in `scarlet`.
+165. Ground spawn of "Rune Wilun" (69910) in `gunthak`.
+166. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Requires `pre_pal` ==2. Gives "Broken Sword Piece" (69906).
+167. Combine in "Gilfal's Scabbard" (69902): "Broken Sword Piece" (69903), "Broken Sword Piece" (69904), "Broken Sword Piece" (69905), "Broken Sword Piece" (69906). Produces "Fractured Couragebringer" (69911). The combine does not fail.
+168. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Sets `pre_pal` to `4`.
+169. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Sets `pre_pal` to `3`.
+170. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Requires `pre_pal` ==3. Gives "Fractured Couragebringer" (69912).
+171. povalor/"Baltron Werters", hand "Fractured Couragebringer" (69912). Requires `pre_pal` ==4. Gives "Couragebringer" (69913).
+172. hohonora/"Irak Altil", say "Hail". Sets `paladin_epic` to `6`.
+173. Spawns "Durunal the Cursebearer" (300087) in `wallofslaughter` on enter.
+174. Loot "Dark and Twisted Sword" (69971) from "Durunal the Cursebearer".
+175. hohonora/"Irak Altil", hand "Dark and Twisted Sword" (69971). Requires `paladin_epic` ==6. Gives "Dark and Twisted Sword" (69972).
 
 ### "Redemption" (64031)
 
@@ -459,7 +405,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 11. Loot "Drema's Soulstone" (69928) from "Drema Young".
 12. Loot "Drema's Soulstone" (69928) from "Drema Young" in `letalis`.
 13. Loot "Soulstone Shard" (69950) from "Coterie Corruptor" in `tenebrous`.
-14. Say "Mujaki Death" to ponightmare/"Mujaki".
+14. Say "Event:Death Complete:204080" to ponightmare/"Mujaki".
 15. Spawns "Shade of Mujaki the Devourer" (204081).
 16. Loot "Soulstone Shard" (69951) from "Shade of Mujaki the Devourer".
 17. Combine in "Drema's Soulstone" (69928): "Soulstone Shard" (69950), "Soulstone Shard" (69951). Produces "Drema's Soulstone" (69952). The combine does not fail.
@@ -518,139 +464,106 @@ Each list is the order you obtain that item. Later steps point here instead of r
 70. No quest step gives Drom's Champagne (13829). The dump lists it in freeporteast, freporte, highpasshold.
 71. freeporteast/"Tykar Renlin", hand "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829). Gives "Bunker Cell #1" (12196).
 72. freporte/"Tykar Renlin", hand "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829). Gives "Bunker Cell #1" (12196).
-73. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
-74. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
-75. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-76. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-77. 67 other recipes also produce Celestial Essence (9650).
-78. Common item: Jar of Acid (22133). Listed in 15 zones.
-79. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
-80. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
-81. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-82. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
-83. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-84. Common item: Firing Sheet (16906). Listed in 34 zones.
-85. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-86. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-87. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-88. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-89. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-90. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-91. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-92. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-93. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-94. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-95. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-96. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-97. Say "Tm Devrak Death" to rujd/"Rujd".
-98. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-99. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-100. Say "Tm Dokorel Death" to rujd/"Rujd".
-101. Say "Tm Velrek Death" to rujd/"Rujd".
-102. Say "Researcher Death" to rujg/"Rujg".
-103. Spawns "A Barrel" (260015).
-104. Loot "Pod of Water" (13044) from "A Barrel".
-105. 3 other loot steps also yield Pod of Water (13044).
-106. Forage "Pod of Water" (13044) in `ruja`.
-107. Forage "Pod of Water" (13044) in `uqua`.
-108. Forage "Pod of Water" (13044) in `yxtta`.
-109. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-110. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-111. 17 other recipes also produce Bottle (16598).
-112. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-113. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-114. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-115. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-116. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-117. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-118. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-119. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-120. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-121. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-122. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-123. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-124. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-125. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-126. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-127. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-128. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-129. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-130. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-131. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-132. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-133. Common item: Snake Scales (13070). Listed in 56 zones.
-134. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Snake Scales" (13070), "Bottle" (16598). Produces "Bog Juice" (16581). Requires Brewing, trivial 21.
-135. Common item: Spit (17947). Listed in 34 zones.
-136. Common item: Fire Beetle Eye (10307). Listed in 24 zones.
-137. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
-138. Loot "Rat Ears" (13072) from "Sepsis Rat".
-139. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
-140. Loot "Rat Ears" (13072) from "A Young Plague Rat".
-141. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
-142. Combine in "Spit" (17947): "Fire Beetle Eye" (10307), "Rat Ears" (13072). Produces "Edible Goo" (13498). Requires Baking, trivial 21.
-143. freeporteast/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
-144. freportw/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
-145. highkeep/"Assistant Kiolna", hand "H. K. 102" (12143). Gives "Sealed Note" (18936).
-146. paw/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
-147. southkarana/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
-148. Kill freportw/"Sir Lucan D-Lere". Spawns "Sir Lucan D'Lere" (9147).
-149. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere".
-150. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere" in `freeporteast`.
-151. freeportwest/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
-152. freportn/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
-153. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freeportwest/"Merko Quetalis". Spawns "spawns Guard Willia" (383270). Loot "Token of Truth" (13866) from "spawns Guard Willia".
-154. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freportn/"Merko Quetalis". Spawns "spawns Guard Willia" (8110). Loot "Token of Truth" (13866) from "spawns Guard Willia".
-155. Loot "Token of Truth" (13866) from "Guard Willia".
-156. freeportwest/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
-157. freportn/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
-158. Loot "Glowing Sword Hilt" (12197) from "Xicotl" in `mistmoore`.
-159. paw/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
-160. southkarana/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
-161. airplane/"Inte Akera", hand "SoulFire" (5504). Gives "Inte's First Blessing" (18033).
-162. lavastorm/"Ruathey", say "Bag". Gives "Nobleman's Bag" (17878).
-163. Common item: Ghoul's Heart (2410). Listed in 8 zones.
-164. No quest step gives Amstaf's Scroll (2411). The dump lists it in highkeep.
-165. No quest step gives Blade of Nobility (2412). The dump lists it in butcher.
-166. Loot "Hilt of the Nobleman" (2413) from "Ekeros" in `najena`.
-167. Loot "Hilt of the Nobleman" (2413) from "A Skeleton" in `najena`.
-168. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). The combine does not fail.
-169. airplane/"Inte Akera", hand "Ghoulbane" (5403). Gives "Inte's Second Blessing" (18034).
-170. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Head" (19073) from "Spawn Miragul".
-171. Loot "Miragul's Head" (19073) from "Miragul".
-172. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Robe" (1254) from "Spawn Miragul".
-173. Loot "Miragul's Robe" (1254) from "Miragul".
-174. airplane/"Inte Akera", hand "Miragul's Robe" (1254) + "Inte's First Blessing" (18033) + "Inte's Second Blessing" (18034) + "Miragul's Head" (19073). Gives "Fiery Avenger" (11050).
-175. fearplane/"Irak Altil", hand "Fiery Avenger" (11050) + "Mark of Atonement" (29010). Gives "Fiery Defender" (10099).
-176. povalor/"Baltron Werters", say "Couragebringer". Sets `pre_pal` to `1`.
-177. Requires `pre_pal` unset; no setter establishes this state.
-178. povalor/"Baltron Werters", say "Couragebringer". Requires `pre_pal` unset. Gives "Baltron's Solvent" (69901).
-179. sro/"Gilfal", hand "Baltron's Solvent" (69901). Requires `pre_pal` ==1. Gives "Gilfal's Scabbard" (69902).
-180. Spawns "Neffiken Lord Kelek-Vor" (210229) in `postorms` on event_signal.
-181. Loot "Broken Sword Piece" (69903) from "Neffiken Lord Kelek-Vor".
-182. Loot "Broken Sword Piece" (69903) from "Neffiken Lord of Kelek'Vor".
-183. Say "Control Timer" to hateplaneb/"Maestro".
-184. Spawns "Maestro of Rancor" (186111).
-185. Loot "Broken Sword Piece" (69904) from "Maestro of Rancor".
-186. **Broken:** no event trigger found for `hateplaneb/maestro#timer:popmaestro`.
-187. Spawns "Maestro of Rancor" (186111) after `hateplaneb/maestro#timer:popmaestro`.
-188. Loot "Broken Sword Piece" (69905) from "Kaniz Painbringer" in `potorment`.
-189. sro/"Gilfal", hand "Baltron's Solvent" (69901). Sets `pre_pal` to `2`.
-190. Ground spawn of "Rune of Xor" (69909) in `potranquility`.
-191. Ground spawn of "Rune of Yirno" (69908) in `mistmoore`.
-192. Ground spawn of "Rune of Zota" (69907) in `scarlet`.
-193. Ground spawn of "Rune Wilun" (69910) in `gunthak`.
-194. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Requires `pre_pal` ==2. Gives "Broken Sword Piece" (69906).
-195. Combine in "Gilfal's Scabbard" (69902): "Broken Sword Piece" (69903), "Broken Sword Piece" (69904), "Broken Sword Piece" (69905), "Broken Sword Piece" (69906). Produces "Fractured Couragebringer" (69911). The combine does not fail.
-196. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Sets `pre_pal` to `4`.
-197. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Sets `pre_pal` to `3`.
-198. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Requires `pre_pal` ==3. Gives "Fractured Couragebringer" (69912).
-199. povalor/"Baltron Werters", hand "Fractured Couragebringer" (69912). Requires `pre_pal` ==4. Gives "Couragebringer" (69913).
-200. hohonora/"Irak Altil", say "Hail". Sets `paladin_epic` to `6`.
-201. Spawns "Durunal the Cursebearer" (300087) in `wallofslaughter` on enter.
-202. Loot "Dark and Twisted Sword" (69971) from "Durunal the Cursebearer".
-203. hohonora/"Irak Altil", hand "Dark and Twisted Sword" (69971). Requires `paladin_epic` ==6. Gives "Dark and Twisted Sword" (69972).
-204. Loot "Redis' Soulstone" (69983) from "Shade of Redis Linrok" in `dranikcatacombsa`.
-205. Combine in "Dark and Twisted Sword" (69972): "Rithnok's Soulstone" (69941), "Drema's Soulstone" (69952), "Reiya's Soulstone" (69942), "Redis' Soulstone" (69983). Produces "Redemption" (64031). The combine does not fail.
+73. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+74. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+75. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
+76. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+77. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
+78. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+79. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+80. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+81. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+82. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
+83. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
+84. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
+85. Say "Tm Devrak Death" to rujd/"Rujd".
+86. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
+87. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
+88. Say "Tm Dokorel Death" to rujd/"Rujd".
+89. Say "Tm Velrek Death" to rujd/"Rujd".
+90. Say "Event:Death Complete:260061" to rujg/"Rujg".
+91. Spawns "A Barrel" (260015).
+92. Loot "Pod of Water" (13044) from "A Barrel".
+93. 3 other loot steps also yield Pod of Water (13044).
+94. Forage "Pod of Water" (13044) in `ruja`.
+95. Forage "Pod of Water" (13044) in `uqua`.
+96. Forage "Pod of Water" (13044) in `yxtta`.
+97. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+98. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+99. 17 other recipes also produce Bottle (16598).
+100. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+101. Common item: Snake Scales (13070). Listed in 56 zones.
+102. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Snake Scales" (13070), "Bottle" (16598). Produces "Bog Juice" (16581). Requires Brewing, trivial 21.
+103. Common item: Spit (17947). Listed in 34 zones.
+104. Common item: Fire Beetle Eye (10307). Listed in 24 zones.
+105. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
+106. Loot "Rat Ears" (13072) from "Sepsis Rat".
+107. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
+108. Loot "Rat Ears" (13072) from "A Young Plague Rat".
+109. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
+110. Combine in "Spit" (17947): "Fire Beetle Eye" (10307), "Rat Ears" (13072). Produces "Edible Goo" (13498). Requires Baking, trivial 21.
+111. freeporteast/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
+112. freportw/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
+113. highkeep/"Assistant Kiolna", hand "H. K. 102" (12143). Gives "Sealed Note" (18936).
+114. paw/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
+115. southkarana/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
+116. Kill freportw/"Sir Lucan D-Lere". Spawns "Sir Lucan D'Lere" (9147).
+117. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere".
+118. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere" in `freeporteast`.
+119. freeportwest/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
+120. freportn/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
+121. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freeportwest/"Merko Quetalis". Spawns "spawns Guard Willia" (383270). Loot "Token of Truth" (13866) from "spawns Guard Willia".
+122. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freportn/"Merko Quetalis". Spawns "spawns Guard Willia" (8110). Loot "Token of Truth" (13866) from "spawns Guard Willia".
+123. Loot "Token of Truth" (13866) from "Guard Willia".
+124. freeportwest/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
+125. freportn/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
+126. Loot "Glowing Sword Hilt" (12197) from "Xicotl" in `mistmoore`.
+127. paw/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
+128. southkarana/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
+129. airplane/"Inte Akera", hand "SoulFire" (5504). Gives "Inte's First Blessing" (18033).
+130. lavastorm/"Ruathey", say "Bag". Gives "Nobleman's Bag" (17878).
+131. Common item: Ghoul's Heart (2410). Listed in 8 zones.
+132. No quest step gives Amstaf's Scroll (2411). The dump lists it in highkeep.
+133. No quest step gives Blade of Nobility (2412). The dump lists it in butcher.
+134. Loot "Hilt of the Nobleman" (2413) from "Ekeros" in `najena`.
+135. Loot "Hilt of the Nobleman" (2413) from "A Skeleton" in `najena`.
+136. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). The combine does not fail.
+137. airplane/"Inte Akera", hand "Ghoulbane" (5403). Gives "Inte's Second Blessing" (18034).
+138. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Head" (19073) from "Spawn Miragul".
+139. Loot "Miragul's Head" (19073) from "Miragul".
+140. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Robe" (1254) from "Spawn Miragul".
+141. Loot "Miragul's Robe" (1254) from "Miragul".
+142. airplane/"Inte Akera", hand "Miragul's Robe" (1254) + "Inte's First Blessing" (18033) + "Inte's Second Blessing" (18034) + "Miragul's Head" (19073). Gives "Fiery Avenger" (11050).
+143. fearplane/"Irak Altil", hand "Fiery Avenger" (11050) + "Mark of Atonement" (29010). Gives "Fiery Defender" (10099).
+144. povalor/"Baltron Werters", say "Couragebringer". Sets `pre_pal` to `1`.
+145. Requires `pre_pal` unset; no setter establishes this state.
+146. povalor/"Baltron Werters", say "Couragebringer". Requires `pre_pal` unset. Gives "Baltron's Solvent" (69901).
+147. sro/"Gilfal", hand "Baltron's Solvent" (69901). Requires `pre_pal` ==1. Gives "Gilfal's Scabbard" (69902).
+148. Spawns "Neffiken Lord Kelek-Vor" (210229) in `postorms` on event_signal.
+149. Loot "Broken Sword Piece" (69903) from "Neffiken Lord Kelek-Vor".
+150. Loot "Broken Sword Piece" (69903) from "Neffiken Lord of Kelek'Vor".
+151. Encounter starts when NPC 186196 spawns in `hateplaneb`.
+152. Starts timer `popmaestro`.
+153. Spawns "Maestro of Rancor" (186111) after `hateplaneb/maestro#timer:popmaestro`.
+154. Loot "Broken Sword Piece" (69904) from "Maestro of Rancor".
+155. Loot "Broken Sword Piece" (69905) from "Kaniz Painbringer" in `potorment`.
+156. sro/"Gilfal", hand "Baltron's Solvent" (69901). Sets `pre_pal` to `2`.
+157. Ground spawn of "Rune of Xor" (69909) in `potranquility`.
+158. Ground spawn of "Rune of Yirno" (69908) in `mistmoore`.
+159. Ground spawn of "Rune of Zota" (69907) in `scarlet`.
+160. Ground spawn of "Rune Wilun" (69910) in `gunthak`.
+161. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Requires `pre_pal` ==2. Gives "Broken Sword Piece" (69906).
+162. Combine in "Gilfal's Scabbard" (69902): "Broken Sword Piece" (69903), "Broken Sword Piece" (69904), "Broken Sword Piece" (69905), "Broken Sword Piece" (69906). Produces "Fractured Couragebringer" (69911). The combine does not fail.
+163. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Sets `pre_pal` to `4`.
+164. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Sets `pre_pal` to `3`.
+165. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Requires `pre_pal` ==3. Gives "Fractured Couragebringer" (69912).
+166. povalor/"Baltron Werters", hand "Fractured Couragebringer" (69912). Requires `pre_pal` ==4. Gives "Couragebringer" (69913).
+167. hohonora/"Irak Altil", say "Hail". Sets `paladin_epic` to `6`.
+168. Spawns "Durunal the Cursebearer" (300087) in `wallofslaughter` on enter.
+169. Loot "Dark and Twisted Sword" (69971) from "Durunal the Cursebearer".
+170. hohonora/"Irak Altil", hand "Dark and Twisted Sword" (69971). Requires `paladin_epic` ==6. Gives "Dark and Twisted Sword" (69972).
+171. Loot "Redis' Soulstone" (69983) from "Shade of Redis Linrok" in `dranikcatacombsa`.
+172. Combine in "Dark and Twisted Sword" (69972): "Rithnok's Soulstone" (69941), "Drema's Soulstone" (69952), "Reiya's Soulstone" (69942), "Redis' Soulstone" (69983). Produces "Redemption" (64031). The combine does not fail.
 
 ### "Token of Compassion" (69953)
 
@@ -671,7 +584,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 15. Loot "Drema's Soulstone" (69928) from "Drema Young".
 16. Loot "Drema's Soulstone" (69928) from "Drema Young" in `letalis`.
 17. Loot "Soulstone Shard" (69950) from "Coterie Corruptor" in `tenebrous`.
-18. Say "Mujaki Death" to ponightmare/"Mujaki".
+18. Say "Event:Death Complete:204080" to ponightmare/"Mujaki".
 19. Spawns "Shade of Mujaki the Devourer" (204081).
 20. Loot "Soulstone Shard" (69951) from "Shade of Mujaki the Devourer".
 21. Combine in "Drema's Soulstone" (69928): "Soulstone Shard" (69950), "Soulstone Shard" (69951). Produces "Drema's Soulstone" (69952). The combine does not fail.
@@ -727,193 +640,158 @@ Each list is the order you obtain that item. Later steps point here instead of r
 71. Loot "Tainted Darksteel Shield" (29002) from "Kirak Vil" in `nektulos`.
 72. felwithea/"Elia The Pure", hand "Tainted Darksteel Shield" (29002). Gives "Gleaming Crested Shield" (29005).
 73. erudnext/"Reklon Gnallen", hand "Gleaming Crested Sword" (29003) + "Gleaming Crested Breastplate" (29004) + "Gleaming Crested Shield" (29005). Gives "Mark of Atonement" (29010).
-74. No quest step gives Drom's Champagne (13829). The dump lists it in freeporteast, freporte, highpasshold.
-75. freeporteast/"Tykar Renlin", hand "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829). Gives "Bunker Cell #1" (12196).
-76. freporte/"Tykar Renlin", hand "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829). Gives "Bunker Cell #1" (12196).
-77. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
-78. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
-79. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-80. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-81. 67 other recipes also produce Celestial Essence (9650).
-82. Common item: Jar of Acid (22133). Listed in 15 zones.
-83. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
-84. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
-85. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-86. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
-87. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-88. Common item: Firing Sheet (16906). Listed in 34 zones.
-89. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-90. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-91. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-92. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-93. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-94. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-95. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-96. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-97. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-98. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-99. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-100. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-101. Say "Tm Devrak Death" to rujd/"Rujd".
-102. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-103. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-104. Say "Tm Dokorel Death" to rujd/"Rujd".
-105. Say "Tm Velrek Death" to rujd/"Rujd".
-106. Say "Researcher Death" to rujg/"Rujg".
-107. Spawns "A Barrel" (260015).
-108. Loot "Pod of Water" (13044) from "A Barrel".
-109. 3 other loot steps also yield Pod of Water (13044).
-110. Forage "Pod of Water" (13044) in `ruja`.
-111. Forage "Pod of Water" (13044) in `uqua`.
-112. Forage "Pod of Water" (13044) in `yxtta`.
-113. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-114. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-115. 17 other recipes also produce Bottle (16598).
-116. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-117. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-118. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-119. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-120. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-121. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-122. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-123. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-124. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-125. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-126. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-127. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-128. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-129. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-130. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-131. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-132. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-133. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-134. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-135. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-136. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-137. Common item: Snake Scales (13070). Listed in 56 zones.
-138. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Snake Scales" (13070), "Bottle" (16598). Produces "Bog Juice" (16581). Requires Brewing, trivial 21.
-139. Common item: Spit (17947). Listed in 34 zones.
-140. Common item: Fire Beetle Eye (10307). Listed in 24 zones.
-141. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
-142. Loot "Rat Ears" (13072) from "Sepsis Rat".
-143. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
-144. Loot "Rat Ears" (13072) from "A Young Plague Rat".
-145. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
-146. Combine in "Spit" (17947): "Fire Beetle Eye" (10307), "Rat Ears" (13072). Produces "Edible Goo" (13498). Requires Baking, trivial 21.
-147. freeporteast/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
-148. freportw/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
-149. highkeep/"Assistant Kiolna", hand "H. K. 102" (12143). Gives "Sealed Note" (18936).
-150. paw/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
-151. southkarana/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
-152. Kill freportw/"Sir Lucan D-Lere". Spawns "Sir Lucan D'Lere" (9147).
-153. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere".
-154. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere" in `freeporteast`.
-155. freeportwest/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
-156. freportn/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
-157. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freeportwest/"Merko Quetalis". Spawns "spawns Guard Willia" (383270). Loot "Token of Truth" (13866) from "spawns Guard Willia".
-158. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freportn/"Merko Quetalis". Spawns "spawns Guard Willia" (8110). Loot "Token of Truth" (13866) from "spawns Guard Willia".
-159. Loot "Token of Truth" (13866) from "Guard Willia".
-160. freeportwest/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
-161. freportn/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
-162. Loot "Glowing Sword Hilt" (12197) from "Xicotl" in `mistmoore`.
-163. paw/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
-164. southkarana/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
-165. airplane/"Inte Akera", hand "SoulFire" (5504). Gives "Inte's First Blessing" (18033).
-166. lavastorm/"Ruathey", say "Bag". Gives "Nobleman's Bag" (17878).
-167. Common item: Ghoul's Heart (2410). Listed in 8 zones.
-168. No quest step gives Amstaf's Scroll (2411). The dump lists it in highkeep.
-169. No quest step gives Blade of Nobility (2412). The dump lists it in butcher.
-170. Loot "Hilt of the Nobleman" (2413) from "Ekeros" in `najena`.
-171. Loot "Hilt of the Nobleman" (2413) from "A Skeleton" in `najena`.
-172. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). The combine does not fail.
-173. airplane/"Inte Akera", hand "Ghoulbane" (5403). Gives "Inte's Second Blessing" (18034).
-174. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Head" (19073) from "Spawn Miragul".
-175. Loot "Miragul's Head" (19073) from "Miragul".
-176. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Robe" (1254) from "Spawn Miragul".
-177. Loot "Miragul's Robe" (1254) from "Miragul".
-178. airplane/"Inte Akera", hand "Miragul's Robe" (1254) + "Inte's First Blessing" (18033) + "Inte's Second Blessing" (18034) + "Miragul's Head" (19073). Gives "Fiery Avenger" (11050).
-179. fearplane/"Irak Altil", hand "Fiery Avenger" (11050) + "Mark of Atonement" (29010). Gives "Fiery Defender" (10099).
-180. povalor/"Baltron Werters", say "Couragebringer". Sets `pre_pal` to `1`.
-181. Requires `pre_pal` unset; no setter establishes this state.
-182. povalor/"Baltron Werters", say "Couragebringer". Requires `pre_pal` unset. Gives "Baltron's Solvent" (69901).
-183. sro/"Gilfal", hand "Baltron's Solvent" (69901). Requires `pre_pal` ==1. Gives "Gilfal's Scabbard" (69902).
-184. Spawns "Neffiken Lord Kelek-Vor" (210229) in `postorms` on event_signal.
-185. Loot "Broken Sword Piece" (69903) from "Neffiken Lord Kelek-Vor".
-186. Loot "Broken Sword Piece" (69903) from "Neffiken Lord of Kelek'Vor".
-187. Say "Control Timer" to hateplaneb/"Maestro".
-188. Spawns "Maestro of Rancor" (186111).
-189. Loot "Broken Sword Piece" (69904) from "Maestro of Rancor".
-190. **Broken:** no event trigger found for `hateplaneb/maestro#timer:popmaestro`.
-191. Spawns "Maestro of Rancor" (186111) after `hateplaneb/maestro#timer:popmaestro`.
-192. Loot "Broken Sword Piece" (69905) from "Kaniz Painbringer" in `potorment`.
-193. sro/"Gilfal", hand "Baltron's Solvent" (69901). Sets `pre_pal` to `2`.
-194. Ground spawn of "Rune of Xor" (69909) in `potranquility`.
-195. Ground spawn of "Rune of Yirno" (69908) in `mistmoore`.
-196. Ground spawn of "Rune of Zota" (69907) in `scarlet`.
-197. Ground spawn of "Rune Wilun" (69910) in `gunthak`.
-198. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Requires `pre_pal` ==2. Gives "Broken Sword Piece" (69906).
-199. Combine in "Gilfal's Scabbard" (69902): "Broken Sword Piece" (69903), "Broken Sword Piece" (69904), "Broken Sword Piece" (69905), "Broken Sword Piece" (69906). Produces "Fractured Couragebringer" (69911). The combine does not fail.
-200. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Sets `pre_pal` to `4`.
-201. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Sets `pre_pal` to `3`.
-202. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Requires `pre_pal` ==3. Gives "Fractured Couragebringer" (69912).
-203. povalor/"Baltron Werters", hand "Fractured Couragebringer" (69912). Requires `pre_pal` ==4. Gives "Couragebringer" (69913).
-204. hohonora/"Irak Altil", say "Hail". Sets `paladin_epic` to `6`.
-205. Spawns "Durunal the Cursebearer" (300087) in `wallofslaughter` on enter.
-206. Loot "Dark and Twisted Sword" (69971) from "Durunal the Cursebearer".
-207. hohonora/"Irak Altil", hand "Dark and Twisted Sword" (69971). Requires `paladin_epic` ==6. Gives "Dark and Twisted Sword" (69972).
-208. Loot "Redis' Soulstone" (69983) from "Shade of Redis Linrok" in `dranikcatacombsa`.
-209. Combine in "Dark and Twisted Sword" (69972): "Rithnok's Soulstone" (69941), "Drema's Soulstone" (69952), "Reiya's Soulstone" (69942), "Redis' Soulstone" (69983). Produces "Redemption" (64031). The combine does not fail.
-210. hohonora/"Irak Altil", say "Tell Me About Your Master". Sets `paladin_epic` to `9`.
-211. erudnint/"Josper Kenshed", say "Collect Component". Gives "Empty Bag" (17944).
-212. halas/"Lysbith Mcnaff", say "Protect The Pass". Gives "Empty Bag" (17944).
-213. Loot "Goblin Ice Necklace" (13897) from "Redwind" in `everfrost`.
-214. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Scout" in `everfrost`.
-215. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Whelp" in `everfrost`.
-216. Loot "Goblin Ice Necklace" (13897) from "An Icy Orc" in `everfrost`.
-217. Loot "Goblin Ice Necklace" (13897) from "Ice Goblin Diver" in `everfrost`.
-218. Combine in "Empty Bag" (17944): "Goblin Ice Necklace" (13897). Produces "Bag of Ice Necklaces" (13898). The combine does not fail.
-219. halas/"Lysbith Mcnaff", hand "Bag of Ice Necklaces" (13898). Gives "Iron Ration" (13005).
-220. Common item: Gnoll Fang (13915). Listed in 5 zones.
-221. halas/"Lysbith Mcnaff", hand "Gnoll Fang" (13915) + "Gnoll Fang" (13915) + "Gnoll Fang" (13915). Gives "Iron Ration" (13005).
-222. Requires `halloween_draykey_rations` unset; no setter establishes this state.
-223. kithicor/"Old Man Draykey", say "Instructions". Requires `halloween_draykey_rations` unset. Gives "Iron Ration" (13005).
-224. commons/"Kizdean Gix", say "Messages For Neriak". Gives "Sealed Letter" (18889).
-225. neriakc/"Loveal S-Nez", hand "Sealed Letter" (18889). Gives "Iron Ration" (13005).
-226. Loot "Cask" (16580) from "Tugog Grigol" in `rathemtn`.
-227. Common item: Hops (16591). Listed in 31 zones.
-228. Common item: Malt (16595). Listed in 30 zones.
-229. Common item: Yeast (16596). Listed in 30 zones.
-230. Combine in "Portable Drink Barrel" (17179): "Cask" (16580), "Hops" (16591), "Malt" (16595), "Yeast" (16596). Produces "Mead" (13008). Requires Brewing, trivial 41.
-231. erudnext/"Reklon Gnallen", hand "Iron Ration" (13005) + "Mead" (13008). Requires `paladin_epic` ==9. Gives "Erudin Prayer Bead" (69965).
-232. Summon "Quiver of Marr" (17307) by casting "Quiver of Marr".
-233. rathemtn/"Shin Master Grubbus", hand "Quiver of Marr" (17307). Requires `paladin_epic` ==9. Gives "Gukta Prayer Bead" (69964).
-234. Common item: Barley (16590). Listed in 28 zones.
-235. Combine in "Medicine Bag" (17901): "Hand-Formed Bottle" (45232), "Ensnaring Concoction V" (45236). Produces "Empty Vial" (10062), "Cork" (16851), "Formed Ensnaring Concoction V" (45258). Requires Alchemy, trivial 41.
-236. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-237. 11 other recipes also produce Cork (16851).
-238. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Celestial Essence" (9650). Produces "Purified Water" (12607). Requires Brewing, trivial 58.
-239. Combine in "Tracker's Water Extractor" (17987): "Purification Tablet" (12630), "Water Reed" (12778). Produces "Purified Water" (12607) x3. Requires Pottery. The combine does not fail.
-240. 3 other recipes also produce Purified Water (12607).
-241. Forage "Sand Verbena" (65582) in `taka`.
-242. Forage "Sand Verbena" (65582) in `takb`.
-243. Forage "Sand Verbena" (65582) in `takc`.
-244. Forage "Sand Verbena" (65582) in `takd`.
-245. Forage "Sand Verbena" (65582) in `take`.
-246. Forage "Sand Verbena" (65582) in `takf`.
-247. Forage "Sand Verbena" (65582) in `takg`.
-248. Forage "Sand Verbena" (65582) in `takh`.
-249. Forage "Sand Verbena" (65582) in `taki`.
-250. Forage "Sand Verbena" (65582) in `takj`.
-251. Combine in Brew Barrel (19): "Barley" (16590), "Bottle" (16598), "Cork" (16851), "Hops" (16591), "Purified Water" (12607), "Sand Verbena" (65582), "Yeast" (16596). Produces "Bottle of Double Brewed Double Dry Stout" (51157). Requires Brewing, trivial 226.
-252. kaladimb/"Datur Nightseer", hand "Bottle of Double Brewed Double Dry Stout" (51157). Requires `paladin_epic` ==9. Gives "Kaladim Prayer Bead" (69963).
-253. felwithea/"General Jyleel", hand platinum:1000. Requires `paladin_epic` ==9. Gives "Felwithe Prayer Bead" (69962).
-254. Ground spawn of "Freeport Prayer Bead" (69961) in `freeportwest`.
-255. Ground spawn of "Freeport Prayer Bead" (69961) in `freportn`.
-256. qeynos2/"Ziska Ironforge", hand platinum:500. Requires `paladin_epic` ==9. Gives "Qeynos Prayer Bead" (69960).
-257. Combine in "Unfilled Set of Prayer Beads" (69968): "Rivervale Prayer Bead" (69967), "Ak'anon Prayer Bead" (69966), "Erudin Prayer Bead" (69965), "Gukta Prayer Bead" (69964), "Kaladim Prayer Bead" (69963), "Felwithe Prayer Bead" (69962), "Freeport Prayer Bead" (69961), "Qeynos Prayer Bead" (69960). Produces "Set of Prayer Beads" (69969). The combine does not fail.
-258. dranikhollowsc/"Anetal", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `2`.
-259. natimbi/"Kemik Arulon", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `1`.
-260. natimbi/"Kemik Arulon", say "Hail". Requires `paladin_epic_hollowc` ==2. Requires `paladin_epic_hollowc` ==1. Gives "Token of Compassion" (69953).
+74. freeporteast/"Tykar Renlin", hand "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829). Gives "Bunker Cell #1" (12196).
+75. freporte/"Tykar Renlin", hand "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829). Gives "Bunker Cell #1" (12196).
+76. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Snake Scales" (13070), "Bottle" (16598). Produces "Bog Juice" (16581). Requires Brewing, trivial 21.
+77. Combine in "Spit" (17947): "Fire Beetle Eye" (10307), "Rat Ears" (13072). Produces "Edible Goo" (13498). Requires Baking, trivial 21.
+78. freeporteast/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
+79. freportw/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
+80. highkeep/"Assistant Kiolna", hand "H. K. 102" (12143). Gives "Sealed Note" (18936).
+81. paw/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
+82. southkarana/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
+83. Kill freportw/"Sir Lucan D-Lere". Spawns "Sir Lucan D'Lere" (9147).
+84. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere".
+85. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere" in `freeporteast`.
+86. freeportwest/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
+87. freportn/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
+88. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freeportwest/"Merko Quetalis". Spawns "spawns Guard Willia" (383270). Loot "Token of Truth" (13866) from "spawns Guard Willia".
+89. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freportn/"Merko Quetalis". Spawns "spawns Guard Willia" (8110). Loot "Token of Truth" (13866) from "spawns Guard Willia".
+90. Loot "Token of Truth" (13866) from "Guard Willia".
+91. freeportwest/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
+92. freportn/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
+93. Loot "Glowing Sword Hilt" (12197) from "Xicotl" in `mistmoore`.
+94. paw/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
+95. southkarana/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
+96. airplane/"Inte Akera", hand "SoulFire" (5504). Gives "Inte's First Blessing" (18033).
+97. lavastorm/"Ruathey", say "Bag". Gives "Nobleman's Bag" (17878).
+98. Common item: Ghoul's Heart (2410). Listed in 8 zones.
+99. No quest step gives Amstaf's Scroll (2411). The dump lists it in highkeep.
+100. No quest step gives Blade of Nobility (2412). The dump lists it in butcher.
+101. Loot "Hilt of the Nobleman" (2413) from "Ekeros" in `najena`.
+102. Loot "Hilt of the Nobleman" (2413) from "A Skeleton" in `najena`.
+103. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). The combine does not fail.
+104. airplane/"Inte Akera", hand "Ghoulbane" (5403). Gives "Inte's Second Blessing" (18034).
+105. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Head" (19073) from "Spawn Miragul".
+106. Loot "Miragul's Head" (19073) from "Miragul".
+107. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Robe" (1254) from "Spawn Miragul".
+108. Loot "Miragul's Robe" (1254) from "Miragul".
+109. airplane/"Inte Akera", hand "Miragul's Robe" (1254) + "Inte's First Blessing" (18033) + "Inte's Second Blessing" (18034) + "Miragul's Head" (19073). Gives "Fiery Avenger" (11050).
+110. fearplane/"Irak Altil", hand "Fiery Avenger" (11050) + "Mark of Atonement" (29010). Gives "Fiery Defender" (10099).
+111. povalor/"Baltron Werters", say "Couragebringer". Sets `pre_pal` to `1`.
+112. Requires `pre_pal` unset; no setter establishes this state.
+113. povalor/"Baltron Werters", say "Couragebringer". Requires `pre_pal` unset. Gives "Baltron's Solvent" (69901).
+114. sro/"Gilfal", hand "Baltron's Solvent" (69901). Requires `pre_pal` ==1. Gives "Gilfal's Scabbard" (69902).
+115. Spawns "Neffiken Lord Kelek-Vor" (210229) in `postorms` on event_signal.
+116. Loot "Broken Sword Piece" (69903) from "Neffiken Lord Kelek-Vor".
+117. Loot "Broken Sword Piece" (69903) from "Neffiken Lord of Kelek'Vor".
+118. Encounter starts when NPC 186196 spawns in `hateplaneb`.
+119. Starts timer `popmaestro`.
+120. Spawns "Maestro of Rancor" (186111) after `hateplaneb/maestro#timer:popmaestro`.
+121. Loot "Broken Sword Piece" (69904) from "Maestro of Rancor".
+122. Loot "Broken Sword Piece" (69905) from "Kaniz Painbringer" in `potorment`.
+123. sro/"Gilfal", hand "Baltron's Solvent" (69901). Sets `pre_pal` to `2`.
+124. Ground spawn of "Rune of Xor" (69909) in `potranquility`.
+125. Ground spawn of "Rune of Yirno" (69908) in `mistmoore`.
+126. Ground spawn of "Rune of Zota" (69907) in `scarlet`.
+127. Ground spawn of "Rune Wilun" (69910) in `gunthak`.
+128. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Requires `pre_pal` ==2. Gives "Broken Sword Piece" (69906).
+129. Combine in "Gilfal's Scabbard" (69902): "Broken Sword Piece" (69903), "Broken Sword Piece" (69904), "Broken Sword Piece" (69905), "Broken Sword Piece" (69906). Produces "Fractured Couragebringer" (69911). The combine does not fail.
+130. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Sets `pre_pal` to `4`.
+131. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Sets `pre_pal` to `3`.
+132. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Requires `pre_pal` ==3. Gives "Fractured Couragebringer" (69912).
+133. povalor/"Baltron Werters", hand "Fractured Couragebringer" (69912). Requires `pre_pal` ==4. Gives "Couragebringer" (69913).
+134. hohonora/"Irak Altil", say "Hail". Sets `paladin_epic` to `6`.
+135. Spawns "Durunal the Cursebearer" (300087) in `wallofslaughter` on enter.
+136. Loot "Dark and Twisted Sword" (69971) from "Durunal the Cursebearer".
+137. hohonora/"Irak Altil", hand "Dark and Twisted Sword" (69971). Requires `paladin_epic` ==6. Gives "Dark and Twisted Sword" (69972).
+138. Loot "Redis' Soulstone" (69983) from "Shade of Redis Linrok" in `dranikcatacombsa`.
+139. Combine in "Dark and Twisted Sword" (69972): "Rithnok's Soulstone" (69941), "Drema's Soulstone" (69952), "Reiya's Soulstone" (69942), "Redis' Soulstone" (69983). Produces "Redemption" (64031). The combine does not fail.
+140. hohonora/"Irak Altil", say "Tell Me About Your Master". Sets `paladin_epic` to `9`.
+141. erudnint/"Josper Kenshed", say "Collect Component". Gives "Empty Bag" (17944).
+142. halas/"Lysbith Mcnaff", say "Protect The Pass". Gives "Empty Bag" (17944).
+143. Loot "Goblin Ice Necklace" (13897) from "Redwind" in `everfrost`.
+144. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Scout" in `everfrost`.
+145. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Whelp" in `everfrost`.
+146. Loot "Goblin Ice Necklace" (13897) from "An Icy Orc" in `everfrost`.
+147. Loot "Goblin Ice Necklace" (13897) from "Ice Goblin Diver" in `everfrost`.
+148. Combine in "Empty Bag" (17944): "Goblin Ice Necklace" (13897). Produces "Bag of Ice Necklaces" (13898). The combine does not fail.
+149. halas/"Lysbith Mcnaff", hand "Bag of Ice Necklaces" (13898). Gives "Iron Ration" (13005).
+150. Common item: Gnoll Fang (13915). Listed in 5 zones.
+151. halas/"Lysbith Mcnaff", hand "Gnoll Fang" (13915) + "Gnoll Fang" (13915) + "Gnoll Fang" (13915). Gives "Iron Ration" (13005).
+152. Requires `halloween_draykey_rations` unset; no setter establishes this state.
+153. kithicor/"Old Man Draykey", say "Instructions". Requires `halloween_draykey_rations` unset. Gives "Iron Ration" (13005).
+154. commons/"Kizdean Gix", say "Messages For Neriak". Gives "Sealed Letter" (18889).
+155. neriakc/"Loveal S-Nez", hand "Sealed Letter" (18889). Gives "Iron Ration" (13005).
+156. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
+157. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
+158. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+159. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+160. 67 other recipes also produce Celestial Essence (9650).
+161. Common item: Jar of Acid (22133). Listed in 15 zones.
+162. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
+163. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
+164. Common item: Mortar and Pestle (17904). Listed in 12 zones.
+165. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
+166. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
+167. Common item: Firing Sheet (16906). Listed in 34 zones.
+168. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
+169. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+170. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
+171. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+172. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
+173. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
+174. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+175. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
+176. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
+177. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
+178. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
+179. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
+180. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
+181. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
+182. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
+183. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
+184. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+185. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+186. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+187. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
+188. Loot "Cask" (16580) from "Tugog Grigol" in `rathemtn`.
+189. Common item: Hops (16591). Listed in 31 zones.
+190. Common item: Malt (16595). Listed in 30 zones.
+191. Common item: Yeast (16596). Listed in 30 zones.
+192. Combine in "Portable Drink Barrel" (17179): "Cask" (16580), "Hops" (16591), "Malt" (16595), "Yeast" (16596). Produces "Mead" (13008). Requires Brewing, trivial 41.
+193. erudnext/"Reklon Gnallen", hand "Iron Ration" (13005) + "Mead" (13008). Requires `paladin_epic` ==9. Gives "Erudin Prayer Bead" (69965).
+194. Summon "Quiver of Marr" (17307) by casting "Quiver of Marr".
+195. rathemtn/"Shin Master Grubbus", hand "Quiver of Marr" (17307). Requires `paladin_epic` ==9. Gives "Gukta Prayer Bead" (69964).
+196. Common item: Barley (16590). Listed in 28 zones.
+197. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+198. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+199. 17 other recipes also produce Bottle (16598).
+200. Combine in "Medicine Bag" (17901): "Hand-Formed Bottle" (45232), "Ensnaring Concoction V" (45236). Produces "Empty Vial" (10062), "Cork" (16851), "Formed Ensnaring Concoction V" (45258). Requires Alchemy, trivial 41.
+201. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+202. 11 other recipes also produce Cork (16851).
+203. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Celestial Essence" (9650). Produces "Purified Water" (12607). Requires Brewing, trivial 58.
+204. Combine in "Tracker's Water Extractor" (17987): "Purification Tablet" (12630), "Water Reed" (12778). Produces "Purified Water" (12607) x3. Requires Pottery. The combine does not fail.
+205. 3 other recipes also produce Purified Water (12607).
+206. Forage "Sand Verbena" (65582) in `taka`.
+207. Forage "Sand Verbena" (65582) in `takb`.
+208. Forage "Sand Verbena" (65582) in `takc`.
+209. Forage "Sand Verbena" (65582) in `takd`.
+210. Forage "Sand Verbena" (65582) in `take`.
+211. Forage "Sand Verbena" (65582) in `takf`.
+212. Forage "Sand Verbena" (65582) in `takg`.
+213. Forage "Sand Verbena" (65582) in `takh`.
+214. Forage "Sand Verbena" (65582) in `taki`.
+215. Forage "Sand Verbena" (65582) in `takj`.
+216. Combine in Brew Barrel (19): "Barley" (16590), "Bottle" (16598), "Cork" (16851), "Hops" (16591), "Purified Water" (12607), "Sand Verbena" (65582), "Yeast" (16596). Produces "Bottle of Double Brewed Double Dry Stout" (51157). Requires Brewing, trivial 226.
+217. kaladimb/"Datur Nightseer", hand "Bottle of Double Brewed Double Dry Stout" (51157). Requires `paladin_epic` ==9. Gives "Kaladim Prayer Bead" (69963).
+218. felwithea/"General Jyleel", hand platinum:1000. Requires `paladin_epic` ==9. Gives "Felwithe Prayer Bead" (69962).
+219. Ground spawn of "Freeport Prayer Bead" (69961) in `freeportwest`.
+220. Ground spawn of "Freeport Prayer Bead" (69961) in `freportn`.
+221. qeynos2/"Ziska Ironforge", hand platinum:500. Requires `paladin_epic` ==9. Gives "Qeynos Prayer Bead" (69960).
+222. Combine in "Unfilled Set of Prayer Beads" (69968): "Rivervale Prayer Bead" (69967), "Ak'anon Prayer Bead" (69966), "Erudin Prayer Bead" (69965), "Gukta Prayer Bead" (69964), "Kaladim Prayer Bead" (69963), "Felwithe Prayer Bead" (69962), "Freeport Prayer Bead" (69961), "Qeynos Prayer Bead" (69960). Produces "Set of Prayer Beads" (69969). The combine does not fail.
+223. dranikhollowsc/"Anetal", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `2`.
+224. natimbi/"Kemik Arulon", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `1`.
+225. natimbi/"Kemik Arulon", say "Hail". Requires `paladin_epic_hollowc` ==2. Requires `paladin_epic_hollowc` ==1. Gives "Token of Compassion" (69953).
 
 ### "Token of Chivalry" (69954)
 
@@ -934,7 +812,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 15. Loot "Drema's Soulstone" (69928) from "Drema Young".
 16. Loot "Drema's Soulstone" (69928) from "Drema Young" in `letalis`.
 17. Loot "Soulstone Shard" (69950) from "Coterie Corruptor" in `tenebrous`.
-18. Say "Mujaki Death" to ponightmare/"Mujaki".
+18. Say "Event:Death Complete:204080" to ponightmare/"Mujaki".
 19. Spawns "Shade of Mujaki the Devourer" (204081).
 20. Loot "Soulstone Shard" (69951) from "Shade of Mujaki the Devourer".
 21. Combine in "Drema's Soulstone" (69928): "Soulstone Shard" (69950), "Soulstone Shard" (69951). Produces "Drema's Soulstone" (69952). The combine does not fail.
@@ -990,197 +868,149 @@ Each list is the order you obtain that item. Later steps point here instead of r
 71. Loot "Tainted Darksteel Shield" (29002) from "Kirak Vil" in `nektulos`.
 72. felwithea/"Elia The Pure", hand "Tainted Darksteel Shield" (29002). Gives "Gleaming Crested Shield" (29005).
 73. erudnext/"Reklon Gnallen", hand "Gleaming Crested Sword" (29003) + "Gleaming Crested Breastplate" (29004) + "Gleaming Crested Shield" (29005). Gives "Mark of Atonement" (29010).
-74. No quest step gives Drom's Champagne (13829). The dump lists it in freeporteast, freporte, highpasshold.
-75. freeporteast/"Tykar Renlin", hand "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829). Gives "Bunker Cell #1" (12196).
-76. freporte/"Tykar Renlin", hand "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829). Gives "Bunker Cell #1" (12196).
-77. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
-78. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
-79. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-80. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-81. 67 other recipes also produce Celestial Essence (9650).
-82. Common item: Jar of Acid (22133). Listed in 15 zones.
-83. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
-84. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
-85. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-86. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
-87. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-88. Common item: Firing Sheet (16906). Listed in 34 zones.
-89. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-90. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-91. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-92. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-93. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-94. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-95. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-96. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-97. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-98. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-99. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-100. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-101. Say "Tm Devrak Death" to rujd/"Rujd".
-102. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-103. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-104. Say "Tm Dokorel Death" to rujd/"Rujd".
-105. Say "Tm Velrek Death" to rujd/"Rujd".
-106. Say "Researcher Death" to rujg/"Rujg".
-107. Spawns "A Barrel" (260015).
-108. Loot "Pod of Water" (13044) from "A Barrel".
-109. 3 other loot steps also yield Pod of Water (13044).
-110. Forage "Pod of Water" (13044) in `ruja`.
-111. Forage "Pod of Water" (13044) in `uqua`.
-112. Forage "Pod of Water" (13044) in `yxtta`.
-113. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-114. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-115. 17 other recipes also produce Bottle (16598).
-116. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-117. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-118. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-119. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-120. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-121. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-122. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-123. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-124. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-125. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-126. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-127. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-128. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-129. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-130. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-131. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-132. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-133. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-134. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-135. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-136. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-137. Common item: Snake Scales (13070). Listed in 56 zones.
-138. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Snake Scales" (13070), "Bottle" (16598). Produces "Bog Juice" (16581). Requires Brewing, trivial 21.
-139. Common item: Spit (17947). Listed in 34 zones.
-140. Common item: Fire Beetle Eye (10307). Listed in 24 zones.
-141. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
-142. Loot "Rat Ears" (13072) from "Sepsis Rat".
-143. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
-144. Loot "Rat Ears" (13072) from "A Young Plague Rat".
-145. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
-146. Combine in "Spit" (17947): "Fire Beetle Eye" (10307), "Rat Ears" (13072). Produces "Edible Goo" (13498). Requires Baking, trivial 21.
-147. freeporteast/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
-148. freportw/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
-149. highkeep/"Assistant Kiolna", hand "H. K. 102" (12143). Gives "Sealed Note" (18936).
-150. paw/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
-151. southkarana/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
-152. Kill freportw/"Sir Lucan D-Lere". Spawns "Sir Lucan D'Lere" (9147).
-153. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere".
-154. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere" in `freeporteast`.
-155. freeportwest/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
-156. freportn/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
-157. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freeportwest/"Merko Quetalis". Spawns "spawns Guard Willia" (383270). Loot "Token of Truth" (13866) from "spawns Guard Willia".
-158. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freportn/"Merko Quetalis". Spawns "spawns Guard Willia" (8110). Loot "Token of Truth" (13866) from "spawns Guard Willia".
-159. Loot "Token of Truth" (13866) from "Guard Willia".
-160. freeportwest/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
-161. freportn/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
-162. Loot "Glowing Sword Hilt" (12197) from "Xicotl" in `mistmoore`.
-163. paw/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
-164. southkarana/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
-165. airplane/"Inte Akera", hand "SoulFire" (5504). Gives "Inte's First Blessing" (18033).
-166. lavastorm/"Ruathey", say "Bag". Gives "Nobleman's Bag" (17878).
-167. Common item: Ghoul's Heart (2410). Listed in 8 zones.
-168. No quest step gives Amstaf's Scroll (2411). The dump lists it in highkeep.
-169. No quest step gives Blade of Nobility (2412). The dump lists it in butcher.
-170. Loot "Hilt of the Nobleman" (2413) from "Ekeros" in `najena`.
-171. Loot "Hilt of the Nobleman" (2413) from "A Skeleton" in `najena`.
-172. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). The combine does not fail.
-173. airplane/"Inte Akera", hand "Ghoulbane" (5403). Gives "Inte's Second Blessing" (18034).
-174. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Head" (19073) from "Spawn Miragul".
-175. Loot "Miragul's Head" (19073) from "Miragul".
-176. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Robe" (1254) from "Spawn Miragul".
-177. Loot "Miragul's Robe" (1254) from "Miragul".
-178. airplane/"Inte Akera", hand "Miragul's Robe" (1254) + "Inte's First Blessing" (18033) + "Inte's Second Blessing" (18034) + "Miragul's Head" (19073). Gives "Fiery Avenger" (11050).
-179. fearplane/"Irak Altil", hand "Fiery Avenger" (11050) + "Mark of Atonement" (29010). Gives "Fiery Defender" (10099).
-180. povalor/"Baltron Werters", say "Couragebringer". Sets `pre_pal` to `1`.
-181. Requires `pre_pal` unset; no setter establishes this state.
-182. povalor/"Baltron Werters", say "Couragebringer". Requires `pre_pal` unset. Gives "Baltron's Solvent" (69901).
-183. sro/"Gilfal", hand "Baltron's Solvent" (69901). Requires `pre_pal` ==1. Gives "Gilfal's Scabbard" (69902).
-184. Spawns "Neffiken Lord Kelek-Vor" (210229) in `postorms` on event_signal.
-185. Loot "Broken Sword Piece" (69903) from "Neffiken Lord Kelek-Vor".
-186. Loot "Broken Sword Piece" (69903) from "Neffiken Lord of Kelek'Vor".
-187. Say "Control Timer" to hateplaneb/"Maestro".
-188. Spawns "Maestro of Rancor" (186111).
-189. Loot "Broken Sword Piece" (69904) from "Maestro of Rancor".
-190. **Broken:** no event trigger found for `hateplaneb/maestro#timer:popmaestro`.
-191. Spawns "Maestro of Rancor" (186111) after `hateplaneb/maestro#timer:popmaestro`.
-192. Loot "Broken Sword Piece" (69905) from "Kaniz Painbringer" in `potorment`.
-193. sro/"Gilfal", hand "Baltron's Solvent" (69901). Sets `pre_pal` to `2`.
-194. Ground spawn of "Rune of Xor" (69909) in `potranquility`.
-195. Ground spawn of "Rune of Yirno" (69908) in `mistmoore`.
-196. Ground spawn of "Rune of Zota" (69907) in `scarlet`.
-197. Ground spawn of "Rune Wilun" (69910) in `gunthak`.
-198. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Requires `pre_pal` ==2. Gives "Broken Sword Piece" (69906).
-199. Combine in "Gilfal's Scabbard" (69902): "Broken Sword Piece" (69903), "Broken Sword Piece" (69904), "Broken Sword Piece" (69905), "Broken Sword Piece" (69906). Produces "Fractured Couragebringer" (69911). The combine does not fail.
-200. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Sets `pre_pal` to `4`.
-201. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Sets `pre_pal` to `3`.
-202. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Requires `pre_pal` ==3. Gives "Fractured Couragebringer" (69912).
-203. povalor/"Baltron Werters", hand "Fractured Couragebringer" (69912). Requires `pre_pal` ==4. Gives "Couragebringer" (69913).
-204. hohonora/"Irak Altil", say "Hail". Sets `paladin_epic` to `6`.
-205. Spawns "Durunal the Cursebearer" (300087) in `wallofslaughter` on enter.
-206. Loot "Dark and Twisted Sword" (69971) from "Durunal the Cursebearer".
-207. hohonora/"Irak Altil", hand "Dark and Twisted Sword" (69971). Requires `paladin_epic` ==6. Gives "Dark and Twisted Sword" (69972).
-208. Loot "Redis' Soulstone" (69983) from "Shade of Redis Linrok" in `dranikcatacombsa`.
-209. Combine in "Dark and Twisted Sword" (69972): "Rithnok's Soulstone" (69941), "Drema's Soulstone" (69952), "Reiya's Soulstone" (69942), "Redis' Soulstone" (69983). Produces "Redemption" (64031). The combine does not fail.
-210. hohonora/"Irak Altil", say "Tell Me About Your Master". Sets `paladin_epic` to `9`.
-211. erudnint/"Josper Kenshed", say "Collect Component". Gives "Empty Bag" (17944).
-212. halas/"Lysbith Mcnaff", say "Protect The Pass". Gives "Empty Bag" (17944).
-213. Loot "Goblin Ice Necklace" (13897) from "Redwind" in `everfrost`.
-214. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Scout" in `everfrost`.
-215. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Whelp" in `everfrost`.
-216. Loot "Goblin Ice Necklace" (13897) from "An Icy Orc" in `everfrost`.
-217. Loot "Goblin Ice Necklace" (13897) from "Ice Goblin Diver" in `everfrost`.
-218. Combine in "Empty Bag" (17944): "Goblin Ice Necklace" (13897). Produces "Bag of Ice Necklaces" (13898). The combine does not fail.
-219. halas/"Lysbith Mcnaff", hand "Bag of Ice Necklaces" (13898). Gives "Iron Ration" (13005).
-220. Common item: Gnoll Fang (13915). Listed in 5 zones.
-221. halas/"Lysbith Mcnaff", hand "Gnoll Fang" (13915) + "Gnoll Fang" (13915) + "Gnoll Fang" (13915). Gives "Iron Ration" (13005).
-222. Requires `halloween_draykey_rations` unset; no setter establishes this state.
-223. kithicor/"Old Man Draykey", say "Instructions". Requires `halloween_draykey_rations` unset. Gives "Iron Ration" (13005).
-224. commons/"Kizdean Gix", say "Messages For Neriak". Gives "Sealed Letter" (18889).
-225. neriakc/"Loveal S-Nez", hand "Sealed Letter" (18889). Gives "Iron Ration" (13005).
-226. Loot "Cask" (16580) from "Tugog Grigol" in `rathemtn`.
-227. Common item: Hops (16591). Listed in 31 zones.
-228. Common item: Malt (16595). Listed in 30 zones.
-229. Common item: Yeast (16596). Listed in 30 zones.
-230. Combine in "Portable Drink Barrel" (17179): "Cask" (16580), "Hops" (16591), "Malt" (16595), "Yeast" (16596). Produces "Mead" (13008). Requires Brewing, trivial 41.
-231. erudnext/"Reklon Gnallen", hand "Iron Ration" (13005) + "Mead" (13008). Requires `paladin_epic` ==9. Gives "Erudin Prayer Bead" (69965).
-232. Summon "Quiver of Marr" (17307) by casting "Quiver of Marr".
-233. rathemtn/"Shin Master Grubbus", hand "Quiver of Marr" (17307). Requires `paladin_epic` ==9. Gives "Gukta Prayer Bead" (69964).
-234. Common item: Barley (16590). Listed in 28 zones.
-235. Combine in "Medicine Bag" (17901): "Hand-Formed Bottle" (45232), "Ensnaring Concoction V" (45236). Produces "Empty Vial" (10062), "Cork" (16851), "Formed Ensnaring Concoction V" (45258). Requires Alchemy, trivial 41.
-236. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-237. 11 other recipes also produce Cork (16851).
-238. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Celestial Essence" (9650). Produces "Purified Water" (12607). Requires Brewing, trivial 58.
-239. Combine in "Tracker's Water Extractor" (17987): "Purification Tablet" (12630), "Water Reed" (12778). Produces "Purified Water" (12607) x3. Requires Pottery. The combine does not fail.
-240. 3 other recipes also produce Purified Water (12607).
-241. Forage "Sand Verbena" (65582) in `taka`.
-242. Forage "Sand Verbena" (65582) in `takb`.
-243. Forage "Sand Verbena" (65582) in `takc`.
-244. Forage "Sand Verbena" (65582) in `takd`.
-245. Forage "Sand Verbena" (65582) in `take`.
-246. Forage "Sand Verbena" (65582) in `takf`.
-247. Forage "Sand Verbena" (65582) in `takg`.
-248. Forage "Sand Verbena" (65582) in `takh`.
-249. Forage "Sand Verbena" (65582) in `taki`.
-250. Forage "Sand Verbena" (65582) in `takj`.
-251. Combine in Brew Barrel (19): "Barley" (16590), "Bottle" (16598), "Cork" (16851), "Hops" (16591), "Purified Water" (12607), "Sand Verbena" (65582), "Yeast" (16596). Produces "Bottle of Double Brewed Double Dry Stout" (51157). Requires Brewing, trivial 226.
-252. kaladimb/"Datur Nightseer", hand "Bottle of Double Brewed Double Dry Stout" (51157). Requires `paladin_epic` ==9. Gives "Kaladim Prayer Bead" (69963).
-253. felwithea/"General Jyleel", hand platinum:1000. Requires `paladin_epic` ==9. Gives "Felwithe Prayer Bead" (69962).
-254. Ground spawn of "Freeport Prayer Bead" (69961) in `freeportwest`.
-255. Ground spawn of "Freeport Prayer Bead" (69961) in `freportn`.
-256. qeynos2/"Ziska Ironforge", hand platinum:500. Requires `paladin_epic` ==9. Gives "Qeynos Prayer Bead" (69960).
-257. Combine in "Unfilled Set of Prayer Beads" (69968): "Rivervale Prayer Bead" (69967), "Ak'anon Prayer Bead" (69966), "Erudin Prayer Bead" (69965), "Gukta Prayer Bead" (69964), "Kaladim Prayer Bead" (69963), "Felwithe Prayer Bead" (69962), "Freeport Prayer Bead" (69961), "Qeynos Prayer Bead" (69960). Produces "Set of Prayer Beads" (69969). The combine does not fail.
-258. dranikhollowsc/"Anetal", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `2`.
-259. natimbi/"Kemik Arulon", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `1`.
-260. natimbi/"Kemik Arulon", say "Hail". Requires `paladin_epic_hollowc` ==2. Requires `paladin_epic_hollowc` ==1. Gives "Token of Compassion" (69953).
-261. Requires `pal_chest_keel` unset; no setter establishes this state.
-262. oasis/"Paladin Epic", say "Hail". Requires `pal_chest_keel` unset. Gives "Keelee's Brooch" (69982).
-263. oasis/"Paladin Epic", say "Keelee Say". Gives "Keelee's Brooch" (69982).
-264. sro/"Instructor Maerceci", hand "Keelee's Brooch" (69982). Gives "Token of Chivalry" (69954).
+74. highkeep/"Assistant Kiolna", hand "H. K. 102" (12143). Gives "Sealed Note" (18936).
+75. paw/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
+76. southkarana/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
+77. Kill freportw/"Sir Lucan D-Lere". Spawns "Sir Lucan D'Lere" (9147).
+78. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere".
+79. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere" in `freeporteast`.
+80. freeportwest/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
+81. freportn/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
+82. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freeportwest/"Merko Quetalis". Spawns "spawns Guard Willia" (383270). Loot "Token of Truth" (13866) from "spawns Guard Willia".
+83. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freportn/"Merko Quetalis". Spawns "spawns Guard Willia" (8110). Loot "Token of Truth" (13866) from "spawns Guard Willia".
+84. Loot "Token of Truth" (13866) from "Guard Willia".
+85. freeportwest/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
+86. freportn/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
+87. Loot "Glowing Sword Hilt" (12197) from "Xicotl" in `mistmoore`.
+88. paw/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
+89. southkarana/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
+90. airplane/"Inte Akera", hand "SoulFire" (5504). Gives "Inte's First Blessing" (18033).
+91. lavastorm/"Ruathey", say "Bag". Gives "Nobleman's Bag" (17878).
+92. Common item: Ghoul's Heart (2410). Listed in 8 zones.
+93. No quest step gives Amstaf's Scroll (2411). The dump lists it in highkeep.
+94. No quest step gives Blade of Nobility (2412). The dump lists it in butcher.
+95. Loot "Hilt of the Nobleman" (2413) from "Ekeros" in `najena`.
+96. Loot "Hilt of the Nobleman" (2413) from "A Skeleton" in `najena`.
+97. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). The combine does not fail.
+98. airplane/"Inte Akera", hand "Ghoulbane" (5403). Gives "Inte's Second Blessing" (18034).
+99. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Head" (19073) from "Spawn Miragul".
+100. Loot "Miragul's Head" (19073) from "Miragul".
+101. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Robe" (1254) from "Spawn Miragul".
+102. Loot "Miragul's Robe" (1254) from "Miragul".
+103. airplane/"Inte Akera", hand "Miragul's Robe" (1254) + "Inte's First Blessing" (18033) + "Inte's Second Blessing" (18034) + "Miragul's Head" (19073). Gives "Fiery Avenger" (11050).
+104. fearplane/"Irak Altil", hand "Fiery Avenger" (11050) + "Mark of Atonement" (29010). Gives "Fiery Defender" (10099).
+105. povalor/"Baltron Werters", say "Couragebringer". Sets `pre_pal` to `1`.
+106. Requires `pre_pal` unset; no setter establishes this state.
+107. povalor/"Baltron Werters", say "Couragebringer". Requires `pre_pal` unset. Gives "Baltron's Solvent" (69901).
+108. sro/"Gilfal", hand "Baltron's Solvent" (69901). Requires `pre_pal` ==1. Gives "Gilfal's Scabbard" (69902).
+109. Spawns "Neffiken Lord Kelek-Vor" (210229) in `postorms` on event_signal.
+110. Loot "Broken Sword Piece" (69903) from "Neffiken Lord Kelek-Vor".
+111. Loot "Broken Sword Piece" (69903) from "Neffiken Lord of Kelek'Vor".
+112. Encounter starts when NPC 186196 spawns in `hateplaneb`.
+113. Starts timer `popmaestro`.
+114. Spawns "Maestro of Rancor" (186111) after `hateplaneb/maestro#timer:popmaestro`.
+115. Loot "Broken Sword Piece" (69904) from "Maestro of Rancor".
+116. Loot "Broken Sword Piece" (69905) from "Kaniz Painbringer" in `potorment`.
+117. sro/"Gilfal", hand "Baltron's Solvent" (69901). Sets `pre_pal` to `2`.
+118. Ground spawn of "Rune of Xor" (69909) in `potranquility`.
+119. Ground spawn of "Rune of Yirno" (69908) in `mistmoore`.
+120. Ground spawn of "Rune of Zota" (69907) in `scarlet`.
+121. Ground spawn of "Rune Wilun" (69910) in `gunthak`.
+122. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Requires `pre_pal` ==2. Gives "Broken Sword Piece" (69906).
+123. Combine in "Gilfal's Scabbard" (69902): "Broken Sword Piece" (69903), "Broken Sword Piece" (69904), "Broken Sword Piece" (69905), "Broken Sword Piece" (69906). Produces "Fractured Couragebringer" (69911). The combine does not fail.
+124. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Sets `pre_pal` to `4`.
+125. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Sets `pre_pal` to `3`.
+126. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Requires `pre_pal` ==3. Gives "Fractured Couragebringer" (69912).
+127. povalor/"Baltron Werters", hand "Fractured Couragebringer" (69912). Requires `pre_pal` ==4. Gives "Couragebringer" (69913).
+128. hohonora/"Irak Altil", say "Hail". Sets `paladin_epic` to `6`.
+129. Spawns "Durunal the Cursebearer" (300087) in `wallofslaughter` on enter.
+130. Loot "Dark and Twisted Sword" (69971) from "Durunal the Cursebearer".
+131. hohonora/"Irak Altil", hand "Dark and Twisted Sword" (69971). Requires `paladin_epic` ==6. Gives "Dark and Twisted Sword" (69972).
+132. Loot "Redis' Soulstone" (69983) from "Shade of Redis Linrok" in `dranikcatacombsa`.
+133. Combine in "Dark and Twisted Sword" (69972): "Rithnok's Soulstone" (69941), "Drema's Soulstone" (69952), "Reiya's Soulstone" (69942), "Redis' Soulstone" (69983). Produces "Redemption" (64031). The combine does not fail.
+134. hohonora/"Irak Altil", say "Tell Me About Your Master". Sets `paladin_epic` to `9`.
+135. erudnint/"Josper Kenshed", say "Collect Component". Gives "Empty Bag" (17944).
+136. halas/"Lysbith Mcnaff", say "Protect The Pass". Gives "Empty Bag" (17944).
+137. Loot "Goblin Ice Necklace" (13897) from "Redwind" in `everfrost`.
+138. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Scout" in `everfrost`.
+139. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Whelp" in `everfrost`.
+140. Loot "Goblin Ice Necklace" (13897) from "An Icy Orc" in `everfrost`.
+141. Loot "Goblin Ice Necklace" (13897) from "Ice Goblin Diver" in `everfrost`.
+142. Combine in "Empty Bag" (17944): "Goblin Ice Necklace" (13897). Produces "Bag of Ice Necklaces" (13898). The combine does not fail.
+143. halas/"Lysbith Mcnaff", hand "Bag of Ice Necklaces" (13898). Gives "Iron Ration" (13005).
+144. Common item: Gnoll Fang (13915). Listed in 5 zones.
+145. halas/"Lysbith Mcnaff", hand "Gnoll Fang" (13915) + "Gnoll Fang" (13915) + "Gnoll Fang" (13915). Gives "Iron Ration" (13005).
+146. Requires `halloween_draykey_rations` unset; no setter establishes this state.
+147. kithicor/"Old Man Draykey", say "Instructions". Requires `halloween_draykey_rations` unset. Gives "Iron Ration" (13005).
+148. commons/"Kizdean Gix", say "Messages For Neriak". Gives "Sealed Letter" (18889).
+149. neriakc/"Loveal S-Nez", hand "Sealed Letter" (18889). Gives "Iron Ration" (13005).
+150. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
+151. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
+152. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+153. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+154. 67 other recipes also produce Celestial Essence (9650).
+155. Common item: Jar of Acid (22133). Listed in 15 zones.
+156. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
+157. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
+158. Common item: Mortar and Pestle (17904). Listed in 12 zones.
+159. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
+160. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
+161. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+162. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
+163. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
+164. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
+165. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
+166. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
+167. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
+168. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
+169. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
+170. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
+171. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+172. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+173. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+174. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
+175. Loot "Cask" (16580) from "Tugog Grigol" in `rathemtn`.
+176. Common item: Hops (16591). Listed in 31 zones.
+177. Common item: Malt (16595). Listed in 30 zones.
+178. Common item: Yeast (16596). Listed in 30 zones.
+179. Combine in "Portable Drink Barrel" (17179): "Cask" (16580), "Hops" (16591), "Malt" (16595), "Yeast" (16596). Produces "Mead" (13008). Requires Brewing, trivial 41.
+180. erudnext/"Reklon Gnallen", hand "Iron Ration" (13005) + "Mead" (13008). Requires `paladin_epic` ==9. Gives "Erudin Prayer Bead" (69965).
+181. Summon "Quiver of Marr" (17307) by casting "Quiver of Marr".
+182. rathemtn/"Shin Master Grubbus", hand "Quiver of Marr" (17307). Requires `paladin_epic` ==9. Gives "Gukta Prayer Bead" (69964).
+183. Common item: Barley (16590). Listed in 28 zones.
+184. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+185. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+186. 17 other recipes also produce Bottle (16598).
+187. Combine in "Medicine Bag" (17901): "Hand-Formed Bottle" (45232), "Ensnaring Concoction V" (45236). Produces "Empty Vial" (10062), "Cork" (16851), "Formed Ensnaring Concoction V" (45258). Requires Alchemy, trivial 41.
+188. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+189. 11 other recipes also produce Cork (16851).
+190. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Celestial Essence" (9650). Produces "Purified Water" (12607). Requires Brewing, trivial 58.
+191. Combine in "Tracker's Water Extractor" (17987): "Purification Tablet" (12630), "Water Reed" (12778). Produces "Purified Water" (12607) x3. Requires Pottery. The combine does not fail.
+192. 3 other recipes also produce Purified Water (12607).
+193. Forage "Sand Verbena" (65582) in `taka`.
+194. Forage "Sand Verbena" (65582) in `takb`.
+195. Forage "Sand Verbena" (65582) in `takc`.
+196. Forage "Sand Verbena" (65582) in `takd`.
+197. Forage "Sand Verbena" (65582) in `take`.
+198. Forage "Sand Verbena" (65582) in `takf`.
+199. Forage "Sand Verbena" (65582) in `takg`.
+200. Forage "Sand Verbena" (65582) in `takh`.
+201. Forage "Sand Verbena" (65582) in `taki`.
+202. Forage "Sand Verbena" (65582) in `takj`.
+203. Combine in Brew Barrel (19): "Barley" (16590), "Bottle" (16598), "Cork" (16851), "Hops" (16591), "Purified Water" (12607), "Sand Verbena" (65582), "Yeast" (16596). Produces "Bottle of Double Brewed Double Dry Stout" (51157). Requires Brewing, trivial 226.
+204. kaladimb/"Datur Nightseer", hand "Bottle of Double Brewed Double Dry Stout" (51157). Requires `paladin_epic` ==9. Gives "Kaladim Prayer Bead" (69963).
+205. felwithea/"General Jyleel", hand platinum:1000. Requires `paladin_epic` ==9. Gives "Felwithe Prayer Bead" (69962).
+206. Ground spawn of "Freeport Prayer Bead" (69961) in `freeportwest`.
+207. Ground spawn of "Freeport Prayer Bead" (69961) in `freportn`.
+208. qeynos2/"Ziska Ironforge", hand platinum:500. Requires `paladin_epic` ==9. Gives "Qeynos Prayer Bead" (69960).
+209. Combine in "Unfilled Set of Prayer Beads" (69968): "Rivervale Prayer Bead" (69967), "Ak'anon Prayer Bead" (69966), "Erudin Prayer Bead" (69965), "Gukta Prayer Bead" (69964), "Kaladim Prayer Bead" (69963), "Felwithe Prayer Bead" (69962), "Freeport Prayer Bead" (69961), "Qeynos Prayer Bead" (69960). Produces "Set of Prayer Beads" (69969). The combine does not fail.
+210. dranikhollowsc/"Anetal", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `2`.
+211. natimbi/"Kemik Arulon", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `1`.
+212. natimbi/"Kemik Arulon", say "Hail". Requires `paladin_epic_hollowc` ==2. Requires `paladin_epic_hollowc` ==1. Gives "Token of Compassion" (69953).
+213. Requires `pal_chest_keel` unset; no setter establishes this state.
+214. oasis/"Paladin Epic", say "Hail". Requires `pal_chest_keel` unset. Gives "Keelee's Brooch" (69982).
+215. oasis/"Paladin Epic", say "Keelee Say". Gives "Keelee's Brooch" (69982).
+216. sro/"Instructor Maerceci", hand "Keelee's Brooch" (69982). Gives "Token of Chivalry" (69954).
 
 ### "Token of Heroism" (69955)
 
@@ -1213,7 +1043,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 15. Loot "Drema's Soulstone" (69928) from "Drema Young".
 16. Loot "Drema's Soulstone" (69928) from "Drema Young" in `letalis`.
 17. Loot "Soulstone Shard" (69950) from "Coterie Corruptor" in `tenebrous`.
-18. Say "Mujaki Death" to ponightmare/"Mujaki".
+18. Say "Event:Death Complete:204080" to ponightmare/"Mujaki".
 19. Spawns "Shade of Mujaki the Devourer" (204081).
 20. Loot "Soulstone Shard" (69951) from "Shade of Mujaki the Devourer".
 21. Combine in "Drema's Soulstone" (69928): "Soulstone Shard" (69950), "Soulstone Shard" (69951). Produces "Drema's Soulstone" (69952). The combine does not fail.
@@ -1269,212 +1099,168 @@ Each list is the order you obtain that item. Later steps point here instead of r
 71. Loot "Tainted Darksteel Shield" (29002) from "Kirak Vil" in `nektulos`.
 72. felwithea/"Elia The Pure", hand "Tainted Darksteel Shield" (29002). Gives "Gleaming Crested Shield" (29005).
 73. erudnext/"Reklon Gnallen", hand "Gleaming Crested Sword" (29003) + "Gleaming Crested Breastplate" (29004) + "Gleaming Crested Shield" (29005). Gives "Mark of Atonement" (29010).
-74. No quest step gives Drom's Champagne (13829). The dump lists it in freeporteast, freporte, highpasshold.
-75. freeporteast/"Tykar Renlin", hand "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829). Gives "Bunker Cell #1" (12196).
-76. freporte/"Tykar Renlin", hand "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829). Gives "Bunker Cell #1" (12196).
-77. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
-78. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
-79. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-80. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-81. 67 other recipes also produce Celestial Essence (9650).
-82. Common item: Jar of Acid (22133). Listed in 15 zones.
-83. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
-84. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
-85. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-86. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
-87. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-88. Common item: Firing Sheet (16906). Listed in 34 zones.
-89. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-90. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-91. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-92. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-93. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-94. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-95. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-96. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-97. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-98. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-99. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-100. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-101. Say "Tm Devrak Death" to rujd/"Rujd".
-102. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-103. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-104. Say "Tm Dokorel Death" to rujd/"Rujd".
-105. Say "Tm Velrek Death" to rujd/"Rujd".
-106. Say "Researcher Death" to rujg/"Rujg".
-107. Spawns "A Barrel" (260015).
-108. Loot "Pod of Water" (13044) from "A Barrel".
-109. 3 other loot steps also yield Pod of Water (13044).
-110. Forage "Pod of Water" (13044) in `ruja`.
-111. Forage "Pod of Water" (13044) in `uqua`.
-112. Forage "Pod of Water" (13044) in `yxtta`.
-113. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-114. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-115. 17 other recipes also produce Bottle (16598).
-116. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-117. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-118. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-119. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-120. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-121. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-122. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-123. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-124. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-125. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-126. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-127. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-128. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-129. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-130. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-131. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-132. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-133. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-134. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-135. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-136. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-137. Common item: Snake Scales (13070). Listed in 56 zones.
-138. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Snake Scales" (13070), "Bottle" (16598). Produces "Bog Juice" (16581). Requires Brewing, trivial 21.
-139. Common item: Spit (17947). Listed in 34 zones.
-140. Common item: Fire Beetle Eye (10307). Listed in 24 zones.
-141. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
-142. Loot "Rat Ears" (13072) from "Sepsis Rat".
-143. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
-144. Loot "Rat Ears" (13072) from "A Young Plague Rat".
-145. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
-146. Combine in "Spit" (17947): "Fire Beetle Eye" (10307), "Rat Ears" (13072). Produces "Edible Goo" (13498). Requires Baking, trivial 21.
-147. freeporteast/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
-148. freportw/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
-149. highkeep/"Assistant Kiolna", hand "H. K. 102" (12143). Gives "Sealed Note" (18936).
-150. paw/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
-151. southkarana/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
-152. Kill freportw/"Sir Lucan D-Lere". Spawns "Sir Lucan D'Lere" (9147).
-153. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere".
-154. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere" in `freeporteast`.
-155. freeportwest/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
-156. freportn/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
-157. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freeportwest/"Merko Quetalis". Spawns "spawns Guard Willia" (383270). Loot "Token of Truth" (13866) from "spawns Guard Willia".
-158. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freportn/"Merko Quetalis". Spawns "spawns Guard Willia" (8110). Loot "Token of Truth" (13866) from "spawns Guard Willia".
-159. Loot "Token of Truth" (13866) from "Guard Willia".
-160. freeportwest/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
-161. freportn/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
-162. Loot "Glowing Sword Hilt" (12197) from "Xicotl" in `mistmoore`.
-163. paw/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
-164. southkarana/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
-165. airplane/"Inte Akera", hand "SoulFire" (5504). Gives "Inte's First Blessing" (18033).
-166. lavastorm/"Ruathey", say "Bag". Gives "Nobleman's Bag" (17878).
-167. Common item: Ghoul's Heart (2410). Listed in 8 zones.
-168. No quest step gives Amstaf's Scroll (2411). The dump lists it in highkeep.
-169. No quest step gives Blade of Nobility (2412). The dump lists it in butcher.
-170. Loot "Hilt of the Nobleman" (2413) from "Ekeros" in `najena`.
-171. Loot "Hilt of the Nobleman" (2413) from "A Skeleton" in `najena`.
-172. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). The combine does not fail.
-173. airplane/"Inte Akera", hand "Ghoulbane" (5403). Gives "Inte's Second Blessing" (18034).
-174. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Head" (19073) from "Spawn Miragul".
-175. Loot "Miragul's Head" (19073) from "Miragul".
-176. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Robe" (1254) from "Spawn Miragul".
-177. Loot "Miragul's Robe" (1254) from "Miragul".
-178. airplane/"Inte Akera", hand "Miragul's Robe" (1254) + "Inte's First Blessing" (18033) + "Inte's Second Blessing" (18034) + "Miragul's Head" (19073). Gives "Fiery Avenger" (11050).
-179. fearplane/"Irak Altil", hand "Fiery Avenger" (11050) + "Mark of Atonement" (29010). Gives "Fiery Defender" (10099).
-180. povalor/"Baltron Werters", say "Couragebringer". Sets `pre_pal` to `1`.
-181. Requires `pre_pal` unset; no setter establishes this state.
-182. povalor/"Baltron Werters", say "Couragebringer". Requires `pre_pal` unset. Gives "Baltron's Solvent" (69901).
-183. sro/"Gilfal", hand "Baltron's Solvent" (69901). Requires `pre_pal` ==1. Gives "Gilfal's Scabbard" (69902).
-184. Spawns "Neffiken Lord Kelek-Vor" (210229) in `postorms` on event_signal.
-185. Loot "Broken Sword Piece" (69903) from "Neffiken Lord Kelek-Vor".
-186. Loot "Broken Sword Piece" (69903) from "Neffiken Lord of Kelek'Vor".
-187. Say "Control Timer" to hateplaneb/"Maestro".
-188. Spawns "Maestro of Rancor" (186111).
-189. Loot "Broken Sword Piece" (69904) from "Maestro of Rancor".
-190. **Broken:** no event trigger found for `hateplaneb/maestro#timer:popmaestro`.
-191. Spawns "Maestro of Rancor" (186111) after `hateplaneb/maestro#timer:popmaestro`.
-192. Loot "Broken Sword Piece" (69905) from "Kaniz Painbringer" in `potorment`.
-193. sro/"Gilfal", hand "Baltron's Solvent" (69901). Sets `pre_pal` to `2`.
-194. Ground spawn of "Rune of Xor" (69909) in `potranquility`.
-195. Ground spawn of "Rune of Yirno" (69908) in `mistmoore`.
-196. Ground spawn of "Rune of Zota" (69907) in `scarlet`.
-197. Ground spawn of "Rune Wilun" (69910) in `gunthak`.
-198. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Requires `pre_pal` ==2. Gives "Broken Sword Piece" (69906).
-199. Combine in "Gilfal's Scabbard" (69902): "Broken Sword Piece" (69903), "Broken Sword Piece" (69904), "Broken Sword Piece" (69905), "Broken Sword Piece" (69906). Produces "Fractured Couragebringer" (69911). The combine does not fail.
-200. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Sets `pre_pal` to `4`.
-201. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Sets `pre_pal` to `3`.
-202. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Requires `pre_pal` ==3. Gives "Fractured Couragebringer" (69912).
-203. povalor/"Baltron Werters", hand "Fractured Couragebringer" (69912). Requires `pre_pal` ==4. Gives "Couragebringer" (69913).
-204. hohonora/"Irak Altil", say "Hail". Sets `paladin_epic` to `6`.
-205. Spawns "Durunal the Cursebearer" (300087) in `wallofslaughter` on enter.
-206. Loot "Dark and Twisted Sword" (69971) from "Durunal the Cursebearer".
-207. hohonora/"Irak Altil", hand "Dark and Twisted Sword" (69971). Requires `paladin_epic` ==6. Gives "Dark and Twisted Sword" (69972).
-208. Loot "Redis' Soulstone" (69983) from "Shade of Redis Linrok" in `dranikcatacombsa`.
-209. Combine in "Dark and Twisted Sword" (69972): "Rithnok's Soulstone" (69941), "Drema's Soulstone" (69952), "Reiya's Soulstone" (69942), "Redis' Soulstone" (69983). Produces "Redemption" (64031). The combine does not fail.
-210. hohonora/"Irak Altil", say "Tell Me About Your Master". Sets `paladin_epic` to `9`.
-211. erudnint/"Josper Kenshed", say "Collect Component". Gives "Empty Bag" (17944).
-212. halas/"Lysbith Mcnaff", say "Protect The Pass". Gives "Empty Bag" (17944).
-213. Loot "Goblin Ice Necklace" (13897) from "Redwind" in `everfrost`.
-214. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Scout" in `everfrost`.
-215. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Whelp" in `everfrost`.
-216. Loot "Goblin Ice Necklace" (13897) from "An Icy Orc" in `everfrost`.
-217. Loot "Goblin Ice Necklace" (13897) from "Ice Goblin Diver" in `everfrost`.
-218. Combine in "Empty Bag" (17944): "Goblin Ice Necklace" (13897). Produces "Bag of Ice Necklaces" (13898). The combine does not fail.
-219. halas/"Lysbith Mcnaff", hand "Bag of Ice Necklaces" (13898). Gives "Iron Ration" (13005).
-220. Common item: Gnoll Fang (13915). Listed in 5 zones.
-221. halas/"Lysbith Mcnaff", hand "Gnoll Fang" (13915) + "Gnoll Fang" (13915) + "Gnoll Fang" (13915). Gives "Iron Ration" (13005).
-222. Requires `halloween_draykey_rations` unset; no setter establishes this state.
-223. kithicor/"Old Man Draykey", say "Instructions". Requires `halloween_draykey_rations` unset. Gives "Iron Ration" (13005).
-224. commons/"Kizdean Gix", say "Messages For Neriak". Gives "Sealed Letter" (18889).
-225. neriakc/"Loveal S-Nez", hand "Sealed Letter" (18889). Gives "Iron Ration" (13005).
-226. Loot "Cask" (16580) from "Tugog Grigol" in `rathemtn`.
-227. Common item: Hops (16591). Listed in 31 zones.
-228. Common item: Malt (16595). Listed in 30 zones.
-229. Common item: Yeast (16596). Listed in 30 zones.
-230. Combine in "Portable Drink Barrel" (17179): "Cask" (16580), "Hops" (16591), "Malt" (16595), "Yeast" (16596). Produces "Mead" (13008). Requires Brewing, trivial 41.
-231. erudnext/"Reklon Gnallen", hand "Iron Ration" (13005) + "Mead" (13008). Requires `paladin_epic` ==9. Gives "Erudin Prayer Bead" (69965).
-232. Summon "Quiver of Marr" (17307) by casting "Quiver of Marr".
-233. rathemtn/"Shin Master Grubbus", hand "Quiver of Marr" (17307). Requires `paladin_epic` ==9. Gives "Gukta Prayer Bead" (69964).
-234. Common item: Barley (16590). Listed in 28 zones.
-235. Combine in "Medicine Bag" (17901): "Hand-Formed Bottle" (45232), "Ensnaring Concoction V" (45236). Produces "Empty Vial" (10062), "Cork" (16851), "Formed Ensnaring Concoction V" (45258). Requires Alchemy, trivial 41.
-236. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-237. 11 other recipes also produce Cork (16851).
-238. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Celestial Essence" (9650). Produces "Purified Water" (12607). Requires Brewing, trivial 58.
-239. Combine in "Tracker's Water Extractor" (17987): "Purification Tablet" (12630), "Water Reed" (12778). Produces "Purified Water" (12607) x3. Requires Pottery. The combine does not fail.
-240. 3 other recipes also produce Purified Water (12607).
-241. Forage "Sand Verbena" (65582) in `taka`.
-242. Forage "Sand Verbena" (65582) in `takb`.
-243. Forage "Sand Verbena" (65582) in `takc`.
-244. Forage "Sand Verbena" (65582) in `takd`.
-245. Forage "Sand Verbena" (65582) in `take`.
-246. Forage "Sand Verbena" (65582) in `takf`.
-247. Forage "Sand Verbena" (65582) in `takg`.
-248. Forage "Sand Verbena" (65582) in `takh`.
-249. Forage "Sand Verbena" (65582) in `taki`.
-250. Forage "Sand Verbena" (65582) in `takj`.
-251. Combine in Brew Barrel (19): "Barley" (16590), "Bottle" (16598), "Cork" (16851), "Hops" (16591), "Purified Water" (12607), "Sand Verbena" (65582), "Yeast" (16596). Produces "Bottle of Double Brewed Double Dry Stout" (51157). Requires Brewing, trivial 226.
-252. kaladimb/"Datur Nightseer", hand "Bottle of Double Brewed Double Dry Stout" (51157). Requires `paladin_epic` ==9. Gives "Kaladim Prayer Bead" (69963).
-253. felwithea/"General Jyleel", hand platinum:1000. Requires `paladin_epic` ==9. Gives "Felwithe Prayer Bead" (69962).
-254. Ground spawn of "Freeport Prayer Bead" (69961) in `freeportwest`.
-255. Ground spawn of "Freeport Prayer Bead" (69961) in `freportn`.
-256. qeynos2/"Ziska Ironforge", hand platinum:500. Requires `paladin_epic` ==9. Gives "Qeynos Prayer Bead" (69960).
-257. Combine in "Unfilled Set of Prayer Beads" (69968): "Rivervale Prayer Bead" (69967), "Ak'anon Prayer Bead" (69966), "Erudin Prayer Bead" (69965), "Gukta Prayer Bead" (69964), "Kaladim Prayer Bead" (69963), "Felwithe Prayer Bead" (69962), "Freeport Prayer Bead" (69961), "Qeynos Prayer Bead" (69960). Produces "Set of Prayer Beads" (69969). The combine does not fail.
-258. dranikhollowsc/"Anetal", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `2`.
-259. natimbi/"Kemik Arulon", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `1`.
-260. natimbi/"Kemik Arulon", say "Hail". Requires `paladin_epic_hollowc` ==2. Requires `paladin_epic_hollowc` ==1. Gives "Token of Compassion" (69953).
-261. Requires `pal_chest_keel` unset; no setter establishes this state.
-262. oasis/"Paladin Epic", say "Hail". Requires `pal_chest_keel` unset. Gives "Keelee's Brooch" (69982).
-263. oasis/"Paladin Epic", say "Keelee Say". Gives "Keelee's Brooch" (69982).
-264. sro/"Instructor Maerceci", hand "Keelee's Brooch" (69982). Gives "Token of Chivalry" (69954).
-265. Loot "Valdoon Kel'Novar's Heart" (69981) from "Valdoon Kel'Novar" in `mmcc`.
-266. felwithea/"Galrun Starforge", hand "Valdoon Kel'Novar's Heart" (69981). Gives "Token of Cleansing" (69956).
-267. provinggrounds/"Pashia Clouddancer", say "Note". Gives "Note from Pashia" (69973).
-268. nedaria/"Duram Firechaser", hand "Note from Pashia" (69973). Gives "Token of Heroism" (69955).
-269. Say "Check Lorb" to anguish/"Zone Status".
-270. Spawns "Orb of Discordant Energy" (317087).
-271. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-272. Say "Check Uorb" to anguish/"Zone Status".
-273. Say "Check Amv Chest" to anguish/"Zone Status".
-274. Spawns "Ornate Chest" (317112).
-275. Loot "Globe of Discordant Energy" (47100) from "Ornate Chest".
-276. 2 other loot steps also yield Globe of Discordant Energy (47100).
-277. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" in `anguish`.
-278. Loot "Globe of Discordant Energy" (47100) from "Overlords Chest".
-279. airplane/"Inte Akera", hand "Globe of Discordant Energy" (47100). Gives "Scabbard of the Righteous" (69959).
+74. freeporteast/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
+75. freportw/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
+76. highkeep/"Assistant Kiolna", hand "H. K. 102" (12143). Gives "Sealed Note" (18936).
+77. paw/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
+78. southkarana/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
+79. Kill freportw/"Sir Lucan D-Lere". Spawns "Sir Lucan D'Lere" (9147).
+80. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere".
+81. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere" in `freeporteast`.
+82. freeportwest/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
+83. freportn/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
+84. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freeportwest/"Merko Quetalis". Spawns "spawns Guard Willia" (383270). Loot "Token of Truth" (13866) from "spawns Guard Willia".
+85. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freportn/"Merko Quetalis". Spawns "spawns Guard Willia" (8110). Loot "Token of Truth" (13866) from "spawns Guard Willia".
+86. Loot "Token of Truth" (13866) from "Guard Willia".
+87. freeportwest/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
+88. freportn/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
+89. Loot "Glowing Sword Hilt" (12197) from "Xicotl" in `mistmoore`.
+90. paw/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
+91. southkarana/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
+92. airplane/"Inte Akera", hand "SoulFire" (5504). Gives "Inte's First Blessing" (18033).
+93. lavastorm/"Ruathey", say "Bag". Gives "Nobleman's Bag" (17878).
+94. Common item: Ghoul's Heart (2410). Listed in 8 zones.
+95. No quest step gives Amstaf's Scroll (2411). The dump lists it in highkeep.
+96. No quest step gives Blade of Nobility (2412). The dump lists it in butcher.
+97. Loot "Hilt of the Nobleman" (2413) from "Ekeros" in `najena`.
+98. Loot "Hilt of the Nobleman" (2413) from "A Skeleton" in `najena`.
+99. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). The combine does not fail.
+100. airplane/"Inte Akera", hand "Ghoulbane" (5403). Gives "Inte's Second Blessing" (18034).
+101. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Head" (19073) from "Spawn Miragul".
+102. Loot "Miragul's Head" (19073) from "Miragul".
+103. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Robe" (1254) from "Spawn Miragul".
+104. Loot "Miragul's Robe" (1254) from "Miragul".
+105. airplane/"Inte Akera", hand "Miragul's Robe" (1254) + "Inte's First Blessing" (18033) + "Inte's Second Blessing" (18034) + "Miragul's Head" (19073). Gives "Fiery Avenger" (11050).
+106. fearplane/"Irak Altil", hand "Fiery Avenger" (11050) + "Mark of Atonement" (29010). Gives "Fiery Defender" (10099).
+107. povalor/"Baltron Werters", say "Couragebringer". Sets `pre_pal` to `1`.
+108. Requires `pre_pal` unset; no setter establishes this state.
+109. povalor/"Baltron Werters", say "Couragebringer". Requires `pre_pal` unset. Gives "Baltron's Solvent" (69901).
+110. sro/"Gilfal", hand "Baltron's Solvent" (69901). Requires `pre_pal` ==1. Gives "Gilfal's Scabbard" (69902).
+111. Spawns "Neffiken Lord Kelek-Vor" (210229) in `postorms` on event_signal.
+112. Loot "Broken Sword Piece" (69903) from "Neffiken Lord Kelek-Vor".
+113. Loot "Broken Sword Piece" (69903) from "Neffiken Lord of Kelek'Vor".
+114. Encounter starts when NPC 186196 spawns in `hateplaneb`.
+115. Starts timer `popmaestro`.
+116. Spawns "Maestro of Rancor" (186111) after `hateplaneb/maestro#timer:popmaestro`.
+117. Loot "Broken Sword Piece" (69904) from "Maestro of Rancor".
+118. Loot "Broken Sword Piece" (69905) from "Kaniz Painbringer" in `potorment`.
+119. sro/"Gilfal", hand "Baltron's Solvent" (69901). Sets `pre_pal` to `2`.
+120. Ground spawn of "Rune of Xor" (69909) in `potranquility`.
+121. Ground spawn of "Rune of Yirno" (69908) in `mistmoore`.
+122. Ground spawn of "Rune of Zota" (69907) in `scarlet`.
+123. Ground spawn of "Rune Wilun" (69910) in `gunthak`.
+124. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Requires `pre_pal` ==2. Gives "Broken Sword Piece" (69906).
+125. Combine in "Gilfal's Scabbard" (69902): "Broken Sword Piece" (69903), "Broken Sword Piece" (69904), "Broken Sword Piece" (69905), "Broken Sword Piece" (69906). Produces "Fractured Couragebringer" (69911). The combine does not fail.
+126. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Sets `pre_pal` to `4`.
+127. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Sets `pre_pal` to `3`.
+128. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Requires `pre_pal` ==3. Gives "Fractured Couragebringer" (69912).
+129. povalor/"Baltron Werters", hand "Fractured Couragebringer" (69912). Requires `pre_pal` ==4. Gives "Couragebringer" (69913).
+130. hohonora/"Irak Altil", say "Hail". Sets `paladin_epic` to `6`.
+131. Spawns "Durunal the Cursebearer" (300087) in `wallofslaughter` on enter.
+132. Loot "Dark and Twisted Sword" (69971) from "Durunal the Cursebearer".
+133. hohonora/"Irak Altil", hand "Dark and Twisted Sword" (69971). Requires `paladin_epic` ==6. Gives "Dark and Twisted Sword" (69972).
+134. Loot "Redis' Soulstone" (69983) from "Shade of Redis Linrok" in `dranikcatacombsa`.
+135. Combine in "Dark and Twisted Sword" (69972): "Rithnok's Soulstone" (69941), "Drema's Soulstone" (69952), "Reiya's Soulstone" (69942), "Redis' Soulstone" (69983). Produces "Redemption" (64031). The combine does not fail.
+136. hohonora/"Irak Altil", say "Tell Me About Your Master". Sets `paladin_epic` to `9`.
+137. erudnint/"Josper Kenshed", say "Collect Component". Gives "Empty Bag" (17944).
+138. halas/"Lysbith Mcnaff", say "Protect The Pass". Gives "Empty Bag" (17944).
+139. Loot "Goblin Ice Necklace" (13897) from "Redwind" in `everfrost`.
+140. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Scout" in `everfrost`.
+141. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Whelp" in `everfrost`.
+142. Loot "Goblin Ice Necklace" (13897) from "An Icy Orc" in `everfrost`.
+143. Loot "Goblin Ice Necklace" (13897) from "Ice Goblin Diver" in `everfrost`.
+144. Combine in "Empty Bag" (17944): "Goblin Ice Necklace" (13897). Produces "Bag of Ice Necklaces" (13898). The combine does not fail.
+145. halas/"Lysbith Mcnaff", hand "Bag of Ice Necklaces" (13898). Gives "Iron Ration" (13005).
+146. Common item: Gnoll Fang (13915). Listed in 5 zones.
+147. halas/"Lysbith Mcnaff", hand "Gnoll Fang" (13915) + "Gnoll Fang" (13915) + "Gnoll Fang" (13915). Gives "Iron Ration" (13005).
+148. Requires `halloween_draykey_rations` unset; no setter establishes this state.
+149. kithicor/"Old Man Draykey", say "Instructions". Requires `halloween_draykey_rations` unset. Gives "Iron Ration" (13005).
+150. commons/"Kizdean Gix", say "Messages For Neriak". Gives "Sealed Letter" (18889).
+151. neriakc/"Loveal S-Nez", hand "Sealed Letter" (18889). Gives "Iron Ration" (13005).
+152. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
+153. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
+154. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+155. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+156. 67 other recipes also produce Celestial Essence (9650).
+157. Common item: Jar of Acid (22133). Listed in 15 zones.
+158. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
+159. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
+160. Common item: Mortar and Pestle (17904). Listed in 12 zones.
+161. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
+162. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
+163. Common item: Firing Sheet (16906). Listed in 34 zones.
+164. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
+165. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+166. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
+167. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
+168. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
+169. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
+170. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
+171. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
+172. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
+173. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
+174. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
+175. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+176. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+177. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+178. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
+179. Loot "Cask" (16580) from "Tugog Grigol" in `rathemtn`.
+180. Common item: Hops (16591). Listed in 31 zones.
+181. Common item: Malt (16595). Listed in 30 zones.
+182. Common item: Yeast (16596). Listed in 30 zones.
+183. Combine in "Portable Drink Barrel" (17179): "Cask" (16580), "Hops" (16591), "Malt" (16595), "Yeast" (16596). Produces "Mead" (13008). Requires Brewing, trivial 41.
+184. erudnext/"Reklon Gnallen", hand "Iron Ration" (13005) + "Mead" (13008). Requires `paladin_epic` ==9. Gives "Erudin Prayer Bead" (69965).
+185. Summon "Quiver of Marr" (17307) by casting "Quiver of Marr".
+186. rathemtn/"Shin Master Grubbus", hand "Quiver of Marr" (17307). Requires `paladin_epic` ==9. Gives "Gukta Prayer Bead" (69964).
+187. Common item: Barley (16590). Listed in 28 zones.
+188. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+189. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+190. 17 other recipes also produce Bottle (16598).
+191. Combine in "Medicine Bag" (17901): "Hand-Formed Bottle" (45232), "Ensnaring Concoction V" (45236). Produces "Empty Vial" (10062), "Cork" (16851), "Formed Ensnaring Concoction V" (45258). Requires Alchemy, trivial 41.
+192. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+193. 11 other recipes also produce Cork (16851).
+194. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Celestial Essence" (9650). Produces "Purified Water" (12607). Requires Brewing, trivial 58.
+195. Combine in "Tracker's Water Extractor" (17987): "Purification Tablet" (12630), "Water Reed" (12778). Produces "Purified Water" (12607) x3. Requires Pottery. The combine does not fail.
+196. 3 other recipes also produce Purified Water (12607).
+197. Forage "Sand Verbena" (65582) in `taka`.
+198. Forage "Sand Verbena" (65582) in `takb`.
+199. Forage "Sand Verbena" (65582) in `takc`.
+200. Forage "Sand Verbena" (65582) in `takd`.
+201. Forage "Sand Verbena" (65582) in `take`.
+202. Forage "Sand Verbena" (65582) in `takf`.
+203. Forage "Sand Verbena" (65582) in `takg`.
+204. Forage "Sand Verbena" (65582) in `takh`.
+205. Forage "Sand Verbena" (65582) in `taki`.
+206. Forage "Sand Verbena" (65582) in `takj`.
+207. Combine in Brew Barrel (19): "Barley" (16590), "Bottle" (16598), "Cork" (16851), "Hops" (16591), "Purified Water" (12607), "Sand Verbena" (65582), "Yeast" (16596). Produces "Bottle of Double Brewed Double Dry Stout" (51157). Requires Brewing, trivial 226.
+208. kaladimb/"Datur Nightseer", hand "Bottle of Double Brewed Double Dry Stout" (51157). Requires `paladin_epic` ==9. Gives "Kaladim Prayer Bead" (69963).
+209. felwithea/"General Jyleel", hand platinum:1000. Requires `paladin_epic` ==9. Gives "Felwithe Prayer Bead" (69962).
+210. Ground spawn of "Freeport Prayer Bead" (69961) in `freeportwest`.
+211. Ground spawn of "Freeport Prayer Bead" (69961) in `freportn`.
+212. qeynos2/"Ziska Ironforge", hand platinum:500. Requires `paladin_epic` ==9. Gives "Qeynos Prayer Bead" (69960).
+213. Combine in "Unfilled Set of Prayer Beads" (69968): "Rivervale Prayer Bead" (69967), "Ak'anon Prayer Bead" (69966), "Erudin Prayer Bead" (69965), "Gukta Prayer Bead" (69964), "Kaladim Prayer Bead" (69963), "Felwithe Prayer Bead" (69962), "Freeport Prayer Bead" (69961), "Qeynos Prayer Bead" (69960). Produces "Set of Prayer Beads" (69969). The combine does not fail.
+214. dranikhollowsc/"Anetal", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `2`.
+215. natimbi/"Kemik Arulon", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `1`.
+216. natimbi/"Kemik Arulon", say "Hail". Requires `paladin_epic_hollowc` ==2. Requires `paladin_epic_hollowc` ==1. Gives "Token of Compassion" (69953).
+217. Requires `pal_chest_keel` unset; no setter establishes this state.
+218. oasis/"Paladin Epic", say "Hail". Requires `pal_chest_keel` unset. Gives "Keelee's Brooch" (69982).
+219. oasis/"Paladin Epic", say "Keelee Say". Gives "Keelee's Brooch" (69982).
+220. sro/"Instructor Maerceci", hand "Keelee's Brooch" (69982). Gives "Token of Chivalry" (69954).
+221. Loot "Valdoon Kel'Novar's Heart" (69981) from "Valdoon Kel'Novar" in `mmcc`.
+222. felwithea/"Galrun Starforge", hand "Valdoon Kel'Novar's Heart" (69981). Gives "Token of Cleansing" (69956).
+223. provinggrounds/"Pashia Clouddancer", say "Note". Gives "Note from Pashia" (69973).
+224. nedaria/"Duram Firechaser", hand "Note from Pashia" (69973). Gives "Token of Heroism" (69955).
+225. Say "Check Lorb" to anguish/"Zone Status".
+226. Spawns "Orb of Discordant Energy" (317087).
+227. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+228. Say "Check Uorb" to anguish/"Zone Status".
+229. Say "Check Amv Chest" to anguish/"Zone Status".
+230. Spawns "Ornate Chest" (317112).
+231. Loot "Globe of Discordant Energy" (47100) from "Ornate Chest".
+232. 2 other loot steps also yield Globe of Discordant Energy (47100).
+233. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" in `anguish`.
+234. Loot "Globe of Discordant Energy" (47100) from "Overlords Chest".
+235. airplane/"Inte Akera", hand "Globe of Discordant Energy" (47100). Gives "Scabbard of the Righteous" (69959).
 
 ### "Token of Loyalty" (69958)
 
@@ -1495,7 +1281,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 15. Loot "Drema's Soulstone" (69928) from "Drema Young".
 16. Loot "Drema's Soulstone" (69928) from "Drema Young" in `letalis`.
 17. Loot "Soulstone Shard" (69950) from "Coterie Corruptor" in `tenebrous`.
-18. Say "Mujaki Death" to ponightmare/"Mujaki".
+18. Say "Event:Death Complete:204080" to ponightmare/"Mujaki".
 19. Spawns "Shade of Mujaki the Devourer" (204081).
 20. Loot "Soulstone Shard" (69951) from "Shade of Mujaki the Devourer".
 21. Combine in "Drema's Soulstone" (69928): "Soulstone Shard" (69950), "Soulstone Shard" (69951). Produces "Drema's Soulstone" (69952). The combine does not fail.
@@ -1551,212 +1337,168 @@ Each list is the order you obtain that item. Later steps point here instead of r
 71. Loot "Tainted Darksteel Shield" (29002) from "Kirak Vil" in `nektulos`.
 72. felwithea/"Elia The Pure", hand "Tainted Darksteel Shield" (29002). Gives "Gleaming Crested Shield" (29005).
 73. erudnext/"Reklon Gnallen", hand "Gleaming Crested Sword" (29003) + "Gleaming Crested Breastplate" (29004) + "Gleaming Crested Shield" (29005). Gives "Mark of Atonement" (29010).
-74. No quest step gives Drom's Champagne (13829). The dump lists it in freeporteast, freporte, highpasshold.
-75. freeporteast/"Tykar Renlin", hand "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829). Gives "Bunker Cell #1" (12196).
-76. freporte/"Tykar Renlin", hand "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829). Gives "Bunker Cell #1" (12196).
-77. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
-78. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
-79. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-80. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-81. 67 other recipes also produce Celestial Essence (9650).
-82. Common item: Jar of Acid (22133). Listed in 15 zones.
-83. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
-84. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
-85. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-86. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
-87. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-88. Common item: Firing Sheet (16906). Listed in 34 zones.
-89. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-90. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-91. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-92. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-93. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-94. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-95. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-96. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-97. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-98. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-99. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-100. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-101. Say "Tm Devrak Death" to rujd/"Rujd".
-102. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-103. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-104. Say "Tm Dokorel Death" to rujd/"Rujd".
-105. Say "Tm Velrek Death" to rujd/"Rujd".
-106. Say "Researcher Death" to rujg/"Rujg".
-107. Spawns "A Barrel" (260015).
-108. Loot "Pod of Water" (13044) from "A Barrel".
-109. 3 other loot steps also yield Pod of Water (13044).
-110. Forage "Pod of Water" (13044) in `ruja`.
-111. Forage "Pod of Water" (13044) in `uqua`.
-112. Forage "Pod of Water" (13044) in `yxtta`.
-113. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-114. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-115. 17 other recipes also produce Bottle (16598).
-116. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-117. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-118. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-119. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-120. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-121. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-122. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-123. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-124. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-125. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-126. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-127. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-128. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-129. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-130. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-131. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-132. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-133. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-134. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-135. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-136. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-137. Common item: Snake Scales (13070). Listed in 56 zones.
-138. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Snake Scales" (13070), "Bottle" (16598). Produces "Bog Juice" (16581). Requires Brewing, trivial 21.
-139. Common item: Spit (17947). Listed in 34 zones.
-140. Common item: Fire Beetle Eye (10307). Listed in 24 zones.
-141. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
-142. Loot "Rat Ears" (13072) from "Sepsis Rat".
-143. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
-144. Loot "Rat Ears" (13072) from "A Young Plague Rat".
-145. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
-146. Combine in "Spit" (17947): "Fire Beetle Eye" (10307), "Rat Ears" (13072). Produces "Edible Goo" (13498). Requires Baking, trivial 21.
-147. freeporteast/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
-148. freportw/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
-149. highkeep/"Assistant Kiolna", hand "H. K. 102" (12143). Gives "Sealed Note" (18936).
-150. paw/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
-151. southkarana/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
-152. Kill freportw/"Sir Lucan D-Lere". Spawns "Sir Lucan D'Lere" (9147).
-153. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere".
-154. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere" in `freeporteast`.
-155. freeportwest/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
-156. freportn/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
-157. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freeportwest/"Merko Quetalis". Spawns "spawns Guard Willia" (383270). Loot "Token of Truth" (13866) from "spawns Guard Willia".
-158. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freportn/"Merko Quetalis". Spawns "spawns Guard Willia" (8110). Loot "Token of Truth" (13866) from "spawns Guard Willia".
-159. Loot "Token of Truth" (13866) from "Guard Willia".
-160. freeportwest/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
-161. freportn/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
-162. Loot "Glowing Sword Hilt" (12197) from "Xicotl" in `mistmoore`.
-163. paw/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
-164. southkarana/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
-165. airplane/"Inte Akera", hand "SoulFire" (5504). Gives "Inte's First Blessing" (18033).
-166. lavastorm/"Ruathey", say "Bag". Gives "Nobleman's Bag" (17878).
-167. Common item: Ghoul's Heart (2410). Listed in 8 zones.
-168. No quest step gives Amstaf's Scroll (2411). The dump lists it in highkeep.
-169. No quest step gives Blade of Nobility (2412). The dump lists it in butcher.
-170. Loot "Hilt of the Nobleman" (2413) from "Ekeros" in `najena`.
-171. Loot "Hilt of the Nobleman" (2413) from "A Skeleton" in `najena`.
-172. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). The combine does not fail.
-173. airplane/"Inte Akera", hand "Ghoulbane" (5403). Gives "Inte's Second Blessing" (18034).
-174. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Head" (19073) from "Spawn Miragul".
-175. Loot "Miragul's Head" (19073) from "Miragul".
-176. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Robe" (1254) from "Spawn Miragul".
-177. Loot "Miragul's Robe" (1254) from "Miragul".
-178. airplane/"Inte Akera", hand "Miragul's Robe" (1254) + "Inte's First Blessing" (18033) + "Inte's Second Blessing" (18034) + "Miragul's Head" (19073). Gives "Fiery Avenger" (11050).
-179. fearplane/"Irak Altil", hand "Fiery Avenger" (11050) + "Mark of Atonement" (29010). Gives "Fiery Defender" (10099).
-180. povalor/"Baltron Werters", say "Couragebringer". Sets `pre_pal` to `1`.
-181. Requires `pre_pal` unset; no setter establishes this state.
-182. povalor/"Baltron Werters", say "Couragebringer". Requires `pre_pal` unset. Gives "Baltron's Solvent" (69901).
-183. sro/"Gilfal", hand "Baltron's Solvent" (69901). Requires `pre_pal` ==1. Gives "Gilfal's Scabbard" (69902).
-184. Spawns "Neffiken Lord Kelek-Vor" (210229) in `postorms` on event_signal.
-185. Loot "Broken Sword Piece" (69903) from "Neffiken Lord Kelek-Vor".
-186. Loot "Broken Sword Piece" (69903) from "Neffiken Lord of Kelek'Vor".
-187. Say "Control Timer" to hateplaneb/"Maestro".
-188. Spawns "Maestro of Rancor" (186111).
-189. Loot "Broken Sword Piece" (69904) from "Maestro of Rancor".
-190. **Broken:** no event trigger found for `hateplaneb/maestro#timer:popmaestro`.
-191. Spawns "Maestro of Rancor" (186111) after `hateplaneb/maestro#timer:popmaestro`.
-192. Loot "Broken Sword Piece" (69905) from "Kaniz Painbringer" in `potorment`.
-193. sro/"Gilfal", hand "Baltron's Solvent" (69901). Sets `pre_pal` to `2`.
-194. Ground spawn of "Rune of Xor" (69909) in `potranquility`.
-195. Ground spawn of "Rune of Yirno" (69908) in `mistmoore`.
-196. Ground spawn of "Rune of Zota" (69907) in `scarlet`.
-197. Ground spawn of "Rune Wilun" (69910) in `gunthak`.
-198. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Requires `pre_pal` ==2. Gives "Broken Sword Piece" (69906).
-199. Combine in "Gilfal's Scabbard" (69902): "Broken Sword Piece" (69903), "Broken Sword Piece" (69904), "Broken Sword Piece" (69905), "Broken Sword Piece" (69906). Produces "Fractured Couragebringer" (69911). The combine does not fail.
-200. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Sets `pre_pal` to `4`.
-201. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Sets `pre_pal` to `3`.
-202. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Requires `pre_pal` ==3. Gives "Fractured Couragebringer" (69912).
-203. povalor/"Baltron Werters", hand "Fractured Couragebringer" (69912). Requires `pre_pal` ==4. Gives "Couragebringer" (69913).
-204. hohonora/"Irak Altil", say "Hail". Sets `paladin_epic` to `6`.
-205. Spawns "Durunal the Cursebearer" (300087) in `wallofslaughter` on enter.
-206. Loot "Dark and Twisted Sword" (69971) from "Durunal the Cursebearer".
-207. hohonora/"Irak Altil", hand "Dark and Twisted Sword" (69971). Requires `paladin_epic` ==6. Gives "Dark and Twisted Sword" (69972).
-208. Loot "Redis' Soulstone" (69983) from "Shade of Redis Linrok" in `dranikcatacombsa`.
-209. Combine in "Dark and Twisted Sword" (69972): "Rithnok's Soulstone" (69941), "Drema's Soulstone" (69952), "Reiya's Soulstone" (69942), "Redis' Soulstone" (69983). Produces "Redemption" (64031). The combine does not fail.
-210. hohonora/"Irak Altil", say "Tell Me About Your Master". Sets `paladin_epic` to `9`.
-211. erudnint/"Josper Kenshed", say "Collect Component". Gives "Empty Bag" (17944).
-212. halas/"Lysbith Mcnaff", say "Protect The Pass". Gives "Empty Bag" (17944).
-213. Loot "Goblin Ice Necklace" (13897) from "Redwind" in `everfrost`.
-214. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Scout" in `everfrost`.
-215. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Whelp" in `everfrost`.
-216. Loot "Goblin Ice Necklace" (13897) from "An Icy Orc" in `everfrost`.
-217. Loot "Goblin Ice Necklace" (13897) from "Ice Goblin Diver" in `everfrost`.
-218. Combine in "Empty Bag" (17944): "Goblin Ice Necklace" (13897). Produces "Bag of Ice Necklaces" (13898). The combine does not fail.
-219. halas/"Lysbith Mcnaff", hand "Bag of Ice Necklaces" (13898). Gives "Iron Ration" (13005).
-220. Common item: Gnoll Fang (13915). Listed in 5 zones.
-221. halas/"Lysbith Mcnaff", hand "Gnoll Fang" (13915) + "Gnoll Fang" (13915) + "Gnoll Fang" (13915). Gives "Iron Ration" (13005).
-222. Requires `halloween_draykey_rations` unset; no setter establishes this state.
-223. kithicor/"Old Man Draykey", say "Instructions". Requires `halloween_draykey_rations` unset. Gives "Iron Ration" (13005).
-224. commons/"Kizdean Gix", say "Messages For Neriak". Gives "Sealed Letter" (18889).
-225. neriakc/"Loveal S-Nez", hand "Sealed Letter" (18889). Gives "Iron Ration" (13005).
-226. Loot "Cask" (16580) from "Tugog Grigol" in `rathemtn`.
-227. Common item: Hops (16591). Listed in 31 zones.
-228. Common item: Malt (16595). Listed in 30 zones.
-229. Common item: Yeast (16596). Listed in 30 zones.
-230. Combine in "Portable Drink Barrel" (17179): "Cask" (16580), "Hops" (16591), "Malt" (16595), "Yeast" (16596). Produces "Mead" (13008). Requires Brewing, trivial 41.
-231. erudnext/"Reklon Gnallen", hand "Iron Ration" (13005) + "Mead" (13008). Requires `paladin_epic` ==9. Gives "Erudin Prayer Bead" (69965).
-232. Summon "Quiver of Marr" (17307) by casting "Quiver of Marr".
-233. rathemtn/"Shin Master Grubbus", hand "Quiver of Marr" (17307). Requires `paladin_epic` ==9. Gives "Gukta Prayer Bead" (69964).
-234. Common item: Barley (16590). Listed in 28 zones.
-235. Combine in "Medicine Bag" (17901): "Hand-Formed Bottle" (45232), "Ensnaring Concoction V" (45236). Produces "Empty Vial" (10062), "Cork" (16851), "Formed Ensnaring Concoction V" (45258). Requires Alchemy, trivial 41.
-236. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-237. 11 other recipes also produce Cork (16851).
-238. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Celestial Essence" (9650). Produces "Purified Water" (12607). Requires Brewing, trivial 58.
-239. Combine in "Tracker's Water Extractor" (17987): "Purification Tablet" (12630), "Water Reed" (12778). Produces "Purified Water" (12607) x3. Requires Pottery. The combine does not fail.
-240. 3 other recipes also produce Purified Water (12607).
-241. Forage "Sand Verbena" (65582) in `taka`.
-242. Forage "Sand Verbena" (65582) in `takb`.
-243. Forage "Sand Verbena" (65582) in `takc`.
-244. Forage "Sand Verbena" (65582) in `takd`.
-245. Forage "Sand Verbena" (65582) in `take`.
-246. Forage "Sand Verbena" (65582) in `takf`.
-247. Forage "Sand Verbena" (65582) in `takg`.
-248. Forage "Sand Verbena" (65582) in `takh`.
-249. Forage "Sand Verbena" (65582) in `taki`.
-250. Forage "Sand Verbena" (65582) in `takj`.
-251. Combine in Brew Barrel (19): "Barley" (16590), "Bottle" (16598), "Cork" (16851), "Hops" (16591), "Purified Water" (12607), "Sand Verbena" (65582), "Yeast" (16596). Produces "Bottle of Double Brewed Double Dry Stout" (51157). Requires Brewing, trivial 226.
-252. kaladimb/"Datur Nightseer", hand "Bottle of Double Brewed Double Dry Stout" (51157). Requires `paladin_epic` ==9. Gives "Kaladim Prayer Bead" (69963).
-253. felwithea/"General Jyleel", hand platinum:1000. Requires `paladin_epic` ==9. Gives "Felwithe Prayer Bead" (69962).
-254. Ground spawn of "Freeport Prayer Bead" (69961) in `freeportwest`.
-255. Ground spawn of "Freeport Prayer Bead" (69961) in `freportn`.
-256. qeynos2/"Ziska Ironforge", hand platinum:500. Requires `paladin_epic` ==9. Gives "Qeynos Prayer Bead" (69960).
-257. Combine in "Unfilled Set of Prayer Beads" (69968): "Rivervale Prayer Bead" (69967), "Ak'anon Prayer Bead" (69966), "Erudin Prayer Bead" (69965), "Gukta Prayer Bead" (69964), "Kaladim Prayer Bead" (69963), "Felwithe Prayer Bead" (69962), "Freeport Prayer Bead" (69961), "Qeynos Prayer Bead" (69960). Produces "Set of Prayer Beads" (69969). The combine does not fail.
-258. dranikhollowsc/"Anetal", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `2`.
-259. natimbi/"Kemik Arulon", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `1`.
-260. natimbi/"Kemik Arulon", say "Hail". Requires `paladin_epic_hollowc` ==2. Requires `paladin_epic_hollowc` ==1. Gives "Token of Compassion" (69953).
-261. Requires `pal_chest_keel` unset; no setter establishes this state.
-262. oasis/"Paladin Epic", say "Hail". Requires `pal_chest_keel` unset. Gives "Keelee's Brooch" (69982).
-263. oasis/"Paladin Epic", say "Keelee Say". Gives "Keelee's Brooch" (69982).
-264. sro/"Instructor Maerceci", hand "Keelee's Brooch" (69982). Gives "Token of Chivalry" (69954).
-265. Loot "Valdoon Kel'Novar's Heart" (69981) from "Valdoon Kel'Novar" in `mmcc`.
-266. felwithea/"Galrun Starforge", hand "Valdoon Kel'Novar's Heart" (69981). Gives "Token of Cleansing" (69956).
-267. provinggrounds/"Pashia Clouddancer", say "Note". Gives "Note from Pashia" (69973).
-268. nedaria/"Duram Firechaser", hand "Note from Pashia" (69973). Gives "Token of Heroism" (69955).
-269. Say "Check Lorb" to anguish/"Zone Status".
-270. Spawns "Orb of Discordant Energy" (317087).
-271. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-272. Say "Check Uorb" to anguish/"Zone Status".
-273. Say "Check Amv Chest" to anguish/"Zone Status".
-274. Spawns "Ornate Chest" (317112).
-275. Loot "Globe of Discordant Energy" (47100) from "Ornate Chest".
-276. 2 other loot steps also yield Globe of Discordant Energy (47100).
-277. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" in `anguish`.
-278. Loot "Globe of Discordant Energy" (47100) from "Overlords Chest".
-279. airplane/"Inte Akera", hand "Globe of Discordant Energy" (47100). Gives "Token of Loyalty" (69958).
+74. freeporteast/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
+75. freportw/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
+76. highkeep/"Assistant Kiolna", hand "H. K. 102" (12143). Gives "Sealed Note" (18936).
+77. paw/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
+78. southkarana/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
+79. Kill freportw/"Sir Lucan D-Lere". Spawns "Sir Lucan D'Lere" (9147).
+80. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere".
+81. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere" in `freeporteast`.
+82. freeportwest/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
+83. freportn/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
+84. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freeportwest/"Merko Quetalis". Spawns "spawns Guard Willia" (383270). Loot "Token of Truth" (13866) from "spawns Guard Willia".
+85. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freportn/"Merko Quetalis". Spawns "spawns Guard Willia" (8110). Loot "Token of Truth" (13866) from "spawns Guard Willia".
+86. Loot "Token of Truth" (13866) from "Guard Willia".
+87. freeportwest/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
+88. freportn/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
+89. Loot "Glowing Sword Hilt" (12197) from "Xicotl" in `mistmoore`.
+90. paw/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
+91. southkarana/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
+92. airplane/"Inte Akera", hand "SoulFire" (5504). Gives "Inte's First Blessing" (18033).
+93. lavastorm/"Ruathey", say "Bag". Gives "Nobleman's Bag" (17878).
+94. Common item: Ghoul's Heart (2410). Listed in 8 zones.
+95. No quest step gives Amstaf's Scroll (2411). The dump lists it in highkeep.
+96. No quest step gives Blade of Nobility (2412). The dump lists it in butcher.
+97. Loot "Hilt of the Nobleman" (2413) from "Ekeros" in `najena`.
+98. Loot "Hilt of the Nobleman" (2413) from "A Skeleton" in `najena`.
+99. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). The combine does not fail.
+100. airplane/"Inte Akera", hand "Ghoulbane" (5403). Gives "Inte's Second Blessing" (18034).
+101. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Head" (19073) from "Spawn Miragul".
+102. Loot "Miragul's Head" (19073) from "Miragul".
+103. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Robe" (1254) from "Spawn Miragul".
+104. Loot "Miragul's Robe" (1254) from "Miragul".
+105. airplane/"Inte Akera", hand "Miragul's Robe" (1254) + "Inte's First Blessing" (18033) + "Inte's Second Blessing" (18034) + "Miragul's Head" (19073). Gives "Fiery Avenger" (11050).
+106. fearplane/"Irak Altil", hand "Fiery Avenger" (11050) + "Mark of Atonement" (29010). Gives "Fiery Defender" (10099).
+107. povalor/"Baltron Werters", say "Couragebringer". Sets `pre_pal` to `1`.
+108. Requires `pre_pal` unset; no setter establishes this state.
+109. povalor/"Baltron Werters", say "Couragebringer". Requires `pre_pal` unset. Gives "Baltron's Solvent" (69901).
+110. sro/"Gilfal", hand "Baltron's Solvent" (69901). Requires `pre_pal` ==1. Gives "Gilfal's Scabbard" (69902).
+111. Spawns "Neffiken Lord Kelek-Vor" (210229) in `postorms` on event_signal.
+112. Loot "Broken Sword Piece" (69903) from "Neffiken Lord Kelek-Vor".
+113. Loot "Broken Sword Piece" (69903) from "Neffiken Lord of Kelek'Vor".
+114. Encounter starts when NPC 186196 spawns in `hateplaneb`.
+115. Starts timer `popmaestro`.
+116. Spawns "Maestro of Rancor" (186111) after `hateplaneb/maestro#timer:popmaestro`.
+117. Loot "Broken Sword Piece" (69904) from "Maestro of Rancor".
+118. Loot "Broken Sword Piece" (69905) from "Kaniz Painbringer" in `potorment`.
+119. sro/"Gilfal", hand "Baltron's Solvent" (69901). Sets `pre_pal` to `2`.
+120. Ground spawn of "Rune of Xor" (69909) in `potranquility`.
+121. Ground spawn of "Rune of Yirno" (69908) in `mistmoore`.
+122. Ground spawn of "Rune of Zota" (69907) in `scarlet`.
+123. Ground spawn of "Rune Wilun" (69910) in `gunthak`.
+124. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Requires `pre_pal` ==2. Gives "Broken Sword Piece" (69906).
+125. Combine in "Gilfal's Scabbard" (69902): "Broken Sword Piece" (69903), "Broken Sword Piece" (69904), "Broken Sword Piece" (69905), "Broken Sword Piece" (69906). Produces "Fractured Couragebringer" (69911). The combine does not fail.
+126. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Sets `pre_pal` to `4`.
+127. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Sets `pre_pal` to `3`.
+128. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Requires `pre_pal` ==3. Gives "Fractured Couragebringer" (69912).
+129. povalor/"Baltron Werters", hand "Fractured Couragebringer" (69912). Requires `pre_pal` ==4. Gives "Couragebringer" (69913).
+130. hohonora/"Irak Altil", say "Hail". Sets `paladin_epic` to `6`.
+131. Spawns "Durunal the Cursebearer" (300087) in `wallofslaughter` on enter.
+132. Loot "Dark and Twisted Sword" (69971) from "Durunal the Cursebearer".
+133. hohonora/"Irak Altil", hand "Dark and Twisted Sword" (69971). Requires `paladin_epic` ==6. Gives "Dark and Twisted Sword" (69972).
+134. Loot "Redis' Soulstone" (69983) from "Shade of Redis Linrok" in `dranikcatacombsa`.
+135. Combine in "Dark and Twisted Sword" (69972): "Rithnok's Soulstone" (69941), "Drema's Soulstone" (69952), "Reiya's Soulstone" (69942), "Redis' Soulstone" (69983). Produces "Redemption" (64031). The combine does not fail.
+136. hohonora/"Irak Altil", say "Tell Me About Your Master". Sets `paladin_epic` to `9`.
+137. erudnint/"Josper Kenshed", say "Collect Component". Gives "Empty Bag" (17944).
+138. halas/"Lysbith Mcnaff", say "Protect The Pass". Gives "Empty Bag" (17944).
+139. Loot "Goblin Ice Necklace" (13897) from "Redwind" in `everfrost`.
+140. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Scout" in `everfrost`.
+141. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Whelp" in `everfrost`.
+142. Loot "Goblin Ice Necklace" (13897) from "An Icy Orc" in `everfrost`.
+143. Loot "Goblin Ice Necklace" (13897) from "Ice Goblin Diver" in `everfrost`.
+144. Combine in "Empty Bag" (17944): "Goblin Ice Necklace" (13897). Produces "Bag of Ice Necklaces" (13898). The combine does not fail.
+145. halas/"Lysbith Mcnaff", hand "Bag of Ice Necklaces" (13898). Gives "Iron Ration" (13005).
+146. Common item: Gnoll Fang (13915). Listed in 5 zones.
+147. halas/"Lysbith Mcnaff", hand "Gnoll Fang" (13915) + "Gnoll Fang" (13915) + "Gnoll Fang" (13915). Gives "Iron Ration" (13005).
+148. Requires `halloween_draykey_rations` unset; no setter establishes this state.
+149. kithicor/"Old Man Draykey", say "Instructions". Requires `halloween_draykey_rations` unset. Gives "Iron Ration" (13005).
+150. commons/"Kizdean Gix", say "Messages For Neriak". Gives "Sealed Letter" (18889).
+151. neriakc/"Loveal S-Nez", hand "Sealed Letter" (18889). Gives "Iron Ration" (13005).
+152. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
+153. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
+154. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+155. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+156. 67 other recipes also produce Celestial Essence (9650).
+157. Common item: Jar of Acid (22133). Listed in 15 zones.
+158. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
+159. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
+160. Common item: Mortar and Pestle (17904). Listed in 12 zones.
+161. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
+162. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
+163. Common item: Firing Sheet (16906). Listed in 34 zones.
+164. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
+165. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+166. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
+167. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
+168. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
+169. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
+170. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
+171. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
+172. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
+173. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
+174. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
+175. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+176. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+177. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+178. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
+179. Loot "Cask" (16580) from "Tugog Grigol" in `rathemtn`.
+180. Common item: Hops (16591). Listed in 31 zones.
+181. Common item: Malt (16595). Listed in 30 zones.
+182. Common item: Yeast (16596). Listed in 30 zones.
+183. Combine in "Portable Drink Barrel" (17179): "Cask" (16580), "Hops" (16591), "Malt" (16595), "Yeast" (16596). Produces "Mead" (13008). Requires Brewing, trivial 41.
+184. erudnext/"Reklon Gnallen", hand "Iron Ration" (13005) + "Mead" (13008). Requires `paladin_epic` ==9. Gives "Erudin Prayer Bead" (69965).
+185. Summon "Quiver of Marr" (17307) by casting "Quiver of Marr".
+186. rathemtn/"Shin Master Grubbus", hand "Quiver of Marr" (17307). Requires `paladin_epic` ==9. Gives "Gukta Prayer Bead" (69964).
+187. Common item: Barley (16590). Listed in 28 zones.
+188. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+189. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+190. 17 other recipes also produce Bottle (16598).
+191. Combine in "Medicine Bag" (17901): "Hand-Formed Bottle" (45232), "Ensnaring Concoction V" (45236). Produces "Empty Vial" (10062), "Cork" (16851), "Formed Ensnaring Concoction V" (45258). Requires Alchemy, trivial 41.
+192. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+193. 11 other recipes also produce Cork (16851).
+194. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Celestial Essence" (9650). Produces "Purified Water" (12607). Requires Brewing, trivial 58.
+195. Combine in "Tracker's Water Extractor" (17987): "Purification Tablet" (12630), "Water Reed" (12778). Produces "Purified Water" (12607) x3. Requires Pottery. The combine does not fail.
+196. 3 other recipes also produce Purified Water (12607).
+197. Forage "Sand Verbena" (65582) in `taka`.
+198. Forage "Sand Verbena" (65582) in `takb`.
+199. Forage "Sand Verbena" (65582) in `takc`.
+200. Forage "Sand Verbena" (65582) in `takd`.
+201. Forage "Sand Verbena" (65582) in `take`.
+202. Forage "Sand Verbena" (65582) in `takf`.
+203. Forage "Sand Verbena" (65582) in `takg`.
+204. Forage "Sand Verbena" (65582) in `takh`.
+205. Forage "Sand Verbena" (65582) in `taki`.
+206. Forage "Sand Verbena" (65582) in `takj`.
+207. Combine in Brew Barrel (19): "Barley" (16590), "Bottle" (16598), "Cork" (16851), "Hops" (16591), "Purified Water" (12607), "Sand Verbena" (65582), "Yeast" (16596). Produces "Bottle of Double Brewed Double Dry Stout" (51157). Requires Brewing, trivial 226.
+208. kaladimb/"Datur Nightseer", hand "Bottle of Double Brewed Double Dry Stout" (51157). Requires `paladin_epic` ==9. Gives "Kaladim Prayer Bead" (69963).
+209. felwithea/"General Jyleel", hand platinum:1000. Requires `paladin_epic` ==9. Gives "Felwithe Prayer Bead" (69962).
+210. Ground spawn of "Freeport Prayer Bead" (69961) in `freeportwest`.
+211. Ground spawn of "Freeport Prayer Bead" (69961) in `freportn`.
+212. qeynos2/"Ziska Ironforge", hand platinum:500. Requires `paladin_epic` ==9. Gives "Qeynos Prayer Bead" (69960).
+213. Combine in "Unfilled Set of Prayer Beads" (69968): "Rivervale Prayer Bead" (69967), "Ak'anon Prayer Bead" (69966), "Erudin Prayer Bead" (69965), "Gukta Prayer Bead" (69964), "Kaladim Prayer Bead" (69963), "Felwithe Prayer Bead" (69962), "Freeport Prayer Bead" (69961), "Qeynos Prayer Bead" (69960). Produces "Set of Prayer Beads" (69969). The combine does not fail.
+214. dranikhollowsc/"Anetal", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `2`.
+215. natimbi/"Kemik Arulon", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `1`.
+216. natimbi/"Kemik Arulon", say "Hail". Requires `paladin_epic_hollowc` ==2. Requires `paladin_epic_hollowc` ==1. Gives "Token of Compassion" (69953).
+217. Requires `pal_chest_keel` unset; no setter establishes this state.
+218. oasis/"Paladin Epic", say "Hail". Requires `pal_chest_keel` unset. Gives "Keelee's Brooch" (69982).
+219. oasis/"Paladin Epic", say "Keelee Say". Gives "Keelee's Brooch" (69982).
+220. sro/"Instructor Maerceci", hand "Keelee's Brooch" (69982). Gives "Token of Chivalry" (69954).
+221. Loot "Valdoon Kel'Novar's Heart" (69981) from "Valdoon Kel'Novar" in `mmcc`.
+222. felwithea/"Galrun Starforge", hand "Valdoon Kel'Novar's Heart" (69981). Gives "Token of Cleansing" (69956).
+223. provinggrounds/"Pashia Clouddancer", say "Note". Gives "Note from Pashia" (69973).
+224. nedaria/"Duram Firechaser", hand "Note from Pashia" (69973). Gives "Token of Heroism" (69955).
+225. Say "Check Lorb" to anguish/"Zone Status".
+226. Spawns "Orb of Discordant Energy" (317087).
+227. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+228. Say "Check Uorb" to anguish/"Zone Status".
+229. Say "Check Amv Chest" to anguish/"Zone Status".
+230. Spawns "Ornate Chest" (317112).
+231. Loot "Globe of Discordant Energy" (47100) from "Ornate Chest".
+232. 2 other loot steps also yield Globe of Discordant Energy (47100).
+233. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" in `anguish`.
+234. Loot "Globe of Discordant Energy" (47100) from "Overlords Chest".
+235. airplane/"Inte Akera", hand "Globe of Discordant Energy" (47100). Gives "Token of Loyalty" (69958).
 
 ### "Token of Conviction" (69957)
 
@@ -1777,7 +1519,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 15. Loot "Drema's Soulstone" (69928) from "Drema Young".
 16. Loot "Drema's Soulstone" (69928) from "Drema Young" in `letalis`.
 17. Loot "Soulstone Shard" (69950) from "Coterie Corruptor" in `tenebrous`.
-18. Say "Mujaki Death" to ponightmare/"Mujaki".
+18. Say "Event:Death Complete:204080" to ponightmare/"Mujaki".
 19. Spawns "Shade of Mujaki the Devourer" (204081).
 20. Loot "Soulstone Shard" (69951) from "Shade of Mujaki the Devourer".
 21. Combine in "Drema's Soulstone" (69928): "Soulstone Shard" (69950), "Soulstone Shard" (69951). Produces "Drema's Soulstone" (69952). The combine does not fail.
@@ -1833,212 +1575,168 @@ Each list is the order you obtain that item. Later steps point here instead of r
 71. Loot "Tainted Darksteel Shield" (29002) from "Kirak Vil" in `nektulos`.
 72. felwithea/"Elia The Pure", hand "Tainted Darksteel Shield" (29002). Gives "Gleaming Crested Shield" (29005).
 73. erudnext/"Reklon Gnallen", hand "Gleaming Crested Sword" (29003) + "Gleaming Crested Breastplate" (29004) + "Gleaming Crested Shield" (29005). Gives "Mark of Atonement" (29010).
-74. No quest step gives Drom's Champagne (13829). The dump lists it in freeporteast, freporte, highpasshold.
-75. freeporteast/"Tykar Renlin", hand "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829). Gives "Bunker Cell #1" (12196).
-76. freporte/"Tykar Renlin", hand "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829) + "Drom's Champagne" (13829). Gives "Bunker Cell #1" (12196).
-77. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
-78. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
-79. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-80. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-81. 67 other recipes also produce Celestial Essence (9650).
-82. Common item: Jar of Acid (22133). Listed in 15 zones.
-83. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
-84. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
-85. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-86. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
-87. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-88. Common item: Firing Sheet (16906). Listed in 34 zones.
-89. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-90. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-91. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-92. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-93. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-94. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-95. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-96. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-97. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-98. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-99. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-100. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-101. Say "Tm Devrak Death" to rujd/"Rujd".
-102. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-103. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-104. Say "Tm Dokorel Death" to rujd/"Rujd".
-105. Say "Tm Velrek Death" to rujd/"Rujd".
-106. Say "Researcher Death" to rujg/"Rujg".
-107. Spawns "A Barrel" (260015).
-108. Loot "Pod of Water" (13044) from "A Barrel".
-109. 3 other loot steps also yield Pod of Water (13044).
-110. Forage "Pod of Water" (13044) in `ruja`.
-111. Forage "Pod of Water" (13044) in `uqua`.
-112. Forage "Pod of Water" (13044) in `yxtta`.
-113. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-114. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-115. 17 other recipes also produce Bottle (16598).
-116. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-117. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-118. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-119. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-120. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-121. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-122. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-123. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-124. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-125. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-126. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-127. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-128. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-129. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-130. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-131. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-132. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-133. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-134. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-135. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-136. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-137. Common item: Snake Scales (13070). Listed in 56 zones.
-138. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Snake Scales" (13070), "Bottle" (16598). Produces "Bog Juice" (16581). Requires Brewing, trivial 21.
-139. Common item: Spit (17947). Listed in 34 zones.
-140. Common item: Fire Beetle Eye (10307). Listed in 24 zones.
-141. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
-142. Loot "Rat Ears" (13072) from "Sepsis Rat".
-143. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
-144. Loot "Rat Ears" (13072) from "A Young Plague Rat".
-145. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
-146. Combine in "Spit" (17947): "Fire Beetle Eye" (10307), "Rat Ears" (13072). Produces "Edible Goo" (13498). Requires Baking, trivial 21.
-147. freeporteast/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
-148. freportw/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
-149. highkeep/"Assistant Kiolna", hand "H. K. 102" (12143). Gives "Sealed Note" (18936).
-150. paw/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
-151. southkarana/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
-152. Kill freportw/"Sir Lucan D-Lere". Spawns "Sir Lucan D'Lere" (9147).
-153. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere".
-154. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere" in `freeporteast`.
-155. freeportwest/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
-156. freportn/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
-157. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freeportwest/"Merko Quetalis". Spawns "spawns Guard Willia" (383270). Loot "Token of Truth" (13866) from "spawns Guard Willia".
-158. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freportn/"Merko Quetalis". Spawns "spawns Guard Willia" (8110). Loot "Token of Truth" (13866) from "spawns Guard Willia".
-159. Loot "Token of Truth" (13866) from "Guard Willia".
-160. freeportwest/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
-161. freportn/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
-162. Loot "Glowing Sword Hilt" (12197) from "Xicotl" in `mistmoore`.
-163. paw/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
-164. southkarana/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
-165. airplane/"Inte Akera", hand "SoulFire" (5504). Gives "Inte's First Blessing" (18033).
-166. lavastorm/"Ruathey", say "Bag". Gives "Nobleman's Bag" (17878).
-167. Common item: Ghoul's Heart (2410). Listed in 8 zones.
-168. No quest step gives Amstaf's Scroll (2411). The dump lists it in highkeep.
-169. No quest step gives Blade of Nobility (2412). The dump lists it in butcher.
-170. Loot "Hilt of the Nobleman" (2413) from "Ekeros" in `najena`.
-171. Loot "Hilt of the Nobleman" (2413) from "A Skeleton" in `najena`.
-172. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). The combine does not fail.
-173. airplane/"Inte Akera", hand "Ghoulbane" (5403). Gives "Inte's Second Blessing" (18034).
-174. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Head" (19073) from "Spawn Miragul".
-175. Loot "Miragul's Head" (19073) from "Miragul".
-176. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Robe" (1254) from "Spawn Miragul".
-177. Loot "Miragul's Robe" (1254) from "Miragul".
-178. airplane/"Inte Akera", hand "Miragul's Robe" (1254) + "Inte's First Blessing" (18033) + "Inte's Second Blessing" (18034) + "Miragul's Head" (19073). Gives "Fiery Avenger" (11050).
-179. fearplane/"Irak Altil", hand "Fiery Avenger" (11050) + "Mark of Atonement" (29010). Gives "Fiery Defender" (10099).
-180. povalor/"Baltron Werters", say "Couragebringer". Sets `pre_pal` to `1`.
-181. Requires `pre_pal` unset; no setter establishes this state.
-182. povalor/"Baltron Werters", say "Couragebringer". Requires `pre_pal` unset. Gives "Baltron's Solvent" (69901).
-183. sro/"Gilfal", hand "Baltron's Solvent" (69901). Requires `pre_pal` ==1. Gives "Gilfal's Scabbard" (69902).
-184. Spawns "Neffiken Lord Kelek-Vor" (210229) in `postorms` on event_signal.
-185. Loot "Broken Sword Piece" (69903) from "Neffiken Lord Kelek-Vor".
-186. Loot "Broken Sword Piece" (69903) from "Neffiken Lord of Kelek'Vor".
-187. Say "Control Timer" to hateplaneb/"Maestro".
-188. Spawns "Maestro of Rancor" (186111).
-189. Loot "Broken Sword Piece" (69904) from "Maestro of Rancor".
-190. **Broken:** no event trigger found for `hateplaneb/maestro#timer:popmaestro`.
-191. Spawns "Maestro of Rancor" (186111) after `hateplaneb/maestro#timer:popmaestro`.
-192. Loot "Broken Sword Piece" (69905) from "Kaniz Painbringer" in `potorment`.
-193. sro/"Gilfal", hand "Baltron's Solvent" (69901). Sets `pre_pal` to `2`.
-194. Ground spawn of "Rune of Xor" (69909) in `potranquility`.
-195. Ground spawn of "Rune of Yirno" (69908) in `mistmoore`.
-196. Ground spawn of "Rune of Zota" (69907) in `scarlet`.
-197. Ground spawn of "Rune Wilun" (69910) in `gunthak`.
-198. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Requires `pre_pal` ==2. Gives "Broken Sword Piece" (69906).
-199. Combine in "Gilfal's Scabbard" (69902): "Broken Sword Piece" (69903), "Broken Sword Piece" (69904), "Broken Sword Piece" (69905), "Broken Sword Piece" (69906). Produces "Fractured Couragebringer" (69911). The combine does not fail.
-200. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Sets `pre_pal` to `4`.
-201. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Sets `pre_pal` to `3`.
-202. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Requires `pre_pal` ==3. Gives "Fractured Couragebringer" (69912).
-203. povalor/"Baltron Werters", hand "Fractured Couragebringer" (69912). Requires `pre_pal` ==4. Gives "Couragebringer" (69913).
-204. hohonora/"Irak Altil", say "Hail". Sets `paladin_epic` to `6`.
-205. Spawns "Durunal the Cursebearer" (300087) in `wallofslaughter` on enter.
-206. Loot "Dark and Twisted Sword" (69971) from "Durunal the Cursebearer".
-207. hohonora/"Irak Altil", hand "Dark and Twisted Sword" (69971). Requires `paladin_epic` ==6. Gives "Dark and Twisted Sword" (69972).
-208. Loot "Redis' Soulstone" (69983) from "Shade of Redis Linrok" in `dranikcatacombsa`.
-209. Combine in "Dark and Twisted Sword" (69972): "Rithnok's Soulstone" (69941), "Drema's Soulstone" (69952), "Reiya's Soulstone" (69942), "Redis' Soulstone" (69983). Produces "Redemption" (64031). The combine does not fail.
-210. hohonora/"Irak Altil", say "Tell Me About Your Master". Sets `paladin_epic` to `9`.
-211. erudnint/"Josper Kenshed", say "Collect Component". Gives "Empty Bag" (17944).
-212. halas/"Lysbith Mcnaff", say "Protect The Pass". Gives "Empty Bag" (17944).
-213. Loot "Goblin Ice Necklace" (13897) from "Redwind" in `everfrost`.
-214. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Scout" in `everfrost`.
-215. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Whelp" in `everfrost`.
-216. Loot "Goblin Ice Necklace" (13897) from "An Icy Orc" in `everfrost`.
-217. Loot "Goblin Ice Necklace" (13897) from "Ice Goblin Diver" in `everfrost`.
-218. Combine in "Empty Bag" (17944): "Goblin Ice Necklace" (13897). Produces "Bag of Ice Necklaces" (13898). The combine does not fail.
-219. halas/"Lysbith Mcnaff", hand "Bag of Ice Necklaces" (13898). Gives "Iron Ration" (13005).
-220. Common item: Gnoll Fang (13915). Listed in 5 zones.
-221. halas/"Lysbith Mcnaff", hand "Gnoll Fang" (13915) + "Gnoll Fang" (13915) + "Gnoll Fang" (13915). Gives "Iron Ration" (13005).
-222. Requires `halloween_draykey_rations` unset; no setter establishes this state.
-223. kithicor/"Old Man Draykey", say "Instructions". Requires `halloween_draykey_rations` unset. Gives "Iron Ration" (13005).
-224. commons/"Kizdean Gix", say "Messages For Neriak". Gives "Sealed Letter" (18889).
-225. neriakc/"Loveal S-Nez", hand "Sealed Letter" (18889). Gives "Iron Ration" (13005).
-226. Loot "Cask" (16580) from "Tugog Grigol" in `rathemtn`.
-227. Common item: Hops (16591). Listed in 31 zones.
-228. Common item: Malt (16595). Listed in 30 zones.
-229. Common item: Yeast (16596). Listed in 30 zones.
-230. Combine in "Portable Drink Barrel" (17179): "Cask" (16580), "Hops" (16591), "Malt" (16595), "Yeast" (16596). Produces "Mead" (13008). Requires Brewing, trivial 41.
-231. erudnext/"Reklon Gnallen", hand "Iron Ration" (13005) + "Mead" (13008). Requires `paladin_epic` ==9. Gives "Erudin Prayer Bead" (69965).
-232. Summon "Quiver of Marr" (17307) by casting "Quiver of Marr".
-233. rathemtn/"Shin Master Grubbus", hand "Quiver of Marr" (17307). Requires `paladin_epic` ==9. Gives "Gukta Prayer Bead" (69964).
-234. Common item: Barley (16590). Listed in 28 zones.
-235. Combine in "Medicine Bag" (17901): "Hand-Formed Bottle" (45232), "Ensnaring Concoction V" (45236). Produces "Empty Vial" (10062), "Cork" (16851), "Formed Ensnaring Concoction V" (45258). Requires Alchemy, trivial 41.
-236. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-237. 11 other recipes also produce Cork (16851).
-238. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Celestial Essence" (9650). Produces "Purified Water" (12607). Requires Brewing, trivial 58.
-239. Combine in "Tracker's Water Extractor" (17987): "Purification Tablet" (12630), "Water Reed" (12778). Produces "Purified Water" (12607) x3. Requires Pottery. The combine does not fail.
-240. 3 other recipes also produce Purified Water (12607).
-241. Forage "Sand Verbena" (65582) in `taka`.
-242. Forage "Sand Verbena" (65582) in `takb`.
-243. Forage "Sand Verbena" (65582) in `takc`.
-244. Forage "Sand Verbena" (65582) in `takd`.
-245. Forage "Sand Verbena" (65582) in `take`.
-246. Forage "Sand Verbena" (65582) in `takf`.
-247. Forage "Sand Verbena" (65582) in `takg`.
-248. Forage "Sand Verbena" (65582) in `takh`.
-249. Forage "Sand Verbena" (65582) in `taki`.
-250. Forage "Sand Verbena" (65582) in `takj`.
-251. Combine in Brew Barrel (19): "Barley" (16590), "Bottle" (16598), "Cork" (16851), "Hops" (16591), "Purified Water" (12607), "Sand Verbena" (65582), "Yeast" (16596). Produces "Bottle of Double Brewed Double Dry Stout" (51157). Requires Brewing, trivial 226.
-252. kaladimb/"Datur Nightseer", hand "Bottle of Double Brewed Double Dry Stout" (51157). Requires `paladin_epic` ==9. Gives "Kaladim Prayer Bead" (69963).
-253. felwithea/"General Jyleel", hand platinum:1000. Requires `paladin_epic` ==9. Gives "Felwithe Prayer Bead" (69962).
-254. Ground spawn of "Freeport Prayer Bead" (69961) in `freeportwest`.
-255. Ground spawn of "Freeport Prayer Bead" (69961) in `freportn`.
-256. qeynos2/"Ziska Ironforge", hand platinum:500. Requires `paladin_epic` ==9. Gives "Qeynos Prayer Bead" (69960).
-257. Combine in "Unfilled Set of Prayer Beads" (69968): "Rivervale Prayer Bead" (69967), "Ak'anon Prayer Bead" (69966), "Erudin Prayer Bead" (69965), "Gukta Prayer Bead" (69964), "Kaladim Prayer Bead" (69963), "Felwithe Prayer Bead" (69962), "Freeport Prayer Bead" (69961), "Qeynos Prayer Bead" (69960). Produces "Set of Prayer Beads" (69969). The combine does not fail.
-258. dranikhollowsc/"Anetal", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `2`.
-259. natimbi/"Kemik Arulon", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `1`.
-260. natimbi/"Kemik Arulon", say "Hail". Requires `paladin_epic_hollowc` ==2. Requires `paladin_epic_hollowc` ==1. Gives "Token of Compassion" (69953).
-261. Requires `pal_chest_keel` unset; no setter establishes this state.
-262. oasis/"Paladin Epic", say "Hail". Requires `pal_chest_keel` unset. Gives "Keelee's Brooch" (69982).
-263. oasis/"Paladin Epic", say "Keelee Say". Gives "Keelee's Brooch" (69982).
-264. sro/"Instructor Maerceci", hand "Keelee's Brooch" (69982). Gives "Token of Chivalry" (69954).
-265. Loot "Valdoon Kel'Novar's Heart" (69981) from "Valdoon Kel'Novar" in `mmcc`.
-266. felwithea/"Galrun Starforge", hand "Valdoon Kel'Novar's Heart" (69981). Gives "Token of Cleansing" (69956).
-267. provinggrounds/"Pashia Clouddancer", say "Note". Gives "Note from Pashia" (69973).
-268. nedaria/"Duram Firechaser", hand "Note from Pashia" (69973). Gives "Token of Heroism" (69955).
-269. Say "Check Lorb" to anguish/"Zone Status".
-270. Spawns "Orb of Discordant Energy" (317087).
-271. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-272. Say "Check Uorb" to anguish/"Zone Status".
-273. Say "Check Amv Chest" to anguish/"Zone Status".
-274. Spawns "Ornate Chest" (317112).
-275. Loot "Globe of Discordant Energy" (47100) from "Ornate Chest".
-276. 2 other loot steps also yield Globe of Discordant Energy (47100).
-277. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" in `anguish`.
-278. Loot "Globe of Discordant Energy" (47100) from "Overlords Chest".
-279. airplane/"Inte Akera", hand "Globe of Discordant Energy" (47100). Gives "Token of Conviction" (69957).
+74. freeporteast/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
+75. freportw/"A Prisoner", hand "Bunker Cell #1" (12196) + "Edible Goo" (13498) + "Bog Juice" (16581). Gives "H. K. 102" (12143).
+76. highkeep/"Assistant Kiolna", hand "H. K. 102" (12143). Gives "Sealed Note" (18936).
+77. paw/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
+78. southkarana/"Brother Hayle", hand "Sealed Note" (18936). Gives "Note" (18937).
+79. Kill freportw/"Sir Lucan D-Lere". Spawns "Sir Lucan D'Lere" (9147).
+80. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere".
+81. Loot "Testimony of Truth" (18827) from "Sir Lucan D'Lere" in `freeporteast`.
+82. freeportwest/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
+83. freportn/"Valeron Dushire", hand "Testimony of Truth" (18827). Gives "Brilliant Sword of Faith" (13947).
+84. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freeportwest/"Merko Quetalis". Spawns "spawns Guard Willia" (383270). Loot "Token of Truth" (13866) from "spawns Guard Willia".
+85. Hand "Token of Bravery" (12144) + "Token of Generosity" (13865) to freportn/"Merko Quetalis". Spawns "spawns Guard Willia" (8110). Loot "Token of Truth" (13866) from "spawns Guard Willia".
+86. Loot "Token of Truth" (13866) from "Guard Willia".
+87. freeportwest/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
+88. freportn/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
+89. Loot "Glowing Sword Hilt" (12197) from "Xicotl" in `mistmoore`.
+90. paw/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
+91. southkarana/"Brother Hayle", hand "Glowing Sword Hilt" (12197) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Note" (18937). Gives "SoulFire" (5504).
+92. airplane/"Inte Akera", hand "SoulFire" (5504). Gives "Inte's First Blessing" (18033).
+93. lavastorm/"Ruathey", say "Bag". Gives "Nobleman's Bag" (17878).
+94. Common item: Ghoul's Heart (2410). Listed in 8 zones.
+95. No quest step gives Amstaf's Scroll (2411). The dump lists it in highkeep.
+96. No quest step gives Blade of Nobility (2412). The dump lists it in butcher.
+97. Loot "Hilt of the Nobleman" (2413) from "Ekeros" in `najena`.
+98. Loot "Hilt of the Nobleman" (2413) from "A Skeleton" in `najena`.
+99. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). The combine does not fail.
+100. airplane/"Inte Akera", hand "Ghoulbane" (5403). Gives "Inte's Second Blessing" (18034).
+101. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Head" (19073) from "Spawn Miragul".
+102. Loot "Miragul's Head" (19073) from "Miragul".
+103. Hand "Miragul's Phylactery" (19072) to everfrost/"Lich Of Miragul". Spawns "Spawn Miragul" (30094). Loot "Miragul's Robe" (1254) from "Spawn Miragul".
+104. Loot "Miragul's Robe" (1254) from "Miragul".
+105. airplane/"Inte Akera", hand "Miragul's Robe" (1254) + "Inte's First Blessing" (18033) + "Inte's Second Blessing" (18034) + "Miragul's Head" (19073). Gives "Fiery Avenger" (11050).
+106. fearplane/"Irak Altil", hand "Fiery Avenger" (11050) + "Mark of Atonement" (29010). Gives "Fiery Defender" (10099).
+107. povalor/"Baltron Werters", say "Couragebringer". Sets `pre_pal` to `1`.
+108. Requires `pre_pal` unset; no setter establishes this state.
+109. povalor/"Baltron Werters", say "Couragebringer". Requires `pre_pal` unset. Gives "Baltron's Solvent" (69901).
+110. sro/"Gilfal", hand "Baltron's Solvent" (69901). Requires `pre_pal` ==1. Gives "Gilfal's Scabbard" (69902).
+111. Spawns "Neffiken Lord Kelek-Vor" (210229) in `postorms` on event_signal.
+112. Loot "Broken Sword Piece" (69903) from "Neffiken Lord Kelek-Vor".
+113. Loot "Broken Sword Piece" (69903) from "Neffiken Lord of Kelek'Vor".
+114. Encounter starts when NPC 186196 spawns in `hateplaneb`.
+115. Starts timer `popmaestro`.
+116. Spawns "Maestro of Rancor" (186111) after `hateplaneb/maestro#timer:popmaestro`.
+117. Loot "Broken Sword Piece" (69904) from "Maestro of Rancor".
+118. Loot "Broken Sword Piece" (69905) from "Kaniz Painbringer" in `potorment`.
+119. sro/"Gilfal", hand "Baltron's Solvent" (69901). Sets `pre_pal` to `2`.
+120. Ground spawn of "Rune of Xor" (69909) in `potranquility`.
+121. Ground spawn of "Rune of Yirno" (69908) in `mistmoore`.
+122. Ground spawn of "Rune of Zota" (69907) in `scarlet`.
+123. Ground spawn of "Rune Wilun" (69910) in `gunthak`.
+124. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Requires `pre_pal` ==2. Gives "Broken Sword Piece" (69906).
+125. Combine in "Gilfal's Scabbard" (69902): "Broken Sword Piece" (69903), "Broken Sword Piece" (69904), "Broken Sword Piece" (69905), "Broken Sword Piece" (69906). Produces "Fractured Couragebringer" (69911). The combine does not fail.
+126. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Sets `pre_pal` to `4`.
+127. everfrost/"Rombus", hand "Rune of Zota" (69907) + "Rune of Yirno" (69908) + "Rune of Xor" (69909) + "Rune Wilun" (69910). Sets `pre_pal` to `3`.
+128. sro/"Gilfal", hand "Fractured Couragebringer" (69911). Requires `pre_pal` ==3. Gives "Fractured Couragebringer" (69912).
+129. povalor/"Baltron Werters", hand "Fractured Couragebringer" (69912). Requires `pre_pal` ==4. Gives "Couragebringer" (69913).
+130. hohonora/"Irak Altil", say "Hail". Sets `paladin_epic` to `6`.
+131. Spawns "Durunal the Cursebearer" (300087) in `wallofslaughter` on enter.
+132. Loot "Dark and Twisted Sword" (69971) from "Durunal the Cursebearer".
+133. hohonora/"Irak Altil", hand "Dark and Twisted Sword" (69971). Requires `paladin_epic` ==6. Gives "Dark and Twisted Sword" (69972).
+134. Loot "Redis' Soulstone" (69983) from "Shade of Redis Linrok" in `dranikcatacombsa`.
+135. Combine in "Dark and Twisted Sword" (69972): "Rithnok's Soulstone" (69941), "Drema's Soulstone" (69952), "Reiya's Soulstone" (69942), "Redis' Soulstone" (69983). Produces "Redemption" (64031). The combine does not fail.
+136. hohonora/"Irak Altil", say "Tell Me About Your Master". Sets `paladin_epic` to `9`.
+137. erudnint/"Josper Kenshed", say "Collect Component". Gives "Empty Bag" (17944).
+138. halas/"Lysbith Mcnaff", say "Protect The Pass". Gives "Empty Bag" (17944).
+139. Loot "Goblin Ice Necklace" (13897) from "Redwind" in `everfrost`.
+140. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Scout" in `everfrost`.
+141. Loot "Goblin Ice Necklace" (13897) from "An Ice Goblin Whelp" in `everfrost`.
+142. Loot "Goblin Ice Necklace" (13897) from "An Icy Orc" in `everfrost`.
+143. Loot "Goblin Ice Necklace" (13897) from "Ice Goblin Diver" in `everfrost`.
+144. Combine in "Empty Bag" (17944): "Goblin Ice Necklace" (13897). Produces "Bag of Ice Necklaces" (13898). The combine does not fail.
+145. halas/"Lysbith Mcnaff", hand "Bag of Ice Necklaces" (13898). Gives "Iron Ration" (13005).
+146. Common item: Gnoll Fang (13915). Listed in 5 zones.
+147. halas/"Lysbith Mcnaff", hand "Gnoll Fang" (13915) + "Gnoll Fang" (13915) + "Gnoll Fang" (13915). Gives "Iron Ration" (13005).
+148. Requires `halloween_draykey_rations` unset; no setter establishes this state.
+149. kithicor/"Old Man Draykey", say "Instructions". Requires `halloween_draykey_rations` unset. Gives "Iron Ration" (13005).
+150. commons/"Kizdean Gix", say "Messages For Neriak". Gives "Sealed Letter" (18889).
+151. neriakc/"Loveal S-Nez", hand "Sealed Letter" (18889). Gives "Iron Ration" (13005).
+152. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
+153. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
+154. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+155. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+156. 67 other recipes also produce Celestial Essence (9650).
+157. Common item: Jar of Acid (22133). Listed in 15 zones.
+158. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
+159. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
+160. Common item: Mortar and Pestle (17904). Listed in 12 zones.
+161. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
+162. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
+163. Common item: Firing Sheet (16906). Listed in 34 zones.
+164. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
+165. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+166. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
+167. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
+168. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
+169. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
+170. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
+171. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
+172. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
+173. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
+174. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
+175. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+176. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+177. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+178. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
+179. Loot "Cask" (16580) from "Tugog Grigol" in `rathemtn`.
+180. Common item: Hops (16591). Listed in 31 zones.
+181. Common item: Malt (16595). Listed in 30 zones.
+182. Common item: Yeast (16596). Listed in 30 zones.
+183. Combine in "Portable Drink Barrel" (17179): "Cask" (16580), "Hops" (16591), "Malt" (16595), "Yeast" (16596). Produces "Mead" (13008). Requires Brewing, trivial 41.
+184. erudnext/"Reklon Gnallen", hand "Iron Ration" (13005) + "Mead" (13008). Requires `paladin_epic` ==9. Gives "Erudin Prayer Bead" (69965).
+185. Summon "Quiver of Marr" (17307) by casting "Quiver of Marr".
+186. rathemtn/"Shin Master Grubbus", hand "Quiver of Marr" (17307). Requires `paladin_epic` ==9. Gives "Gukta Prayer Bead" (69964).
+187. Common item: Barley (16590). Listed in 28 zones.
+188. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+189. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+190. 17 other recipes also produce Bottle (16598).
+191. Combine in "Medicine Bag" (17901): "Hand-Formed Bottle" (45232), "Ensnaring Concoction V" (45236). Produces "Empty Vial" (10062), "Cork" (16851), "Formed Ensnaring Concoction V" (45258). Requires Alchemy, trivial 41.
+192. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+193. 11 other recipes also produce Cork (16851).
+194. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Celestial Essence" (9650). Produces "Purified Water" (12607). Requires Brewing, trivial 58.
+195. Combine in "Tracker's Water Extractor" (17987): "Purification Tablet" (12630), "Water Reed" (12778). Produces "Purified Water" (12607) x3. Requires Pottery. The combine does not fail.
+196. 3 other recipes also produce Purified Water (12607).
+197. Forage "Sand Verbena" (65582) in `taka`.
+198. Forage "Sand Verbena" (65582) in `takb`.
+199. Forage "Sand Verbena" (65582) in `takc`.
+200. Forage "Sand Verbena" (65582) in `takd`.
+201. Forage "Sand Verbena" (65582) in `take`.
+202. Forage "Sand Verbena" (65582) in `takf`.
+203. Forage "Sand Verbena" (65582) in `takg`.
+204. Forage "Sand Verbena" (65582) in `takh`.
+205. Forage "Sand Verbena" (65582) in `taki`.
+206. Forage "Sand Verbena" (65582) in `takj`.
+207. Combine in Brew Barrel (19): "Barley" (16590), "Bottle" (16598), "Cork" (16851), "Hops" (16591), "Purified Water" (12607), "Sand Verbena" (65582), "Yeast" (16596). Produces "Bottle of Double Brewed Double Dry Stout" (51157). Requires Brewing, trivial 226.
+208. kaladimb/"Datur Nightseer", hand "Bottle of Double Brewed Double Dry Stout" (51157). Requires `paladin_epic` ==9. Gives "Kaladim Prayer Bead" (69963).
+209. felwithea/"General Jyleel", hand platinum:1000. Requires `paladin_epic` ==9. Gives "Felwithe Prayer Bead" (69962).
+210. Ground spawn of "Freeport Prayer Bead" (69961) in `freeportwest`.
+211. Ground spawn of "Freeport Prayer Bead" (69961) in `freportn`.
+212. qeynos2/"Ziska Ironforge", hand platinum:500. Requires `paladin_epic` ==9. Gives "Qeynos Prayer Bead" (69960).
+213. Combine in "Unfilled Set of Prayer Beads" (69968): "Rivervale Prayer Bead" (69967), "Ak'anon Prayer Bead" (69966), "Erudin Prayer Bead" (69965), "Gukta Prayer Bead" (69964), "Kaladim Prayer Bead" (69963), "Felwithe Prayer Bead" (69962), "Freeport Prayer Bead" (69961), "Qeynos Prayer Bead" (69960). Produces "Set of Prayer Beads" (69969). The combine does not fail.
+214. dranikhollowsc/"Anetal", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `2`.
+215. natimbi/"Kemik Arulon", hand "Set of Prayer Beads" (69969). Sets `paladin_epic_hollowc` to `1`.
+216. natimbi/"Kemik Arulon", say "Hail". Requires `paladin_epic_hollowc` ==2. Requires `paladin_epic_hollowc` ==1. Gives "Token of Compassion" (69953).
+217. Requires `pal_chest_keel` unset; no setter establishes this state.
+218. oasis/"Paladin Epic", say "Hail". Requires `pal_chest_keel` unset. Gives "Keelee's Brooch" (69982).
+219. oasis/"Paladin Epic", say "Keelee Say". Gives "Keelee's Brooch" (69982).
+220. sro/"Instructor Maerceci", hand "Keelee's Brooch" (69982). Gives "Token of Chivalry" (69954).
+221. Loot "Valdoon Kel'Novar's Heart" (69981) from "Valdoon Kel'Novar" in `mmcc`.
+222. felwithea/"Galrun Starforge", hand "Valdoon Kel'Novar's Heart" (69981). Gives "Token of Cleansing" (69956).
+223. provinggrounds/"Pashia Clouddancer", say "Note". Gives "Note from Pashia" (69973).
+224. nedaria/"Duram Firechaser", hand "Note from Pashia" (69973). Gives "Token of Heroism" (69955).
+225. Say "Check Lorb" to anguish/"Zone Status".
+226. Spawns "Orb of Discordant Energy" (317087).
+227. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+228. Say "Check Uorb" to anguish/"Zone Status".
+229. Say "Check Amv Chest" to anguish/"Zone Status".
+230. Spawns "Ornate Chest" (317112).
+231. Loot "Globe of Discordant Energy" (47100) from "Ornate Chest".
+232. 2 other loot steps also yield Globe of Discordant Energy (47100).
+233. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" in `anguish`.
+234. Loot "Globe of Discordant Energy" (47100) from "Overlords Chest".
+235. airplane/"Inte Akera", hand "Globe of Discordant Energy" (47100). Gives "Token of Conviction" (69957).
 
 ## `paladin_epic`
 

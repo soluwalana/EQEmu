@@ -75,7 +75,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 63. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
 64. Say "Tm Dokorel Death" to rujd/"Rujd".
 65. Say "Tm Velrek Death" to rujd/"Rujd".
-66. Say "Researcher Death" to rujg/"Rujg".
+66. Say "Event:Death Complete:260061" to rujg/"Rujg".
 67. Spawns "A Barrel" (260015).
 68. Loot "Pod of Water" (13044) from "A Barrel".
 69. 3 other loot steps also yield Pod of Water (13044).
@@ -111,88 +111,80 @@ Each list is the order you obtain that item. Later steps point here instead of r
 99. Common item: Mortar and Pestle (17904). Listed in 12 zones.
 100. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
 101. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-102. Common item: Firing Sheet (16906). Listed in 34 zones.
-103. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-104. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-105. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-106. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-107. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-108. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-109. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-110. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-111. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-112. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-113. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-114. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-115. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-116. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-117. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-118. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-119. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-120. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-121. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-122. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-123. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
-124. Loot "Rat Ears" (13072) from "Sepsis Rat".
-125. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
-126. Loot "Rat Ears" (13072) from "A Young Plague Rat".
-127. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
-128. Common item: Spider Legs (13417). Listed in 56 zones.
-129. Common item: Rice (16593). Listed in 30 zones.
-130. Combine in "Portable Drink Barrel" (17179): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
-131. Combine in Brew Barrel (19): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
-132. Combine in "Toolbox" (17902): "Water Flask" (13006), "Gnomish Spirits" (13037). Produces "Firewater" (16881). Requires Tinkering, trivial 17.
-133. Common item: Metal Fastening (16888). Listed in 14 zones.
-134. Common item: Sharkskin Tubing (16891). Listed in 14 zones.
-135. Common item: Lime Coated Meshing (16892). Listed in 10 zones.
-136. Combine in "Toolbox" (17902): "Platemail Helm" (4001), "Aqualung" (16873), "Firewater" (16881), "Metal Fastening" (16888), "Sharkskin Tubing" (16891), "Lime Coated Meshing" (16892). Produces "Rebreather" (16889). Requires Tinkering, trivial 175.
-137. Loot "Block of Permafrost" (20665) from "Lady Vox" in `permafrost`.
-138. Loot "Block of Permafrost" (20665) from "An Ice Giant" in `permafrost`.
-139. Common item: Keg of Vox Tail Ale (20664). Listed in 13 zones.
-140. oceanoftears/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
-141. oot/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
-142. Loot "Ancient Blade" (20670) from "Queen Velazul Di'zok" in `chardok`.
-143. Ground spawn of "Unjeweled Dragon Head Hilt" (20668) in `lakerathe`.
-144. No quest step gives Apothic Crown (1239). The dump lists it in hateplane, hateplaneb.
-145. poknowledge/"Arch Mage Deidus", hand "Apothic Crown" (1239). Gives "Diamond" (10037).
-146. No quest step gives Apothic Robe (1240). The dump lists it in hateplane, hateplaneb.
-147. poknowledge/"Arch Mage Deidus", hand "Apothic Robe" (1240). Gives "Diamond" (10037).
-148. No quest step gives Apothic Sleeves (1241). The dump lists it in hateplane, hateplaneb.
-149. poknowledge/"Arch Mage Deidus", hand "Apothic Sleeves" (1241). Gives "Diamond" (10037).
-150. No quest step gives Apothic Warband (1242). The dump lists it in hateplane, hateplaneb.
-151. poknowledge/"Arch Mage Deidus", hand "Apothic Warband" (1242). Gives "Diamond" (10037).
-152. No quest step gives Apothic Gloves (1243). The dump lists it in hateplane, hateplaneb.
-153. poknowledge/"Arch Mage Deidus", hand "Apothic Gloves" (1243). Gives "Diamond" (10037).
-154. No quest step gives Apothic Kilt (1244). The dump lists it in hateplane, hateplaneb.
-155. poknowledge/"Arch Mage Deidus", hand "Apothic Kilt" (1244). Gives "Diamond" (10037).
-156. Say "Controller Timer" to bloodfields/"Gaz".
-157. Spawns "Ikaav Dreamweaver" (301031).
-158. Loot "Black Sapphire" (10036) from "Ikaav Dreamweaver".
-159. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
-160. Loot "Black Sapphire" (10036) from "A parasitic murkglider".
-161. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
-162. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
-163. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
-164. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
-165. 45 other loot steps also yield Black Sapphire (10036).
-166. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
-167. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
-168. Loot "Jacinth" (10053) from "A Reclusive Girplan".
-169. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
-170. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
-171. 64 other loot steps also yield Jacinth (10053).
-172. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
-173. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
-174. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
-175. Loot "Giant Sized Monocle" (20678) from "A Mountain Giant Patriarch" in `dreadlands`.
-176. frontiermtns/"Mentrax Mountainbone", hand "Giant Sized Monocle" (20678). Gives "Rejesiam Ore" (20666).
-177. Loot "Ball of Everliving Golem" (20677) from "Dread" in `fearplane`.
-178. Loot "Ball of Everliving Golem" (20677) from "Fright" in `fearplane`.
-179. Loot "Ball of Everliving Golem" (20677) from "Terror" in `fearplane`.
-180. freeporteast/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
-181. freporte/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
-182. Combine in "Red Scabbard" (17859): "Ancient Sword Blade" (20667), "Ancient Blade" (20670), "Jeweled Dragon Head Hilt" (20671), "Finely Crafted Dragon Head Hilt" (20672). Produces "Jagged Blade of War" (10908). The combine does not fail.
-183. Combine in "Red Scabbard" (17859): "Jagged Blade of War" (10908). Produces "Blade of Tactics" (10909), "Blade of Strategy" (10910). The combine does not fail.
+102. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+103. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
+104. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
+105. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
+106. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
+107. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
+108. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
+109. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
+110. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
+111. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
+112. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+113. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+114. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+115. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
+116. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
+117. Loot "Rat Ears" (13072) from "Sepsis Rat".
+118. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
+119. Loot "Rat Ears" (13072) from "A Young Plague Rat".
+120. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
+121. Common item: Spider Legs (13417). Listed in 56 zones.
+122. Common item: Rice (16593). Listed in 30 zones.
+123. Combine in "Portable Drink Barrel" (17179): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
+124. Combine in Brew Barrel (19): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
+125. Combine in "Toolbox" (17902): "Water Flask" (13006), "Gnomish Spirits" (13037). Produces "Firewater" (16881). Requires Tinkering, trivial 17.
+126. Common item: Metal Fastening (16888). Listed in 14 zones.
+127. Common item: Sharkskin Tubing (16891). Listed in 14 zones.
+128. Common item: Lime Coated Meshing (16892). Listed in 10 zones.
+129. Combine in "Toolbox" (17902): "Platemail Helm" (4001), "Aqualung" (16873), "Firewater" (16881), "Metal Fastening" (16888), "Sharkskin Tubing" (16891), "Lime Coated Meshing" (16892). Produces "Rebreather" (16889). Requires Tinkering, trivial 175.
+130. Loot "Block of Permafrost" (20665) from "Lady Vox" in `permafrost`.
+131. Loot "Block of Permafrost" (20665) from "An Ice Giant" in `permafrost`.
+132. Common item: Keg of Vox Tail Ale (20664). Listed in 13 zones.
+133. oceanoftears/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
+134. oot/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
+135. Loot "Ancient Blade" (20670) from "Queen Velazul Di'zok" in `chardok`.
+136. Ground spawn of "Unjeweled Dragon Head Hilt" (20668) in `lakerathe`.
+137. No quest step gives Apothic Crown (1239). The dump lists it in hateplane, hateplaneb.
+138. poknowledge/"Arch Mage Deidus", hand "Apothic Crown" (1239). Gives "Diamond" (10037).
+139. No quest step gives Apothic Robe (1240). The dump lists it in hateplane, hateplaneb.
+140. poknowledge/"Arch Mage Deidus", hand "Apothic Robe" (1240). Gives "Diamond" (10037).
+141. No quest step gives Apothic Sleeves (1241). The dump lists it in hateplane, hateplaneb.
+142. poknowledge/"Arch Mage Deidus", hand "Apothic Sleeves" (1241). Gives "Diamond" (10037).
+143. No quest step gives Apothic Warband (1242). The dump lists it in hateplane, hateplaneb.
+144. poknowledge/"Arch Mage Deidus", hand "Apothic Warband" (1242). Gives "Diamond" (10037).
+145. No quest step gives Apothic Gloves (1243). The dump lists it in hateplane, hateplaneb.
+146. poknowledge/"Arch Mage Deidus", hand "Apothic Gloves" (1243). Gives "Diamond" (10037).
+147. No quest step gives Apothic Kilt (1244). The dump lists it in hateplane, hateplaneb.
+148. poknowledge/"Arch Mage Deidus", hand "Apothic Kilt" (1244). Gives "Diamond" (10037).
+149. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
+150. Loot "Black Sapphire" (10036) from "A parasitic murkglider".
+151. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
+152. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
+153. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
+154. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
+155. Kill delvea/"A Drake Egg". Spawns "a Delve spellbinder" (341091).
+156. Loot "Black Sapphire" (10036) from "a Delve spellbinder".
+157. 40 other loot steps also yield Black Sapphire (10036).
+158. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
+159. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
+160. Loot "Jacinth" (10053) from "A Reclusive Girplan".
+161. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
+162. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
+163. 52 other loot steps also yield Jacinth (10053).
+164. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
+165. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
+166. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
+167. Loot "Giant Sized Monocle" (20678) from "A Mountain Giant Patriarch" in `dreadlands`.
+168. frontiermtns/"Mentrax Mountainbone", hand "Giant Sized Monocle" (20678). Gives "Rejesiam Ore" (20666).
+169. Loot "Ball of Everliving Golem" (20677) from "Dread" in `fearplane`.
+170. Loot "Ball of Everliving Golem" (20677) from "Fright" in `fearplane`.
+171. Loot "Ball of Everliving Golem" (20677) from "Terror" in `fearplane`.
+172. freeporteast/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
+173. freporte/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
+174. Combine in "Red Scabbard" (17859): "Ancient Sword Blade" (20667), "Ancient Blade" (20670), "Jeweled Dragon Head Hilt" (20671), "Finely Crafted Dragon Head Hilt" (20672). Produces "Jagged Blade of War" (10908). The combine does not fail.
+175. Combine in "Red Scabbard" (17859): "Jagged Blade of War" (10908). Produces "Blade of Tactics" (10909), "Blade of Strategy" (10910). The combine does not fail.
 
 ### "Blade of Tactics" (10909)
 
@@ -261,7 +253,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 63. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
 64. Say "Tm Dokorel Death" to rujd/"Rujd".
 65. Say "Tm Velrek Death" to rujd/"Rujd".
-66. Say "Researcher Death" to rujg/"Rujg".
+66. Say "Event:Death Complete:260061" to rujg/"Rujg".
 67. Spawns "A Barrel" (260015).
 68. Loot "Pod of Water" (13044) from "A Barrel".
 69. 3 other loot steps also yield Pod of Water (13044).
@@ -297,88 +289,80 @@ Each list is the order you obtain that item. Later steps point here instead of r
 99. Common item: Mortar and Pestle (17904). Listed in 12 zones.
 100. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
 101. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-102. Common item: Firing Sheet (16906). Listed in 34 zones.
-103. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-104. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-105. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-106. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-107. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-108. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-109. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-110. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-111. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-112. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-113. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-114. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-115. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-116. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-117. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-118. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-119. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-120. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-121. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-122. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-123. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
-124. Loot "Rat Ears" (13072) from "Sepsis Rat".
-125. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
-126. Loot "Rat Ears" (13072) from "A Young Plague Rat".
-127. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
-128. Common item: Spider Legs (13417). Listed in 56 zones.
-129. Common item: Rice (16593). Listed in 30 zones.
-130. Combine in "Portable Drink Barrel" (17179): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
-131. Combine in Brew Barrel (19): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
-132. Combine in "Toolbox" (17902): "Water Flask" (13006), "Gnomish Spirits" (13037). Produces "Firewater" (16881). Requires Tinkering, trivial 17.
-133. Common item: Metal Fastening (16888). Listed in 14 zones.
-134. Common item: Sharkskin Tubing (16891). Listed in 14 zones.
-135. Common item: Lime Coated Meshing (16892). Listed in 10 zones.
-136. Combine in "Toolbox" (17902): "Platemail Helm" (4001), "Aqualung" (16873), "Firewater" (16881), "Metal Fastening" (16888), "Sharkskin Tubing" (16891), "Lime Coated Meshing" (16892). Produces "Rebreather" (16889). Requires Tinkering, trivial 175.
-137. Loot "Block of Permafrost" (20665) from "Lady Vox" in `permafrost`.
-138. Loot "Block of Permafrost" (20665) from "An Ice Giant" in `permafrost`.
-139. Common item: Keg of Vox Tail Ale (20664). Listed in 13 zones.
-140. oceanoftears/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
-141. oot/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
-142. Loot "Ancient Blade" (20670) from "Queen Velazul Di'zok" in `chardok`.
-143. Ground spawn of "Unjeweled Dragon Head Hilt" (20668) in `lakerathe`.
-144. No quest step gives Apothic Crown (1239). The dump lists it in hateplane, hateplaneb.
-145. poknowledge/"Arch Mage Deidus", hand "Apothic Crown" (1239). Gives "Diamond" (10037).
-146. No quest step gives Apothic Robe (1240). The dump lists it in hateplane, hateplaneb.
-147. poknowledge/"Arch Mage Deidus", hand "Apothic Robe" (1240). Gives "Diamond" (10037).
-148. No quest step gives Apothic Sleeves (1241). The dump lists it in hateplane, hateplaneb.
-149. poknowledge/"Arch Mage Deidus", hand "Apothic Sleeves" (1241). Gives "Diamond" (10037).
-150. No quest step gives Apothic Warband (1242). The dump lists it in hateplane, hateplaneb.
-151. poknowledge/"Arch Mage Deidus", hand "Apothic Warband" (1242). Gives "Diamond" (10037).
-152. No quest step gives Apothic Gloves (1243). The dump lists it in hateplane, hateplaneb.
-153. poknowledge/"Arch Mage Deidus", hand "Apothic Gloves" (1243). Gives "Diamond" (10037).
-154. No quest step gives Apothic Kilt (1244). The dump lists it in hateplane, hateplaneb.
-155. poknowledge/"Arch Mage Deidus", hand "Apothic Kilt" (1244). Gives "Diamond" (10037).
-156. Say "Controller Timer" to bloodfields/"Gaz".
-157. Spawns "Ikaav Dreamweaver" (301031).
-158. Loot "Black Sapphire" (10036) from "Ikaav Dreamweaver".
-159. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
-160. Loot "Black Sapphire" (10036) from "A parasitic murkglider".
-161. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
-162. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
-163. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
-164. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
-165. 45 other loot steps also yield Black Sapphire (10036).
-166. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
-167. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
-168. Loot "Jacinth" (10053) from "A Reclusive Girplan".
-169. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
-170. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
-171. 64 other loot steps also yield Jacinth (10053).
-172. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
-173. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
-174. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
-175. Loot "Giant Sized Monocle" (20678) from "A Mountain Giant Patriarch" in `dreadlands`.
-176. frontiermtns/"Mentrax Mountainbone", hand "Giant Sized Monocle" (20678). Gives "Rejesiam Ore" (20666).
-177. Loot "Ball of Everliving Golem" (20677) from "Dread" in `fearplane`.
-178. Loot "Ball of Everliving Golem" (20677) from "Fright" in `fearplane`.
-179. Loot "Ball of Everliving Golem" (20677) from "Terror" in `fearplane`.
-180. freeporteast/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
-181. freporte/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
-182. Combine in "Red Scabbard" (17859): "Ancient Sword Blade" (20667), "Ancient Blade" (20670), "Jeweled Dragon Head Hilt" (20671), "Finely Crafted Dragon Head Hilt" (20672). Produces "Jagged Blade of War" (10908). The combine does not fail.
-183. Combine in "Red Scabbard" (17859): "Jagged Blade of War" (10908). Produces "Blade of Tactics" (10909), "Blade of Strategy" (10910). The combine does not fail.
+102. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+103. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
+104. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
+105. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
+106. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
+107. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
+108. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
+109. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
+110. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
+111. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
+112. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+113. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+114. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+115. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
+116. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
+117. Loot "Rat Ears" (13072) from "Sepsis Rat".
+118. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
+119. Loot "Rat Ears" (13072) from "A Young Plague Rat".
+120. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
+121. Common item: Spider Legs (13417). Listed in 56 zones.
+122. Common item: Rice (16593). Listed in 30 zones.
+123. Combine in "Portable Drink Barrel" (17179): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
+124. Combine in Brew Barrel (19): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
+125. Combine in "Toolbox" (17902): "Water Flask" (13006), "Gnomish Spirits" (13037). Produces "Firewater" (16881). Requires Tinkering, trivial 17.
+126. Common item: Metal Fastening (16888). Listed in 14 zones.
+127. Common item: Sharkskin Tubing (16891). Listed in 14 zones.
+128. Common item: Lime Coated Meshing (16892). Listed in 10 zones.
+129. Combine in "Toolbox" (17902): "Platemail Helm" (4001), "Aqualung" (16873), "Firewater" (16881), "Metal Fastening" (16888), "Sharkskin Tubing" (16891), "Lime Coated Meshing" (16892). Produces "Rebreather" (16889). Requires Tinkering, trivial 175.
+130. Loot "Block of Permafrost" (20665) from "Lady Vox" in `permafrost`.
+131. Loot "Block of Permafrost" (20665) from "An Ice Giant" in `permafrost`.
+132. Common item: Keg of Vox Tail Ale (20664). Listed in 13 zones.
+133. oceanoftears/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
+134. oot/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
+135. Loot "Ancient Blade" (20670) from "Queen Velazul Di'zok" in `chardok`.
+136. Ground spawn of "Unjeweled Dragon Head Hilt" (20668) in `lakerathe`.
+137. No quest step gives Apothic Crown (1239). The dump lists it in hateplane, hateplaneb.
+138. poknowledge/"Arch Mage Deidus", hand "Apothic Crown" (1239). Gives "Diamond" (10037).
+139. No quest step gives Apothic Robe (1240). The dump lists it in hateplane, hateplaneb.
+140. poknowledge/"Arch Mage Deidus", hand "Apothic Robe" (1240). Gives "Diamond" (10037).
+141. No quest step gives Apothic Sleeves (1241). The dump lists it in hateplane, hateplaneb.
+142. poknowledge/"Arch Mage Deidus", hand "Apothic Sleeves" (1241). Gives "Diamond" (10037).
+143. No quest step gives Apothic Warband (1242). The dump lists it in hateplane, hateplaneb.
+144. poknowledge/"Arch Mage Deidus", hand "Apothic Warband" (1242). Gives "Diamond" (10037).
+145. No quest step gives Apothic Gloves (1243). The dump lists it in hateplane, hateplaneb.
+146. poknowledge/"Arch Mage Deidus", hand "Apothic Gloves" (1243). Gives "Diamond" (10037).
+147. No quest step gives Apothic Kilt (1244). The dump lists it in hateplane, hateplaneb.
+148. poknowledge/"Arch Mage Deidus", hand "Apothic Kilt" (1244). Gives "Diamond" (10037).
+149. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
+150. Loot "Black Sapphire" (10036) from "A parasitic murkglider".
+151. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
+152. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
+153. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
+154. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
+155. Kill delvea/"A Drake Egg". Spawns "a Delve spellbinder" (341091).
+156. Loot "Black Sapphire" (10036) from "a Delve spellbinder".
+157. 40 other loot steps also yield Black Sapphire (10036).
+158. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
+159. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
+160. Loot "Jacinth" (10053) from "A Reclusive Girplan".
+161. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
+162. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
+163. 52 other loot steps also yield Jacinth (10053).
+164. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
+165. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
+166. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
+167. Loot "Giant Sized Monocle" (20678) from "A Mountain Giant Patriarch" in `dreadlands`.
+168. frontiermtns/"Mentrax Mountainbone", hand "Giant Sized Monocle" (20678). Gives "Rejesiam Ore" (20666).
+169. Loot "Ball of Everliving Golem" (20677) from "Dread" in `fearplane`.
+170. Loot "Ball of Everliving Golem" (20677) from "Fright" in `fearplane`.
+171. Loot "Ball of Everliving Golem" (20677) from "Terror" in `fearplane`.
+172. freeporteast/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
+173. freporte/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
+174. Combine in "Red Scabbard" (17859): "Ancient Sword Blade" (20667), "Ancient Blade" (20670), "Jeweled Dragon Head Hilt" (20671), "Finely Crafted Dragon Head Hilt" (20672). Produces "Jagged Blade of War" (10908). The combine does not fail.
+175. Combine in "Red Scabbard" (17859): "Jagged Blade of War" (10908). Produces "Blade of Tactics" (10909), "Blade of Strategy" (10910). The combine does not fail.
 
 ### "Blade of Tactics" (66176)
 
@@ -449,7 +433,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 65. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
 66. Say "Tm Dokorel Death" to rujd/"Rujd".
 67. Say "Tm Velrek Death" to rujd/"Rujd".
-68. Say "Researcher Death" to rujg/"Rujg".
+68. Say "Event:Death Complete:260061" to rujg/"Rujg".
 69. Spawns "A Barrel" (260015).
 70. Loot "Pod of Water" (13044) from "A Barrel".
 71. 3 other loot steps also yield Pod of Water (13044).
@@ -476,101 +460,86 @@ Each list is the order you obtain that item. Later steps point here instead of r
 92. Combine in "Toolbox" (17902): "Fresh Fish" (13019), "Metal Rod" (16850), "Metal Twine" (16857), "Gnomish Bolts" (16861), "Silk Lined Steel Helm" (16862), "Fine Coral Mesh" (16890). Produces "Aqualung" (16873) x20. Requires Tinkering, trivial 148.
 93. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
 94. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
-95. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-96. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-97. 67 other recipes also produce Celestial Essence (9650).
-98. Common item: Jar of Acid (22133). Listed in 15 zones.
-99. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
-100. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
-101. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-102. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
-103. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-104. Common item: Firing Sheet (16906). Listed in 34 zones.
-105. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-106. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-107. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-108. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-109. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-110. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-111. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-112. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-113. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-114. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-115. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-116. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-117. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-118. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-119. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-120. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-121. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-122. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-123. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-124. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-125. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
-126. Loot "Rat Ears" (13072) from "Sepsis Rat".
-127. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
-128. Loot "Rat Ears" (13072) from "A Young Plague Rat".
-129. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
-130. Common item: Spider Legs (13417). Listed in 56 zones.
-131. Common item: Rice (16593). Listed in 30 zones.
-132. Combine in "Portable Drink Barrel" (17179): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
-133. Combine in Brew Barrel (19): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
-134. Combine in "Toolbox" (17902): "Water Flask" (13006), "Gnomish Spirits" (13037). Produces "Firewater" (16881). Requires Tinkering, trivial 17.
-135. Common item: Metal Fastening (16888). Listed in 14 zones.
-136. Common item: Sharkskin Tubing (16891). Listed in 14 zones.
-137. Common item: Lime Coated Meshing (16892). Listed in 10 zones.
-138. Combine in "Toolbox" (17902): "Platemail Helm" (4001), "Aqualung" (16873), "Firewater" (16881), "Metal Fastening" (16888), "Sharkskin Tubing" (16891), "Lime Coated Meshing" (16892). Produces "Rebreather" (16889). Requires Tinkering, trivial 175.
-139. Loot "Block of Permafrost" (20665) from "Lady Vox" in `permafrost`.
-140. Loot "Block of Permafrost" (20665) from "An Ice Giant" in `permafrost`.
-141. Common item: Keg of Vox Tail Ale (20664). Listed in 13 zones.
-142. oceanoftears/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
-143. oot/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
-144. Loot "Ancient Blade" (20670) from "Queen Velazul Di'zok" in `chardok`.
-145. Ground spawn of "Unjeweled Dragon Head Hilt" (20668) in `lakerathe`.
-146. No quest step gives Apothic Crown (1239). The dump lists it in hateplane, hateplaneb.
-147. poknowledge/"Arch Mage Deidus", hand "Apothic Crown" (1239). Gives "Diamond" (10037).
-148. No quest step gives Apothic Robe (1240). The dump lists it in hateplane, hateplaneb.
-149. poknowledge/"Arch Mage Deidus", hand "Apothic Robe" (1240). Gives "Diamond" (10037).
-150. No quest step gives Apothic Sleeves (1241). The dump lists it in hateplane, hateplaneb.
-151. poknowledge/"Arch Mage Deidus", hand "Apothic Sleeves" (1241). Gives "Diamond" (10037).
-152. No quest step gives Apothic Warband (1242). The dump lists it in hateplane, hateplaneb.
-153. poknowledge/"Arch Mage Deidus", hand "Apothic Warband" (1242). Gives "Diamond" (10037).
-154. No quest step gives Apothic Gloves (1243). The dump lists it in hateplane, hateplaneb.
-155. poknowledge/"Arch Mage Deidus", hand "Apothic Gloves" (1243). Gives "Diamond" (10037).
-156. No quest step gives Apothic Kilt (1244). The dump lists it in hateplane, hateplaneb.
-157. poknowledge/"Arch Mage Deidus", hand "Apothic Kilt" (1244). Gives "Diamond" (10037).
-158. Say "Controller Timer" to bloodfields/"Gaz".
-159. Spawns "Ikaav Dreamweaver" (301031).
-160. Loot "Black Sapphire" (10036) from "Ikaav Dreamweaver".
-161. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
-162. Loot "Black Sapphire" (10036) from "A parasitic murkglider".
-163. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
-164. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
-165. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
-166. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
-167. 45 other loot steps also yield Black Sapphire (10036).
-168. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
-169. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
-170. Loot "Jacinth" (10053) from "A Reclusive Girplan".
-171. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
-172. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
-173. 64 other loot steps also yield Jacinth (10053).
-174. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
-175. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
-176. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
-177. Loot "Giant Sized Monocle" (20678) from "A Mountain Giant Patriarch" in `dreadlands`.
-178. frontiermtns/"Mentrax Mountainbone", hand "Giant Sized Monocle" (20678). Gives "Rejesiam Ore" (20666).
-179. Loot "Ball of Everliving Golem" (20677) from "Dread" in `fearplane`.
-180. Loot "Ball of Everliving Golem" (20677) from "Fright" in `fearplane`.
-181. Loot "Ball of Everliving Golem" (20677) from "Terror" in `fearplane`.
-182. freeporteast/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
-183. freporte/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
-184. Combine in "Red Scabbard" (17859): "Ancient Sword Blade" (20667), "Ancient Blade" (20670), "Jeweled Dragon Head Hilt" (20671), "Finely Crafted Dragon Head Hilt" (20672). Produces "Jagged Blade of War" (10908). The combine does not fail.
-185. freeporteast/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Red Scabbard" (17869).
-186. freporte/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Red Scabbard" (17869).
-187. freeporteast/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Jagged Blade of War" (66175).
-188. freporte/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Jagged Blade of War" (66175).
-189. Combine in "Red Scabbard" (17869): "Jagged Blade of War" (66175). Produces "Blade of Tactics" (66176), "Blade of Strategy" (66177). Requires Pottery. The combine does not fail.
+95. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
+96. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
+97. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
+98. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
+99. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
+100. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
+101. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
+102. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
+103. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
+104. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
+105. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
+106. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
+107. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+108. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+109. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+110. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
+111. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
+112. Loot "Rat Ears" (13072) from "Sepsis Rat".
+113. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
+114. Loot "Rat Ears" (13072) from "A Young Plague Rat".
+115. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
+116. Common item: Spider Legs (13417). Listed in 56 zones.
+117. Common item: Rice (16593). Listed in 30 zones.
+118. Combine in "Portable Drink Barrel" (17179): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
+119. Combine in Brew Barrel (19): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
+120. Combine in "Toolbox" (17902): "Water Flask" (13006), "Gnomish Spirits" (13037). Produces "Firewater" (16881). Requires Tinkering, trivial 17.
+121. Common item: Metal Fastening (16888). Listed in 14 zones.
+122. Common item: Sharkskin Tubing (16891). Listed in 14 zones.
+123. Common item: Lime Coated Meshing (16892). Listed in 10 zones.
+124. Combine in "Toolbox" (17902): "Platemail Helm" (4001), "Aqualung" (16873), "Firewater" (16881), "Metal Fastening" (16888), "Sharkskin Tubing" (16891), "Lime Coated Meshing" (16892). Produces "Rebreather" (16889). Requires Tinkering, trivial 175.
+125. Loot "Block of Permafrost" (20665) from "Lady Vox" in `permafrost`.
+126. Loot "Block of Permafrost" (20665) from "An Ice Giant" in `permafrost`.
+127. Common item: Keg of Vox Tail Ale (20664). Listed in 13 zones.
+128. oceanoftears/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
+129. oot/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
+130. Loot "Ancient Blade" (20670) from "Queen Velazul Di'zok" in `chardok`.
+131. Ground spawn of "Unjeweled Dragon Head Hilt" (20668) in `lakerathe`.
+132. No quest step gives Apothic Crown (1239). The dump lists it in hateplane, hateplaneb.
+133. poknowledge/"Arch Mage Deidus", hand "Apothic Crown" (1239). Gives "Diamond" (10037).
+134. No quest step gives Apothic Robe (1240). The dump lists it in hateplane, hateplaneb.
+135. poknowledge/"Arch Mage Deidus", hand "Apothic Robe" (1240). Gives "Diamond" (10037).
+136. No quest step gives Apothic Sleeves (1241). The dump lists it in hateplane, hateplaneb.
+137. poknowledge/"Arch Mage Deidus", hand "Apothic Sleeves" (1241). Gives "Diamond" (10037).
+138. No quest step gives Apothic Warband (1242). The dump lists it in hateplane, hateplaneb.
+139. poknowledge/"Arch Mage Deidus", hand "Apothic Warband" (1242). Gives "Diamond" (10037).
+140. No quest step gives Apothic Gloves (1243). The dump lists it in hateplane, hateplaneb.
+141. poknowledge/"Arch Mage Deidus", hand "Apothic Gloves" (1243). Gives "Diamond" (10037).
+142. No quest step gives Apothic Kilt (1244). The dump lists it in hateplane, hateplaneb.
+143. poknowledge/"Arch Mage Deidus", hand "Apothic Kilt" (1244). Gives "Diamond" (10037).
+144. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
+145. Loot "Black Sapphire" (10036) from "A parasitic murkglider".
+146. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
+147. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
+148. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
+149. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
+150. Kill delvea/"A Drake Egg". Spawns "a Delve spellbinder" (341091).
+151. Loot "Black Sapphire" (10036) from "a Delve spellbinder".
+152. 40 other loot steps also yield Black Sapphire (10036).
+153. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
+154. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
+155. Loot "Jacinth" (10053) from "A Reclusive Girplan".
+156. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
+157. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
+158. 52 other loot steps also yield Jacinth (10053).
+159. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
+160. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
+161. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
+162. Loot "Giant Sized Monocle" (20678) from "A Mountain Giant Patriarch" in `dreadlands`.
+163. frontiermtns/"Mentrax Mountainbone", hand "Giant Sized Monocle" (20678). Gives "Rejesiam Ore" (20666).
+164. Loot "Ball of Everliving Golem" (20677) from "Dread" in `fearplane`.
+165. Loot "Ball of Everliving Golem" (20677) from "Fright" in `fearplane`.
+166. Loot "Ball of Everliving Golem" (20677) from "Terror" in `fearplane`.
+167. freeporteast/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
+168. freporte/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
+169. Combine in "Red Scabbard" (17859): "Ancient Sword Blade" (20667), "Ancient Blade" (20670), "Jeweled Dragon Head Hilt" (20671), "Finely Crafted Dragon Head Hilt" (20672). Produces "Jagged Blade of War" (10908). The combine does not fail.
+170. freeporteast/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Red Scabbard" (17869).
+171. freporte/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Red Scabbard" (17869).
+172. freeporteast/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Jagged Blade of War" (66175).
+173. freporte/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Jagged Blade of War" (66175).
+174. Combine in "Red Scabbard" (17869): "Jagged Blade of War" (66175). Produces "Blade of Tactics" (66176), "Blade of Strategy" (66177). Requires Pottery. The combine does not fail.
 
 ### "Blade of Strategy" (66177)
 
@@ -641,7 +610,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 65. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
 66. Say "Tm Dokorel Death" to rujd/"Rujd".
 67. Say "Tm Velrek Death" to rujd/"Rujd".
-68. Say "Researcher Death" to rujg/"Rujg".
+68. Say "Event:Death Complete:260061" to rujg/"Rujg".
 69. Spawns "A Barrel" (260015).
 70. Loot "Pod of Water" (13044) from "A Barrel".
 71. 3 other loot steps also yield Pod of Water (13044).
@@ -668,101 +637,86 @@ Each list is the order you obtain that item. Later steps point here instead of r
 92. Combine in "Toolbox" (17902): "Fresh Fish" (13019), "Metal Rod" (16850), "Metal Twine" (16857), "Gnomish Bolts" (16861), "Silk Lined Steel Helm" (16862), "Fine Coral Mesh" (16890). Produces "Aqualung" (16873) x20. Requires Tinkering, trivial 148.
 93. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
 94. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
-95. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-96. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-97. 67 other recipes also produce Celestial Essence (9650).
-98. Common item: Jar of Acid (22133). Listed in 15 zones.
-99. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
-100. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
-101. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-102. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
-103. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-104. Common item: Firing Sheet (16906). Listed in 34 zones.
-105. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-106. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-107. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-108. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-109. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-110. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-111. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-112. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-113. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-114. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-115. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-116. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-117. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-118. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-119. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-120. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-121. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-122. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-123. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-124. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-125. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
-126. Loot "Rat Ears" (13072) from "Sepsis Rat".
-127. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
-128. Loot "Rat Ears" (13072) from "A Young Plague Rat".
-129. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
-130. Common item: Spider Legs (13417). Listed in 56 zones.
-131. Common item: Rice (16593). Listed in 30 zones.
-132. Combine in "Portable Drink Barrel" (17179): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
-133. Combine in Brew Barrel (19): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
-134. Combine in "Toolbox" (17902): "Water Flask" (13006), "Gnomish Spirits" (13037). Produces "Firewater" (16881). Requires Tinkering, trivial 17.
-135. Common item: Metal Fastening (16888). Listed in 14 zones.
-136. Common item: Sharkskin Tubing (16891). Listed in 14 zones.
-137. Common item: Lime Coated Meshing (16892). Listed in 10 zones.
-138. Combine in "Toolbox" (17902): "Platemail Helm" (4001), "Aqualung" (16873), "Firewater" (16881), "Metal Fastening" (16888), "Sharkskin Tubing" (16891), "Lime Coated Meshing" (16892). Produces "Rebreather" (16889). Requires Tinkering, trivial 175.
-139. Loot "Block of Permafrost" (20665) from "Lady Vox" in `permafrost`.
-140. Loot "Block of Permafrost" (20665) from "An Ice Giant" in `permafrost`.
-141. Common item: Keg of Vox Tail Ale (20664). Listed in 13 zones.
-142. oceanoftears/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
-143. oot/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
-144. Loot "Ancient Blade" (20670) from "Queen Velazul Di'zok" in `chardok`.
-145. Ground spawn of "Unjeweled Dragon Head Hilt" (20668) in `lakerathe`.
-146. No quest step gives Apothic Crown (1239). The dump lists it in hateplane, hateplaneb.
-147. poknowledge/"Arch Mage Deidus", hand "Apothic Crown" (1239). Gives "Diamond" (10037).
-148. No quest step gives Apothic Robe (1240). The dump lists it in hateplane, hateplaneb.
-149. poknowledge/"Arch Mage Deidus", hand "Apothic Robe" (1240). Gives "Diamond" (10037).
-150. No quest step gives Apothic Sleeves (1241). The dump lists it in hateplane, hateplaneb.
-151. poknowledge/"Arch Mage Deidus", hand "Apothic Sleeves" (1241). Gives "Diamond" (10037).
-152. No quest step gives Apothic Warband (1242). The dump lists it in hateplane, hateplaneb.
-153. poknowledge/"Arch Mage Deidus", hand "Apothic Warband" (1242). Gives "Diamond" (10037).
-154. No quest step gives Apothic Gloves (1243). The dump lists it in hateplane, hateplaneb.
-155. poknowledge/"Arch Mage Deidus", hand "Apothic Gloves" (1243). Gives "Diamond" (10037).
-156. No quest step gives Apothic Kilt (1244). The dump lists it in hateplane, hateplaneb.
-157. poknowledge/"Arch Mage Deidus", hand "Apothic Kilt" (1244). Gives "Diamond" (10037).
-158. Say "Controller Timer" to bloodfields/"Gaz".
-159. Spawns "Ikaav Dreamweaver" (301031).
-160. Loot "Black Sapphire" (10036) from "Ikaav Dreamweaver".
-161. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
-162. Loot "Black Sapphire" (10036) from "A parasitic murkglider".
-163. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
-164. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
-165. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
-166. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
-167. 45 other loot steps also yield Black Sapphire (10036).
-168. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
-169. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
-170. Loot "Jacinth" (10053) from "A Reclusive Girplan".
-171. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
-172. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
-173. 64 other loot steps also yield Jacinth (10053).
-174. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
-175. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
-176. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
-177. Loot "Giant Sized Monocle" (20678) from "A Mountain Giant Patriarch" in `dreadlands`.
-178. frontiermtns/"Mentrax Mountainbone", hand "Giant Sized Monocle" (20678). Gives "Rejesiam Ore" (20666).
-179. Loot "Ball of Everliving Golem" (20677) from "Dread" in `fearplane`.
-180. Loot "Ball of Everliving Golem" (20677) from "Fright" in `fearplane`.
-181. Loot "Ball of Everliving Golem" (20677) from "Terror" in `fearplane`.
-182. freeporteast/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
-183. freporte/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
-184. Combine in "Red Scabbard" (17859): "Ancient Sword Blade" (20667), "Ancient Blade" (20670), "Jeweled Dragon Head Hilt" (20671), "Finely Crafted Dragon Head Hilt" (20672). Produces "Jagged Blade of War" (10908). The combine does not fail.
-185. freeporteast/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Red Scabbard" (17869).
-186. freporte/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Red Scabbard" (17869).
-187. freeporteast/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Jagged Blade of War" (66175).
-188. freporte/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Jagged Blade of War" (66175).
-189. Combine in "Red Scabbard" (17869): "Jagged Blade of War" (66175). Produces "Blade of Tactics" (66176), "Blade of Strategy" (66177). Requires Pottery. The combine does not fail.
+95. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
+96. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
+97. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
+98. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
+99. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
+100. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
+101. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
+102. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
+103. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
+104. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
+105. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
+106. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
+107. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+108. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+109. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+110. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
+111. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
+112. Loot "Rat Ears" (13072) from "Sepsis Rat".
+113. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
+114. Loot "Rat Ears" (13072) from "A Young Plague Rat".
+115. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
+116. Common item: Spider Legs (13417). Listed in 56 zones.
+117. Common item: Rice (16593). Listed in 30 zones.
+118. Combine in "Portable Drink Barrel" (17179): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
+119. Combine in Brew Barrel (19): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
+120. Combine in "Toolbox" (17902): "Water Flask" (13006), "Gnomish Spirits" (13037). Produces "Firewater" (16881). Requires Tinkering, trivial 17.
+121. Common item: Metal Fastening (16888). Listed in 14 zones.
+122. Common item: Sharkskin Tubing (16891). Listed in 14 zones.
+123. Common item: Lime Coated Meshing (16892). Listed in 10 zones.
+124. Combine in "Toolbox" (17902): "Platemail Helm" (4001), "Aqualung" (16873), "Firewater" (16881), "Metal Fastening" (16888), "Sharkskin Tubing" (16891), "Lime Coated Meshing" (16892). Produces "Rebreather" (16889). Requires Tinkering, trivial 175.
+125. Loot "Block of Permafrost" (20665) from "Lady Vox" in `permafrost`.
+126. Loot "Block of Permafrost" (20665) from "An Ice Giant" in `permafrost`.
+127. Common item: Keg of Vox Tail Ale (20664). Listed in 13 zones.
+128. oceanoftears/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
+129. oot/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
+130. Loot "Ancient Blade" (20670) from "Queen Velazul Di'zok" in `chardok`.
+131. Ground spawn of "Unjeweled Dragon Head Hilt" (20668) in `lakerathe`.
+132. No quest step gives Apothic Crown (1239). The dump lists it in hateplane, hateplaneb.
+133. poknowledge/"Arch Mage Deidus", hand "Apothic Crown" (1239). Gives "Diamond" (10037).
+134. No quest step gives Apothic Robe (1240). The dump lists it in hateplane, hateplaneb.
+135. poknowledge/"Arch Mage Deidus", hand "Apothic Robe" (1240). Gives "Diamond" (10037).
+136. No quest step gives Apothic Sleeves (1241). The dump lists it in hateplane, hateplaneb.
+137. poknowledge/"Arch Mage Deidus", hand "Apothic Sleeves" (1241). Gives "Diamond" (10037).
+138. No quest step gives Apothic Warband (1242). The dump lists it in hateplane, hateplaneb.
+139. poknowledge/"Arch Mage Deidus", hand "Apothic Warband" (1242). Gives "Diamond" (10037).
+140. No quest step gives Apothic Gloves (1243). The dump lists it in hateplane, hateplaneb.
+141. poknowledge/"Arch Mage Deidus", hand "Apothic Gloves" (1243). Gives "Diamond" (10037).
+142. No quest step gives Apothic Kilt (1244). The dump lists it in hateplane, hateplaneb.
+143. poknowledge/"Arch Mage Deidus", hand "Apothic Kilt" (1244). Gives "Diamond" (10037).
+144. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
+145. Loot "Black Sapphire" (10036) from "A parasitic murkglider".
+146. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
+147. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
+148. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
+149. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
+150. Kill delvea/"A Drake Egg". Spawns "a Delve spellbinder" (341091).
+151. Loot "Black Sapphire" (10036) from "a Delve spellbinder".
+152. 40 other loot steps also yield Black Sapphire (10036).
+153. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
+154. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
+155. Loot "Jacinth" (10053) from "A Reclusive Girplan".
+156. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
+157. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
+158. 52 other loot steps also yield Jacinth (10053).
+159. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
+160. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
+161. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
+162. Loot "Giant Sized Monocle" (20678) from "A Mountain Giant Patriarch" in `dreadlands`.
+163. frontiermtns/"Mentrax Mountainbone", hand "Giant Sized Monocle" (20678). Gives "Rejesiam Ore" (20666).
+164. Loot "Ball of Everliving Golem" (20677) from "Dread" in `fearplane`.
+165. Loot "Ball of Everliving Golem" (20677) from "Fright" in `fearplane`.
+166. Loot "Ball of Everliving Golem" (20677) from "Terror" in `fearplane`.
+167. freeporteast/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
+168. freporte/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
+169. Combine in "Red Scabbard" (17859): "Ancient Sword Blade" (20667), "Ancient Blade" (20670), "Jeweled Dragon Head Hilt" (20671), "Finely Crafted Dragon Head Hilt" (20672). Produces "Jagged Blade of War" (10908). The combine does not fail.
+170. freeporteast/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Red Scabbard" (17869).
+171. freporte/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Red Scabbard" (17869).
+172. freeporteast/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Jagged Blade of War" (66175).
+173. freporte/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Jagged Blade of War" (66175).
+174. Combine in "Red Scabbard" (17869): "Jagged Blade of War" (66175). Produces "Blade of Tactics" (66176), "Blade of Strategy" (66177). Requires Pottery. The combine does not fail.
 
 ### "Jagged Blade of War" (10908)
 
@@ -882,7 +836,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 65. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
 66. Say "Tm Dokorel Death" to rujd/"Rujd".
 67. Say "Tm Velrek Death" to rujd/"Rujd".
-68. Say "Researcher Death" to rujg/"Rujg".
+68. Say "Event:Death Complete:260061" to rujg/"Rujg".
 69. Spawns "A Barrel" (260015).
 70. Loot "Pod of Water" (13044) from "A Barrel".
 71. 3 other loot steps also yield Pod of Water (13044).
@@ -918,88 +872,80 @@ Each list is the order you obtain that item. Later steps point here instead of r
 101. Common item: Mortar and Pestle (17904). Listed in 12 zones.
 102. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
 103. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-104. Common item: Firing Sheet (16906). Listed in 34 zones.
-105. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-106. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-107. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-108. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-109. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-110. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-111. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-112. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-113. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-114. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-115. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-116. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-117. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-118. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-119. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-120. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-121. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-122. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-123. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-124. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-125. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
-126. Loot "Rat Ears" (13072) from "Sepsis Rat".
-127. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
-128. Loot "Rat Ears" (13072) from "A Young Plague Rat".
-129. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
-130. Common item: Spider Legs (13417). Listed in 56 zones.
-131. Common item: Rice (16593). Listed in 30 zones.
-132. Combine in "Portable Drink Barrel" (17179): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
-133. Combine in Brew Barrel (19): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
-134. Combine in "Toolbox" (17902): "Water Flask" (13006), "Gnomish Spirits" (13037). Produces "Firewater" (16881). Requires Tinkering, trivial 17.
-135. Common item: Metal Fastening (16888). Listed in 14 zones.
-136. Common item: Sharkskin Tubing (16891). Listed in 14 zones.
-137. Common item: Lime Coated Meshing (16892). Listed in 10 zones.
-138. Combine in "Toolbox" (17902): "Platemail Helm" (4001), "Aqualung" (16873), "Firewater" (16881), "Metal Fastening" (16888), "Sharkskin Tubing" (16891), "Lime Coated Meshing" (16892). Produces "Rebreather" (16889). Requires Tinkering, trivial 175.
-139. Loot "Block of Permafrost" (20665) from "Lady Vox" in `permafrost`.
-140. Loot "Block of Permafrost" (20665) from "An Ice Giant" in `permafrost`.
-141. Common item: Keg of Vox Tail Ale (20664). Listed in 13 zones.
-142. oceanoftears/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
-143. oot/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
-144. Loot "Ancient Blade" (20670) from "Queen Velazul Di'zok" in `chardok`.
-145. Ground spawn of "Unjeweled Dragon Head Hilt" (20668) in `lakerathe`.
-146. No quest step gives Apothic Crown (1239). The dump lists it in hateplane, hateplaneb.
-147. poknowledge/"Arch Mage Deidus", hand "Apothic Crown" (1239). Gives "Diamond" (10037).
-148. No quest step gives Apothic Robe (1240). The dump lists it in hateplane, hateplaneb.
-149. poknowledge/"Arch Mage Deidus", hand "Apothic Robe" (1240). Gives "Diamond" (10037).
-150. No quest step gives Apothic Sleeves (1241). The dump lists it in hateplane, hateplaneb.
-151. poknowledge/"Arch Mage Deidus", hand "Apothic Sleeves" (1241). Gives "Diamond" (10037).
-152. No quest step gives Apothic Warband (1242). The dump lists it in hateplane, hateplaneb.
-153. poknowledge/"Arch Mage Deidus", hand "Apothic Warband" (1242). Gives "Diamond" (10037).
-154. No quest step gives Apothic Gloves (1243). The dump lists it in hateplane, hateplaneb.
-155. poknowledge/"Arch Mage Deidus", hand "Apothic Gloves" (1243). Gives "Diamond" (10037).
-156. No quest step gives Apothic Kilt (1244). The dump lists it in hateplane, hateplaneb.
-157. poknowledge/"Arch Mage Deidus", hand "Apothic Kilt" (1244). Gives "Diamond" (10037).
-158. Say "Controller Timer" to bloodfields/"Gaz".
-159. Spawns "Ikaav Dreamweaver" (301031).
-160. Loot "Black Sapphire" (10036) from "Ikaav Dreamweaver".
-161. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
-162. Loot "Black Sapphire" (10036) from "A parasitic murkglider".
-163. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
-164. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
-165. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
-166. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
-167. 45 other loot steps also yield Black Sapphire (10036).
-168. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
-169. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
-170. Loot "Jacinth" (10053) from "A Reclusive Girplan".
-171. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
-172. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
-173. 64 other loot steps also yield Jacinth (10053).
-174. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
-175. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
-176. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
-177. Loot "Giant Sized Monocle" (20678) from "A Mountain Giant Patriarch" in `dreadlands`.
-178. frontiermtns/"Mentrax Mountainbone", hand "Giant Sized Monocle" (20678). Gives "Rejesiam Ore" (20666).
-179. Loot "Ball of Everliving Golem" (20677) from "Dread" in `fearplane`.
-180. Loot "Ball of Everliving Golem" (20677) from "Fright" in `fearplane`.
-181. Loot "Ball of Everliving Golem" (20677) from "Terror" in `fearplane`.
-182. freeporteast/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
-183. freporte/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
-184. Combine in "Red Scabbard" (17859): "Ancient Sword Blade" (20667), "Ancient Blade" (20670), "Jeweled Dragon Head Hilt" (20671), "Finely Crafted Dragon Head Hilt" (20672). Produces "Jagged Blade of War" (10908). The combine does not fail.
-185. freeporteast/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Jagged Blade of War" (66175).
+104. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+105. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
+106. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
+107. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
+108. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
+109. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
+110. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
+111. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
+112. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
+113. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
+114. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+115. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+116. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+117. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
+118. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
+119. Loot "Rat Ears" (13072) from "Sepsis Rat".
+120. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
+121. Loot "Rat Ears" (13072) from "A Young Plague Rat".
+122. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
+123. Common item: Spider Legs (13417). Listed in 56 zones.
+124. Common item: Rice (16593). Listed in 30 zones.
+125. Combine in "Portable Drink Barrel" (17179): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
+126. Combine in Brew Barrel (19): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
+127. Combine in "Toolbox" (17902): "Water Flask" (13006), "Gnomish Spirits" (13037). Produces "Firewater" (16881). Requires Tinkering, trivial 17.
+128. Common item: Metal Fastening (16888). Listed in 14 zones.
+129. Common item: Sharkskin Tubing (16891). Listed in 14 zones.
+130. Common item: Lime Coated Meshing (16892). Listed in 10 zones.
+131. Combine in "Toolbox" (17902): "Platemail Helm" (4001), "Aqualung" (16873), "Firewater" (16881), "Metal Fastening" (16888), "Sharkskin Tubing" (16891), "Lime Coated Meshing" (16892). Produces "Rebreather" (16889). Requires Tinkering, trivial 175.
+132. Loot "Block of Permafrost" (20665) from "Lady Vox" in `permafrost`.
+133. Loot "Block of Permafrost" (20665) from "An Ice Giant" in `permafrost`.
+134. Common item: Keg of Vox Tail Ale (20664). Listed in 13 zones.
+135. oceanoftears/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
+136. oot/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
+137. Loot "Ancient Blade" (20670) from "Queen Velazul Di'zok" in `chardok`.
+138. Ground spawn of "Unjeweled Dragon Head Hilt" (20668) in `lakerathe`.
+139. No quest step gives Apothic Crown (1239). The dump lists it in hateplane, hateplaneb.
+140. poknowledge/"Arch Mage Deidus", hand "Apothic Crown" (1239). Gives "Diamond" (10037).
+141. No quest step gives Apothic Robe (1240). The dump lists it in hateplane, hateplaneb.
+142. poknowledge/"Arch Mage Deidus", hand "Apothic Robe" (1240). Gives "Diamond" (10037).
+143. No quest step gives Apothic Sleeves (1241). The dump lists it in hateplane, hateplaneb.
+144. poknowledge/"Arch Mage Deidus", hand "Apothic Sleeves" (1241). Gives "Diamond" (10037).
+145. No quest step gives Apothic Warband (1242). The dump lists it in hateplane, hateplaneb.
+146. poknowledge/"Arch Mage Deidus", hand "Apothic Warband" (1242). Gives "Diamond" (10037).
+147. No quest step gives Apothic Gloves (1243). The dump lists it in hateplane, hateplaneb.
+148. poknowledge/"Arch Mage Deidus", hand "Apothic Gloves" (1243). Gives "Diamond" (10037).
+149. No quest step gives Apothic Kilt (1244). The dump lists it in hateplane, hateplaneb.
+150. poknowledge/"Arch Mage Deidus", hand "Apothic Kilt" (1244). Gives "Diamond" (10037).
+151. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
+152. Loot "Black Sapphire" (10036) from "A parasitic murkglider".
+153. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
+154. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
+155. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
+156. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
+157. Kill delvea/"A Drake Egg". Spawns "a Delve spellbinder" (341091).
+158. Loot "Black Sapphire" (10036) from "a Delve spellbinder".
+159. 40 other loot steps also yield Black Sapphire (10036).
+160. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
+161. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
+162. Loot "Jacinth" (10053) from "A Reclusive Girplan".
+163. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
+164. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
+165. 52 other loot steps also yield Jacinth (10053).
+166. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
+167. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
+168. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
+169. Loot "Giant Sized Monocle" (20678) from "A Mountain Giant Patriarch" in `dreadlands`.
+170. frontiermtns/"Mentrax Mountainbone", hand "Giant Sized Monocle" (20678). Gives "Rejesiam Ore" (20666).
+171. Loot "Ball of Everliving Golem" (20677) from "Dread" in `fearplane`.
+172. Loot "Ball of Everliving Golem" (20677) from "Fright" in `fearplane`.
+173. Loot "Ball of Everliving Golem" (20677) from "Terror" in `fearplane`.
+174. freeporteast/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
+175. freporte/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
+176. Combine in "Red Scabbard" (17859): "Ancient Sword Blade" (20667), "Ancient Blade" (20670), "Jeweled Dragon Head Hilt" (20671), "Finely Crafted Dragon Head Hilt" (20672). Produces "Jagged Blade of War" (10908). The combine does not fail.
+177. freeporteast/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Jagged Blade of War" (66175).
 
 ### "Blackfall Blade" (60303)
 
@@ -1020,7 +966,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 15. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
 16. Say "Tm Dokorel Death" to rujd/"Rujd".
 17. Say "Tm Velrek Death" to rujd/"Rujd".
-18. Say "Researcher Death" to rujg/"Rujg".
+18. Say "Event:Death Complete:260061" to rujg/"Rujg".
 19. Spawns "A Barrel" (260015).
 20. Loot "Pod of Water" (13044) from "A Barrel".
 21. 3 other loot steps also yield Pod of Water (13044).
@@ -1118,7 +1064,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 18. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
 19. Say "Tm Dokorel Death" to rujd/"Rujd".
 20. Say "Tm Velrek Death" to rujd/"Rujd".
-21. Say "Researcher Death" to rujg/"Rujg".
+21. Say "Event:Death Complete:260061" to rujg/"Rujg".
 22. Spawns "A Barrel" (260015).
 23. Loot "Pod of Water" (13044) from "A Barrel".
 24. 3 other loot steps also yield Pod of Water (13044).
@@ -1245,7 +1191,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 65. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
 66. Say "Tm Dokorel Death" to rujd/"Rujd".
 67. Say "Tm Velrek Death" to rujd/"Rujd".
-68. Say "Researcher Death" to rujg/"Rujg".
+68. Say "Event:Death Complete:260061" to rujg/"Rujg".
 69. Spawns "A Barrel" (260015).
 70. Loot "Pod of Water" (13044) from "A Barrel".
 71. 3 other loot steps also yield Pod of Water (13044).
@@ -1272,108 +1218,93 @@ Each list is the order you obtain that item. Later steps point here instead of r
 92. Combine in "Toolbox" (17902): "Fresh Fish" (13019), "Metal Rod" (16850), "Metal Twine" (16857), "Gnomish Bolts" (16861), "Silk Lined Steel Helm" (16862), "Fine Coral Mesh" (16890). Produces "Aqualung" (16873) x20. Requires Tinkering, trivial 148.
 93. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
 94. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
-95. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-96. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-97. 67 other recipes also produce Celestial Essence (9650).
-98. Common item: Jar of Acid (22133). Listed in 15 zones.
-99. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
-100. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
-101. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-102. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
-103. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-104. Common item: Firing Sheet (16906). Listed in 34 zones.
-105. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-106. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-107. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-108. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-109. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-110. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-111. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-112. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-113. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-114. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-115. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-116. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-117. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-118. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-119. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-120. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-121. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-122. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-123. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-124. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-125. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
-126. Loot "Rat Ears" (13072) from "Sepsis Rat".
-127. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
-128. Loot "Rat Ears" (13072) from "A Young Plague Rat".
-129. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
-130. Common item: Spider Legs (13417). Listed in 56 zones.
-131. Common item: Rice (16593). Listed in 30 zones.
-132. Combine in "Portable Drink Barrel" (17179): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
-133. Combine in Brew Barrel (19): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
-134. Combine in "Toolbox" (17902): "Water Flask" (13006), "Gnomish Spirits" (13037). Produces "Firewater" (16881). Requires Tinkering, trivial 17.
-135. Common item: Metal Fastening (16888). Listed in 14 zones.
-136. Common item: Sharkskin Tubing (16891). Listed in 14 zones.
-137. Common item: Lime Coated Meshing (16892). Listed in 10 zones.
-138. Combine in "Toolbox" (17902): "Platemail Helm" (4001), "Aqualung" (16873), "Firewater" (16881), "Metal Fastening" (16888), "Sharkskin Tubing" (16891), "Lime Coated Meshing" (16892). Produces "Rebreather" (16889). Requires Tinkering, trivial 175.
-139. Loot "Block of Permafrost" (20665) from "Lady Vox" in `permafrost`.
-140. Loot "Block of Permafrost" (20665) from "An Ice Giant" in `permafrost`.
-141. Common item: Keg of Vox Tail Ale (20664). Listed in 13 zones.
-142. oceanoftears/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
-143. oot/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
-144. Loot "Ancient Blade" (20670) from "Queen Velazul Di'zok" in `chardok`.
-145. Ground spawn of "Unjeweled Dragon Head Hilt" (20668) in `lakerathe`.
-146. No quest step gives Apothic Crown (1239). The dump lists it in hateplane, hateplaneb.
-147. poknowledge/"Arch Mage Deidus", hand "Apothic Crown" (1239). Gives "Diamond" (10037).
-148. No quest step gives Apothic Robe (1240). The dump lists it in hateplane, hateplaneb.
-149. poknowledge/"Arch Mage Deidus", hand "Apothic Robe" (1240). Gives "Diamond" (10037).
-150. No quest step gives Apothic Sleeves (1241). The dump lists it in hateplane, hateplaneb.
-151. poknowledge/"Arch Mage Deidus", hand "Apothic Sleeves" (1241). Gives "Diamond" (10037).
-152. No quest step gives Apothic Warband (1242). The dump lists it in hateplane, hateplaneb.
-153. poknowledge/"Arch Mage Deidus", hand "Apothic Warband" (1242). Gives "Diamond" (10037).
-154. No quest step gives Apothic Gloves (1243). The dump lists it in hateplane, hateplaneb.
-155. poknowledge/"Arch Mage Deidus", hand "Apothic Gloves" (1243). Gives "Diamond" (10037).
-156. No quest step gives Apothic Kilt (1244). The dump lists it in hateplane, hateplaneb.
-157. poknowledge/"Arch Mage Deidus", hand "Apothic Kilt" (1244). Gives "Diamond" (10037).
-158. Say "Controller Timer" to bloodfields/"Gaz".
-159. Spawns "Ikaav Dreamweaver" (301031).
-160. Loot "Black Sapphire" (10036) from "Ikaav Dreamweaver".
-161. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
-162. Loot "Black Sapphire" (10036) from "A parasitic murkglider".
-163. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
-164. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
-165. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
-166. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
-167. 45 other loot steps also yield Black Sapphire (10036).
-168. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
-169. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
-170. Loot "Jacinth" (10053) from "A Reclusive Girplan".
-171. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
-172. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
-173. 64 other loot steps also yield Jacinth (10053).
-174. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
-175. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
-176. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
-177. Loot "Giant Sized Monocle" (20678) from "A Mountain Giant Patriarch" in `dreadlands`.
-178. frontiermtns/"Mentrax Mountainbone", hand "Giant Sized Monocle" (20678). Gives "Rejesiam Ore" (20666).
-179. Loot "Ball of Everliving Golem" (20677) from "Dread" in `fearplane`.
-180. Loot "Ball of Everliving Golem" (20677) from "Fright" in `fearplane`.
-181. Loot "Ball of Everliving Golem" (20677) from "Terror" in `fearplane`.
-182. freeporteast/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
-183. freporte/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
-184. Combine in "Red Scabbard" (17859): "Ancient Sword Blade" (20667), "Ancient Blade" (20670), "Jeweled Dragon Head Hilt" (20671), "Finely Crafted Dragon Head Hilt" (20672). Produces "Jagged Blade of War" (10908). The combine does not fail.
-185. freeporteast/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Red Scabbard" (17869).
-186. freporte/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Red Scabbard" (17869).
-187. freeporteast/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Jagged Blade of War" (66175).
-188. freporte/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Jagged Blade of War" (66175).
-189. Combine in "Red Scabbard" (17869): "Jagged Blade of War" (66175). Produces "Blade of Tactics" (66176), "Blade of Strategy" (66177). Requires Pottery. The combine does not fail.
-190. Combine in "Red Scabbard" (17869): "Blade of Tactics" (66176), "Blade of Strategy" (66177). Produces "Jagged Blade of War" (66175). Requires Pottery. The combine does not fail.
-191. Requires `warrior_epic` unset; no setter establishes this state.
-192. draniksscar/"Korbuk Brimblade", say "Work". Sets `warrior_pre` to `1`.
-193. Loot "Elegant Shank" (60286) from "Shoqui the Forgotten" in `hatesfury`.
-194. draniksscar/"Korbuk Brimblade", hand "Elegant Shank" (60286). Sets `warrior_pre` to `3`.
-195. Loot "Redblade Family Sword" (60287) from "Drevlon Knacknabber" in `eastkarana`.
-196. freeporteast/"Kargek Redblade", hand "Redblade Family Sword" (60287). Requires `warrior_pre` set. Requires `warrior_pre` ==3. Gives "Emblazoned Champion's Hilt" (60288).
+95. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
+96. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
+97. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
+98. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
+99. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
+100. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
+101. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
+102. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
+103. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
+104. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
+105. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
+106. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
+107. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+108. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+109. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+110. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
+111. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
+112. Loot "Rat Ears" (13072) from "Sepsis Rat".
+113. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
+114. Loot "Rat Ears" (13072) from "A Young Plague Rat".
+115. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
+116. Common item: Spider Legs (13417). Listed in 56 zones.
+117. Common item: Rice (16593). Listed in 30 zones.
+118. Combine in "Portable Drink Barrel" (17179): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
+119. Combine in Brew Barrel (19): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
+120. Combine in "Toolbox" (17902): "Water Flask" (13006), "Gnomish Spirits" (13037). Produces "Firewater" (16881). Requires Tinkering, trivial 17.
+121. Common item: Metal Fastening (16888). Listed in 14 zones.
+122. Common item: Sharkskin Tubing (16891). Listed in 14 zones.
+123. Common item: Lime Coated Meshing (16892). Listed in 10 zones.
+124. Combine in "Toolbox" (17902): "Platemail Helm" (4001), "Aqualung" (16873), "Firewater" (16881), "Metal Fastening" (16888), "Sharkskin Tubing" (16891), "Lime Coated Meshing" (16892). Produces "Rebreather" (16889). Requires Tinkering, trivial 175.
+125. Loot "Block of Permafrost" (20665) from "Lady Vox" in `permafrost`.
+126. Loot "Block of Permafrost" (20665) from "An Ice Giant" in `permafrost`.
+127. Common item: Keg of Vox Tail Ale (20664). Listed in 13 zones.
+128. oceanoftears/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
+129. oot/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
+130. Loot "Ancient Blade" (20670) from "Queen Velazul Di'zok" in `chardok`.
+131. Ground spawn of "Unjeweled Dragon Head Hilt" (20668) in `lakerathe`.
+132. No quest step gives Apothic Crown (1239). The dump lists it in hateplane, hateplaneb.
+133. poknowledge/"Arch Mage Deidus", hand "Apothic Crown" (1239). Gives "Diamond" (10037).
+134. No quest step gives Apothic Robe (1240). The dump lists it in hateplane, hateplaneb.
+135. poknowledge/"Arch Mage Deidus", hand "Apothic Robe" (1240). Gives "Diamond" (10037).
+136. No quest step gives Apothic Sleeves (1241). The dump lists it in hateplane, hateplaneb.
+137. poknowledge/"Arch Mage Deidus", hand "Apothic Sleeves" (1241). Gives "Diamond" (10037).
+138. No quest step gives Apothic Warband (1242). The dump lists it in hateplane, hateplaneb.
+139. poknowledge/"Arch Mage Deidus", hand "Apothic Warband" (1242). Gives "Diamond" (10037).
+140. No quest step gives Apothic Gloves (1243). The dump lists it in hateplane, hateplaneb.
+141. poknowledge/"Arch Mage Deidus", hand "Apothic Gloves" (1243). Gives "Diamond" (10037).
+142. No quest step gives Apothic Kilt (1244). The dump lists it in hateplane, hateplaneb.
+143. poknowledge/"Arch Mage Deidus", hand "Apothic Kilt" (1244). Gives "Diamond" (10037).
+144. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
+145. Loot "Black Sapphire" (10036) from "A parasitic murkglider".
+146. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
+147. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
+148. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
+149. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
+150. Kill delvea/"A Drake Egg". Spawns "a Delve spellbinder" (341091).
+151. Loot "Black Sapphire" (10036) from "a Delve spellbinder".
+152. 40 other loot steps also yield Black Sapphire (10036).
+153. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
+154. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
+155. Loot "Jacinth" (10053) from "A Reclusive Girplan".
+156. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
+157. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
+158. 52 other loot steps also yield Jacinth (10053).
+159. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
+160. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
+161. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
+162. Loot "Giant Sized Monocle" (20678) from "A Mountain Giant Patriarch" in `dreadlands`.
+163. frontiermtns/"Mentrax Mountainbone", hand "Giant Sized Monocle" (20678). Gives "Rejesiam Ore" (20666).
+164. Loot "Ball of Everliving Golem" (20677) from "Dread" in `fearplane`.
+165. Loot "Ball of Everliving Golem" (20677) from "Fright" in `fearplane`.
+166. Loot "Ball of Everliving Golem" (20677) from "Terror" in `fearplane`.
+167. freeporteast/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
+168. freporte/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
+169. Combine in "Red Scabbard" (17859): "Ancient Sword Blade" (20667), "Ancient Blade" (20670), "Jeweled Dragon Head Hilt" (20671), "Finely Crafted Dragon Head Hilt" (20672). Produces "Jagged Blade of War" (10908). The combine does not fail.
+170. freeporteast/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Red Scabbard" (17869).
+171. freporte/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Red Scabbard" (17869).
+172. freeporteast/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Jagged Blade of War" (66175).
+173. freporte/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Jagged Blade of War" (66175).
+174. Combine in "Red Scabbard" (17869): "Jagged Blade of War" (66175). Produces "Blade of Tactics" (66176), "Blade of Strategy" (66177). Requires Pottery. The combine does not fail.
+175. Combine in "Red Scabbard" (17869): "Blade of Tactics" (66176), "Blade of Strategy" (66177). Produces "Jagged Blade of War" (66175). Requires Pottery. The combine does not fail.
+176. Requires `warrior_epic` unset; no setter establishes this state.
+177. draniksscar/"Korbuk Brimblade", say "Work". Sets `warrior_pre` to `1`.
+178. Loot "Elegant Shank" (60286) from "Shoqui the Forgotten" in `hatesfury`.
+179. draniksscar/"Korbuk Brimblade", hand "Elegant Shank" (60286). Sets `warrior_pre` to `3`.
+180. Loot "Redblade Family Sword" (60287) from "Drevlon Knacknabber" in `eastkarana`.
+181. freeporteast/"Kargek Redblade", hand "Redblade Family Sword" (60287). Requires `warrior_pre` set. Requires `warrior_pre` ==3. Gives "Emblazoned Champion's Hilt" (60288).
 
 ### "Dardek's Forged Blade" (60292)
 
@@ -1444,7 +1375,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 65. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
 66. Say "Tm Dokorel Death" to rujd/"Rujd".
 67. Say "Tm Velrek Death" to rujd/"Rujd".
-68. Say "Researcher Death" to rujg/"Rujg".
+68. Say "Event:Death Complete:260061" to rujg/"Rujg".
 69. Spawns "A Barrel" (260015).
 70. Loot "Pod of Water" (13044) from "A Barrel".
 71. 3 other loot steps also yield Pod of Water (13044).
@@ -1470,113 +1401,87 @@ Each list is the order you obtain that item. Later steps point here instead of r
 91. Common item: Fine Coral Mesh (16890). Listed in 14 zones.
 92. Combine in "Toolbox" (17902): "Fresh Fish" (13019), "Metal Rod" (16850), "Metal Twine" (16857), "Gnomish Bolts" (16861), "Silk Lined Steel Helm" (16862), "Fine Coral Mesh" (16890). Produces "Aqualung" (16873) x20. Requires Tinkering, trivial 148.
 93. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
-94. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
-95. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-96. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-97. 67 other recipes also produce Celestial Essence (9650).
-98. Common item: Jar of Acid (22133). Listed in 15 zones.
-99. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
-100. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
-101. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-102. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
-103. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-104. Common item: Firing Sheet (16906). Listed in 34 zones.
-105. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-106. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-107. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-108. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-109. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-110. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-111. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-112. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-113. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-114. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-115. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-116. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-117. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-118. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-119. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-120. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-121. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-122. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-123. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-124. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-125. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
-126. Loot "Rat Ears" (13072) from "Sepsis Rat".
-127. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
-128. Loot "Rat Ears" (13072) from "A Young Plague Rat".
-129. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
-130. Common item: Spider Legs (13417). Listed in 56 zones.
-131. Common item: Rice (16593). Listed in 30 zones.
-132. Combine in "Portable Drink Barrel" (17179): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
-133. Combine in Brew Barrel (19): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
-134. Combine in "Toolbox" (17902): "Water Flask" (13006), "Gnomish Spirits" (13037). Produces "Firewater" (16881). Requires Tinkering, trivial 17.
-135. Common item: Metal Fastening (16888). Listed in 14 zones.
-136. Common item: Sharkskin Tubing (16891). Listed in 14 zones.
-137. Common item: Lime Coated Meshing (16892). Listed in 10 zones.
-138. Combine in "Toolbox" (17902): "Platemail Helm" (4001), "Aqualung" (16873), "Firewater" (16881), "Metal Fastening" (16888), "Sharkskin Tubing" (16891), "Lime Coated Meshing" (16892). Produces "Rebreather" (16889). Requires Tinkering, trivial 175.
-139. Loot "Block of Permafrost" (20665) from "Lady Vox" in `permafrost`.
-140. Loot "Block of Permafrost" (20665) from "An Ice Giant" in `permafrost`.
-141. Common item: Keg of Vox Tail Ale (20664). Listed in 13 zones.
-142. oceanoftears/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
-143. oot/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
-144. Loot "Ancient Blade" (20670) from "Queen Velazul Di'zok" in `chardok`.
-145. Ground spawn of "Unjeweled Dragon Head Hilt" (20668) in `lakerathe`.
-146. No quest step gives Apothic Crown (1239). The dump lists it in hateplane, hateplaneb.
-147. poknowledge/"Arch Mage Deidus", hand "Apothic Crown" (1239). Gives "Diamond" (10037).
-148. No quest step gives Apothic Robe (1240). The dump lists it in hateplane, hateplaneb.
-149. poknowledge/"Arch Mage Deidus", hand "Apothic Robe" (1240). Gives "Diamond" (10037).
-150. No quest step gives Apothic Sleeves (1241). The dump lists it in hateplane, hateplaneb.
-151. poknowledge/"Arch Mage Deidus", hand "Apothic Sleeves" (1241). Gives "Diamond" (10037).
-152. No quest step gives Apothic Warband (1242). The dump lists it in hateplane, hateplaneb.
-153. poknowledge/"Arch Mage Deidus", hand "Apothic Warband" (1242). Gives "Diamond" (10037).
-154. No quest step gives Apothic Gloves (1243). The dump lists it in hateplane, hateplaneb.
-155. poknowledge/"Arch Mage Deidus", hand "Apothic Gloves" (1243). Gives "Diamond" (10037).
-156. No quest step gives Apothic Kilt (1244). The dump lists it in hateplane, hateplaneb.
-157. poknowledge/"Arch Mage Deidus", hand "Apothic Kilt" (1244). Gives "Diamond" (10037).
-158. Say "Controller Timer" to bloodfields/"Gaz".
-159. Spawns "Ikaav Dreamweaver" (301031).
-160. Loot "Black Sapphire" (10036) from "Ikaav Dreamweaver".
-161. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
-162. Loot "Black Sapphire" (10036) from "A parasitic murkglider".
-163. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
-164. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
-165. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
-166. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
-167. 45 other loot steps also yield Black Sapphire (10036).
-168. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
-169. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
-170. Loot "Jacinth" (10053) from "A Reclusive Girplan".
-171. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
-172. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
-173. 64 other loot steps also yield Jacinth (10053).
-174. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
-175. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
-176. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
-177. Loot "Giant Sized Monocle" (20678) from "A Mountain Giant Patriarch" in `dreadlands`.
-178. frontiermtns/"Mentrax Mountainbone", hand "Giant Sized Monocle" (20678). Gives "Rejesiam Ore" (20666).
-179. Loot "Ball of Everliving Golem" (20677) from "Dread" in `fearplane`.
-180. Loot "Ball of Everliving Golem" (20677) from "Fright" in `fearplane`.
-181. Loot "Ball of Everliving Golem" (20677) from "Terror" in `fearplane`.
-182. freeporteast/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
-183. freporte/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
-184. Combine in "Red Scabbard" (17859): "Ancient Sword Blade" (20667), "Ancient Blade" (20670), "Jeweled Dragon Head Hilt" (20671), "Finely Crafted Dragon Head Hilt" (20672). Produces "Jagged Blade of War" (10908). The combine does not fail.
-185. freeporteast/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Red Scabbard" (17869).
-186. freporte/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Red Scabbard" (17869).
-187. freeporteast/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Jagged Blade of War" (66175).
-188. freporte/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Jagged Blade of War" (66175).
-189. Combine in "Red Scabbard" (17869): "Jagged Blade of War" (66175). Produces "Blade of Tactics" (66176), "Blade of Strategy" (66177). Requires Pottery. The combine does not fail.
-190. Combine in "Red Scabbard" (17869): "Blade of Tactics" (66176), "Blade of Strategy" (66177). Produces "Jagged Blade of War" (66175). Requires Pottery. The combine does not fail.
-191. Requires `warrior_epic` unset; no setter establishes this state.
-192. draniksscar/"Korbuk Brimblade", say "Work". Sets `warrior_pre` to `1`.
-193. Loot "Elegant Shank" (60286) from "Shoqui the Forgotten" in `hatesfury`.
-194. draniksscar/"Korbuk Brimblade", hand "Elegant Shank" (60286). Sets `warrior_pre` to `3`.
-195. Loot "Redblade Family Sword" (60287) from "Drevlon Knacknabber" in `eastkarana`.
-196. freeporteast/"Kargek Redblade", hand "Redblade Family Sword" (60287). Requires `warrior_pre` set. Requires `warrior_pre` ==3. Gives "Emblazoned Champion's Hilt" (60288).
-197. freporte/"Kargek Redblade", hand "Redblade Family Sword" (60287). Requires `warrior_pre` set. Requires `warrior_pre` ==3. Gives "Emblazoned Champion's Hilt" (60288).
-198. draniksscar/"Korbuk Brimblade", hand "Emblazoned Champion's Hilt" (60288). Sets `warrior_pre` to `4`.
-199. Loot "Korbuk's Weapon Plans" (60285) from "The Diaku Overseer" in `potactics`.
-200. thurgadina/"Dardek Bladewright", hand "Korbuk's Weapon Plans" (60285) + "Elegant Shank" (60286) + "Emblazoned Champion's Hilt" (60288). Requires `warrior_pre` ==4. Gives "Dardek's Forged Blade" (60292).
+94. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
+95. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
+96. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+97. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+98. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+99. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
+100. Spawns "Sepsis Rat" (45113) in `qcat` on event_death.
+101. Loot "Rat Ears" (13072) from "Sepsis Rat".
+102. Kill steamfont/"Diseased Female Rat". Spawns "A Young Plague Rat" (56086).
+103. Loot "Rat Ears" (13072) from "A Young Plague Rat".
+104. Kill steamfontmts/"Diseased Female Rat". Spawns "A Young Plague Rat" (448036).
+105. Common item: Spider Legs (13417). Listed in 56 zones.
+106. Common item: Rice (16593). Listed in 30 zones.
+107. Combine in "Portable Drink Barrel" (17179): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
+108. Combine in Brew Barrel (19): "Rat Ears" (13072), "Spider Legs" (13417), "Rice" (16593), "Bottle" (16598). Produces "Gnomish Spirits" (13037) x2. Requires Brewing, trivial 102.
+109. Combine in "Toolbox" (17902): "Water Flask" (13006), "Gnomish Spirits" (13037). Produces "Firewater" (16881). Requires Tinkering, trivial 17.
+110. Common item: Metal Fastening (16888). Listed in 14 zones.
+111. Common item: Sharkskin Tubing (16891). Listed in 14 zones.
+112. Common item: Lime Coated Meshing (16892). Listed in 10 zones.
+113. Combine in "Toolbox" (17902): "Platemail Helm" (4001), "Aqualung" (16873), "Firewater" (16881), "Metal Fastening" (16888), "Sharkskin Tubing" (16891), "Lime Coated Meshing" (16892). Produces "Rebreather" (16889). Requires Tinkering, trivial 175.
+114. Loot "Block of Permafrost" (20665) from "Lady Vox" in `permafrost`.
+115. Loot "Block of Permafrost" (20665) from "An Ice Giant" in `permafrost`.
+116. Common item: Keg of Vox Tail Ale (20664). Listed in 13 zones.
+117. oceanoftears/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
+118. oot/"Denken Strongpick", hand "Rebreather" (16889) + "Keg of Vox Tail Ale" (20664) + "Block of Permafrost" (20665). Gives "Ancient Sword Blade" (20667).
+119. Loot "Ancient Blade" (20670) from "Queen Velazul Di'zok" in `chardok`.
+120. Ground spawn of "Unjeweled Dragon Head Hilt" (20668) in `lakerathe`.
+121. No quest step gives Apothic Crown (1239). The dump lists it in hateplane, hateplaneb.
+122. poknowledge/"Arch Mage Deidus", hand "Apothic Crown" (1239). Gives "Diamond" (10037).
+123. No quest step gives Apothic Robe (1240). The dump lists it in hateplane, hateplaneb.
+124. poknowledge/"Arch Mage Deidus", hand "Apothic Robe" (1240). Gives "Diamond" (10037).
+125. No quest step gives Apothic Sleeves (1241). The dump lists it in hateplane, hateplaneb.
+126. poknowledge/"Arch Mage Deidus", hand "Apothic Sleeves" (1241). Gives "Diamond" (10037).
+127. No quest step gives Apothic Warband (1242). The dump lists it in hateplane, hateplaneb.
+128. poknowledge/"Arch Mage Deidus", hand "Apothic Warband" (1242). Gives "Diamond" (10037).
+129. No quest step gives Apothic Gloves (1243). The dump lists it in hateplane, hateplaneb.
+130. poknowledge/"Arch Mage Deidus", hand "Apothic Gloves" (1243). Gives "Diamond" (10037).
+131. No quest step gives Apothic Kilt (1244). The dump lists it in hateplane, hateplaneb.
+132. poknowledge/"Arch Mage Deidus", hand "Apothic Kilt" (1244). Gives "Diamond" (10037).
+133. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
+134. Loot "Black Sapphire" (10036) from "A parasitic murkglider".
+135. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
+136. Loot "Black Sapphire" (10036) from "a Reanimated Berserker".
+137. Spawns "An Iksar Skeleton" (277032) in `chardokb` on event_combat.
+138. Loot "Black Sapphire" (10036) from "An Iksar Skeleton".
+139. Kill delvea/"A Drake Egg". Spawns "a Delve spellbinder" (341091).
+140. Loot "Black Sapphire" (10036) from "a Delve spellbinder".
+141. 40 other loot steps also yield Black Sapphire (10036).
+142. Hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352) to bloodfields/"Caller Donivin". Spawns "A Reclusive Girplan" (301033). Loot "Jacinth" (10053) from "A Reclusive Girplan".
+143. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301073).
+144. Loot "Jacinth" (10053) from "A Reclusive Girplan".
+145. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301074).
+146. Kill bloodfields/"A Reclusive Girplan". Spawns "A Reclusive Girplan" (301075).
+147. 52 other loot steps also yield Jacinth (10053).
+148. freeporteast/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
+149. freporte/"Wenden Blackhammer", hand "Black Sapphire" (10036) + "Diamond" (10037) + "Jacinth" (10053) + "Unjeweled Dragon Head Hilt" (20668). Gives "Jeweled Dragon Head Hilt" (20671).
+150. Ground spawn of "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
+151. Loot "Giant Sized Monocle" (20678) from "A Mountain Giant Patriarch" in `dreadlands`.
+152. frontiermtns/"Mentrax Mountainbone", hand "Giant Sized Monocle" (20678). Gives "Rejesiam Ore" (20666).
+153. Loot "Ball of Everliving Golem" (20677) from "Dread" in `fearplane`.
+154. Loot "Ball of Everliving Golem" (20677) from "Fright" in `fearplane`.
+155. Loot "Ball of Everliving Golem" (20677) from "Terror" in `fearplane`.
+156. freeporteast/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
+157. freporte/"Wenden Blackhammer", hand "Rejesiam Ore" (20666) + "Severely Damaged Dragon Head Hilt" (20669) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
+158. Combine in "Red Scabbard" (17859): "Ancient Sword Blade" (20667), "Ancient Blade" (20670), "Jeweled Dragon Head Hilt" (20671), "Finely Crafted Dragon Head Hilt" (20672). Produces "Jagged Blade of War" (10908). The combine does not fail.
+159. freeporteast/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Red Scabbard" (17869).
+160. freporte/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Red Scabbard" (17869).
+161. freeporteast/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Jagged Blade of War" (66175).
+162. freporte/"Gartrog Smitehammer", hand "Jagged Blade of War" (10908) + "Red Scabbard" (17859). Gives "Jagged Blade of War" (66175).
+163. Combine in "Red Scabbard" (17869): "Jagged Blade of War" (66175). Produces "Blade of Tactics" (66176), "Blade of Strategy" (66177). Requires Pottery. The combine does not fail.
+164. Combine in "Red Scabbard" (17869): "Blade of Tactics" (66176), "Blade of Strategy" (66177). Produces "Jagged Blade of War" (66175). Requires Pottery. The combine does not fail.
+165. Requires `warrior_epic` unset; no setter establishes this state.
+166. draniksscar/"Korbuk Brimblade", say "Work". Sets `warrior_pre` to `1`.
+167. Loot "Elegant Shank" (60286) from "Shoqui the Forgotten" in `hatesfury`.
+168. draniksscar/"Korbuk Brimblade", hand "Elegant Shank" (60286). Sets `warrior_pre` to `3`.
+169. Loot "Redblade Family Sword" (60287) from "Drevlon Knacknabber" in `eastkarana`.
+170. freeporteast/"Kargek Redblade", hand "Redblade Family Sword" (60287). Requires `warrior_pre` set. Requires `warrior_pre` ==3. Gives "Emblazoned Champion's Hilt" (60288).
+171. freporte/"Kargek Redblade", hand "Redblade Family Sword" (60287). Requires `warrior_pre` set. Requires `warrior_pre` ==3. Gives "Emblazoned Champion's Hilt" (60288).
+172. draniksscar/"Korbuk Brimblade", hand "Emblazoned Champion's Hilt" (60288). Sets `warrior_pre` to `4`.
+173. Loot "Korbuk's Weapon Plans" (60285) from "The Diaku Overseer" in `potactics`.
+174. thurgadina/"Dardek Bladewright", hand "Korbuk's Weapon Plans" (60285) + "Elegant Shank" (60286) + "Emblazoned Champion's Hilt" (60288). Requires `warrior_pre` ==4. Gives "Dardek's Forged Blade" (60292).
 
 ## `warrior_pre`
 

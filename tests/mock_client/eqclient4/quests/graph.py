@@ -1717,6 +1717,7 @@ def _other_summons(edges: list[dict], text: str, npc_id: str) -> None:
         "event_timer",  # linked through named timer triggers instead
     }
     branches = _branch_index(text)
+    registered = {callback for _kind, _npc, callback in _registered_npc_events(text)}
     for name, start, stop in _functions(text):
         if name in skip or start < 0:
             continue
@@ -1758,8 +1759,11 @@ def _other_summons(edges: list[dict], text: str, npc_id: str) -> None:
                         "zone": npc_id.split("/", 1)[0],
                     }
                 )
-            for npc_type, spawn_name in _spawn_calls(snippet):
-                edges.append(_spawn_edge(group, npc_type, spawn_name, group))
+            # Registered encounter handlers are owned by an NPC/event. Their
+            # spawns are emitted by _link_event_causality with that ownership.
+            if name not in registered:
+                for npc_type, spawn_name in _spawn_calls(snippet):
+                    edges.append(_spawn_edge(group, npc_type, spawn_name, group))
             for flag, value in _all_flag_sets(snippet):
                 edges.append(
                     {
@@ -2107,6 +2111,91 @@ def _signal_body(text: str, signal: int) -> str:
     return ""
 
 
+# Encounter Lua scripts register arbitrary callback names for specific NPCs.
+# Unlike EVENT_TIMER, callback names such as Evangelist_Timer are NOT dialogue.
+_REGISTER_EVENT = re.compile(
+    r"eq\.register_npc_event\s*\(\s*['\"][^'\"]+['\"]\s*,\s*"
+    r"Event\.(\w+)\s*,\s*(\d+)\s*,\s*(\w+)\s*\)", re.I,
+)
+
+
+def _registered_npc_events(text: str) -> list[tuple[str, int, str]]:
+    return [(kind.lower(), int(npc), callback.lower())
+            for kind, npc, callback in _REGISTER_EVENT.findall(text)]
+
+
+def _callback_timer_bodies(text: str, callback: str) -> list[tuple[str, str]]:
+    """(timer name, body) for each direct conditional in an event timer callback."""
+    scope = _event_functions(text, callback)
+    if not scope:
+        return []
+    lo, hi = scope
+    result = []
+    for b in _branch_index(text):
+        if lo <= b[0] and b[3] <= hi:
+            for timer in _TIMER_IS.findall(text[b[0]:b[1]]):
+                result.append((timer, text[b[2]:b[3]]))
+    return result
+
+
+def _link_registered_encounter(graph: QuestGraph, npc_id: str, text: str) -> None:
+    """Event callback ownership, named timers and spawned-NPC lifecycle links."""
+    registrations = _registered_npc_events(text)
+    if not registrations:
+        return
+    zone = npc_id.split('/', 1)[0]
+    registered = {(kind, npc): callback for kind, npc, callback in registrations}
+
+    def trigger(source: str, target: str, **detail: object) -> None:
+        graph.edges.append({"kind": "edge", "rel": "triggers",
+                            "from": source, "to": target, **detail})
+
+    for (kind, npc), callback in registered.items():
+        scope = _event_functions(text, callback)
+        if not scope:
+            continue
+        body = text[scope[0]:scope[1]]
+        if kind == 'timer':
+            for timer, branch_body in _callback_timer_bodies(text, callback):
+                source = f'{npc_id}#timer:{timer}'
+                # Child timers are created only after this named timer fires.
+                for following in dict.fromkeys(_SET_TIMER.findall(branch_body)):
+                    trigger(source, f'{npc_id}#timer:{following}', timer=following)
+                for spawned, name in _spawn_calls(branch_body):
+                    graph.edges.append(_spawn_edge(source, spawned, name, source))
+        elif kind in {'spawn', 'death_complete', 'signal'}:
+            event = f'{npc_id}#event:{kind}:{npc}'
+            # Ignore nested conditional bodies here only if the condition is
+            # signal-specific; for spawn/death use the entire callback.
+            for timer in dict.fromkeys(_SET_TIMER.findall(body)):
+                trigger(event, f'{npc_id}#timer:{timer}', timer=timer)
+            for spawned, name in _spawn_calls(body):
+                graph.edges.append(_spawn_edge(event, spawned, name, event))
+
+    # An NPC spawned by a timer or death callback invokes its Event.spawn.
+    # A death callback is *not* automatic: killing the NPC is mandatory.
+    spawns = [row for row in graph.edges if row.get('rel') == 'spawns'
+              and str(row.get('from', '')).startswith(zone + '/')]
+    seen = set()
+    for edge in spawns:
+        npc = int(edge['npc'])
+        origin = str(edge['from'])
+        for kind in ('spawn', 'death_complete'):
+            if (kind, npc) not in registered:
+                continue
+            if kind == 'spawn':
+                target = f'{npc_id}#event:spawn:{npc}'
+                pairs = [(origin, target)]
+            else:
+                kill = f'{npc_id}#kill:{npc}'
+                target = f'{npc_id}#event:death_complete:{npc}'
+                pairs = [(origin, kill), (kill, target)]
+            for src, dst in pairs:
+                if src == dst or (src, dst) in seen:
+                    continue
+                seen.add((src, dst))
+                trigger(src, dst, npc=npc)
+
 def _link_event_causality(graph: QuestGraph, scripts: list[tuple[str, str, str]]) -> None:
     """Resolve per-zone NPC-type signals and named timers across scripts."""
     receivers: dict[tuple[str, int], tuple[str, str]] = {}
@@ -2118,6 +2207,9 @@ def _link_event_causality(graph: QuestGraph, scripts: list[tuple[str, str, str]]
     # Record each timer's spawns even if the initiating event is unresolved.
     # An orphan timer is an unresolved event dependency, not a free-world spawn.
     for _zone, npc_id, text in scripts:
+        if _registered_npc_events(text):
+            _link_registered_encounter(graph, npc_id, text)
+            continue
         for timer, spawns in _timer_spawns(text).items():
             timer_id = f"{npc_id}#timer:{timer}"
             for npc_type, name in spawns:

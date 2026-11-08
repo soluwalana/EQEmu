@@ -474,43 +474,43 @@ def write_class(name, title, mains, prefixes, ctx):
         expand_item=None,
         visiting: frozenset[str] = frozenset(),
     ) -> list[str]:
-        """Follow triggers backward from a timer to its initiating hand-in.
-
-        The graph stores `source -> event` triggers. Render prerequisites in
-        execution order; use the caller's item traversal for hand-in inputs.
-        """
+        """Explain named timers by following causal edges, including encounter lifecycle."""
         if source in visiting:
             return [f"**Broken:** cyclic event trigger at `{source}`."]
 
         incoming = [
-            edge
-            for rows in by_from.values()
-            for edge in rows
+            edge for rows in by_from.values() for edge in rows
             if edge.get("rel") == "triggers" and edge.get("to") == source
         ]
         if not incoming:
+            if "#event:spawn:" in source:
+                npc = source.rsplit(":", 1)[-1]
+                who, _, zone = parse_who(source)
+                return [f"Encounter starts when NPC {npc} spawns in `{zone}`."]
             return [f"**Broken:** no event trigger found for `{source}`."]
 
-        # More than one incoming trigger denotes alternative ways to reach an
-        # event, not a requirement to perform every trigger.
-        edge = sorted(incoming, key=lambda row: str(row.get("from", "")))[0]
+        # More than one incoming edge means alternative routes, not mandatory steps.
+        edge = sorted(incoming, key=lambda row: (
+            0 if "#event:spawn:" in str(row.get("from", "")) else 1,
+            str(row.get("from", "")),
+        ))[0]
         parent = str(edge["from"])
         active = visiting | {source}
-
-        if "#signal:" in parent or "#timer:" in parent:
-            return event_chain(parent, expand_item, active) + [
-                f"Trigger `{source}` from `{parent}`."
-            ]
+        if any(mark in parent for mark in ("#signal:", "#timer:", "#event:", "#kill:")):
+            steps = event_chain(parent, expand_item, active)
+            if "#kill:" in source:
+                steps.append(f"Kill NPC {source.rsplit(':', 1)[-1]}.")
+            elif "#timer:" in source:
+                steps.append(f"Starts timer `{source.rsplit(':', 1)[-1]}`.")
+            return steps
 
         who, action, _zone = parse_who(parent)
         steps: list[str] = []
-        requirements = handed({"from": parent, "group": parent})
-        for needed in requirements:
+        for needed in handed({"from": parent, "group": parent}):
             if expand_item is not None:
                 expand_item(needed)
             else:
                 steps.append(f"Acquire {quoted_item(items, needed)}.")
-
         description = quoted_who(who)
         if action:
             description += f", {quoted_action(items, action)}"
@@ -718,7 +718,7 @@ def write_class(name, title, mains, prefixes, ctx):
         goal: int,
         flag_trail: frozenset[str] = frozenset(),
     ) -> None:
-        if item_id in trail or item_id in seen:
+        if item_id in trail or item_id in seen or len(trail) > 12:
             return
 
         seen.add(item_id)

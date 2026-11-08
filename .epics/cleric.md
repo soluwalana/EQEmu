@@ -27,7 +27,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 15. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
 16. Say "Tm Dokorel Death" to rujd/"Rujd".
 17. Say "Tm Velrek Death" to rujd/"Rujd".
-18. Say "Researcher Death" to rujg/"Rujg".
+18. Say "Event:Death Complete:260061" to rujg/"Rujg".
 19. Spawns "A Barrel" (260015).
 20. Loot "Pod of Water" (13044) from "A Barrel".
 21. 3 other loot steps also yield Pod of Water (13044).

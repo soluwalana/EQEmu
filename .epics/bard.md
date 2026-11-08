@@ -64,17 +64,25 @@ Each list is the order you obtain that item. Later steps point here instead of r
 29. Loot "Signed Agreement" (10243) from "Galdorin Visigothe" in `abysmal`.
 30. overthere/"Inem R'Ker", hand "Signed Agreement" (10243). Sets `Fatestealer_gal` to `1`.
 31. overthere/"Inem R'Ker", hand "Signed Agreement" (10243). Sets `Fatestealer_bard` to `1`.
-32. Say "Trash Death" to hateplaneb/"Rogue 1 5".
+32. Say "Event:Death Complete:186114" to hateplaneb/"Rogue 1 5".
 33. Spawns "a Teir'Dal guardian" (186190).
 34. Loot "Stack of Pages" (52335) from "a Teir'Dal guardian".
-35. steamfont/"Yendar Starpyre", hand "Stack of Pages" (52335). Sets `Fatestealer_page` to `1`.
-36. Hand "Crystallized Shard of Doomfire" (21339) + "Igneous Rock of Doomfire" (21340) + "Pile of Doomfire Ash" (21341) + "Foul Doomfire Brimstone" (21342) to soldungc/"The Firewatcher". Spawns "Culthor the Gatekeeper" (278005). Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper".
-37. Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper" in `soldungc`.
-38. nedaria/"Smith Dandi", hand "Smoldering Embers of Solusek" (52346). Sets `Fatestealer_forge` to `1`.
-39. Say "Trash Death" to hateplaneb/"Rogue 1 5".
-40. Spawns "a Teir'Dal guardian" (186190).
-41. Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
-42. nedaria/"Lirprin, Head Of Affairs", hand "Soulstone of Lanys" (52337). Requires `Fatestealer_bard` ==1. Requires `Fatestealer_page` ==1. Requires `Fatestealer_forge` ==1. Gives "Fatestealer" (52347).
+35. Say "Event:Death Complete:186100" to hateplaneb/"Rogue 1 5".
+36. Say "Event:Death Complete:186112" to hateplaneb/"Rogue 1 5".
+37. Say "Event:Death Complete:186116" to hateplaneb/"Rogue 1 5".
+38. 2 other loot steps also yield Stack of Pages (52335).
+39. steamfont/"Yendar Starpyre", hand "Stack of Pages" (52335). Sets `Fatestealer_page` to `1`.
+40. Hand "Crystallized Shard of Doomfire" (21339) + "Igneous Rock of Doomfire" (21340) + "Pile of Doomfire Ash" (21341) + "Foul Doomfire Brimstone" (21342) to soldungc/"The Firewatcher". Spawns "Culthor the Gatekeeper" (278005). Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper".
+41. Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper" in `soldungc`.
+42. nedaria/"Smith Dandi", hand "Smoldering Embers of Solusek" (52346). Sets `Fatestealer_forge` to `1`.
+43. Say "Event:Death Complete:186114" to hateplaneb/"Rogue 1 5".
+44. Spawns "a Teir'Dal guardian" (186190).
+45. Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
+46. Say "Event:Death Complete:186100" to hateplaneb/"Rogue 1 5".
+47. Say "Event:Death Complete:186112" to hateplaneb/"Rogue 1 5".
+48. Say "Event:Death Complete:186116" to hateplaneb/"Rogue 1 5".
+49. 2 other loot steps also yield Soulstone of Lanys (52337).
+50. nedaria/"Lirprin, Head Of Affairs", hand "Soulstone of Lanys" (52337). Requires `Fatestealer_bard` ==1. Requires `Fatestealer_page` ==1. Requires `Fatestealer_forge` ==1. Gives "Fatestealer" (52347).
 
 ### "Strongbox Half Full of Velixite" (52342)
 
@@ -87,25 +95,33 @@ Each list is the order you obtain that item. Later steps point here instead of r
 7. Loot "Signed Agreement" (10243) from "Galdorin Visigothe" in `abysmal`.
 8. overthere/"Inem R'Ker", hand "Signed Agreement" (10243). Sets `Fatestealer_gal` to `1`.
 9. overthere/"Inem R'Ker", hand "Signed Agreement" (10243). Sets `Fatestealer_bard` to `1`.
-10. Say "Trash Death" to hateplaneb/"Rogue 1 5".
+10. Say "Event:Death Complete:186114" to hateplaneb/"Rogue 1 5".
 11. Spawns "a Teir'Dal guardian" (186190).
 12. Loot "Stack of Pages" (52335) from "a Teir'Dal guardian".
-13. steamfont/"Yendar Starpyre", hand "Stack of Pages" (52335). Sets `Fatestealer_page` to `1`.
-14. Hand "Crystallized Shard of Doomfire" (21339) + "Igneous Rock of Doomfire" (21340) + "Pile of Doomfire Ash" (21341) + "Foul Doomfire Brimstone" (21342) to soldungc/"The Firewatcher". Spawns "Culthor the Gatekeeper" (278005). Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper".
-15. Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper" in `soldungc`.
-16. nedaria/"Smith Dandi", hand "Smoldering Embers of Solusek" (52346). Sets `Fatestealer_forge` to `1`.
-17. Say "Trash Death" to hateplaneb/"Rogue 1 5".
-18. Spawns "a Teir'Dal guardian" (186190).
-19. Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
-20. nedaria/"Lirprin, Head Of Affairs", hand "Soulstone of Lanys" (52337). Requires `Fatestealer_bard` ==1. Requires `Fatestealer_page` ==1. Requires `Fatestealer_forge` ==1. Gives "Fatestealer" (52347).
-21. nedaria/"Lirprin, Head Of Affairs", say "Hail". Sets `Fatestealer` to `3`.
-22. Requires `rogue_epic_iceclad` unset; no setter establishes this state.
-23. iceclad/"Lookout Larithim", say "What Happened Then". Requires `Fatestealer` ==3. Requires `rogue_epic_iceclad` unset. Gives "Air-Tight Strongbox" (52339).
-24. Say "What Happened Then" to iceclad/"Lookout Larithim".
-25. Spawns "Polar Kraken" (110131).
-26. Loot "Lump of Raw Alloy" (52340) from "Polar Kraken".
-27. Combine in "Air-Tight Strongbox" (52339): "Lump of Raw Alloy" (52340). Produces "Strongbox Full of Alloy" (52341). The combine does not fail.
-28. iceclad/"Lookout Larithim", hand "Strongbox Full of Alloy" (52341). Gives "Strongbox Half Full of Velixite" (52342).
+13. Say "Event:Death Complete:186100" to hateplaneb/"Rogue 1 5".
+14. Say "Event:Death Complete:186112" to hateplaneb/"Rogue 1 5".
+15. Say "Event:Death Complete:186116" to hateplaneb/"Rogue 1 5".
+16. 2 other loot steps also yield Stack of Pages (52335).
+17. steamfont/"Yendar Starpyre", hand "Stack of Pages" (52335). Sets `Fatestealer_page` to `1`.
+18. Hand "Crystallized Shard of Doomfire" (21339) + "Igneous Rock of Doomfire" (21340) + "Pile of Doomfire Ash" (21341) + "Foul Doomfire Brimstone" (21342) to soldungc/"The Firewatcher". Spawns "Culthor the Gatekeeper" (278005). Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper".
+19. Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper" in `soldungc`.
+20. nedaria/"Smith Dandi", hand "Smoldering Embers of Solusek" (52346). Sets `Fatestealer_forge` to `1`.
+21. Say "Event:Death Complete:186114" to hateplaneb/"Rogue 1 5".
+22. Spawns "a Teir'Dal guardian" (186190).
+23. Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
+24. Say "Event:Death Complete:186100" to hateplaneb/"Rogue 1 5".
+25. Say "Event:Death Complete:186112" to hateplaneb/"Rogue 1 5".
+26. Say "Event:Death Complete:186116" to hateplaneb/"Rogue 1 5".
+27. 2 other loot steps also yield Soulstone of Lanys (52337).
+28. nedaria/"Lirprin, Head Of Affairs", hand "Soulstone of Lanys" (52337). Requires `Fatestealer_bard` ==1. Requires `Fatestealer_page` ==1. Requires `Fatestealer_forge` ==1. Gives "Fatestealer" (52347).
+29. nedaria/"Lirprin, Head Of Affairs", say "Hail". Sets `Fatestealer` to `3`.
+30. Requires `rogue_epic_iceclad` unset; no setter establishes this state.
+31. iceclad/"Lookout Larithim", say "What Happened Then". Requires `Fatestealer` ==3. Requires `rogue_epic_iceclad` unset. Gives "Air-Tight Strongbox" (52339).
+32. Say "What Happened Then" to iceclad/"Lookout Larithim".
+33. Spawns "Polar Kraken" (110131).
+34. Loot "Lump of Raw Alloy" (52340) from "Polar Kraken".
+35. Combine in "Air-Tight Strongbox" (52339): "Lump of Raw Alloy" (52340). Produces "Strongbox Full of Alloy" (52341). The combine does not fail.
+36. iceclad/"Lookout Larithim", hand "Strongbox Full of Alloy" (52341). Gives "Strongbox Half Full of Velixite" (52342).
 
 ### "Singing Short Sword" (20542)
 
@@ -163,7 +179,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 52. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
 53. Say "Tm Dokorel Death" to rujd/"Rujd".
 54. Say "Tm Velrek Death" to rujd/"Rujd".
-55. Say "Researcher Death" to rujg/"Rujg".
+55. Say "Event:Death Complete:260061" to rujg/"Rujg".
 56. Spawns "A Barrel" (260015).
 57. Loot "Pod of Water" (13044) from "A Barrel".
 58. 3 other loot steps also yield Pod of Water (13044).
@@ -253,7 +269,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Draconic Prism" (77628)
 
-1. Say "Malignantdeath" to kithicor/"Cloaked".
+1. Say "Event:Death Complete:20291" to kithicor/"Cloaked".
 2. Spawns "A Shadow Thief" (20292).
 3. Loot "Crest of Rizlona" (77626) from "A Shadow Thief".
 4. No quest step gives Dragorn Blood (77639). The dump lists it in causeway, wallofslaughter.
@@ -485,9 +501,19 @@ In script order:
 How the items are reached:
 
 - Soulstone of Lanys (52337)
-  - Say "Trash Death" to hateplaneb/"Rogue 1 5".
+  - Say "Event:Death Complete:186114" to hateplaneb/"Rogue 1 5".
   - Spawns "a Teir'Dal guardian" (186190).
   - Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
+  - Say "Event:Death Complete:186100" to hateplaneb/"Rogue 1 5".
+  - Spawns "a Teir'Dal guardian" (186190).
+  - Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
+  - Say "Event:Death Complete:186112" to hateplaneb/"Rogue 1 5".
+  - Spawns "a Teir'Dal guardian" (186190).
+  - Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
+  - Say "Event:Death Complete:186116" to hateplaneb/"Rogue 1 5".
+  - Spawns "a Teir'Dal guardian" (186190).
+  - Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
+  - 2 other loot steps also yield Soulstone of Lanys (52337).
   - Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
 
 This step also depends on `Fatestealer_bard`, shown above.
@@ -513,9 +539,19 @@ In script order:
 How the items are reached:
 
 - Stack of Pages (52335)
-  - Say "Trash Death" to hateplaneb/"Rogue 1 5".
+  - Say "Event:Death Complete:186114" to hateplaneb/"Rogue 1 5".
   - Spawns "a Teir'Dal guardian" (186190).
   - Loot "Stack of Pages" (52335) from "a Teir'Dal guardian".
+  - Say "Event:Death Complete:186100" to hateplaneb/"Rogue 1 5".
+  - Spawns "a Teir'Dal guardian" (186190).
+  - Loot "Stack of Pages" (52335) from "a Teir'Dal guardian".
+  - Say "Event:Death Complete:186112" to hateplaneb/"Rogue 1 5".
+  - Spawns "a Teir'Dal guardian" (186190).
+  - Loot "Stack of Pages" (52335) from "a Teir'Dal guardian".
+  - Say "Event:Death Complete:186116" to hateplaneb/"Rogue 1 5".
+  - Spawns "a Teir'Dal guardian" (186190).
+  - Loot "Stack of Pages" (52335) from "a Teir'Dal guardian".
+  - 2 other loot steps also yield Stack of Pages (52335).
   - Loot "Stack of Pages" (52335) from "a Teir'Dal guardian".
 
 ###### Steps on `Fatestealer_page` that do not change it
@@ -1237,7 +1273,7 @@ In script order:
 How the items are reached:
 
 - Dark Orb (77613)
-  - Say "Vesthdeath" to necropolis/"Vesthon".
+  - Say "Event:Death Complete:123173" to necropolis/"Vesthon".
   - Spawns "Needs Heading Validation" (123189).
   - Loot "Dark Orb" (77613) from "Needs Heading Validation".
   - Loot "Dark Orb" (77613) from "The Dracoliche of Hsagra".

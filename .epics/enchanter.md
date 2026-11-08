@@ -320,128 +320,100 @@ Each list is the order you obtain that item. Later steps point here instead of r
 72. Loot "3rd Piece of the Staff" (54299) from "Ukun Bloodbeast" in `vxed`.
 73. Loot "3rd Piece of the Staff" (54299) from "Umbiki" in `vxed`.
 74. Loot "3rd Piece of the Staff" (54299) from "misguided beludu Creque" in `vxed`.
-75. Say "War Timer" to bloodfields/"War".
-76. Spawns "War Caller Kaavi" (301042).
+75. **Broken:** no event trigger found for `bloodfields/war#timer:reset`.
+76. Spawns "War Caller Kaavi" (301042) after `bloodfields/war#timer:reset`.
 77. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi".
-78. **Broken:** no event trigger found for `bloodfields/war#timer:reset`.
-79. Spawns "War Caller Kaavi" (301042) after `bloodfields/war#timer:reset`.
-80. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi" in `bloodfields`.
-81. Loot "Ornate Staff Topper" (52961) from "Faleniel of Darkwater" in `sirens`.
-82. Loot "All-Seeing Eye" (54293) from "All-Seeing Eye" in `mischiefplane`.
-83. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
-84. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
-85. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-86. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-87. 67 other recipes also produce Celestial Essence (9650).
-88. Common item: Jar of Acid (22133). Listed in 15 zones.
-89. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
-90. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
-91. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-92. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
-93. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-94. Common item: Firing Sheet (16906). Listed in 34 zones.
-95. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-96. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-97. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-98. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-99. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-100. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-101. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-102. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-103. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-104. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-105. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-106. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-107. Say "Tm Devrak Death" to rujd/"Rujd".
-108. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-109. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-110. Say "Tm Dokorel Death" to rujd/"Rujd".
-111. Say "Tm Velrek Death" to rujd/"Rujd".
-112. Say "Researcher Death" to rujg/"Rujg".
-113. Spawns "A Barrel" (260015).
-114. Loot "Pod of Water" (13044) from "A Barrel".
-115. 3 other loot steps also yield Pod of Water (13044).
-116. Forage "Pod of Water" (13044) in `ruja`.
-117. Forage "Pod of Water" (13044) in `uqua`.
-118. Forage "Pod of Water" (13044) in `yxtta`.
-119. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-120. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-121. 17 other recipes also produce Bottle (16598).
-122. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-123. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-124. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-125. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-126. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-127. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-128. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-129. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-130. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-131. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-132. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-133. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-134. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-135. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-136. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-137. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-138. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-139. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-140. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-141. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-142. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-143. Forage "Dragon Egg" (19139) in `templeveeshan`.
-144. Forage "Dragon Egg" (19139) in `westwastes`.
-145. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Dragon Egg" (19139). Produces "Dragon Egg Oil" (9664). Requires Brewing, trivial 150.
-146. Loot "Glimmering Oil" (52942) from "A Greasy Clockwork" in `poinnovation`.
-147. bazaar/"Caerlyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
-148. crescent/"Realnyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
-149. bazaar/"Caerlyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
-150. crescent/"Realnyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
-151. No quest step gives Coalesced Mana (97042). The dump lists it in arcstone, relic, skylance.
-152. Combine in Pottery Wheel (21): "Water Flask" (13006), "White Wolf Skin" (13768), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
-153. Combine in Pottery Wheel (21): "Water Flask" (13006), "Crow's Special Brew" (13799), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
-154. 19 other recipes also produce Unfired Poison Vial (16885).
-155. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
-156. Combine in Kiln (22): "Unfired Poison Vial" (16885), "High Quality Firing Sheet" (16908). Produces "Poison Vial" (16965). Requires Pottery, trivial 17.
-157. Kill broodlands/"Brood Drone". Spawns "The Broodqueen" (337254).
-158. Loot "Ruby" (10035) from "The Broodqueen".
-159. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
-160. Loot "Ruby" (10035) from "A parasitic murkglider".
-161. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
-162. Loot "Ruby" (10035) from "a Reanimated Berserker".
-163. Kill delvea/"A Drake Egg". Spawns "a Delve spellbinder" (341091).
-164. Loot "Ruby" (10035) from "a Delve spellbinder".
-165. 116 other loot steps also yield Ruby (10035).
-166. Combine in "Spell Research Kit" (93492): "Celestial Essence" (9650), "Coalesced Mana" (97042), "Poison Vial" (16965), "Ruby" (10035). Produces "Vial of Purified Mana" (10254). Requires Research, trivial 200.
-167. Forage "Glow Lichen" (14925) in `nektulos`.
-168. Common item: Essence of Sunlight (22527). Listed in 8 zones.
-169. Ground spawn of "Abysmal Moonwater" (54298) in `abysmal`.
-170. Combine in Brew Barrel (19): "Vial of Purified Mana" (10254), "Glow Lichen" (14925), "Essence of Sunlight" (22527), "Abysmal Moonwater" (54298). Produces "Glowing Concoction" (52943). Requires Brewing, trivial 116.
-171. Common item: Medicine Bag (17901). Listed in 33 zones.
-172. Common item: Glaze Lacquer (29355). Listed in 5 zones.
-173. No quest step gives Prism Shard (65469). The dump lists it in crescent, gunthak, poknowledge.
-174. Combine in "Medicine Bag" (17901): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Alchemy, trivial 54.
-175. Combine in "Portable Drink Barrel" (17179): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Brewing, trivial 54.
-176. Combine in Brew Barrel (19): "Dragon Egg Oil" (9664), "Glimmering Oil" (52942), "Glowing Concoction" (52943), "Prismatic Dye" (65472). Produces "Incandescent Oil" (57924). Requires Brewing, trivial 116. The combine does not fail.
-177. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
-178. burningwood/"A Sarnak Imitator", say "Prepared". Requires `ench_epic` set. Requires `ench_epic` >=1. Gives "Tattered Illegible Tome" (57918).
-179. Ground spawn of "Cryptic Page" (52933) in `charasis`.
-180. Ground spawn of "Cryptic Page" (52934) in `sebilis`.
-181. Ground spawn of "Cryptic Page" (52935) in `cazicthule`.
-182. Ground spawn of "Cryptic Page" (52936) in `crystal`.
-183. Ground spawn of "Cryptic Page" (52937) in `skyshrine`.
-184. Ground spawn of "Cryptic Page" (52938) in `velketor`.
-185. Ground spawn of "Cryptic Page" (52939) in `nadox`.
-186. Ground spawn of "Cryptic Page" (54308) in `najena`.
-187. Ground spawn of "Cryptic Page" (57916) in `fungusgrove`.
-188. Ground spawn of "Cryptic Page" (57923) in `oot`.
-189. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). The combine does not fail.
-190. burningwood/"A Sarnak Imitator", hand "Complete Illegible Tome" (54267). Sets `ench_epic` to `2`.
-191. poknowledge/"Grand Librarian Maelin", say "Jeb Lumsed Sent Me". Requires `ench_epic` ==2. Gives "Note to Lobaen" (52950).
-192. poknowledge/"Illusionist Lobaen", hand "Note to Lobaen" (52950). Gives "Sealed Documents" (52959).
-193. burningwood/"A Sarnak Imitator", hand "Sealed Documents" (52959). Gives "Assembling the Staff" (54286).
-194. Loot "Sullied Gold Filigree" (52963) from "An Enticing Potameid" in `natimbi`.
-195. hohonora/"Anthone Chapin", hand "Sullied Gold Filigree" (52963). Gives "Purified Gold Filigree" (52953).
-196. Combine in "Ornate Staff Chest" (52960): "1st Piece of the Staff" (54289), "2nd Piece of the Staff" (54310), "3rd Piece of the Staff" (54299), "4th Piece of the Staff" (54284), "Ornate Staff Topper" (52961), "All-Seeing Eye" (54293), "Incandescent Oil" (57924), "Purified Gold Filigree" (52953). Produces "Latched Ornate Chest" (52966). The combine does not fail.
+78. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi" in `bloodfields`.
+79. Loot "Ornate Staff Topper" (52961) from "Faleniel of Darkwater" in `sirens`.
+80. Loot "All-Seeing Eye" (54293) from "All-Seeing Eye" in `mischiefplane`.
+81. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
+82. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
+83. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+84. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+85. 67 other recipes also produce Celestial Essence (9650).
+86. Common item: Jar of Acid (22133). Listed in 15 zones.
+87. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
+88. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
+89. Common item: Mortar and Pestle (17904). Listed in 12 zones.
+90. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
+91. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
+92. Common item: Firing Sheet (16906). Listed in 34 zones.
+93. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
+94. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
+95. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+96. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
+97. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+98. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
+99. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
+100. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
+101. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+102. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
+103. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
+104. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
+105. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
+106. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
+107. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
+108. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
+109. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
+110. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
+111. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+112. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+113. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+114. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
+115. Forage "Dragon Egg" (19139) in `templeveeshan`.
+116. Forage "Dragon Egg" (19139) in `westwastes`.
+117. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Dragon Egg" (19139). Produces "Dragon Egg Oil" (9664). Requires Brewing, trivial 150.
+118. Loot "Glimmering Oil" (52942) from "A Greasy Clockwork" in `poinnovation`.
+119. bazaar/"Caerlyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
+120. crescent/"Realnyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
+121. bazaar/"Caerlyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
+122. crescent/"Realnyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
+123. No quest step gives Coalesced Mana (97042). The dump lists it in arcstone, relic, skylance.
+124. Combine in Pottery Wheel (21): "Water Flask" (13006), "White Wolf Skin" (13768), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
+125. Combine in Pottery Wheel (21): "Water Flask" (13006), "Crow's Special Brew" (13799), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
+126. 19 other recipes also produce Unfired Poison Vial (16885).
+127. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
+128. Combine in Kiln (22): "Unfired Poison Vial" (16885), "High Quality Firing Sheet" (16908). Produces "Poison Vial" (16965). Requires Pottery, trivial 17.
+129. Kill broodlands/"Brood Drone". Spawns "The Broodqueen" (337254).
+130. Loot "Ruby" (10035) from "The Broodqueen".
+131. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
+132. Loot "Ruby" (10035) from "A parasitic murkglider".
+133. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
+134. Loot "Ruby" (10035) from "a Reanimated Berserker".
+135. Kill delvea/"A Drake Egg". Spawns "a Delve spellbinder" (341091).
+136. Loot "Ruby" (10035) from "a Delve spellbinder".
+137. 104 other loot steps also yield Ruby (10035).
+138. Combine in "Spell Research Kit" (93492): "Celestial Essence" (9650), "Coalesced Mana" (97042), "Poison Vial" (16965), "Ruby" (10035). Produces "Vial of Purified Mana" (10254). Requires Research, trivial 200.
+139. Forage "Glow Lichen" (14925) in `nektulos`.
+140. Common item: Essence of Sunlight (22527). Listed in 8 zones.
+141. Ground spawn of "Abysmal Moonwater" (54298) in `abysmal`.
+142. Combine in Brew Barrel (19): "Vial of Purified Mana" (10254), "Glow Lichen" (14925), "Essence of Sunlight" (22527), "Abysmal Moonwater" (54298). Produces "Glowing Concoction" (52943). Requires Brewing, trivial 116.
+143. Common item: Medicine Bag (17901). Listed in 33 zones.
+144. Common item: Glaze Lacquer (29355). Listed in 5 zones.
+145. No quest step gives Prism Shard (65469). The dump lists it in crescent, gunthak, poknowledge.
+146. Combine in "Medicine Bag" (17901): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Alchemy, trivial 54.
+147. Combine in "Portable Drink Barrel" (17179): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Brewing, trivial 54.
+148. Combine in Brew Barrel (19): "Dragon Egg Oil" (9664), "Glimmering Oil" (52942), "Glowing Concoction" (52943), "Prismatic Dye" (65472). Produces "Incandescent Oil" (57924). Requires Brewing, trivial 116. The combine does not fail.
+149. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
+150. burningwood/"A Sarnak Imitator", say "Prepared". Requires `ench_epic` set. Requires `ench_epic` >=1. Gives "Tattered Illegible Tome" (57918).
+151. Ground spawn of "Cryptic Page" (52933) in `charasis`.
+152. Ground spawn of "Cryptic Page" (52934) in `sebilis`.
+153. Ground spawn of "Cryptic Page" (52935) in `cazicthule`.
+154. Ground spawn of "Cryptic Page" (52936) in `crystal`.
+155. Ground spawn of "Cryptic Page" (52937) in `skyshrine`.
+156. Ground spawn of "Cryptic Page" (52938) in `velketor`.
+157. Ground spawn of "Cryptic Page" (52939) in `nadox`.
+158. Ground spawn of "Cryptic Page" (54308) in `najena`.
+159. Ground spawn of "Cryptic Page" (57916) in `fungusgrove`.
+160. Ground spawn of "Cryptic Page" (57923) in `oot`.
+161. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). The combine does not fail.
+162. burningwood/"A Sarnak Imitator", hand "Complete Illegible Tome" (54267). Sets `ench_epic` to `2`.
+163. poknowledge/"Grand Librarian Maelin", say "Jeb Lumsed Sent Me". Requires `ench_epic` ==2. Gives "Note to Lobaen" (52950).
+164. poknowledge/"Illusionist Lobaen", hand "Note to Lobaen" (52950). Gives "Sealed Documents" (52959).
+165. burningwood/"A Sarnak Imitator", hand "Sealed Documents" (52959). Gives "Assembling the Staff" (54286).
+166. Loot "Sullied Gold Filigree" (52963) from "An Enticing Potameid" in `natimbi`.
+167. hohonora/"Anthone Chapin", hand "Sullied Gold Filigree" (52963). Gives "Purified Gold Filigree" (52953).
+168. Combine in "Ornate Staff Chest" (52960): "1st Piece of the Staff" (54289), "2nd Piece of the Staff" (54310), "3rd Piece of the Staff" (54299), "4th Piece of the Staff" (54284), "Ornate Staff Topper" (52961), "All-Seeing Eye" (54293), "Incandescent Oil" (57924), "Purified Gold Filigree" (52953). Produces "Latched Ornate Chest" (52966). The combine does not fail.
 
 ### "Oculus of Persuasion" (52952)
 
@@ -519,129 +491,99 @@ Each list is the order you obtain that item. Later steps point here instead of r
 72. Loot "3rd Piece of the Staff" (54299) from "Ukun Bloodbeast" in `vxed`.
 73. Loot "3rd Piece of the Staff" (54299) from "Umbiki" in `vxed`.
 74. Loot "3rd Piece of the Staff" (54299) from "misguided beludu Creque" in `vxed`.
-75. Say "War Timer" to bloodfields/"War".
-76. Spawns "War Caller Kaavi" (301042).
+75. **Broken:** no event trigger found for `bloodfields/war#timer:reset`.
+76. Spawns "War Caller Kaavi" (301042) after `bloodfields/war#timer:reset`.
 77. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi".
-78. **Broken:** no event trigger found for `bloodfields/war#timer:reset`.
-79. Spawns "War Caller Kaavi" (301042) after `bloodfields/war#timer:reset`.
-80. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi" in `bloodfields`.
-81. Loot "Ornate Staff Topper" (52961) from "Faleniel of Darkwater" in `sirens`.
-82. Loot "All-Seeing Eye" (54293) from "All-Seeing Eye" in `mischiefplane`.
-83. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
-84. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
-85. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-86. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-87. 67 other recipes also produce Celestial Essence (9650).
-88. Common item: Jar of Acid (22133). Listed in 15 zones.
-89. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
-90. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
-91. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-92. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
-93. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-94. Common item: Firing Sheet (16906). Listed in 34 zones.
-95. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-96. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-97. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-98. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-99. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-100. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-101. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-102. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-103. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-104. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-105. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-106. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-107. Say "Tm Devrak Death" to rujd/"Rujd".
-108. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-109. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-110. Say "Tm Dokorel Death" to rujd/"Rujd".
-111. Say "Tm Velrek Death" to rujd/"Rujd".
-112. Say "Researcher Death" to rujg/"Rujg".
-113. Spawns "A Barrel" (260015).
-114. Loot "Pod of Water" (13044) from "A Barrel".
-115. 3 other loot steps also yield Pod of Water (13044).
-116. Forage "Pod of Water" (13044) in `ruja`.
-117. Forage "Pod of Water" (13044) in `uqua`.
-118. Forage "Pod of Water" (13044) in `yxtta`.
-119. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-120. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-121. 17 other recipes also produce Bottle (16598).
-122. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-123. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-124. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-125. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-126. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-127. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-128. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-129. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-130. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-131. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-132. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-133. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-134. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-135. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-136. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-137. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-138. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-139. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-140. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-141. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-142. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-143. Forage "Dragon Egg" (19139) in `templeveeshan`.
-144. Forage "Dragon Egg" (19139) in `westwastes`.
-145. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Dragon Egg" (19139). Produces "Dragon Egg Oil" (9664). Requires Brewing, trivial 150.
-146. Loot "Glimmering Oil" (52942) from "A Greasy Clockwork" in `poinnovation`.
-147. bazaar/"Caerlyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
-148. crescent/"Realnyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
-149. bazaar/"Caerlyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
-150. crescent/"Realnyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
-151. No quest step gives Coalesced Mana (97042). The dump lists it in arcstone, relic, skylance.
-152. Combine in Pottery Wheel (21): "Water Flask" (13006), "White Wolf Skin" (13768), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
-153. Combine in Pottery Wheel (21): "Water Flask" (13006), "Crow's Special Brew" (13799), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
-154. 19 other recipes also produce Unfired Poison Vial (16885).
-155. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
-156. Combine in Kiln (22): "Unfired Poison Vial" (16885), "High Quality Firing Sheet" (16908). Produces "Poison Vial" (16965). Requires Pottery, trivial 17.
-157. Kill broodlands/"Brood Drone". Spawns "The Broodqueen" (337254).
-158. Loot "Ruby" (10035) from "The Broodqueen".
-159. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
-160. Loot "Ruby" (10035) from "A parasitic murkglider".
-161. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
-162. Loot "Ruby" (10035) from "a Reanimated Berserker".
-163. Kill delvea/"A Drake Egg". Spawns "a Delve spellbinder" (341091).
-164. Loot "Ruby" (10035) from "a Delve spellbinder".
-165. 116 other loot steps also yield Ruby (10035).
-166. Combine in "Spell Research Kit" (93492): "Celestial Essence" (9650), "Coalesced Mana" (97042), "Poison Vial" (16965), "Ruby" (10035). Produces "Vial of Purified Mana" (10254). Requires Research, trivial 200.
-167. Forage "Glow Lichen" (14925) in `nektulos`.
-168. Common item: Essence of Sunlight (22527). Listed in 8 zones.
-169. Ground spawn of "Abysmal Moonwater" (54298) in `abysmal`.
-170. Combine in Brew Barrel (19): "Vial of Purified Mana" (10254), "Glow Lichen" (14925), "Essence of Sunlight" (22527), "Abysmal Moonwater" (54298). Produces "Glowing Concoction" (52943). Requires Brewing, trivial 116.
-171. Common item: Medicine Bag (17901). Listed in 33 zones.
-172. Common item: Glaze Lacquer (29355). Listed in 5 zones.
-173. No quest step gives Prism Shard (65469). The dump lists it in crescent, gunthak, poknowledge.
-174. Combine in "Medicine Bag" (17901): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Alchemy, trivial 54.
-175. Combine in "Portable Drink Barrel" (17179): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Brewing, trivial 54.
-176. Combine in Brew Barrel (19): "Dragon Egg Oil" (9664), "Glimmering Oil" (52942), "Glowing Concoction" (52943), "Prismatic Dye" (65472). Produces "Incandescent Oil" (57924). Requires Brewing, trivial 116. The combine does not fail.
-177. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
-178. burningwood/"A Sarnak Imitator", say "Prepared". Requires `ench_epic` set. Requires `ench_epic` >=1. Gives "Tattered Illegible Tome" (57918).
-179. Ground spawn of "Cryptic Page" (52933) in `charasis`.
-180. Ground spawn of "Cryptic Page" (52934) in `sebilis`.
-181. Ground spawn of "Cryptic Page" (52935) in `cazicthule`.
-182. Ground spawn of "Cryptic Page" (52936) in `crystal`.
-183. Ground spawn of "Cryptic Page" (52937) in `skyshrine`.
-184. Ground spawn of "Cryptic Page" (52938) in `velketor`.
-185. Ground spawn of "Cryptic Page" (52939) in `nadox`.
-186. Ground spawn of "Cryptic Page" (54308) in `najena`.
-187. Ground spawn of "Cryptic Page" (57916) in `fungusgrove`.
-188. Ground spawn of "Cryptic Page" (57923) in `oot`.
-189. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). The combine does not fail.
-190. burningwood/"A Sarnak Imitator", hand "Complete Illegible Tome" (54267). Sets `ench_epic` to `2`.
-191. poknowledge/"Grand Librarian Maelin", say "Jeb Lumsed Sent Me". Requires `ench_epic` ==2. Gives "Note to Lobaen" (52950).
-192. poknowledge/"Illusionist Lobaen", hand "Note to Lobaen" (52950). Gives "Sealed Documents" (52959).
-193. burningwood/"A Sarnak Imitator", hand "Sealed Documents" (52959). Gives "Assembling the Staff" (54286).
-194. Loot "Sullied Gold Filigree" (52963) from "An Enticing Potameid" in `natimbi`.
-195. hohonora/"Anthone Chapin", hand "Sullied Gold Filigree" (52963). Gives "Purified Gold Filigree" (52953).
-196. Combine in "Ornate Staff Chest" (52960): "1st Piece of the Staff" (54289), "2nd Piece of the Staff" (54310), "3rd Piece of the Staff" (54299), "4th Piece of the Staff" (54284), "Ornate Staff Topper" (52961), "All-Seeing Eye" (54293), "Incandescent Oil" (57924), "Purified Gold Filigree" (52953). Produces "Latched Ornate Chest" (52966). The combine does not fail.
-197. burningwood/"A Sarnak Imitator", hand "Latched Ornate Chest" (52966). Gives "Oculus of Persuasion" (52952).
+78. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi" in `bloodfields`.
+79. Loot "Ornate Staff Topper" (52961) from "Faleniel of Darkwater" in `sirens`.
+80. Loot "All-Seeing Eye" (54293) from "All-Seeing Eye" in `mischiefplane`.
+81. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
+82. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
+83. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+84. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+85. 67 other recipes also produce Celestial Essence (9650).
+86. Common item: Jar of Acid (22133). Listed in 15 zones.
+87. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
+88. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
+89. Common item: Mortar and Pestle (17904). Listed in 12 zones.
+90. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
+91. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
+92. Common item: Firing Sheet (16906). Listed in 34 zones.
+93. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
+94. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+95. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
+96. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+97. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
+98. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
+99. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+100. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
+101. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
+102. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
+103. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
+104. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
+105. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
+106. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
+107. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
+108. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
+109. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+110. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+111. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+112. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
+113. Forage "Dragon Egg" (19139) in `templeveeshan`.
+114. Forage "Dragon Egg" (19139) in `westwastes`.
+115. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Dragon Egg" (19139). Produces "Dragon Egg Oil" (9664). Requires Brewing, trivial 150.
+116. Loot "Glimmering Oil" (52942) from "A Greasy Clockwork" in `poinnovation`.
+117. bazaar/"Caerlyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
+118. crescent/"Realnyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
+119. bazaar/"Caerlyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
+120. crescent/"Realnyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
+121. No quest step gives Coalesced Mana (97042). The dump lists it in arcstone, relic, skylance.
+122. Combine in Pottery Wheel (21): "Water Flask" (13006), "White Wolf Skin" (13768), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
+123. Combine in Pottery Wheel (21): "Water Flask" (13006), "Crow's Special Brew" (13799), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
+124. 19 other recipes also produce Unfired Poison Vial (16885).
+125. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
+126. Combine in Kiln (22): "Unfired Poison Vial" (16885), "High Quality Firing Sheet" (16908). Produces "Poison Vial" (16965). Requires Pottery, trivial 17.
+127. Kill broodlands/"Brood Drone". Spawns "The Broodqueen" (337254).
+128. Loot "Ruby" (10035) from "The Broodqueen".
+129. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
+130. Loot "Ruby" (10035) from "A parasitic murkglider".
+131. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
+132. Loot "Ruby" (10035) from "a Reanimated Berserker".
+133. Kill delvea/"A Drake Egg". Spawns "a Delve spellbinder" (341091).
+134. Loot "Ruby" (10035) from "a Delve spellbinder".
+135. 104 other loot steps also yield Ruby (10035).
+136. Combine in "Spell Research Kit" (93492): "Celestial Essence" (9650), "Coalesced Mana" (97042), "Poison Vial" (16965), "Ruby" (10035). Produces "Vial of Purified Mana" (10254). Requires Research, trivial 200.
+137. Forage "Glow Lichen" (14925) in `nektulos`.
+138. Common item: Essence of Sunlight (22527). Listed in 8 zones.
+139. Ground spawn of "Abysmal Moonwater" (54298) in `abysmal`.
+140. Combine in Brew Barrel (19): "Vial of Purified Mana" (10254), "Glow Lichen" (14925), "Essence of Sunlight" (22527), "Abysmal Moonwater" (54298). Produces "Glowing Concoction" (52943). Requires Brewing, trivial 116.
+141. Common item: Medicine Bag (17901). Listed in 33 zones.
+142. Common item: Glaze Lacquer (29355). Listed in 5 zones.
+143. No quest step gives Prism Shard (65469). The dump lists it in crescent, gunthak, poknowledge.
+144. Combine in "Medicine Bag" (17901): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Alchemy, trivial 54.
+145. Combine in "Portable Drink Barrel" (17179): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Brewing, trivial 54.
+146. Combine in Brew Barrel (19): "Dragon Egg Oil" (9664), "Glimmering Oil" (52942), "Glowing Concoction" (52943), "Prismatic Dye" (65472). Produces "Incandescent Oil" (57924). Requires Brewing, trivial 116. The combine does not fail.
+147. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
+148. burningwood/"A Sarnak Imitator", say "Prepared". Requires `ench_epic` set. Requires `ench_epic` >=1. Gives "Tattered Illegible Tome" (57918).
+149. Ground spawn of "Cryptic Page" (52933) in `charasis`.
+150. Ground spawn of "Cryptic Page" (52934) in `sebilis`.
+151. Ground spawn of "Cryptic Page" (52935) in `cazicthule`.
+152. Ground spawn of "Cryptic Page" (52936) in `crystal`.
+153. Ground spawn of "Cryptic Page" (52937) in `skyshrine`.
+154. Ground spawn of "Cryptic Page" (52938) in `velketor`.
+155. Ground spawn of "Cryptic Page" (52939) in `nadox`.
+156. Ground spawn of "Cryptic Page" (54308) in `najena`.
+157. Ground spawn of "Cryptic Page" (57916) in `fungusgrove`.
+158. Ground spawn of "Cryptic Page" (57923) in `oot`.
+159. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). The combine does not fail.
+160. burningwood/"A Sarnak Imitator", hand "Complete Illegible Tome" (54267). Sets `ench_epic` to `2`.
+161. poknowledge/"Grand Librarian Maelin", say "Jeb Lumsed Sent Me". Requires `ench_epic` ==2. Gives "Note to Lobaen" (52950).
+162. poknowledge/"Illusionist Lobaen", hand "Note to Lobaen" (52950). Gives "Sealed Documents" (52959).
+163. burningwood/"A Sarnak Imitator", hand "Sealed Documents" (52959). Gives "Assembling the Staff" (54286).
+164. Loot "Sullied Gold Filigree" (52963) from "An Enticing Potameid" in `natimbi`.
+165. hohonora/"Anthone Chapin", hand "Sullied Gold Filigree" (52963). Gives "Purified Gold Filigree" (52953).
+166. Combine in "Ornate Staff Chest" (52960): "1st Piece of the Staff" (54289), "2nd Piece of the Staff" (54310), "3rd Piece of the Staff" (54299), "4th Piece of the Staff" (54284), "Ornate Staff Topper" (52961), "All-Seeing Eye" (54293), "Incandescent Oil" (57924), "Purified Gold Filigree" (52953). Produces "Latched Ornate Chest" (52966). The combine does not fail.
+167. burningwood/"A Sarnak Imitator", hand "Latched Ornate Chest" (52966). Gives "Oculus of Persuasion" (52952).
 
 ### "Purifying Crystal" (52954)
 
@@ -720,145 +662,136 @@ Each list is the order you obtain that item. Later steps point here instead of r
 73. Loot "3rd Piece of the Staff" (54299) from "Ukun Bloodbeast" in `vxed`.
 74. Loot "3rd Piece of the Staff" (54299) from "Umbiki" in `vxed`.
 75. Loot "3rd Piece of the Staff" (54299) from "misguided beludu Creque" in `vxed`.
-76. Say "War Timer" to bloodfields/"War".
-77. Spawns "War Caller Kaavi" (301042).
+76. **Broken:** no event trigger found for `bloodfields/war#timer:reset`.
+77. Spawns "War Caller Kaavi" (301042) after `bloodfields/war#timer:reset`.
 78. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi".
-79. **Broken:** no event trigger found for `bloodfields/war#timer:reset`.
-80. Spawns "War Caller Kaavi" (301042) after `bloodfields/war#timer:reset`.
-81. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi" in `bloodfields`.
-82. Loot "Ornate Staff Topper" (52961) from "Faleniel of Darkwater" in `sirens`.
-83. Loot "All-Seeing Eye" (54293) from "All-Seeing Eye" in `mischiefplane`.
-84. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
-85. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
-86. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-87. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-88. 67 other recipes also produce Celestial Essence (9650).
-89. Common item: Jar of Acid (22133). Listed in 15 zones.
-90. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
-91. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
-92. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-93. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
-94. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-95. Common item: Firing Sheet (16906). Listed in 34 zones.
-96. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-97. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-98. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-99. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-100. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-101. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-102. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-103. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-104. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-105. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-106. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-107. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-108. Say "Tm Devrak Death" to rujd/"Rujd".
-109. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-110. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-111. Say "Tm Dokorel Death" to rujd/"Rujd".
-112. Say "Tm Velrek Death" to rujd/"Rujd".
-113. Say "Researcher Death" to rujg/"Rujg".
-114. Spawns "A Barrel" (260015).
-115. Loot "Pod of Water" (13044) from "A Barrel".
-116. 3 other loot steps also yield Pod of Water (13044).
-117. Forage "Pod of Water" (13044) in `ruja`.
-118. Forage "Pod of Water" (13044) in `uqua`.
-119. Forage "Pod of Water" (13044) in `yxtta`.
-120. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-121. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-122. 17 other recipes also produce Bottle (16598).
-123. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-124. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-125. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-126. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-127. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-128. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-129. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-130. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-131. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-132. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-133. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-134. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-135. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-136. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-137. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-138. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-139. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-140. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-141. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-142. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-143. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-144. Forage "Dragon Egg" (19139) in `templeveeshan`.
-145. Forage "Dragon Egg" (19139) in `westwastes`.
-146. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Dragon Egg" (19139). Produces "Dragon Egg Oil" (9664). Requires Brewing, trivial 150.
-147. Loot "Glimmering Oil" (52942) from "A Greasy Clockwork" in `poinnovation`.
-148. bazaar/"Caerlyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
-149. crescent/"Realnyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
-150. bazaar/"Caerlyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
-151. crescent/"Realnyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
-152. No quest step gives Coalesced Mana (97042). The dump lists it in arcstone, relic, skylance.
-153. Combine in Pottery Wheel (21): "Water Flask" (13006), "White Wolf Skin" (13768), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
-154. Combine in Pottery Wheel (21): "Water Flask" (13006), "Crow's Special Brew" (13799), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
-155. 19 other recipes also produce Unfired Poison Vial (16885).
-156. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
-157. Combine in Kiln (22): "Unfired Poison Vial" (16885), "High Quality Firing Sheet" (16908). Produces "Poison Vial" (16965). Requires Pottery, trivial 17.
-158. Kill broodlands/"Brood Drone". Spawns "The Broodqueen" (337254).
-159. Loot "Ruby" (10035) from "The Broodqueen".
-160. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
-161. Loot "Ruby" (10035) from "A parasitic murkglider".
-162. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
-163. Loot "Ruby" (10035) from "a Reanimated Berserker".
-164. Kill delvea/"A Drake Egg". Spawns "a Delve spellbinder" (341091).
-165. Loot "Ruby" (10035) from "a Delve spellbinder".
-166. 116 other loot steps also yield Ruby (10035).
-167. Combine in "Spell Research Kit" (93492): "Celestial Essence" (9650), "Coalesced Mana" (97042), "Poison Vial" (16965), "Ruby" (10035). Produces "Vial of Purified Mana" (10254). Requires Research, trivial 200.
-168. Forage "Glow Lichen" (14925) in `nektulos`.
-169. Common item: Essence of Sunlight (22527). Listed in 8 zones.
-170. Ground spawn of "Abysmal Moonwater" (54298) in `abysmal`.
-171. Combine in Brew Barrel (19): "Vial of Purified Mana" (10254), "Glow Lichen" (14925), "Essence of Sunlight" (22527), "Abysmal Moonwater" (54298). Produces "Glowing Concoction" (52943). Requires Brewing, trivial 116.
-172. Common item: Medicine Bag (17901). Listed in 33 zones.
-173. Common item: Glaze Lacquer (29355). Listed in 5 zones.
-174. No quest step gives Prism Shard (65469). The dump lists it in crescent, gunthak, poknowledge.
-175. Combine in "Medicine Bag" (17901): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Alchemy, trivial 54.
-176. Combine in "Portable Drink Barrel" (17179): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Brewing, trivial 54.
-177. Combine in Brew Barrel (19): "Dragon Egg Oil" (9664), "Glimmering Oil" (52942), "Glowing Concoction" (52943), "Prismatic Dye" (65472). Produces "Incandescent Oil" (57924). Requires Brewing, trivial 116. The combine does not fail.
-178. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
-179. burningwood/"A Sarnak Imitator", say "Prepared". Requires `ench_epic` set. Requires `ench_epic` >=1. Gives "Tattered Illegible Tome" (57918).
-180. Ground spawn of "Cryptic Page" (52933) in `charasis`.
-181. Ground spawn of "Cryptic Page" (52934) in `sebilis`.
-182. Ground spawn of "Cryptic Page" (52935) in `cazicthule`.
-183. Ground spawn of "Cryptic Page" (52936) in `crystal`.
-184. Ground spawn of "Cryptic Page" (52937) in `skyshrine`.
-185. Ground spawn of "Cryptic Page" (52938) in `velketor`.
-186. Ground spawn of "Cryptic Page" (52939) in `nadox`.
-187. Ground spawn of "Cryptic Page" (54308) in `najena`.
-188. Ground spawn of "Cryptic Page" (57916) in `fungusgrove`.
-189. Ground spawn of "Cryptic Page" (57923) in `oot`.
-190. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). The combine does not fail.
-191. burningwood/"A Sarnak Imitator", hand "Complete Illegible Tome" (54267). Sets `ench_epic` to `2`.
-192. poknowledge/"Grand Librarian Maelin", say "Jeb Lumsed Sent Me". Requires `ench_epic` ==2. Gives "Note to Lobaen" (52950).
-193. poknowledge/"Illusionist Lobaen", hand "Note to Lobaen" (52950). Gives "Sealed Documents" (52959).
-194. burningwood/"A Sarnak Imitator", hand "Sealed Documents" (52959). Gives "Assembling the Staff" (54286).
-195. Loot "Sullied Gold Filigree" (52963) from "An Enticing Potameid" in `natimbi`.
-196. hohonora/"Anthone Chapin", hand "Sullied Gold Filigree" (52963). Gives "Purified Gold Filigree" (52953).
-197. Combine in "Ornate Staff Chest" (52960): "1st Piece of the Staff" (54289), "2nd Piece of the Staff" (54310), "3rd Piece of the Staff" (54299), "4th Piece of the Staff" (54284), "Ornate Staff Topper" (52961), "All-Seeing Eye" (54293), "Incandescent Oil" (57924), "Purified Gold Filigree" (52953). Produces "Latched Ornate Chest" (52966). The combine does not fail.
-198. burningwood/"A Sarnak Imitator", hand "Latched Ornate Chest" (52966). Gives "Oculus of Persuasion" (52952).
-199. Hand "Heart of a Twisted Stoneservant" (54239) to wakening/"Alaurin". Spawns "A Luminescent Geonid" (119184). Loot "Luminescent Crystal" (52949) from "A Luminescent Geonid".
-200. Loot "Luminescent Crystal" (52949) from "A Luminescent Geonid".
-201. wakening/"Alaurin", hand "Luminescent Crystal" (52949). Gives "Purifying Crystal Fragment" (52955).
-202. Loot "Volatile Vampyre Blood" (52965) from "a Coterie insatiate" in `tenebrous`.
-203. westwastes/"Vohnkare", hand "Volatile Vampyre Blood" (52965). Gives "Purifying Crystal Fragment" (52956).
-204. No quest step gives Gnomish Candy (52944). The dump lists it in akanon.
-205. No quest step gives Koada`Dal Silk (52948). The dump lists it in felwithea, felwitheb.
-206. No quest step gives Feir`Dal Champagne (52940). The dump lists it in gfaydark, katta, rivervale.
-207. No quest step gives Dwarven Steel (57921). The dump lists it in kaladima.
-208. lfaydark/"A Brownie Noble", hand "Feir'Dal Champagne" (52940) + "Gnomish Candy" (52944) + "Koada'Dal Silk" (52948) + "Dwarven Steel" (57921). Sets `ench_epic` to `8`.
-209. Loot "Harnessing Stone" (52946) from "Miriku the Chaotic" in `kael`.
-210. lfaydark/"A Brownie Noble", hand "Harnessing Stone" (52946). Requires `ench_epic` ==8. Gives "Purifying Crystal Fragment" (52957).
-211. Hand "Mountain Pooka Meat" (54240) to jaggedpine/"Chef Brargus". Spawns "Firwyn" (181226). Loot "Dryad Necklace" (57917) from "Firwyn".
-212. Loot "Dryad Necklace" (57917) from "Firwyn".
-213. gfaydark/"Feyana Lightwing", hand "Dryad Necklace" (57917). Gives "Purifying Crystal Fragment" (52958).
-214. Combine in "Planar Jeweler's Kit" (17764): "Purifying Crystal Fragment" (52955), "Purifying Crystal Fragment" (52956), "Purifying Crystal Fragment" (52957), "Purifying Crystal Fragment" (52958). Produces "Purifying Crystal" (52954). Requires Jewelry Making. The combine does not fail.
+79. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi" in `bloodfields`.
+80. Loot "Ornate Staff Topper" (52961) from "Faleniel of Darkwater" in `sirens`.
+81. Loot "All-Seeing Eye" (54293) from "All-Seeing Eye" in `mischiefplane`.
+82. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
+83. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
+84. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+85. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+86. 67 other recipes also produce Celestial Essence (9650).
+87. Common item: Jar of Acid (22133). Listed in 15 zones.
+88. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
+89. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
+90. Common item: Mortar and Pestle (17904). Listed in 12 zones.
+91. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
+92. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
+93. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+94. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
+95. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
+96. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
+97. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
+98. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
+99. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
+100. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
+101. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
+102. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
+103. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+104. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+105. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+106. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
+107. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+108. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
+109. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+110. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+111. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+112. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+113. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+114. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+115. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+116. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
+117. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
+118. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
+119. Say "Tm Devrak Death" to rujd/"Rujd".
+120. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
+121. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
+122. Say "Tm Dokorel Death" to rujd/"Rujd".
+123. Say "Tm Velrek Death" to rujd/"Rujd".
+124. Say "Event:Death Complete:260061" to rujg/"Rujg".
+125. Spawns "A Barrel" (260015).
+126. Loot "Pod of Water" (13044) from "A Barrel".
+127. 3 other loot steps also yield Pod of Water (13044).
+128. Forage "Pod of Water" (13044) in `ruja`.
+129. Forage "Pod of Water" (13044) in `uqua`.
+130. Forage "Pod of Water" (13044) in `yxtta`.
+131. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+132. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+133. 17 other recipes also produce Bottle (16598).
+134. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+135. Forage "Dragon Egg" (19139) in `templeveeshan`.
+136. Forage "Dragon Egg" (19139) in `westwastes`.
+137. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Dragon Egg" (19139). Produces "Dragon Egg Oil" (9664). Requires Brewing, trivial 150.
+138. Loot "Glimmering Oil" (52942) from "A Greasy Clockwork" in `poinnovation`.
+139. bazaar/"Caerlyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
+140. crescent/"Realnyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
+141. bazaar/"Caerlyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
+142. crescent/"Realnyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
+143. No quest step gives Coalesced Mana (97042). The dump lists it in arcstone, relic, skylance.
+144. Combine in Pottery Wheel (21): "Water Flask" (13006), "White Wolf Skin" (13768), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
+145. Combine in Pottery Wheel (21): "Water Flask" (13006), "Crow's Special Brew" (13799), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
+146. 19 other recipes also produce Unfired Poison Vial (16885).
+147. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
+148. Combine in Kiln (22): "Unfired Poison Vial" (16885), "High Quality Firing Sheet" (16908). Produces "Poison Vial" (16965). Requires Pottery, trivial 17.
+149. Kill broodlands/"Brood Drone". Spawns "The Broodqueen" (337254).
+150. Loot "Ruby" (10035) from "The Broodqueen".
+151. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
+152. Loot "Ruby" (10035) from "A parasitic murkglider".
+153. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
+154. Loot "Ruby" (10035) from "a Reanimated Berserker".
+155. Kill delvea/"A Drake Egg". Spawns "a Delve spellbinder" (341091).
+156. Loot "Ruby" (10035) from "a Delve spellbinder".
+157. 104 other loot steps also yield Ruby (10035).
+158. Combine in "Spell Research Kit" (93492): "Celestial Essence" (9650), "Coalesced Mana" (97042), "Poison Vial" (16965), "Ruby" (10035). Produces "Vial of Purified Mana" (10254). Requires Research, trivial 200.
+159. Forage "Glow Lichen" (14925) in `nektulos`.
+160. Common item: Essence of Sunlight (22527). Listed in 8 zones.
+161. Ground spawn of "Abysmal Moonwater" (54298) in `abysmal`.
+162. Combine in Brew Barrel (19): "Vial of Purified Mana" (10254), "Glow Lichen" (14925), "Essence of Sunlight" (22527), "Abysmal Moonwater" (54298). Produces "Glowing Concoction" (52943). Requires Brewing, trivial 116.
+163. Common item: Medicine Bag (17901). Listed in 33 zones.
+164. Common item: Glaze Lacquer (29355). Listed in 5 zones.
+165. No quest step gives Prism Shard (65469). The dump lists it in crescent, gunthak, poknowledge.
+166. Combine in "Medicine Bag" (17901): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Alchemy, trivial 54.
+167. Combine in "Portable Drink Barrel" (17179): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Brewing, trivial 54.
+168. Combine in Brew Barrel (19): "Dragon Egg Oil" (9664), "Glimmering Oil" (52942), "Glowing Concoction" (52943), "Prismatic Dye" (65472). Produces "Incandescent Oil" (57924). Requires Brewing, trivial 116. The combine does not fail.
+169. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
+170. burningwood/"A Sarnak Imitator", say "Prepared". Requires `ench_epic` set. Requires `ench_epic` >=1. Gives "Tattered Illegible Tome" (57918).
+171. Ground spawn of "Cryptic Page" (52933) in `charasis`.
+172. Ground spawn of "Cryptic Page" (52934) in `sebilis`.
+173. Ground spawn of "Cryptic Page" (52935) in `cazicthule`.
+174. Ground spawn of "Cryptic Page" (52936) in `crystal`.
+175. Ground spawn of "Cryptic Page" (52937) in `skyshrine`.
+176. Ground spawn of "Cryptic Page" (52938) in `velketor`.
+177. Ground spawn of "Cryptic Page" (52939) in `nadox`.
+178. Ground spawn of "Cryptic Page" (54308) in `najena`.
+179. Ground spawn of "Cryptic Page" (57916) in `fungusgrove`.
+180. Ground spawn of "Cryptic Page" (57923) in `oot`.
+181. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). The combine does not fail.
+182. burningwood/"A Sarnak Imitator", hand "Complete Illegible Tome" (54267). Sets `ench_epic` to `2`.
+183. poknowledge/"Grand Librarian Maelin", say "Jeb Lumsed Sent Me". Requires `ench_epic` ==2. Gives "Note to Lobaen" (52950).
+184. poknowledge/"Illusionist Lobaen", hand "Note to Lobaen" (52950). Gives "Sealed Documents" (52959).
+185. burningwood/"A Sarnak Imitator", hand "Sealed Documents" (52959). Gives "Assembling the Staff" (54286).
+186. Loot "Sullied Gold Filigree" (52963) from "An Enticing Potameid" in `natimbi`.
+187. hohonora/"Anthone Chapin", hand "Sullied Gold Filigree" (52963). Gives "Purified Gold Filigree" (52953).
+188. Combine in "Ornate Staff Chest" (52960): "1st Piece of the Staff" (54289), "2nd Piece of the Staff" (54310), "3rd Piece of the Staff" (54299), "4th Piece of the Staff" (54284), "Ornate Staff Topper" (52961), "All-Seeing Eye" (54293), "Incandescent Oil" (57924), "Purified Gold Filigree" (52953). Produces "Latched Ornate Chest" (52966). The combine does not fail.
+189. burningwood/"A Sarnak Imitator", hand "Latched Ornate Chest" (52966). Gives "Oculus of Persuasion" (52952).
+190. Hand "Heart of a Twisted Stoneservant" (54239) to wakening/"Alaurin". Spawns "A Luminescent Geonid" (119184). Loot "Luminescent Crystal" (52949) from "A Luminescent Geonid".
+191. Loot "Luminescent Crystal" (52949) from "A Luminescent Geonid".
+192. wakening/"Alaurin", hand "Luminescent Crystal" (52949). Gives "Purifying Crystal Fragment" (52955).
+193. Loot "Volatile Vampyre Blood" (52965) from "a Coterie insatiate" in `tenebrous`.
+194. westwastes/"Vohnkare", hand "Volatile Vampyre Blood" (52965). Gives "Purifying Crystal Fragment" (52956).
+195. No quest step gives Gnomish Candy (52944). The dump lists it in akanon.
+196. No quest step gives Koada`Dal Silk (52948). The dump lists it in felwithea, felwitheb.
+197. No quest step gives Feir`Dal Champagne (52940). The dump lists it in gfaydark, katta, rivervale.
+198. No quest step gives Dwarven Steel (57921). The dump lists it in kaladima.
+199. lfaydark/"A Brownie Noble", hand "Feir'Dal Champagne" (52940) + "Gnomish Candy" (52944) + "Koada'Dal Silk" (52948) + "Dwarven Steel" (57921). Sets `ench_epic` to `8`.
+200. Loot "Harnessing Stone" (52946) from "Miriku the Chaotic" in `kael`.
+201. lfaydark/"A Brownie Noble", hand "Harnessing Stone" (52946). Requires `ench_epic` ==8. Gives "Purifying Crystal Fragment" (52957).
+202. Hand "Mountain Pooka Meat" (54240) to jaggedpine/"Chef Brargus". Spawns "Firwyn" (181226). Loot "Dryad Necklace" (57917) from "Firwyn".
+203. Loot "Dryad Necklace" (57917) from "Firwyn".
+204. gfaydark/"Feyana Lightwing", hand "Dryad Necklace" (57917). Gives "Purifying Crystal Fragment" (52958).
+205. Combine in "Planar Jeweler's Kit" (17764): "Purifying Crystal Fragment" (52955), "Purifying Crystal Fragment" (52956), "Purifying Crystal Fragment" (52957), "Purifying Crystal Fragment" (52958). Produces "Purifying Crystal" (52954). Requires Jewelry Making. The combine does not fail.
 
 ### "Channeling Crystal" (57920)
 
