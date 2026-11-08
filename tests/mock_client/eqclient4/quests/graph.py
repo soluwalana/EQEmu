@@ -722,7 +722,30 @@ def _lex_queries(value: str) -> list[list[str]]:
     for prefix in _QUERY_PREFIXES:
         if words[:len(prefix)] == list(prefix) and len(words) > len(prefix):
             candidates.append(words[len(prefix):])
+    # A quest script may test `make the shaft` after the NPC explicitly
+    # lists the weapon's parts as `shaft, blade, fittings, hilt`.
+    if words[:2] == ["make", "the"] and len(words) > 2:
+        candidates.append(words[2:])
     return candidates
+
+
+def _answer_to_question(phrase: str, reply: str) -> bool:
+    """Ground `am a smith` / `not a smith` in `Are you a smith?`.
+
+    This is a yes/no response to an explicit question, not a generic
+    removal of negation or of the words `am` and `not`.
+    """
+    words = _lex_tokens(phrase)
+    if len(words) < 3 or words[0] not in {"am", "not"} or words[1] not in {"a", "an"}:
+        return False
+    profession = words[2:]
+    for question in re.findall(r"[^?]*\?", reply):
+        tokens = _lex_tokens(question)
+        for i in range(len(tokens) - 2):
+            if tokens[i:i + 3] in (["are", "you", "a"], ["are", "you", "an"]):
+                if _lex_sequence(profession, tokens[i + 3:]):
+                    return True
+    return False
 
 
 def _lex_mentioned(phrase: str, replies: list[str]) -> bool:
@@ -737,6 +760,8 @@ def _lex_mentioned(phrase: str, replies: list[str]) -> bool:
         return False
     for reply in replies:
         tokens = _lex_tokens(reply)
+        if _answer_to_question(phrase, reply):
+            return True
         if any(_lex_sequence(query, tokens) for query in queries):
             return True
         for match in _OPTION_LIST.finditer(reply):
