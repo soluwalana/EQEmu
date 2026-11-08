@@ -10,7 +10,7 @@ import re
 from collections.abc import Iterator
 
 _SPEECH_CALL = re.compile(
-    r"(?<![\w:])(?P<call>quest::say|quest:say|quest::emote|quest:emote|e\.self:Say|e\.self:Emote|eq\.say|eq\.emote|e\.other:Message|\$client->Message)\s*\(",
+    r"(?<![\w:])(?P<call>quest::say|quest:say|quest::emote|quest:emote|e\.self:Say|e\.self:Emote|e\.self:QuestSay|eq\.say|eq\.emote|e\.other:Message|\$client->Message)\s*\(",
     re.IGNORECASE,
 )
 _STRING = re.compile(r'''"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*' ''', re.X | re.S)
@@ -171,10 +171,12 @@ def iter_speech_calls(text: str, lo: int = 0, hi: int | None = None) -> Iterator
             continue
         name = match.group('call').lower()
         expression = text[opener + 1:end]
-        # Messages have a leading color/type argument, not dialogue text.
+        # Player-directed messages have a leading color/type argument.
         # e.other:Message(MT.DarkGray, "NPC says ...")
         # $client->Message(15, "NPC says ...")
-        if name.endswith('message'):
+        # QuestSay(client, text) is another NPC speech API. Its first
+        # argument selects the recipient and is not part of the dialogue.
+        if name.endswith('message') or name.endswith('questsay'):
             arguments = _top_level_arguments(expression)
             if len(arguments) < 2:
                 continue
