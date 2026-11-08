@@ -763,6 +763,36 @@ def _speech_mentions(word: str, speech: list[dict]) -> bool:
             or _lex_mentioned(word, [str(event.get("text") or "") for event in speech]))
 
 
+def _non_say_speech(text: str) -> list[dict]:
+    """Quest dialogue unlocked by item hand-ins, not by player /say.
+
+    Preserve event names and guards; do not invent a preceding SAY turn.
+    Restrict to player-facing item/trade events, rather than all NPC events.
+    """
+    found = []
+    branches = _branch_index(text)
+    for name, lo, hi in _functions(text):
+        event = name.lower()
+        if event not in {"event_item", "event_trade"}:
+            continue
+        for speech in iter_speech_calls(text, lo, hi):
+            at = speech["offset"]
+            ancestry = sorted(
+                (branch for branch in branches
+                 if lo <= branch[0] and branch[0] <= at < branch[3]),
+                key=lambda branch: (branch[0], -branch[3]),
+            )
+            found.append({
+                "event": event,
+                "channel": speech["channel"],
+                "text": speech["text"],
+                "links": speech["links"],
+                "guards": [text[b[0]:b[1]].strip() for b in ancestry],
+                "order": at,
+            })
+    return found
+
+
 def dialogue_chains(text: str, filename: str, zone: str) -> list[dict]:
     """Extract complete EVENT_SAY conversations with response-grounded transitions.
 
@@ -774,6 +804,7 @@ def dialogue_chains(text: str, filename: str, zone: str) -> list[dict]:
     home = zone.lower()
     source = f"{home}/{npc.lower()}"
     branches = _branch_index(text)
+    context_speech = _non_say_speech(text)
     chains = []
     for function_name, lo, hi in _functions(text):
         if function_name.lower() != "event_say":
@@ -843,6 +874,20 @@ def dialogue_chains(text: str, filename: str, zone: str) -> list[dict]:
                         'source_order': 'earlier' if parent_index < index else 'later',
                     })
                     found = True
+
+            # Event-triggered dialogue (a completed item hand-in, for example)
+            # can supply the first choice. This is not a SAY-to-SAY edge.
+            for speech in context_speech:
+                if _speech_mentions(target['input'], [speech]):
+                    transitions.append({
+                        'from': speech['event'], 'to': target['input'],
+                        'basis': 'external_event_mention',
+                        'event': speech['event'],
+                        'guards': speech['guards'],
+                        'evidence': speech['text'],
+                    })
+                    found = True
+
             if not found and index:
                 transitions.append({
                     'from': turns[index - 1]['input'], 'to': target['input'],
@@ -853,6 +898,7 @@ def dialogue_chains(text: str, filename: str, zone: str) -> list[dict]:
             'kind': 'dialogue', 'zone': home, 'npc': npc,
             'source': source, 'handler': function_name,
             'turns': turns, 'transitions': transitions,
+            'context_speech': context_speech,
         })
     return chains
 
@@ -1423,6 +1469,21 @@ def link_script(
                 'word': other, 'basis': 'spoken_text',
                 'source_order': 'earlier' if i < j else 'later',
             })
+
+    # Source is an external event, never the previous player SAY branch.
+    # Event guards remain attached so the graph does not imply unconditional
+    # access to these dialogue options.
+    for speech in _non_say_speech(text):
+        origin = f"{npc_id}#{speech['event']}"
+        for word, _at, _reply in say_turns:
+            if _speech_mentions(word, [speech]):
+                edges.append({
+                    'kind': 'edge', 'rel': 'suggests',
+                    'from': origin, 'to': f'{npc_id}#{word}',
+                    'word': word, 'basis': 'external_event_speech',
+                    'event': speech['event'], 'guards': speech['guards'],
+                    'evidence': speech['text'],
+                })
 
     for turn in turn_ins(text):
         ids = tuple(sorted(item for item, _count in turn["items"]))

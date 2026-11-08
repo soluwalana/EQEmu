@@ -9,8 +9,9 @@ Example:
     python find_missing_say_links.py ~/.eqclient/quest_graph.jsonl --scope previous
     python find_missing_say_links.py ~/.eqclient/quest_graph.jsonl --format jsonl -o missing.jsonl
 
-By default, checks all earlier NPC responses in each dialogue chain (history).
-`--scope previous` checks only the immediately preceding NPC response.
+By default, checks all other NPC responses in each dialogue handler (all).
+Use --scope history to require a cue in a preceding source-code branch.
+`--scope previous` checks only the immediately preceding source-code branch.
 The *full input phrase* must occur literally, ignoring case, punctuation,
 underscores, and whitespace. First turns are excluded because there is no
 preceding conversation to compare against.
@@ -148,7 +149,12 @@ def missing_links(path: Path, scope: str):
                     if scope == "all" else
                     turns[:index] if scope == "history" else turns[index - 1:index]
                 )
-                if index > 0 and not _turn_mentions(keyword, observed_turns):
+                # With --scope all, include text from item/trade events.
+                # Do not merge those event-gated replies into chronological
+                # --scope history/previous conversations.
+                context = (chain.get('context_speech') or []) if scope == 'all' else []
+                event_evidence = _turn_mentions(keyword, [{'reply': context}]) if context else False
+                if index > 0 and not (_turn_mentions(keyword, observed_turns) or event_evidence):
                     prev = turns[index - 1]
                     yield {
                         "source": chain.get("source", ""),
@@ -168,8 +174,7 @@ def missing_links(path: Path, scope: str):
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("graph", type=Path, help="Path to quest_graph.jsonl")
-    parser.add_argument(
-        "--scope", choices=("all", "history", "previous"), default="all",
+    parser.add_argument("--scope", choices=("all", "history", "previous"), default="all",
                         help="Check all branches, earlier branches, or preceding branch (default: all)")
     parser.add_argument("--format", choices=("csv", "jsonl"), default="csv")
     parser.add_argument("-o", "--output", type=Path, help="Output file (default: stdout)")
