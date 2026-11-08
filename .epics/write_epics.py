@@ -7,6 +7,10 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
+from eqclient4.data.drops import ensure_drops
+
+DROP_BOOK = ensure_drops()
+
 GRAPH = Path.home() / ".eqclient" / "quest_graph.jsonl"
 OUT = Path("/Users/samo/work/EQEmu/.epics")
 
@@ -60,6 +64,29 @@ def load():
                 row.get("text") or ""
             )
     return items, edges, says, world
+
+
+def fallback_drop(items, item_id: int) -> str | None:
+    """Only for items with no quest, recipe, or catalog acquisition path."""
+    dropper = DROP_BOOK.best(int(item_id))
+    if not dropper:
+        return None
+    
+    if dropper.name:
+        npc = quoted(dropper.name)
+    else:
+        npc = f"NPC {dropper.npc_id}"
+    
+    where = ""
+    if dropper.zone:
+        where = f" in `{dropper.zone}`"
+
+    chance = f"{dropper.chance:.2f}".rstrip("0").rstrip(".")
+    return (
+        f"Loot {quoted_item(items, item_id)} from {npc} "
+        f"(NPC {dropper.npc_id}){where}. "
+        f"Drop cache: {chance}% chance per kill."
+    )
 
 
 def indexes(edges, world):
@@ -653,6 +680,11 @@ def write_class(name, title, mains, prefixes, ctx):
             bits = leaf_bits(alias)
             if bits and not bits[0].startswith("**Broken:**"):
                 return [f"Same item as {quoted_item(items, alias)}."] + bits
+        
+        fallback = fallback_drop(items, item_id)
+        if fallback:
+            return [fallback]
+        
         zones = (items.get(item_id) or {}).get("zones") or []
         if zones:
             if len(zones) > 3:

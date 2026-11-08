@@ -10,198 +10,450 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Ragebringer" (11057)
 
-1. Hand "Sealed Box" (28057) to kithicor/"Adjutant D-Kan". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
-2. Hand "Sealed Box" (28057) to kithicor/"Advisor C-Zatl". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
-3. Hand "Sealed Box" (28057) to kithicor/"Brigadier G-Tav". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
-4. Hand "Sealed Box" (28057) to kithicor/"Coercer Q-Ioul". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
-5. 3 other loot steps also yield General's Pouch (28013).
-6. Loot "General's Pouch" (28013) from "General V'ghera".
-7. Loot "Fleshripper" (5411) from "Solusek kobold king" in `soldungb`.
-8. Loot "Painbringer" (5410) from "Kobold Champion" in `soldungb`.
-9. Loot "Mithril Two-Handed Sword" (5401) from "The Froglok King" in `gukbottom`.
-10. Loot "Gigantic Zweihander" (5308) from "Karg IceBear" in `everfrost`.
-11. qey2hh1/"Vilnius The Small", hand "Gigantic Zweihander" (5308) + "Mithril Two-Handed Sword" (5401) + "Painbringer" (5410) + "Fleshripper" (5411). Gives "Jagged Diamond Dagger" (7506).
-12. Loot "Robe of the Ishva" (1357) from "Coercer Q'ioul" in `kithicor`.
-13. Loot "Robe of the Ishva" (1357) from "Jinalis Andir" in `cauldron`.
-14. Loot "Robe of the Ishva" (1357) from "The Ishva Mal" in `southkarana`.
-15. No quest step gives Robe of the Kedge (1253). The dump lists it in chambersf, kedge, kithicor.
-16. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oceanoftears`.
-17. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oot`.
-18. Common item: Shining Metallic Robes (1360). Listed in 4 zones.
-19. qey2hh1/"Vilnius The Small", hand "Robe of the Kedge" (1253) + "Robe of the Oracle" (1354) + "Robe of the Ishva" (1357) + "Shining Metallic Robes" (1360). Gives "Cazic Quill" (7505).
-20. highpass/"Stanos Herkanor", hand "Cazic Quill" (7505) + "Jagged Diamond Dagger" (7506) + "General's Pouch" (28013). Gives "Ragebringer" (11057).
+1. Loot "Bayle List I" (18808) from "Mutt Rootlit" in `highpass`.
+2. qrg/"Gerael Woodone", say "Deliver A Flask". Gives "Flask of Nitrates" (13945).
+3. akanon/"Kimble Nogflop", hand "Flask of Nitrates" (13945). Gives "Regurgitonic" (12140).
+4. qrg/"Mammoth", hand "Regurgitonic" (12140). Gives "Bayle List II" (18809).
+5. Loot "Bayle List III" (18810) from "Dyllin Starsine" in `highpass`.
+6. Loot "Bayle List III" (18810) from "Dyllin Starsine" in `highpasshold`.
+7. southro/"Rathmana Allin", hand "Bayle List I" (18808) + "Bayle List II" (18809) + "Bayle List III" (18810). Gives "Translated Parchment" (18961).
+8. highpass/"Stanos Herkanor", hand "Translated Parchment" (18961). Gives "Sealed Box" (28057).
+9. Kill wakening/"A Tar Goo". Spawns "A Tar Goo" (119122).
+10. Loot "Oily Goo Secretion" (11637) from "A Tar Goo".
+11. 1 alternative loot source(s) also yield Oily Goo Secretion (11637).
+12. bazaar/"Caerlyna", hand "Vale Sewing Kit" (92882). Gives "Vale Sewing Kit Token" (56884).
+13. bazaar/"Caerlyna", hand "Vale Sewing Kit Token" (56884). Gives "Vale Sewing Kit" (92882).
+14. Common item: Needle Mold (12019). Listed in 32 zones.
+15. Common item: Thimble Mold (12057). Listed in 32 zones.
+16. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+17. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+18. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+19. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+20. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+21. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+22. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+23. Say "Tm Devrak Death" to rujd/"Rujd".
+24. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
+25. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
+26. 6 alternative loot source(s) also yield Pod of Water (13044).
+27. Forage "Pod of Water" (13044) in `ruja`.
+28. Forage "Pod of Water" (13044) in `uqua`.
+29. Forage "Pod of Water" (13044) in `yxtta`.
+30. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+31. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+32. 17 other recipes also produce Bottle (16598).
+33. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+34. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
+35. Combine in Forge (17): "Smithing Chisel" (7052), "Small Brick of High Quality Ore" (10468). Hands back "Smithing Chisel" (7052). Produces "Small Piece of High Quality Ore" (22229) x2. Requires Blacksmithing, trivial 27.
+36. 4 other recipes also produce Small Piece of High Quality Ore (22229).
+37. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
+38. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
+39. Loot "Crystalline Silk" (25306) from "A Crystal Grinder" (NPC 121089) in `crystal`. Drop cache: 100% chance per kill.
+40. Combine in "Vale Sewing Kit" (92882): "Crystalline Silk" (25306). Produces "Crystalline Silk Mesh" (11636). Requires Tailoring, trivial 68.
+41. skyshrine/"Iago Sabuela", hand "Crystalline Silk Mesh" (11636) + "Oily Goo Secretion" (11637). Gives "Empty Artifact Container" (17167).
+42. Loot "Crystal Dragon Eye" (11638) from "An Ice Paw Sorcerer" in `velketor`.
+43. Loot "Golden Dragon Claw" (11639) from "A Chetari Runemage" in `necropolis`.
+44. Loot "Platinum Dragon Scale" (11640) from "A Siren Sorceress" in `sirens`.
+45. Loot "Rodrick's Head" (1045) from "Rodrick Tardok".
+46. Loot "Rodrick's Head" (1045) from "Rodrick Tardok" in `eastwastes`.
+47. Spawns "Poxbreath Yellowfang" (116566) in `eastwastes` on event_signal.
+48. Loot "Note from Kromrif" (18084) from "Poxbreath Yellowfang".
+49. Spawns "Scarbrow Ga'Hruk" (116568) in `eastwastes` on event_signal.
+50. Loot "Head of Scarbrow" (30141) from "Scarbrow Ga'Hruk".
+51. Say "Help" to eastwastes/"Tain Hammerfrost".
+52. Spawns "Ghrek Squatnot" (116560).
+53. Loot "Frozen Elixir" (30138) from "Ghrek Squatnot".
+54. eastwastes/"Tain Hammerfrost", hand "Frozen Elixir" (30138). Gives "Coldain Smithing Hammer" (30140).
+55. Spawns "Rabid Tundra Kodiak" (116545) in `eastwastes` on event_waypoint_arrive.
+56. Loot "Rabid Kodiak Skin" (30266) from "Rabid Tundra Kodiak".
+57. eastwastes/"Boridain Glacierbane", hand "Rabid Kodiak Skin" (30266). Gives "Broken Axe" (30267).
+58. iceclad/"A Lost Pirate", say "I Will Find The Parts". Gives "Map Binding" (17053).
+59. Loot "First part of an Iceclad Map" (30043) from "Dire Wolf Stalker" in `iceclad`.
+60. Loot "Second part of an Iceclad Map" (30044) from "Stormfeather" in `iceclad`.
+61. Loot "Second part of an Iceclad Map" (30044) from "The Fabled Stormfeather".
+62. greatdivide/"Bloody Gnome Captive", say "Map". Gives "Third part of an Iceclad Map" (30045).
+63. Loot "Fourth part of an Iceclad Map" (30073) from "Lodizal" in `iceclad`.
+64. Loot "Fourth part of an Iceclad Map" (30073) from "The Fabled Lodizal".
+65. Combine in "Map Binding" (17053): "First part of an Iceclad Map" (30043), "Second part of an Iceclad Map" (30044), "Third part of an Iceclad Map" (30045), "Fourth part of an Iceclad Map" (30073). Produces "Pieces of the Iceclad Map" (30046). The combine does not fail.
+66. Hand "Pieces of the Iceclad Map" (30046) to iceclad/"A Lost Pirate". Spawns "Rabid Snow Cougar Does Not Exist Using Regular For Now" (116008). Loot "High Quality Cougarskin" (30030) from "Rabid Snow Cougar Does Not Exist Using Regular For Now".
+67. Loot "High Quality Tundra Kodiak Pelt" (30077) from "A Tundra Kodiak" (NPC 116044) in `eastwastes`. Drop cache: 3.91% chance per kill.
+68. Combine in "Vale Sewing Kit" (92882): "High Quality Cougarskin" (30030), "High Quality Tundra Kodiak Pelt" (30077). Produces "Coldain Hunting Blanket" (30135). Requires Tailoring, trivial 41.
+69. eastwastes/"Garadain Glacierbane", hand "Coldain Hunting Blanket" (30135). Gives "Copper Coldain Insignia Ring" (30131).
+70. eastwastes/"Garadain Glacierbane", hand "Copper Coldain Insignia Ring" (30131) + "Broken Axe" (30267). Gives "Silver Coldain Insignia Ring" (30133).
+71. Ground spawn of "Skinning Rock" (30062) in `eastwastes`.
+72. Loot "Wooly Rhino Horn" (30088) from "A Wooly Rhino" (NPC 116033) in `eastwastes`. Drop cache: 20% chance per kill.
+73. Loot "High Quality Walrus Hide" (30096) from "A Walrus" (NPC 116065) in `eastwastes`. Drop cache: 14.1% chance per kill.
+74. Combine in Forge (17): "Skinning Rock" (30062), "Wooly Rhino Horn" (30088), "High Quality Walrus Hide" (30096). Produces "Coldain Hunting Knife" (30137). Requires Blacksmithing, trivial 41.
+75. eastwastes/"Garadain Glacierbane", hand "Silver Coldain Insignia Ring" (30133) + "Coldain Hunting Knife" (30137). Gives "Gold Coldain Insignia Ring" (30132).
+76. eastwastes/"Garadain Glacierbane", hand "Gold Coldain Insignia Ring" (30132) + "Coldain Smithing Hammer" (30140). Gives "Platinum Coldain Insignia Ring" (30134).
+77. eastwastes/"Garadain Glacierbane", hand "Platinum Coldain Insignia Ring" (30134) + "Head of Scarbrow" (30141). Gives "Obsidian Coldain Insignia Ring" (30268).
+78. eastwastes/"Garadain Glacierbane", hand "Rodrick's Head" (1045) + "Note from Kromrif" (18084) + "Obsidian Coldain Insignia Ring" (30268). Gives "Mithril Coldain Insignia Ring" (30162).
+79. eastwastes/"Dobbin Crossaxe", hand "Mithril Coldain Insignia Ring" (30162). Gives "Note from Corbin" (1047).
+80. eastwastes/"Garadain Glacierbane", hand "Note from Corbin" (1047). Gives "Adamantium Coldain Insignia Ring" (30163).
+81. eastwastes/"Garadain Glacierbane", hand "Adamantium Coldain Insignia Ring" (30163). Gives "Marching Orders" (1093).
+82. Hand "Marching Orders" (1093) to eastwastes/"Gloradin Coldheart". Spawns "Oracle of Ry'Gorr" (116006). Loot "Dragon Scripture Tablet" (11651) from "Oracle of Ry'Gorr".
+83. 1 alternative loot source(s) also yield Dragon Scripture Tablet (11651).
+84. Combine in "Empty Artifact Container" (17167): "Crystal Dragon Eye" (11638), "Golden Dragon Claw" (11639), "Platinum Dragon Scale" (11640), "Dragon Scripture Tablet" (11651). Produces "Sealed Box" (28057). The combine does not fail.
+85. Hand "Sealed Box" (28057) to kithicor/"Adjutant D-Kan". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
+86. 6 alternative loot source(s) also yield General's Pouch (28013).
+87. Loot "Fleshripper" (5411) from "Solusek kobold king" in `soldungb`.
+88. Loot "Painbringer" (5410) from "Kobold Champion" in `soldungb`.
+89. Loot "Mithril Two-Handed Sword" (5401) from "The Froglok King" in `gukbottom`.
+90. Loot "Gigantic Zweihander" (5308) from "Karg IceBear" in `everfrost`.
+91. qey2hh1/"Vilnius The Small", hand "Gigantic Zweihander" (5308) + "Mithril Two-Handed Sword" (5401) + "Painbringer" (5410) + "Fleshripper" (5411). Gives "Jagged Diamond Dagger" (7506).
+92. Loot "Robe of the Ishva" (1357) from "Coercer Q'ioul" in `kithicor`.
+93. Loot "Robe of the Ishva" (1357) from "Jinalis Andir" in `cauldron`.
+94. Loot "Robe of the Ishva" (1357) from "The Ishva Mal" in `southkarana`.
+95. Loot "Robe of the Kedge" (1253) from "Kubaria" (NPC 309002) in `chambersf`. Drop cache: 100% chance per kill.
+96. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oceanoftears`.
+97. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oot`.
+98. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
+99. qey2hh1/"Vilnius The Small", hand "Robe of the Kedge" (1253) + "Robe of the Oracle" (1354) + "Robe of the Ishva" (1357) + "Shining Metallic Robes" (1360). Gives "Cazic Quill" (7505).
+100. highpass/"Stanos Herkanor", hand "Cazic Quill" (7505) + "Jagged Diamond Dagger" (7506) + "General's Pouch" (28013). Gives "Ragebringer" (11057).
 
 ### "Fatestealer" (52347)
 
-1. Hand "Sealed Box" (28057) to kithicor/"Adjutant D-Kan". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
-2. Hand "Sealed Box" (28057) to kithicor/"Advisor C-Zatl". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
-3. Hand "Sealed Box" (28057) to kithicor/"Brigadier G-Tav". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
-4. Hand "Sealed Box" (28057) to kithicor/"Coercer Q-Ioul". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
-5. 3 other loot steps also yield General's Pouch (28013).
-6. Loot "General's Pouch" (28013) from "General V'ghera".
-7. Loot "Fleshripper" (5411) from "Solusek kobold king" in `soldungb`.
-8. Loot "Painbringer" (5410) from "Kobold Champion" in `soldungb`.
-9. Loot "Mithril Two-Handed Sword" (5401) from "The Froglok King" in `gukbottom`.
-10. Loot "Gigantic Zweihander" (5308) from "Karg IceBear" in `everfrost`.
-11. qey2hh1/"Vilnius The Small", hand "Gigantic Zweihander" (5308) + "Mithril Two-Handed Sword" (5401) + "Painbringer" (5410) + "Fleshripper" (5411). Gives "Jagged Diamond Dagger" (7506).
-12. Loot "Robe of the Ishva" (1357) from "Coercer Q'ioul" in `kithicor`.
-13. Loot "Robe of the Ishva" (1357) from "Jinalis Andir" in `cauldron`.
-14. Loot "Robe of the Ishva" (1357) from "The Ishva Mal" in `southkarana`.
-15. No quest step gives Robe of the Kedge (1253). The dump lists it in chambersf, kedge, kithicor.
-16. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oceanoftears`.
-17. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oot`.
-18. Common item: Shining Metallic Robes (1360). Listed in 4 zones.
-19. qey2hh1/"Vilnius The Small", hand "Robe of the Kedge" (1253) + "Robe of the Oracle" (1354) + "Robe of the Ishva" (1357) + "Shining Metallic Robes" (1360). Gives "Cazic Quill" (7505).
-20. highpass/"Stanos Herkanor", hand "Cazic Quill" (7505) + "Jagged Diamond Dagger" (7506) + "General's Pouch" (28013). Gives "Ragebringer" (11057).
-21. highpasshold/"Stanos Herkanor", hand "Cazic Quill" (7505) + "Jagged Diamond Dagger" (7506) + "General's Pouch" (28013). Gives "Ragebringer" (11057).
-22. highpass/"Stanos Herkanor", say "Hail". Sets `Fatestealer` to `1`.
-23. Loot "Signed Agreement" (10246) from "Lythe Songbird" in `freeporteast`.
-24. Loot "Signed Agreement" (10246) from "Lythe Songbird" in `freportw`.
-25. overthere/"Inem R'Ker", hand "Signed Agreement" (10246). Sets `Fatestealer_lyt` to `1`.
-26. Loot "Signed Agreement" (10239) from "Seana Marsinger" in `gfaydark`.
-27. Loot "Signed Agreement" (52416) from "Stefan Marsinger" in `gfaydark`.
-28. overthere/"Inem R'Ker", hand "Signed Agreement" (10239) + "Signed Agreement" (52416). Sets `Fatestealer_mar` to `1`.
-29. Loot "Signed Agreement" (10243) from "Galdorin Visigothe" in `abysmal`.
-30. overthere/"Inem R'Ker", hand "Signed Agreement" (10243). Sets `Fatestealer_gal` to `1`.
-31. overthere/"Inem R'Ker", hand "Signed Agreement" (10243). Sets `Fatestealer_bard` to `1`.
-32. Say "Event:Death Complete:186114" to hateplaneb/"Rogue 1 5".
-33. Spawns "a Teir'Dal guardian" (186190).
-34. Loot "Stack of Pages" (52335) from "a Teir'Dal guardian".
-35. Say "Event:Death Complete:186100" to hateplaneb/"Rogue 1 5".
-36. Say "Event:Death Complete:186112" to hateplaneb/"Rogue 1 5".
-37. Say "Event:Death Complete:186116" to hateplaneb/"Rogue 1 5".
-38. 2 other loot steps also yield Stack of Pages (52335).
-39. steamfont/"Yendar Starpyre", hand "Stack of Pages" (52335). Sets `Fatestealer_page` to `1`.
-40. Hand "Crystallized Shard of Doomfire" (21339) + "Igneous Rock of Doomfire" (21340) + "Pile of Doomfire Ash" (21341) + "Foul Doomfire Brimstone" (21342) to soldungc/"The Firewatcher". Spawns "Culthor the Gatekeeper" (278005). Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper".
-41. Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper" in `soldungc`.
-42. nedaria/"Smith Dandi", hand "Smoldering Embers of Solusek" (52346). Sets `Fatestealer_forge` to `1`.
-43. Say "Event:Death Complete:186114" to hateplaneb/"Rogue 1 5".
-44. Spawns "a Teir'Dal guardian" (186190).
-45. Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
-46. Say "Event:Death Complete:186100" to hateplaneb/"Rogue 1 5".
-47. Say "Event:Death Complete:186112" to hateplaneb/"Rogue 1 5".
-48. Say "Event:Death Complete:186116" to hateplaneb/"Rogue 1 5".
-49. 2 other loot steps also yield Soulstone of Lanys (52337).
-50. nedaria/"Lirprin, Head Of Affairs", hand "Soulstone of Lanys" (52337). Requires `Fatestealer_bard` ==1. Requires `Fatestealer_page` ==1. Requires `Fatestealer_forge` ==1. Gives "Fatestealer" (52347).
+1. Loot "Bayle List I" (18808) from "Mutt Rootlit" in `highpass`.
+2. qrg/"Gerael Woodone", say "Deliver A Flask". Gives "Flask of Nitrates" (13945).
+3. akanon/"Kimble Nogflop", hand "Flask of Nitrates" (13945). Gives "Regurgitonic" (12140).
+4. qrg/"Mammoth", hand "Regurgitonic" (12140). Gives "Bayle List II" (18809).
+5. Loot "Bayle List III" (18810) from "Dyllin Starsine" in `highpass`.
+6. Loot "Bayle List III" (18810) from "Dyllin Starsine" in `highpasshold`.
+7. southro/"Rathmana Allin", hand "Bayle List I" (18808) + "Bayle List II" (18809) + "Bayle List III" (18810). Gives "Translated Parchment" (18961).
+8. highpass/"Stanos Herkanor", hand "Translated Parchment" (18961). Gives "Sealed Box" (28057).
+9. Kill wakening/"A Tar Goo". Spawns "A Tar Goo" (119122).
+10. Loot "Oily Goo Secretion" (11637) from "A Tar Goo".
+11. 1 alternative loot source(s) also yield Oily Goo Secretion (11637).
+12. bazaar/"Caerlyna", hand "Vale Sewing Kit" (92882). Gives "Vale Sewing Kit Token" (56884).
+13. bazaar/"Caerlyna", hand "Vale Sewing Kit Token" (56884). Gives "Vale Sewing Kit" (92882).
+14. Common item: Needle Mold (12019). Listed in 32 zones.
+15. Common item: Thimble Mold (12057). Listed in 32 zones.
+16. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+17. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+18. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+19. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+20. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+21. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+22. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+23. Say "Tm Devrak Death" to rujd/"Rujd".
+24. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
+25. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
+26. 6 alternative loot source(s) also yield Pod of Water (13044).
+27. Forage "Pod of Water" (13044) in `ruja`.
+28. Forage "Pod of Water" (13044) in `uqua`.
+29. Forage "Pod of Water" (13044) in `yxtta`.
+30. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+31. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+32. 17 other recipes also produce Bottle (16598).
+33. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+34. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
+35. Combine in Forge (17): "Smithing Chisel" (7052), "Small Brick of High Quality Ore" (10468). Hands back "Smithing Chisel" (7052). Produces "Small Piece of High Quality Ore" (22229) x2. Requires Blacksmithing, trivial 27.
+36. 4 other recipes also produce Small Piece of High Quality Ore (22229).
+37. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
+38. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
+39. Loot "Crystalline Silk" (25306) from "A Crystal Grinder" (NPC 121089) in `crystal`. Drop cache: 100% chance per kill.
+40. Combine in "Vale Sewing Kit" (92882): "Crystalline Silk" (25306). Produces "Crystalline Silk Mesh" (11636). Requires Tailoring, trivial 68.
+41. skyshrine/"Iago Sabuela", hand "Crystalline Silk Mesh" (11636) + "Oily Goo Secretion" (11637). Gives "Empty Artifact Container" (17167).
+42. Loot "Crystal Dragon Eye" (11638) from "An Ice Paw Sorcerer" in `velketor`.
+43. Loot "Golden Dragon Claw" (11639) from "A Chetari Runemage" in `necropolis`.
+44. Loot "Platinum Dragon Scale" (11640) from "A Siren Sorceress" in `sirens`.
+45. Loot "Rodrick's Head" (1045) from "Rodrick Tardok".
+46. Loot "Rodrick's Head" (1045) from "Rodrick Tardok" in `eastwastes`.
+47. Spawns "Poxbreath Yellowfang" (116566) in `eastwastes` on event_signal.
+48. Loot "Note from Kromrif" (18084) from "Poxbreath Yellowfang".
+49. Spawns "Scarbrow Ga'Hruk" (116568) in `eastwastes` on event_signal.
+50. Loot "Head of Scarbrow" (30141) from "Scarbrow Ga'Hruk".
+51. Say "Help" to eastwastes/"Tain Hammerfrost".
+52. Spawns "Ghrek Squatnot" (116560).
+53. Loot "Frozen Elixir" (30138) from "Ghrek Squatnot".
+54. eastwastes/"Tain Hammerfrost", hand "Frozen Elixir" (30138). Gives "Coldain Smithing Hammer" (30140).
+55. Spawns "Rabid Tundra Kodiak" (116545) in `eastwastes` on event_waypoint_arrive.
+56. Loot "Rabid Kodiak Skin" (30266) from "Rabid Tundra Kodiak".
+57. eastwastes/"Boridain Glacierbane", hand "Rabid Kodiak Skin" (30266). Gives "Broken Axe" (30267).
+58. iceclad/"A Lost Pirate", say "I Will Find The Parts". Gives "Map Binding" (17053).
+59. Loot "First part of an Iceclad Map" (30043) from "Dire Wolf Stalker" in `iceclad`.
+60. Loot "Second part of an Iceclad Map" (30044) from "Stormfeather" in `iceclad`.
+61. Loot "Second part of an Iceclad Map" (30044) from "The Fabled Stormfeather".
+62. greatdivide/"Bloody Gnome Captive", say "Map". Gives "Third part of an Iceclad Map" (30045).
+63. Loot "Fourth part of an Iceclad Map" (30073) from "Lodizal" in `iceclad`.
+64. Loot "Fourth part of an Iceclad Map" (30073) from "The Fabled Lodizal".
+65. Combine in "Map Binding" (17053): "First part of an Iceclad Map" (30043), "Second part of an Iceclad Map" (30044), "Third part of an Iceclad Map" (30045), "Fourth part of an Iceclad Map" (30073). Produces "Pieces of the Iceclad Map" (30046). The combine does not fail.
+66. Hand "Pieces of the Iceclad Map" (30046) to iceclad/"A Lost Pirate". Spawns "Rabid Snow Cougar Does Not Exist Using Regular For Now" (116008). Loot "High Quality Cougarskin" (30030) from "Rabid Snow Cougar Does Not Exist Using Regular For Now".
+67. Loot "High Quality Tundra Kodiak Pelt" (30077) from "A Tundra Kodiak" (NPC 116044) in `eastwastes`. Drop cache: 3.91% chance per kill.
+68. Combine in "Vale Sewing Kit" (92882): "High Quality Cougarskin" (30030), "High Quality Tundra Kodiak Pelt" (30077). Produces "Coldain Hunting Blanket" (30135). Requires Tailoring, trivial 41.
+69. eastwastes/"Garadain Glacierbane", hand "Coldain Hunting Blanket" (30135). Gives "Copper Coldain Insignia Ring" (30131).
+70. eastwastes/"Garadain Glacierbane", hand "Copper Coldain Insignia Ring" (30131) + "Broken Axe" (30267). Gives "Silver Coldain Insignia Ring" (30133).
+71. Ground spawn of "Skinning Rock" (30062) in `eastwastes`.
+72. Loot "Wooly Rhino Horn" (30088) from "A Wooly Rhino" (NPC 116033) in `eastwastes`. Drop cache: 20% chance per kill.
+73. Loot "High Quality Walrus Hide" (30096) from "A Walrus" (NPC 116065) in `eastwastes`. Drop cache: 14.1% chance per kill.
+74. Combine in Forge (17): "Skinning Rock" (30062), "Wooly Rhino Horn" (30088), "High Quality Walrus Hide" (30096). Produces "Coldain Hunting Knife" (30137). Requires Blacksmithing, trivial 41.
+75. eastwastes/"Garadain Glacierbane", hand "Silver Coldain Insignia Ring" (30133) + "Coldain Hunting Knife" (30137). Gives "Gold Coldain Insignia Ring" (30132).
+76. eastwastes/"Garadain Glacierbane", hand "Gold Coldain Insignia Ring" (30132) + "Coldain Smithing Hammer" (30140). Gives "Platinum Coldain Insignia Ring" (30134).
+77. eastwastes/"Garadain Glacierbane", hand "Platinum Coldain Insignia Ring" (30134) + "Head of Scarbrow" (30141). Gives "Obsidian Coldain Insignia Ring" (30268).
+78. eastwastes/"Garadain Glacierbane", hand "Rodrick's Head" (1045) + "Note from Kromrif" (18084) + "Obsidian Coldain Insignia Ring" (30268). Gives "Mithril Coldain Insignia Ring" (30162).
+79. eastwastes/"Dobbin Crossaxe", hand "Mithril Coldain Insignia Ring" (30162). Gives "Note from Corbin" (1047).
+80. eastwastes/"Garadain Glacierbane", hand "Note from Corbin" (1047). Gives "Adamantium Coldain Insignia Ring" (30163).
+81. eastwastes/"Garadain Glacierbane", hand "Adamantium Coldain Insignia Ring" (30163). Gives "Marching Orders" (1093).
+82. Hand "Marching Orders" (1093) to eastwastes/"Gloradin Coldheart". Spawns "Oracle of Ry'Gorr" (116006). Loot "Dragon Scripture Tablet" (11651) from "Oracle of Ry'Gorr".
+83. 1 alternative loot source(s) also yield Dragon Scripture Tablet (11651).
+84. Combine in "Empty Artifact Container" (17167): "Crystal Dragon Eye" (11638), "Golden Dragon Claw" (11639), "Platinum Dragon Scale" (11640), "Dragon Scripture Tablet" (11651). Produces "Sealed Box" (28057). The combine does not fail.
+85. Hand "Sealed Box" (28057) to kithicor/"Adjutant D-Kan". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
+86. 6 alternative loot source(s) also yield General's Pouch (28013).
+87. Loot "Fleshripper" (5411) from "Solusek kobold king" in `soldungb`.
+88. Loot "Painbringer" (5410) from "Kobold Champion" in `soldungb`.
+89. Loot "Mithril Two-Handed Sword" (5401) from "The Froglok King" in `gukbottom`.
+90. Loot "Gigantic Zweihander" (5308) from "Karg IceBear" in `everfrost`.
+91. qey2hh1/"Vilnius The Small", hand "Gigantic Zweihander" (5308) + "Mithril Two-Handed Sword" (5401) + "Painbringer" (5410) + "Fleshripper" (5411). Gives "Jagged Diamond Dagger" (7506).
+92. Loot "Robe of the Ishva" (1357) from "Coercer Q'ioul" in `kithicor`.
+93. Loot "Robe of the Ishva" (1357) from "Jinalis Andir" in `cauldron`.
+94. Loot "Robe of the Ishva" (1357) from "The Ishva Mal" in `southkarana`.
+95. Loot "Robe of the Kedge" (1253) from "Kubaria" (NPC 309002) in `chambersf`. Drop cache: 100% chance per kill.
+96. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oceanoftears`.
+97. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oot`.
+98. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
+99. qey2hh1/"Vilnius The Small", hand "Robe of the Kedge" (1253) + "Robe of the Oracle" (1354) + "Robe of the Ishva" (1357) + "Shining Metallic Robes" (1360). Gives "Cazic Quill" (7505).
+100. highpass/"Stanos Herkanor", hand "Cazic Quill" (7505) + "Jagged Diamond Dagger" (7506) + "General's Pouch" (28013). Gives "Ragebringer" (11057).
+101. highpass/"Stanos Herkanor", say "Hail". Sets `Fatestealer` to `1`.
+102. Unresolved cyclic prerequisite: `Fatestealer_gal` ==1.
+103. Unresolved cyclic prerequisite: `Fatestealer_gal` ==1.
+104. Unresolved cyclic prerequisite: `Fatestealer_mar` ==1.
+105. Unresolved cyclic prerequisite: `Fatestealer_gal` ==1.
+106. Unresolved cyclic prerequisite: `Fatestealer_mar` ==1.
+107. Unresolved cyclic prerequisite: `Fatestealer_lyt` ==1.
+108. Loot "Signed Agreement" (10246) from "Lythe Songbird" in `freeporteast`.
+109. Loot "Signed Agreement" (10246) from "Lythe Songbird" in `freportw`.
+110. overthere/"Inem R'Ker", hand "Signed Agreement" (10246). Sets `Fatestealer_lyt` to `1`.
+111. Loot "Signed Agreement" (10239) from "Seana Marsinger" in `gfaydark`.
+112. Loot "Signed Agreement" (52416) from "Stefan Marsinger" in `gfaydark`.
+113. overthere/"Inem R'Ker", hand "Signed Agreement" (10239) + "Signed Agreement" (52416). Sets `Fatestealer_mar` to `1`.
+114. Loot "Signed Agreement" (10243) from "Galdorin Visigothe" in `abysmal`.
+115. overthere/"Inem R'Ker", hand "Signed Agreement" (10243). Sets `Fatestealer_gal` to `1`.
+116. overthere/"Inem R'Ker", hand "Signed Agreement" (10243). Sets `Fatestealer_bard` to `1`.
+117. Spawns "a Teir'Dal guardian" (186190) in `hateplaneb` on event death_complete:186114.
+118. Loot "Stack of Pages" (52335) from "a Teir'Dal guardian".
+119. 5 alternative loot source(s) also yield Stack of Pages (52335).
+120. steamfont/"Yendar Starpyre", hand "Stack of Pages" (52335). Sets `Fatestealer_page` to `1`.
+121. Spawns "A Furious Magma Guardian" (278123) in `soldungc` on event_signal.
+122. Loot "Crystallized Shard of Doomfire" (21339) from "A Furious Magma Guardian".
+123. 1 alternative loot source(s) also yield Crystallized Shard of Doomfire (21339).
+124. Loot "Foul Doomfire Brimstone" (21342) from "A Pool Of Living Lava" (NPC 278043) in `soldungc`. Drop cache: 15.97% chance per kill.
+125. Loot "Igneous Rock of Doomfire" (21340) from "Typhoeus" (NPC 278069) in `soldungc`. Drop cache: 35% chance per kill.
+126. Loot "Pile of Doomfire Ash" (21341) from "a Taklasinai marauder" (NPC 278075) in `soldungc`. Drop cache: 35% chance per kill.
+127. Hand "Crystallized Shard of Doomfire" (21339) + "Igneous Rock of Doomfire" (21340) + "Pile of Doomfire Ash" (21341) + "Foul Doomfire Brimstone" (21342) to soldungc/"The Firewatcher". Spawns "Culthor the Gatekeeper" (278005). Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper".
+128. nedaria/"Smith Dandi", hand "Smoldering Embers of Solusek" (52346). Sets `Fatestealer_forge` to `1`.
+129. Spawns "a Teir'Dal guardian" (186190) in `hateplaneb` on event death_complete:186114.
+130. Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
+131. 5 alternative loot source(s) also yield Soulstone of Lanys (52337).
+132. nedaria/"Lirprin, Head Of Affairs", hand "Soulstone of Lanys" (52337). Requires `Fatestealer_bard` ==1. Requires `Fatestealer_page` ==1. Requires `Fatestealer_forge` ==1. Gives "Fatestealer" (52347).
 
 ### "Strongbox Half Full of Velixite" (52342)
 
-1. Loot "Signed Agreement" (10246) from "Lythe Songbird" in `freeporteast`.
-2. Loot "Signed Agreement" (10246) from "Lythe Songbird" in `freportw`.
-3. overthere/"Inem R'Ker", hand "Signed Agreement" (10246). Sets `Fatestealer_lyt` to `1`.
-4. Loot "Signed Agreement" (10239) from "Seana Marsinger" in `gfaydark`.
-5. Loot "Signed Agreement" (52416) from "Stefan Marsinger" in `gfaydark`.
-6. overthere/"Inem R'Ker", hand "Signed Agreement" (10239) + "Signed Agreement" (52416). Sets `Fatestealer_mar` to `1`.
-7. Loot "Signed Agreement" (10243) from "Galdorin Visigothe" in `abysmal`.
-8. overthere/"Inem R'Ker", hand "Signed Agreement" (10243). Sets `Fatestealer_gal` to `1`.
-9. overthere/"Inem R'Ker", hand "Signed Agreement" (10243). Sets `Fatestealer_bard` to `1`.
-10. Say "Event:Death Complete:186114" to hateplaneb/"Rogue 1 5".
-11. Spawns "a Teir'Dal guardian" (186190).
-12. Loot "Stack of Pages" (52335) from "a Teir'Dal guardian".
-13. Say "Event:Death Complete:186100" to hateplaneb/"Rogue 1 5".
-14. Say "Event:Death Complete:186112" to hateplaneb/"Rogue 1 5".
-15. Say "Event:Death Complete:186116" to hateplaneb/"Rogue 1 5".
-16. 2 other loot steps also yield Stack of Pages (52335).
-17. steamfont/"Yendar Starpyre", hand "Stack of Pages" (52335). Sets `Fatestealer_page` to `1`.
-18. Hand "Crystallized Shard of Doomfire" (21339) + "Igneous Rock of Doomfire" (21340) + "Pile of Doomfire Ash" (21341) + "Foul Doomfire Brimstone" (21342) to soldungc/"The Firewatcher". Spawns "Culthor the Gatekeeper" (278005). Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper".
-19. Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper" in `soldungc`.
-20. nedaria/"Smith Dandi", hand "Smoldering Embers of Solusek" (52346). Sets `Fatestealer_forge` to `1`.
-21. Say "Event:Death Complete:186114" to hateplaneb/"Rogue 1 5".
-22. Spawns "a Teir'Dal guardian" (186190).
-23. Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
-24. Say "Event:Death Complete:186100" to hateplaneb/"Rogue 1 5".
-25. Say "Event:Death Complete:186112" to hateplaneb/"Rogue 1 5".
-26. Say "Event:Death Complete:186116" to hateplaneb/"Rogue 1 5".
-27. 2 other loot steps also yield Soulstone of Lanys (52337).
-28. nedaria/"Lirprin, Head Of Affairs", hand "Soulstone of Lanys" (52337). Requires `Fatestealer_bard` ==1. Requires `Fatestealer_page` ==1. Requires `Fatestealer_forge` ==1. Gives "Fatestealer" (52347).
-29. nedaria/"Lirprin, Head Of Affairs", say "Hail". Sets `Fatestealer` to `3`.
-30. Requires `rogue_epic_iceclad` unset; no setter establishes this state.
-31. iceclad/"Lookout Larithim", say "What Happened Then". Requires `Fatestealer` ==3. Requires `rogue_epic_iceclad` unset. Gives "Air-Tight Strongbox" (52339).
-32. Say "What Happened Then" to iceclad/"Lookout Larithim".
-33. Spawns "Polar Kraken" (110131).
-34. Loot "Lump of Raw Alloy" (52340) from "Polar Kraken".
-35. Combine in "Air-Tight Strongbox" (52339): "Lump of Raw Alloy" (52340). Produces "Strongbox Full of Alloy" (52341). The combine does not fail.
-36. iceclad/"Lookout Larithim", hand "Strongbox Full of Alloy" (52341). Gives "Strongbox Half Full of Velixite" (52342).
+1. Loot "Bayle List I" (18808) from "Mutt Rootlit" in `highpass`.
+2. qrg/"Gerael Woodone", say "Deliver A Flask". Gives "Flask of Nitrates" (13945).
+3. akanon/"Kimble Nogflop", hand "Flask of Nitrates" (13945). Gives "Regurgitonic" (12140).
+4. qrg/"Mammoth", hand "Regurgitonic" (12140). Gives "Bayle List II" (18809).
+5. Loot "Bayle List III" (18810) from "Dyllin Starsine" in `highpass`.
+6. Loot "Bayle List III" (18810) from "Dyllin Starsine" in `highpasshold`.
+7. southro/"Rathmana Allin", hand "Bayle List I" (18808) + "Bayle List II" (18809) + "Bayle List III" (18810). Gives "Translated Parchment" (18961).
+8. highpass/"Stanos Herkanor", hand "Translated Parchment" (18961). Gives "Sealed Box" (28057).
+9. Kill wakening/"A Tar Goo". Spawns "A Tar Goo" (119122).
+10. Loot "Oily Goo Secretion" (11637) from "A Tar Goo".
+11. 1 alternative loot source(s) also yield Oily Goo Secretion (11637).
+12. bazaar/"Caerlyna", hand "Vale Sewing Kit" (92882). Gives "Vale Sewing Kit Token" (56884).
+13. bazaar/"Caerlyna", hand "Vale Sewing Kit Token" (56884). Gives "Vale Sewing Kit" (92882).
+14. Common item: Needle Mold (12019). Listed in 32 zones.
+15. Common item: Thimble Mold (12057). Listed in 32 zones.
+16. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+17. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+18. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+19. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+20. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+21. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+22. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+23. Say "Tm Devrak Death" to rujd/"Rujd".
+24. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
+25. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
+26. 6 alternative loot source(s) also yield Pod of Water (13044).
+27. Forage "Pod of Water" (13044) in `ruja`.
+28. Forage "Pod of Water" (13044) in `uqua`.
+29. Forage "Pod of Water" (13044) in `yxtta`.
+30. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+31. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+32. 17 other recipes also produce Bottle (16598).
+33. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+34. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
+35. Combine in Forge (17): "Smithing Chisel" (7052), "Small Brick of High Quality Ore" (10468). Hands back "Smithing Chisel" (7052). Produces "Small Piece of High Quality Ore" (22229) x2. Requires Blacksmithing, trivial 27.
+36. 4 other recipes also produce Small Piece of High Quality Ore (22229).
+37. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
+38. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
+39. Loot "Crystalline Silk" (25306) from "A Crystal Grinder" (NPC 121089) in `crystal`. Drop cache: 100% chance per kill.
+40. Combine in "Vale Sewing Kit" (92882): "Crystalline Silk" (25306). Produces "Crystalline Silk Mesh" (11636). Requires Tailoring, trivial 68.
+41. skyshrine/"Iago Sabuela", hand "Crystalline Silk Mesh" (11636) + "Oily Goo Secretion" (11637). Gives "Empty Artifact Container" (17167).
+42. Loot "Crystal Dragon Eye" (11638) from "An Ice Paw Sorcerer" in `velketor`.
+43. Loot "Golden Dragon Claw" (11639) from "A Chetari Runemage" in `necropolis`.
+44. Loot "Platinum Dragon Scale" (11640) from "A Siren Sorceress" in `sirens`.
+45. Loot "Rodrick's Head" (1045) from "Rodrick Tardok".
+46. Loot "Rodrick's Head" (1045) from "Rodrick Tardok" in `eastwastes`.
+47. Spawns "Poxbreath Yellowfang" (116566) in `eastwastes` on event_signal.
+48. Loot "Note from Kromrif" (18084) from "Poxbreath Yellowfang".
+49. Spawns "Scarbrow Ga'Hruk" (116568) in `eastwastes` on event_signal.
+50. Loot "Head of Scarbrow" (30141) from "Scarbrow Ga'Hruk".
+51. Say "Help" to eastwastes/"Tain Hammerfrost".
+52. Spawns "Ghrek Squatnot" (116560).
+53. Loot "Frozen Elixir" (30138) from "Ghrek Squatnot".
+54. eastwastes/"Tain Hammerfrost", hand "Frozen Elixir" (30138). Gives "Coldain Smithing Hammer" (30140).
+55. Spawns "Rabid Tundra Kodiak" (116545) in `eastwastes` on event_waypoint_arrive.
+56. Loot "Rabid Kodiak Skin" (30266) from "Rabid Tundra Kodiak".
+57. eastwastes/"Boridain Glacierbane", hand "Rabid Kodiak Skin" (30266). Gives "Broken Axe" (30267).
+58. iceclad/"A Lost Pirate", say "I Will Find The Parts". Gives "Map Binding" (17053).
+59. Loot "First part of an Iceclad Map" (30043) from "Dire Wolf Stalker" in `iceclad`.
+60. Loot "Second part of an Iceclad Map" (30044) from "Stormfeather" in `iceclad`.
+61. Loot "Second part of an Iceclad Map" (30044) from "The Fabled Stormfeather".
+62. greatdivide/"Bloody Gnome Captive", say "Map". Gives "Third part of an Iceclad Map" (30045).
+63. Loot "Fourth part of an Iceclad Map" (30073) from "Lodizal" in `iceclad`.
+64. Loot "Fourth part of an Iceclad Map" (30073) from "The Fabled Lodizal".
+65. Combine in "Map Binding" (17053): "First part of an Iceclad Map" (30043), "Second part of an Iceclad Map" (30044), "Third part of an Iceclad Map" (30045), "Fourth part of an Iceclad Map" (30073). Produces "Pieces of the Iceclad Map" (30046). The combine does not fail.
+66. Hand "Pieces of the Iceclad Map" (30046) to iceclad/"A Lost Pirate". Spawns "Rabid Snow Cougar Does Not Exist Using Regular For Now" (116008). Loot "High Quality Cougarskin" (30030) from "Rabid Snow Cougar Does Not Exist Using Regular For Now".
+67. Loot "High Quality Tundra Kodiak Pelt" (30077) from "A Tundra Kodiak" (NPC 116044) in `eastwastes`. Drop cache: 3.91% chance per kill.
+68. Combine in "Vale Sewing Kit" (92882): "High Quality Cougarskin" (30030), "High Quality Tundra Kodiak Pelt" (30077). Produces "Coldain Hunting Blanket" (30135). Requires Tailoring, trivial 41.
+69. eastwastes/"Garadain Glacierbane", hand "Coldain Hunting Blanket" (30135). Gives "Copper Coldain Insignia Ring" (30131).
+70. eastwastes/"Garadain Glacierbane", hand "Copper Coldain Insignia Ring" (30131) + "Broken Axe" (30267). Gives "Silver Coldain Insignia Ring" (30133).
+71. Ground spawn of "Skinning Rock" (30062) in `eastwastes`.
+72. Loot "Wooly Rhino Horn" (30088) from "A Wooly Rhino" (NPC 116033) in `eastwastes`. Drop cache: 20% chance per kill.
+73. Loot "High Quality Walrus Hide" (30096) from "A Walrus" (NPC 116065) in `eastwastes`. Drop cache: 14.1% chance per kill.
+74. Combine in Forge (17): "Skinning Rock" (30062), "Wooly Rhino Horn" (30088), "High Quality Walrus Hide" (30096). Produces "Coldain Hunting Knife" (30137). Requires Blacksmithing, trivial 41.
+75. eastwastes/"Garadain Glacierbane", hand "Silver Coldain Insignia Ring" (30133) + "Coldain Hunting Knife" (30137). Gives "Gold Coldain Insignia Ring" (30132).
+76. eastwastes/"Garadain Glacierbane", hand "Gold Coldain Insignia Ring" (30132) + "Coldain Smithing Hammer" (30140). Gives "Platinum Coldain Insignia Ring" (30134).
+77. eastwastes/"Garadain Glacierbane", hand "Platinum Coldain Insignia Ring" (30134) + "Head of Scarbrow" (30141). Gives "Obsidian Coldain Insignia Ring" (30268).
+78. eastwastes/"Garadain Glacierbane", hand "Rodrick's Head" (1045) + "Note from Kromrif" (18084) + "Obsidian Coldain Insignia Ring" (30268). Gives "Mithril Coldain Insignia Ring" (30162).
+79. eastwastes/"Dobbin Crossaxe", hand "Mithril Coldain Insignia Ring" (30162). Gives "Note from Corbin" (1047).
+80. eastwastes/"Garadain Glacierbane", hand "Note from Corbin" (1047). Gives "Adamantium Coldain Insignia Ring" (30163).
+81. eastwastes/"Garadain Glacierbane", hand "Adamantium Coldain Insignia Ring" (30163). Gives "Marching Orders" (1093).
+82. Hand "Marching Orders" (1093) to eastwastes/"Gloradin Coldheart". Spawns "Oracle of Ry'Gorr" (116006). Loot "Dragon Scripture Tablet" (11651) from "Oracle of Ry'Gorr".
+83. 1 alternative loot source(s) also yield Dragon Scripture Tablet (11651).
+84. Combine in "Empty Artifact Container" (17167): "Crystal Dragon Eye" (11638), "Golden Dragon Claw" (11639), "Platinum Dragon Scale" (11640), "Dragon Scripture Tablet" (11651). Produces "Sealed Box" (28057). The combine does not fail.
+85. Hand "Sealed Box" (28057) to kithicor/"Adjutant D-Kan". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
+86. 6 alternative loot source(s) also yield General's Pouch (28013).
+87. Loot "Fleshripper" (5411) from "Solusek kobold king" in `soldungb`.
+88. Loot "Painbringer" (5410) from "Kobold Champion" in `soldungb`.
+89. Loot "Mithril Two-Handed Sword" (5401) from "The Froglok King" in `gukbottom`.
+90. Loot "Gigantic Zweihander" (5308) from "Karg IceBear" in `everfrost`.
+91. qey2hh1/"Vilnius The Small", hand "Gigantic Zweihander" (5308) + "Mithril Two-Handed Sword" (5401) + "Painbringer" (5410) + "Fleshripper" (5411). Gives "Jagged Diamond Dagger" (7506).
+92. Loot "Robe of the Ishva" (1357) from "Coercer Q'ioul" in `kithicor`.
+93. Loot "Robe of the Ishva" (1357) from "Jinalis Andir" in `cauldron`.
+94. Loot "Robe of the Ishva" (1357) from "The Ishva Mal" in `southkarana`.
+95. Loot "Robe of the Kedge" (1253) from "Kubaria" (NPC 309002) in `chambersf`. Drop cache: 100% chance per kill.
+96. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oceanoftears`.
+97. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oot`.
+98. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
+99. qey2hh1/"Vilnius The Small", hand "Robe of the Kedge" (1253) + "Robe of the Oracle" (1354) + "Robe of the Ishva" (1357) + "Shining Metallic Robes" (1360). Gives "Cazic Quill" (7505).
+100. highpass/"Stanos Herkanor", hand "Cazic Quill" (7505) + "Jagged Diamond Dagger" (7506) + "General's Pouch" (28013). Gives "Ragebringer" (11057).
+101. highpass/"Stanos Herkanor", say "Hail". Sets `Fatestealer` to `1`.
+102. Unresolved cyclic prerequisite: `Fatestealer_gal` ==1.
+103. Unresolved cyclic prerequisite: `Fatestealer_gal` ==1.
+104. Unresolved cyclic prerequisite: `Fatestealer_mar` ==1.
+105. Unresolved cyclic prerequisite: `Fatestealer_gal` ==1.
+106. Unresolved cyclic prerequisite: `Fatestealer_mar` ==1.
+107. Unresolved cyclic prerequisite: `Fatestealer_lyt` ==1.
+108. Loot "Signed Agreement" (10246) from "Lythe Songbird" in `freeporteast`.
+109. Loot "Signed Agreement" (10246) from "Lythe Songbird" in `freportw`.
+110. overthere/"Inem R'Ker", hand "Signed Agreement" (10246). Sets `Fatestealer_lyt` to `1`.
+111. Loot "Signed Agreement" (10239) from "Seana Marsinger" in `gfaydark`.
+112. Loot "Signed Agreement" (52416) from "Stefan Marsinger" in `gfaydark`.
+113. overthere/"Inem R'Ker", hand "Signed Agreement" (10239) + "Signed Agreement" (52416). Sets `Fatestealer_mar` to `1`.
+114. Loot "Signed Agreement" (10243) from "Galdorin Visigothe" in `abysmal`.
+115. overthere/"Inem R'Ker", hand "Signed Agreement" (10243). Sets `Fatestealer_gal` to `1`.
+116. overthere/"Inem R'Ker", hand "Signed Agreement" (10243). Sets `Fatestealer_bard` to `1`.
+117. Spawns "a Teir'Dal guardian" (186190) in `hateplaneb` on event death_complete:186114.
+118. Loot "Stack of Pages" (52335) from "a Teir'Dal guardian".
+119. 5 alternative loot source(s) also yield Stack of Pages (52335).
+120. steamfont/"Yendar Starpyre", hand "Stack of Pages" (52335). Sets `Fatestealer_page` to `1`.
+121. Spawns "A Furious Magma Guardian" (278123) in `soldungc` on event_signal.
+122. Loot "Crystallized Shard of Doomfire" (21339) from "A Furious Magma Guardian".
+123. 1 alternative loot source(s) also yield Crystallized Shard of Doomfire (21339).
+124. Loot "Foul Doomfire Brimstone" (21342) from "A Pool Of Living Lava" (NPC 278043) in `soldungc`. Drop cache: 15.97% chance per kill.
+125. Loot "Igneous Rock of Doomfire" (21340) from "Typhoeus" (NPC 278069) in `soldungc`. Drop cache: 35% chance per kill.
+126. Loot "Pile of Doomfire Ash" (21341) from "a Taklasinai marauder" (NPC 278075) in `soldungc`. Drop cache: 35% chance per kill.
+127. Hand "Crystallized Shard of Doomfire" (21339) + "Igneous Rock of Doomfire" (21340) + "Pile of Doomfire Ash" (21341) + "Foul Doomfire Brimstone" (21342) to soldungc/"The Firewatcher". Spawns "Culthor the Gatekeeper" (278005). Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper".
+128. nedaria/"Smith Dandi", hand "Smoldering Embers of Solusek" (52346). Sets `Fatestealer_forge` to `1`.
+129. Spawns "a Teir'Dal guardian" (186190) in `hateplaneb` on event death_complete:186114.
+130. Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
+131. 5 alternative loot source(s) also yield Soulstone of Lanys (52337).
+132. nedaria/"Lirprin, Head Of Affairs", hand "Soulstone of Lanys" (52337). Requires `Fatestealer_bard` ==1. Requires `Fatestealer_page` ==1. Requires `Fatestealer_forge` ==1. Gives "Fatestealer" (52347).
+133. nedaria/"Lirprin, Head Of Affairs", say "Hail". Sets `Fatestealer` to `3`.
+134. iceclad/"Lookout Larithim", say "What Happened Then". Requires `Fatestealer` ==3. Requires `rogue_epic_iceclad` unset. Gives "Air-Tight Strongbox" (52339).
+135. Say "What Happened Then" to iceclad/"Lookout Larithim".
+136. Spawns "Polar Kraken" (110131).
+137. Loot "Lump of Raw Alloy" (52340) from "Polar Kraken".
+138. Combine in "Air-Tight Strongbox" (52339): "Lump of Raw Alloy" (52340). Produces "Strongbox Full of Alloy" (52341). The combine does not fail.
+139. iceclad/"Lookout Larithim", hand "Strongbox Full of Alloy" (52341). Gives "Strongbox Half Full of Velixite" (52342).
 
 ### "Singing Short Sword" (20542)
 
 1. qey2hh1/"Konia Swiftfoot", say "Ready". Gives "Torch of Misty" (20532).
 2. misty/"Fajio Knejo", hand "Torch of Misty" (20532). Gives "Torch of Ro" (20533).
-3. mistythicket/"Fajio Knejo", hand "Torch of Misty" (20532). Gives "Torch of Ro" (20533).
-4. southro/"Andad Filla", hand "Torch of Ro" (20533). Gives "Torch of Rathe" (20534).
-5. sro/"Andad Filla", hand "Torch of Ro" (20533). Gives "Torch of Rathe" (20534).
-6. lakerathe/"Misty Tekcihta", hand "Torch of Rathe" (20534). Gives "Proof of Speed" (20379).
-7. qey2hh1/"Konia Swiftfoot", hand "Proof of Speed" (20379). Gives "Maestro's Symphony Page 24 Top" (20376).
-8. Hand "Note to Maligar" (20368) to qey2hh1/"Maligar". Spawns "Maligars Enraged Doppleganger" (12173). Loot "Maligar's Head" (20367) from "Maligars Enraged Doppleganger".
-9. Loot "Maligar's Head" (20367) from "Maligars Enraged Doppleganger".
-10. southkarana/"Baenar Swiftsong", hand "Maligar's Head" (20367). Gives "Mahlin's Mystical Bongos" (20366).
-11. qey2hh1/"Konia Swiftfoot", hand "Mahlin's Mystical Bongos" (20366). Gives "Maestro's Symphony Page 24 Bottom" (20383).
-12. Loot "Chromodrac Gut" (20527) from "Eldrig the Old" in `skyfire`.
-13. Loot "Red Wurm Gut" (20528) from "Nezekezena" in `burningwood`.
-14. Loot "Onyx Drake Gut" (20529) from "Blackwing".
-15. Loot "Onyx Drake Gut" (20529) from "Blackwing" in `rathemtn`.
-16. southkarana/"Kelkim Menkia", hand "Chromodrac Gut" (20527) + "Red Wurm Gut" (20528) + "Onyx Drake Gut" (20529). Gives "Maestro's Symphony Page 25" (20377).
-17. Loot "Alluring Horn" (20530) from "Quag Maelstrom" in `oceanoftears`.
-18. Loot "Alluring Horn" (20530) from "Quag Maelstrom" in `oot`.
-19. butcher/"Vedico Windwisper", hand "Alluring Horn" (20530). Gives "Note to Forpar Fizfla" (20378).
-20. steamfont/"Forpar Fizfla", hand "Note to Forpar Fizfla" (20378). Gives "Forpar's Note to Himself" (20380).
-21. steamfontmts/"Forpar Fizfla", hand "Note to Forpar Fizfla" (20378). Gives "Forpar's Note to Himself" (20380).
+3. southro/"Andad Filla", hand "Torch of Ro" (20533). Gives "Torch of Rathe" (20534).
+4. lakerathe/"Misty Tekcihta", hand "Torch of Rathe" (20534). Gives "Proof of Speed" (20379).
+5. qey2hh1/"Konia Swiftfoot", hand "Proof of Speed" (20379). Gives "Maestro's Symphony Page 24 Top" (20376).
+6. southkarana/"Baenar Swiftsong", say "Doll". Gives "Solusek Mining Company Invoice" (20372).
+7. soldunga/"Marfen Binkdirple", hand "Solusek Mining Company Invoice" (20372). Gives "Mechanical Doll" (20370).
+8. unrest/"Serra", hand "Mechanical Doll" (20370). Gives "Note for Baenar" (20371).
+9. southkarana/"Baenar Swiftsong", hand "Note for Baenar" (20371). Gives "Note to Maligar" (20368).
+10. Hand "Note to Maligar" (20368) to qey2hh1/"Maligar". Spawns "Maligars Enraged Doppleganger" (12173). Loot "Maligar's Head" (20367) from "Maligars Enraged Doppleganger".
+11. southkarana/"Baenar Swiftsong", hand "Maligar's Head" (20367). Gives "Mahlin's Mystical Bongos" (20366).
+12. qey2hh1/"Konia Swiftfoot", hand "Mahlin's Mystical Bongos" (20366). Gives "Maestro's Symphony Page 24 Bottom" (20383).
+13. Loot "Chromodrac Gut" (20527) from "Eldrig the Old" in `skyfire`.
+14. Loot "Red Wurm Gut" (20528) from "Nezekezena" in `burningwood`.
+15. Loot "Onyx Drake Gut" (20529) from "Blackwing".
+16. Loot "Onyx Drake Gut" (20529) from "Blackwing" in `rathemtn`.
+17. southkarana/"Kelkim Menkia", hand "Chromodrac Gut" (20527) + "Red Wurm Gut" (20528) + "Onyx Drake Gut" (20529). Gives "Maestro's Symphony Page 25" (20377).
+18. Loot "Alluring Horn" (20530) from "Quag Maelstrom" in `oceanoftears`.
+19. Loot "Alluring Horn" (20530) from "Quag Maelstrom" in `oot`.
+20. butcher/"Vedico Windwisper", hand "Alluring Horn" (20530). Gives "Note to Forpar Fizfla" (20378).
+21. steamfont/"Forpar Fizfla", hand "Note to Forpar Fizfla" (20378). Gives "Forpar's Note to Himself" (20380).
 22. Loot "Kedge Backbone" (20524) from "Phinigel Autropos" in `kedge`.
 23. Loot "Petrified Werewolf Skull" (20525) from "The Fabled Drolvarg Warlord".
 24. Loot "Petrified Werewolf Skull" (20525) from "a Drolvarg warlord" in `karnor`.
-25. No quest step gives Amygdalan Tendril (5520). The dump lists it in fearplane.
+25. Loot "Amygdalan Tendril" (5520) from "Amygdalan warrior" (NPC 72015) in `fearplane`. Drop cache: 8.14% chance per kill.
 26. steamfont/"Forpar Fizfla", hand "Amygdalan Tendril" (5520) + "Forpar's Note to Himself" (20380) + "Kedge Backbone" (20524) + "Petrified Werewolf Skull" (20525). Gives "Mystical Lute Head" (20535).
-27. steamfontmts/"Forpar Fizfla", hand "Amygdalan Tendril" (5520) + "Forpar's Note to Himself" (20380) + "Kedge Backbone" (20524) + "Petrified Werewolf Skull" (20525). Gives "Mystical Lute Head" (20535).
-28. Loot "White Dragon Scales" (11602) from "Gorenaire" in `dreadlands`.
-29. Loot "White Dragon Scales" (11602) from "Lady Vox" in `permafrost`.
-30. Loot "White Dragon Scales" (11602) from "The Fabled Gorenaire".
-31. Loot "Red Dragon Scales" (11622) from "Echo of Nortlav" in `hole`.
-32. Loot "Red Dragon Scales" (11622) from "Lord Nagafen" in `soldungb`.
-33. Loot "Red Dragon Scales" (11622) from "Melalafen" in `westwastes`.
-34. Loot "Red Dragon Scales" (11622) from "Talendor" in `skyfire`.
-35. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
-36. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
-37. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
-38. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-39. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-40. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-41. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-42. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-43. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-44. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-45. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-46. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-47. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-48. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-49. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-50. Say "Tm Devrak Death" to rujd/"Rujd".
-51. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-52. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-53. Say "Tm Dokorel Death" to rujd/"Rujd".
-54. Say "Tm Velrek Death" to rujd/"Rujd".
-55. Say "Event:Death Complete:260061" to rujg/"Rujg".
-56. Spawns "A Barrel" (260015).
-57. Loot "Pod of Water" (13044) from "A Barrel".
-58. 3 other loot steps also yield Pod of Water (13044).
-59. Forage "Pod of Water" (13044) in `ruja`.
-60. Forage "Pod of Water" (13044) in `uqua`.
-61. Forage "Pod of Water" (13044) in `yxtta`.
-62. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-63. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-64. 17 other recipes also produce Bottle (16598).
-65. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-66. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
-67. steamfont/"Forpar Fizfla", hand "White Dragon Scales" (11602) + "Red Dragon Scales" (11622) + "Metal Bits" (16905). Gives "Mystical Lute Body" (20536).
-68. steamfontmts/"Forpar Fizfla", hand "White Dragon Scales" (11602) + "Red Dragon Scales" (11622) + "Metal Bits" (16905). Gives "Mystical Lute Body" (20536).
-69. Kill sebilis/"An Undead Bard". Spawns "Trakanon" (89181).
-70. Loot "Undead Dragongut Strings" (20526) from "Trakanon".
-71. steamfont/"Forpar Fizfla", hand "Undead Dragongut Strings" (20526) + "Mystical Lute Head" (20535) + "Mystical Lute Body" (20536). Gives "Mystical Lute" (20538).
-72. steamfontmts/"Forpar Fizfla", hand "Undead Dragongut Strings" (20526) + "Mystical Lute Head" (20535) + "Mystical Lute Body" (20536). Gives "Mystical Lute" (20538).
-73. dreadlands/"Baldric Slezaf", hand "Maestro's Symphony Page 24 Top" (20376) + "Maestro's Symphony Page 25" (20377) + "Maestro's Symphony Page 24 Bottom" (20383) + "Mystical Lute" (20538). Gives "Singing Short Sword" (20542).
+27. Loot "White Dragon Scales" (11602) from "Gorenaire" in `dreadlands`.
+28. Loot "White Dragon Scales" (11602) from "Lady Vox" in `permafrost`.
+29. Loot "White Dragon Scales" (11602) from "The Fabled Gorenaire".
+30. Loot "Red Dragon Scales" (11622) from "Echo of Nortlav" in `hole`.
+31. Loot "Red Dragon Scales" (11622) from "Lord Nagafen" in `soldungb`.
+32. Loot "Red Dragon Scales" (11622) from "Melalafen" in `westwastes`.
+33. Loot "Red Dragon Scales" (11622) from "Talendor" in `skyfire`.
+34. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
+35. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
+36. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
+37. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+38. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+39. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+40. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+41. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+42. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+43. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+44. Say "Tm Devrak Death" to rujd/"Rujd".
+45. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
+46. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
+47. 6 alternative loot source(s) also yield Pod of Water (13044).
+48. Forage "Pod of Water" (13044) in `ruja`.
+49. Forage "Pod of Water" (13044) in `uqua`.
+50. Forage "Pod of Water" (13044) in `yxtta`.
+51. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+52. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+53. 17 other recipes also produce Bottle (16598).
+54. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+55. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
+56. steamfont/"Forpar Fizfla", hand "White Dragon Scales" (11602) + "Red Dragon Scales" (11622) + "Metal Bits" (16905). Gives "Mystical Lute Body" (20536).
+57. Kill sebilis/"An Undead Bard". Spawns "Trakanon" (89181).
+58. Loot "Undead Dragongut Strings" (20526) from "Trakanon".
+59. steamfont/"Forpar Fizfla", hand "Undead Dragongut Strings" (20526) + "Mystical Lute Head" (20535) + "Mystical Lute Body" (20536). Gives "Mystical Lute" (20538).
+60. dreadlands/"Baldric Slezaf", hand "Maestro's Symphony Page 24 Top" (20376) + "Maestro's Symphony Page 25" (20377) + "Maestro's Symphony Page 24 Bottom" (20383) + "Mystical Lute" (20538). Gives "Singing Short Sword" (20542).
 
 ### "Wind Dragon Prism" (77618)
 
-1. No quest step gives Dragorn Blood (77639). The dump lists it in causeway, wallofslaughter.
+1. Loot "Dragorn Blood" (77639) from "A Dragorn Serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.52% chance per kill.
 2. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
 3. Summon "Cloudy Diamond of Air" (29989) by casting "Imbue Air".
 4. Forage "Wind Dragon Crystal" (12783) in `skyfire`.
@@ -209,7 +461,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Fire Dragon Prism" (77619)
 
-1. No quest step gives Dragorn Blood (77639). The dump lists it in causeway, wallofslaughter.
+1. Loot "Dragorn Blood" (77639) from "A Dragorn Serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.52% chance per kill.
 2. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
 3. Summon "Red Diamond of Fire" (29986) by casting "Imbue Fire".
 4. Forage "Fire Dragon Crystal" (12487) in `skyfire`.
@@ -217,7 +469,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Water Dragon Prism" (77620)
 
-1. No quest step gives Dragorn Blood (77639). The dump lists it in causeway, wallofslaughter.
+1. Loot "Dragorn Blood" (77639) from "A Dragorn Serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.52% chance per kill.
 2. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
 3. Summon "Aqua Diamond of Water" (29987) by casting "Imbue Water".
 4. Forage "Ice Dragon Crystal" (12781) in `skyfire`.
@@ -225,7 +477,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Earth Dragon Prism" (77621)
 
-1. No quest step gives Dragorn Blood (77639). The dump lists it in causeway, wallofslaughter.
+1. Loot "Dragorn Blood" (77639) from "A Dragorn Serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.52% chance per kill.
 2. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
 3. Summon "Brown Diamond of Earth" (29988) by casting "Imbue Earth".
 4. Forage "Earth Dragon Crystal" (12782) in `skyfire`.
@@ -233,7 +485,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Swamp Dragon Prism" (77622)
 
-1. No quest step gives Dragorn Blood (77639). The dump lists it in causeway, wallofslaughter.
+1. Loot "Dragorn Blood" (77639) from "A Dragorn Serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.52% chance per kill.
 2. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
 3. Summon "Green Diamond of Disease" (30118) by casting "Imbue Disease".
 4. Spawns "A Swamp Dragon" (83249) in `swampofnohope` on event_hp.
@@ -242,7 +494,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Plains Dragon Prism" (77623)
 
-1. No quest step gives Dragorn Blood (77639). The dump lists it in causeway, wallofslaughter.
+1. Loot "Dragorn Blood" (77639) from "A Dragorn Serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.52% chance per kill.
 2. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
 3. Summon "Gray Diamond of Storms" (29991) by casting "Imbue Storm".
 4. Spawns "A Plains Dragon" (13130) in `northkarana` on event_hp.
@@ -251,7 +503,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Forest Dragon Prism" (77624)
 
-1. No quest step gives Dragorn Blood (77639). The dump lists it in causeway, wallofslaughter.
+1. Loot "Dragorn Blood" (77639) from "A Dragorn Serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.52% chance per kill.
 2. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
 3. Summon "Yellow Diamond of Valor" (30489) by casting "Imbue Valor".
 4. Spawns "A Forest Dragon" (181224) in `jaggedpine` on event_hp.
@@ -260,7 +512,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Mountain Dragon Prism" (77625)
 
-1. No quest step gives Dragorn Blood (77639). The dump lists it in causeway, wallofslaughter.
+1. Loot "Dragorn Blood" (77639) from "A Dragorn Serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.52% chance per kill.
 2. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
 3. Summon "White Diamond of Justice" (29494) by casting "Imbue Justice".
 4. Spawns "A Mountain Dragon" (100227) in `stonebrunt` on event_hp.
@@ -269,40 +521,39 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Draconic Prism" (77628)
 
-1. Say "Event:Death Complete:20291" to kithicor/"Cloaked".
-2. Spawns "A Shadow Thief" (20292).
-3. Loot "Crest of Rizlona" (77626) from "A Shadow Thief".
-4. No quest step gives Dragorn Blood (77639). The dump lists it in causeway, wallofslaughter.
-5. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
-6. Summon "Cloudy Diamond of Air" (29989) by casting "Imbue Air".
-7. Forage "Wind Dragon Crystal" (12783) in `skyfire`.
-8. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Cloudy Diamond of Air" (29989), "Wind Dragon Crystal" (12783). Produces "Wind Dragon Prism" (77618). Requires Jewelry Making. The combine does not fail.
-9. Summon "Red Diamond of Fire" (29986) by casting "Imbue Fire".
-10. Forage "Fire Dragon Crystal" (12487) in `skyfire`.
-11. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Red Diamond of Fire" (29986), "Fire Dragon Crystal" (12487). Produces "Fire Dragon Prism" (77619). Requires Jewelry Making. The combine does not fail.
-12. Summon "Aqua Diamond of Water" (29987) by casting "Imbue Water".
-13. Forage "Ice Dragon Crystal" (12781) in `skyfire`.
-14. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Aqua Diamond of Water" (29987), "Ice Dragon Crystal" (12781). Produces "Water Dragon Prism" (77620). Requires Jewelry Making. The combine does not fail.
-15. Summon "Brown Diamond of Earth" (29988) by casting "Imbue Earth".
-16. Forage "Earth Dragon Crystal" (12782) in `skyfire`.
-17. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Brown Diamond of Earth" (29988), "Earth Dragon Crystal" (12782). Produces "Earth Dragon Prism" (77621). Requires Jewelry Making. The combine does not fail.
-18. Summon "Green Diamond of Disease" (30118) by casting "Imbue Disease".
-19. Spawns "A Swamp Dragon" (83249) in `swampofnohope` on event_hp.
-20. Loot "Swamp Dragon Crystal" (77614) from "A Swamp Dragon".
-21. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Green Diamond of Disease" (30118), "Swamp Dragon Crystal" (77614). Produces "Swamp Dragon Prism" (77622). Requires Jewelry Making. The combine does not fail.
-22. Summon "Gray Diamond of Storms" (29991) by casting "Imbue Storm".
-23. Spawns "A Plains Dragon" (13130) in `northkarana` on event_hp.
-24. Loot "Plains Dragon Crystal" (77615) from "A Plains Dragon".
-25. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Gray Diamond of Storms" (29991), "Plains Dragon Crystal" (77615). Produces "Plains Dragon Prism" (77623). Requires Jewelry Making. The combine does not fail.
-26. Summon "Yellow Diamond of Valor" (30489) by casting "Imbue Valor".
-27. Spawns "A Forest Dragon" (181224) in `jaggedpine` on event_hp.
-28. Loot "Forest Dragon Crystal" (77616) from "A Forest Dragon".
-29. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Yellow Diamond of Valor" (30489), "Forest Dragon Crystal" (77616). Produces "Forest Dragon Prism" (77624). Requires Jewelry Making. The combine does not fail.
-30. Summon "White Diamond of Justice" (29494) by casting "Imbue Justice".
-31. Spawns "A Mountain Dragon" (100227) in `stonebrunt` on event_hp.
-32. Loot "Mountain Dragon Crystal" (77617) from "A Mountain Dragon".
-33. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "White Diamond of Justice" (29494), "Mountain Dragon Crystal" (77617). Produces "Mountain Dragon Prism" (77625). Requires Jewelry Making. The combine does not fail.
-34. Combine in "Crest of Rizlona" (77626): "Wind Dragon Prism" (77618), "Fire Dragon Prism" (77619), "Water Dragon Prism" (77620), "Earth Dragon Prism" (77621), "Swamp Dragon Prism" (77622), "Plains Dragon Prism" (77623), "Forest Dragon Prism" (77624), "Mountain Dragon Prism" (77625). Produces "Draconic Prism" (77628). The combine does not fail.
+1. Spawns "A Shadow Thief" (20292) in `kithicor` on event death_complete:20291.
+2. Loot "Crest of Rizlona" (77626) from "A Shadow Thief".
+3. Loot "Dragorn Blood" (77639) from "A Dragorn Serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.52% chance per kill.
+4. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
+5. Summon "Cloudy Diamond of Air" (29989) by casting "Imbue Air".
+6. Forage "Wind Dragon Crystal" (12783) in `skyfire`.
+7. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Cloudy Diamond of Air" (29989), "Wind Dragon Crystal" (12783). Produces "Wind Dragon Prism" (77618). Requires Jewelry Making. The combine does not fail.
+8. Summon "Red Diamond of Fire" (29986) by casting "Imbue Fire".
+9. Forage "Fire Dragon Crystal" (12487) in `skyfire`.
+10. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Red Diamond of Fire" (29986), "Fire Dragon Crystal" (12487). Produces "Fire Dragon Prism" (77619). Requires Jewelry Making. The combine does not fail.
+11. Summon "Aqua Diamond of Water" (29987) by casting "Imbue Water".
+12. Forage "Ice Dragon Crystal" (12781) in `skyfire`.
+13. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Aqua Diamond of Water" (29987), "Ice Dragon Crystal" (12781). Produces "Water Dragon Prism" (77620). Requires Jewelry Making. The combine does not fail.
+14. Summon "Brown Diamond of Earth" (29988) by casting "Imbue Earth".
+15. Forage "Earth Dragon Crystal" (12782) in `skyfire`.
+16. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Brown Diamond of Earth" (29988), "Earth Dragon Crystal" (12782). Produces "Earth Dragon Prism" (77621). Requires Jewelry Making. The combine does not fail.
+17. Summon "Green Diamond of Disease" (30118) by casting "Imbue Disease".
+18. Spawns "A Swamp Dragon" (83249) in `swampofnohope` on event_hp.
+19. Loot "Swamp Dragon Crystal" (77614) from "A Swamp Dragon".
+20. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Green Diamond of Disease" (30118), "Swamp Dragon Crystal" (77614). Produces "Swamp Dragon Prism" (77622). Requires Jewelry Making. The combine does not fail.
+21. Summon "Gray Diamond of Storms" (29991) by casting "Imbue Storm".
+22. Spawns "A Plains Dragon" (13130) in `northkarana` on event_hp.
+23. Loot "Plains Dragon Crystal" (77615) from "A Plains Dragon".
+24. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Gray Diamond of Storms" (29991), "Plains Dragon Crystal" (77615). Produces "Plains Dragon Prism" (77623). Requires Jewelry Making. The combine does not fail.
+25. Summon "Yellow Diamond of Valor" (30489) by casting "Imbue Valor".
+26. Spawns "A Forest Dragon" (181224) in `jaggedpine` on event_hp.
+27. Loot "Forest Dragon Crystal" (77616) from "A Forest Dragon".
+28. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Yellow Diamond of Valor" (30489), "Forest Dragon Crystal" (77616). Produces "Forest Dragon Prism" (77624). Requires Jewelry Making. The combine does not fail.
+29. Summon "White Diamond of Justice" (29494) by casting "Imbue Justice".
+30. Spawns "A Mountain Dragon" (100227) in `stonebrunt` on event_hp.
+31. Loot "Mountain Dragon Crystal" (77617) from "A Mountain Dragon".
+32. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "White Diamond of Justice" (29494), "Mountain Dragon Crystal" (77617). Produces "Mountain Dragon Prism" (77625). Requires Jewelry Making. The combine does not fail.
+33. Combine in "Crest of Rizlona" (77626): "Wind Dragon Prism" (77618), "Fire Dragon Prism" (77619), "Water Dragon Prism" (77620), "Earth Dragon Prism" (77621), "Swamp Dragon Prism" (77622), "Plains Dragon Prism" (77623), "Forest Dragon Prism" (77624), "Mountain Dragon Prism" (77625). Produces "Draconic Prism" (77628). The combine does not fail.
 
 ## `bardPQ`
 
@@ -363,7 +614,6 @@ How the items are reached:
 
 - Sealed Letter (77602)
   - Hand "Kromzek Supply Orders" (77601) to wakening/"Lantaric-Dar". Spawns "Cristoc Bonethug" (119182). Loot "Sealed Letter" (77602) from "Cristoc Bonethug".
-  - Loot "Sealed Letter" (77602) from "Cristoc Bonethug".
 
 ### 4. vas thorel — hand 77603
 
@@ -383,7 +633,6 @@ How the items are reached:
 - Sealed Kromzek Scroll (77603)
   - Say "Lantaric" to iceclad/"Vas Thorel".
   - Spawns "Noble Oldencamp" (110123).
-  - Loot "Sealed Kromzek Scroll" (77603) from "Noble Oldencamp".
   - Loot "Sealed Kromzek Scroll" (77603) from "Noble Oldencamp".
 
 ### Steps on `bardPQ` that do not change it
@@ -463,6 +712,8 @@ How the items are reached:
 - Ragebringer (11057)
   - Prerequisite: "Ragebringer" (11057). See section 0.
 
+Alternative or repeat transition to `Fatestealer` = `1` (not an additional required stage).
+
 ##### 1. stanos herkanor — say hail
 
 Zone: `highpasshold`.
@@ -501,20 +752,9 @@ In script order:
 How the items are reached:
 
 - Soulstone of Lanys (52337)
-  - Say "Event:Death Complete:186114" to hateplaneb/"Rogue 1 5".
-  - Spawns "a Teir'Dal guardian" (186190).
+  - Spawns "a Teir'Dal guardian" (186190) in `hateplaneb` on event death_complete:186114.
   - Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
-  - Say "Event:Death Complete:186100" to hateplaneb/"Rogue 1 5".
-  - Spawns "a Teir'Dal guardian" (186190).
-  - Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
-  - Say "Event:Death Complete:186112" to hateplaneb/"Rogue 1 5".
-  - Spawns "a Teir'Dal guardian" (186190).
-  - Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
-  - Say "Event:Death Complete:186116" to hateplaneb/"Rogue 1 5".
-  - Spawns "a Teir'Dal guardian" (186190).
-  - Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
-  - 2 other loot steps also yield Soulstone of Lanys (52337).
-  - Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian".
+  - 5 alternative loot source(s) also yield Soulstone of Lanys (52337).
 
 This step also depends on `Fatestealer_bard`, shown above.
 
@@ -539,20 +779,9 @@ In script order:
 How the items are reached:
 
 - Stack of Pages (52335)
-  - Say "Event:Death Complete:186114" to hateplaneb/"Rogue 1 5".
-  - Spawns "a Teir'Dal guardian" (186190).
+  - Spawns "a Teir'Dal guardian" (186190) in `hateplaneb` on event death_complete:186114.
   - Loot "Stack of Pages" (52335) from "a Teir'Dal guardian".
-  - Say "Event:Death Complete:186100" to hateplaneb/"Rogue 1 5".
-  - Spawns "a Teir'Dal guardian" (186190).
-  - Loot "Stack of Pages" (52335) from "a Teir'Dal guardian".
-  - Say "Event:Death Complete:186112" to hateplaneb/"Rogue 1 5".
-  - Spawns "a Teir'Dal guardian" (186190).
-  - Loot "Stack of Pages" (52335) from "a Teir'Dal guardian".
-  - Say "Event:Death Complete:186116" to hateplaneb/"Rogue 1 5".
-  - Spawns "a Teir'Dal guardian" (186190).
-  - Loot "Stack of Pages" (52335) from "a Teir'Dal guardian".
-  - 2 other loot steps also yield Stack of Pages (52335).
-  - Loot "Stack of Pages" (52335) from "a Teir'Dal guardian".
+  - 5 alternative loot source(s) also yield Stack of Pages (52335).
 
 ###### Steps on `Fatestealer_page` that do not change it
 
@@ -586,7 +815,6 @@ How the items are reached:
 
 - Smoldering Embers of Solusek (52346)
   - Hand "Crystallized Shard of Doomfire" (21339) + "Igneous Rock of Doomfire" (21340) + "Pile of Doomfire Ash" (21341) + "Foul Doomfire Brimstone" (21342) to soldungc/"The Firewatcher". Spawns "Culthor the Gatekeeper" (278005). Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper".
-  - Loot "Smoldering Embers of Solusek" (52346) from "Culthor the Gatekeeper" in `soldungc`.
 
 This step also depends on `Fatestealer_bard`, shown above.
 
@@ -689,24 +917,11 @@ How the items are reached:
   - Say "Check Lorb" to anguish/"Zone Status".
   - Spawns "Orb of Discordant Energy" (317087).
   - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-  - Say "Check Lorb" to anguish/"Zone Status".
-  - Spawns "Orb of Discordant Energy" (317087).
-  - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-  - Say "Check Uorb" to anguish/"Zone Status".
-  - Spawns "Orb of Discordant Energy" (317087).
-  - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-  - Say "Check Amv Chest" to anguish/"Zone Status".
-  - Spawns "Ornate Chest" (317112).
-  - Loot "Globe of Discordant Energy" (47100) from "Ornate Chest".
-  - 2 other loot steps also yield Globe of Discordant Energy (47100).
-  - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" in `anguish`.
-  - Loot "Globe of Discordant Energy" (47100) from "Ornate Chest".
-  - Loot "Globe of Discordant Energy" (47100) from "Overlords Chest".
+  - 4 alternative loot source(s) also yield Globe of Discordant Energy (47100).
 - Strongbox Half Full of Velixite (52342)
   - Prerequisite: "Strongbox Half Full of Velixite" (52342). See section 0.
 - Wren's Fatestealer (21346)
   - Spawns "Wren Simsy" (336253) in `dranik` on kill.
-  - Loot "Wren's Fatestealer" (21346) from "Wren Simsy".
   - Loot "Wren's Fatestealer" (21346) from "Wren Simsy".
 - Fatestealer (52347)
   - Prerequisite: "Fatestealer" (52347). See section 0.
@@ -735,6 +950,8 @@ How the items are reached:
   - Loots Fine Steel Dagger (7350).
   - Loots Wren's Fatestealer (21346).
   - Loots Versluierd Fungus (35087).
+- `firiona` vorla diensk, say come in needs `Fatestealer` ==1.
+  - Gives Occluded Sun Pendant (52009).
 - `halas` elyn connoy, hand 52353 needs `Fatestealer` ==1.
   - Sets `Fatestealer_hl` to `1`.
   - Sets `Fatestealer_gem` to `1`.
@@ -887,6 +1104,8 @@ How the items are reached:
 - `oasis` a wayward kiraikuei, hand 9599 needs `Fatestealer` ==1.
   - Turn in Pulsating Blue Metal Sphere (9599).
   - Gives Pulsating Blue Metal Sphere (9599).
+- `overthere` inem r`ker, say change their tune needs `Fatestealer` ==1.
+  - Gives Notice to Cease and Desist (9590).
 - `overthere` inem r`ker, hand 10239+52416 needs `Fatestealer` ==1.
   - Sets `Fatestealer_mar` to `1`.
   - Sets `Fatestealer_bard` to `1`.
@@ -917,6 +1136,8 @@ How the items are reached:
   - Sets `Fatestealer_rv` to `1`.
   - Sets `Fatestealer_gem` to `1`.
   - Turn in Pouch of Gems (52353).
+- `rivervale` lendel deeppockets, say small job needs `Fatestealer` ==1.
+  - Gives Jumjum Twist Recipe (52333).
 - `sharvahl` master taruun rakutah, hand 52353 needs `Fatestealer` ==1.
   - Sets `Fatestealer_sv` to `1`.
   - Sets `Fatestealer_gem` to `1`.
@@ -924,6 +1145,8 @@ How the items are reached:
 - `sharvahl` master taruun rakutah, hand 9491 needs `Fatestealer` ==1.
   - Sets `Fatestealer_sv` to `1`.
   - Turn in King's Feast (9491).
+- `sharvahl` master taruun rakutah, say small task needs `Fatestealer` ==1.
+  - Gives King's Feast Request (52334).
 
 Subquest `Fatestealer_gal`:
 
@@ -1075,6 +1298,8 @@ This step also depends on `Fatestealer_mar`, shown above.
 
 This step also depends on `Fatestealer_lyt`, shown above.
 
+Alternative or repeat transition to `Fatestealer_bard` = `1` (not an additional required stage).
+
 ### 1. inem r`ker — hand 10243
 
 Zone: `overthere`.
@@ -1105,6 +1330,8 @@ This step also depends on `Fatestealer_gal`, shown above.
 This step also depends on `Fatestealer_mar`, shown above.
 
 This step also depends on `Fatestealer_lyt`, shown above.
+
+Alternative or repeat transition to `Fatestealer_bard` = `1` (not an additional required stage).
 
 ### 1. inem r`ker — hand 10246
 
@@ -1174,6 +1401,8 @@ How the items are reached:
 - Singing Short Sword (20542)
   - Prerequisite: "Singing Short Sword" (20542). See section 0.
 
+Alternative or repeat transition to `bard15` = `1` (not an additional required stage).
+
 ### 1. lantaric-dar — hand 77604+77605+77606+77607
 
 Zone: `wakening`.
@@ -1196,21 +1425,17 @@ How the items are reached:
   - Say "Lantaric" to iceclad/"Vas Thorel".
   - Spawns "Nihilist Xeegarn" (110127).
   - Loot "Xeegarn's Head" (77604) from "Nihilist Xeegarn".
-  - Loot "Xeegarn's Head" (77604) from "Nihilist Xeegarn".
 - Amilia's Head (77605)
   - Say "Lantaric" to iceclad/"Vas Thorel".
   - Spawns "Amilia Verisue" (110128).
-  - Loot "Amilia's Head" (77605) from "Amilia Verisue".
   - Loot "Amilia's Head" (77605) from "Amilia Verisue".
 - Puella's Head (77606)
   - Say "Lantaric" to iceclad/"Vas Thorel".
   - Spawns "Puella Opalis" (110126).
   - Loot "Puella's Head" (77606) from "Puella Opalis".
-  - Loot "Puella's Head" (77606) from "Puella Opalis".
 - Locis' Head (77607)
   - Say "Lantaric" to iceclad/"Vas Thorel".
   - Spawns "Locis V'Sek" (110125).
-  - Loot "Locis' Head" (77607) from "Locis V'Sek".
   - Loot "Locis' Head" (77607) from "Locis V'Sek".
 
 This step also depends on `bardPQ`, shown above.
@@ -1234,7 +1459,6 @@ How the items are reached:
 - Cracked Dragon Bone (77608)
   - Kill necropolis/"Excavator Quellin". Spawns "Tarn Macklin" (123164).
   - Loot "Cracked Dragon Bone" (77608) from "Tarn Macklin".
-  - Loot "Cracked Dragon Bone" (77608) from "Tarn Macklin".
 
 ### 3. lantaric-dar — hand 77612
 
@@ -1254,7 +1478,6 @@ How the items are reached:
 - Blackened Dragon Bone (77612)
   - Spawns "Vesthon's Draconic Abomination" (123171) in `necropolis` on event_hp.
   - Loot "Blackened Dragon Bone" (77612) from "Vesthon's Draconic Abomination".
-  - Loot "Blackened Dragon Bone" (77612) from "Vesthon's Draconic Abomination".
 
 ### 4. lantaric-dar — hand 77613
 
@@ -1273,10 +1496,8 @@ In script order:
 How the items are reached:
 
 - Dark Orb (77613)
-  - Say "Event:Death Complete:123173" to necropolis/"Vesthon".
-  - Spawns "Needs Heading Validation" (123189).
+  - Spawns "Needs Heading Validation" (123189) in `necropolis` on event death_complete:123173.
   - Loot "Dark Orb" (77613) from "Needs Heading Validation".
-  - Loot "Dark Orb" (77613) from "The Dracoliche of Hsagra".
 
 ### 5. walthin fireweaver — say hail
 
@@ -1334,7 +1555,6 @@ Combine:
 
 - `recipe:19882` is combined in Rusted Bile Etched Blade (77630).
   - Hand "Vhalen's Necklace" (77629) to potorment/"A Bruised Woman". Spawns "Metala Von Korach" (207084). Loot "Rusted Bile Etched Blade" (77630) from "Metala Von Korach".
-  - Loot "Rusted Bile Etched Blade" (77630) from "Metala Von Korach".
   - Put in x1: Draconic Prism (77628).
     - Prerequisite: "Draconic Prism" (77628). See section 0.
   - Produces Prismatic Dragon Blade (77631).
@@ -1414,24 +1634,12 @@ How the items are reached:
   - Loot "Black Chaos Boots" (77642) from "A Dragorn Darkwarrior" in `wallofslaughter`.
   - Loot "Black Chaos Boots" (77642) from "A Dragorn Ireknight" in `wallofslaughter`.
 - Black Chaos Breastplate (77643)
-  - No quest step gives Black Chaos Breastplate (77643). The dump lists it in riftseekers.
+  - Loot "Black Chaos Breastplate" (77643) from "A Gelidran Flamefreeze" (NPC 334016) in `riftseekers`. Drop cache: 4.49% chance per kill.
 - Globe of Discordant Energy (47100)
   - Say "Check Lorb" to anguish/"Zone Status".
   - Spawns "Orb of Discordant Energy" (317087).
   - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-  - Say "Check Lorb" to anguish/"Zone Status".
-  - Spawns "Orb of Discordant Energy" (317087).
-  - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-  - Say "Check Uorb" to anguish/"Zone Status".
-  - Spawns "Orb of Discordant Energy" (317087).
-  - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-  - Say "Check Amv Chest" to anguish/"Zone Status".
-  - Spawns "Ornate Chest" (317112).
-  - Loot "Globe of Discordant Energy" (47100) from "Ornate Chest".
-  - 2 other loot steps also yield Globe of Discordant Energy (47100).
-  - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" in `anguish`.
-  - Loot "Globe of Discordant Energy" (47100) from "Ornate Chest".
-  - Loot "Globe of Discordant Energy" (47100) from "Overlords Chest".
+  - 4 alternative loot source(s) also yield Globe of Discordant Energy (47100).
 
 ### Steps on `bard20` that do not change it
 

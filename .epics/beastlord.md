@@ -8,72 +8,6 @@ Flags with writes: `beast_epic`, `bstepic`.
 
 Each list is the order you obtain that item. Later steps point here instead of repeating the chain.
 
-### "Claw of the Savage Spirit" (8495)
-
-1. Combine in "Carved Wooden Chest" (17361): "Wrapped Spider Totem" (9033), "Wrapped Wolf Totem" (9035), "Wrapped Ice Bear Totem" (9037), "Wrapped Gorilla Totem" (9039), "Wrapped Watcher Totem" (9041), "Wrapped Alligator Totem" (9043). Produces "Sealed Box of Totems" (9044). The combine does not fail.
-2. sharvahl/"Elder Animist Dumul", hand "Sealed Box of Totems" (9044). Gives "Seal of Elder Dumul" (9045).
-3. timorous/"Scout Sihmoj", hand "Seal of Elder Dumul" (9045). Gives "Black Silk Sack" (17360).
-4. Kill timorous/"Draz Nurakk". Spawns "Draz Nurakks Image" (96322).
-5. Loot "Shards of Broken Glass" (9046) from "Draz Nurakks Image".
-6. Combine in "Black Silk Sack" (17360): "Shards of Broken Glass" (9046). Produces "Sack of Broken Glass" (9047). The combine does not fail.
-7. timorous/"Scout Sihmoj", hand "Sack of Broken Glass" (9047). Gives "Sack of Broken Glass" (9048).
-8. sharvahl/"Elder Animist Dumul", hand "Sack of Broken Glass" (9048). Gives "Note for Historian Qua" (9049).
-9. sharvahl/"Arms Historian Qua", hand "Note for Historian Qua" (9049). Gives "Qua's Receipt" (9050).
-10. sharvahl/"Weapons Master Rahoul", hand "Qua's Receipt" (9050). Gives "Rahoul's Collection Box" (17363).
-11. No quest step gives Gem of the Void (9053). The dump lists it in maiden.
-12. Spawns "A Boulder Fiend" (171063) in `thegrey` on enter.
-13. Loot "Perfect Acrylia Ore" (9052) from "A Boulder Fiend".
-14. Spawns "A Stone Beast" (171051) in `thegrey` on enter.
-15. Loot "Perfect Acrylia Ore" (9052) from "A Stone Beast".
-16. Spawns "Stonehand" (171064) in `thegrey` on enter.
-17. Loot "Perfect Acrylia Ore" (9052) from "Stonehand".
-18. Spawns "Boulder" (171069) in `thegrey` on enter.
-19. Loot "Perfect Acrylia Ore" (9052) from "Boulder".
-20. No quest step gives Chunk of Dense Fungal Padding (9054). The dump lists it in thedeep.
-21. Combine in "Rahoul's Collection Box" (17363): "Gem of the Void" (9053), "Perfect Acrylia Ore" (9052), "Chunk of Dense Fungal Padding" (9054). Produces "Sealed Collection Box" (9051). The combine does not fail.
-22. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9055).
-23. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9056).
-24. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Acrylia Gilded Box" (17362).
-25. Hand "Khati Sha Seal of War" (9057) to fungusgrove/"Scout Halmia". Spawns "Draz Nurakk" (157116). Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
-26. Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
-27. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Khati Sha Seal of War" (9057).
-28. fungusgrove/"Scout Halmia", hand "Khati Sha Seal of War" (9057). Gives "Khati Sha Seal of War" (9062).
-29. Combine in "Acrylia Gilded Box" (17362): "Jagged Claw of Rending" (9055), "Jagged Claw of Rending" (9056), "Draz Nurakk's Head" (9059), "Khati Sha Seal of War" (9062). Produces "Sealed Gilded Wooden Chest" (9060). The combine does not fail.
-30. sharvahl/"Elder Animist Dumul", hand "Sealed Gilded Wooden Chest" (9060). Gives "Claw of the Savage Spirit" (8495).
-
-### "Claw of the Savage Spirit" (8496)
-
-1. Combine in "Carved Wooden Chest" (17361): "Wrapped Spider Totem" (9033), "Wrapped Wolf Totem" (9035), "Wrapped Ice Bear Totem" (9037), "Wrapped Gorilla Totem" (9039), "Wrapped Watcher Totem" (9041), "Wrapped Alligator Totem" (9043). Produces "Sealed Box of Totems" (9044). The combine does not fail.
-2. sharvahl/"Elder Animist Dumul", hand "Sealed Box of Totems" (9044). Gives "Seal of Elder Dumul" (9045).
-3. timorous/"Scout Sihmoj", hand "Seal of Elder Dumul" (9045). Gives "Black Silk Sack" (17360).
-4. Kill timorous/"Draz Nurakk". Spawns "Draz Nurakks Image" (96322).
-5. Loot "Shards of Broken Glass" (9046) from "Draz Nurakks Image".
-6. Combine in "Black Silk Sack" (17360): "Shards of Broken Glass" (9046). Produces "Sack of Broken Glass" (9047). The combine does not fail.
-7. timorous/"Scout Sihmoj", hand "Sack of Broken Glass" (9047). Gives "Sack of Broken Glass" (9048).
-8. sharvahl/"Elder Animist Dumul", hand "Sack of Broken Glass" (9048). Gives "Note for Historian Qua" (9049).
-9. sharvahl/"Arms Historian Qua", hand "Note for Historian Qua" (9049). Gives "Qua's Receipt" (9050).
-10. sharvahl/"Weapons Master Rahoul", hand "Qua's Receipt" (9050). Gives "Rahoul's Collection Box" (17363).
-11. No quest step gives Gem of the Void (9053). The dump lists it in maiden.
-12. Spawns "A Boulder Fiend" (171063) in `thegrey` on enter.
-13. Loot "Perfect Acrylia Ore" (9052) from "A Boulder Fiend".
-14. Spawns "A Stone Beast" (171051) in `thegrey` on enter.
-15. Loot "Perfect Acrylia Ore" (9052) from "A Stone Beast".
-16. Spawns "Stonehand" (171064) in `thegrey` on enter.
-17. Loot "Perfect Acrylia Ore" (9052) from "Stonehand".
-18. Spawns "Boulder" (171069) in `thegrey` on enter.
-19. Loot "Perfect Acrylia Ore" (9052) from "Boulder".
-20. No quest step gives Chunk of Dense Fungal Padding (9054). The dump lists it in thedeep.
-21. Combine in "Rahoul's Collection Box" (17363): "Gem of the Void" (9053), "Perfect Acrylia Ore" (9052), "Chunk of Dense Fungal Padding" (9054). Produces "Sealed Collection Box" (9051). The combine does not fail.
-22. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9055).
-23. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9056).
-24. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Acrylia Gilded Box" (17362).
-25. Hand "Khati Sha Seal of War" (9057) to fungusgrove/"Scout Halmia". Spawns "Draz Nurakk" (157116). Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
-26. Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
-27. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Khati Sha Seal of War" (9057).
-28. fungusgrove/"Scout Halmia", hand "Khati Sha Seal of War" (9057). Gives "Khati Sha Seal of War" (9062).
-29. Combine in "Acrylia Gilded Box" (17362): "Jagged Claw of Rending" (9055), "Jagged Claw of Rending" (9056), "Draz Nurakk's Head" (9059), "Khati Sha Seal of War" (9062). Produces "Sealed Gilded Wooden Chest" (9060). The combine does not fail.
-30. sharvahl/"Elder Animist Dumul", hand "Sealed Gilded Wooden Chest" (9060). Gives "Claw of the Savage Spirit" (8496).
-
 ### "Decorated Statuette of the Feral" (57059)
 
 1. Common item: Large Sewing Kit (17880). Listed in 39 zones.
@@ -85,26 +19,28 @@ Each list is the order you obtain that item. Later steps point here instead of r
 7. Common item: Jar of Acid (22133). Listed in 15 zones.
 8. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
 9. Combine in Brew Barrel (19): "Ukun Hide" (67424), "Acid Wash" (15987). Produces "Tanned Ukun Leather" (52932). Requires Brewing, trivial 100.
-10. No quest step gives Gem of the Void (9053). The dump lists it in maiden.
-11. No quest step gives Chunk of Dense Fungal Padding (9054). The dump lists it in thedeep.
+10. Loot "Gem of the Void" (9053) from "Xi Xaui" (NPC 173047) in `maiden`. Drop cache: 6.52% chance per kill.
+11. Loot "Chunk of Dense Fungal Padding" (9054) from "A Deepspore Mushroom" (NPC 164041) in `thedeep`. Drop cache: 15.97% chance per kill.
 12. Spawns "A Boulder Fiend" (171063) in `thegrey` on enter.
 13. Loot "Perfect Acrylia Ore" (9052) from "A Boulder Fiend".
-14. Spawns "A Stone Beast" (171051) in `thegrey` on enter.
-15. Loot "Perfect Acrylia Ore" (9052) from "A Stone Beast".
-16. Spawns "Stonehand" (171064) in `thegrey` on enter.
-17. Loot "Perfect Acrylia Ore" (9052) from "Stonehand".
-18. Spawns "Boulder" (171069) in `thegrey` on enter.
-19. Loot "Perfect Acrylia Ore" (9052) from "Boulder".
-20. sharvahl/"Weapons Master Rahoul", hand "Perfect Acrylia Ore" (9052) + "Gem of the Void" (9053) + "Chunk of Dense Fungal Padding" (9054). Sets `beast_turnin` to `1`.
-21. sharvahl/"Weapons Master Rahoul", say "Adornments". Requires `beast_turnin` ==1. Gives "Adornments Pattern" (57056).
-22. Combine in "Large Sewing Kit" (17880): "Tanned Ukun Leather" (52932), "Adornments Pattern" (57056). Produces "Crafted Tassels" (52929). Requires Tailoring, trivial 100.
-23. sharvahl/"Weapons Master Rahoul", hand platinum:2000. Gives "Plain Beastlord Statuette" (52931).
-24. Combine in "Large Sewing Kit" (17880): "Crafted Tassels" (52929), "Plain Beastlord Statuette" (52931). Produces "Decorated Statuette of the Feral" (57059). Requires Tailoring, trivial 100.
+14. 3 alternative loot source(s) also yield Perfect Acrylia Ore (9052).
+15. sharvahl/"Weapons Master Rahoul", hand "Perfect Acrylia Ore" (9052) + "Gem of the Void" (9053) + "Chunk of Dense Fungal Padding" (9054). Sets `beast_turnin` to `1`.
+16. sharvahl/"Weapons Master Rahoul", say "Adornments". Requires `beast_turnin` ==1. Gives "Adornments Pattern" (57056).
+17. Combine in "Large Sewing Kit" (17880): "Tanned Ukun Leather" (52932), "Adornments Pattern" (57056). Produces "Crafted Tassels" (52929). Requires Tailoring, trivial 100.
+18. sharvahl/"Weapons Master Rahoul", hand platinum:2000. Gives "Plain Beastlord Statuette" (52931).
+19. Combine in "Large Sewing Kit" (17880): "Crafted Tassels" (52929), "Plain Beastlord Statuette" (52931). Produces "Decorated Statuette of the Feral" (57059). Requires Tailoring, trivial 100.
 
 ### "Letter from Muada" (57008)
 
-1. oot/"Marrey Mcgrannel", hand "Letter from Muada" (57008). Sets `beast_epic` to `2`.
-2. oot/"Marrey Mcgrannel", say "Way". Requires `beast_epic` ==2. Gives "Letter from Muada" (57008).
+1. cazicthule/"Ikpug Giblod", hand "Letter from Muada" (57008). Sets `beast_epic` to `5`.
+2. cazicthule/"Ikpug Giblod", say "Learning". Requires `beast_epic` ==5. Gives "Letter from Muada" (57008).
+
+### "Note to Irionu" (57996)
+
+1. Loot "Darkened Spirit Essence" (57009) from "Frantic Ravenous Beast" in `maiden`.
+2. Loot "Disturbed Beast Essence" (57995) from "A Ravenous Nightstalker" in `ponightmare`.
+3. sharvahl/"Elder Animist Muada", hand "Darkened Spirit Essence" (57009) + "Disturbed Beast Essence" (57995). Sets `beast_epic` to `7`.
+4. sharvahl/"Elder Animist Muada", say "Greater Calling". Requires `beast_epic` ==7. Gives "Note to Irionu" (57996).
 
 ### "Sealed Note for Muada" (52900)
 
@@ -114,152 +50,330 @@ Each list is the order you obtain that item. Later steps point here instead of r
 ### "Ale" (13039)
 
 1. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-2. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-3. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-4. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-5. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-6. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-7. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-8. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-9. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-10. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-11. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-12. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-13. Say "Tm Devrak Death" to rujd/"Rujd".
-14. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-15. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-16. Say "Tm Dokorel Death" to rujd/"Rujd".
-17. Say "Tm Velrek Death" to rujd/"Rujd".
-18. Say "Event:Death Complete:260061" to rujg/"Rujg".
-19. Spawns "A Barrel" (260015).
-20. Loot "Pod of Water" (13044) from "A Barrel".
-21. 3 other loot steps also yield Pod of Water (13044).
-22. Forage "Pod of Water" (13044) in `ruja`.
-23. Forage "Pod of Water" (13044) in `uqua`.
-24. Forage "Pod of Water" (13044) in `yxtta`.
-25. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-26. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-27. 17 other recipes also produce Bottle (16598).
-28. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-29. global/"Familiarbrewworks", hand "Water Flask" (13006). Gives "Ale" (13039).
+2. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+3. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+4. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+5. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+6. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+7. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+8. Say "Tm Devrak Death" to rujd/"Rujd".
+9. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
+10. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
+11. 6 alternative loot source(s) also yield Pod of Water (13044).
+12. Forage "Pod of Water" (13044) in `ruja`.
+13. Forage "Pod of Water" (13044) in `uqua`.
+14. Forage "Pod of Water" (13044) in `yxtta`.
+15. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+16. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+17. 17 other recipes also produce Bottle (16598).
+18. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+19. global/"Familiarbrewworks", hand "Water Flask" (13006). Gives "Ale" (13039).
 
 ### "Gift of the Sphinx" (52905)
 
-1. Hand "Sparkling Silk Scarf" (52904) to rathemtn/"Ankhefenmut". Spawns "Needs Heading Validation" (50327). Loot "Sullied Ankh Piece" (52903) from "Needs Heading Validation".
-2. Loot "Sullied Ankh Piece" (52903) from "Raving Sphinx Spiritservant".
-3. rathemtn/"Ankhefenmut", hand "Sullied Ankh Piece" (52903). Gives "Gift of the Sphinx" (52905).
+1. Say "Happening" to rathemtn/"Zazamoukh".
+2. Spawns "Needs Heading Validation" (50326).
+3. Loot "Tarnished Ankh Piece" (52902) from "Needs Heading Validation".
+4. rathemtn/"Zazamoukh", hand "Tarnished Ankh Piece" (52902). Gives "Sparkling Silk Scarf" (52904).
+5. Hand "Sparkling Silk Scarf" (52904) to rathemtn/"Ankhefenmut". Spawns "Needs Heading Validation" (50327). Loot "Sullied Ankh Piece" (52903) from "Needs Heading Validation".
+6. rathemtn/"Ankhefenmut", hand "Sullied Ankh Piece" (52903). Gives "Gift of the Sphinx" (52905).
 
 ### "Sealed Response to the Elders" (52908)
 
-1. jaggedpine/"Rashara Wrualla", say "Not Possible". Gives "Request of the Elders" (52906).
-2. Hand "Request of the Elders" (52906) to draniksscar/"Yerika Sisslak". Spawns "Girplan Spiritleech" (302085). Loot "Rashara's Warder's Essence" (52907) from "Girplan Spiritleech".
-3. Loot "Rashara's Warder's Essence" (52907) from "Girplan Spiritleech".
-4. draniksscar/"Yerika Sisslak", hand "Rashara's Warder's Essence" (52907). Gives "Sealed Response to the Elders" (52908).
+1. Say "Happening" to rathemtn/"Zazamoukh".
+2. Spawns "Needs Heading Validation" (50326).
+3. Loot "Tarnished Ankh Piece" (52902) from "Needs Heading Validation".
+4. rathemtn/"Zazamoukh", hand "Tarnished Ankh Piece" (52902). Gives "Sparkling Silk Scarf" (52904).
+5. Hand "Sparkling Silk Scarf" (52904) to rathemtn/"Ankhefenmut". Spawns "Needs Heading Validation" (50327). Loot "Sullied Ankh Piece" (52903) from "Needs Heading Validation".
+6. rathemtn/"Ankhefenmut", hand "Sullied Ankh Piece" (52903). Gives "Gift of the Sphinx" (52905).
+7. sharvahl/"Elder Animist Muada", hand "Gift of the Sphinx" (52905). Sets `beast_epic` to `15`.
+8. jaggedpine/"Rashara Wrualla", say "Not Possible". Requires `beast_epic` ==15. Gives "Request of the Elders" (52906).
+9. Hand "Request of the Elders" (52906) to draniksscar/"Yerika Sisslak". Spawns "Girplan Spiritleech" (302085). Loot "Rashara's Warder's Essence" (52907) from "Girplan Spiritleech".
+10. draniksscar/"Yerika Sisslak", hand "Rashara's Warder's Essence" (52907). Gives "Sealed Response to the Elders" (52908).
 
 ### "Wrapped Discordant Totem of the Feral" (52914)
 
-1. sharvahl/"Elder Animist Muada", say "Stopped". Gives "Elder Cloak of Resilience" (52909).
-2. Hand "Elder Cloak of Resilience" (52909) to dranik/"Erana Farrel". Spawns "Discordling Dark Animist" (336126). Loot "Discordant Totem of the Feral" (52910) from "Discordling Dark Animist".
-3. Loot "Discordant Totem of the Feral" (52910) from "Discordling Dark Animist".
-4. dranik/"Erana Farrel", hand "Discordant Totem of the Feral" (52910). Gives "Wrapped Discordant Totem of the Feral" (52914).
+1. Say "Happening" to rathemtn/"Zazamoukh".
+2. Spawns "Needs Heading Validation" (50326).
+3. Loot "Tarnished Ankh Piece" (52902) from "Needs Heading Validation".
+4. rathemtn/"Zazamoukh", hand "Tarnished Ankh Piece" (52902). Gives "Sparkling Silk Scarf" (52904).
+5. Hand "Sparkling Silk Scarf" (52904) to rathemtn/"Ankhefenmut". Spawns "Needs Heading Validation" (50327). Loot "Sullied Ankh Piece" (52903) from "Needs Heading Validation".
+6. rathemtn/"Ankhefenmut", hand "Sullied Ankh Piece" (52903). Gives "Gift of the Sphinx" (52905).
+7. sharvahl/"Elder Animist Muada", hand "Gift of the Sphinx" (52905). Sets `beast_epic` to `15`.
+8. jaggedpine/"Rashara Wrualla", say "Not Possible". Requires `beast_epic` ==15. Gives "Request of the Elders" (52906).
+9. Hand "Request of the Elders" (52906) to draniksscar/"Yerika Sisslak". Spawns "Girplan Spiritleech" (302085). Loot "Rashara's Warder's Essence" (52907) from "Girplan Spiritleech".
+10. draniksscar/"Yerika Sisslak", hand "Rashara's Warder's Essence" (52907). Gives "Sealed Response to the Elders" (52908).
+11. jaggedpine/"Rashara Wrualla", hand "Rashara's Warder's Essence" (52907) + "Sealed Response to the Elders" (52908). Sets `beast_epic` to `16`.
+12. sharvahl/"Elder Animist Muada", say "Stopped". Requires `beast_epic` ==16. Gives "Elder Cloak of Resilience" (52909).
+13. Hand "Elder Cloak of Resilience" (52909) to dranik/"Erana Farrel". Spawns "Discordling Dark Animist" (336126). Loot "Discordant Totem of the Feral" (52910) from "Discordling Dark Animist".
+14. dranik/"Erana Farrel", hand "Discordant Totem of the Feral" (52910). Gives "Wrapped Discordant Totem of the Feral" (52914).
+
+### "Claw of the Savage Spirit" (8495)
+
+1. Spawns "Arcanist Ukigit" (167661) in `grimling` on event_signal.
+2. Loot "Copper Medal of War" (4393) from "Arcanist Ukigit".
+3. sharvahl/"Elder Animist Dumul", hand "Copper Medal of War" (4393). Gives "Carved Wooden Chest" (17361).
+4. Hand "Official Seal of the Khati Sha" (9031) to emeraldjungle/"Scout Vyrak". Spawns "The Spirit of Rage" (94126). Loot "Totem of the Gorilla" (9038) from "The Spirit of Rage".
+5. emeraldjungle/"Scout Vyrak", hand "Totem of the Gorilla" (9038). Gives "Official Seal of the Khati Sha" (9031).
+6. Hand "Official Seal of the Khati Sha" (9031) to feerrott/"Scout Ahlikal". Spawns "The Spirit of Decay" (47205). Loot "Totem of the Spider" (9032) from "The Spirit of Decay".
+7. feerrott/"Scout Ahlikal", hand "Totem of the Spider" (9032). Gives "Wrapped Spider Totem" (9033).
+8. Hand "Official Seal of the Khati Sha" (9031) to lfaydark/"Scout Rahjiq". Spawns "The Spirit of Malevolence" (57119). Loot "Totem of the Wolf" (9034) from "The Spirit of Malevolence".
+9. lfaydark/"Scout Rahjiq", hand "Totem of the Wolf" (9034). Gives "Wrapped Wolf Totem" (9035).
+10. Hand "Official Seal of the Khati Sha" (9031) to permafrost/"Scout Janomin". Spawns "The Icebound Spirit" (73107). Loot "Totem of the Ice Bear" (9036) from "The Icebound Spirit".
+11. permafrost/"Scout Janomin", hand "Totem of the Ice Bear" (9036). Gives "Wrapped Ice Bear Totem" (9037).
+12. emeraldjungle/"Scout Vyrak", hand "Totem of the Gorilla" (9038). Gives "Wrapped Gorilla Totem" (9039).
+13. Hand "Official Seal of the Khati Sha" (9031) to stonebrunt/"Scout Malom". Spawns "The Spirit of Torment" (100220). Loot "Totem of the Watcher" (9040) from "The Spirit of Torment".
+14. stonebrunt/"Scout Malom", hand "Totem of the Watcher" (9040). Gives "Wrapped Watcher Totem" (9041).
+15. Hand "Official Seal of the Khati Sha" (9031) to swampofnohope/"Scout Eyru". Spawns "The Spirit of Sorrow" (83244). Loot "Totem of the Alligator" (9042) from "The Spirit of Sorrow".
+16. swampofnohope/"Scout Eyru", hand "Totem of the Alligator" (9042). Gives "Wrapped Alligator Totem" (9043).
+17. Combine in "Carved Wooden Chest" (17361): "Wrapped Spider Totem" (9033), "Wrapped Wolf Totem" (9035), "Wrapped Ice Bear Totem" (9037), "Wrapped Gorilla Totem" (9039), "Wrapped Watcher Totem" (9041), "Wrapped Alligator Totem" (9043). Produces "Sealed Box of Totems" (9044). The combine does not fail.
+18. sharvahl/"Elder Animist Dumul", hand "Sealed Box of Totems" (9044). Gives "Seal of Elder Dumul" (9045).
+19. timorous/"Scout Sihmoj", hand "Seal of Elder Dumul" (9045). Gives "Black Silk Sack" (17360).
+20. Kill timorous/"Draz Nurakk". Spawns "Draz Nurakks Image" (96322).
+21. Loot "Shards of Broken Glass" (9046) from "Draz Nurakks Image".
+22. Combine in "Black Silk Sack" (17360): "Shards of Broken Glass" (9046). Produces "Sack of Broken Glass" (9047). The combine does not fail.
+23. timorous/"Scout Sihmoj", hand "Sack of Broken Glass" (9047). Gives "Sack of Broken Glass" (9048).
+24. sharvahl/"Elder Animist Dumul", hand "Sack of Broken Glass" (9048). Gives "Note for Historian Qua" (9049).
+25. sharvahl/"Arms Historian Qua", hand "Note for Historian Qua" (9049). Gives "Qua's Receipt" (9050).
+26. sharvahl/"Weapons Master Rahoul", hand "Qua's Receipt" (9050). Gives "Rahoul's Collection Box" (17363).
+27. Loot "Gem of the Void" (9053) from "Xi Xaui" (NPC 173047) in `maiden`. Drop cache: 6.52% chance per kill.
+28. Spawns "A Boulder Fiend" (171063) in `thegrey` on enter.
+29. Loot "Perfect Acrylia Ore" (9052) from "A Boulder Fiend".
+30. 3 alternative loot source(s) also yield Perfect Acrylia Ore (9052).
+31. Loot "Chunk of Dense Fungal Padding" (9054) from "A Deepspore Mushroom" (NPC 164041) in `thedeep`. Drop cache: 15.97% chance per kill.
+32. Combine in "Rahoul's Collection Box" (17363): "Gem of the Void" (9053), "Perfect Acrylia Ore" (9052), "Chunk of Dense Fungal Padding" (9054). Produces "Sealed Collection Box" (9051). The combine does not fail.
+33. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9055).
+34. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9056).
+35. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Acrylia Gilded Box" (17362).
+36. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Khati Sha Seal of War" (9057).
+37. Hand "Khati Sha Seal of War" (9057) to fungusgrove/"Scout Halmia". Spawns "Draz Nurakk" (157116). Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
+38. fungusgrove/"Scout Halmia", hand "Khati Sha Seal of War" (9057). Gives "Khati Sha Seal of War" (9062).
+39. Combine in "Acrylia Gilded Box" (17362): "Jagged Claw of Rending" (9055), "Jagged Claw of Rending" (9056), "Draz Nurakk's Head" (9059), "Khati Sha Seal of War" (9062). Produces "Sealed Gilded Wooden Chest" (9060). The combine does not fail.
+40. sharvahl/"Elder Animist Dumul", hand "Sealed Gilded Wooden Chest" (9060). Gives "Claw of the Savage Spirit" (8495).
+
+### "Claw of the Savage Spirit" (8496)
+
+1. Spawns "Arcanist Ukigit" (167661) in `grimling` on event_signal.
+2. Loot "Copper Medal of War" (4393) from "Arcanist Ukigit".
+3. sharvahl/"Elder Animist Dumul", hand "Copper Medal of War" (4393). Gives "Carved Wooden Chest" (17361).
+4. Hand "Official Seal of the Khati Sha" (9031) to emeraldjungle/"Scout Vyrak". Spawns "The Spirit of Rage" (94126). Loot "Totem of the Gorilla" (9038) from "The Spirit of Rage".
+5. emeraldjungle/"Scout Vyrak", hand "Totem of the Gorilla" (9038). Gives "Official Seal of the Khati Sha" (9031).
+6. Hand "Official Seal of the Khati Sha" (9031) to feerrott/"Scout Ahlikal". Spawns "The Spirit of Decay" (47205). Loot "Totem of the Spider" (9032) from "The Spirit of Decay".
+7. feerrott/"Scout Ahlikal", hand "Totem of the Spider" (9032). Gives "Wrapped Spider Totem" (9033).
+8. Hand "Official Seal of the Khati Sha" (9031) to lfaydark/"Scout Rahjiq". Spawns "The Spirit of Malevolence" (57119). Loot "Totem of the Wolf" (9034) from "The Spirit of Malevolence".
+9. lfaydark/"Scout Rahjiq", hand "Totem of the Wolf" (9034). Gives "Wrapped Wolf Totem" (9035).
+10. Hand "Official Seal of the Khati Sha" (9031) to permafrost/"Scout Janomin". Spawns "The Icebound Spirit" (73107). Loot "Totem of the Ice Bear" (9036) from "The Icebound Spirit".
+11. permafrost/"Scout Janomin", hand "Totem of the Ice Bear" (9036). Gives "Wrapped Ice Bear Totem" (9037).
+12. emeraldjungle/"Scout Vyrak", hand "Totem of the Gorilla" (9038). Gives "Wrapped Gorilla Totem" (9039).
+13. Hand "Official Seal of the Khati Sha" (9031) to stonebrunt/"Scout Malom". Spawns "The Spirit of Torment" (100220). Loot "Totem of the Watcher" (9040) from "The Spirit of Torment".
+14. stonebrunt/"Scout Malom", hand "Totem of the Watcher" (9040). Gives "Wrapped Watcher Totem" (9041).
+15. Hand "Official Seal of the Khati Sha" (9031) to swampofnohope/"Scout Eyru". Spawns "The Spirit of Sorrow" (83244). Loot "Totem of the Alligator" (9042) from "The Spirit of Sorrow".
+16. swampofnohope/"Scout Eyru", hand "Totem of the Alligator" (9042). Gives "Wrapped Alligator Totem" (9043).
+17. Combine in "Carved Wooden Chest" (17361): "Wrapped Spider Totem" (9033), "Wrapped Wolf Totem" (9035), "Wrapped Ice Bear Totem" (9037), "Wrapped Gorilla Totem" (9039), "Wrapped Watcher Totem" (9041), "Wrapped Alligator Totem" (9043). Produces "Sealed Box of Totems" (9044). The combine does not fail.
+18. sharvahl/"Elder Animist Dumul", hand "Sealed Box of Totems" (9044). Gives "Seal of Elder Dumul" (9045).
+19. timorous/"Scout Sihmoj", hand "Seal of Elder Dumul" (9045). Gives "Black Silk Sack" (17360).
+20. Kill timorous/"Draz Nurakk". Spawns "Draz Nurakks Image" (96322).
+21. Loot "Shards of Broken Glass" (9046) from "Draz Nurakks Image".
+22. Combine in "Black Silk Sack" (17360): "Shards of Broken Glass" (9046). Produces "Sack of Broken Glass" (9047). The combine does not fail.
+23. timorous/"Scout Sihmoj", hand "Sack of Broken Glass" (9047). Gives "Sack of Broken Glass" (9048).
+24. sharvahl/"Elder Animist Dumul", hand "Sack of Broken Glass" (9048). Gives "Note for Historian Qua" (9049).
+25. sharvahl/"Arms Historian Qua", hand "Note for Historian Qua" (9049). Gives "Qua's Receipt" (9050).
+26. sharvahl/"Weapons Master Rahoul", hand "Qua's Receipt" (9050). Gives "Rahoul's Collection Box" (17363).
+27. Loot "Gem of the Void" (9053) from "Xi Xaui" (NPC 173047) in `maiden`. Drop cache: 6.52% chance per kill.
+28. Spawns "A Boulder Fiend" (171063) in `thegrey` on enter.
+29. Loot "Perfect Acrylia Ore" (9052) from "A Boulder Fiend".
+30. 3 alternative loot source(s) also yield Perfect Acrylia Ore (9052).
+31. Loot "Chunk of Dense Fungal Padding" (9054) from "A Deepspore Mushroom" (NPC 164041) in `thedeep`. Drop cache: 15.97% chance per kill.
+32. Combine in "Rahoul's Collection Box" (17363): "Gem of the Void" (9053), "Perfect Acrylia Ore" (9052), "Chunk of Dense Fungal Padding" (9054). Produces "Sealed Collection Box" (9051). The combine does not fail.
+33. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9055).
+34. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9056).
+35. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Acrylia Gilded Box" (17362).
+36. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Khati Sha Seal of War" (9057).
+37. Hand "Khati Sha Seal of War" (9057) to fungusgrove/"Scout Halmia". Spawns "Draz Nurakk" (157116). Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
+38. fungusgrove/"Scout Halmia", hand "Khati Sha Seal of War" (9057). Gives "Khati Sha Seal of War" (9062).
+39. Combine in "Acrylia Gilded Box" (17362): "Jagged Claw of Rending" (9055), "Jagged Claw of Rending" (9056), "Draz Nurakk's Head" (9059), "Khati Sha Seal of War" (9062). Produces "Sealed Gilded Wooden Chest" (9060). The combine does not fail.
+40. sharvahl/"Elder Animist Dumul", hand "Sealed Gilded Wooden Chest" (9060). Gives "Claw of the Savage Spirit" (8496).
 
 ### "Spiritbound Totem" (57027)
 
-1. Loot "Eerie Medallion" (57025) from "Grimling Colonel" in `grimling`.
-2. Loot "Eerie Medallion" (57025) from "Grimling General".
-3. Say "Hail" to jaggedpine/"Rashara Wrualla".
-4. Spawns "Dismal Darkpaw Mystic" (181225).
-5. Loot "Scalding Blood" (57058) from "Dismal Darkpaw Mystic".
-6. Loot "Fierce Spirit Clay" (57020) from "Spiritfrenzied Phoenix" in `poair`.
-7. sharvahl/"Elder Animist Muada", say "Make The Totem". Gives "Elders' Totem Mold" (52930).
-8. sharvahl/"Elder Animist Muada", say "Task". Gives "Peculiar Unshapen Piece of Wood" (57011).
-9. Combine in Kiln (22): "Fierce Spirit Clay" (57020), "Eerie Medallion" (57025), "Scalding Blood" (57058). Produces "Gilded Resonating Clay" (57029). Requires Pottery 100. The combine does not fail.
-10. sharvahl/"Elder Animist Muada", say "Make The Totem". Gives "Combined Essence" (52913).
-11. Combine in Oven (15): "Peculiar Unshapen Piece of Wood" (57011), "Gilded Resonating Clay" (57029), "Combined Essence" (52913). Produces "Malleable Glowing Totem" (57050). Requires Baking 100. The combine does not fail.
-12. Combine in Forge (17): "Elders' Totem Mold" (52930), "Malleable Glowing Totem" (57050). Produces "Spiritbound Totem" (57027). Requires Blacksmithing 100. The combine does not fail.
+1. Say "Happening" to rathemtn/"Zazamoukh".
+2. Spawns "Needs Heading Validation" (50326).
+3. Loot "Tarnished Ankh Piece" (52902) from "Needs Heading Validation".
+4. rathemtn/"Zazamoukh", hand "Tarnished Ankh Piece" (52902). Gives "Sparkling Silk Scarf" (52904).
+5. Hand "Sparkling Silk Scarf" (52904) to rathemtn/"Ankhefenmut". Spawns "Needs Heading Validation" (50327). Loot "Sullied Ankh Piece" (52903) from "Needs Heading Validation".
+6. rathemtn/"Ankhefenmut", hand "Sullied Ankh Piece" (52903). Gives "Gift of the Sphinx" (52905).
+7. sharvahl/"Elder Animist Muada", hand "Gift of the Sphinx" (52905). Sets `beast_epic` to `15`.
+8. jaggedpine/"Rashara Wrualla", say "Not Possible". Requires `beast_epic` ==15. Gives "Request of the Elders" (52906).
+9. Hand "Request of the Elders" (52906) to draniksscar/"Yerika Sisslak". Spawns "Girplan Spiritleech" (302085). Loot "Rashara's Warder's Essence" (52907) from "Girplan Spiritleech".
+10. draniksscar/"Yerika Sisslak", hand "Rashara's Warder's Essence" (52907). Gives "Sealed Response to the Elders" (52908).
+11. jaggedpine/"Rashara Wrualla", hand "Rashara's Warder's Essence" (52907) + "Sealed Response to the Elders" (52908). Sets `beast_epic` to `16`.
+12. sharvahl/"Elder Animist Muada", say "Stopped". Requires `beast_epic` ==16. Gives "Elder Cloak of Resilience" (52909).
+13. Hand "Elder Cloak of Resilience" (52909) to dranik/"Erana Farrel". Spawns "Discordling Dark Animist" (336126). Loot "Discordant Totem of the Feral" (52910) from "Discordling Dark Animist".
+14. dranik/"Erana Farrel", hand "Discordant Totem of the Feral" (52910). Gives "Wrapped Discordant Totem of the Feral" (52914).
+15. sharvahl/"Elder Animist Muada", hand "Wrapped Discordant Totem of the Feral" (52914). Sets `beast_epic` to `17`.
+16. Say "End The Threat In The Grimling Forest" to grimling/"Scout Husman".
+17. Spawns "Grimling Colonel" (167426).
+18. Loot "Eerie Medallion" (57025) from "Grimling Colonel".
+19. 1 alternative loot source(s) also yield Eerie Medallion (57025).
+20. Say "Hail" to jaggedpine/"Rashara Wrualla".
+21. Spawns "Dismal Darkpaw Mystic" (181225).
+22. Loot "Scalding Blood" (57058) from "Dismal Darkpaw Mystic".
+23. Loot "Fierce Spirit Clay" (57020) from "Spiritfrenzied Phoenix" in `poair`.
+24. sharvahl/"Elder Animist Muada", say "Make The Totem". Requires `beast_epic` ==17. Gives "Elders' Totem Mold" (52930).
+25. sharvahl/"Elder Animist Muada", say "Task". Requires `beast_epic` ==17. Gives "Peculiar Unshapen Piece of Wood" (57011).
+26. Combine in Kiln (22): "Fierce Spirit Clay" (57020), "Eerie Medallion" (57025), "Scalding Blood" (57058). Produces "Gilded Resonating Clay" (57029). Requires Pottery 100. The combine does not fail.
+27. sharvahl/"Elder Animist Muada", say "Make The Totem". Requires `beast_epic` ==17. Gives "Combined Essence" (52913).
+28. Combine in Oven (15): "Peculiar Unshapen Piece of Wood" (57011), "Gilded Resonating Clay" (57029), "Combined Essence" (52913). Produces "Malleable Glowing Totem" (57050). Requires Baking 100. The combine does not fail.
+29. Combine in Forge (17): "Elders' Totem Mold" (52930), "Malleable Glowing Totem" (57050). Produces "Spiritbound Totem" (57027). Requires Blacksmithing 100. The combine does not fail.
 
 ### "Blended Elixir of Fortitude" (57051)
 
-1. Kill causeway/"Bazu Terror". Spawns "Discordling Dark Animist" (303094).
-2. Loot "Dark Animist Wand" (57012) from "Discordling Dark Animist".
-3. causeway/"Jillaa Oogblat", hand "Dark Animist Wand" (57012). Sets `beast_epic` to `19`.
-4. sharvahl/"Elder Animist Muada", say "Agree To Take On This Charge". Requires `beast_epic` ==19. Gives "Blended Elixir of Fortitude" (57051).
+1. Say "Happening" to rathemtn/"Zazamoukh".
+2. Spawns "Needs Heading Validation" (50326).
+3. Loot "Tarnished Ankh Piece" (52902) from "Needs Heading Validation".
+4. rathemtn/"Zazamoukh", hand "Tarnished Ankh Piece" (52902). Gives "Sparkling Silk Scarf" (52904).
+5. Hand "Sparkling Silk Scarf" (52904) to rathemtn/"Ankhefenmut". Spawns "Needs Heading Validation" (50327). Loot "Sullied Ankh Piece" (52903) from "Needs Heading Validation".
+6. rathemtn/"Ankhefenmut", hand "Sullied Ankh Piece" (52903). Gives "Gift of the Sphinx" (52905).
+7. sharvahl/"Elder Animist Muada", hand "Gift of the Sphinx" (52905). Sets `beast_epic` to `15`.
+8. jaggedpine/"Rashara Wrualla", say "Not Possible". Requires `beast_epic` ==15. Gives "Request of the Elders" (52906).
+9. Hand "Request of the Elders" (52906) to draniksscar/"Yerika Sisslak". Spawns "Girplan Spiritleech" (302085). Loot "Rashara's Warder's Essence" (52907) from "Girplan Spiritleech".
+10. draniksscar/"Yerika Sisslak", hand "Rashara's Warder's Essence" (52907). Gives "Sealed Response to the Elders" (52908).
+11. jaggedpine/"Rashara Wrualla", hand "Rashara's Warder's Essence" (52907) + "Sealed Response to the Elders" (52908). Sets `beast_epic` to `16`.
+12. sharvahl/"Elder Animist Muada", say "Stopped". Requires `beast_epic` ==16. Gives "Elder Cloak of Resilience" (52909).
+13. Hand "Elder Cloak of Resilience" (52909) to dranik/"Erana Farrel". Spawns "Discordling Dark Animist" (336126). Loot "Discordant Totem of the Feral" (52910) from "Discordling Dark Animist".
+14. dranik/"Erana Farrel", hand "Discordant Totem of the Feral" (52910). Gives "Wrapped Discordant Totem of the Feral" (52914).
+15. sharvahl/"Elder Animist Muada", hand "Wrapped Discordant Totem of the Feral" (52914). Sets `beast_epic` to `17`.
+16. Say "End The Threat In The Grimling Forest" to grimling/"Scout Husman".
+17. Spawns "Grimling Colonel" (167426).
+18. Loot "Eerie Medallion" (57025) from "Grimling Colonel".
+19. 1 alternative loot source(s) also yield Eerie Medallion (57025).
+20. Say "Hail" to jaggedpine/"Rashara Wrualla".
+21. Spawns "Dismal Darkpaw Mystic" (181225).
+22. Loot "Scalding Blood" (57058) from "Dismal Darkpaw Mystic".
+23. Loot "Fierce Spirit Clay" (57020) from "Spiritfrenzied Phoenix" in `poair`.
+24. sharvahl/"Elder Animist Muada", say "Make The Totem". Requires `beast_epic` ==17. Gives "Elders' Totem Mold" (52930).
+25. sharvahl/"Elder Animist Muada", say "Task". Requires `beast_epic` ==17. Gives "Peculiar Unshapen Piece of Wood" (57011).
+26. Combine in Kiln (22): "Fierce Spirit Clay" (57020), "Eerie Medallion" (57025), "Scalding Blood" (57058). Produces "Gilded Resonating Clay" (57029). Requires Pottery 100. The combine does not fail.
+27. sharvahl/"Elder Animist Muada", say "Make The Totem". Requires `beast_epic` ==17. Gives "Combined Essence" (52913).
+28. Combine in Oven (15): "Peculiar Unshapen Piece of Wood" (57011), "Gilded Resonating Clay" (57029), "Combined Essence" (52913). Produces "Malleable Glowing Totem" (57050). Requires Baking 100. The combine does not fail.
+29. Combine in Forge (17): "Elders' Totem Mold" (52930), "Malleable Glowing Totem" (57050). Produces "Spiritbound Totem" (57027). Requires Blacksmithing 100. The combine does not fail.
+30. sharvahl/"Elder Animist Muada", say "Trapped Spirits". Sets `beast_epic` to `18`.
+31. Kill causeway/"Bazu Terror". Spawns "Discordling Dark Animist" (303094).
+32. Loot "Dark Animist Wand" (57012) from "Discordling Dark Animist".
+33. causeway/"Jillaa Oogblat", hand "Dark Animist Wand" (57012). Sets `beast_epic` to `19`.
+34. sharvahl/"Elder Animist Muada", say "Agree To Take On This Charge". Requires `beast_epic` ==19. Gives "Blended Elixir of Fortitude" (57051).
 
 ### "Wrapped Gemmed Wand" (57052)
 
-1. Say "Strong" to bloodfields/"Tormented Scout".
-2. Spawns "DDA" (301069).
-3. Loot "Gemmed Dark Animist Wand" (57014) from "DDA".
-4. Loot "Gemmed Dark Animist Wand" (57014) from "Discordling Dark Animist".
-5. bloodfields/"Tormented Scout", hand "Gemmed Dark Animist Wand" (57014). Gives "Wrapped Gemmed Wand" (57052).
+1. Say "Happening" to rathemtn/"Zazamoukh".
+2. Spawns "Needs Heading Validation" (50326).
+3. Loot "Tarnished Ankh Piece" (52902) from "Needs Heading Validation".
+4. rathemtn/"Zazamoukh", hand "Tarnished Ankh Piece" (52902). Gives "Sparkling Silk Scarf" (52904).
+5. Hand "Sparkling Silk Scarf" (52904) to rathemtn/"Ankhefenmut". Spawns "Needs Heading Validation" (50327). Loot "Sullied Ankh Piece" (52903) from "Needs Heading Validation".
+6. rathemtn/"Ankhefenmut", hand "Sullied Ankh Piece" (52903). Gives "Gift of the Sphinx" (52905).
+7. sharvahl/"Elder Animist Muada", hand "Gift of the Sphinx" (52905). Sets `beast_epic` to `15`.
+8. jaggedpine/"Rashara Wrualla", say "Not Possible". Requires `beast_epic` ==15. Gives "Request of the Elders" (52906).
+9. Hand "Request of the Elders" (52906) to draniksscar/"Yerika Sisslak". Spawns "Girplan Spiritleech" (302085). Loot "Rashara's Warder's Essence" (52907) from "Girplan Spiritleech".
+10. draniksscar/"Yerika Sisslak", hand "Rashara's Warder's Essence" (52907). Gives "Sealed Response to the Elders" (52908).
+11. jaggedpine/"Rashara Wrualla", hand "Rashara's Warder's Essence" (52907) + "Sealed Response to the Elders" (52908). Sets `beast_epic` to `16`.
+12. sharvahl/"Elder Animist Muada", say "Stopped". Requires `beast_epic` ==16. Gives "Elder Cloak of Resilience" (52909).
+13. Hand "Elder Cloak of Resilience" (52909) to dranik/"Erana Farrel". Spawns "Discordling Dark Animist" (336126). Loot "Discordant Totem of the Feral" (52910) from "Discordling Dark Animist".
+14. dranik/"Erana Farrel", hand "Discordant Totem of the Feral" (52910). Gives "Wrapped Discordant Totem of the Feral" (52914).
+15. sharvahl/"Elder Animist Muada", hand "Wrapped Discordant Totem of the Feral" (52914). Sets `beast_epic` to `17`.
+16. Say "End The Threat In The Grimling Forest" to grimling/"Scout Husman".
+17. Spawns "Grimling Colonel" (167426).
+18. Loot "Eerie Medallion" (57025) from "Grimling Colonel".
+19. 1 alternative loot source(s) also yield Eerie Medallion (57025).
+20. Say "Hail" to jaggedpine/"Rashara Wrualla".
+21. Spawns "Dismal Darkpaw Mystic" (181225).
+22. Loot "Scalding Blood" (57058) from "Dismal Darkpaw Mystic".
+23. Loot "Fierce Spirit Clay" (57020) from "Spiritfrenzied Phoenix" in `poair`.
+24. sharvahl/"Elder Animist Muada", say "Make The Totem". Requires `beast_epic` ==17. Gives "Elders' Totem Mold" (52930).
+25. sharvahl/"Elder Animist Muada", say "Task". Requires `beast_epic` ==17. Gives "Peculiar Unshapen Piece of Wood" (57011).
+26. Combine in Kiln (22): "Fierce Spirit Clay" (57020), "Eerie Medallion" (57025), "Scalding Blood" (57058). Produces "Gilded Resonating Clay" (57029). Requires Pottery 100. The combine does not fail.
+27. sharvahl/"Elder Animist Muada", say "Make The Totem". Requires `beast_epic` ==17. Gives "Combined Essence" (52913).
+28. Combine in Oven (15): "Peculiar Unshapen Piece of Wood" (57011), "Gilded Resonating Clay" (57029), "Combined Essence" (52913). Produces "Malleable Glowing Totem" (57050). Requires Baking 100. The combine does not fail.
+29. Combine in Forge (17): "Elders' Totem Mold" (52930), "Malleable Glowing Totem" (57050). Produces "Spiritbound Totem" (57027). Requires Blacksmithing 100. The combine does not fail.
+30. sharvahl/"Elder Animist Muada", say "Trapped Spirits". Sets `beast_epic` to `18`.
+31. Kill causeway/"Bazu Terror". Spawns "Discordling Dark Animist" (303094).
+32. Loot "Dark Animist Wand" (57012) from "Discordling Dark Animist".
+33. causeway/"Jillaa Oogblat", hand "Dark Animist Wand" (57012). Sets `beast_epic` to `19`.
+34. sharvahl/"Elder Animist Muada", say "Agree To Take On This Charge". Requires `beast_epic` ==19. Gives "Blended Elixir of Fortitude" (57051).
+35. causeway/"Jillaa Oogblat", hand "Blended Elixir of Fortitude" (57051). Sets `beast_epic` to `20`.
+36. Say "Strong" to bloodfields/"Tormented Scout".
+37. Spawns "DDA" (301069).
+38. Loot "Gemmed Dark Animist Wand" (57014) from "DDA".
+39. bloodfields/"Tormented Scout", hand "Gemmed Dark Animist Wand" (57014). Gives "Wrapped Gemmed Wand" (57052).
 
 ### "Savage Lord's Totem" (52911)
 
-1. sharvahl/"Elder Animist Muada", say "Stopped". Gives "Elder Cloak of Resilience" (52909).
-2. Hand "Elder Cloak of Resilience" (52909) to dranik/"Erana Farrel". Spawns "Discordling Dark Animist" (336126). Loot "Discordant Totem of the Feral" (52910) from "Discordling Dark Animist".
-3. Loot "Discordant Totem of the Feral" (52910) from "Discordling Dark Animist".
-4. dranik/"Erana Farrel", hand "Discordant Totem of the Feral" (52910). Gives "Wrapped Discordant Totem of the Feral" (52914).
-5. sharvahl/"Elder Animist Muada", hand "Wrapped Discordant Totem of the Feral" (52914). Gives "Savage Lord's Totem" (52911).
+1. Say "Happening" to rathemtn/"Zazamoukh".
+2. Spawns "Needs Heading Validation" (50326).
+3. Loot "Tarnished Ankh Piece" (52902) from "Needs Heading Validation".
+4. rathemtn/"Zazamoukh", hand "Tarnished Ankh Piece" (52902). Gives "Sparkling Silk Scarf" (52904).
+5. Hand "Sparkling Silk Scarf" (52904) to rathemtn/"Ankhefenmut". Spawns "Needs Heading Validation" (50327). Loot "Sullied Ankh Piece" (52903) from "Needs Heading Validation".
+6. rathemtn/"Ankhefenmut", hand "Sullied Ankh Piece" (52903). Gives "Gift of the Sphinx" (52905).
+7. sharvahl/"Elder Animist Muada", hand "Gift of the Sphinx" (52905). Sets `beast_epic` to `15`.
+8. jaggedpine/"Rashara Wrualla", say "Not Possible". Requires `beast_epic` ==15. Gives "Request of the Elders" (52906).
+9. Hand "Request of the Elders" (52906) to draniksscar/"Yerika Sisslak". Spawns "Girplan Spiritleech" (302085). Loot "Rashara's Warder's Essence" (52907) from "Girplan Spiritleech".
+10. draniksscar/"Yerika Sisslak", hand "Rashara's Warder's Essence" (52907). Gives "Sealed Response to the Elders" (52908).
+11. jaggedpine/"Rashara Wrualla", hand "Rashara's Warder's Essence" (52907) + "Sealed Response to the Elders" (52908). Sets `beast_epic` to `16`.
+12. sharvahl/"Elder Animist Muada", say "Stopped". Requires `beast_epic` ==16. Gives "Elder Cloak of Resilience" (52909).
+13. Hand "Elder Cloak of Resilience" (52909) to dranik/"Erana Farrel". Spawns "Discordling Dark Animist" (336126). Loot "Discordant Totem of the Feral" (52910) from "Discordling Dark Animist".
+14. dranik/"Erana Farrel", hand "Discordant Totem of the Feral" (52910). Gives "Wrapped Discordant Totem of the Feral" (52914).
+15. sharvahl/"Elder Animist Muada", hand "Wrapped Discordant Totem of the Feral" (52914). Gives "Savage Lord's Totem" (52911).
 
 ### "Sealed Letter from Muada" (57053)
 
-1. Say "Strong" to bloodfields/"Tormented Scout".
-2. Spawns "DDA" (301069).
-3. Loot "Gemmed Dark Animist Wand" (57014) from "DDA".
-4. Loot "Gemmed Dark Animist Wand" (57014) from "Discordling Dark Animist".
-5. bloodfields/"Tormented Scout", hand "Gemmed Dark Animist Wand" (57014). Gives "Wrapped Gemmed Wand" (57052).
-6. sharvahl/"Elder Animist Muada", hand "Wrapped Gemmed Wand" (57052). Sets `beast_epic` to `21`.
-7. Say "Check Lorb" to anguish/"Zone Status".
-8. Spawns "Orb of Discordant Energy" (317087).
-9. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-10. Say "Check Uorb" to anguish/"Zone Status".
-11. Say "Check Amv Chest" to anguish/"Zone Status".
-12. Spawns "Ornate Chest" (317112).
-13. Loot "Globe of Discordant Energy" (47100) from "Ornate Chest".
-14. 2 other loot steps also yield Globe of Discordant Energy (47100).
-15. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" in `anguish`.
-16. Loot "Globe of Discordant Energy" (47100) from "Overlords Chest".
-17. Loot "Eerie Medallion" (57025) from "Grimling Colonel" in `grimling`.
-18. Loot "Eerie Medallion" (57025) from "Grimling General".
-19. Say "Hail" to jaggedpine/"Rashara Wrualla".
-20. Spawns "Dismal Darkpaw Mystic" (181225).
-21. Loot "Scalding Blood" (57058) from "Dismal Darkpaw Mystic".
-22. Loot "Fierce Spirit Clay" (57020) from "Spiritfrenzied Phoenix" in `poair`.
-23. sharvahl/"Elder Animist Muada", say "Make The Totem". Gives "Elders' Totem Mold" (52930).
-24. sharvahl/"Elder Animist Muada", say "Task". Gives "Peculiar Unshapen Piece of Wood" (57011).
-25. Combine in Kiln (22): "Fierce Spirit Clay" (57020), "Eerie Medallion" (57025), "Scalding Blood" (57058). Produces "Gilded Resonating Clay" (57029). Requires Pottery 100. The combine does not fail.
-26. sharvahl/"Elder Animist Muada", say "Make The Totem". Gives "Combined Essence" (52913).
-27. Combine in Oven (15): "Peculiar Unshapen Piece of Wood" (57011), "Gilded Resonating Clay" (57029), "Combined Essence" (52913). Produces "Malleable Glowing Totem" (57050). Requires Baking 100. The combine does not fail.
-28. Combine in Forge (17): "Elders' Totem Mold" (52930), "Malleable Glowing Totem" (57050). Produces "Spiritbound Totem" (57027). Requires Blacksmithing 100. The combine does not fail.
-29. sharvahl/"Elder Animist Muada", hand "Globe of Discordant Energy" (47100) + "Spiritbound Totem" (57027). Requires `beast_epic` ==21. Gives "Sealed Letter from Muada" (57053).
+1. Say "Happening" to rathemtn/"Zazamoukh".
+2. Spawns "Needs Heading Validation" (50326).
+3. Loot "Tarnished Ankh Piece" (52902) from "Needs Heading Validation".
+4. rathemtn/"Zazamoukh", hand "Tarnished Ankh Piece" (52902). Gives "Sparkling Silk Scarf" (52904).
+5. Hand "Sparkling Silk Scarf" (52904) to rathemtn/"Ankhefenmut". Spawns "Needs Heading Validation" (50327). Loot "Sullied Ankh Piece" (52903) from "Needs Heading Validation".
+6. rathemtn/"Ankhefenmut", hand "Sullied Ankh Piece" (52903). Gives "Gift of the Sphinx" (52905).
+7. sharvahl/"Elder Animist Muada", hand "Gift of the Sphinx" (52905). Sets `beast_epic` to `15`.
+8. jaggedpine/"Rashara Wrualla", say "Not Possible". Requires `beast_epic` ==15. Gives "Request of the Elders" (52906).
+9. Hand "Request of the Elders" (52906) to draniksscar/"Yerika Sisslak". Spawns "Girplan Spiritleech" (302085). Loot "Rashara's Warder's Essence" (52907) from "Girplan Spiritleech".
+10. draniksscar/"Yerika Sisslak", hand "Rashara's Warder's Essence" (52907). Gives "Sealed Response to the Elders" (52908).
+11. jaggedpine/"Rashara Wrualla", hand "Rashara's Warder's Essence" (52907) + "Sealed Response to the Elders" (52908). Sets `beast_epic` to `16`.
+12. sharvahl/"Elder Animist Muada", say "Stopped". Requires `beast_epic` ==16. Gives "Elder Cloak of Resilience" (52909).
+13. Hand "Elder Cloak of Resilience" (52909) to dranik/"Erana Farrel". Spawns "Discordling Dark Animist" (336126). Loot "Discordant Totem of the Feral" (52910) from "Discordling Dark Animist".
+14. dranik/"Erana Farrel", hand "Discordant Totem of the Feral" (52910). Gives "Wrapped Discordant Totem of the Feral" (52914).
+15. sharvahl/"Elder Animist Muada", hand "Wrapped Discordant Totem of the Feral" (52914). Sets `beast_epic` to `17`.
+16. Say "End The Threat In The Grimling Forest" to grimling/"Scout Husman".
+17. Spawns "Grimling Colonel" (167426).
+18. Loot "Eerie Medallion" (57025) from "Grimling Colonel".
+19. 1 alternative loot source(s) also yield Eerie Medallion (57025).
+20. Say "Hail" to jaggedpine/"Rashara Wrualla".
+21. Spawns "Dismal Darkpaw Mystic" (181225).
+22. Loot "Scalding Blood" (57058) from "Dismal Darkpaw Mystic".
+23. Loot "Fierce Spirit Clay" (57020) from "Spiritfrenzied Phoenix" in `poair`.
+24. sharvahl/"Elder Animist Muada", say "Make The Totem". Requires `beast_epic` ==17. Gives "Elders' Totem Mold" (52930).
+25. sharvahl/"Elder Animist Muada", say "Task". Requires `beast_epic` ==17. Gives "Peculiar Unshapen Piece of Wood" (57011).
+26. Combine in Kiln (22): "Fierce Spirit Clay" (57020), "Eerie Medallion" (57025), "Scalding Blood" (57058). Produces "Gilded Resonating Clay" (57029). Requires Pottery 100. The combine does not fail.
+27. sharvahl/"Elder Animist Muada", say "Make The Totem". Requires `beast_epic` ==17. Gives "Combined Essence" (52913).
+28. Combine in Oven (15): "Peculiar Unshapen Piece of Wood" (57011), "Gilded Resonating Clay" (57029), "Combined Essence" (52913). Produces "Malleable Glowing Totem" (57050). Requires Baking 100. The combine does not fail.
+29. Combine in Forge (17): "Elders' Totem Mold" (52930), "Malleable Glowing Totem" (57050). Produces "Spiritbound Totem" (57027). Requires Blacksmithing 100. The combine does not fail.
+30. sharvahl/"Elder Animist Muada", say "Trapped Spirits". Sets `beast_epic` to `18`.
+31. Kill causeway/"Bazu Terror". Spawns "Discordling Dark Animist" (303094).
+32. Loot "Dark Animist Wand" (57012) from "Discordling Dark Animist".
+33. causeway/"Jillaa Oogblat", hand "Dark Animist Wand" (57012). Sets `beast_epic` to `19`.
+34. sharvahl/"Elder Animist Muada", say "Agree To Take On This Charge". Requires `beast_epic` ==19. Gives "Blended Elixir of Fortitude" (57051).
+35. causeway/"Jillaa Oogblat", hand "Blended Elixir of Fortitude" (57051). Sets `beast_epic` to `20`.
+36. Say "Strong" to bloodfields/"Tormented Scout".
+37. Spawns "DDA" (301069).
+38. Loot "Gemmed Dark Animist Wand" (57014) from "DDA".
+39. bloodfields/"Tormented Scout", hand "Gemmed Dark Animist Wand" (57014). Gives "Wrapped Gemmed Wand" (57052).
+40. sharvahl/"Elder Animist Muada", hand "Wrapped Gemmed Wand" (57052). Sets `beast_epic` to `21`.
+41. Say "Check Lorb" to anguish/"Zone Status".
+42. Spawns "Orb of Discordant Energy" (317087).
+43. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+44. 4 alternative loot source(s) also yield Globe of Discordant Energy (47100).
+45. sharvahl/"Elder Animist Muada", hand "Globe of Discordant Energy" (47100) + "Spiritbound Totem" (57027). Requires `beast_epic` ==21. Gives "Sealed Letter from Muada" (57053).
 
 ## `beast_epic`
 
 Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23.
-
-### 1. elder animist muada — say hail
-
-Zone: `sharvahl`.
-
-> I am honored to have had the opportunity to observe you -- a feral champion for the ills that have befallen our kind. You have certainly made your name known...
-
-Sets `beast_epic` to `1`.
-
-- Needs `beast_epic` ==17.
-- Needs Claw of the Savage Spirit (8495).
-- Needs Claw of the Savage Spirit (8496).
-- Needs `beast_epic` unset.
-In script order:
-
-1. Sets `beast_epic` to `1`.
-
-
-How the items are reached:
-
-- Claw of the Savage Spirit (8495)
-  - Prerequisite: "Claw of the Savage Spirit" (8495). See section 0.
-- Claw of the Savage Spirit (8496)
-  - Prerequisite: "Claw of the Savage Spirit" (8496). See section 0.
 
 ### 1. elder animist muada — hand 57059
 
@@ -400,7 +514,7 @@ In script order:
 How the items are reached:
 
 - Note to Irionu (57996)
-  - Given by sharvahl/"Elder Animist Muada", say "Greater Calling".
+  - Prerequisite: "Note to Irionu" (57996). See section 0.
 
 ### 9. elder animist muada — hand 52900
 
@@ -445,6 +559,7 @@ Zone: `oot`.
 
 Sets `beast_epic` to `11`.
 
+- Needs `beast_epic` ==10.
 In script order:
 
 1. Sets `beast_epic` to `11`.
@@ -459,6 +574,7 @@ Zone: `rathemtn`.
 
 Sets `beast_epic` to `12`.
 
+- Needs `beast_epic` ==11.
 In script order:
 
 1. Sets `beast_epic` to `12`.
@@ -483,7 +599,6 @@ How the items are reached:
   - Say "Happening" to rathemtn/"Zazamoukh".
   - Spawns "Needs Heading Validation" (50326).
   - Loot "Tarnished Ankh Piece" (52902) from "Needs Heading Validation".
-  - Loot "Tarnished Ankh Piece" (52902) from "Rambling Sphinx Spiritservant".
 
 ### 14. ankhefenmut — hand 52903
 
@@ -502,7 +617,6 @@ How the items are reached:
 
 - Sullied Ankh Piece (52903)
   - Hand "Sparkling Silk Scarf" (52904) to rathemtn/"Ankhefenmut". Spawns "Needs Heading Validation" (50327). Loot "Sullied Ankh Piece" (52903) from "Needs Heading Validation".
-  - Loot "Sullied Ankh Piece" (52903) from "Raving Sphinx Spiritservant".
 
 ### 15. elder animist muada — hand 52905
 
@@ -537,9 +651,7 @@ In script order:
 How the items are reached:
 
 - Rashara's Warder's Essence (52907)
-  - jaggedpine/"Rashara Wrualla", say "Not Possible". Gives "Request of the Elders" (52906).
   - Hand "Request of the Elders" (52906) to draniksscar/"Yerika Sisslak". Spawns "Girplan Spiritleech" (302085). Loot "Rashara's Warder's Essence" (52907) from "Girplan Spiritleech".
-  - Loot "Rashara's Warder's Essence" (52907) from "Girplan Spiritleech".
 - Sealed Response to the Elders (52908)
   - Prerequisite: "Sealed Response to the Elders" (52908). See section 0.
 
@@ -561,6 +673,32 @@ How the items are reached:
 - Wrapped Discordant Totem of the Feral (52914)
   - Prerequisite: "Wrapped Discordant Totem of the Feral" (52914). See section 0.
 
+Alternative or repeat transition to `beast_epic` = `1` (not an additional required stage).
+
+### 1. elder animist muada — say hail
+
+Zone: `sharvahl`.
+
+> I am honored to have had the opportunity to observe you -- a feral champion for the ills that have befallen our kind. You have certainly made your name known...
+
+Sets `beast_epic` to `1`.
+
+- Needs `beast_epic` ==17.
+- Needs Claw of the Savage Spirit (8495).
+- Needs Claw of the Savage Spirit (8496).
+- Needs `beast_epic` unset.
+In script order:
+
+1. Sets `beast_epic` to `1`.
+
+
+How the items are reached:
+
+- Claw of the Savage Spirit (8495)
+  - Prerequisite: "Claw of the Savage Spirit" (8495). See section 0.
+- Claw of the Savage Spirit (8496)
+  - Prerequisite: "Claw of the Savage Spirit" (8496). See section 0.
+
 ### 18. elder animist muada — say trapped spirits
 
 Zone: `sharvahl`.
@@ -570,6 +708,7 @@ Zone: `sharvahl`.
 Sets `beast_epic` to `18`.
 
 - Needs Spiritbound Totem (57027).
+- Needs `beast_epic` ==17.
 In script order:
 
 1. Sets `beast_epic` to `18`.
@@ -597,7 +736,6 @@ How the items are reached:
 
 - Dark Animist Wand (57012)
   - Kill causeway/"Bazu Terror". Spawns "Discordling Dark Animist" (303094).
-  - Loot "Dark Animist Wand" (57012) from "Discordling Dark Animist".
   - Loot "Dark Animist Wand" (57012) from "Discordling Dark Animist".
 
 ### 20. jillaa oogblat — hand 57051
@@ -824,6 +962,8 @@ In script order:
   - Loots Adorned Earring of Hope (71118).
   - Loots Polished Earring of Animosity (71119).
   - Loots Ring of Black Flame (71120).
+- `cazicthule` ikpug giblod, say learning needs `beast_epic` ==5.
+  - Gives Letter from Muada (57008).
 - `dranik` player, on loot needs `beast_epic` ==16.
   - Sets `warrior_epic_dranik` to `1`.
   - Spawns a chest (Epic 1.5) (283157).
@@ -918,14 +1058,42 @@ In script order:
   - Loots Muramite Leather Wraps of Conflict (71065).
   - Loots Muramite Silk Sleeves of Contention (71069).
   - Loots Muramite Silk Gloves of Contention (71070).
+- `grimling` scout husman, say end the threat in the grimling forest needs `beast_epic` ==17.
+  - Spawns Grimling Colonel (167426).
+  - Spawns Grimling General (167726).
+  - Loots Sunshard Ore (33792).
+  - Loots Bonded Loam (34882).
+  - Loots Eerie Medallion (57025).
+  - Loots Harmonagate (97003).
+  - Loots Sunshard Ore (33792).
+  - Loots Bonded Loam (34882).
+  - Loots Eerie Medallion (57025).
+  - Loots Harmonagate (97003).
+- `jaggedpine` rashara wrualla, say not possible needs `beast_epic` ==15.
+  - Gives Request of the Elders (52906).
+- `jaggedpine` rashara wrualla, say wait needs `beast_epic` ==4.
+  - Gives Letter from Muada (57008).
 - `oot` marrey mcgrannel, say way needs `beast_epic` ==2.
+  - Gives Letter from Muada (57008).
+- `overthere` irionu bastun, say read needs `beast_epic` ==3.
   - Gives Letter from Muada (57008).
 - `sharvahl` elder animist muada, say agree to take on this charge needs `beast_epic` ==19.
   - Gives Blended Elixir of Fortitude (57051).
+- `sharvahl` elder animist muada, say greater calling needs `beast_epic` ==7.
+  - Gives Note to Irionu (57996).
 - `sharvahl` elder animist muada, hand 47100+57027 needs `beast_epic` ==21.
   - Turn in Globe of Discordant Energy (47100).
   - Turn in Spiritbound Totem (57027).
   - Gives Sealed Letter from Muada (57053).
+- `sharvahl` elder animist muada, say make the totem needs `beast_epic` ==17.
+  - Gives Elders' Totem Mold (52930).
+  - Gives Combined Essence (52913).
+- `sharvahl` elder animist muada, say stopped needs `beast_epic` ==16.
+  - Gives Elder Cloak of Resilience (52909).
+- `sharvahl` elder animist muada, say task needs `beast_epic` ==17.
+  - Gives Peculiar Unshapen Piece of Wood (57011).
+- `westwastes` diddugu, say mastodon needs `beast_epic` ==6.
+  - Gives Letter from Muada (57008).
 
 ## `bstepic`
 
@@ -949,7 +1117,6 @@ How the items are reached:
 
 - Copper Medal of War (4393)
   - Spawns "Arcanist Ukigit" (167661) in `grimling` on event_signal.
-  - Loot "Copper Medal of War" (4393) from "Arcanist Ukigit".
   - Loot "Copper Medal of War" (4393) from "Arcanist Ukigit".
 
 ## Other flags touched along the way

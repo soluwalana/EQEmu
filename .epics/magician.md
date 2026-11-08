@@ -10,7 +10,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Tome of Primal Fires" (15769)
 
-1. No quest step gives Journal of Magus Tvish (15639). The dump lists it in akheva, eastkorlacha.
+1. Loot "Journal of Magus Tvish" (15639) from "Danvi's Corpse" (NPC 179132) in `akheva`. Drop cache: 100% chance per kill.
 2. poknowledge/"Bantil Io'Tuv", hand "Journal of Magus Tvish" (15639). Sets `mage_epic` to `2`.
 3. westwastes/"A Lost Tomekeeper", say "Violet Roses". Requires `mage_epic` ==2. Gives "Tome of Primal Fires" (15769).
 
@@ -21,42 +21,53 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Staff of Elemental Essence" (19092)
 
-1. najena/"Akksstaff'S Minion", on event_death_complete. Sets `ask_minion_dead` to `1`.
-2. najena/"Akksstaff", say "Demise". Requires `ask_minion_dead` set. Gives "Sentience of Elements" (15778).
-3. poknowledge/"Bantil Io'Tuv", hand "Sentience of Elements" (15778). Sets `mage_epic` to `6`.
-4. Hand "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) to cobaltscar/"High Priest Margle". Spawns "Tiknonmanin" (117094). Loot "Elemental Essence of Water" (19086) from "Tiknonmanin".
-5. Loot "Elemental Essence of Water" (19086) from "Tiknonmanin".
-6. Spawns "Elemental Essence of Fire" (214127) in `potactics` on event_waypoint_arrive.
-7. Loot "Elemental Essence of Fire" (16807) from "Elemental Essence of Fire".
-8. Spawns "Elemental Essence of Air" (303100) in `causeway` on enter.
-9. Loot "Elemental Essence of Air" (16773) from "Elemental Essence of Air".
-10. Spawns "Elemental Essence of Earth" (169127) in `letalis` on enter.
-11. Loot "Elemental Essence of Earth" (19087) from "Elemental Essence of Earth".
-12. poknowledge/"Bantil Io'Tuv", hand "Elemental Essence of Air" (16773) + "Elemental Essence of Fire" (16807) + "Elemental Essence of Water" (19086) + "Elemental Essence of Earth" (19087). Requires `mage_epic` ==6. Gives "Staff of Elemental Essence" (19092).
+1. Loot "Journal of Magus Tvish" (15639) from "Danvi's Corpse" (NPC 179132) in `akheva`. Drop cache: 100% chance per kill.
+2. poknowledge/"Bantil Io'Tuv", hand "Journal of Magus Tvish" (15639). Sets `mage_epic` to `2`.
+3. westwastes/"A Lost Tomekeeper", say "Violet Roses". Requires `mage_epic` ==2. Gives "Tome of Primal Fires" (15769).
+4. poknowledge/"Bantil Io'Tuv", hand "Tome of Primal Fires" (15769). Sets `mage_epic` to `3`.
+5. Ground spawn of "Book of Bindings and Incantations" (15772) in `charasis`.
+6. poknowledge/"Bantil Io'Tuv", hand "Book of Bindings and Incantations" (15772). Sets `mage_epic` to `4`.
+7. Loot "Codex of Ice and Ether" (15775) from "Grigor Rojha" in `thedeep`.
+8. poknowledge/"Bantil Io'Tuv", hand "Codex of Ice and Ether" (15775). Sets `mage_epic` to `5`.
+9. najena/"Akksstaff'S Minion", on event_death_complete. Sets `ask_minion_dead` to `1`.
+10. najena/"Akksstaff", say "Demise". Requires `ask_minion_dead` set. Gives "Sentience of Elements" (15778).
+11. poknowledge/"Bantil Io'Tuv", hand "Sentience of Elements" (15778). Sets `mage_epic` to `6`.
+12. potranquility/"Jurmak The Undertow", say "Elemental Essences". Sets `mage_epic_water1` to `1`.
+13. Loot "Ice Burrower Meat" (19022) from "An Ice Burrower" in `westwastes`.
+14. Hand "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) to cobaltscar/"High Priest Margle". Spawns "Tiknonmanin" (117094). Loot "Elemental Essence of Water" (19086) from "Tiknonmanin".
+15. Spawns "Elemental Essence of Fire" (214127) in `potactics` on event_waypoint_arrive.
+16. Loot "Elemental Essence of Fire" (16807) from "Elemental Essence of Fire".
+17. potranquility/"Sarhya The Dawnbreeze", say "Elemental Essences". Sets `mage_epic_air1` to `1`.
+18. Spawns "Elemental Essence of Air" (303100) in `causeway` on enter.
+19. Loot "Elemental Essence of Air" (16773) from "Elemental Essence of Air".
+20. potranquility/"Taq'Aal Emeraldshard", say "Elemental Essences". Sets `mage_epic_earth1` to `1`.
+21. Spawns "Elemental Essence of Earth" (169127) in `letalis` on enter.
+22. Loot "Elemental Essence of Earth" (19087) from "Elemental Essence of Earth".
+23. poknowledge/"Bantil Io'Tuv", hand "Elemental Essence of Air" (16773) + "Elemental Essence of Fire" (16807) + "Elemental Essence of Water" (19086) + "Elemental Essence of Earth" (19087). Requires `mage_epic` ==6. Gives "Staff of Elemental Essence" (19092).
 
 ### "Note from Iilivina" (19438)
 
-1. No quest step gives Gelidran Essence (19099). The dump lists it in riftseekers.
-2. No quest step gives Pyrilen Essence (19093). The dump lists it in riftseekers.
+1. Loot "Gelidran Essence" (19099) from "A Gelidran Flamefreeze" (NPC 334016) in `riftseekers`. Drop cache: 8.79% chance per kill.
+2. Loot "Pyrilen Essence" (19093) from "A Pyrilen Firecharmer" (NPC 334010) in `riftseekers`. Drop cache: 8.75% chance per kill.
 3. draniksscar/"Iilivina", hand "Pyrilen Essence" (19093) + "Pyrilen Essence" (19093) + "Gelidran Essence" (19099) + "Gelidran Essence" (19099). Gives "Note from Iilivina" (19438).
 
 ### "Pouch of Powdered Riftseeker Essence" (19149)
 
-1. No quest step gives Gelidran Essence (19099). The dump lists it in riftseekers.
-2. No quest step gives Pyrilen Essence (19093). The dump lists it in riftseekers.
+1. Loot "Gelidran Essence" (19099) from "A Gelidran Flamefreeze" (NPC 334016) in `riftseekers`. Drop cache: 8.79% chance per kill.
+2. Loot "Pyrilen Essence" (19093) from "A Pyrilen Firecharmer" (NPC 334010) in `riftseekers`. Drop cache: 8.75% chance per kill.
 3. draniksscar/"Iilivina", hand "Pyrilen Essence" (19093) + "Pyrilen Essence" (19093) + "Gelidran Essence" (19099) + "Gelidran Essence" (19099). Gives "Pouch of Powdered Riftseeker Essence" (19149).
 
 ### "Small pouch of Riftseeker Essence" (19441)
 
-1. No quest step gives Gelidran Essence (19099). The dump lists it in riftseekers.
-2. No quest step gives Pyrilen Essence (19093). The dump lists it in riftseekers.
+1. Loot "Gelidran Essence" (19099) from "A Gelidran Flamefreeze" (NPC 334016) in `riftseekers`. Drop cache: 8.79% chance per kill.
+2. Loot "Pyrilen Essence" (19093) from "A Pyrilen Firecharmer" (NPC 334010) in `riftseekers`. Drop cache: 8.75% chance per kill.
 3. draniksscar/"Iilivina", hand "Pyrilen Essence" (19093) + "Pyrilen Essence" (19093) + "Gelidran Essence" (19099) + "Gelidran Essence" (19099). Gives "Note from Iilivina" (19438).
 4. draniksscar/"Iilivina", hand "Pyrilen Essence" (19093) + "Pyrilen Essence" (19093) + "Gelidran Essence" (19099) + "Gelidran Essence" (19099). Gives "Pouch of Powdered Riftseeker Essence" (19149).
 5. poknowledge/"Bantil Io'Tuv", hand "Pouch of Powdered Riftseeker Essence" (19149) + "Note from Iilivina" (19438). Gives "Small pouch of Riftseeker Essence" (19441).
 
-## `mage_epic`
+## `mage_epic` 1.5
 
-Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11.
+Values written: 1, 2, 3, 4, 5, 6, 7.
 
 ### 1. bantil io`tuv — say hail
 
@@ -80,6 +91,8 @@ How the items are reached:
   - Loot "Orb of Mastery" (28034) from "Ipputs Dagglebrap" in `chambersf`.
   - Loot "Orb of Mastery" (28034) from "Melodite Arinal" in `chambersf`.
   - Loot "Orb of Mastery" (28034) from "Nakert Grimmagus" in `chambersf`.
+
+Alternative or repeat transition to `mage_epic` = `1` (not an additional required stage).
 
 ### 1. bantil io`tuv — hand 11998+14941+14960+14966
 
@@ -122,7 +135,7 @@ In script order:
 How the items are reached:
 
 - Journal of Magus Tvish (15639)
-  - No quest step gives Journal of Magus Tvish (15639). The dump lists it in akheva, eastkorlacha.
+  - Loot "Journal of Magus Tvish" (15639) from "Danvi's Corpse" (NPC 179132) in `akheva`. Drop cache: 100% chance per kill.
 
 ### 3. bantil io`tuv — hand 15769
 
@@ -216,19 +229,144 @@ How the items are reached:
 
 - Elemental Essence of Water (19086)
   - Hand "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) to cobaltscar/"High Priest Margle". Spawns "Tiknonmanin" (117094). Loot "Elemental Essence of Water" (19086) from "Tiknonmanin".
-  - Loot "Elemental Essence of Water" (19086) from "Tiknonmanin".
 - Elemental Essence of Fire (16807)
   - Spawns "Elemental Essence of Fire" (214127) in `potactics` on event_waypoint_arrive.
-  - Loot "Elemental Essence of Fire" (16807) from "Elemental Essence of Fire".
   - Loot "Elemental Essence of Fire" (16807) from "Elemental Essence of Fire".
 - Elemental Essence of Air (16773)
   - Spawns "Elemental Essence of Air" (303100) in `causeway` on enter.
   - Loot "Elemental Essence of Air" (16773) from "Elemental Essence of Air".
-  - Loot "Elemental Essence of Air" (16773) from "Elemental Essence of Air".
 - Elemental Essence of Earth (19087)
   - Spawns "Elemental Essence of Earth" (169127) in `letalis` on enter.
   - Loot "Elemental Essence of Earth" (19087) from "Elemental Essence of Earth".
-  - Loot "Elemental Essence of Earth" (19087) from "Elemental Essence of Earth".
+
+### Steps on `mage_epic` that do not change it
+
+- `draniksscar` iilivina, hand 19092 needs `mage_epic` ==7.
+  - Turn in Staff of Elemental Essence (19092).
+  - Gives Staff of Elemental Essence (19092).
+- `dreadlands` player, on enter needs `mage_epic` set.
+  - Spawns Time Terror (86172).
+  - Loots Time Terror Essence (63130).
+- `dreadlands` player, on loot needs `mage_epic` set.
+  - Sets `mage_chest_dl` to `1`.
+  - Spawns a chest (epic 2.0) (893).
+  - Loots Glyphed Helm of Conflict (71073).
+  - Loots Glyphed Vambraces of Conflict (71074).
+  - Loots Glyphed Gauntlets of Conflict (71075).
+  - Loots Glyphed Boots of Conflict (71076).
+  - Loots Glyphed Bracer of Conflict (71077).
+  - Loots Lightning Blackened Chain Coif (71078).
+  - Loots Lightning Blackened Chain Vambraces (71079).
+  - Loots Lightning Blackened Chain Gloves (71080).
+  - Loots Lightning Blackened Chain Boots (71081).
+  - Loots Lightning Blackened Chain Bracer (71082).
+  - Loots Chaos-Imbued Leather Skullcap (71083).
+  - Loots Chaos-Imbued Leather Sleeves (71084).
+  - Loots Chaos-Imbued Leather Gloves (71085).
+  - Loots Chaos-Imbued Leather Boots (71086).
+  - Loots Chaos-Imbued Leather Bracer (71087).
+  - Loots Discordant Cap of Betrayal (71088).
+  - Loots Discordant Sleeves of Betrayal (71089).
+  - Loots Discordant Gloves of Betrayal (71090).
+  - Loots Discordant Sandals of Betrayal (71091).
+  - Loots Discordant Bracer of Betrayal (71092).
+  - Loots Glyphed Breastplate of Conflict (71093).
+  - Loots Glyphed Greaves of Conflict (71094).
+  - Loots Lightning Blackened Chain Links (71095).
+  - Loots Lightning Blackened Chain Greaves (71096).
+  - Loots Chaos-Imbued Leather Tunic (71097).
+  - Loots Chaos-Imbued Leather Leggings (71098).
+  - Loots Discordant Robe of Betrayal (71099).
+  - Loots Discordant Leggings of Betrayal (71100).
+  - Loots Razor-Edged Shield of War (71101).
+  - Loots Cracked Shield of Discipline (71102).
+  - Loots Chipped Talisman of Peace (71103).
+  - Loots Blood-Soaked Champions Scroll (71104).
+  - Loots Pitted Shoulderpads of Stone (71105).
+  - Loots Mask of Reckless Flame (71106).
+  - Loots Cloak of the Corrupted Curate (71107).
+  - Loots Belt of Twisted Iron (71108).
+  - Loots Mask of Dark Horror (71109).
+  - Loots Black Web Mantle (71110).
+  - Loots Herb-Wrapped Silk Sash (71111).
+  - Loots Dragorn Scale Cloak (71112).
+  - Loots Fused Bone Collar (71113).
+  - Loots Pauldrons of the Fallen Crusader (71114).
+  - Loots Visor of Distorted Vision (71115).
+  - Loots Shadowed Amulet of Anarchy (71116).
+  - Loots Fractured Champion's Ring (71117).
+  - Loots Adorned Earring of Hope (71118).
+  - Loots Polished Earring of Animosity (71119).
+  - Loots Ring of Black Flame (71120).
+- `hohonora` player, on loot needs `mage_epic` set.
+  - Sets `mage_chest_hoh` to `1`.
+  - Spawns a chest (893).
+  - Loots Glyphed Helm of Conflict (71073).
+  - Loots Glyphed Vambraces of Conflict (71074).
+  - Loots Glyphed Gauntlets of Conflict (71075).
+  - Loots Glyphed Boots of Conflict (71076).
+  - Loots Glyphed Bracer of Conflict (71077).
+  - Loots Lightning Blackened Chain Coif (71078).
+  - Loots Lightning Blackened Chain Vambraces (71079).
+  - Loots Lightning Blackened Chain Gloves (71080).
+  - Loots Lightning Blackened Chain Boots (71081).
+  - Loots Lightning Blackened Chain Bracer (71082).
+  - Loots Chaos-Imbued Leather Skullcap (71083).
+  - Loots Chaos-Imbued Leather Sleeves (71084).
+  - Loots Chaos-Imbued Leather Gloves (71085).
+  - Loots Chaos-Imbued Leather Boots (71086).
+  - Loots Chaos-Imbued Leather Bracer (71087).
+  - Loots Discordant Cap of Betrayal (71088).
+  - Loots Discordant Sleeves of Betrayal (71089).
+  - Loots Discordant Gloves of Betrayal (71090).
+  - Loots Discordant Sandals of Betrayal (71091).
+  - Loots Discordant Bracer of Betrayal (71092).
+  - Loots Glyphed Breastplate of Conflict (71093).
+  - Loots Glyphed Greaves of Conflict (71094).
+  - Loots Lightning Blackened Chain Links (71095).
+  - Loots Lightning Blackened Chain Greaves (71096).
+  - Loots Chaos-Imbued Leather Tunic (71097).
+  - Loots Chaos-Imbued Leather Leggings (71098).
+  - Loots Discordant Robe of Betrayal (71099).
+  - Loots Discordant Leggings of Betrayal (71100).
+  - Loots Razor-Edged Shield of War (71101).
+  - Loots Cracked Shield of Discipline (71102).
+  - Loots Chipped Talisman of Peace (71103).
+  - Loots Blood-Soaked Champions Scroll (71104).
+  - Loots Pitted Shoulderpads of Stone (71105).
+  - Loots Mask of Reckless Flame (71106).
+  - Loots Cloak of the Corrupted Curate (71107).
+  - Loots Belt of Twisted Iron (71108).
+  - Loots Mask of Dark Horror (71109).
+  - Loots Black Web Mantle (71110).
+  - Loots Herb-Wrapped Silk Sash (71111).
+  - Loots Dragorn Scale Cloak (71112).
+  - Loots Fused Bone Collar (71113).
+  - Loots Pauldrons of the Fallen Crusader (71114).
+  - Loots Visor of Distorted Vision (71115).
+  - Loots Shadowed Amulet of Anarchy (71116).
+  - Loots Fractured Champion's Ring (71117).
+  - Loots Adorned Earring of Hope (71118).
+  - Loots Polished Earring of Animosity (71119).
+  - Loots Ring of Black Flame (71120).
+- `najena` akksstaff, say bantil sent me needs `mage_epic` set.
+  - Spawns Akksstaff`s Minion (44108).
+- `poknowledge` bantil io`tuv, say pieces needs `mage_epic` ==1.
+  - Gives Tattered Note (15005).
+- `potranquility` jurmak the undertow, say elemental essences needs `mage_epic` ==6.
+  - Sets `mage_epic_water1` to `1`.
+- `potranquility` miak the searedsoul, say elemental essences needs `mage_epic` ==6.
+  - Sets `mage_epic_fire1` to `1`.
+- `potranquility` sarhya the dawnbreeze, say elemental essences needs `mage_epic` ==6.
+  - Sets `mage_epic_air1` to `1`.
+- `potranquility` taq`aal emeraldshard, say elemental essences needs `mage_epic` ==6.
+  - Sets `mage_epic_earth1` to `1`.
+- `westwastes` a lost tomekeeper, say violet roses needs `mage_epic` ==2.
+  - Gives Tome of Primal Fires (15769).
+
+## `mage_epic` 2.0
+
+Values written: 8, 9, 10, 11.
 
 ### 8. iilivina — hand 19092
 
@@ -269,6 +407,8 @@ How the items are reached:
   - Prerequisite: "Note from Iilivina" (19438). See section 0.
 - Pouch of Powdered Riftseeker Essence (19149)
   - Prerequisite: "Pouch of Powdered Riftseeker Essence" (19149). See section 0.
+
+Alternative or repeat transition to `mage_epic` = `9` (not an additional required stage).
 
 ### 9. vornol transon — hand 19441
 
@@ -321,18 +461,14 @@ How the items are reached:
 - Element of Order (19547)
   - Spawns "Order Elemental" (211057) in `hohonora` on enter.
   - Loot "Element of Order" (19547) from "Order Elemental".
-  - Loot "Element of Order" (19547) from "Order Elemental".
 - Element of Body (19447)
   - Spawns "Body Elemental" (284105) in `ferubi` on enter.
-  - Loot "Element of Body" (19447) from "Body Elemental".
   - Loot "Element of Body" (19447) from "Body Elemental".
 - Element of Chaos (19444)
   - Spawns "Chaos Elemental" (86174) in `dreadlands` on enter.
   - Loot "Element of Chaos" (19444) from "Chaos Elemental".
-  - Loot "Element of Chaos" (19444) from "Chaos Elemental".
 - Element of Spirit (19544)
   - Spawns "Spirit Elemental" (200060) in `codecay` on enter.
-  - Loot "Element of Spirit" (19544) from "Spirit Elemental".
   - Loot "Element of Spirit" (19544) from "Spirit Elemental".
 
 ### Steps on `mage_epic` that do not change it
@@ -345,10 +481,10 @@ How the items are reached:
   - Sets `mage_epic_dl` to `1`.
   - Spawns Chaos Elemental (86174).
   - Loots Element of Chaos (19444).
-- `dreadlands` player, on enter needs `mage_epic` set.
+- `dreadlands` player, on enter needs `mage_epic` ==10.
   - Spawns Time Terror (86172).
   - Loots Time Terror Essence (63130).
-- `dreadlands` player, on loot needs `mage_epic` set.
+- `dreadlands` player, on loot needs `mage_epic` ==10.
   - Sets `mage_chest_dl` to `1`.
   - Spawns a chest (epic 2.0) (893).
   - Loots Glyphed Helm of Conflict (71073).
@@ -463,24 +599,10 @@ How the items are reached:
   - Loots Adorned Earring of Hope (71118).
   - Loots Polished Earring of Animosity (71119).
   - Loots Ring of Black Flame (71120).
-- `najena` akksstaff, say bantil sent me needs `mage_epic` set.
-  - Spawns Akksstaff`s Minion (44108).
 - `poknowledge` bantil io`tuv, hand 19092+47100 needs `mage_epic` ==11.
   - Turn in Globe of Discordant Energy (47100).
   - Turn in Staff of Elemental Essence (19092).
   - Gives Focus of Primal Elements (19839).
-- `poknowledge` bantil io`tuv, say pieces needs `mage_epic` ==1.
-  - Gives Tattered Note (15005).
-- `potranquility` jurmak the undertow, say elemental essences needs `mage_epic` ==6.
-  - Sets `mage_epic_water1` to `1`.
-- `potranquility` miak the searedsoul, say elemental essences needs `mage_epic` ==6.
-  - Sets `mage_epic_fire1` to `1`.
-- `potranquility` sarhya the dawnbreeze, say elemental essences needs `mage_epic` ==6.
-  - Sets `mage_epic_air1` to `1`.
-- `potranquility` taq`aal emeraldshard, say elemental essences needs `mage_epic` ==6.
-  - Sets `mage_epic_earth1` to `1`.
-- `westwastes` a lost tomekeeper, say violet roses needs `mage_epic` ==2.
-  - Gives Tome of Primal Fires (15769).
 
 ## Other flags touched along the way
 

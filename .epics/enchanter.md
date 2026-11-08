@@ -10,788 +10,789 @@ Each list is the order you obtain that item. Later steps point here instead of r
 
 ### "Illegible Tome" (52947)
 
-1. Hand "Dragon Boneshard" (65574) to veksar/"Spirit Of Garudon". Spawns "Garudon" (109107). Loot "Garudon's Statue" (52941) from "Garudon".
-2. Loot "Garudon's Statue" (52941) from "Garudon".
+1. Loot "Dragon Boneshard" (65574) from "A Curate" (NPC 109068) in `veksar`. Drop cache: 10% chance per kill.
+2. Hand "Dragon Boneshard" (65574) to veksar/"Spirit Of Garudon". Spawns "Garudon" (109107). Loot "Garudon's Statue" (52941) from "Garudon".
 3. lakeofillomen/"A Bloodgill Mimic", hand "Garudon's Statue" (52941). Sets `EnchPre` to `1`.
 4. Loot "Crumbling Tome" (54313) from "A Shissar Lorekeeper" in `ssratemple`.
 5. ssratemple/"A Soriz Imitator", hand "Crumbling Tome" (54313). Requires `EnchPre` ==1. Gives "Illegible Tome" (52947).
 
 ### "Gnomish Translating Device" (52945)
 
-1. Hand "Dragon Boneshard" (65574) to veksar/"Spirit Of Garudon". Spawns "Garudon" (109107). Loot "Garudon's Statue" (52941) from "Garudon".
-2. Loot "Garudon's Statue" (52941) from "Garudon".
+1. Loot "Dragon Boneshard" (65574) from "A Curate" (NPC 109068) in `veksar`. Drop cache: 10% chance per kill.
+2. Hand "Dragon Boneshard" (65574) to veksar/"Spirit Of Garudon". Spawns "Garudon" (109107). Loot "Garudon's Statue" (52941) from "Garudon".
 3. lakeofillomen/"A Bloodgill Mimic", hand "Garudon's Statue" (52941). Sets `EnchPre` to `1`.
 4. Loot "Crumbling Tome" (54313) from "A Shissar Lorekeeper" in `ssratemple`.
 5. ssratemple/"A Soriz Imitator", hand "Crumbling Tome" (54313). Requires `EnchPre` ==1. Gives "Illegible Tome" (52947).
 6. akanon/"Rilgor Plegnog", say "Insidious". Gives "Compacting Satchel" (54303).
-7. No quest step gives Fine Insidious Halo (54384). The dump lists it in hateplaneb.
-8. No quest step gives Fine Insidious Sleeves (54385). The dump lists it in hateplaneb.
-9. No quest step gives Fine Insidious Manacle (54386). The dump lists it in hateplaneb.
-10. No quest step gives Fine Insidious Gloves (54387). The dump lists it in hateplaneb.
-11. No quest step gives Fine Insidious Pantaloons (54388). The dump lists it in hateplaneb.
-12. No quest step gives Fine Insidious Slippers (54389). The dump lists it in hateplaneb.
+7. Loot "Fine Insidious Halo" (54384) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2% chance per kill.
+8. Loot "Fine Insidious Sleeves" (54385) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.08% chance per kill.
+9. Loot "Fine Insidious Manacle" (54386) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.09% chance per kill.
+10. Loot "Fine Insidious Gloves" (54387) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.24% chance per kill.
+11. Loot "Fine Insidious Pantaloons" (54388) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.23% chance per kill.
+12. Loot "Fine Insidious Slippers" (54389) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.07% chance per kill.
 13. Combine in "Compacting Satchel" (54303): "Fine Insidious Halo" (54384), "Fine Insidious Sleeves" (54385), "Fine Insidious Manacle" (54386), "Fine Insidious Gloves" (54387), "Fine Insidious Pantaloons" (54388), "Fine Insidious Slippers" (54389). Produces "Insidious Bundle" (54317). The combine does not fail.
 14. akanon/"Rilgor Plegnog", hand "Insidious Bundle" (54317). Gives "Gnomish Translating Device" (52945).
 
 ### "Staff of the Serpent" (10650)
 
-1. Common item: Shining Metallic Robes (1360). Listed in 4 zones.
+1. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
 2. akanon/"Rilgor Plegnog", hand "Shining Metallic Robes" (1360). Gives "Mechanical Pen" (10600).
 3. qcat/"Reania Jukle", say "Supply". Gives "Empty Ink Vial" (10626).
 4. gukbottom/"A Ghoul Scribe", hand "Empty Ink Vial" (10626). Gives "Ink of the Dark" (10601).
-5. Hand "Quill" (13051) + "Piece of Parchment" (13063) to qey2hh1/"Chrislin Baker". Spawns "Thrackin Griften" (12172). Loot "White Paper" (10602) from "Thrackin Griften".
-6. Loot "White Paper" (10602) from "Thrackin Griften".
-7. erudnext/"Stofo Olan", hand "Mechanical Pen" (10600) + "Ink of the Dark" (10601) + "White Paper" (10602). Gives "Copy of Notes" (10603).
-8. burningwood/"A Sarnak Imitator", hand "Copy of Notes" (10603). Gives "Jeb's Seal" (10604).
-9. akanon/"Clockwork Viix", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
-10. firiona/"Nadia Starfeast", say "I Need A Sack". Gives "Enchanters Sack" (17861).
-11. hole/"Polzin Mrid", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
-12. overthere/"Modani Qu-Loni", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
-13. Loot "Xolion Rod" (10606) from "Vessel Drozlin" in `cabeast`.
-14. Loot "Innoruuk's Word" (10607) from "Verina Tomb" in `neriakc`.
-15. Loot "Head of a Prince" (10627) from "Prince Selrach Di'zok" in `chardok`.
-16. felwitheb/"Joren Nobleheart", hand "Head of a Prince" (10627). Gives "Chalice of Kings" (10608).
-17. Ground spawn of "Large Muddy Sandals" (10628) in `oggok`.
-18. oggok/"Bozlum Blossom", hand "Large Muddy Sandals" (10628). Gives "Scribbled Parchment" (10629).
-19. oggok/"Brokk Boxtripper", hand "Scribbled Parchment" (10629). Gives "Gift to Bozlum" (10630).
-20. oggok/"Bozlum Blossom", hand "Gift to Bozlum" (10630). Gives "Snow Blossoms" (10609).
-21. Combine in "Enchanters Sack" (17861): "Xolion Rod" (10606), "Innoruuk's Word" (10607), "Chalice of Kings" (10608), "Snow Blossoms" (10609). Produces "Sack For Modani" (10635). The combine does not fail.
-22. overthere/"Modani Qu-Loni", hand "Sack For Modani" (10635). Gives "1st Piece of Staff" (10610).
-23. Loot "Spoon" (10614) from "Cazel" in `oasis`.
-24. Loot "Spoon" (10614) from "Cazel" in `southro`.
-25. Ground spawn of "The One Key" (10615) in `overthere`.
-26. Ground spawn of "Lost Scroll" (10616) in `dalnir`.
-27. Ground spawn of "Charm and Sacrifice" (10617) in `airplane`.
-28. Combine in "Enchanters Sack" (17861): "Spoon" (10614), "The One Key" (10615), "Lost Scroll" (10616), "Charm and Sacrifice" (10617). Produces "Sack For Mizzle" (10636). The combine does not fail.
-29. akanon/"Clockwork Viix", hand "Sack For Mizzle" (10636). Gives "2nd Piece of Staff" (10611).
-30. firiona/"Nadia Starfeast", say "Diamond". Gives "Dull Diamond" (10631).
-31. kaesora/"Spectral Librarian", hand "Dull Diamond" (10631). Gives "Enchanted Diamond" (10618).
-32. firiona/"Nadia Starfeast", say "Sapphire". Gives "Dull Sapphire" (10632).
-33. skyfire/"Felia Goldenwing", hand "Dull Sapphire" (10632). Gives "Enchanted Sapphire" (10619).
-34. firiona/"Nadia Starfeast", say "Ruby". Gives "Dull Ruby" (10633).
-35. citymist/"Wraith Of Jaxion", hand "Dull Ruby" (10633). Gives "Enchanted Ruby" (10620).
-36. firiona/"Nadia Starfeast", say "Emerald". Gives "Dull Emerald" (10634).
-37. overthere/"Impaler Tzilug", hand "Dull Emerald" (10634). Gives "Enchanted Emerald" (10621).
-38. Combine in "Enchanters Sack" (17861): "Enchanted Diamond" (10618), "Enchanted Sapphire" (10619), "Enchanted Ruby" (10620), "Enchanted Emerald" (10621). Produces "Sack For Nadia" (10637). The combine does not fail.
-39. firiona/"Nadia Starfeast", hand "Sack For Nadia" (10637). Gives "3rd Piece of Staff" (10612).
-40. Loot "Head of the Serpent" (10622) from "Wraith of a Shissar" in `fearplane`.
-41. Loot "Essence of a Ghost" (10623) from "the Ghost of Kindle" in `hole`.
-42. No quest step gives Essence of a Vampire (10624). The dump lists it in hateplane, hateplaneb.
-43. Loot "Sands of the Mystics" (10625) from "The Tangrin" in `fieldofbone`.
-44. Combine in "Enchanters Sack" (17861): "Head of the Serpent" (10622), "Essence of a Ghost" (10623), "Essence of a Vampire" (10624), "Sands of the Mystics" (10625). Produces "Sack For Polzin" (10638). The combine does not fail.
-45. hole/"Polzin Mrid", hand "Sack For Polzin" (10638). Gives "4th Piece of Staff" (10613).
-46. Combine in "Enchanters Sack" (17861): "1st Piece of Staff" (10610), "2nd Piece of Staff" (10611), "3rd Piece of Staff" (10612), "4th Piece of Staff" (10613). Produces "Bundle of Staves" (10639). The combine does not fail.
-47. burningwood/"A Sarnak Imitator", hand "Bundle of Staves" (10639). Gives "Staff of the Serpent" (10650).
+5. Common item: Piece of Parchment (13063). Listed in 23 zones.
+6. Common item: Quill (13051). Listed in 32 zones.
+7. Hand "Quill" (13051) + "Piece of Parchment" (13063) to qey2hh1/"Chrislin Baker". Spawns "Thrackin Griften" (12172). Loot "White Paper" (10602) from "Thrackin Griften".
+8. erudnext/"Stofo Olan", hand "Mechanical Pen" (10600) + "Ink of the Dark" (10601) + "White Paper" (10602). Gives "Copy of Notes" (10603).
+9. burningwood/"A Sarnak Imitator", hand "Copy of Notes" (10603). Gives "Jeb's Seal" (10604).
+10. akanon/"Clockwork Viix", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
+11. Loot "Xolion Rod" (10606) from "Vessel Drozlin" in `cabeast`.
+12. Loot "Innoruuk's Word" (10607) from "Verina Tomb" in `neriakc`.
+13. Loot "Head of a Prince" (10627) from "Prince Selrach Di'zok" in `chardok`.
+14. felwitheb/"Joren Nobleheart", hand "Head of a Prince" (10627). Gives "Chalice of Kings" (10608).
+15. Ground spawn of "Large Muddy Sandals" (10628) in `oggok`.
+16. oggok/"Bozlum Blossom", hand "Large Muddy Sandals" (10628). Gives "Scribbled Parchment" (10629).
+17. oggok/"Brokk Boxtripper", hand "Scribbled Parchment" (10629). Gives "Gift to Bozlum" (10630).
+18. oggok/"Bozlum Blossom", hand "Gift to Bozlum" (10630). Gives "Snow Blossoms" (10609).
+19. Combine in "Enchanters Sack" (17861): "Xolion Rod" (10606), "Innoruuk's Word" (10607), "Chalice of Kings" (10608), "Snow Blossoms" (10609). Produces "Sack For Modani" (10635). The combine does not fail.
+20. overthere/"Modani Qu-Loni", hand "Sack For Modani" (10635). Gives "1st Piece of Staff" (10610).
+21. Loot "Spoon" (10614) from "Cazel" in `oasis`.
+22. Loot "Spoon" (10614) from "Cazel" in `southro`.
+23. Ground spawn of "The One Key" (10615) in `overthere`.
+24. Ground spawn of "Lost Scroll" (10616) in `dalnir`.
+25. Ground spawn of "Charm and Sacrifice" (10617) in `airplane`.
+26. Combine in "Enchanters Sack" (17861): "Spoon" (10614), "The One Key" (10615), "Lost Scroll" (10616), "Charm and Sacrifice" (10617). Produces "Sack For Mizzle" (10636). The combine does not fail.
+27. akanon/"Clockwork Viix", hand "Sack For Mizzle" (10636). Gives "2nd Piece of Staff" (10611).
+28. firiona/"Nadia Starfeast", say "Diamond". Gives "Dull Diamond" (10631).
+29. kaesora/"Spectral Librarian", hand "Dull Diamond" (10631). Gives "Enchanted Diamond" (10618).
+30. firiona/"Nadia Starfeast", say "Sapphire". Gives "Dull Sapphire" (10632).
+31. skyfire/"Felia Goldenwing", hand "Dull Sapphire" (10632). Gives "Enchanted Sapphire" (10619).
+32. firiona/"Nadia Starfeast", say "Ruby". Gives "Dull Ruby" (10633).
+33. citymist/"Wraith Of Jaxion", hand "Dull Ruby" (10633). Gives "Enchanted Ruby" (10620).
+34. firiona/"Nadia Starfeast", say "Emerald". Gives "Dull Emerald" (10634).
+35. overthere/"Impaler Tzilug", hand "Dull Emerald" (10634). Gives "Enchanted Emerald" (10621).
+36. Combine in "Enchanters Sack" (17861): "Enchanted Diamond" (10618), "Enchanted Sapphire" (10619), "Enchanted Ruby" (10620), "Enchanted Emerald" (10621). Produces "Sack For Nadia" (10637). The combine does not fail.
+37. firiona/"Nadia Starfeast", hand "Sack For Nadia" (10637). Gives "3rd Piece of Staff" (10612).
+38. Loot "Head of the Serpent" (10622) from "Wraith of a Shissar" in `fearplane`.
+39. Loot "Essence of a Ghost" (10623) from "the Ghost of Kindle" in `hole`.
+40. Loot "Essence of a Vampire" (10624) from "A Forsaken Revenant" (NPC 76005) in `hateplane`. Drop cache: 10.57% chance per kill.
+41. Loot "Sands of the Mystics" (10625) from "The Tangrin" in `fieldofbone`.
+42. Combine in "Enchanters Sack" (17861): "Head of the Serpent" (10622), "Essence of a Ghost" (10623), "Essence of a Vampire" (10624), "Sands of the Mystics" (10625). Produces "Sack For Polzin" (10638). The combine does not fail.
+43. hole/"Polzin Mrid", hand "Sack For Polzin" (10638). Gives "4th Piece of Staff" (10613).
+44. Combine in "Enchanters Sack" (17861): "1st Piece of Staff" (10610), "2nd Piece of Staff" (10611), "3rd Piece of Staff" (10612), "4th Piece of Staff" (10613). Produces "Bundle of Staves" (10639). The combine does not fail.
+45. burningwood/"A Sarnak Imitator", hand "Bundle of Staves" (10639). Gives "Staff of the Serpent" (10650).
 
 ### "Complete Illegible Tome" (54267)
 
-1. Hand "Dragon Boneshard" (65574) to veksar/"Spirit Of Garudon". Spawns "Garudon" (109107). Loot "Garudon's Statue" (52941) from "Garudon".
-2. Loot "Garudon's Statue" (52941) from "Garudon".
+1. Loot "Dragon Boneshard" (65574) from "A Curate" (NPC 109068) in `veksar`. Drop cache: 10% chance per kill.
+2. Hand "Dragon Boneshard" (65574) to veksar/"Spirit Of Garudon". Spawns "Garudon" (109107). Loot "Garudon's Statue" (52941) from "Garudon".
 3. lakeofillomen/"A Bloodgill Mimic", hand "Garudon's Statue" (52941). Sets `EnchPre` to `1`.
 4. Loot "Crumbling Tome" (54313) from "A Shissar Lorekeeper" in `ssratemple`.
 5. ssratemple/"A Soriz Imitator", hand "Crumbling Tome" (54313). Requires `EnchPre` ==1. Gives "Illegible Tome" (52947).
 6. akanon/"Rilgor Plegnog", say "Insidious". Gives "Compacting Satchel" (54303).
-7. No quest step gives Fine Insidious Halo (54384). The dump lists it in hateplaneb.
-8. No quest step gives Fine Insidious Sleeves (54385). The dump lists it in hateplaneb.
-9. No quest step gives Fine Insidious Manacle (54386). The dump lists it in hateplaneb.
-10. No quest step gives Fine Insidious Gloves (54387). The dump lists it in hateplaneb.
-11. No quest step gives Fine Insidious Pantaloons (54388). The dump lists it in hateplaneb.
-12. No quest step gives Fine Insidious Slippers (54389). The dump lists it in hateplaneb.
+7. Loot "Fine Insidious Halo" (54384) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2% chance per kill.
+8. Loot "Fine Insidious Sleeves" (54385) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.08% chance per kill.
+9. Loot "Fine Insidious Manacle" (54386) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.09% chance per kill.
+10. Loot "Fine Insidious Gloves" (54387) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.24% chance per kill.
+11. Loot "Fine Insidious Pantaloons" (54388) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.23% chance per kill.
+12. Loot "Fine Insidious Slippers" (54389) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.07% chance per kill.
 13. Combine in "Compacting Satchel" (54303): "Fine Insidious Halo" (54384), "Fine Insidious Sleeves" (54385), "Fine Insidious Manacle" (54386), "Fine Insidious Gloves" (54387), "Fine Insidious Pantaloons" (54388), "Fine Insidious Slippers" (54389). Produces "Insidious Bundle" (54317). The combine does not fail.
 14. akanon/"Rilgor Plegnog", hand "Insidious Bundle" (54317). Gives "Gnomish Translating Device" (52945).
 15. burningwood/"A Sarnak Imitator", hand "Gnomish Translating Device" (52945) + "Illegible Tome" (52947). Sets `EnchPre` to `2`.
-16. Common item: Shining Metallic Robes (1360). Listed in 4 zones.
+16. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
 17. akanon/"Rilgor Plegnog", hand "Shining Metallic Robes" (1360). Gives "Mechanical Pen" (10600).
 18. qcat/"Reania Jukle", say "Supply". Gives "Empty Ink Vial" (10626).
 19. gukbottom/"A Ghoul Scribe", hand "Empty Ink Vial" (10626). Gives "Ink of the Dark" (10601).
-20. Hand "Quill" (13051) + "Piece of Parchment" (13063) to qey2hh1/"Chrislin Baker". Spawns "Thrackin Griften" (12172). Loot "White Paper" (10602) from "Thrackin Griften".
-21. Loot "White Paper" (10602) from "Thrackin Griften".
-22. erudnext/"Stofo Olan", hand "Mechanical Pen" (10600) + "Ink of the Dark" (10601) + "White Paper" (10602). Gives "Copy of Notes" (10603).
-23. burningwood/"A Sarnak Imitator", hand "Copy of Notes" (10603). Gives "Jeb's Seal" (10604).
-24. akanon/"Clockwork Viix", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
-25. firiona/"Nadia Starfeast", say "I Need A Sack". Gives "Enchanters Sack" (17861).
-26. hole/"Polzin Mrid", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
-27. overthere/"Modani Qu-Loni", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
-28. Loot "Xolion Rod" (10606) from "Vessel Drozlin" in `cabeast`.
-29. Loot "Innoruuk's Word" (10607) from "Verina Tomb" in `neriakc`.
-30. Loot "Head of a Prince" (10627) from "Prince Selrach Di'zok" in `chardok`.
-31. felwitheb/"Joren Nobleheart", hand "Head of a Prince" (10627). Gives "Chalice of Kings" (10608).
-32. Ground spawn of "Large Muddy Sandals" (10628) in `oggok`.
-33. oggok/"Bozlum Blossom", hand "Large Muddy Sandals" (10628). Gives "Scribbled Parchment" (10629).
-34. oggok/"Brokk Boxtripper", hand "Scribbled Parchment" (10629). Gives "Gift to Bozlum" (10630).
-35. oggok/"Bozlum Blossom", hand "Gift to Bozlum" (10630). Gives "Snow Blossoms" (10609).
-36. Combine in "Enchanters Sack" (17861): "Xolion Rod" (10606), "Innoruuk's Word" (10607), "Chalice of Kings" (10608), "Snow Blossoms" (10609). Produces "Sack For Modani" (10635). The combine does not fail.
-37. overthere/"Modani Qu-Loni", hand "Sack For Modani" (10635). Gives "1st Piece of Staff" (10610).
-38. Loot "Spoon" (10614) from "Cazel" in `oasis`.
-39. Loot "Spoon" (10614) from "Cazel" in `southro`.
-40. Ground spawn of "The One Key" (10615) in `overthere`.
-41. Ground spawn of "Lost Scroll" (10616) in `dalnir`.
-42. Ground spawn of "Charm and Sacrifice" (10617) in `airplane`.
-43. Combine in "Enchanters Sack" (17861): "Spoon" (10614), "The One Key" (10615), "Lost Scroll" (10616), "Charm and Sacrifice" (10617). Produces "Sack For Mizzle" (10636). The combine does not fail.
-44. akanon/"Clockwork Viix", hand "Sack For Mizzle" (10636). Gives "2nd Piece of Staff" (10611).
-45. firiona/"Nadia Starfeast", say "Diamond". Gives "Dull Diamond" (10631).
-46. kaesora/"Spectral Librarian", hand "Dull Diamond" (10631). Gives "Enchanted Diamond" (10618).
-47. firiona/"Nadia Starfeast", say "Sapphire". Gives "Dull Sapphire" (10632).
-48. skyfire/"Felia Goldenwing", hand "Dull Sapphire" (10632). Gives "Enchanted Sapphire" (10619).
-49. firiona/"Nadia Starfeast", say "Ruby". Gives "Dull Ruby" (10633).
-50. citymist/"Wraith Of Jaxion", hand "Dull Ruby" (10633). Gives "Enchanted Ruby" (10620).
-51. firiona/"Nadia Starfeast", say "Emerald". Gives "Dull Emerald" (10634).
-52. overthere/"Impaler Tzilug", hand "Dull Emerald" (10634). Gives "Enchanted Emerald" (10621).
-53. Combine in "Enchanters Sack" (17861): "Enchanted Diamond" (10618), "Enchanted Sapphire" (10619), "Enchanted Ruby" (10620), "Enchanted Emerald" (10621). Produces "Sack For Nadia" (10637). The combine does not fail.
-54. firiona/"Nadia Starfeast", hand "Sack For Nadia" (10637). Gives "3rd Piece of Staff" (10612).
-55. Loot "Head of the Serpent" (10622) from "Wraith of a Shissar" in `fearplane`.
-56. Loot "Essence of a Ghost" (10623) from "the Ghost of Kindle" in `hole`.
-57. No quest step gives Essence of a Vampire (10624). The dump lists it in hateplane, hateplaneb.
-58. Loot "Sands of the Mystics" (10625) from "The Tangrin" in `fieldofbone`.
-59. Combine in "Enchanters Sack" (17861): "Head of the Serpent" (10622), "Essence of a Ghost" (10623), "Essence of a Vampire" (10624), "Sands of the Mystics" (10625). Produces "Sack For Polzin" (10638). The combine does not fail.
-60. hole/"Polzin Mrid", hand "Sack For Polzin" (10638). Gives "4th Piece of Staff" (10613).
-61. Combine in "Enchanters Sack" (17861): "1st Piece of Staff" (10610), "2nd Piece of Staff" (10611), "3rd Piece of Staff" (10612), "4th Piece of Staff" (10613). Produces "Bundle of Staves" (10639). The combine does not fail.
-62. burningwood/"A Sarnak Imitator", hand "Bundle of Staves" (10639). Gives "Staff of the Serpent" (10650).
-63. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
-64. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
-65. burningwood/"A Sarnak Imitator", say "Prepared". Requires `ench_epic` set. Requires `ench_epic` >=1. Gives "Tattered Illegible Tome" (57918).
-66. Ground spawn of "Cryptic Page" (52933) in `charasis`.
-67. Ground spawn of "Cryptic Page" (52934) in `sebilis`.
-68. Ground spawn of "Cryptic Page" (52935) in `cazicthule`.
-69. Ground spawn of "Cryptic Page" (52936) in `crystal`.
-70. Ground spawn of "Cryptic Page" (52937) in `skyshrine`.
-71. Ground spawn of "Cryptic Page" (52938) in `velketor`.
-72. Ground spawn of "Cryptic Page" (52939) in `nadox`.
-73. Ground spawn of "Cryptic Page" (54308) in `najena`.
-74. Ground spawn of "Cryptic Page" (57916) in `fungusgrove`.
-75. Ground spawn of "Cryptic Page" (57923) in `oot`.
-76. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). The combine does not fail.
+20. Common item: Piece of Parchment (13063). Listed in 23 zones.
+21. Common item: Quill (13051). Listed in 32 zones.
+22. Hand "Quill" (13051) + "Piece of Parchment" (13063) to qey2hh1/"Chrislin Baker". Spawns "Thrackin Griften" (12172). Loot "White Paper" (10602) from "Thrackin Griften".
+23. erudnext/"Stofo Olan", hand "Mechanical Pen" (10600) + "Ink of the Dark" (10601) + "White Paper" (10602). Gives "Copy of Notes" (10603).
+24. burningwood/"A Sarnak Imitator", hand "Copy of Notes" (10603). Gives "Jeb's Seal" (10604).
+25. akanon/"Clockwork Viix", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
+26. Loot "Xolion Rod" (10606) from "Vessel Drozlin" in `cabeast`.
+27. Loot "Innoruuk's Word" (10607) from "Verina Tomb" in `neriakc`.
+28. Loot "Head of a Prince" (10627) from "Prince Selrach Di'zok" in `chardok`.
+29. felwitheb/"Joren Nobleheart", hand "Head of a Prince" (10627). Gives "Chalice of Kings" (10608).
+30. Ground spawn of "Large Muddy Sandals" (10628) in `oggok`.
+31. oggok/"Bozlum Blossom", hand "Large Muddy Sandals" (10628). Gives "Scribbled Parchment" (10629).
+32. oggok/"Brokk Boxtripper", hand "Scribbled Parchment" (10629). Gives "Gift to Bozlum" (10630).
+33. oggok/"Bozlum Blossom", hand "Gift to Bozlum" (10630). Gives "Snow Blossoms" (10609).
+34. Combine in "Enchanters Sack" (17861): "Xolion Rod" (10606), "Innoruuk's Word" (10607), "Chalice of Kings" (10608), "Snow Blossoms" (10609). Produces "Sack For Modani" (10635). The combine does not fail.
+35. overthere/"Modani Qu-Loni", hand "Sack For Modani" (10635). Gives "1st Piece of Staff" (10610).
+36. Loot "Spoon" (10614) from "Cazel" in `oasis`.
+37. Loot "Spoon" (10614) from "Cazel" in `southro`.
+38. Ground spawn of "The One Key" (10615) in `overthere`.
+39. Ground spawn of "Lost Scroll" (10616) in `dalnir`.
+40. Ground spawn of "Charm and Sacrifice" (10617) in `airplane`.
+41. Combine in "Enchanters Sack" (17861): "Spoon" (10614), "The One Key" (10615), "Lost Scroll" (10616), "Charm and Sacrifice" (10617). Produces "Sack For Mizzle" (10636). The combine does not fail.
+42. akanon/"Clockwork Viix", hand "Sack For Mizzle" (10636). Gives "2nd Piece of Staff" (10611).
+43. firiona/"Nadia Starfeast", say "Diamond". Gives "Dull Diamond" (10631).
+44. kaesora/"Spectral Librarian", hand "Dull Diamond" (10631). Gives "Enchanted Diamond" (10618).
+45. firiona/"Nadia Starfeast", say "Sapphire". Gives "Dull Sapphire" (10632).
+46. skyfire/"Felia Goldenwing", hand "Dull Sapphire" (10632). Gives "Enchanted Sapphire" (10619).
+47. firiona/"Nadia Starfeast", say "Ruby". Gives "Dull Ruby" (10633).
+48. citymist/"Wraith Of Jaxion", hand "Dull Ruby" (10633). Gives "Enchanted Ruby" (10620).
+49. firiona/"Nadia Starfeast", say "Emerald". Gives "Dull Emerald" (10634).
+50. overthere/"Impaler Tzilug", hand "Dull Emerald" (10634). Gives "Enchanted Emerald" (10621).
+51. Combine in "Enchanters Sack" (17861): "Enchanted Diamond" (10618), "Enchanted Sapphire" (10619), "Enchanted Ruby" (10620), "Enchanted Emerald" (10621). Produces "Sack For Nadia" (10637). The combine does not fail.
+52. firiona/"Nadia Starfeast", hand "Sack For Nadia" (10637). Gives "3rd Piece of Staff" (10612).
+53. Loot "Head of the Serpent" (10622) from "Wraith of a Shissar" in `fearplane`.
+54. Loot "Essence of a Ghost" (10623) from "the Ghost of Kindle" in `hole`.
+55. Loot "Essence of a Vampire" (10624) from "A Forsaken Revenant" (NPC 76005) in `hateplane`. Drop cache: 10.57% chance per kill.
+56. Loot "Sands of the Mystics" (10625) from "The Tangrin" in `fieldofbone`.
+57. Combine in "Enchanters Sack" (17861): "Head of the Serpent" (10622), "Essence of a Ghost" (10623), "Essence of a Vampire" (10624), "Sands of the Mystics" (10625). Produces "Sack For Polzin" (10638). The combine does not fail.
+58. hole/"Polzin Mrid", hand "Sack For Polzin" (10638). Gives "4th Piece of Staff" (10613).
+59. Combine in "Enchanters Sack" (17861): "1st Piece of Staff" (10610), "2nd Piece of Staff" (10611), "3rd Piece of Staff" (10612), "4th Piece of Staff" (10613). Produces "Bundle of Staves" (10639). The combine does not fail.
+60. burningwood/"A Sarnak Imitator", hand "Bundle of Staves" (10639). Gives "Staff of the Serpent" (10650).
+61. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
+62. burningwood/"A Sarnak Imitator", say "Prepared". Requires `ench_epic` set. Requires `ench_epic` >=1. Gives "Tattered Illegible Tome" (57918).
+63. Ground spawn of "Cryptic Page" (52933) in `charasis`.
+64. Ground spawn of "Cryptic Page" (52934) in `sebilis`.
+65. Ground spawn of "Cryptic Page" (52935) in `cazicthule`.
+66. Ground spawn of "Cryptic Page" (52936) in `crystal`.
+67. Ground spawn of "Cryptic Page" (52937) in `skyshrine`.
+68. Ground spawn of "Cryptic Page" (52938) in `velketor`.
+69. Ground spawn of "Cryptic Page" (52939) in `nadox`.
+70. Ground spawn of "Cryptic Page" (54308) in `najena`.
+71. Ground spawn of "Cryptic Page" (57916) in `fungusgrove`.
+72. Ground spawn of "Cryptic Page" (57923) in `oot`.
+73. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). The combine does not fail.
 
 ### "Sealed Documents" (52959)
 
-1. Hand "Dragon Boneshard" (65574) to veksar/"Spirit Of Garudon". Spawns "Garudon" (109107). Loot "Garudon's Statue" (52941) from "Garudon".
-2. Loot "Garudon's Statue" (52941) from "Garudon".
+1. Loot "Dragon Boneshard" (65574) from "A Curate" (NPC 109068) in `veksar`. Drop cache: 10% chance per kill.
+2. Hand "Dragon Boneshard" (65574) to veksar/"Spirit Of Garudon". Spawns "Garudon" (109107). Loot "Garudon's Statue" (52941) from "Garudon".
 3. lakeofillomen/"A Bloodgill Mimic", hand "Garudon's Statue" (52941). Sets `EnchPre` to `1`.
 4. Loot "Crumbling Tome" (54313) from "A Shissar Lorekeeper" in `ssratemple`.
 5. ssratemple/"A Soriz Imitator", hand "Crumbling Tome" (54313). Requires `EnchPre` ==1. Gives "Illegible Tome" (52947).
 6. akanon/"Rilgor Plegnog", say "Insidious". Gives "Compacting Satchel" (54303).
-7. No quest step gives Fine Insidious Halo (54384). The dump lists it in hateplaneb.
-8. No quest step gives Fine Insidious Sleeves (54385). The dump lists it in hateplaneb.
-9. No quest step gives Fine Insidious Manacle (54386). The dump lists it in hateplaneb.
-10. No quest step gives Fine Insidious Gloves (54387). The dump lists it in hateplaneb.
-11. No quest step gives Fine Insidious Pantaloons (54388). The dump lists it in hateplaneb.
-12. No quest step gives Fine Insidious Slippers (54389). The dump lists it in hateplaneb.
+7. Loot "Fine Insidious Halo" (54384) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2% chance per kill.
+8. Loot "Fine Insidious Sleeves" (54385) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.08% chance per kill.
+9. Loot "Fine Insidious Manacle" (54386) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.09% chance per kill.
+10. Loot "Fine Insidious Gloves" (54387) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.24% chance per kill.
+11. Loot "Fine Insidious Pantaloons" (54388) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.23% chance per kill.
+12. Loot "Fine Insidious Slippers" (54389) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.07% chance per kill.
 13. Combine in "Compacting Satchel" (54303): "Fine Insidious Halo" (54384), "Fine Insidious Sleeves" (54385), "Fine Insidious Manacle" (54386), "Fine Insidious Gloves" (54387), "Fine Insidious Pantaloons" (54388), "Fine Insidious Slippers" (54389). Produces "Insidious Bundle" (54317). The combine does not fail.
 14. akanon/"Rilgor Plegnog", hand "Insidious Bundle" (54317). Gives "Gnomish Translating Device" (52945).
 15. burningwood/"A Sarnak Imitator", hand "Gnomish Translating Device" (52945) + "Illegible Tome" (52947). Sets `EnchPre` to `2`.
-16. Common item: Shining Metallic Robes (1360). Listed in 4 zones.
+16. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
 17. akanon/"Rilgor Plegnog", hand "Shining Metallic Robes" (1360). Gives "Mechanical Pen" (10600).
 18. qcat/"Reania Jukle", say "Supply". Gives "Empty Ink Vial" (10626).
 19. gukbottom/"A Ghoul Scribe", hand "Empty Ink Vial" (10626). Gives "Ink of the Dark" (10601).
-20. Hand "Quill" (13051) + "Piece of Parchment" (13063) to qey2hh1/"Chrislin Baker". Spawns "Thrackin Griften" (12172). Loot "White Paper" (10602) from "Thrackin Griften".
-21. Loot "White Paper" (10602) from "Thrackin Griften".
-22. erudnext/"Stofo Olan", hand "Mechanical Pen" (10600) + "Ink of the Dark" (10601) + "White Paper" (10602). Gives "Copy of Notes" (10603).
-23. burningwood/"A Sarnak Imitator", hand "Copy of Notes" (10603). Gives "Jeb's Seal" (10604).
-24. akanon/"Clockwork Viix", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
-25. firiona/"Nadia Starfeast", say "I Need A Sack". Gives "Enchanters Sack" (17861).
-26. hole/"Polzin Mrid", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
-27. overthere/"Modani Qu-Loni", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
-28. Loot "Xolion Rod" (10606) from "Vessel Drozlin" in `cabeast`.
-29. Loot "Innoruuk's Word" (10607) from "Verina Tomb" in `neriakc`.
-30. Loot "Head of a Prince" (10627) from "Prince Selrach Di'zok" in `chardok`.
-31. felwitheb/"Joren Nobleheart", hand "Head of a Prince" (10627). Gives "Chalice of Kings" (10608).
-32. Ground spawn of "Large Muddy Sandals" (10628) in `oggok`.
-33. oggok/"Bozlum Blossom", hand "Large Muddy Sandals" (10628). Gives "Scribbled Parchment" (10629).
-34. oggok/"Brokk Boxtripper", hand "Scribbled Parchment" (10629). Gives "Gift to Bozlum" (10630).
-35. oggok/"Bozlum Blossom", hand "Gift to Bozlum" (10630). Gives "Snow Blossoms" (10609).
-36. Combine in "Enchanters Sack" (17861): "Xolion Rod" (10606), "Innoruuk's Word" (10607), "Chalice of Kings" (10608), "Snow Blossoms" (10609). Produces "Sack For Modani" (10635). The combine does not fail.
-37. overthere/"Modani Qu-Loni", hand "Sack For Modani" (10635). Gives "1st Piece of Staff" (10610).
-38. Loot "Spoon" (10614) from "Cazel" in `oasis`.
-39. Loot "Spoon" (10614) from "Cazel" in `southro`.
-40. Ground spawn of "The One Key" (10615) in `overthere`.
-41. Ground spawn of "Lost Scroll" (10616) in `dalnir`.
-42. Ground spawn of "Charm and Sacrifice" (10617) in `airplane`.
-43. Combine in "Enchanters Sack" (17861): "Spoon" (10614), "The One Key" (10615), "Lost Scroll" (10616), "Charm and Sacrifice" (10617). Produces "Sack For Mizzle" (10636). The combine does not fail.
-44. akanon/"Clockwork Viix", hand "Sack For Mizzle" (10636). Gives "2nd Piece of Staff" (10611).
-45. firiona/"Nadia Starfeast", say "Diamond". Gives "Dull Diamond" (10631).
-46. kaesora/"Spectral Librarian", hand "Dull Diamond" (10631). Gives "Enchanted Diamond" (10618).
-47. firiona/"Nadia Starfeast", say "Sapphire". Gives "Dull Sapphire" (10632).
-48. skyfire/"Felia Goldenwing", hand "Dull Sapphire" (10632). Gives "Enchanted Sapphire" (10619).
-49. firiona/"Nadia Starfeast", say "Ruby". Gives "Dull Ruby" (10633).
-50. citymist/"Wraith Of Jaxion", hand "Dull Ruby" (10633). Gives "Enchanted Ruby" (10620).
-51. firiona/"Nadia Starfeast", say "Emerald". Gives "Dull Emerald" (10634).
-52. overthere/"Impaler Tzilug", hand "Dull Emerald" (10634). Gives "Enchanted Emerald" (10621).
-53. Combine in "Enchanters Sack" (17861): "Enchanted Diamond" (10618), "Enchanted Sapphire" (10619), "Enchanted Ruby" (10620), "Enchanted Emerald" (10621). Produces "Sack For Nadia" (10637). The combine does not fail.
-54. firiona/"Nadia Starfeast", hand "Sack For Nadia" (10637). Gives "3rd Piece of Staff" (10612).
-55. Loot "Head of the Serpent" (10622) from "Wraith of a Shissar" in `fearplane`.
-56. Loot "Essence of a Ghost" (10623) from "the Ghost of Kindle" in `hole`.
-57. No quest step gives Essence of a Vampire (10624). The dump lists it in hateplane, hateplaneb.
-58. Loot "Sands of the Mystics" (10625) from "The Tangrin" in `fieldofbone`.
-59. Combine in "Enchanters Sack" (17861): "Head of the Serpent" (10622), "Essence of a Ghost" (10623), "Essence of a Vampire" (10624), "Sands of the Mystics" (10625). Produces "Sack For Polzin" (10638). The combine does not fail.
-60. hole/"Polzin Mrid", hand "Sack For Polzin" (10638). Gives "4th Piece of Staff" (10613).
-61. Combine in "Enchanters Sack" (17861): "1st Piece of Staff" (10610), "2nd Piece of Staff" (10611), "3rd Piece of Staff" (10612), "4th Piece of Staff" (10613). Produces "Bundle of Staves" (10639). The combine does not fail.
-62. burningwood/"A Sarnak Imitator", hand "Bundle of Staves" (10639). Gives "Staff of the Serpent" (10650).
-63. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
-64. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
-65. burningwood/"A Sarnak Imitator", say "Prepared". Requires `ench_epic` set. Requires `ench_epic` >=1. Gives "Tattered Illegible Tome" (57918).
-66. Ground spawn of "Cryptic Page" (52933) in `charasis`.
-67. Ground spawn of "Cryptic Page" (52934) in `sebilis`.
-68. Ground spawn of "Cryptic Page" (52935) in `cazicthule`.
-69. Ground spawn of "Cryptic Page" (52936) in `crystal`.
-70. Ground spawn of "Cryptic Page" (52937) in `skyshrine`.
-71. Ground spawn of "Cryptic Page" (52938) in `velketor`.
-72. Ground spawn of "Cryptic Page" (52939) in `nadox`.
-73. Ground spawn of "Cryptic Page" (54308) in `najena`.
-74. Ground spawn of "Cryptic Page" (57916) in `fungusgrove`.
-75. Ground spawn of "Cryptic Page" (57923) in `oot`.
-76. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). The combine does not fail.
-77. burningwood/"A Sarnak Imitator", hand "Complete Illegible Tome" (54267). Sets `ench_epic` to `2`.
-78. poknowledge/"Grand Librarian Maelin", say "Jeb Lumsed Sent Me". Requires `ench_epic` ==2. Gives "Note to Lobaen" (52950).
-79. poknowledge/"Illusionist Lobaen", hand "Note to Lobaen" (52950). Gives "Sealed Documents" (52959).
+20. Common item: Piece of Parchment (13063). Listed in 23 zones.
+21. Common item: Quill (13051). Listed in 32 zones.
+22. Hand "Quill" (13051) + "Piece of Parchment" (13063) to qey2hh1/"Chrislin Baker". Spawns "Thrackin Griften" (12172). Loot "White Paper" (10602) from "Thrackin Griften".
+23. erudnext/"Stofo Olan", hand "Mechanical Pen" (10600) + "Ink of the Dark" (10601) + "White Paper" (10602). Gives "Copy of Notes" (10603).
+24. burningwood/"A Sarnak Imitator", hand "Copy of Notes" (10603). Gives "Jeb's Seal" (10604).
+25. akanon/"Clockwork Viix", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
+26. Loot "Xolion Rod" (10606) from "Vessel Drozlin" in `cabeast`.
+27. Loot "Innoruuk's Word" (10607) from "Verina Tomb" in `neriakc`.
+28. Loot "Head of a Prince" (10627) from "Prince Selrach Di'zok" in `chardok`.
+29. felwitheb/"Joren Nobleheart", hand "Head of a Prince" (10627). Gives "Chalice of Kings" (10608).
+30. Ground spawn of "Large Muddy Sandals" (10628) in `oggok`.
+31. oggok/"Bozlum Blossom", hand "Large Muddy Sandals" (10628). Gives "Scribbled Parchment" (10629).
+32. oggok/"Brokk Boxtripper", hand "Scribbled Parchment" (10629). Gives "Gift to Bozlum" (10630).
+33. oggok/"Bozlum Blossom", hand "Gift to Bozlum" (10630). Gives "Snow Blossoms" (10609).
+34. Combine in "Enchanters Sack" (17861): "Xolion Rod" (10606), "Innoruuk's Word" (10607), "Chalice of Kings" (10608), "Snow Blossoms" (10609). Produces "Sack For Modani" (10635). The combine does not fail.
+35. overthere/"Modani Qu-Loni", hand "Sack For Modani" (10635). Gives "1st Piece of Staff" (10610).
+36. Loot "Spoon" (10614) from "Cazel" in `oasis`.
+37. Loot "Spoon" (10614) from "Cazel" in `southro`.
+38. Ground spawn of "The One Key" (10615) in `overthere`.
+39. Ground spawn of "Lost Scroll" (10616) in `dalnir`.
+40. Ground spawn of "Charm and Sacrifice" (10617) in `airplane`.
+41. Combine in "Enchanters Sack" (17861): "Spoon" (10614), "The One Key" (10615), "Lost Scroll" (10616), "Charm and Sacrifice" (10617). Produces "Sack For Mizzle" (10636). The combine does not fail.
+42. akanon/"Clockwork Viix", hand "Sack For Mizzle" (10636). Gives "2nd Piece of Staff" (10611).
+43. firiona/"Nadia Starfeast", say "Diamond". Gives "Dull Diamond" (10631).
+44. kaesora/"Spectral Librarian", hand "Dull Diamond" (10631). Gives "Enchanted Diamond" (10618).
+45. firiona/"Nadia Starfeast", say "Sapphire". Gives "Dull Sapphire" (10632).
+46. skyfire/"Felia Goldenwing", hand "Dull Sapphire" (10632). Gives "Enchanted Sapphire" (10619).
+47. firiona/"Nadia Starfeast", say "Ruby". Gives "Dull Ruby" (10633).
+48. citymist/"Wraith Of Jaxion", hand "Dull Ruby" (10633). Gives "Enchanted Ruby" (10620).
+49. firiona/"Nadia Starfeast", say "Emerald". Gives "Dull Emerald" (10634).
+50. overthere/"Impaler Tzilug", hand "Dull Emerald" (10634). Gives "Enchanted Emerald" (10621).
+51. Combine in "Enchanters Sack" (17861): "Enchanted Diamond" (10618), "Enchanted Sapphire" (10619), "Enchanted Ruby" (10620), "Enchanted Emerald" (10621). Produces "Sack For Nadia" (10637). The combine does not fail.
+52. firiona/"Nadia Starfeast", hand "Sack For Nadia" (10637). Gives "3rd Piece of Staff" (10612).
+53. Loot "Head of the Serpent" (10622) from "Wraith of a Shissar" in `fearplane`.
+54. Loot "Essence of a Ghost" (10623) from "the Ghost of Kindle" in `hole`.
+55. Loot "Essence of a Vampire" (10624) from "A Forsaken Revenant" (NPC 76005) in `hateplane`. Drop cache: 10.57% chance per kill.
+56. Loot "Sands of the Mystics" (10625) from "The Tangrin" in `fieldofbone`.
+57. Combine in "Enchanters Sack" (17861): "Head of the Serpent" (10622), "Essence of a Ghost" (10623), "Essence of a Vampire" (10624), "Sands of the Mystics" (10625). Produces "Sack For Polzin" (10638). The combine does not fail.
+58. hole/"Polzin Mrid", hand "Sack For Polzin" (10638). Gives "4th Piece of Staff" (10613).
+59. Combine in "Enchanters Sack" (17861): "1st Piece of Staff" (10610), "2nd Piece of Staff" (10611), "3rd Piece of Staff" (10612), "4th Piece of Staff" (10613). Produces "Bundle of Staves" (10639). The combine does not fail.
+60. burningwood/"A Sarnak Imitator", hand "Bundle of Staves" (10639). Gives "Staff of the Serpent" (10650).
+61. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
+62. burningwood/"A Sarnak Imitator", say "Prepared". Requires `ench_epic` set. Requires `ench_epic` >=1. Gives "Tattered Illegible Tome" (57918).
+63. Ground spawn of "Cryptic Page" (52933) in `charasis`.
+64. Ground spawn of "Cryptic Page" (52934) in `sebilis`.
+65. Ground spawn of "Cryptic Page" (52935) in `cazicthule`.
+66. Ground spawn of "Cryptic Page" (52936) in `crystal`.
+67. Ground spawn of "Cryptic Page" (52937) in `skyshrine`.
+68. Ground spawn of "Cryptic Page" (52938) in `velketor`.
+69. Ground spawn of "Cryptic Page" (52939) in `nadox`.
+70. Ground spawn of "Cryptic Page" (54308) in `najena`.
+71. Ground spawn of "Cryptic Page" (57916) in `fungusgrove`.
+72. Ground spawn of "Cryptic Page" (57923) in `oot`.
+73. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). The combine does not fail.
+74. burningwood/"A Sarnak Imitator", hand "Complete Illegible Tome" (54267). Sets `ench_epic` to `2`.
+75. poknowledge/"Grand Librarian Maelin", say "Jeb Lumsed Sent Me". Requires `ench_epic` ==2. Gives "Note to Lobaen" (52950).
+76. poknowledge/"Illusionist Lobaen", hand "Note to Lobaen" (52950). Gives "Sealed Documents" (52959).
 
 ### "Latched Ornate Chest" (52966)
 
-1. Hand "Dragon Boneshard" (65574) to veksar/"Spirit Of Garudon". Spawns "Garudon" (109107). Loot "Garudon's Statue" (52941) from "Garudon".
-2. Loot "Garudon's Statue" (52941) from "Garudon".
-3. lakeofillomen/"A Bloodgill Mimic", hand "Garudon's Statue" (52941). Sets `EnchPre` to `1`.
-4. Loot "Crumbling Tome" (54313) from "A Shissar Lorekeeper" in `ssratemple`.
-5. ssratemple/"A Soriz Imitator", hand "Crumbling Tome" (54313). Requires `EnchPre` ==1. Gives "Illegible Tome" (52947).
-6. akanon/"Rilgor Plegnog", say "Insidious". Gives "Compacting Satchel" (54303).
-7. No quest step gives Fine Insidious Halo (54384). The dump lists it in hateplaneb.
-8. No quest step gives Fine Insidious Sleeves (54385). The dump lists it in hateplaneb.
-9. No quest step gives Fine Insidious Manacle (54386). The dump lists it in hateplaneb.
-10. No quest step gives Fine Insidious Gloves (54387). The dump lists it in hateplaneb.
-11. No quest step gives Fine Insidious Pantaloons (54388). The dump lists it in hateplaneb.
-12. No quest step gives Fine Insidious Slippers (54389). The dump lists it in hateplaneb.
-13. Combine in "Compacting Satchel" (54303): "Fine Insidious Halo" (54384), "Fine Insidious Sleeves" (54385), "Fine Insidious Manacle" (54386), "Fine Insidious Gloves" (54387), "Fine Insidious Pantaloons" (54388), "Fine Insidious Slippers" (54389). Produces "Insidious Bundle" (54317). The combine does not fail.
-14. akanon/"Rilgor Plegnog", hand "Insidious Bundle" (54317). Gives "Gnomish Translating Device" (52945).
-15. burningwood/"A Sarnak Imitator", hand "Gnomish Translating Device" (52945) + "Illegible Tome" (52947). Sets `EnchPre` to `2`.
-16. Common item: Shining Metallic Robes (1360). Listed in 4 zones.
-17. akanon/"Rilgor Plegnog", hand "Shining Metallic Robes" (1360). Gives "Mechanical Pen" (10600).
-18. qcat/"Reania Jukle", say "Supply". Gives "Empty Ink Vial" (10626).
-19. gukbottom/"A Ghoul Scribe", hand "Empty Ink Vial" (10626). Gives "Ink of the Dark" (10601).
-20. Hand "Quill" (13051) + "Piece of Parchment" (13063) to qey2hh1/"Chrislin Baker". Spawns "Thrackin Griften" (12172). Loot "White Paper" (10602) from "Thrackin Griften".
-21. Loot "White Paper" (10602) from "Thrackin Griften".
-22. erudnext/"Stofo Olan", hand "Mechanical Pen" (10600) + "Ink of the Dark" (10601) + "White Paper" (10602). Gives "Copy of Notes" (10603).
-23. burningwood/"A Sarnak Imitator", hand "Copy of Notes" (10603). Gives "Jeb's Seal" (10604).
-24. akanon/"Clockwork Viix", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
-25. firiona/"Nadia Starfeast", say "I Need A Sack". Gives "Enchanters Sack" (17861).
-26. hole/"Polzin Mrid", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
-27. overthere/"Modani Qu-Loni", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
-28. Loot "Xolion Rod" (10606) from "Vessel Drozlin" in `cabeast`.
-29. Loot "Innoruuk's Word" (10607) from "Verina Tomb" in `neriakc`.
-30. Loot "Head of a Prince" (10627) from "Prince Selrach Di'zok" in `chardok`.
-31. felwitheb/"Joren Nobleheart", hand "Head of a Prince" (10627). Gives "Chalice of Kings" (10608).
-32. Ground spawn of "Large Muddy Sandals" (10628) in `oggok`.
-33. oggok/"Bozlum Blossom", hand "Large Muddy Sandals" (10628). Gives "Scribbled Parchment" (10629).
-34. oggok/"Brokk Boxtripper", hand "Scribbled Parchment" (10629). Gives "Gift to Bozlum" (10630).
-35. oggok/"Bozlum Blossom", hand "Gift to Bozlum" (10630). Gives "Snow Blossoms" (10609).
-36. Combine in "Enchanters Sack" (17861): "Xolion Rod" (10606), "Innoruuk's Word" (10607), "Chalice of Kings" (10608), "Snow Blossoms" (10609). Produces "Sack For Modani" (10635). The combine does not fail.
-37. overthere/"Modani Qu-Loni", hand "Sack For Modani" (10635). Gives "1st Piece of Staff" (10610).
-38. Loot "Spoon" (10614) from "Cazel" in `oasis`.
-39. Loot "Spoon" (10614) from "Cazel" in `southro`.
-40. Ground spawn of "The One Key" (10615) in `overthere`.
-41. Ground spawn of "Lost Scroll" (10616) in `dalnir`.
-42. Ground spawn of "Charm and Sacrifice" (10617) in `airplane`.
-43. Combine in "Enchanters Sack" (17861): "Spoon" (10614), "The One Key" (10615), "Lost Scroll" (10616), "Charm and Sacrifice" (10617). Produces "Sack For Mizzle" (10636). The combine does not fail.
-44. akanon/"Clockwork Viix", hand "Sack For Mizzle" (10636). Gives "2nd Piece of Staff" (10611).
-45. firiona/"Nadia Starfeast", say "Diamond". Gives "Dull Diamond" (10631).
-46. kaesora/"Spectral Librarian", hand "Dull Diamond" (10631). Gives "Enchanted Diamond" (10618).
-47. firiona/"Nadia Starfeast", say "Sapphire". Gives "Dull Sapphire" (10632).
-48. skyfire/"Felia Goldenwing", hand "Dull Sapphire" (10632). Gives "Enchanted Sapphire" (10619).
-49. firiona/"Nadia Starfeast", say "Ruby". Gives "Dull Ruby" (10633).
-50. citymist/"Wraith Of Jaxion", hand "Dull Ruby" (10633). Gives "Enchanted Ruby" (10620).
-51. firiona/"Nadia Starfeast", say "Emerald". Gives "Dull Emerald" (10634).
-52. overthere/"Impaler Tzilug", hand "Dull Emerald" (10634). Gives "Enchanted Emerald" (10621).
-53. Combine in "Enchanters Sack" (17861): "Enchanted Diamond" (10618), "Enchanted Sapphire" (10619), "Enchanted Ruby" (10620), "Enchanted Emerald" (10621). Produces "Sack For Nadia" (10637). The combine does not fail.
-54. firiona/"Nadia Starfeast", hand "Sack For Nadia" (10637). Gives "3rd Piece of Staff" (10612).
-55. Loot "Head of the Serpent" (10622) from "Wraith of a Shissar" in `fearplane`.
-56. Loot "Essence of a Ghost" (10623) from "the Ghost of Kindle" in `hole`.
-57. No quest step gives Essence of a Vampire (10624). The dump lists it in hateplane, hateplaneb.
-58. Loot "Sands of the Mystics" (10625) from "The Tangrin" in `fieldofbone`.
-59. Combine in "Enchanters Sack" (17861): "Head of the Serpent" (10622), "Essence of a Ghost" (10623), "Essence of a Vampire" (10624), "Sands of the Mystics" (10625). Produces "Sack For Polzin" (10638). The combine does not fail.
-60. hole/"Polzin Mrid", hand "Sack For Polzin" (10638). Gives "4th Piece of Staff" (10613).
-61. Combine in "Enchanters Sack" (17861): "1st Piece of Staff" (10610), "2nd Piece of Staff" (10611), "3rd Piece of Staff" (10612), "4th Piece of Staff" (10613). Produces "Bundle of Staves" (10639). The combine does not fail.
-62. burningwood/"A Sarnak Imitator", hand "Bundle of Staves" (10639). Gives "Staff of the Serpent" (10650).
-63. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
-64. global/"Global Player", combine recipe 19919. Sets `ench_epic` to `9`.
-65. burningwood/"A Sarnak Imitator", say "Chest". Requires `ench_epic` set. Requires `ench_epic` >=3. Gives "Ornate Staff Chest" (52960).
-66. Ground spawn of "Taste of Enticement" (52964) in `mistmoore`.
-67. frozenshadow/"Advisor Svartmane", hand "Taste of Enticement" (52964). Gives "1st Piece of the Staff" (54289).
-68. Loot "2nd Piece of the Staff" (54310) from "The Yrendan Scarab" in `pojustice`.
-69. Loot "3rd Piece of the Staff" (54299) from "Chavoor the Trickster" in `vxed`.
-70. Loot "3rd Piece of the Staff" (54299) from "Ikaav Firecaller" in `vxed`.
-71. Loot "3rd Piece of the Staff" (54299) from "Kyv Hunter" in `vxed`.
-72. Loot "3rd Piece of the Staff" (54299) from "Ukun Bloodbeast" in `vxed`.
-73. Loot "3rd Piece of the Staff" (54299) from "Umbiki" in `vxed`.
-74. Loot "3rd Piece of the Staff" (54299) from "misguided beludu Creque" in `vxed`.
-75. **Broken:** no event trigger found for `bloodfields/war#timer:reset`.
-76. Spawns "War Caller Kaavi" (301042) after `bloodfields/war#timer:reset`.
-77. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi".
-78. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi" in `bloodfields`.
-79. Loot "Ornate Staff Topper" (52961) from "Faleniel of Darkwater" in `sirens`.
-80. Loot "All-Seeing Eye" (54293) from "All-Seeing Eye" in `mischiefplane`.
-81. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
-82. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
-83. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-84. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-85. 67 other recipes also produce Celestial Essence (9650).
-86. Common item: Jar of Acid (22133). Listed in 15 zones.
-87. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
-88. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
-89. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-90. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
-91. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-92. Common item: Firing Sheet (16906). Listed in 34 zones.
-93. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-94. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-95. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-96. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-97. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-98. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-99. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-100. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-101. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-102. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-103. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-104. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-105. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-106. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-107. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-108. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-109. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-110. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-111. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-112. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-113. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-114. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-115. Forage "Dragon Egg" (19139) in `templeveeshan`.
-116. Forage "Dragon Egg" (19139) in `westwastes`.
-117. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Dragon Egg" (19139). Produces "Dragon Egg Oil" (9664). Requires Brewing, trivial 150.
-118. Loot "Glimmering Oil" (52942) from "A Greasy Clockwork" in `poinnovation`.
-119. bazaar/"Caerlyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
-120. crescent/"Realnyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
-121. bazaar/"Caerlyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
-122. crescent/"Realnyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
-123. No quest step gives Coalesced Mana (97042). The dump lists it in arcstone, relic, skylance.
-124. Combine in Pottery Wheel (21): "Water Flask" (13006), "White Wolf Skin" (13768), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
-125. Combine in Pottery Wheel (21): "Water Flask" (13006), "Crow's Special Brew" (13799), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
-126. 19 other recipes also produce Unfired Poison Vial (16885).
-127. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
-128. Combine in Kiln (22): "Unfired Poison Vial" (16885), "High Quality Firing Sheet" (16908). Produces "Poison Vial" (16965). Requires Pottery, trivial 17.
-129. Kill broodlands/"Brood Drone". Spawns "The Broodqueen" (337254).
-130. Loot "Ruby" (10035) from "The Broodqueen".
-131. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
-132. Loot "Ruby" (10035) from "A parasitic murkglider".
-133. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
-134. Loot "Ruby" (10035) from "a Reanimated Berserker".
-135. Kill delvea/"A Drake Egg". Spawns "a Delve spellbinder" (341091).
-136. Loot "Ruby" (10035) from "a Delve spellbinder".
-137. 104 other loot steps also yield Ruby (10035).
-138. Combine in "Spell Research Kit" (93492): "Celestial Essence" (9650), "Coalesced Mana" (97042), "Poison Vial" (16965), "Ruby" (10035). Produces "Vial of Purified Mana" (10254). Requires Research, trivial 200.
-139. Forage "Glow Lichen" (14925) in `nektulos`.
-140. Common item: Essence of Sunlight (22527). Listed in 8 zones.
-141. Ground spawn of "Abysmal Moonwater" (54298) in `abysmal`.
-142. Combine in Brew Barrel (19): "Vial of Purified Mana" (10254), "Glow Lichen" (14925), "Essence of Sunlight" (22527), "Abysmal Moonwater" (54298). Produces "Glowing Concoction" (52943). Requires Brewing, trivial 116.
-143. Common item: Medicine Bag (17901). Listed in 33 zones.
-144. Common item: Glaze Lacquer (29355). Listed in 5 zones.
-145. No quest step gives Prism Shard (65469). The dump lists it in crescent, gunthak, poknowledge.
-146. Combine in "Medicine Bag" (17901): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Alchemy, trivial 54.
-147. Combine in "Portable Drink Barrel" (17179): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Brewing, trivial 54.
-148. Combine in Brew Barrel (19): "Dragon Egg Oil" (9664), "Glimmering Oil" (52942), "Glowing Concoction" (52943), "Prismatic Dye" (65472). Produces "Incandescent Oil" (57924). Requires Brewing, trivial 116. The combine does not fail.
-149. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
-150. burningwood/"A Sarnak Imitator", say "Prepared". Requires `ench_epic` set. Requires `ench_epic` >=1. Gives "Tattered Illegible Tome" (57918).
-151. Ground spawn of "Cryptic Page" (52933) in `charasis`.
-152. Ground spawn of "Cryptic Page" (52934) in `sebilis`.
-153. Ground spawn of "Cryptic Page" (52935) in `cazicthule`.
-154. Ground spawn of "Cryptic Page" (52936) in `crystal`.
-155. Ground spawn of "Cryptic Page" (52937) in `skyshrine`.
-156. Ground spawn of "Cryptic Page" (52938) in `velketor`.
-157. Ground spawn of "Cryptic Page" (52939) in `nadox`.
-158. Ground spawn of "Cryptic Page" (54308) in `najena`.
-159. Ground spawn of "Cryptic Page" (57916) in `fungusgrove`.
-160. Ground spawn of "Cryptic Page" (57923) in `oot`.
-161. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). The combine does not fail.
-162. burningwood/"A Sarnak Imitator", hand "Complete Illegible Tome" (54267). Sets `ench_epic` to `2`.
-163. poknowledge/"Grand Librarian Maelin", say "Jeb Lumsed Sent Me". Requires `ench_epic` ==2. Gives "Note to Lobaen" (52950).
-164. poknowledge/"Illusionist Lobaen", hand "Note to Lobaen" (52950). Gives "Sealed Documents" (52959).
-165. burningwood/"A Sarnak Imitator", hand "Sealed Documents" (52959). Gives "Assembling the Staff" (54286).
-166. Loot "Sullied Gold Filigree" (52963) from "An Enticing Potameid" in `natimbi`.
-167. hohonora/"Anthone Chapin", hand "Sullied Gold Filigree" (52963). Gives "Purified Gold Filigree" (52953).
-168. Combine in "Ornate Staff Chest" (52960): "1st Piece of the Staff" (54289), "2nd Piece of the Staff" (54310), "3rd Piece of the Staff" (54299), "4th Piece of the Staff" (54284), "Ornate Staff Topper" (52961), "All-Seeing Eye" (54293), "Incandescent Oil" (57924), "Purified Gold Filigree" (52953). Produces "Latched Ornate Chest" (52966). The combine does not fail.
+1. global/"Global Player", combine recipe 19919. Sets `ench_epic` to `9`.
+2. burningwood/"A Sarnak Imitator", say "Chest". Requires `ench_epic` set. Requires `ench_epic` >=3. Gives "Ornate Staff Chest" (52960).
+3. Ground spawn of "Taste of Enticement" (52964) in `mistmoore`.
+4. frozenshadow/"Advisor Svartmane", hand "Taste of Enticement" (52964). Gives "1st Piece of the Staff" (54289).
+5. Loot "2nd Piece of the Staff" (54310) from "The Yrendan Scarab" in `pojustice`.
+6. Loot "3rd Piece of the Staff" (54299) from "Chavoor the Trickster" in `vxed`.
+7. Loot "3rd Piece of the Staff" (54299) from "Ikaav Firecaller" in `vxed`.
+8. Loot "3rd Piece of the Staff" (54299) from "Kyv Hunter" in `vxed`.
+9. Loot "3rd Piece of the Staff" (54299) from "Ukun Bloodbeast" in `vxed`.
+10. Loot "3rd Piece of the Staff" (54299) from "Umbiki" in `vxed`.
+11. Loot "3rd Piece of the Staff" (54299) from "misguided beludu Creque" in `vxed`.
+12. **Broken:** no event trigger found for `bloodfields/war#timer:reset`.
+13. Spawns "War Caller Kaavi" (301042) after `bloodfields/war#timer:reset`.
+14. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi".
+15. Loot "Ornate Staff Topper" (52961) from "Faleniel of Darkwater" in `sirens`.
+16. Loot "All-Seeing Eye" (54293) from "All-Seeing Eye" in `mischiefplane`.
+17. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
+18. potranquility/"Elder Fuirstel", say "Hail". Sets `pop_cod_final` to `1`.
+19. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Requires `pop_cod_final` ==1. Requires `pop_cod_final` set. Gives "Filthy Breastplate" (15984).
+20. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+21. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+22. 67 other recipes also produce Celestial Essence (9650).
+23. Common item: Jar of Acid (22133). Listed in 15 zones.
+24. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
+25. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
+26. Common item: Mortar and Pestle (17904). Listed in 12 zones.
+27. Loot "Sandstorm Pearl" (29909) from "Rorek Steelthorn" (NPC 209081) in `bothunder`. Drop cache: 5.33% chance per kill.
+28. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
+29. Common item: Firing Sheet (16906). Listed in 34 zones.
+30. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+31. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+32. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+33. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+34. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+35. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+36. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+37. Say "Tm Devrak Death" to rujd/"Rujd".
+38. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
+39. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
+40. 6 alternative loot source(s) also yield Pod of Water (13044).
+41. Forage "Pod of Water" (13044) in `ruja`.
+42. Forage "Pod of Water" (13044) in `uqua`.
+43. Forage "Pod of Water" (13044) in `yxtta`.
+44. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+45. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+46. 17 other recipes also produce Bottle (16598).
+47. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+48. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
+49. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
+50. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
+51. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
+52. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
+53. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
+54. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+55. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
+56. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
+57. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
+58. Loot "Drop of Pure Rain" (29904) from "A vann stav" (NPC 209018) in `bothunder`. Drop cache: 4% chance per kill.
+59. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
+60. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+61. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+62. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+63. poknowledge/"Aid Grimel", say "Skill In Brewing". Requires `pop_cod_final` ==1. Requires `pop_cod_final` set. Gives "Portable Drink Barrel" (17179).
+64. Forage "Dragon Egg" (19139) in `templeveeshan`.
+65. Forage "Dragon Egg" (19139) in `westwastes`.
+66. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Dragon Egg" (19139). Produces "Dragon Egg Oil" (9664). Requires Brewing, trivial 150.
+67. Loot "Glimmering Oil" (52942) from "A Greasy Clockwork" in `poinnovation`.
+68. bazaar/"Caerlyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
+69. bazaar/"Caerlyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
+70. Loot "Coalesced Mana" (97042) from "Assistant Gareth" (NPC 371049) in `skylance`. Drop cache: 66.67% chance per kill.
+71. Combine in Pottery Wheel (21): "Water Flask" (13006), "White Wolf Skin" (13768), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
+72. Combine in Pottery Wheel (21): "Water Flask" (13006), "Crow's Special Brew" (13799), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
+73. 19 other recipes also produce Unfired Poison Vial (16885).
+74. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
+75. Combine in Kiln (22): "Unfired Poison Vial" (16885), "High Quality Firing Sheet" (16908). Produces "Poison Vial" (16965). Requires Pottery, trivial 17.
+76. Spawns "Pxet Elite Blademaster" (284039) in `ferubi` on event_signal.
+77. Loot "Broken Sword Blade" (67521) from "Pxet Elite Blademaster".
+78. Spawns "Pxet Elite Spearmaster" (284091) in `ferubi` on event_signal.
+79. Loot "Jagged Spear Tip" (67522) from "Pxet Elite Spearmaster".
+80. Spawns "Pxet Elite Brawler" (284088) in `ferubi` on event_signal.
+81. Loot "Tarnished Knuckles" (67523) from "Pxet Elite Brawler".
+82. Spawns "Pxet Elite Hammermaster" (284090) in `ferubi` on event_signal.
+83. Loot "Chipped Hammer Head" (67524) from "Pxet Elite Hammermaster".
+84. Hand "Broken Sword Blade" (67521) + "Jagged Spear Tip" (67522) + "Tarnished Knuckles" (67523) + "Chipped Hammer Head" (67524) to ferubi/"Smith Rondo". Spawns "Master's Apprentice" (284093). Loot "Ruby" (10035) from "Master's Apprentice".
+85. 107 alternative loot source(s) also yield Ruby (10035).
+86. Combine in "Spell Research Kit" (93492): "Celestial Essence" (9650), "Coalesced Mana" (97042), "Poison Vial" (16965), "Ruby" (10035). Produces "Vial of Purified Mana" (10254). Requires Research, trivial 200.
+87. Forage "Glow Lichen" (14925) in `nektulos`.
+88. Loot "Essence of Sunlight" (22527) from "A Faerie Dragon" (NPC 119073) in `wakening`. Drop cache: 55% chance per kill.
+89. Ground spawn of "Abysmal Moonwater" (54298) in `abysmal`.
+90. Combine in Brew Barrel (19): "Vial of Purified Mana" (10254), "Glow Lichen" (14925), "Essence of Sunlight" (22527), "Abysmal Moonwater" (54298). Produces "Glowing Concoction" (52943). Requires Brewing, trivial 116.
+91. Common item: Medicine Bag (17901). Listed in 33 zones.
+92. Common item: Glaze Lacquer (29355). Listed in 5 zones.
+93. No quest step gives Prism Shard (65469). The dump lists it in crescent, gunthak, poknowledge.
+94. Combine in "Medicine Bag" (17901): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Alchemy, trivial 54.
+95. Combine in "Portable Drink Barrel" (17179): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Brewing, trivial 54.
+96. Combine in Brew Barrel (19): "Dragon Egg Oil" (9664), "Glimmering Oil" (52942), "Glowing Concoction" (52943), "Prismatic Dye" (65472). Produces "Incandescent Oil" (57924). Requires Brewing, trivial 116. The combine does not fail.
+97. Loot "Dragon Boneshard" (65574) from "A Curate" (NPC 109068) in `veksar`. Drop cache: 10% chance per kill.
+98. Hand "Dragon Boneshard" (65574) to veksar/"Spirit Of Garudon". Spawns "Garudon" (109107). Loot "Garudon's Statue" (52941) from "Garudon".
+99. lakeofillomen/"A Bloodgill Mimic", hand "Garudon's Statue" (52941). Sets `EnchPre` to `1`.
+100. Loot "Crumbling Tome" (54313) from "A Shissar Lorekeeper" in `ssratemple`.
+101. ssratemple/"A Soriz Imitator", hand "Crumbling Tome" (54313). Requires `EnchPre` ==1. Gives "Illegible Tome" (52947).
+102. akanon/"Rilgor Plegnog", say "Insidious". Gives "Compacting Satchel" (54303).
+103. Loot "Fine Insidious Halo" (54384) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2% chance per kill.
+104. Loot "Fine Insidious Sleeves" (54385) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.08% chance per kill.
+105. Loot "Fine Insidious Manacle" (54386) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.09% chance per kill.
+106. Loot "Fine Insidious Gloves" (54387) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.24% chance per kill.
+107. Loot "Fine Insidious Pantaloons" (54388) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.23% chance per kill.
+108. Loot "Fine Insidious Slippers" (54389) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.07% chance per kill.
+109. Combine in "Compacting Satchel" (54303): "Fine Insidious Halo" (54384), "Fine Insidious Sleeves" (54385), "Fine Insidious Manacle" (54386), "Fine Insidious Gloves" (54387), "Fine Insidious Pantaloons" (54388), "Fine Insidious Slippers" (54389). Produces "Insidious Bundle" (54317). The combine does not fail.
+110. akanon/"Rilgor Plegnog", hand "Insidious Bundle" (54317). Gives "Gnomish Translating Device" (52945).
+111. burningwood/"A Sarnak Imitator", hand "Gnomish Translating Device" (52945) + "Illegible Tome" (52947). Sets `EnchPre` to `2`.
+112. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
+113. akanon/"Rilgor Plegnog", hand "Shining Metallic Robes" (1360). Gives "Mechanical Pen" (10600).
+114. qcat/"Reania Jukle", say "Supply". Gives "Empty Ink Vial" (10626).
+115. gukbottom/"A Ghoul Scribe", hand "Empty Ink Vial" (10626). Gives "Ink of the Dark" (10601).
+116. Common item: Piece of Parchment (13063). Listed in 23 zones.
+117. Common item: Quill (13051). Listed in 32 zones.
+118. Hand "Quill" (13051) + "Piece of Parchment" (13063) to qey2hh1/"Chrislin Baker". Spawns "Thrackin Griften" (12172). Loot "White Paper" (10602) from "Thrackin Griften".
+119. erudnext/"Stofo Olan", hand "Mechanical Pen" (10600) + "Ink of the Dark" (10601) + "White Paper" (10602). Gives "Copy of Notes" (10603).
+120. burningwood/"A Sarnak Imitator", hand "Copy of Notes" (10603). Gives "Jeb's Seal" (10604).
+121. akanon/"Clockwork Viix", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
+122. Loot "Xolion Rod" (10606) from "Vessel Drozlin" in `cabeast`.
+123. Loot "Innoruuk's Word" (10607) from "Verina Tomb" in `neriakc`.
+124. Loot "Head of a Prince" (10627) from "Prince Selrach Di'zok" in `chardok`.
+125. felwitheb/"Joren Nobleheart", hand "Head of a Prince" (10627). Gives "Chalice of Kings" (10608).
+126. Ground spawn of "Large Muddy Sandals" (10628) in `oggok`.
+127. oggok/"Bozlum Blossom", hand "Large Muddy Sandals" (10628). Gives "Scribbled Parchment" (10629).
+128. oggok/"Brokk Boxtripper", hand "Scribbled Parchment" (10629). Gives "Gift to Bozlum" (10630).
+129. oggok/"Bozlum Blossom", hand "Gift to Bozlum" (10630). Gives "Snow Blossoms" (10609).
+130. Combine in "Enchanters Sack" (17861): "Xolion Rod" (10606), "Innoruuk's Word" (10607), "Chalice of Kings" (10608), "Snow Blossoms" (10609). Produces "Sack For Modani" (10635). The combine does not fail.
+131. overthere/"Modani Qu-Loni", hand "Sack For Modani" (10635). Gives "1st Piece of Staff" (10610).
+132. Loot "Spoon" (10614) from "Cazel" in `oasis`.
+133. Loot "Spoon" (10614) from "Cazel" in `southro`.
+134. Ground spawn of "The One Key" (10615) in `overthere`.
+135. Ground spawn of "Lost Scroll" (10616) in `dalnir`.
+136. Ground spawn of "Charm and Sacrifice" (10617) in `airplane`.
+137. Combine in "Enchanters Sack" (17861): "Spoon" (10614), "The One Key" (10615), "Lost Scroll" (10616), "Charm and Sacrifice" (10617). Produces "Sack For Mizzle" (10636). The combine does not fail.
+138. akanon/"Clockwork Viix", hand "Sack For Mizzle" (10636). Gives "2nd Piece of Staff" (10611).
+139. firiona/"Nadia Starfeast", say "Diamond". Gives "Dull Diamond" (10631).
+140. kaesora/"Spectral Librarian", hand "Dull Diamond" (10631). Gives "Enchanted Diamond" (10618).
+141. firiona/"Nadia Starfeast", say "Sapphire". Gives "Dull Sapphire" (10632).
+142. skyfire/"Felia Goldenwing", hand "Dull Sapphire" (10632). Gives "Enchanted Sapphire" (10619).
+143. firiona/"Nadia Starfeast", say "Ruby". Gives "Dull Ruby" (10633).
+144. citymist/"Wraith Of Jaxion", hand "Dull Ruby" (10633). Gives "Enchanted Ruby" (10620).
+145. firiona/"Nadia Starfeast", say "Emerald". Gives "Dull Emerald" (10634).
+146. overthere/"Impaler Tzilug", hand "Dull Emerald" (10634). Gives "Enchanted Emerald" (10621).
+147. Combine in "Enchanters Sack" (17861): "Enchanted Diamond" (10618), "Enchanted Sapphire" (10619), "Enchanted Ruby" (10620), "Enchanted Emerald" (10621). Produces "Sack For Nadia" (10637). The combine does not fail.
+148. firiona/"Nadia Starfeast", hand "Sack For Nadia" (10637). Gives "3rd Piece of Staff" (10612).
+149. Loot "Head of the Serpent" (10622) from "Wraith of a Shissar" in `fearplane`.
+150. Loot "Essence of a Ghost" (10623) from "the Ghost of Kindle" in `hole`.
+151. Loot "Essence of a Vampire" (10624) from "A Forsaken Revenant" (NPC 76005) in `hateplane`. Drop cache: 10.57% chance per kill.
+152. Loot "Sands of the Mystics" (10625) from "The Tangrin" in `fieldofbone`.
+153. Combine in "Enchanters Sack" (17861): "Head of the Serpent" (10622), "Essence of a Ghost" (10623), "Essence of a Vampire" (10624), "Sands of the Mystics" (10625). Produces "Sack For Polzin" (10638). The combine does not fail.
+154. hole/"Polzin Mrid", hand "Sack For Polzin" (10638). Gives "4th Piece of Staff" (10613).
+155. Combine in "Enchanters Sack" (17861): "1st Piece of Staff" (10610), "2nd Piece of Staff" (10611), "3rd Piece of Staff" (10612), "4th Piece of Staff" (10613). Produces "Bundle of Staves" (10639). The combine does not fail.
+156. burningwood/"A Sarnak Imitator", hand "Bundle of Staves" (10639). Gives "Staff of the Serpent" (10650).
+157. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
+158. burningwood/"A Sarnak Imitator", say "Prepared". Requires `ench_epic` set. Requires `ench_epic` >=1. Gives "Tattered Illegible Tome" (57918).
+159. Ground spawn of "Cryptic Page" (52933) in `charasis`.
+160. Ground spawn of "Cryptic Page" (52934) in `sebilis`.
+161. Ground spawn of "Cryptic Page" (52935) in `cazicthule`.
+162. Ground spawn of "Cryptic Page" (52936) in `crystal`.
+163. Ground spawn of "Cryptic Page" (52937) in `skyshrine`.
+164. Ground spawn of "Cryptic Page" (52938) in `velketor`.
+165. Ground spawn of "Cryptic Page" (52939) in `nadox`.
+166. Ground spawn of "Cryptic Page" (54308) in `najena`.
+167. Ground spawn of "Cryptic Page" (57916) in `fungusgrove`.
+168. Ground spawn of "Cryptic Page" (57923) in `oot`.
+169. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). The combine does not fail.
+170. burningwood/"A Sarnak Imitator", hand "Complete Illegible Tome" (54267). Sets `ench_epic` to `2`.
+171. poknowledge/"Grand Librarian Maelin", say "Jeb Lumsed Sent Me". Requires `ench_epic` ==2. Gives "Note to Lobaen" (52950).
+172. poknowledge/"Illusionist Lobaen", hand "Note to Lobaen" (52950). Gives "Sealed Documents" (52959).
+173. burningwood/"A Sarnak Imitator", hand "Sealed Documents" (52959). Gives "Assembling the Staff" (54286).
+174. Loot "Sullied Gold Filigree" (52963) from "An Enticing Potameid" in `natimbi`.
+175. hohonora/"Anthone Chapin", hand "Sullied Gold Filigree" (52963). Gives "Purified Gold Filigree" (52953).
+176. Combine in "Ornate Staff Chest" (52960): "1st Piece of the Staff" (54289), "2nd Piece of the Staff" (54310), "3rd Piece of the Staff" (54299), "4th Piece of the Staff" (54284), "Ornate Staff Topper" (52961), "All-Seeing Eye" (54293), "Incandescent Oil" (57924), "Purified Gold Filigree" (52953). Produces "Latched Ornate Chest" (52966). The combine does not fail.
 
 ### "Oculus of Persuasion" (52952)
 
-1. Hand "Dragon Boneshard" (65574) to veksar/"Spirit Of Garudon". Spawns "Garudon" (109107). Loot "Garudon's Statue" (52941) from "Garudon".
-2. Loot "Garudon's Statue" (52941) from "Garudon".
-3. lakeofillomen/"A Bloodgill Mimic", hand "Garudon's Statue" (52941). Sets `EnchPre` to `1`.
-4. Loot "Crumbling Tome" (54313) from "A Shissar Lorekeeper" in `ssratemple`.
-5. ssratemple/"A Soriz Imitator", hand "Crumbling Tome" (54313). Requires `EnchPre` ==1. Gives "Illegible Tome" (52947).
-6. akanon/"Rilgor Plegnog", say "Insidious". Gives "Compacting Satchel" (54303).
-7. No quest step gives Fine Insidious Halo (54384). The dump lists it in hateplaneb.
-8. No quest step gives Fine Insidious Sleeves (54385). The dump lists it in hateplaneb.
-9. No quest step gives Fine Insidious Manacle (54386). The dump lists it in hateplaneb.
-10. No quest step gives Fine Insidious Gloves (54387). The dump lists it in hateplaneb.
-11. No quest step gives Fine Insidious Pantaloons (54388). The dump lists it in hateplaneb.
-12. No quest step gives Fine Insidious Slippers (54389). The dump lists it in hateplaneb.
-13. Combine in "Compacting Satchel" (54303): "Fine Insidious Halo" (54384), "Fine Insidious Sleeves" (54385), "Fine Insidious Manacle" (54386), "Fine Insidious Gloves" (54387), "Fine Insidious Pantaloons" (54388), "Fine Insidious Slippers" (54389). Produces "Insidious Bundle" (54317). The combine does not fail.
-14. akanon/"Rilgor Plegnog", hand "Insidious Bundle" (54317). Gives "Gnomish Translating Device" (52945).
-15. burningwood/"A Sarnak Imitator", hand "Gnomish Translating Device" (52945) + "Illegible Tome" (52947). Sets `EnchPre` to `2`.
-16. Common item: Shining Metallic Robes (1360). Listed in 4 zones.
-17. akanon/"Rilgor Plegnog", hand "Shining Metallic Robes" (1360). Gives "Mechanical Pen" (10600).
-18. qcat/"Reania Jukle", say "Supply". Gives "Empty Ink Vial" (10626).
-19. gukbottom/"A Ghoul Scribe", hand "Empty Ink Vial" (10626). Gives "Ink of the Dark" (10601).
-20. Hand "Quill" (13051) + "Piece of Parchment" (13063) to qey2hh1/"Chrislin Baker". Spawns "Thrackin Griften" (12172). Loot "White Paper" (10602) from "Thrackin Griften".
-21. Loot "White Paper" (10602) from "Thrackin Griften".
-22. erudnext/"Stofo Olan", hand "Mechanical Pen" (10600) + "Ink of the Dark" (10601) + "White Paper" (10602). Gives "Copy of Notes" (10603).
-23. burningwood/"A Sarnak Imitator", hand "Copy of Notes" (10603). Gives "Jeb's Seal" (10604).
-24. akanon/"Clockwork Viix", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
-25. firiona/"Nadia Starfeast", say "I Need A Sack". Gives "Enchanters Sack" (17861).
-26. hole/"Polzin Mrid", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
-27. overthere/"Modani Qu-Loni", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
-28. Loot "Xolion Rod" (10606) from "Vessel Drozlin" in `cabeast`.
-29. Loot "Innoruuk's Word" (10607) from "Verina Tomb" in `neriakc`.
-30. Loot "Head of a Prince" (10627) from "Prince Selrach Di'zok" in `chardok`.
-31. felwitheb/"Joren Nobleheart", hand "Head of a Prince" (10627). Gives "Chalice of Kings" (10608).
-32. Ground spawn of "Large Muddy Sandals" (10628) in `oggok`.
-33. oggok/"Bozlum Blossom", hand "Large Muddy Sandals" (10628). Gives "Scribbled Parchment" (10629).
-34. oggok/"Brokk Boxtripper", hand "Scribbled Parchment" (10629). Gives "Gift to Bozlum" (10630).
-35. oggok/"Bozlum Blossom", hand "Gift to Bozlum" (10630). Gives "Snow Blossoms" (10609).
-36. Combine in "Enchanters Sack" (17861): "Xolion Rod" (10606), "Innoruuk's Word" (10607), "Chalice of Kings" (10608), "Snow Blossoms" (10609). Produces "Sack For Modani" (10635). The combine does not fail.
-37. overthere/"Modani Qu-Loni", hand "Sack For Modani" (10635). Gives "1st Piece of Staff" (10610).
-38. Loot "Spoon" (10614) from "Cazel" in `oasis`.
-39. Loot "Spoon" (10614) from "Cazel" in `southro`.
-40. Ground spawn of "The One Key" (10615) in `overthere`.
-41. Ground spawn of "Lost Scroll" (10616) in `dalnir`.
-42. Ground spawn of "Charm and Sacrifice" (10617) in `airplane`.
-43. Combine in "Enchanters Sack" (17861): "Spoon" (10614), "The One Key" (10615), "Lost Scroll" (10616), "Charm and Sacrifice" (10617). Produces "Sack For Mizzle" (10636). The combine does not fail.
-44. akanon/"Clockwork Viix", hand "Sack For Mizzle" (10636). Gives "2nd Piece of Staff" (10611).
-45. firiona/"Nadia Starfeast", say "Diamond". Gives "Dull Diamond" (10631).
-46. kaesora/"Spectral Librarian", hand "Dull Diamond" (10631). Gives "Enchanted Diamond" (10618).
-47. firiona/"Nadia Starfeast", say "Sapphire". Gives "Dull Sapphire" (10632).
-48. skyfire/"Felia Goldenwing", hand "Dull Sapphire" (10632). Gives "Enchanted Sapphire" (10619).
-49. firiona/"Nadia Starfeast", say "Ruby". Gives "Dull Ruby" (10633).
-50. citymist/"Wraith Of Jaxion", hand "Dull Ruby" (10633). Gives "Enchanted Ruby" (10620).
-51. firiona/"Nadia Starfeast", say "Emerald". Gives "Dull Emerald" (10634).
-52. overthere/"Impaler Tzilug", hand "Dull Emerald" (10634). Gives "Enchanted Emerald" (10621).
-53. Combine in "Enchanters Sack" (17861): "Enchanted Diamond" (10618), "Enchanted Sapphire" (10619), "Enchanted Ruby" (10620), "Enchanted Emerald" (10621). Produces "Sack For Nadia" (10637). The combine does not fail.
-54. firiona/"Nadia Starfeast", hand "Sack For Nadia" (10637). Gives "3rd Piece of Staff" (10612).
-55. Loot "Head of the Serpent" (10622) from "Wraith of a Shissar" in `fearplane`.
-56. Loot "Essence of a Ghost" (10623) from "the Ghost of Kindle" in `hole`.
-57. No quest step gives Essence of a Vampire (10624). The dump lists it in hateplane, hateplaneb.
-58. Loot "Sands of the Mystics" (10625) from "The Tangrin" in `fieldofbone`.
-59. Combine in "Enchanters Sack" (17861): "Head of the Serpent" (10622), "Essence of a Ghost" (10623), "Essence of a Vampire" (10624), "Sands of the Mystics" (10625). Produces "Sack For Polzin" (10638). The combine does not fail.
-60. hole/"Polzin Mrid", hand "Sack For Polzin" (10638). Gives "4th Piece of Staff" (10613).
-61. Combine in "Enchanters Sack" (17861): "1st Piece of Staff" (10610), "2nd Piece of Staff" (10611), "3rd Piece of Staff" (10612), "4th Piece of Staff" (10613). Produces "Bundle of Staves" (10639). The combine does not fail.
-62. burningwood/"A Sarnak Imitator", hand "Bundle of Staves" (10639). Gives "Staff of the Serpent" (10650).
-63. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
-64. global/"Global Player", combine recipe 19919. Sets `ench_epic` to `9`.
-65. burningwood/"A Sarnak Imitator", say "Chest". Requires `ench_epic` set. Requires `ench_epic` >=3. Gives "Ornate Staff Chest" (52960).
-66. Ground spawn of "Taste of Enticement" (52964) in `mistmoore`.
-67. frozenshadow/"Advisor Svartmane", hand "Taste of Enticement" (52964). Gives "1st Piece of the Staff" (54289).
-68. Loot "2nd Piece of the Staff" (54310) from "The Yrendan Scarab" in `pojustice`.
-69. Loot "3rd Piece of the Staff" (54299) from "Chavoor the Trickster" in `vxed`.
-70. Loot "3rd Piece of the Staff" (54299) from "Ikaav Firecaller" in `vxed`.
-71. Loot "3rd Piece of the Staff" (54299) from "Kyv Hunter" in `vxed`.
-72. Loot "3rd Piece of the Staff" (54299) from "Ukun Bloodbeast" in `vxed`.
-73. Loot "3rd Piece of the Staff" (54299) from "Umbiki" in `vxed`.
-74. Loot "3rd Piece of the Staff" (54299) from "misguided beludu Creque" in `vxed`.
-75. **Broken:** no event trigger found for `bloodfields/war#timer:reset`.
-76. Spawns "War Caller Kaavi" (301042) after `bloodfields/war#timer:reset`.
-77. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi".
-78. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi" in `bloodfields`.
-79. Loot "Ornate Staff Topper" (52961) from "Faleniel of Darkwater" in `sirens`.
-80. Loot "All-Seeing Eye" (54293) from "All-Seeing Eye" in `mischiefplane`.
-81. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
-82. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
-83. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-84. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-85. 67 other recipes also produce Celestial Essence (9650).
-86. Common item: Jar of Acid (22133). Listed in 15 zones.
-87. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
-88. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
-89. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-90. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
-91. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-92. Common item: Firing Sheet (16906). Listed in 34 zones.
-93. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-94. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-95. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-96. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-97. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-98. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-99. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-100. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-101. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-102. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-103. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-104. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-105. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-106. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-107. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-108. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-109. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-110. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-111. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-112. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-113. Forage "Dragon Egg" (19139) in `templeveeshan`.
-114. Forage "Dragon Egg" (19139) in `westwastes`.
-115. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Dragon Egg" (19139). Produces "Dragon Egg Oil" (9664). Requires Brewing, trivial 150.
-116. Loot "Glimmering Oil" (52942) from "A Greasy Clockwork" in `poinnovation`.
-117. bazaar/"Caerlyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
-118. crescent/"Realnyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
-119. bazaar/"Caerlyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
-120. crescent/"Realnyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
-121. No quest step gives Coalesced Mana (97042). The dump lists it in arcstone, relic, skylance.
-122. Combine in Pottery Wheel (21): "Water Flask" (13006), "White Wolf Skin" (13768), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
-123. Combine in Pottery Wheel (21): "Water Flask" (13006), "Crow's Special Brew" (13799), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
-124. 19 other recipes also produce Unfired Poison Vial (16885).
-125. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
-126. Combine in Kiln (22): "Unfired Poison Vial" (16885), "High Quality Firing Sheet" (16908). Produces "Poison Vial" (16965). Requires Pottery, trivial 17.
-127. Kill broodlands/"Brood Drone". Spawns "The Broodqueen" (337254).
-128. Loot "Ruby" (10035) from "The Broodqueen".
-129. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
-130. Loot "Ruby" (10035) from "A parasitic murkglider".
-131. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
-132. Loot "Ruby" (10035) from "a Reanimated Berserker".
-133. Kill delvea/"A Drake Egg". Spawns "a Delve spellbinder" (341091).
-134. Loot "Ruby" (10035) from "a Delve spellbinder".
-135. 104 other loot steps also yield Ruby (10035).
-136. Combine in "Spell Research Kit" (93492): "Celestial Essence" (9650), "Coalesced Mana" (97042), "Poison Vial" (16965), "Ruby" (10035). Produces "Vial of Purified Mana" (10254). Requires Research, trivial 200.
-137. Forage "Glow Lichen" (14925) in `nektulos`.
-138. Common item: Essence of Sunlight (22527). Listed in 8 zones.
-139. Ground spawn of "Abysmal Moonwater" (54298) in `abysmal`.
-140. Combine in Brew Barrel (19): "Vial of Purified Mana" (10254), "Glow Lichen" (14925), "Essence of Sunlight" (22527), "Abysmal Moonwater" (54298). Produces "Glowing Concoction" (52943). Requires Brewing, trivial 116.
-141. Common item: Medicine Bag (17901). Listed in 33 zones.
-142. Common item: Glaze Lacquer (29355). Listed in 5 zones.
-143. No quest step gives Prism Shard (65469). The dump lists it in crescent, gunthak, poknowledge.
-144. Combine in "Medicine Bag" (17901): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Alchemy, trivial 54.
-145. Combine in "Portable Drink Barrel" (17179): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Brewing, trivial 54.
-146. Combine in Brew Barrel (19): "Dragon Egg Oil" (9664), "Glimmering Oil" (52942), "Glowing Concoction" (52943), "Prismatic Dye" (65472). Produces "Incandescent Oil" (57924). Requires Brewing, trivial 116. The combine does not fail.
-147. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
-148. burningwood/"A Sarnak Imitator", say "Prepared". Requires `ench_epic` set. Requires `ench_epic` >=1. Gives "Tattered Illegible Tome" (57918).
-149. Ground spawn of "Cryptic Page" (52933) in `charasis`.
-150. Ground spawn of "Cryptic Page" (52934) in `sebilis`.
-151. Ground spawn of "Cryptic Page" (52935) in `cazicthule`.
-152. Ground spawn of "Cryptic Page" (52936) in `crystal`.
-153. Ground spawn of "Cryptic Page" (52937) in `skyshrine`.
-154. Ground spawn of "Cryptic Page" (52938) in `velketor`.
-155. Ground spawn of "Cryptic Page" (52939) in `nadox`.
-156. Ground spawn of "Cryptic Page" (54308) in `najena`.
-157. Ground spawn of "Cryptic Page" (57916) in `fungusgrove`.
-158. Ground spawn of "Cryptic Page" (57923) in `oot`.
-159. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). The combine does not fail.
-160. burningwood/"A Sarnak Imitator", hand "Complete Illegible Tome" (54267). Sets `ench_epic` to `2`.
-161. poknowledge/"Grand Librarian Maelin", say "Jeb Lumsed Sent Me". Requires `ench_epic` ==2. Gives "Note to Lobaen" (52950).
-162. poknowledge/"Illusionist Lobaen", hand "Note to Lobaen" (52950). Gives "Sealed Documents" (52959).
-163. burningwood/"A Sarnak Imitator", hand "Sealed Documents" (52959). Gives "Assembling the Staff" (54286).
-164. Loot "Sullied Gold Filigree" (52963) from "An Enticing Potameid" in `natimbi`.
-165. hohonora/"Anthone Chapin", hand "Sullied Gold Filigree" (52963). Gives "Purified Gold Filigree" (52953).
-166. Combine in "Ornate Staff Chest" (52960): "1st Piece of the Staff" (54289), "2nd Piece of the Staff" (54310), "3rd Piece of the Staff" (54299), "4th Piece of the Staff" (54284), "Ornate Staff Topper" (52961), "All-Seeing Eye" (54293), "Incandescent Oil" (57924), "Purified Gold Filigree" (52953). Produces "Latched Ornate Chest" (52966). The combine does not fail.
-167. burningwood/"A Sarnak Imitator", hand "Latched Ornate Chest" (52966). Gives "Oculus of Persuasion" (52952).
+1. global/"Global Player", combine recipe 19919. Sets `ench_epic` to `9`.
+2. burningwood/"A Sarnak Imitator", say "Chest". Requires `ench_epic` set. Requires `ench_epic` >=3. Gives "Ornate Staff Chest" (52960).
+3. Ground spawn of "Taste of Enticement" (52964) in `mistmoore`.
+4. frozenshadow/"Advisor Svartmane", hand "Taste of Enticement" (52964). Gives "1st Piece of the Staff" (54289).
+5. Loot "2nd Piece of the Staff" (54310) from "The Yrendan Scarab" in `pojustice`.
+6. Loot "3rd Piece of the Staff" (54299) from "Chavoor the Trickster" in `vxed`.
+7. Loot "3rd Piece of the Staff" (54299) from "Ikaav Firecaller" in `vxed`.
+8. Loot "3rd Piece of the Staff" (54299) from "Kyv Hunter" in `vxed`.
+9. Loot "3rd Piece of the Staff" (54299) from "Ukun Bloodbeast" in `vxed`.
+10. Loot "3rd Piece of the Staff" (54299) from "Umbiki" in `vxed`.
+11. Loot "3rd Piece of the Staff" (54299) from "misguided beludu Creque" in `vxed`.
+12. **Broken:** no event trigger found for `bloodfields/war#timer:reset`.
+13. Spawns "War Caller Kaavi" (301042) after `bloodfields/war#timer:reset`.
+14. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi".
+15. Loot "Ornate Staff Topper" (52961) from "Faleniel of Darkwater" in `sirens`.
+16. Loot "All-Seeing Eye" (54293) from "All-Seeing Eye" in `mischiefplane`.
+17. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
+18. potranquility/"Elder Fuirstel", say "Hail". Sets `pop_cod_final` to `1`.
+19. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Requires `pop_cod_final` ==1. Requires `pop_cod_final` set. Gives "Filthy Breastplate" (15984).
+20. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+21. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+22. 67 other recipes also produce Celestial Essence (9650).
+23. Common item: Jar of Acid (22133). Listed in 15 zones.
+24. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
+25. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
+26. Common item: Mortar and Pestle (17904). Listed in 12 zones.
+27. Loot "Sandstorm Pearl" (29909) from "Rorek Steelthorn" (NPC 209081) in `bothunder`. Drop cache: 5.33% chance per kill.
+28. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
+29. Common item: Firing Sheet (16906). Listed in 34 zones.
+30. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+31. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+32. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+33. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+34. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+35. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+36. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+37. Say "Tm Devrak Death" to rujd/"Rujd".
+38. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
+39. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
+40. 6 alternative loot source(s) also yield Pod of Water (13044).
+41. Forage "Pod of Water" (13044) in `ruja`.
+42. Forage "Pod of Water" (13044) in `uqua`.
+43. Forage "Pod of Water" (13044) in `yxtta`.
+44. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+45. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+46. 17 other recipes also produce Bottle (16598).
+47. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+48. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
+49. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
+50. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
+51. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
+52. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
+53. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
+54. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+55. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
+56. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
+57. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
+58. Loot "Drop of Pure Rain" (29904) from "A vann stav" (NPC 209018) in `bothunder`. Drop cache: 4% chance per kill.
+59. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
+60. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+61. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+62. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+63. poknowledge/"Aid Grimel", say "Skill In Brewing". Requires `pop_cod_final` ==1. Requires `pop_cod_final` set. Gives "Portable Drink Barrel" (17179).
+64. Forage "Dragon Egg" (19139) in `templeveeshan`.
+65. Forage "Dragon Egg" (19139) in `westwastes`.
+66. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Dragon Egg" (19139). Produces "Dragon Egg Oil" (9664). Requires Brewing, trivial 150.
+67. Loot "Glimmering Oil" (52942) from "A Greasy Clockwork" in `poinnovation`.
+68. bazaar/"Caerlyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
+69. bazaar/"Caerlyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
+70. Loot "Coalesced Mana" (97042) from "Assistant Gareth" (NPC 371049) in `skylance`. Drop cache: 66.67% chance per kill.
+71. Combine in Pottery Wheel (21): "Water Flask" (13006), "White Wolf Skin" (13768), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
+72. Combine in Pottery Wheel (21): "Water Flask" (13006), "Crow's Special Brew" (13799), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
+73. 19 other recipes also produce Unfired Poison Vial (16885).
+74. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
+75. Combine in Kiln (22): "Unfired Poison Vial" (16885), "High Quality Firing Sheet" (16908). Produces "Poison Vial" (16965). Requires Pottery, trivial 17.
+76. Spawns "Pxet Elite Blademaster" (284039) in `ferubi` on event_signal.
+77. Loot "Broken Sword Blade" (67521) from "Pxet Elite Blademaster".
+78. Spawns "Pxet Elite Spearmaster" (284091) in `ferubi` on event_signal.
+79. Loot "Jagged Spear Tip" (67522) from "Pxet Elite Spearmaster".
+80. Spawns "Pxet Elite Brawler" (284088) in `ferubi` on event_signal.
+81. Loot "Tarnished Knuckles" (67523) from "Pxet Elite Brawler".
+82. Spawns "Pxet Elite Hammermaster" (284090) in `ferubi` on event_signal.
+83. Loot "Chipped Hammer Head" (67524) from "Pxet Elite Hammermaster".
+84. Hand "Broken Sword Blade" (67521) + "Jagged Spear Tip" (67522) + "Tarnished Knuckles" (67523) + "Chipped Hammer Head" (67524) to ferubi/"Smith Rondo". Spawns "Master's Apprentice" (284093). Loot "Ruby" (10035) from "Master's Apprentice".
+85. 107 alternative loot source(s) also yield Ruby (10035).
+86. Combine in "Spell Research Kit" (93492): "Celestial Essence" (9650), "Coalesced Mana" (97042), "Poison Vial" (16965), "Ruby" (10035). Produces "Vial of Purified Mana" (10254). Requires Research, trivial 200.
+87. Forage "Glow Lichen" (14925) in `nektulos`.
+88. Loot "Essence of Sunlight" (22527) from "A Faerie Dragon" (NPC 119073) in `wakening`. Drop cache: 55% chance per kill.
+89. Ground spawn of "Abysmal Moonwater" (54298) in `abysmal`.
+90. Combine in Brew Barrel (19): "Vial of Purified Mana" (10254), "Glow Lichen" (14925), "Essence of Sunlight" (22527), "Abysmal Moonwater" (54298). Produces "Glowing Concoction" (52943). Requires Brewing, trivial 116.
+91. Common item: Medicine Bag (17901). Listed in 33 zones.
+92. Common item: Glaze Lacquer (29355). Listed in 5 zones.
+93. No quest step gives Prism Shard (65469). The dump lists it in crescent, gunthak, poknowledge.
+94. Combine in "Medicine Bag" (17901): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Alchemy, trivial 54.
+95. Combine in "Portable Drink Barrel" (17179): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Brewing, trivial 54.
+96. Combine in Brew Barrel (19): "Dragon Egg Oil" (9664), "Glimmering Oil" (52942), "Glowing Concoction" (52943), "Prismatic Dye" (65472). Produces "Incandescent Oil" (57924). Requires Brewing, trivial 116. The combine does not fail.
+97. Loot "Dragon Boneshard" (65574) from "A Curate" (NPC 109068) in `veksar`. Drop cache: 10% chance per kill.
+98. Hand "Dragon Boneshard" (65574) to veksar/"Spirit Of Garudon". Spawns "Garudon" (109107). Loot "Garudon's Statue" (52941) from "Garudon".
+99. lakeofillomen/"A Bloodgill Mimic", hand "Garudon's Statue" (52941). Sets `EnchPre` to `1`.
+100. Loot "Crumbling Tome" (54313) from "A Shissar Lorekeeper" in `ssratemple`.
+101. ssratemple/"A Soriz Imitator", hand "Crumbling Tome" (54313). Requires `EnchPre` ==1. Gives "Illegible Tome" (52947).
+102. akanon/"Rilgor Plegnog", say "Insidious". Gives "Compacting Satchel" (54303).
+103. Loot "Fine Insidious Halo" (54384) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2% chance per kill.
+104. Loot "Fine Insidious Sleeves" (54385) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.08% chance per kill.
+105. Loot "Fine Insidious Manacle" (54386) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.09% chance per kill.
+106. Loot "Fine Insidious Gloves" (54387) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.24% chance per kill.
+107. Loot "Fine Insidious Pantaloons" (54388) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.23% chance per kill.
+108. Loot "Fine Insidious Slippers" (54389) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.07% chance per kill.
+109. Combine in "Compacting Satchel" (54303): "Fine Insidious Halo" (54384), "Fine Insidious Sleeves" (54385), "Fine Insidious Manacle" (54386), "Fine Insidious Gloves" (54387), "Fine Insidious Pantaloons" (54388), "Fine Insidious Slippers" (54389). Produces "Insidious Bundle" (54317). The combine does not fail.
+110. akanon/"Rilgor Plegnog", hand "Insidious Bundle" (54317). Gives "Gnomish Translating Device" (52945).
+111. burningwood/"A Sarnak Imitator", hand "Gnomish Translating Device" (52945) + "Illegible Tome" (52947). Sets `EnchPre` to `2`.
+112. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
+113. akanon/"Rilgor Plegnog", hand "Shining Metallic Robes" (1360). Gives "Mechanical Pen" (10600).
+114. qcat/"Reania Jukle", say "Supply". Gives "Empty Ink Vial" (10626).
+115. gukbottom/"A Ghoul Scribe", hand "Empty Ink Vial" (10626). Gives "Ink of the Dark" (10601).
+116. Common item: Piece of Parchment (13063). Listed in 23 zones.
+117. Common item: Quill (13051). Listed in 32 zones.
+118. Hand "Quill" (13051) + "Piece of Parchment" (13063) to qey2hh1/"Chrislin Baker". Spawns "Thrackin Griften" (12172). Loot "White Paper" (10602) from "Thrackin Griften".
+119. erudnext/"Stofo Olan", hand "Mechanical Pen" (10600) + "Ink of the Dark" (10601) + "White Paper" (10602). Gives "Copy of Notes" (10603).
+120. burningwood/"A Sarnak Imitator", hand "Copy of Notes" (10603). Gives "Jeb's Seal" (10604).
+121. akanon/"Clockwork Viix", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
+122. Loot "Xolion Rod" (10606) from "Vessel Drozlin" in `cabeast`.
+123. Loot "Innoruuk's Word" (10607) from "Verina Tomb" in `neriakc`.
+124. Loot "Head of a Prince" (10627) from "Prince Selrach Di'zok" in `chardok`.
+125. felwitheb/"Joren Nobleheart", hand "Head of a Prince" (10627). Gives "Chalice of Kings" (10608).
+126. Ground spawn of "Large Muddy Sandals" (10628) in `oggok`.
+127. oggok/"Bozlum Blossom", hand "Large Muddy Sandals" (10628). Gives "Scribbled Parchment" (10629).
+128. oggok/"Brokk Boxtripper", hand "Scribbled Parchment" (10629). Gives "Gift to Bozlum" (10630).
+129. oggok/"Bozlum Blossom", hand "Gift to Bozlum" (10630). Gives "Snow Blossoms" (10609).
+130. Combine in "Enchanters Sack" (17861): "Xolion Rod" (10606), "Innoruuk's Word" (10607), "Chalice of Kings" (10608), "Snow Blossoms" (10609). Produces "Sack For Modani" (10635). The combine does not fail.
+131. overthere/"Modani Qu-Loni", hand "Sack For Modani" (10635). Gives "1st Piece of Staff" (10610).
+132. Loot "Spoon" (10614) from "Cazel" in `oasis`.
+133. Loot "Spoon" (10614) from "Cazel" in `southro`.
+134. Ground spawn of "The One Key" (10615) in `overthere`.
+135. Ground spawn of "Lost Scroll" (10616) in `dalnir`.
+136. Ground spawn of "Charm and Sacrifice" (10617) in `airplane`.
+137. Combine in "Enchanters Sack" (17861): "Spoon" (10614), "The One Key" (10615), "Lost Scroll" (10616), "Charm and Sacrifice" (10617). Produces "Sack For Mizzle" (10636). The combine does not fail.
+138. akanon/"Clockwork Viix", hand "Sack For Mizzle" (10636). Gives "2nd Piece of Staff" (10611).
+139. firiona/"Nadia Starfeast", say "Diamond". Gives "Dull Diamond" (10631).
+140. kaesora/"Spectral Librarian", hand "Dull Diamond" (10631). Gives "Enchanted Diamond" (10618).
+141. firiona/"Nadia Starfeast", say "Sapphire". Gives "Dull Sapphire" (10632).
+142. skyfire/"Felia Goldenwing", hand "Dull Sapphire" (10632). Gives "Enchanted Sapphire" (10619).
+143. firiona/"Nadia Starfeast", say "Ruby". Gives "Dull Ruby" (10633).
+144. citymist/"Wraith Of Jaxion", hand "Dull Ruby" (10633). Gives "Enchanted Ruby" (10620).
+145. firiona/"Nadia Starfeast", say "Emerald". Gives "Dull Emerald" (10634).
+146. overthere/"Impaler Tzilug", hand "Dull Emerald" (10634). Gives "Enchanted Emerald" (10621).
+147. Combine in "Enchanters Sack" (17861): "Enchanted Diamond" (10618), "Enchanted Sapphire" (10619), "Enchanted Ruby" (10620), "Enchanted Emerald" (10621). Produces "Sack For Nadia" (10637). The combine does not fail.
+148. firiona/"Nadia Starfeast", hand "Sack For Nadia" (10637). Gives "3rd Piece of Staff" (10612).
+149. Loot "Head of the Serpent" (10622) from "Wraith of a Shissar" in `fearplane`.
+150. Loot "Essence of a Ghost" (10623) from "the Ghost of Kindle" in `hole`.
+151. Loot "Essence of a Vampire" (10624) from "A Forsaken Revenant" (NPC 76005) in `hateplane`. Drop cache: 10.57% chance per kill.
+152. Loot "Sands of the Mystics" (10625) from "The Tangrin" in `fieldofbone`.
+153. Combine in "Enchanters Sack" (17861): "Head of the Serpent" (10622), "Essence of a Ghost" (10623), "Essence of a Vampire" (10624), "Sands of the Mystics" (10625). Produces "Sack For Polzin" (10638). The combine does not fail.
+154. hole/"Polzin Mrid", hand "Sack For Polzin" (10638). Gives "4th Piece of Staff" (10613).
+155. Combine in "Enchanters Sack" (17861): "1st Piece of Staff" (10610), "2nd Piece of Staff" (10611), "3rd Piece of Staff" (10612), "4th Piece of Staff" (10613). Produces "Bundle of Staves" (10639). The combine does not fail.
+156. burningwood/"A Sarnak Imitator", hand "Bundle of Staves" (10639). Gives "Staff of the Serpent" (10650).
+157. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
+158. burningwood/"A Sarnak Imitator", say "Prepared". Requires `ench_epic` set. Requires `ench_epic` >=1. Gives "Tattered Illegible Tome" (57918).
+159. Ground spawn of "Cryptic Page" (52933) in `charasis`.
+160. Ground spawn of "Cryptic Page" (52934) in `sebilis`.
+161. Ground spawn of "Cryptic Page" (52935) in `cazicthule`.
+162. Ground spawn of "Cryptic Page" (52936) in `crystal`.
+163. Ground spawn of "Cryptic Page" (52937) in `skyshrine`.
+164. Ground spawn of "Cryptic Page" (52938) in `velketor`.
+165. Ground spawn of "Cryptic Page" (52939) in `nadox`.
+166. Ground spawn of "Cryptic Page" (54308) in `najena`.
+167. Ground spawn of "Cryptic Page" (57916) in `fungusgrove`.
+168. Ground spawn of "Cryptic Page" (57923) in `oot`.
+169. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). The combine does not fail.
+170. burningwood/"A Sarnak Imitator", hand "Complete Illegible Tome" (54267). Sets `ench_epic` to `2`.
+171. poknowledge/"Grand Librarian Maelin", say "Jeb Lumsed Sent Me". Requires `ench_epic` ==2. Gives "Note to Lobaen" (52950).
+172. poknowledge/"Illusionist Lobaen", hand "Note to Lobaen" (52950). Gives "Sealed Documents" (52959).
+173. burningwood/"A Sarnak Imitator", hand "Sealed Documents" (52959). Gives "Assembling the Staff" (54286).
+174. Loot "Sullied Gold Filigree" (52963) from "An Enticing Potameid" in `natimbi`.
+175. hohonora/"Anthone Chapin", hand "Sullied Gold Filigree" (52963). Gives "Purified Gold Filigree" (52953).
+176. Combine in "Ornate Staff Chest" (52960): "1st Piece of the Staff" (54289), "2nd Piece of the Staff" (54310), "3rd Piece of the Staff" (54299), "4th Piece of the Staff" (54284), "Ornate Staff Topper" (52961), "All-Seeing Eye" (54293), "Incandescent Oil" (57924), "Purified Gold Filigree" (52953). Produces "Latched Ornate Chest" (52966). The combine does not fail.
+177. burningwood/"A Sarnak Imitator", hand "Latched Ornate Chest" (52966). Gives "Oculus of Persuasion" (52952).
 
 ### "Purifying Crystal" (52954)
 
 1. No quest step gives Planar Jeweler's Kit (17764). The dump lists it in abysmal, poknowledge.
-2. Hand "Dragon Boneshard" (65574) to veksar/"Spirit Of Garudon". Spawns "Garudon" (109107). Loot "Garudon's Statue" (52941) from "Garudon".
-3. Loot "Garudon's Statue" (52941) from "Garudon".
-4. lakeofillomen/"A Bloodgill Mimic", hand "Garudon's Statue" (52941). Sets `EnchPre` to `1`.
-5. Loot "Crumbling Tome" (54313) from "A Shissar Lorekeeper" in `ssratemple`.
-6. ssratemple/"A Soriz Imitator", hand "Crumbling Tome" (54313). Requires `EnchPre` ==1. Gives "Illegible Tome" (52947).
-7. akanon/"Rilgor Plegnog", say "Insidious". Gives "Compacting Satchel" (54303).
-8. No quest step gives Fine Insidious Halo (54384). The dump lists it in hateplaneb.
-9. No quest step gives Fine Insidious Sleeves (54385). The dump lists it in hateplaneb.
-10. No quest step gives Fine Insidious Manacle (54386). The dump lists it in hateplaneb.
-11. No quest step gives Fine Insidious Gloves (54387). The dump lists it in hateplaneb.
-12. No quest step gives Fine Insidious Pantaloons (54388). The dump lists it in hateplaneb.
-13. No quest step gives Fine Insidious Slippers (54389). The dump lists it in hateplaneb.
-14. Combine in "Compacting Satchel" (54303): "Fine Insidious Halo" (54384), "Fine Insidious Sleeves" (54385), "Fine Insidious Manacle" (54386), "Fine Insidious Gloves" (54387), "Fine Insidious Pantaloons" (54388), "Fine Insidious Slippers" (54389). Produces "Insidious Bundle" (54317). The combine does not fail.
-15. akanon/"Rilgor Plegnog", hand "Insidious Bundle" (54317). Gives "Gnomish Translating Device" (52945).
-16. burningwood/"A Sarnak Imitator", hand "Gnomish Translating Device" (52945) + "Illegible Tome" (52947). Sets `EnchPre` to `2`.
-17. Common item: Shining Metallic Robes (1360). Listed in 4 zones.
-18. akanon/"Rilgor Plegnog", hand "Shining Metallic Robes" (1360). Gives "Mechanical Pen" (10600).
-19. qcat/"Reania Jukle", say "Supply". Gives "Empty Ink Vial" (10626).
-20. gukbottom/"A Ghoul Scribe", hand "Empty Ink Vial" (10626). Gives "Ink of the Dark" (10601).
-21. Hand "Quill" (13051) + "Piece of Parchment" (13063) to qey2hh1/"Chrislin Baker". Spawns "Thrackin Griften" (12172). Loot "White Paper" (10602) from "Thrackin Griften".
-22. Loot "White Paper" (10602) from "Thrackin Griften".
-23. erudnext/"Stofo Olan", hand "Mechanical Pen" (10600) + "Ink of the Dark" (10601) + "White Paper" (10602). Gives "Copy of Notes" (10603).
-24. burningwood/"A Sarnak Imitator", hand "Copy of Notes" (10603). Gives "Jeb's Seal" (10604).
-25. akanon/"Clockwork Viix", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
-26. firiona/"Nadia Starfeast", say "I Need A Sack". Gives "Enchanters Sack" (17861).
-27. hole/"Polzin Mrid", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
-28. overthere/"Modani Qu-Loni", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
-29. Loot "Xolion Rod" (10606) from "Vessel Drozlin" in `cabeast`.
-30. Loot "Innoruuk's Word" (10607) from "Verina Tomb" in `neriakc`.
-31. Loot "Head of a Prince" (10627) from "Prince Selrach Di'zok" in `chardok`.
-32. felwitheb/"Joren Nobleheart", hand "Head of a Prince" (10627). Gives "Chalice of Kings" (10608).
-33. Ground spawn of "Large Muddy Sandals" (10628) in `oggok`.
-34. oggok/"Bozlum Blossom", hand "Large Muddy Sandals" (10628). Gives "Scribbled Parchment" (10629).
-35. oggok/"Brokk Boxtripper", hand "Scribbled Parchment" (10629). Gives "Gift to Bozlum" (10630).
-36. oggok/"Bozlum Blossom", hand "Gift to Bozlum" (10630). Gives "Snow Blossoms" (10609).
-37. Combine in "Enchanters Sack" (17861): "Xolion Rod" (10606), "Innoruuk's Word" (10607), "Chalice of Kings" (10608), "Snow Blossoms" (10609). Produces "Sack For Modani" (10635). The combine does not fail.
-38. overthere/"Modani Qu-Loni", hand "Sack For Modani" (10635). Gives "1st Piece of Staff" (10610).
-39. Loot "Spoon" (10614) from "Cazel" in `oasis`.
-40. Loot "Spoon" (10614) from "Cazel" in `southro`.
-41. Ground spawn of "The One Key" (10615) in `overthere`.
-42. Ground spawn of "Lost Scroll" (10616) in `dalnir`.
-43. Ground spawn of "Charm and Sacrifice" (10617) in `airplane`.
-44. Combine in "Enchanters Sack" (17861): "Spoon" (10614), "The One Key" (10615), "Lost Scroll" (10616), "Charm and Sacrifice" (10617). Produces "Sack For Mizzle" (10636). The combine does not fail.
-45. akanon/"Clockwork Viix", hand "Sack For Mizzle" (10636). Gives "2nd Piece of Staff" (10611).
-46. firiona/"Nadia Starfeast", say "Diamond". Gives "Dull Diamond" (10631).
-47. kaesora/"Spectral Librarian", hand "Dull Diamond" (10631). Gives "Enchanted Diamond" (10618).
-48. firiona/"Nadia Starfeast", say "Sapphire". Gives "Dull Sapphire" (10632).
-49. skyfire/"Felia Goldenwing", hand "Dull Sapphire" (10632). Gives "Enchanted Sapphire" (10619).
-50. firiona/"Nadia Starfeast", say "Ruby". Gives "Dull Ruby" (10633).
-51. citymist/"Wraith Of Jaxion", hand "Dull Ruby" (10633). Gives "Enchanted Ruby" (10620).
-52. firiona/"Nadia Starfeast", say "Emerald". Gives "Dull Emerald" (10634).
-53. overthere/"Impaler Tzilug", hand "Dull Emerald" (10634). Gives "Enchanted Emerald" (10621).
-54. Combine in "Enchanters Sack" (17861): "Enchanted Diamond" (10618), "Enchanted Sapphire" (10619), "Enchanted Ruby" (10620), "Enchanted Emerald" (10621). Produces "Sack For Nadia" (10637). The combine does not fail.
-55. firiona/"Nadia Starfeast", hand "Sack For Nadia" (10637). Gives "3rd Piece of Staff" (10612).
-56. Loot "Head of the Serpent" (10622) from "Wraith of a Shissar" in `fearplane`.
-57. Loot "Essence of a Ghost" (10623) from "the Ghost of Kindle" in `hole`.
-58. No quest step gives Essence of a Vampire (10624). The dump lists it in hateplane, hateplaneb.
-59. Loot "Sands of the Mystics" (10625) from "The Tangrin" in `fieldofbone`.
-60. Combine in "Enchanters Sack" (17861): "Head of the Serpent" (10622), "Essence of a Ghost" (10623), "Essence of a Vampire" (10624), "Sands of the Mystics" (10625). Produces "Sack For Polzin" (10638). The combine does not fail.
-61. hole/"Polzin Mrid", hand "Sack For Polzin" (10638). Gives "4th Piece of Staff" (10613).
-62. Combine in "Enchanters Sack" (17861): "1st Piece of Staff" (10610), "2nd Piece of Staff" (10611), "3rd Piece of Staff" (10612), "4th Piece of Staff" (10613). Produces "Bundle of Staves" (10639). The combine does not fail.
-63. burningwood/"A Sarnak Imitator", hand "Bundle of Staves" (10639). Gives "Staff of the Serpent" (10650).
-64. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
-65. global/"Global Player", combine recipe 19919. Sets `ench_epic` to `9`.
-66. burningwood/"A Sarnak Imitator", say "Chest". Requires `ench_epic` set. Requires `ench_epic` >=3. Gives "Ornate Staff Chest" (52960).
-67. Ground spawn of "Taste of Enticement" (52964) in `mistmoore`.
-68. frozenshadow/"Advisor Svartmane", hand "Taste of Enticement" (52964). Gives "1st Piece of the Staff" (54289).
-69. Loot "2nd Piece of the Staff" (54310) from "The Yrendan Scarab" in `pojustice`.
-70. Loot "3rd Piece of the Staff" (54299) from "Chavoor the Trickster" in `vxed`.
-71. Loot "3rd Piece of the Staff" (54299) from "Ikaav Firecaller" in `vxed`.
-72. Loot "3rd Piece of the Staff" (54299) from "Kyv Hunter" in `vxed`.
-73. Loot "3rd Piece of the Staff" (54299) from "Ukun Bloodbeast" in `vxed`.
-74. Loot "3rd Piece of the Staff" (54299) from "Umbiki" in `vxed`.
-75. Loot "3rd Piece of the Staff" (54299) from "misguided beludu Creque" in `vxed`.
-76. **Broken:** no event trigger found for `bloodfields/war#timer:reset`.
-77. Spawns "War Caller Kaavi" (301042) after `bloodfields/war#timer:reset`.
-78. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi".
-79. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi" in `bloodfields`.
-80. Loot "Ornate Staff Topper" (52961) from "Faleniel of Darkwater" in `sirens`.
-81. Loot "All-Seeing Eye" (54293) from "All-Seeing Eye" in `mischiefplane`.
-82. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
-83. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Gives "Filthy Breastplate" (15984).
-84. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-85. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-86. 67 other recipes also produce Celestial Essence (9650).
-87. Common item: Jar of Acid (22133). Listed in 15 zones.
-88. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
-89. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
-90. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-91. No quest step gives Sandstorm Pearl (29909). The dump lists it in bothunder.
-92. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
-93. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-94. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
-95. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
-96. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
-97. Loot "Storm Rider Blood" (29526) from "A stormrider" in `bothunder`.
-98. Loot "Storm Rider Blood" (29526) from "Dolsoj Warrebs" in `bazaar`.
-99. Loot "Storm Rider Blood" (29526) from "a Koka'Vor krovian" in `postorms`.
-100. Loot "Storm Rider Blood" (29526) from "a Koka'Vor senvar" in `postorms`.
-101. No quest step gives Drop of Pure Rain (29904). The dump lists it in bothunder.
-102. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
-103. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
-104. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
-105. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
-106. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-107. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-108. qeynos/"Wolten Grafe", say "Crush The Undead". Gives "Box For Bones" (17941).
-109. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-110. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-111. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-112. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-113. toxxulia/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-114. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-115. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-116. qeynos2/"Phin Esrinap", say "Supplies". Gives "Message to Konem" (18921).
-117. qeytoqrg/"Konem Matse", hand "Message to Konem" (18921). Gives "Grathin's Invoice" (18922).
-118. qeynos2/"Phin Esrinap", hand "Grathin's Invoice" (18922). Gives "Water Flask" (13006).
-119. Say "Tm Devrak Death" to rujd/"Rujd".
-120. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-121. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-122. Say "Tm Dokorel Death" to rujd/"Rujd".
-123. Say "Tm Velrek Death" to rujd/"Rujd".
-124. Say "Event:Death Complete:260061" to rujg/"Rujg".
-125. Spawns "A Barrel" (260015).
-126. Loot "Pod of Water" (13044) from "A Barrel".
-127. 3 other loot steps also yield Pod of Water (13044).
-128. Forage "Pod of Water" (13044) in `ruja`.
-129. Forage "Pod of Water" (13044) in `uqua`.
-130. Forage "Pod of Water" (13044) in `yxtta`.
-131. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-132. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-133. 17 other recipes also produce Bottle (16598).
-134. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-135. Forage "Dragon Egg" (19139) in `templeveeshan`.
-136. Forage "Dragon Egg" (19139) in `westwastes`.
-137. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Dragon Egg" (19139). Produces "Dragon Egg Oil" (9664). Requires Brewing, trivial 150.
-138. Loot "Glimmering Oil" (52942) from "A Greasy Clockwork" in `poinnovation`.
-139. bazaar/"Caerlyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
-140. crescent/"Realnyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
-141. bazaar/"Caerlyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
-142. crescent/"Realnyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
-143. No quest step gives Coalesced Mana (97042). The dump lists it in arcstone, relic, skylance.
-144. Combine in Pottery Wheel (21): "Water Flask" (13006), "White Wolf Skin" (13768), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
-145. Combine in Pottery Wheel (21): "Water Flask" (13006), "Crow's Special Brew" (13799), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
-146. 19 other recipes also produce Unfired Poison Vial (16885).
-147. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
-148. Combine in Kiln (22): "Unfired Poison Vial" (16885), "High Quality Firing Sheet" (16908). Produces "Poison Vial" (16965). Requires Pottery, trivial 17.
-149. Kill broodlands/"Brood Drone". Spawns "The Broodqueen" (337254).
-150. Loot "Ruby" (10035) from "The Broodqueen".
-151. Spawns "A parasitic murkglider" (303121) in `causeway` on event_hp.
-152. Loot "Ruby" (10035) from "A parasitic murkglider".
-153. Spawns "a Reanimated Berserker" (103093) in `chardok` on enter.
-154. Loot "Ruby" (10035) from "a Reanimated Berserker".
-155. Kill delvea/"A Drake Egg". Spawns "a Delve spellbinder" (341091).
-156. Loot "Ruby" (10035) from "a Delve spellbinder".
-157. 104 other loot steps also yield Ruby (10035).
-158. Combine in "Spell Research Kit" (93492): "Celestial Essence" (9650), "Coalesced Mana" (97042), "Poison Vial" (16965), "Ruby" (10035). Produces "Vial of Purified Mana" (10254). Requires Research, trivial 200.
-159. Forage "Glow Lichen" (14925) in `nektulos`.
-160. Common item: Essence of Sunlight (22527). Listed in 8 zones.
-161. Ground spawn of "Abysmal Moonwater" (54298) in `abysmal`.
-162. Combine in Brew Barrel (19): "Vial of Purified Mana" (10254), "Glow Lichen" (14925), "Essence of Sunlight" (22527), "Abysmal Moonwater" (54298). Produces "Glowing Concoction" (52943). Requires Brewing, trivial 116.
-163. Common item: Medicine Bag (17901). Listed in 33 zones.
-164. Common item: Glaze Lacquer (29355). Listed in 5 zones.
-165. No quest step gives Prism Shard (65469). The dump lists it in crescent, gunthak, poknowledge.
-166. Combine in "Medicine Bag" (17901): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Alchemy, trivial 54.
-167. Combine in "Portable Drink Barrel" (17179): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Brewing, trivial 54.
-168. Combine in Brew Barrel (19): "Dragon Egg Oil" (9664), "Glimmering Oil" (52942), "Glowing Concoction" (52943), "Prismatic Dye" (65472). Produces "Incandescent Oil" (57924). Requires Brewing, trivial 116. The combine does not fail.
-169. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
-170. burningwood/"A Sarnak Imitator", say "Prepared". Requires `ench_epic` set. Requires `ench_epic` >=1. Gives "Tattered Illegible Tome" (57918).
-171. Ground spawn of "Cryptic Page" (52933) in `charasis`.
-172. Ground spawn of "Cryptic Page" (52934) in `sebilis`.
-173. Ground spawn of "Cryptic Page" (52935) in `cazicthule`.
-174. Ground spawn of "Cryptic Page" (52936) in `crystal`.
-175. Ground spawn of "Cryptic Page" (52937) in `skyshrine`.
-176. Ground spawn of "Cryptic Page" (52938) in `velketor`.
-177. Ground spawn of "Cryptic Page" (52939) in `nadox`.
-178. Ground spawn of "Cryptic Page" (54308) in `najena`.
-179. Ground spawn of "Cryptic Page" (57916) in `fungusgrove`.
-180. Ground spawn of "Cryptic Page" (57923) in `oot`.
-181. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). The combine does not fail.
-182. burningwood/"A Sarnak Imitator", hand "Complete Illegible Tome" (54267). Sets `ench_epic` to `2`.
-183. poknowledge/"Grand Librarian Maelin", say "Jeb Lumsed Sent Me". Requires `ench_epic` ==2. Gives "Note to Lobaen" (52950).
-184. poknowledge/"Illusionist Lobaen", hand "Note to Lobaen" (52950). Gives "Sealed Documents" (52959).
-185. burningwood/"A Sarnak Imitator", hand "Sealed Documents" (52959). Gives "Assembling the Staff" (54286).
-186. Loot "Sullied Gold Filigree" (52963) from "An Enticing Potameid" in `natimbi`.
-187. hohonora/"Anthone Chapin", hand "Sullied Gold Filigree" (52963). Gives "Purified Gold Filigree" (52953).
-188. Combine in "Ornate Staff Chest" (52960): "1st Piece of the Staff" (54289), "2nd Piece of the Staff" (54310), "3rd Piece of the Staff" (54299), "4th Piece of the Staff" (54284), "Ornate Staff Topper" (52961), "All-Seeing Eye" (54293), "Incandescent Oil" (57924), "Purified Gold Filigree" (52953). Produces "Latched Ornate Chest" (52966). The combine does not fail.
-189. burningwood/"A Sarnak Imitator", hand "Latched Ornate Chest" (52966). Gives "Oculus of Persuasion" (52952).
-190. Hand "Heart of a Twisted Stoneservant" (54239) to wakening/"Alaurin". Spawns "A Luminescent Geonid" (119184). Loot "Luminescent Crystal" (52949) from "A Luminescent Geonid".
-191. Loot "Luminescent Crystal" (52949) from "A Luminescent Geonid".
-192. wakening/"Alaurin", hand "Luminescent Crystal" (52949). Gives "Purifying Crystal Fragment" (52955).
-193. Loot "Volatile Vampyre Blood" (52965) from "a Coterie insatiate" in `tenebrous`.
-194. westwastes/"Vohnkare", hand "Volatile Vampyre Blood" (52965). Gives "Purifying Crystal Fragment" (52956).
-195. No quest step gives Gnomish Candy (52944). The dump lists it in akanon.
-196. No quest step gives Koada`Dal Silk (52948). The dump lists it in felwithea, felwitheb.
-197. No quest step gives Feir`Dal Champagne (52940). The dump lists it in gfaydark, katta, rivervale.
-198. No quest step gives Dwarven Steel (57921). The dump lists it in kaladima.
-199. lfaydark/"A Brownie Noble", hand "Feir'Dal Champagne" (52940) + "Gnomish Candy" (52944) + "Koada'Dal Silk" (52948) + "Dwarven Steel" (57921). Sets `ench_epic` to `8`.
-200. Loot "Harnessing Stone" (52946) from "Miriku the Chaotic" in `kael`.
-201. lfaydark/"A Brownie Noble", hand "Harnessing Stone" (52946). Requires `ench_epic` ==8. Gives "Purifying Crystal Fragment" (52957).
-202. Hand "Mountain Pooka Meat" (54240) to jaggedpine/"Chef Brargus". Spawns "Firwyn" (181226). Loot "Dryad Necklace" (57917) from "Firwyn".
-203. Loot "Dryad Necklace" (57917) from "Firwyn".
-204. gfaydark/"Feyana Lightwing", hand "Dryad Necklace" (57917). Gives "Purifying Crystal Fragment" (52958).
-205. Combine in "Planar Jeweler's Kit" (17764): "Purifying Crystal Fragment" (52955), "Purifying Crystal Fragment" (52956), "Purifying Crystal Fragment" (52957), "Purifying Crystal Fragment" (52958). Produces "Purifying Crystal" (52954). Requires Jewelry Making. The combine does not fail.
+2. global/"Global Player", combine recipe 19919. Sets `ench_epic` to `9`.
+3. burningwood/"A Sarnak Imitator", say "Chest". Requires `ench_epic` set. Requires `ench_epic` >=3. Gives "Ornate Staff Chest" (52960).
+4. Ground spawn of "Taste of Enticement" (52964) in `mistmoore`.
+5. frozenshadow/"Advisor Svartmane", hand "Taste of Enticement" (52964). Gives "1st Piece of the Staff" (54289).
+6. Loot "2nd Piece of the Staff" (54310) from "The Yrendan Scarab" in `pojustice`.
+7. Loot "3rd Piece of the Staff" (54299) from "Chavoor the Trickster" in `vxed`.
+8. Loot "3rd Piece of the Staff" (54299) from "Ikaav Firecaller" in `vxed`.
+9. Loot "3rd Piece of the Staff" (54299) from "Kyv Hunter" in `vxed`.
+10. Loot "3rd Piece of the Staff" (54299) from "Ukun Bloodbeast" in `vxed`.
+11. Loot "3rd Piece of the Staff" (54299) from "Umbiki" in `vxed`.
+12. Loot "3rd Piece of the Staff" (54299) from "misguided beludu Creque" in `vxed`.
+13. **Broken:** no event trigger found for `bloodfields/war#timer:reset`.
+14. Spawns "War Caller Kaavi" (301042) after `bloodfields/war#timer:reset`.
+15. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi".
+16. Loot "Ornate Staff Topper" (52961) from "Faleniel of Darkwater" in `sirens`.
+17. Loot "All-Seeing Eye" (54293) from "All-Seeing Eye" in `mischiefplane`.
+18. Summon "Black Diamond of Nightmares" (29990) by casting "Imbue Nightmare".
+19. potranquility/"Elder Fuirstel", say "Hail". Sets `pop_cod_final` to `1`.
+20. poknowledge/"Aid Grimel", say "Versed In The Art Of Smithing". Requires `pop_cod_final` ==1. Requires `pop_cod_final` set. Gives "Filthy Breastplate" (15984).
+21. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+22. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Burnishing" (11862). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+23. 67 other recipes also produce Celestial Essence (9650).
+24. Common item: Jar of Acid (22133). Listed in 15 zones.
+25. Combine in Brew Barrel (19): "Celestial Essence" (9650), "Jar of Acid" (22133). Produces "Acid Wash" (15987). Requires Brewing, trivial 151.
+26. Combine in Forge (17): "Filthy Breastplate" (15984), "Acid Wash" (15987). Produces "Cleansed Breastplate" (15998). Requires Blacksmithing, trivial 227.
+27. Common item: Mortar and Pestle (17904). Listed in 12 zones.
+28. Loot "Sandstorm Pearl" (29909) from "Rorek Steelthorn" (NPC 209081) in `bothunder`. Drop cache: 5.33% chance per kill.
+29. Combine in "Mortar and Pestle" (17904): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Make Poison, trivial 255.
+30. Common item: Firing Sheet (16906). Listed in 34 zones.
+31. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+32. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+33. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+34. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+35. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+36. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+37. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+38. Say "Tm Devrak Death" to rujd/"Rujd".
+39. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
+40. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
+41. 6 alternative loot source(s) also yield Pod of Water (13044).
+42. Forage "Pod of Water" (13044) in `ruja`.
+43. Forage "Pod of Water" (13044) in `uqua`.
+44. Forage "Pod of Water" (13044) in `yxtta`.
+45. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
+46. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
+47. 17 other recipes also produce Bottle (16598).
+48. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
+49. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
+50. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
+51. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
+52. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
+53. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
+54. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
+55. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+56. Combine in "Mixing Bowl" (17906): "Sandstorm Pearl" (29909). Produces "Powdered Sandstorm Pearl" (29520) x4. Requires Baking. The combine does not fail.
+57. Spawns "a Koka'Vor chieftain" (210236) in `postorms` on event_signal.
+58. Loot "Storm Rider Blood" (29526) from "a Koka'Vor chieftain".
+59. Loot "Drop of Pure Rain" (29904) from "A vann stav" (NPC 209018) in `bothunder`. Drop cache: 4% chance per kill.
+60. Combine in Brew Barrel (19): "Powdered Sandstorm Pearl" (29520), "Storm Rider Blood" (29526), "Drop of Pure Rain" (29904). Produces "Hurricane Temper" (29533). Requires Brewing, trivial 135.
+61. Combine in Forge (17): "Cleansed Breastplate" (15998), "Hurricane Temper" (29533). Produces "Tempered Breastplate" (15999). Requires Blacksmithing, trivial 229.
+62. Combine in Forge (17): "Black Diamond of Nightmares" (29990), "Tempered Breastplate" (15999). Produces "Imbued Breastplate" (15985). Requires Blacksmithing 220. Trivial at 275.
+63. poknowledge/"Aid Grimel", hand "Imbued Breastplate" (15985). Gives "Hardened Leather Signet" (16249).
+64. poknowledge/"Aid Grimel", say "Skill In Brewing". Requires `pop_cod_final` ==1. Requires `pop_cod_final` set. Gives "Portable Drink Barrel" (17179).
+65. Forage "Dragon Egg" (19139) in `templeveeshan`.
+66. Forage "Dragon Egg" (19139) in `westwastes`.
+67. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Dragon Egg" (19139). Produces "Dragon Egg Oil" (9664). Requires Brewing, trivial 150.
+68. Loot "Glimmering Oil" (52942) from "A Greasy Clockwork" in `poinnovation`.
+69. bazaar/"Caerlyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
+70. bazaar/"Caerlyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
+71. Loot "Coalesced Mana" (97042) from "Assistant Gareth" (NPC 371049) in `skylance`. Drop cache: 66.67% chance per kill.
+72. Combine in Pottery Wheel (21): "Water Flask" (13006), "White Wolf Skin" (13768), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
+73. Combine in Pottery Wheel (21): "Water Flask" (13006), "Crow's Special Brew" (13799), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
+74. 19 other recipes also produce Unfired Poison Vial (16885).
+75. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
+76. Combine in Kiln (22): "Unfired Poison Vial" (16885), "High Quality Firing Sheet" (16908). Produces "Poison Vial" (16965). Requires Pottery, trivial 17.
+77. Spawns "Pxet Elite Blademaster" (284039) in `ferubi` on event_signal.
+78. Loot "Broken Sword Blade" (67521) from "Pxet Elite Blademaster".
+79. Spawns "Pxet Elite Spearmaster" (284091) in `ferubi` on event_signal.
+80. Loot "Jagged Spear Tip" (67522) from "Pxet Elite Spearmaster".
+81. Spawns "Pxet Elite Brawler" (284088) in `ferubi` on event_signal.
+82. Loot "Tarnished Knuckles" (67523) from "Pxet Elite Brawler".
+83. Spawns "Pxet Elite Hammermaster" (284090) in `ferubi` on event_signal.
+84. Loot "Chipped Hammer Head" (67524) from "Pxet Elite Hammermaster".
+85. Hand "Broken Sword Blade" (67521) + "Jagged Spear Tip" (67522) + "Tarnished Knuckles" (67523) + "Chipped Hammer Head" (67524) to ferubi/"Smith Rondo". Spawns "Master's Apprentice" (284093). Loot "Ruby" (10035) from "Master's Apprentice".
+86. 107 alternative loot source(s) also yield Ruby (10035).
+87. Combine in "Spell Research Kit" (93492): "Celestial Essence" (9650), "Coalesced Mana" (97042), "Poison Vial" (16965), "Ruby" (10035). Produces "Vial of Purified Mana" (10254). Requires Research, trivial 200.
+88. Forage "Glow Lichen" (14925) in `nektulos`.
+89. Loot "Essence of Sunlight" (22527) from "A Faerie Dragon" (NPC 119073) in `wakening`. Drop cache: 55% chance per kill.
+90. Ground spawn of "Abysmal Moonwater" (54298) in `abysmal`.
+91. Combine in Brew Barrel (19): "Vial of Purified Mana" (10254), "Glow Lichen" (14925), "Essence of Sunlight" (22527), "Abysmal Moonwater" (54298). Produces "Glowing Concoction" (52943). Requires Brewing, trivial 116.
+92. Common item: Medicine Bag (17901). Listed in 33 zones.
+93. Common item: Glaze Lacquer (29355). Listed in 5 zones.
+94. No quest step gives Prism Shard (65469). The dump lists it in crescent, gunthak, poknowledge.
+95. Combine in "Medicine Bag" (17901): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Alchemy, trivial 54.
+96. Combine in "Portable Drink Barrel" (17179): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Brewing, trivial 54.
+97. Combine in Brew Barrel (19): "Dragon Egg Oil" (9664), "Glimmering Oil" (52942), "Glowing Concoction" (52943), "Prismatic Dye" (65472). Produces "Incandescent Oil" (57924). Requires Brewing, trivial 116. The combine does not fail.
+98. Loot "Dragon Boneshard" (65574) from "A Curate" (NPC 109068) in `veksar`. Drop cache: 10% chance per kill.
+99. Hand "Dragon Boneshard" (65574) to veksar/"Spirit Of Garudon". Spawns "Garudon" (109107). Loot "Garudon's Statue" (52941) from "Garudon".
+100. lakeofillomen/"A Bloodgill Mimic", hand "Garudon's Statue" (52941). Sets `EnchPre` to `1`.
+101. Loot "Crumbling Tome" (54313) from "A Shissar Lorekeeper" in `ssratemple`.
+102. ssratemple/"A Soriz Imitator", hand "Crumbling Tome" (54313). Requires `EnchPre` ==1. Gives "Illegible Tome" (52947).
+103. akanon/"Rilgor Plegnog", say "Insidious". Gives "Compacting Satchel" (54303).
+104. Loot "Fine Insidious Halo" (54384) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2% chance per kill.
+105. Loot "Fine Insidious Sleeves" (54385) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.08% chance per kill.
+106. Loot "Fine Insidious Manacle" (54386) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.09% chance per kill.
+107. Loot "Fine Insidious Gloves" (54387) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.24% chance per kill.
+108. Loot "Fine Insidious Pantaloons" (54388) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.23% chance per kill.
+109. Loot "Fine Insidious Slippers" (54389) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.07% chance per kill.
+110. Combine in "Compacting Satchel" (54303): "Fine Insidious Halo" (54384), "Fine Insidious Sleeves" (54385), "Fine Insidious Manacle" (54386), "Fine Insidious Gloves" (54387), "Fine Insidious Pantaloons" (54388), "Fine Insidious Slippers" (54389). Produces "Insidious Bundle" (54317). The combine does not fail.
+111. akanon/"Rilgor Plegnog", hand "Insidious Bundle" (54317). Gives "Gnomish Translating Device" (52945).
+112. burningwood/"A Sarnak Imitator", hand "Gnomish Translating Device" (52945) + "Illegible Tome" (52947). Sets `EnchPre` to `2`.
+113. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
+114. akanon/"Rilgor Plegnog", hand "Shining Metallic Robes" (1360). Gives "Mechanical Pen" (10600).
+115. qcat/"Reania Jukle", say "Supply". Gives "Empty Ink Vial" (10626).
+116. gukbottom/"A Ghoul Scribe", hand "Empty Ink Vial" (10626). Gives "Ink of the Dark" (10601).
+117. Common item: Piece of Parchment (13063). Listed in 23 zones.
+118. Common item: Quill (13051). Listed in 32 zones.
+119. Hand "Quill" (13051) + "Piece of Parchment" (13063) to qey2hh1/"Chrislin Baker". Spawns "Thrackin Griften" (12172). Loot "White Paper" (10602) from "Thrackin Griften".
+120. erudnext/"Stofo Olan", hand "Mechanical Pen" (10600) + "Ink of the Dark" (10601) + "White Paper" (10602). Gives "Copy of Notes" (10603).
+121. burningwood/"A Sarnak Imitator", hand "Copy of Notes" (10603). Gives "Jeb's Seal" (10604).
+122. akanon/"Clockwork Viix", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
+123. Loot "Xolion Rod" (10606) from "Vessel Drozlin" in `cabeast`.
+124. Loot "Innoruuk's Word" (10607) from "Verina Tomb" in `neriakc`.
+125. Loot "Head of a Prince" (10627) from "Prince Selrach Di'zok" in `chardok`.
+126. felwitheb/"Joren Nobleheart", hand "Head of a Prince" (10627). Gives "Chalice of Kings" (10608).
+127. Ground spawn of "Large Muddy Sandals" (10628) in `oggok`.
+128. oggok/"Bozlum Blossom", hand "Large Muddy Sandals" (10628). Gives "Scribbled Parchment" (10629).
+129. oggok/"Brokk Boxtripper", hand "Scribbled Parchment" (10629). Gives "Gift to Bozlum" (10630).
+130. oggok/"Bozlum Blossom", hand "Gift to Bozlum" (10630). Gives "Snow Blossoms" (10609).
+131. Combine in "Enchanters Sack" (17861): "Xolion Rod" (10606), "Innoruuk's Word" (10607), "Chalice of Kings" (10608), "Snow Blossoms" (10609). Produces "Sack For Modani" (10635). The combine does not fail.
+132. overthere/"Modani Qu-Loni", hand "Sack For Modani" (10635). Gives "1st Piece of Staff" (10610).
+133. Loot "Spoon" (10614) from "Cazel" in `oasis`.
+134. Loot "Spoon" (10614) from "Cazel" in `southro`.
+135. Ground spawn of "The One Key" (10615) in `overthere`.
+136. Ground spawn of "Lost Scroll" (10616) in `dalnir`.
+137. Ground spawn of "Charm and Sacrifice" (10617) in `airplane`.
+138. Combine in "Enchanters Sack" (17861): "Spoon" (10614), "The One Key" (10615), "Lost Scroll" (10616), "Charm and Sacrifice" (10617). Produces "Sack For Mizzle" (10636). The combine does not fail.
+139. akanon/"Clockwork Viix", hand "Sack For Mizzle" (10636). Gives "2nd Piece of Staff" (10611).
+140. firiona/"Nadia Starfeast", say "Diamond". Gives "Dull Diamond" (10631).
+141. kaesora/"Spectral Librarian", hand "Dull Diamond" (10631). Gives "Enchanted Diamond" (10618).
+142. firiona/"Nadia Starfeast", say "Sapphire". Gives "Dull Sapphire" (10632).
+143. skyfire/"Felia Goldenwing", hand "Dull Sapphire" (10632). Gives "Enchanted Sapphire" (10619).
+144. firiona/"Nadia Starfeast", say "Ruby". Gives "Dull Ruby" (10633).
+145. citymist/"Wraith Of Jaxion", hand "Dull Ruby" (10633). Gives "Enchanted Ruby" (10620).
+146. firiona/"Nadia Starfeast", say "Emerald". Gives "Dull Emerald" (10634).
+147. overthere/"Impaler Tzilug", hand "Dull Emerald" (10634). Gives "Enchanted Emerald" (10621).
+148. Combine in "Enchanters Sack" (17861): "Enchanted Diamond" (10618), "Enchanted Sapphire" (10619), "Enchanted Ruby" (10620), "Enchanted Emerald" (10621). Produces "Sack For Nadia" (10637). The combine does not fail.
+149. firiona/"Nadia Starfeast", hand "Sack For Nadia" (10637). Gives "3rd Piece of Staff" (10612).
+150. Loot "Head of the Serpent" (10622) from "Wraith of a Shissar" in `fearplane`.
+151. Loot "Essence of a Ghost" (10623) from "the Ghost of Kindle" in `hole`.
+152. Loot "Essence of a Vampire" (10624) from "A Forsaken Revenant" (NPC 76005) in `hateplane`. Drop cache: 10.57% chance per kill.
+153. Loot "Sands of the Mystics" (10625) from "The Tangrin" in `fieldofbone`.
+154. Combine in "Enchanters Sack" (17861): "Head of the Serpent" (10622), "Essence of a Ghost" (10623), "Essence of a Vampire" (10624), "Sands of the Mystics" (10625). Produces "Sack For Polzin" (10638). The combine does not fail.
+155. hole/"Polzin Mrid", hand "Sack For Polzin" (10638). Gives "4th Piece of Staff" (10613).
+156. Combine in "Enchanters Sack" (17861): "1st Piece of Staff" (10610), "2nd Piece of Staff" (10611), "3rd Piece of Staff" (10612), "4th Piece of Staff" (10613). Produces "Bundle of Staves" (10639). The combine does not fail.
+157. burningwood/"A Sarnak Imitator", hand "Bundle of Staves" (10639). Gives "Staff of the Serpent" (10650).
+158. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
+159. burningwood/"A Sarnak Imitator", say "Prepared". Requires `ench_epic` set. Requires `ench_epic` >=1. Gives "Tattered Illegible Tome" (57918).
+160. Ground spawn of "Cryptic Page" (52933) in `charasis`.
+161. Ground spawn of "Cryptic Page" (52934) in `sebilis`.
+162. Ground spawn of "Cryptic Page" (52935) in `cazicthule`.
+163. Ground spawn of "Cryptic Page" (52936) in `crystal`.
+164. Ground spawn of "Cryptic Page" (52937) in `skyshrine`.
+165. Ground spawn of "Cryptic Page" (52938) in `velketor`.
+166. Ground spawn of "Cryptic Page" (52939) in `nadox`.
+167. Ground spawn of "Cryptic Page" (54308) in `najena`.
+168. Ground spawn of "Cryptic Page" (57916) in `fungusgrove`.
+169. Ground spawn of "Cryptic Page" (57923) in `oot`.
+170. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). The combine does not fail.
+171. burningwood/"A Sarnak Imitator", hand "Complete Illegible Tome" (54267). Sets `ench_epic` to `2`.
+172. poknowledge/"Grand Librarian Maelin", say "Jeb Lumsed Sent Me". Requires `ench_epic` ==2. Gives "Note to Lobaen" (52950).
+173. poknowledge/"Illusionist Lobaen", hand "Note to Lobaen" (52950). Gives "Sealed Documents" (52959).
+174. burningwood/"A Sarnak Imitator", hand "Sealed Documents" (52959). Gives "Assembling the Staff" (54286).
+175. Loot "Sullied Gold Filigree" (52963) from "An Enticing Potameid" in `natimbi`.
+176. hohonora/"Anthone Chapin", hand "Sullied Gold Filigree" (52963). Gives "Purified Gold Filigree" (52953).
+177. Combine in "Ornate Staff Chest" (52960): "1st Piece of the Staff" (54289), "2nd Piece of the Staff" (54310), "3rd Piece of the Staff" (54299), "4th Piece of the Staff" (54284), "Ornate Staff Topper" (52961), "All-Seeing Eye" (54293), "Incandescent Oil" (57924), "Purified Gold Filigree" (52953). Produces "Latched Ornate Chest" (52966). The combine does not fail.
+178. burningwood/"A Sarnak Imitator", hand "Latched Ornate Chest" (52966). Gives "Oculus of Persuasion" (52952).
+179. Loot "Heart of a Twisted Stoneservant" (54239) from "A Twisted Stoneservant" in `riwwi`.
+180. Hand "Heart of a Twisted Stoneservant" (54239) to wakening/"Alaurin". Spawns "A Luminescent Geonid" (119184). Loot "Luminescent Crystal" (52949) from "A Luminescent Geonid".
+181. wakening/"Alaurin", hand "Luminescent Crystal" (52949). Gives "Purifying Crystal Fragment" (52955).
+182. Loot "Volatile Vampyre Blood" (52965) from "a Coterie insatiate" in `tenebrous`.
+183. westwastes/"Vohnkare", hand "Volatile Vampyre Blood" (52965). Gives "Purifying Crystal Fragment" (52956).
+184. No quest step gives Gnomish Candy (52944). The dump lists it in akanon.
+185. No quest step gives Koada`Dal Silk (52948). The dump lists it in felwithea, felwitheb.
+186. No quest step gives Feir`Dal Champagne (52940). The dump lists it in gfaydark, katta, rivervale.
+187. No quest step gives Dwarven Steel (57921). The dump lists it in kaladima.
+188. lfaydark/"A Brownie Noble", hand "Feir'Dal Champagne" (52940) + "Gnomish Candy" (52944) + "Koada'Dal Silk" (52948) + "Dwarven Steel" (57921). Sets `ench_epic` to `8`.
+189. Loot "Harnessing Stone" (52946) from "Miriku the Chaotic" in `kael`.
+190. lfaydark/"A Brownie Noble", hand "Harnessing Stone" (52946). Requires `ench_epic` ==8. Gives "Purifying Crystal Fragment" (52957).
+191. Say "Spawn Devastating Pookas" to tipt/"Rikabi The Riddler".
+192. Spawns "A Devastating Pooka" (289037).
+193. Loot "Mountain Pooka Meat" (54240) from "A Devastating Pooka".
+194. Hand "Mountain Pooka Meat" (54240) to jaggedpine/"Chef Brargus". Spawns "Firwyn" (181226). Loot "Dryad Necklace" (57917) from "Firwyn".
+195. gfaydark/"Feyana Lightwing", hand "Dryad Necklace" (57917). Gives "Purifying Crystal Fragment" (52958).
+196. Combine in "Planar Jeweler's Kit" (17764): "Purifying Crystal Fragment" (52955), "Purifying Crystal Fragment" (52956), "Purifying Crystal Fragment" (52957), "Purifying Crystal Fragment" (52958). Produces "Purifying Crystal" (52954). Requires Jewelry Making. The combine does not fail.
 
 ### "Channeling Crystal" (57920)
 
@@ -820,7 +821,6 @@ How the items are reached:
 
 - Garudon's Statue (52941)
   - Hand "Dragon Boneshard" (65574) to veksar/"Spirit Of Garudon". Spawns "Garudon" (109107). Loot "Garudon's Statue" (52941) from "Garudon".
-  - Loot "Garudon's Statue" (52941) from "Garudon".
 
 ### 2. a sarnak imitator — hand 52945+52947
 
@@ -845,6 +845,8 @@ How the items are reached:
 
 ### Steps on `EnchPre` that do not change it
 
+- `burningwood` a sarnak imitator, say hail needs `EnchPre` ==2.
+  - Sets `ench_epic` to `1`.
 - `burningwood` a sarnak imitator, say hail needs `EnchPre` ==2.
   - Sets `ench_epic` to `1`.
 - `ssratemple` a soriz imitator, hand 54313 needs `EnchPre` ==1.
@@ -1002,19 +1004,7 @@ Combine:
     - Say "Check Lorb" to anguish/"Zone Status".
     - Spawns "Orb of Discordant Energy" (317087).
     - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-    - Say "Check Lorb" to anguish/"Zone Status".
-    - Spawns "Orb of Discordant Energy" (317087).
-    - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-    - Say "Check Uorb" to anguish/"Zone Status".
-    - Spawns "Orb of Discordant Energy" (317087).
-    - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-    - Say "Check Amv Chest" to anguish/"Zone Status".
-    - Spawns "Ornate Chest" (317112).
-    - Loot "Globe of Discordant Energy" (47100) from "Ornate Chest".
-    - 2 other loot steps also yield Globe of Discordant Energy (47100).
-    - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" in `anguish`.
-    - Loot "Globe of Discordant Energy" (47100) from "Ornate Chest".
-    - Loot "Globe of Discordant Energy" (47100) from "Overlords Chest".
+    - 4 alternative loot source(s) also yield Globe of Discordant Energy (47100).
   - Put in x1: Oculus of Persuasion (52952).
     - Prerequisite: "Oculus of Persuasion" (52952). See section 0.
   - Produces Staff of Eternal Eloquence (52962).
