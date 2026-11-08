@@ -1,57 +1,22 @@
 #!/usr/bin/env python3
-"""List dialogue inputs not literally mentioned in earlier NPC replies.
+"""Audit unexplained SAY inputs using the exact matcher used by the quest graph.
 
-Reads `kind: dialogue` rows from the quest graph produced by graph.py;
-no quest-script parsing, LLM, or lore dictionary.
-
-Example:
-    python find_missing_say_links.py ~/.eqclient/quest_graph.jsonl
-    python find_missing_say_links.py ~/.eqclient/quest_graph.jsonl --scope previous
-    python find_missing_say_links.py ~/.eqclient/quest_graph.jsonl --format jsonl -o missing.jsonl
-
-By default, checks all other NPC responses in each dialogue handler (all).
-Use --scope history to require a cue in a preceding source-code branch.
-`--scope previous` checks only the immediately preceding source-code branch.
-The *full input phrase* must occur literally, ignoring case, punctuation,
-underscores, and whitespace. First turns are excluded because there is no
-preceding conversation to compare against.
+Run with PYTHONPATH=tests/mock_client if this script is outside the package.
 """
 from __future__ import annotations
 
 import argparse
 import csv
 import json
-import re
 import sys
 from pathlib import Path
 
-from eqclient4.quests.graph import _lex_mentioned
-
-
-_LIST = re.compile(
-    r"(?P<first>\b[\w]+(?:\s+(?:of|the|a|an|to|for|in|on|with)\s+[\w]+)+)"
-    r"(?P<rest>(?:\s*,\s*(?!(?:or|and)\b)[\w]+)+(?:\s*,?\s*(?:or|and)\s+[\w]+)?)",
-    re.IGNORECASE,
-)
-
-
-def mentioned(phrase: str, replies: list[str]) -> bool:
-    return _lex_mentioned(phrase, replies)
+from eqclient4.quests.graph import _speech_mentions
 
 
 def _turn_mentions(phrase: str, turns: list[dict]) -> bool:
-    for turn in turns:
-        replies = turn.get('reply') or []
-        if mentioned(phrase, [str(reply.get('text') or '') for reply in replies]):
-            return True
-        # A say_link may show a readable alias different from the actual
-        # input command used by the EQ client.
-        for reply in replies:
-            for link in reply.get('links') or []:
-                if _lex_mentioned(phrase, [str(link.get('target') or '')]):
-                    return True
-    return False
- 
+    return any(_speech_mentions(phrase, turn.get("reply") or []) for turn in turns)
+
 
 def missing_links(path: Path, scope: str, include_hail: bool = False):
     with path.open(encoding="utf-8") as file:

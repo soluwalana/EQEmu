@@ -883,6 +883,74 @@ def _prompt_response(phrase: str, reply: str) -> bool:
     return False
 
 
+# Syntactically grounded conversation acts, retained as separate labels for SDG.
+_DIALOGUE_PROFESSIONS = frozenset({
+    "warrior", "cleric", "paladin", "ranger", "shadowknight", "shadow", "druid",
+    "monk", "bard", "rogue", "shaman", "necromancer", "wizard", "magician",
+    "enchanter", "beastlord", "berserker",
+})
+
+
+def _dialect_words(text: str) -> list[str]:
+    """Normalize only a few attested EQ dialect spellings for prompt analysis."""
+    text = re.sub(r"\bo['’]\s+", "of ", text, flags=re.I)
+    words = _lex_tokens(text)
+    return [{"ye": "you", "yer": "your", "fer": "for", "yoo": "you"}.get(w, w)
+            for w in words]
+
+
+def _structured_prompt_response(phrase: str, reply: str) -> str | None:
+    """Identify a licensed player dialogue act; return its SDG pattern label.
+
+    Unlike lexical matching, the evidence may be a question, challenge, or
+    referral rather than the literal player command. No open-ended similarity.
+    """
+    words = _lex_tokens(phrase)
+    spoken = _dialect_words(reply)
+    if not words or not spoken:
+        return None
+
+    # `Leave me be, ye ... son o' Innoruuk!` -> `I am not a son of Innoruuk`.
+    # Demand an *addressed* attribution, not a mere mention of a third party.
+    if len(words) >= 5 and words[:4] in (["i", "am", "not", "a"],
+                                           ["i", "am", "not", "an"]):
+        subject = words[4:]
+        for start in range(len(spoken)):
+            if spoken[start] not in {"you", "your"}:
+                continue
+            window = spoken[start + 1:start + 14]
+            if _lex_sequence(subject, window):
+                return "identity_denial"
+
+    # `I ain't the one ye be needin' t' talk to` -> `who do I need to talk to`.
+    if words in (["who", "do", "i", "need", "to", "talk", "to"],
+                 ["who", "should", "i", "talk", "to"],
+                 ["who", "do", "i", "talk", "to"]):
+        has_referral = ("talk" in spoken and "to" in spoken and
+                        ("one" in spoken or "someone" in spoken or
+                         "another" in spoken))
+        denied = ("ain" in spoken and "t" in spoken or
+                  "not" in spoken or "else" in spoken)
+        if has_referral and denied:
+            return "referral_question"
+
+    # An NPC explicitly solicits a class/profession or states who may assist.
+    # `I seek one who calls himself a druid` -> `I am a druid`.
+    if len(words) >= 4 and words[:3] in (["i", "am", "a"], ["i", "am", "an"]):
+        profession = words[3:]
+        if len(profession) == 1 and profession[0] in _DIALOGUE_PROFESSIONS:
+            question_or_gate = any(_lex_sequence(_lex_tokens(q), spoken) for q in (
+                "are you", "if you are", "you are a", "you need be",
+                "one who", "those who", "one that", "who calls", "you be a",
+                "seek one", "seek those", "speak to a", "known as a",
+                "a guest of", "be ye a", "happen to be", "appear to be",
+            ))
+            if question_or_gate and _lex_sequence(profession, spoken):
+                return "profession_response"
+
+    return None
+
+
 def _lex_mentioned(phrase: str, replies: list[str]) -> bool:
     """Match the player's expression to spoken offers, without lore inference.
 
@@ -896,7 +964,8 @@ def _lex_mentioned(phrase: str, replies: list[str]) -> bool:
     for reply in replies:
         tokens = _lex_tokens(reply)
         if (_answer_to_question(phrase, reply) or _reply_intent(phrase, reply)
-                or _prompt_response(phrase, reply)):
+                or _prompt_response(phrase, reply)
+                or _structured_prompt_response(phrase, reply)):
             return True
         if any(_lex_sequence(query, tokens) for query in queries):
             return True
@@ -1031,8 +1100,14 @@ def dialogue_chains(text: str, filename: str, zone: str) -> list[dict]:
                     transitions.append({
                         'from': parent['input'], 'to': target['input'],
                         'basis': ('prompt_response' if any(
-                            _prompt_response(target['input'], event.get('text', ''))
+                            _prompt_response(target['input'], event.get('text', '')) or
+                            _structured_prompt_response(target['input'], event.get('text', ''))
                             for event in parent['reply']) else 'explicit_mention'),
+                        'prompt_pattern': next((
+                            pattern for event in parent['reply']
+                            if (pattern := _structured_prompt_response(
+                                target['input'], event.get('text', '')))
+                        ), None),
                         'evidence': '\n'.join(r['text'] for r in parent['reply']),
                         'source_order': 'earlier' if parent_index < index else 'later',
                     })
@@ -1045,6 +1120,8 @@ def dialogue_chains(text: str, filename: str, zone: str) -> list[dict]:
                     transitions.append({
                         'from': speech['event'], 'to': target['input'],
                         'basis': 'external_event_mention',
+                        'prompt_pattern': _structured_prompt_response(
+                            target['input'], speech.get('text', '')),
                         'event': speech['event'],
                         'guards': speech['guards'],
                         'evidence': speech['text'],
