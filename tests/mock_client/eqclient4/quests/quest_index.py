@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS quest_edge (
     item_id INTEGER, source_event TEXT NOT NULL, target_event TEXT NOT NULL,
     speech_id INTEGER REFERENCES speech(id),
     matched_input TEXT NOT NULL DEFAULT '', basis TEXT NOT NULL DEFAULT '',
+    relationship_basis TEXT NOT NULL DEFAULT '',
     UNIQUE(from_npc, to_npc, relation, item_id, source_event, target_event, speech_id)
 );
 CREATE INDEX IF NOT EXISTS quest_edge_from ON quest_edge(from_npc);
@@ -143,7 +144,7 @@ def build(graph_file: Path, db_file: Path = DEFAULT_DB) -> dict[str, int]:
         # Older indexes are rebuilt in place; retain backward compatibility
         # with schema v1 rather than requiring deletion of the database.
         edge_columns = {row['name'] for row in conn.execute('PRAGMA table_info(quest_edge)')}
-        for column in ('matched_input', 'basis'):
+        for column in ('matched_input', 'basis', 'relationship_basis'):
             if column not in edge_columns:
                 conn.execute(f"ALTER TABLE quest_edge ADD COLUMN {column} TEXT NOT NULL DEFAULT ''")
         with conn:
@@ -218,7 +219,7 @@ def build(graph_file: Path, db_file: Path = DEFAULT_DB) -> dict[str, int]:
             _link_references(conn)
             _link_dialogue(conn)
             conn.execute('INSERT INTO metadata VALUES (?,?)', ('graph_file', str(graph_file)))
-            conn.execute('INSERT INTO metadata VALUES (?,?)', ('schema_version', '2'))
+            conn.execute('INSERT INTO metadata VALUES (?,?)', ('schema_version', '3'))
             totals['npc'] = conn.execute('SELECT count(*) FROM npc').fetchone()[0]
             totals['npc_reference'] = conn.execute('SELECT count(*) FROM npc_reference').fetchone()[0]
             totals['quest_edge'] = conn.execute('SELECT count(*) FROM quest_edge').fetchone()[0]
@@ -336,90 +337,115 @@ def _dialogue_anchors(phrase: str) -> set[str]:
     return anchors
 
 
-def _link_dialogue(conn: sqlite3.Connection) -> None:
-    '''Connect speech at NPC A to a SAY trigger on NPC B.
+def _linked_npc_pairs(conn: sqlite3.Connection) -> dict[str, dict[str, str]]:
+    """Admit a pair only with independent, unambiguous relationship evidence.
 
-    Same-zone targets are eligible. Different-zone targets require that the
-    utterance itself identifies the destination NPC by name. Every edge keeps
-    its originating speech row and its exact destination SAY event; these are
-    *possible* player actions, not proven quest prerequisites.
-    '''
-    # A word -> eligible SAY branches inverted index avoids a quadratic join.
-    by_zone: dict[str, dict[str, set[int]]] = collections.defaultdict(lambda: collections.defaultdict(set))
-    anchors_by_id: dict[int, set[str]] = {}
+    A named reference is directed, but permits conversation in either direction:
+    Lily's speech can introduce `marry` to Devin because Devin names Lily.
+    Uniquely granted/received items also connect a pair. Shared zones and
+    shared mentions of a *third* person are intentionally insufficient.
+    """
+    pairs: dict[str, dict[str, str]] = collections.defaultdict(dict)
+    # Lower rank means stronger contextual proof, not temporal necessity.
+    precedence = {
+        'direct_npc_reference': 0,
+        'reverse_npc_reference': 1,
+        'item_handoff': 2,
+    }
+
+    def add(source: str, target: str, basis: str) -> None:
+        if source == target:
+            return
+        existing = pairs[source].get(target)
+        if existing is None or precedence[basis] < precedence[existing]:
+            pairs[source][target] = basis
+
+    for ref in conn.execute("""SELECT DISTINCT from_npc,to_npc FROM npc_reference
+                               WHERE ambiguous=0"""):
+        add(ref['from_npc'], ref['to_npc'], 'direct_npc_reference')
+        add(ref['to_npc'], ref['from_npc'], 'reverse_npc_reference')
+
+    # Candidate item handoffs can involve common items and many unrelated
+    # NPCs. Require the existing indexer's unique-giver/receiver signal.
+    for edge in conn.execute("""SELECT DISTINCT from_npc,to_npc FROM quest_edge
+                                WHERE relation='item_handoff' AND confidence='strong' """):
+        add(edge['from_npc'], edge['to_npc'], 'item_handoff')
+        add(edge['to_npc'], edge['from_npc'], 'item_handoff')
+    return pairs
+
+
+def _link_dialogue(conn: sqlite3.Connection) -> None:
+    """Find conversationally plausible cross-NPC SAY transitions.
+
+    NPC relationship evidence is mandatory *before* comparing an utterance
+    to another NPC's SAY triggers. The graph matcher is still authoritative
+    for the input phrase; zone sharing or incidental topic overlap is not.
+    """
+    related = _linked_npc_pairs(conn)
+    if not related:
+        return
+
+    # Index SAY triggers by target NPC and discriminating token, so only
+    # relationship-authorized destinations become lexical candidates.
+    by_npc: dict[str, dict[str, set[int]]] = collections.defaultdict(
+        lambda: collections.defaultdict(set))
     targets: dict[int, sqlite3.Row] = {}
-    for row in conn.execute('''SELECT d.id,d.npc_id,d.input,d.say_source,n.zone
-                               FROM dialogue d JOIN npc n ON n.id=d.npc_id'''):
+    for row in conn.execute('SELECT id,npc_id,input,say_source FROM dialogue'):
         if _norm(row['input']) in _GENERIC_SAY_INPUTS:
             continue
         anchors = _dialogue_anchors(row['input'])
         if not anchors:
             continue
         targets[row['id']] = row
-        anchors_by_id[row['id']] = anchors
-        for token in anchors:
-            by_zone[row['zone']][token].add(row['id'])
-
-    by_npc: dict[str, set[int]] = collections.defaultdict(set)
-    for target_id, row in targets.items():
-        by_npc[row['npc_id']].add(target_id)
-
-    named_targets: dict[int, set[str]] = collections.defaultdict(set)
-    for row in conn.execute('''SELECT speech_id,to_npc FROM npc_reference
-                               WHERE ambiguous=0'''):
-        named_targets[row['speech_id']].add(row['to_npc'])
+        for word in anchors:
+            by_npc[row['npc_id']][word].add(row['id'])
 
     inserts = []
-    for speech in conn.execute('''SELECT s.id,s.npc_id,s.event_key,s.text,s.links_json,
-                                       n.zone FROM speech s JOIN npc n ON n.id=s.npc_id'''):
+    for speech in conn.execute("""SELECT id,npc_id,event_key,text,links_json
+                                  FROM speech WHERE text != '' """):
+        neighbors = related.get(speech['npc_id'])
+        if not neighbors:
+            continue
         links = json.loads(speech['links_json'])
         words = set(_lex_tokens(speech['text']))
         for link in links:
             words.update(_lex_tokens(str(link.get('target') or '')))
-        # Plural/singular variants help find candidates, but graph.py still
-        # makes the authoritative equivalence decision.
         variants = set(words)
         for word in words:
             variants.update(_lex_variants(word))
-        candidates: set[int] = set()
-        for word in variants:
-            candidates.update(by_zone[speech['zone']].get(word, ()))
-
-        # Cross-zone dialogue only if this speech actually names the NPC.
-        # Destination lookup is indexed by NPC ID, not by every utterance.
-        named = named_targets.get(speech['id'], set())
-        if named:
-            for named_npc in named:
-                for target_id in by_npc.get(named_npc, ()):
-                    if anchors_by_id[target_id] & variants:
-                        candidates.add(target_id)
 
         msg = [{'text': speech['text'], 'links': links}]
-        for target_id in candidates:
-            target = targets[target_id]
-            if speech['npc_id'] == target['npc_id']:
+        for dest, relationship_basis in neighbors.items():
+            by_word = by_npc.get(dest)
+            if not by_word:
                 continue
-            if not _speech_mentions(target['input'], msg):
-                continue
-            utterance = speech['text']
-            inferred = any(check(target['input'], utterance) for check in
-                           (_prompt_response, _reply_intent, _answer_to_question))
-            basis = 'prompt_response' if inferred else 'explicit_mention'
-            inserts.append((speech['npc_id'], target['npc_id'],
-                            'cross_npc_dialogue', 'context', utterance, None,
-                            speech['event_key'], target['say_source'], speech['id'],
-                            target['input'], basis))
+            candidates: set[int] = set()
+            for word in variants:
+                candidates.update(by_word.get(word, ()))
+            for target_id in candidates:
+                target = targets[target_id]
+                if not _speech_mentions(target['input'], msg):
+                    continue
+                utterance = speech['text']
+                inferred = any(check(target['input'], utterance) for check in
+                               (_prompt_response, _reply_intent, _answer_to_question))
+                basis = 'prompt_response' if inferred else 'explicit_mention'
+                inserts.append((speech['npc_id'], dest,
+                                'cross_npc_dialogue', 'strong_context', utterance,
+                                None, speech['event_key'], target['say_source'],
+                                speech['id'], target['input'], basis,
+                                relationship_basis))
         if len(inserts) >= 10000:
-            conn.executemany('''INSERT OR IGNORE INTO quest_edge
+            conn.executemany("""INSERT OR IGNORE INTO quest_edge
                 (from_npc,to_npc,relation,confidence,evidence,item_id,
-                 source_event,target_event,speech_id,matched_input,basis)
-                VALUES (?,?,?,?,?,?,?,?,?,?,?)''', inserts)
+                 source_event,target_event,speech_id,matched_input,basis,relationship_basis)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""", inserts)
             inserts.clear()
     if inserts:
-        conn.executemany('''INSERT OR IGNORE INTO quest_edge
+        conn.executemany("""INSERT OR IGNORE INTO quest_edge
             (from_npc,to_npc,relation,confidence,evidence,item_id,
-             source_event,target_event,speech_id,matched_input,basis)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?)''', inserts)
+             source_event,target_event,speech_id,matched_input,basis,relationship_basis)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""", inserts)
 
 
 def query_npc(db: Path, npc: str) -> dict:
