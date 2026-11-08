@@ -533,7 +533,7 @@ def write_class(name, title, mains, prefixes, ctx):
         steps.append(f"{description}. Triggers `{source}`.")
         return steps
 
-    def leaf_bits(item_id: int, expand_item=None) -> list[str]:
+    def leaf_bits(item_id: int, expand_item=None, expand_action=None) -> list[str]:
         bits = []
         for edge in real_givers(item_id):
             who, action, _zone = parse_who(edge.get("group") or edge.get("from"))
@@ -563,6 +563,8 @@ def write_class(name, title, mains, prefixes, ctx):
         if chosen_loot is None and possible_loot:
             chosen_loot = possible_loot[0]
         for edge in ([chosen_loot] if chosen_loot else []):
+            if expand_action is not None:
+                expand_action(edge)
             source = str(edge.get("from") or "")
             who, action, zone = parse_who(source)
             spawn = str(edge.get("name") or "")
@@ -757,7 +759,12 @@ def write_class(name, title, mains, prefixes, ctx):
         trail = trail | {item_id}
 
         def dependencies(edge: dict) -> list[dict]:
-            return [
+            """Requirements on this action, with weaker 'set' checks subsumed.
+
+            `flag == N` already entails `flag set`. Keeping both causes a
+            spurious recursive lookup for the same global (Soulwhisper).
+            """
+            rows = [
                 row
                 for row in bundle(
                     by_from,
@@ -767,6 +774,14 @@ def write_class(name, title, mains, prefixes, ctx):
                 )
                 if row.get("rel") == "needs"
             ]
+            precise = {str(row["flag"]) for row in rows
+                       if row.get("flag") and str(row.get("at") or "set") != "set"}
+            filtered = [row for row in rows
+                        if not (row.get("flag") in precise and str(row.get("at") or "set") == "set")]
+            return list({(
+                str(row.get("flag")), str(row.get("at")), str(row.get("item")),
+                str(row.get("state")), str(row.get("op"))
+            ): row for row in filtered}.values())
 
         def value_matches(value: str, at: str) -> bool:
             if at == "set":
@@ -812,6 +827,11 @@ def write_class(name, title, mains, prefixes, ctx):
             """
             predicate = at.replace(" ", "")
             state = (flag, predicate)
+            # Any concrete, already-active value satisfies a bare `set`
+            # requirement. It is not another step of the state machine.
+            if predicate == "set" and any(f == flag and p not in {"set", "unset"}
+                                          for f, p in active):
+                return
             if state in active:
                 steps.append(f"Unresolved cyclic prerequisite: `{flag}` {at}.")
                 return
@@ -961,7 +981,7 @@ def write_class(name, title, mains, prefixes, ctx):
         if made_here:
             return
 
-        for bit in leaf_bits(item_id, expand_item=expand_item):
+        for bit in leaf_bits(item_id, expand_item=expand_item, expand_action=expand_action):
             key = ("leaf", item_id, bit)
             if key not in seen:
                 seen.add(key)

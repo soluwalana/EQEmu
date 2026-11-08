@@ -2075,12 +2075,15 @@ class QuestGraph:
 
 # Event causality. A direct spawn in EVENT_TIMER is not a quest entry point:
 # find who starts the timer, including signals sent by a different NPC script.
-_NPC_FOOTER = re.compile(r"(?im)^\s*#\s*EOF\s+zone:.*?\bID:\s*(\d+)\s+NPC:")
+_NPC_FOOTER = re.compile(
+    r"(?im)^\s*(?:#\s*EOF\s+zone:|--\s*(?:END\s+of\s+FILE|EOF)\s+Zone:)"
+    r"[^\n]*?\bID:\s*(\d+)"
+)
 _SIGNAL_WITH = re.compile(r"(?:quest::signalwith|eq\.signal)\s*\(\s*(\d+)\s*,\s*(\d+)", re.I)
 _SIGNAL_NPC = re.compile(r"\$(\w+)\s*->\s*SignalNPC\s*\(\s*(\d+)\s*\)", re.I)
 _MOB_LOOKUP = re.compile(r"\$(\w+)\s*=\s*\$entity_list->GetMobByNpcTypeID\s*\(\s*(\d+)\s*\)", re.I)
 _CAST_NPC = re.compile(r"\$(\w+)\s*=\s*\$(\w+)\s*->CastToNPC\s*\(\s*\)", re.I)
-_SIGNAL_CONDITION = re.compile(r"\$signal\s*==\s*(\d+)", re.I)
+_SIGNAL_CONDITION = re.compile(r"(?:\$signal|e\.signal)\s*==\s*(\d+)", re.I)
 
 
 def _event_functions(text: str, name: str) -> tuple[int, int] | None:
@@ -2347,10 +2350,28 @@ def _link_event_causality(graph: QuestGraph, scripts: list[tuple[str, str, str]]
         _timer_rewards(graph, npc_id, text)
         _timer_starters(graph, npc_id, text)
 
+    named_receivers = {
+        (zone, re.sub(r"[_\s]+", " ", npc_id.split("/", 1)[-1]).strip().lower()): (npc_id, body)
+        for zone, npc_id, body in scripts
+    }
     sent = set()
     for zone, origin_npc, text in scripts:
         for source, target, signal in _outgoing_signals(text, origin_npc):
             receiver = receivers.get((zone, target))
+            if receiver is None:
+                # A signal may use the live NPC type while an old converted
+                # Lua quest footer still contains an obsolete ID. Its sender
+                # frequently documents the target via `-- NPC: Name`.
+                pattern = re.compile(
+                    r"(?:quest::signalwith|eq\.signal)\s*\(\s*" + str(target)
+                    + r"\s*,\s*" + str(signal) + r"(?:\s*[,)]|\s*\))[^\n]*?"
+                    + r"(?:#|--)\s*NPC:\s*([^\r\n]+)", re.I,
+                )
+                for match in pattern.finditer(text):
+                    name = re.sub(r"[_\s]+", " ", match.group(1)).strip().lower()
+                    receiver = named_receivers.get((zone, name))
+                    if receiver is not None:
+                        break
             if receiver is None:
                 continue
             npc_id, receiver_text = receiver
