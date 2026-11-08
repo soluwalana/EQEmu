@@ -831,6 +831,58 @@ def _reply_intent(phrase: str, reply: str) -> bool:
     return False
 
 
+def _prompt_response(phrase: str, reply: str) -> bool:
+    """Resolve conventional responses only from a demonstrable NPC prompt.
+
+    Unlike general stemming, this does not treat a topical mention as an
+    invitation to say an arbitrary sentence about that topic.
+    """
+    words = _lex_tokens(phrase)
+    if not words:
+        return False
+    tokens = _lex_tokens(reply)
+
+    # A named character/location explicitly introduced by the NPC can be
+    # queried as `who is <name>` or `where is <name>`.
+    if len(words) >= 3 and words[:2] in (
+        ['who', 'is'], ['who', 'are'], ['where', 'is'], ['where', 'are']
+    ) and words[2:] not in (['you'], ['he'], ['she'], ['they'], ['it']):
+        if _lex_sequence(words[2:], tokens):
+            return True
+
+    # The player may turn a visible option into a first-person response:
+    # `do you follow [Justice]` -> `I follow justice`.
+    if len(words) >= 3 and words[:2] in (
+        ['i', 'follow'], ['i', 'want'], ['i', 'wish'], ['i', 'seek'],
+        ['i', 'will'], ['i', 'am'], ['i', 'need'], ['i', 'have'],
+    ):
+        tail = words[2:]
+        for match in re.finditer(r'\[([^\]\n]+)\]', reply):
+            option = _lex_tokens(match.group(1))
+            if len(option) >= len(tail) and _lex_sequence(tail, option):
+                return True
+        if words[:2] == ['i', 'follow'] and _lex_sequence(tail, tokens):
+            if re.search(r'\b(?:do you follow|you follow|follow one of)\b', reply, re.I):
+                return True
+
+    # Simple yes/no answers are warranted by a real interrogative, not an
+    # incidental mention of the concepts yes or no.
+    if words in (['yes'], ['no']):
+        for clause in re.findall(r'[^.!?]*\?', reply):
+            if re.search(r'\b(?:are|do|did|will|would|can|could|shall|have|has|is|was|should)\s+(?:you|your|there|it|he|she|they)\b', clause, re.I):
+                return True
+
+    # Pronouns in an explicitly selectable command can change speaker:
+    # `[lunatic sent you]` -> `lunatic sent me`. Do not switch isolated
+    # pronouns or unrelated words elsewhere in a long NPC speech.
+    if len(words) >= 3 and 'me' in words:
+        changed = ['you' if part == 'me' else part for part in words]
+        for match in re.finditer(r'\[([^\]\n]+)\]', reply):
+            if _lex_sequence(changed, _lex_tokens(match.group(1))):
+                return True
+    return False
+
+
 def _lex_mentioned(phrase: str, replies: list[str]) -> bool:
     """Match the player's expression to spoken offers, without lore inference.
 
@@ -843,7 +895,8 @@ def _lex_mentioned(phrase: str, replies: list[str]) -> bool:
         return False
     for reply in replies:
         tokens = _lex_tokens(reply)
-        if _answer_to_question(phrase, reply) or _reply_intent(phrase, reply):
+        if (_answer_to_question(phrase, reply) or _reply_intent(phrase, reply)
+                or _prompt_response(phrase, reply)):
             return True
         if any(_lex_sequence(query, tokens) for query in queries):
             return True
@@ -977,7 +1030,9 @@ def dialogue_chains(text: str, filename: str, zone: str) -> list[dict]:
                 if _speech_mentions(target['input'], parent['reply']):
                     transitions.append({
                         'from': parent['input'], 'to': target['input'],
-                        'basis': 'explicit_mention',
+                        'basis': ('prompt_response' if any(
+                            _prompt_response(target['input'], event.get('text', ''))
+                            for event in parent['reply']) else 'explicit_mention'),
                         'evidence': '\n'.join(r['text'] for r in parent['reply']),
                         'source_order': 'earlier' if parent_index < index else 'later',
                     })

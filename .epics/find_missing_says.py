@@ -53,7 +53,7 @@ def _turn_mentions(phrase: str, turns: list[dict]) -> bool:
     return False
  
 
-def missing_links(path: Path, scope: str):
+def missing_links(path: Path, scope: str, include_hail: bool = False):
     with path.open(encoding="utf-8") as file:
         for line_no, line in enumerate(file, 1):
             if not line.strip():
@@ -68,7 +68,8 @@ def missing_links(path: Path, scope: str):
 
             for index, turn in enumerate(turns):
                 keyword = str(turn.get("input") or "").strip()
-                if not keyword:
+                if not keyword or (not include_hail and keyword.casefold() == "hail"):
+                    # Hail is a universal interaction, not a discoverable SAY link.
                     continue
                 observed_turns = (
                     [other for j, other in enumerate(turns) if j != index]
@@ -102,11 +103,13 @@ def main(argv=None) -> int:
     parser.add_argument("graph", type=Path, help="Path to quest_graph.jsonl")
     parser.add_argument("--scope", choices=("all", "history", "previous"), default="all",
                         help="Check all branches, earlier branches, or preceding branch (default: all)")
+    parser.add_argument("--include-hail", action="store_true",
+                        help="Include universal hail entry points in missing-link reports")
     parser.add_argument("--format", choices=("csv", "jsonl"), default="csv")
     parser.add_argument("-o", "--output", type=Path, help="Output file (default: stdout)")
     args = parser.parse_args(argv)
     try:
-        rows = list(missing_links(args.graph, args.scope))
+        rows = list(missing_links(args.graph, args.scope, args.include_hail))
     except (OSError, ValueError) as exc:
         parser.error(str(exc))
     if args.output:
