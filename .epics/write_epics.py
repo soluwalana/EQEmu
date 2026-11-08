@@ -494,6 +494,33 @@ def write_class(name, title, mains, prefixes, ctx):
         ctx
     )
     flags = class_flags(sets_of, mains, prefixes)
+    # A shared player event can contain branches for several classes.  Its
+    # graph source (e.g. veksar/player#enter) is not branch-specific; exclude
+    # predicates owned exclusively by another class rather than turning the
+    # Ranger event into a prerequisite for the Warrior epic (and vice versa).
+    owners: dict[str, set[str]] = defaultdict(set)
+    for slug, _label, class_mains, class_prefixes in CLASSES:
+        for owned_flag in class_flags(sets_of, class_mains, class_prefixes):
+            owners[owned_flag].add(slug)
+    foreign_flags = {
+        flag for flag, slugs in owners.items()
+        if name not in slugs and len(slugs) == 1
+    }
+
+    def foreign_only_source(edge: dict) -> bool:
+        """Avoid choosing a different class's quest reward as our source.
+
+        The player event graph sometimes coalesces Ranger and Warrior branches
+        under one source.  Preserve those shared events when this class also
+        has a predicate on that source.
+        """
+        needed = [row.get("flag") for row in bundle(
+            by_from, by_group, edge.get("from", ""), edge.get("group", "")
+        ) if row.get("rel") == "needs" and row.get("flag")]
+        return any(flag in foreign_flags for flag in needed) and not any(
+            flag in flags for flag in needed
+        )
+
     lines: list[str] = []
     seen_flags: set[str] = set()
     seen_recipes: set[int] = set()
@@ -544,15 +571,60 @@ def write_class(name, title, mains, prefixes, ctx):
         givers = [
             edge
             for edge in gives.get(item_id, [])
-            if not _recipe_refund(recipe, edge, item_id) and item_id not in handed(edge)
+            if not _recipe_refund(recipe, edge, item_id)
+            and item_id not in handed(edge)
+            and not foreign_only_source(edge)
         ]
         gated = [edge for edge in givers if prefers(by_from, by_group, edge, flags)]
         candidates = gated or givers
-        # Prefer actions whose prerequisites are present in the graph; avoid
-        # conflating independent reward variants into one linear quest.
+
+        def necessarily_requires(needed: int, target: int, visiting: frozenset[int] = frozenset()) -> bool:
+            """True only if every known way to acquire `needed` depends on `target`.
+
+            A returned quest container must not be selected as its own initial
+            source. Explore alternative producers before declaring a cycle.
+            """
+            if needed == target:
+                return True
+            if needed in visiting:
+                return False
+            active = visiting | {needed}
+            paths = [
+                handed(giver)
+                for giver in gives.get(needed, ())
+                if not _recipe_refund(recipe, giver, needed)
+                and needed not in handed(giver)
+            ]
+            paths.extend(
+                list(recipe_inputs(rid))
+                for rid in produces.get(needed, ())
+                if needed not in recipe_inputs(rid)
+            )
+            return bool(paths) and all(
+                any(necessarily_requires(component, target, active) for component in path)
+                for path in paths
+            )
+
+        def cyclic_source(edge: dict) -> bool:
+            return any(
+                necessarily_requires(component, item_id)
+                for component in handed(edge)
+            )
+
+        # A reward that returns inputs from a later combine is not the initial
+        # way of obtaining them.  For 62611-62614, Corun gives the blood samples
+        # back AFTER 62615 is handed in, but recipes 13406-13409 create them.
+        # Do not emit both acquisition paths as mandatory sequential actions.
+        noncyclic = [edge for edge in candidates if not cyclic_source(edge)]
+        if noncyclic:
+            candidates = noncyclic
+        elif creating(item_id):
+            return []  # use the noncyclic recipe instead of a return/reward loop
+
         return sorted(
             candidates,
             key=lambda edge: (
+                cyclic_source(edge),
                 not bool(
                     handed(edge)
                     or any(
@@ -714,7 +786,8 @@ def write_class(name, title, mains, prefixes, ctx):
         ]
         # One loot path is sufficient to acquire an item. The old code emitted
         # up to four routes consecutively, falsely implying four required kills.
-        possible_loot = gated_loot or loot_rows
+        possible_loot = [edge for edge in (gated_loot or loot_rows)
+                         if not foreign_only_source(edge)]
         unique_loot = list(
             dict.fromkeys(
                 (str(edge.get("from") or ""), str(edge.get("npc") or ""))
@@ -926,7 +999,9 @@ def write_class(name, title, mains, prefixes, ctx):
             dict.fromkeys(
                 f"Requires `{row['flag']}` {row.get('at') or 'set'}"
                 for row in rows
-                if row.get("rel") == "needs" and row.get("flag")
+                if row.get("rel") == "needs"
+                and row.get("flag")
+                and row.get("flag") not in foreign_flags
             )
         )
 
@@ -997,6 +1072,7 @@ def write_class(name, title, mains, prefixes, ctx):
                     edge.get("group", ""),
                 )
                 if row.get("rel") == "needs"
+                and row.get("flag") not in foreign_flags
             ]
             precise = {
                 str(row["flag"])
@@ -1219,7 +1295,7 @@ def write_class(name, title, mains, prefixes, ctx):
 
             made_here = True
 
-        for rid in creating(item_id):
+        for rid in ([] if made_here else creating(item_id)):
             if goal in recipe_inputs(rid):
                 continue
 

@@ -56,18 +56,7 @@ Each list is the order you obtain that item. Later steps point here instead of r
 5. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
 6. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
 7. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-8. Say "Tm Devrak Death" to rujd/"Rujd".
-9. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-10. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-11. 6 alternative loot source(s) also yield Pod of Water (13044).
-12. Forage "Pod of Water" (13044) in `ruja`.
-13. Forage "Pod of Water" (13044) in `uqua`.
-14. Forage "Pod of Water" (13044) in `yxtta`.
-15. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-16. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-17. 17 other recipes also produce Bottle (16598).
-18. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-19. global/"Familiarbrewworks", hand "Water Flask" (13006). Gives "Ale" (13039).
+8. global/"Familiarbrewworks", hand "Water Flask" (13006). Gives "Ale" (13039).
 
 ### "Gift of the Sphinx" (52905)
 

@@ -14,8 +14,8 @@ Each list is the order you obtain that item. Later steps point here instead of r
 2. Loot "Demon Fangs" (1688) from "Xenevorash".
 3. Loot "Metal Pipe" (12979) from "A Drolvarg Pawbuster" in `karnor`.
 4. Loot "Metal Pipe" (12980) from "An Iksar Betrayer" in `chardok`.
-5. bazaar/"Caerlyna", hand "Deluxe Sewing Kit" (17966). Gives "Deluxe Sewing Kit Token" (51537).
-6. bazaar/"Caerlyna", hand "Deluxe Sewing Kit Token" (51537). Gives "Deluxe Sewing Kit" (17966).
+5. No quest step gives King's Court Token (66616). The dump lists it in shadowhaven.
+6. shadowhaven/"Gralin Silvertooth", hand "King's Court Token" (66616). Gives "Deluxe Sewing Kit" (17966).
 7. Loot "Code of Zan Fi" (12316) from "Targin the Rock" in `soldungb`.
 8. Loot "Blackburrow Gnoll Pelt" (13027) from "Refugee Splitpaw" (NPC 17023) in `blackburrow`. Drop cache: 55% chance per kill.
 9. Loot "Blackburrow Gnoll Skin" (13028) from "The Gnoll High Shaman" (NPC 17042) in `blackburrow`. Drop cache: 55% chance per kill.
@@ -62,51 +62,38 @@ Each list is the order you obtain that item. Later steps point here instead of r
 50. freeportwest/"Reyia Beslin", hand "Orange Sash of Order" (10132) + "Blackened Wand" (13237) + "Blackened Sapphire" (13238). Gives "Red Sash of Order" (10133).
 51. rathemtn/"Brother Zephyl", hand "Red Sash of Order" (10133) + "The Idol" (12317). Gives "Rare Robe Pattern" (12315).
 52. Common item: Song: Jonthan's Whistling Warsong (15734). Listed in 8 zones.
-53. bazaar/"Caerlyna", hand "Vale Sewing Kit" (92882). Gives "Vale Sewing Kit Token" (56884).
-54. bazaar/"Caerlyna", hand "Vale Sewing Kit Token" (56884). Gives "Vale Sewing Kit" (92882).
-55. Common item: Needle Mold (12019). Listed in 32 zones.
-56. Common item: Thimble Mold (12057). Listed in 32 zones.
-57. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-58. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-59. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-60. Say "Tm Devrak Death" to rujd/"Rujd".
-61. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-62. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-63. 6 alternative loot source(s) also yield Pod of Water (13044).
-64. Forage "Pod of Water" (13044) in `ruja`.
-65. Forage "Pod of Water" (13044) in `uqua`.
-66. Forage "Pod of Water" (13044) in `yxtta`.
-67. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-68. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-69. 17 other recipes also produce Bottle (16598).
-70. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-71. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
-72. Combine in Forge (17): "Smithing Chisel" (7052), "Small Brick of High Quality Ore" (10468). Hands back "Smithing Chisel" (7052). Produces "Small Piece of High Quality Ore" (22229) x2. Requires Blacksmithing, trivial 27.
-73. 4 other recipes also produce Small Piece of High Quality Ore (22229).
-74. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
-75. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
-76. Loot "Shadow Wolf Pelt" (13779) from "A Shadow Wolf" (NPC 408093) in `commonlands`. Drop cache: 7.64% chance per kill.
-77. Common item: Spell: Gather Shadows (15522). Listed in 13 zones.
-78. Forage "Spider Silk" (13041) in `mistmoore`.
-79. Forage "Spider Silk" (13041) in `mmca`.
-80. Forage "Spider Silk" (13041) in `mmcb`.
-81. Forage "Spider Silk" (13041) in `mmcc`.
-82. Forage "Spider Silk" (13041) in `mmcd`.
-83. Forage "Spider Silk" (13041) in `mmce`.
-84. Forage "Spider Silk" (13041) in `mmcf`.
-85. Forage "Spider Silk" (13041) in `mmcg`.
-86. Forage "Spider Silk" (13041) in `mmch`.
-87. Forage "Spider Silk" (13041) in `mmci`.
-88. Forage "Spider Silk" (13041) in `mmcj`.
-89. Combine in "Vale Sewing Kit" (92882): "Spider Silk" (13041). Produces "Silk Swatch" (16482). Requires Tailoring, trivial 15. The combine does not fail.
-90. Combine in "Vale Sewing Kit" (92882): "Shadow Wolf Pelt" (13779), "Spell: Gather Shadows" (15522), "Silk Swatch" (16482). Produces "Shadow Silk" (16483). Requires Tailoring, trivial 36.
-91. Combine in "Deluxe Sewing Kit" (17966): "Needle of the Void" (12314), "Rare Robe Pattern" (12315), "Song: Jonthan's Whistling Warsong" (15734), "Shadow Silk" (16483). Produces "Robe of the Lost Circle" (12256). Requires Tailoring. The combine does not fail.
-92. dreadlands/"Brother Balatin", hand "Robe of the Lost Circle" (12256) + "Metal Pipe" (12979) + "Metal Pipe" (12980). Gives "Robe of the Whistling Fists" (12970).
-93. Loot "Immortals" (18195) from "Faerie of Dismay" (NPC 91012) in `skyfire`. Drop cache: 35% chance per kill.
-94. erudnext/"Tomekeeper Danl", hand "Immortals" (18195). Gives "Danl's Reference" (1682).
-95. timorous/"Lheao", hand "Danl's Reference" (1682) + "Robe of the Whistling Fists" (12970). Gives "Celestial Fists" (1683).
-96. trakanon/"Kaiaren", hand "Celestial Fists" (1683). Gives "Book of Celestial Fists" (1689).
-97. trakanon/"Kaiaren", hand "Demon Fangs" (1688) + "Book of Celestial Fists" (1689). Gives "Celestial Fists" (10652).
+53. Common item: Needle Mold (12019). Listed in 32 zones.
+54. Common item: Thimble Mold (12057). Listed in 32 zones.
+55. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+56. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+57. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+58. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
+59. Combine in Forge (17): "Smithing Chisel" (7052), "Small Brick of High Quality Ore" (10468). Hands back "Smithing Chisel" (7052). Produces "Small Piece of High Quality Ore" (22229) x2. Requires Blacksmithing, trivial 27.
+60. 4 other recipes also produce Small Piece of High Quality Ore (22229).
+61. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
+62. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
+63. Loot "Shadow Wolf Pelt" (13779) from "A Shadow Wolf" (NPC 408093) in `commonlands`. Drop cache: 7.64% chance per kill.
+64. Common item: Spell: Gather Shadows (15522). Listed in 13 zones.
+65. Forage "Spider Silk" (13041) in `mistmoore`.
+66. Forage "Spider Silk" (13041) in `mmca`.
+67. Forage "Spider Silk" (13041) in `mmcb`.
+68. Forage "Spider Silk" (13041) in `mmcc`.
+69. Forage "Spider Silk" (13041) in `mmcd`.
+70. Forage "Spider Silk" (13041) in `mmce`.
+71. Forage "Spider Silk" (13041) in `mmcf`.
+72. Forage "Spider Silk" (13041) in `mmcg`.
+73. Forage "Spider Silk" (13041) in `mmch`.
+74. Forage "Spider Silk" (13041) in `mmci`.
+75. Forage "Spider Silk" (13041) in `mmcj`.
+76. Combine in "Vale Sewing Kit" (92882): "Spider Silk" (13041). Produces "Silk Swatch" (16482). Requires Tailoring, trivial 15. The combine does not fail.
+77. Combine in "Vale Sewing Kit" (92882): "Shadow Wolf Pelt" (13779), "Spell: Gather Shadows" (15522), "Silk Swatch" (16482). Produces "Shadow Silk" (16483). Requires Tailoring, trivial 36.
+78. Combine in "Deluxe Sewing Kit" (17966): "Needle of the Void" (12314), "Rare Robe Pattern" (12315), "Song: Jonthan's Whistling Warsong" (15734), "Shadow Silk" (16483). Produces "Robe of the Lost Circle" (12256). Requires Tailoring. The combine does not fail.
+79. dreadlands/"Brother Balatin", hand "Robe of the Lost Circle" (12256) + "Metal Pipe" (12979) + "Metal Pipe" (12980). Gives "Robe of the Whistling Fists" (12970).
+80. Loot "Immortals" (18195) from "Faerie of Dismay" (NPC 91012) in `skyfire`. Drop cache: 35% chance per kill.
+81. erudnext/"Tomekeeper Danl", hand "Immortals" (18195). Gives "Danl's Reference" (1682).
+82. timorous/"Lheao", hand "Danl's Reference" (1682) + "Robe of the Whistling Fists" (12970). Gives "Celestial Fists" (1683).
+83. trakanon/"Kaiaren", hand "Celestial Fists" (1683). Gives "Book of Celestial Fists" (1689).
+84. trakanon/"Kaiaren", hand "Demon Fangs" (1688) + "Book of Celestial Fists" (1689). Gives "Celestial Fists" (10652).
 
 ### "Danl's Missing Book" (48132)
 
@@ -129,95 +116,56 @@ Each list is the order you obtain that item. Later steps point here instead of r
 9. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
 10. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
 11. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-12. Say "Tm Devrak Death" to rujd/"Rujd".
-13. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-14. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-15. 6 alternative loot source(s) also yield Pod of Water (13044).
-16. Forage "Pod of Water" (13044) in `ruja`.
-17. Forage "Pod of Water" (13044) in `uqua`.
-18. Forage "Pod of Water" (13044) in `yxtta`.
-19. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-20. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-21. 17 other recipes also produce Bottle (16598).
-22. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-23. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
-24. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
-25. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
-26. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
-27. Common item: Quality Firing Sheet (16907). Listed in 32 zones.
-28. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-29. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-30. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-31. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-32. Common item: Ceramic Lining Sketch (16964). Listed in 40 zones.
-33. Combine in Pottery Wheel (21): "Water Flask" (13006), "Small Block of Clay" (16900), "Ceramic Lining Sketch" (16964). Produces "Unfired Ceramic Lining" (16946). Requires Pottery, trivial 36.
-34. Combine in Kiln (22): "Quality Firing Sheet" (16907), "Unfired Ceramic Lining" (16946). Produces "Ceramic Lining" (16947). Requires Pottery, trivial 17.
-35. Combine in Forge (17): "Pie Tin Mold" (12021), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Pie Tin" (13438). Requires Blacksmithing, trivial 35.
-36. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
-37. Common item: Pie Tin Sketch (16958). Listed in 29 zones.
-38. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006), "Pie Tin Sketch" (16958). Produces "Unfired Pie Tin" (16926). Requires Pottery, trivial 115.
-39. Combine in Kiln (22): "High Quality Firing Sheet" (16908), "Unfired Pie Tin" (16926). Produces "Pie Tin" (13438). Requires Pottery, trivial 15.
-40. Combine in Oven (15): "Sunless Nectar" (48117), "Spices" (13425), "Pie Tin" (13438). Produces "Sugar and Spice Nectar Pie" (48119). Requires Baking, trivial 176.
-41. Common item: Spit (17947). Listed in 34 zones.
-42. Combine in "Mixing Bowl" (17906): "Bottle of Milk" (13087), "Snake Egg" (13088), "Cup of Flour" (13193). Produces "Clump of Dough" (13090). Requires Baking, trivial 17.
-43. Combine in "Mixing Bowl" (17906): "Bottle of Milk" (13087), "Cup of Flour" (13193), "Aviak Eggs" (14968). Produces "Clump of Dough" (13090) x5. Requires Baking, trivial 17.
-44. 10 other recipes also produce Clump of Dough (13090).
-45. Common item: Bread Tin Mold (12025). Listed in 23 zones.
-46. Combine in Forge (17): "Bread Tin Mold" (12025), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Bread Tin" (13440). Requires Blacksmithing, trivial 38.
-47. Combine in "Spit" (17947): "Clump of Dough" (13090), "Bread Tin" (13440). Hands back "Bread Tin" (13440). Produces "Loaf of Bread" (13015). Requires Baking, trivial 115.
-48. Common item: Cheese (8160). Listed in 9 zones.
-49. Combine in "Spit" (17947): "Loaf of Bread" (13015), "Frosting" (13429), "Berry Ice Cream" (75818). Produces "Vegetable Oil" (20386) x2, "Berry Ice Cream Crunch" (75828). Requires Baking, trivial 162.
-50. Combine in "Spit" (17947): "Loaf of Bread" (13015), "Frosting" (13429), "Berry Walnut Ice Cream" (75822). Produces "Vegetable Oil" (20386) x2, "Berry Walnut Crunch" (75832). Requires Baking, trivial 162.
-51. 7 other recipes also produce Vegetable Oil (20386).
-52. Common item: Garlic (58280). Listed in 5 zones.
-53. Combine in Brew Barrel (19): "Vegetable Oil" (20386), "Garlic" (58280). Produces "Grilling Sauce" (58265). Requires Brewing, trivial 54.
-54. Loot "Aged Piece of Meat" (48118) from "Ancient Nobleman" in `veksar`.
-55. Combine in Oven (15): "Loaf of Bread" (13015), "Cheese" (8160), "Grilling Sauce" (58265), "Aged Piece of Meat" (48118). Produces "Aged Meat and Cheese Sandwich" (48120). Requires Baking, trivial 176.
-56. oceanoftears/"Kaiaren", hand "Sugar and Spice Nectar Pie" (48119) + "Aged Meat and Cheese Sandwich" (48120). Sets `mnk_epic20` to `2`.
-57. potranquility/"Vortix", hand "Initiate's Sash of the Celestial Order" (48127). Sets `monk_epic` to `7`.
-58. Loot "Kaiaren's Mind" (48137) from "Kragsmash" in `bloodfields`.
-59. Loot "Kaiaren's Body" (48138) from "Windrush" in `harbingers`.
-60. potranquility/"Vortix", hand "Kaiaren's Mind" (48137) + "Kaiaren's Body" (48138). Sets `monk_epic` to `8`.
-61. Loot "Scribed Note" (20435) from "The Keeper" in `bloodfields`.
-62. potranquility/"Vortix", hand "Scribed Note" (20435). Sets `monk_epic` to `9`.
-63. Unresolved cyclic prerequisite: `mnk_epic20` >=2.
-64. oceanoftears/"Kaiaren", say "Choose To Continue". Sets `mnk_epic20` to `3`.
-65. oceanoftears/"Kaiaren", say "Choose To Continue". Requires `mnk_epic20` ==2. Requires `mnk_epic20` set. Requires `monk_epic` ==9. Requires `mnk_epic20` >=2. Gives "Initiate's Sash of the Celestial Order" (48127).
-66. No quest step gives Coldain Tanners Kit (17863). The dump lists it in thurgadina.
-67. Common item: Glaze Mortar (17882). Listed in 30 zones.
-68. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-69. Common item: Limestone (16844). Listed in 4 zones.
-70. Common item: Lead Sulphide (16845). Listed in 4 zones.
-71. Combine in "Mortar and Pestle" (17904): "Limestone" (16844), "Lead Sulphide" (16845). Produces "White Lead" (16558). Requires Make Poison. The combine does not fail.
-72. Common item: Firing Sheet (16906). Listed in 34 zones.
-73. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-74. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-75. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-76. Combine in "Mixing Bowl" (17906): "Limestone" (16844), "Lead Sulphide" (16845). Produces "White Lead" (16558). Requires Baking, trivial 15. The combine does not fail.
-77. Ground spawn of "Permafrost Crystals" (22121) in `permafrost`.
-78. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
-79. Loot "Iron Oxide" (22124) from "A Black Reaver".
-80. 4 alternative loot source(s) also yield Iron Oxide (22124).
-81. Ground spawn of "Iron Oxide" (22124) in `steamfont`.
-82. Combine in "Glaze Mortar" (17882): "Water Flask" (13006), "White Lead" (16558), "Permafrost Crystals" (22121), "Iron Oxide" (22124). Produces "Divine Crystalline Glaze" (16578). Requires Pottery. The combine does not fail.
-83. Loot "Symbol of Order" (48113) at pojustice/"The Seventh Hammer", on event_signal.
-84. 1 alternative loot source(s) also yield Symbol of Order (48113).
-85. Combine in Kiln (22): "Divine Crystalline Glaze" (16578), "Symbol of Order" (48113). Produces "Polished Symbol of Order" (48126). Requires Pottery, trivial 138.
-86. lakerathe/"Vortix", say "Diary". Sets `monk_epic` to `4`.
-87. Loot "1/2 of Kaiaren's Diary" (48109) from "Wygrish" in `sirens`.
-88. Loot "1/2 of Kaiaren's Diary" (48110) from "Quigli" in `dulak`.
-89. potranquility/"Vortix", hand "1/2 of Kaiaren's Diary" (48109) + "1/2 of Kaiaren's Diary" (48110). Sets `monk_epic` to `5`.
-90. Spawns "Disciple of Moon" (120138) in `westwastes` on enter.
-91. Loot "Symbol of Moon" (48111) from "Disciple of Moon".
-92. Combine in Kiln (22): "Divine Crystalline Glaze" (16578), "Symbol of Moon" (48111). Produces "Polished Symbol of Moon" (48125). Requires Pottery, trivial 138.
-93. Spawns "Disciple of Sun" (175179) in `scarlet` on event_death.
-94. Loot "Symbol of Sun" (48112) from "Disciple of Sun".
-95. 1 alternative loot source(s) also yield Symbol of Sun (48112).
-96. Combine in Kiln (22): "Divine Crystalline Glaze" (16578), "Symbol of Sun" (48112). Produces "Polished Symbol of Sun" (48124). Requires Pottery, trivial 138.
-97. Common item: Belt Pattern (13807). Listed in 39 zones.
-98. bazaar/"Eryke Stremstin", hand platinum:1000. Requires `monk_epic` set. Requires `monk_epic` >=6. Gives "Celestial Thread" (48123).
-99. Combine in "Coldain Tanners Kit" (17863): "Polished Symbol of Order" (48126), "Polished Symbol of Moon" (48125), "Polished Symbol of Sun" (48124), "Belt Pattern" (13807), "Celestial Thread" (48123). Produces "Initiate's Sash of the Celestial Order" (48127). Requires Tailoring, trivial 176.
-100. potranquility/"Vortix", say "Hail". Requires `monk_epic` >=5. Gives "Letter to Stremstin" (48128).
+12. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
+13. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
+14. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
+15. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
+16. Common item: Quality Firing Sheet (16907). Listed in 32 zones.
+17. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
+18. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
+19. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
+20. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
+21. Common item: Ceramic Lining Sketch (16964). Listed in 40 zones.
+22. Combine in Pottery Wheel (21): "Water Flask" (13006), "Small Block of Clay" (16900), "Ceramic Lining Sketch" (16964). Produces "Unfired Ceramic Lining" (16946). Requires Pottery, trivial 36.
+23. Combine in Kiln (22): "Quality Firing Sheet" (16907), "Unfired Ceramic Lining" (16946). Produces "Ceramic Lining" (16947). Requires Pottery, trivial 17.
+24. Combine in Forge (17): "Pie Tin Mold" (12021), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Pie Tin" (13438). Requires Blacksmithing, trivial 35.
+25. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
+26. Common item: Pie Tin Sketch (16958). Listed in 29 zones.
+27. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006), "Pie Tin Sketch" (16958). Produces "Unfired Pie Tin" (16926). Requires Pottery, trivial 115.
+28. Combine in Kiln (22): "High Quality Firing Sheet" (16908), "Unfired Pie Tin" (16926). Produces "Pie Tin" (13438). Requires Pottery, trivial 15.
+29. Combine in Oven (15): "Sunless Nectar" (48117), "Spices" (13425), "Pie Tin" (13438). Produces "Sugar and Spice Nectar Pie" (48119). Requires Baking, trivial 176.
+30. Common item: Spit (17947). Listed in 34 zones.
+31. Combine in "Mixing Bowl" (17906): "Bottle of Milk" (13087), "Snake Egg" (13088), "Cup of Flour" (13193). Produces "Clump of Dough" (13090). Requires Baking, trivial 17.
+32. Combine in "Mixing Bowl" (17906): "Bottle of Milk" (13087), "Cup of Flour" (13193), "Aviak Eggs" (14968). Produces "Clump of Dough" (13090) x5. Requires Baking, trivial 17.
+33. 10 other recipes also produce Clump of Dough (13090).
+34. Common item: Bread Tin Mold (12025). Listed in 23 zones.
+35. Combine in Forge (17): "Bread Tin Mold" (12025), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Bread Tin" (13440). Requires Blacksmithing, trivial 38.
+36. Combine in "Spit" (17947): "Clump of Dough" (13090), "Bread Tin" (13440). Hands back "Bread Tin" (13440). Produces "Loaf of Bread" (13015). Requires Baking, trivial 115.
+37. Common item: Cheese (8160). Listed in 9 zones.
+38. Combine in "Spit" (17947): "Loaf of Bread" (13015), "Frosting" (13429), "Berry Ice Cream" (75818). Produces "Vegetable Oil" (20386) x2, "Berry Ice Cream Crunch" (75828). Requires Baking, trivial 162.
+39. Combine in "Spit" (17947): "Loaf of Bread" (13015), "Frosting" (13429), "Berry Walnut Ice Cream" (75822). Produces "Vegetable Oil" (20386) x2, "Berry Walnut Crunch" (75832). Requires Baking, trivial 162.
+40. 7 other recipes also produce Vegetable Oil (20386).
+41. Common item: Garlic (58280). Listed in 5 zones.
+42. Combine in Brew Barrel (19): "Vegetable Oil" (20386), "Garlic" (58280). Produces "Grilling Sauce" (58265). Requires Brewing, trivial 54.
+43. Loot "Aged Piece of Meat" (48118) from "Ancient Nobleman" in `veksar`.
+44. Combine in Oven (15): "Loaf of Bread" (13015), "Cheese" (8160), "Grilling Sauce" (58265), "Aged Piece of Meat" (48118). Produces "Aged Meat and Cheese Sandwich" (48120). Requires Baking, trivial 176.
+45. oceanoftears/"Kaiaren", hand "Sugar and Spice Nectar Pie" (48119) + "Aged Meat and Cheese Sandwich" (48120). Sets `mnk_epic20` to `2`.
+46. potranquility/"Vortix", hand "Initiate's Sash of the Celestial Order" (48127). Sets `monk_epic` to `7`.
+47. Loot "Kaiaren's Mind" (48137) from "Kragsmash" in `bloodfields`.
+48. Loot "Kaiaren's Body" (48138) from "Windrush" in `harbingers`.
+49. potranquility/"Vortix", hand "Kaiaren's Mind" (48137) + "Kaiaren's Body" (48138). Sets `monk_epic` to `8`.
+50. Loot "Scribed Note" (20435) from "The Keeper" in `bloodfields`.
+51. potranquility/"Vortix", hand "Scribed Note" (20435). Sets `monk_epic` to `9`.
+52. Unresolved cyclic prerequisite: `mnk_epic20` >=2.
+53. oceanoftears/"Kaiaren", say "Choose To Continue". Sets `mnk_epic20` to `3`.
+54. oceanoftears/"Kaiaren", say "Choose To Continue". Requires `mnk_epic20` ==2. Requires `mnk_epic20` set. Requires `monk_epic` ==9. Requires `mnk_epic20` >=2. Gives "Initiate's Sash of the Celestial Order" (48127).
+55. lakerathe/"Vortix", say "Diary". Sets `monk_epic` to `4`.
+56. Loot "1/2 of Kaiaren's Diary" (48109) from "Wygrish" in `sirens`.
+57. Loot "1/2 of Kaiaren's Diary" (48110) from "Quigli" in `dulak`.
+58. potranquility/"Vortix", hand "1/2 of Kaiaren's Diary" (48109) + "1/2 of Kaiaren's Diary" (48110). Sets `monk_epic` to `5`.
+59. Spawns "Disciple of Moon" (120138) in `westwastes` on enter.
+60. Loot "Symbol of Moon" (48111) from "Disciple of Moon".
+61. potranquility/"Vortix", say "Hail". Requires `monk_epic` >=5. Gives "Letter to Stremstin" (48128).
 
 ### "Initiate's Sash of the Celestial Order" (48127)
 
@@ -231,68 +179,57 @@ Each list is the order you obtain that item. Later steps point here instead of r
 8. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
 9. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
 10. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-11. Say "Tm Devrak Death" to rujd/"Rujd".
-12. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-13. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-14. 6 alternative loot source(s) also yield Pod of Water (13044).
-15. Forage "Pod of Water" (13044) in `ruja`.
-16. Forage "Pod of Water" (13044) in `uqua`.
-17. Forage "Pod of Water" (13044) in `yxtta`.
-18. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-19. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-20. 17 other recipes also produce Bottle (16598).
-21. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-22. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
-23. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
-24. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
-25. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
-26. Common item: Quality Firing Sheet (16907). Listed in 32 zones.
-27. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-28. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-29. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-30. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-31. Common item: Ceramic Lining Sketch (16964). Listed in 40 zones.
-32. Combine in Pottery Wheel (21): "Water Flask" (13006), "Small Block of Clay" (16900), "Ceramic Lining Sketch" (16964). Produces "Unfired Ceramic Lining" (16946). Requires Pottery, trivial 36.
-33. Combine in Kiln (22): "Quality Firing Sheet" (16907), "Unfired Ceramic Lining" (16946). Produces "Ceramic Lining" (16947). Requires Pottery, trivial 17.
-34. Combine in Forge (17): "Pie Tin Mold" (12021), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Pie Tin" (13438). Requires Blacksmithing, trivial 35.
-35. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
-36. Common item: Pie Tin Sketch (16958). Listed in 29 zones.
-37. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006), "Pie Tin Sketch" (16958). Produces "Unfired Pie Tin" (16926). Requires Pottery, trivial 115.
-38. Combine in Kiln (22): "High Quality Firing Sheet" (16908), "Unfired Pie Tin" (16926). Produces "Pie Tin" (13438). Requires Pottery, trivial 15.
-39. Combine in Oven (15): "Sunless Nectar" (48117), "Spices" (13425), "Pie Tin" (13438). Produces "Sugar and Spice Nectar Pie" (48119). Requires Baking, trivial 176.
-40. Common item: Spit (17947). Listed in 34 zones.
-41. Combine in "Mixing Bowl" (17906): "Bottle of Milk" (13087), "Snake Egg" (13088), "Cup of Flour" (13193). Produces "Clump of Dough" (13090). Requires Baking, trivial 17.
-42. Combine in "Mixing Bowl" (17906): "Bottle of Milk" (13087), "Cup of Flour" (13193), "Aviak Eggs" (14968). Produces "Clump of Dough" (13090) x5. Requires Baking, trivial 17.
-43. 10 other recipes also produce Clump of Dough (13090).
-44. Common item: Bread Tin Mold (12025). Listed in 23 zones.
-45. Combine in Forge (17): "Bread Tin Mold" (12025), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Bread Tin" (13440). Requires Blacksmithing, trivial 38.
-46. Combine in "Spit" (17947): "Clump of Dough" (13090), "Bread Tin" (13440). Hands back "Bread Tin" (13440). Produces "Loaf of Bread" (13015). Requires Baking, trivial 115.
-47. Common item: Cheese (8160). Listed in 9 zones.
-48. Combine in "Spit" (17947): "Loaf of Bread" (13015), "Frosting" (13429), "Berry Ice Cream" (75818). Produces "Vegetable Oil" (20386) x2, "Berry Ice Cream Crunch" (75828). Requires Baking, trivial 162.
-49. Combine in "Spit" (17947): "Loaf of Bread" (13015), "Frosting" (13429), "Berry Walnut Ice Cream" (75822). Produces "Vegetable Oil" (20386) x2, "Berry Walnut Crunch" (75832). Requires Baking, trivial 162.
-50. 7 other recipes also produce Vegetable Oil (20386).
-51. Common item: Garlic (58280). Listed in 5 zones.
-52. Combine in Brew Barrel (19): "Vegetable Oil" (20386), "Garlic" (58280). Produces "Grilling Sauce" (58265). Requires Brewing, trivial 54.
-53. Loot "Aged Piece of Meat" (48118) from "Ancient Nobleman" in `veksar`.
-54. Combine in Oven (15): "Loaf of Bread" (13015), "Cheese" (8160), "Grilling Sauce" (58265), "Aged Piece of Meat" (48118). Produces "Aged Meat and Cheese Sandwich" (48120). Requires Baking, trivial 176.
-55. oceanoftears/"Kaiaren", hand "Sugar and Spice Nectar Pie" (48119) + "Aged Meat and Cheese Sandwich" (48120). Sets `mnk_epic20` to `2`.
-56. bazaar/"Eryke Stremstin", hand "Letter to Stremstin" (48128). Sets `monk_epic` to `6`.
-57. potranquility/"Vortix", hand "Initiate's Sash of the Celestial Order" (48127). Sets `monk_epic` to `7`.
-58. Loot "Kaiaren's Mind" (48137) from "Kragsmash" in `bloodfields`.
-59. Loot "Kaiaren's Body" (48138) from "Windrush" in `harbingers`.
-60. potranquility/"Vortix", hand "Kaiaren's Mind" (48137) + "Kaiaren's Body" (48138). Sets `monk_epic` to `8`.
-61. Loot "Scribed Note" (20435) from "The Keeper" in `bloodfields`.
-62. potranquility/"Vortix", hand "Scribed Note" (20435). Sets `monk_epic` to `9`.
-63. lakerathe/"Vortix", say "Diary". Sets `monk_epic` to `4`.
-64. Loot "1/2 of Kaiaren's Diary" (48109) from "Wygrish" in `sirens`.
-65. Loot "1/2 of Kaiaren's Diary" (48110) from "Quigli" in `dulak`.
-66. potranquility/"Vortix", hand "1/2 of Kaiaren's Diary" (48109) + "1/2 of Kaiaren's Diary" (48110). Sets `monk_epic` to `5`.
-67. Spawns "Disciple of Moon" (120138) in `westwastes` on enter.
-68. Loot "Symbol of Moon" (48111) from "Disciple of Moon".
-69. potranquility/"Vortix", say "Hail". Requires `monk_epic` >=5. Gives "Letter to Stremstin" (48128).
-70. Unresolved cyclic prerequisite: `mnk_epic20` >=2.
-71. oceanoftears/"Kaiaren", say "Choose To Continue". Sets `mnk_epic20` to `3`.
-72. oceanoftears/"Kaiaren", say "Choose To Continue". Requires `mnk_epic20` ==2. Requires `mnk_epic20` set. Requires `monk_epic` ==9. Requires `mnk_epic20` >=2. Gives "Initiate's Sash of the Celestial Order" (48127).
+11. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
+12. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
+13. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
+14. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
+15. Common item: Quality Firing Sheet (16907). Listed in 32 zones.
+16. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
+17. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
+18. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
+19. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
+20. Common item: Ceramic Lining Sketch (16964). Listed in 40 zones.
+21. Combine in Pottery Wheel (21): "Water Flask" (13006), "Small Block of Clay" (16900), "Ceramic Lining Sketch" (16964). Produces "Unfired Ceramic Lining" (16946). Requires Pottery, trivial 36.
+22. Combine in Kiln (22): "Quality Firing Sheet" (16907), "Unfired Ceramic Lining" (16946). Produces "Ceramic Lining" (16947). Requires Pottery, trivial 17.
+23. Combine in Forge (17): "Pie Tin Mold" (12021), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Pie Tin" (13438). Requires Blacksmithing, trivial 35.
+24. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
+25. Common item: Pie Tin Sketch (16958). Listed in 29 zones.
+26. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006), "Pie Tin Sketch" (16958). Produces "Unfired Pie Tin" (16926). Requires Pottery, trivial 115.
+27. Combine in Kiln (22): "High Quality Firing Sheet" (16908), "Unfired Pie Tin" (16926). Produces "Pie Tin" (13438). Requires Pottery, trivial 15.
+28. Combine in Oven (15): "Sunless Nectar" (48117), "Spices" (13425), "Pie Tin" (13438). Produces "Sugar and Spice Nectar Pie" (48119). Requires Baking, trivial 176.
+29. Common item: Spit (17947). Listed in 34 zones.
+30. Combine in "Mixing Bowl" (17906): "Bottle of Milk" (13087), "Snake Egg" (13088), "Cup of Flour" (13193). Produces "Clump of Dough" (13090). Requires Baking, trivial 17.
+31. Combine in "Mixing Bowl" (17906): "Bottle of Milk" (13087), "Cup of Flour" (13193), "Aviak Eggs" (14968). Produces "Clump of Dough" (13090) x5. Requires Baking, trivial 17.
+32. 10 other recipes also produce Clump of Dough (13090).
+33. Common item: Bread Tin Mold (12025). Listed in 23 zones.
+34. Combine in Forge (17): "Bread Tin Mold" (12025), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Bread Tin" (13440). Requires Blacksmithing, trivial 38.
+35. Combine in "Spit" (17947): "Clump of Dough" (13090), "Bread Tin" (13440). Hands back "Bread Tin" (13440). Produces "Loaf of Bread" (13015). Requires Baking, trivial 115.
+36. Common item: Cheese (8160). Listed in 9 zones.
+37. Combine in "Spit" (17947): "Loaf of Bread" (13015), "Frosting" (13429), "Berry Ice Cream" (75818). Produces "Vegetable Oil" (20386) x2, "Berry Ice Cream Crunch" (75828). Requires Baking, trivial 162.
+38. Combine in "Spit" (17947): "Loaf of Bread" (13015), "Frosting" (13429), "Berry Walnut Ice Cream" (75822). Produces "Vegetable Oil" (20386) x2, "Berry Walnut Crunch" (75832). Requires Baking, trivial 162.
+39. 7 other recipes also produce Vegetable Oil (20386).
+40. Common item: Garlic (58280). Listed in 5 zones.
+41. Combine in Brew Barrel (19): "Vegetable Oil" (20386), "Garlic" (58280). Produces "Grilling Sauce" (58265). Requires Brewing, trivial 54.
+42. Loot "Aged Piece of Meat" (48118) from "Ancient Nobleman" in `veksar`.
+43. Combine in Oven (15): "Loaf of Bread" (13015), "Cheese" (8160), "Grilling Sauce" (58265), "Aged Piece of Meat" (48118). Produces "Aged Meat and Cheese Sandwich" (48120). Requires Baking, trivial 176.
+44. oceanoftears/"Kaiaren", hand "Sugar and Spice Nectar Pie" (48119) + "Aged Meat and Cheese Sandwich" (48120). Sets `mnk_epic20` to `2`.
+45. bazaar/"Eryke Stremstin", hand "Letter to Stremstin" (48128). Sets `monk_epic` to `6`.
+46. potranquility/"Vortix", hand "Initiate's Sash of the Celestial Order" (48127). Sets `monk_epic` to `7`.
+47. Loot "Kaiaren's Mind" (48137) from "Kragsmash" in `bloodfields`.
+48. Loot "Kaiaren's Body" (48138) from "Windrush" in `harbingers`.
+49. potranquility/"Vortix", hand "Kaiaren's Mind" (48137) + "Kaiaren's Body" (48138). Sets `monk_epic` to `8`.
+50. Loot "Scribed Note" (20435) from "The Keeper" in `bloodfields`.
+51. potranquility/"Vortix", hand "Scribed Note" (20435). Sets `monk_epic` to `9`.
+52. lakerathe/"Vortix", say "Diary". Sets `monk_epic` to `4`.
+53. Loot "1/2 of Kaiaren's Diary" (48109) from "Wygrish" in `sirens`.
+54. Loot "1/2 of Kaiaren's Diary" (48110) from "Quigli" in `dulak`.
+55. potranquility/"Vortix", hand "1/2 of Kaiaren's Diary" (48109) + "1/2 of Kaiaren's Diary" (48110). Sets `monk_epic` to `5`.
+56. Spawns "Disciple of Moon" (120138) in `westwastes` on enter.
+57. Loot "Symbol of Moon" (48111) from "Disciple of Moon".
+58. potranquility/"Vortix", say "Hail". Requires `monk_epic` >=5. Gives "Letter to Stremstin" (48128).
+59. Unresolved cyclic prerequisite: `mnk_epic20` >=2.
+60. oceanoftears/"Kaiaren", say "Choose To Continue". Sets `mnk_epic20` to `3`.
+61. oceanoftears/"Kaiaren", say "Choose To Continue". Requires `mnk_epic20` ==2. Requires `mnk_epic20` set. Requires `monk_epic` ==9. Requires `mnk_epic20` >=2. Gives "Initiate's Sash of the Celestial Order" (48127).
 
 ### "Sugar and Spice Nectar Pie" (48119)
 
@@ -306,35 +243,24 @@ Each list is the order you obtain that item. Later steps point here instead of r
 8. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
 9. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
 10. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-11. Say "Tm Devrak Death" to rujd/"Rujd".
-12. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-13. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-14. 6 alternative loot source(s) also yield Pod of Water (13044).
-15. Forage "Pod of Water" (13044) in `ruja`.
-16. Forage "Pod of Water" (13044) in `uqua`.
-17. Forage "Pod of Water" (13044) in `yxtta`.
-18. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-19. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-20. 17 other recipes also produce Bottle (16598).
-21. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-22. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
-23. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
-24. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
-25. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
-26. Common item: Quality Firing Sheet (16907). Listed in 32 zones.
-27. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-28. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-29. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-30. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-31. Common item: Ceramic Lining Sketch (16964). Listed in 40 zones.
-32. Combine in Pottery Wheel (21): "Water Flask" (13006), "Small Block of Clay" (16900), "Ceramic Lining Sketch" (16964). Produces "Unfired Ceramic Lining" (16946). Requires Pottery, trivial 36.
-33. Combine in Kiln (22): "Quality Firing Sheet" (16907), "Unfired Ceramic Lining" (16946). Produces "Ceramic Lining" (16947). Requires Pottery, trivial 17.
-34. Combine in Forge (17): "Pie Tin Mold" (12021), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Pie Tin" (13438). Requires Blacksmithing, trivial 35.
-35. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
-36. Common item: Pie Tin Sketch (16958). Listed in 29 zones.
-37. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006), "Pie Tin Sketch" (16958). Produces "Unfired Pie Tin" (16926). Requires Pottery, trivial 115.
-38. Combine in Kiln (22): "High Quality Firing Sheet" (16908), "Unfired Pie Tin" (16926). Produces "Pie Tin" (13438). Requires Pottery, trivial 15.
-39. Combine in Oven (15): "Sunless Nectar" (48117), "Spices" (13425), "Pie Tin" (13438). Produces "Sugar and Spice Nectar Pie" (48119). Requires Baking, trivial 176.
+11. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
+12. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
+13. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
+14. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
+15. Common item: Quality Firing Sheet (16907). Listed in 32 zones.
+16. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
+17. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
+18. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
+19. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
+20. Common item: Ceramic Lining Sketch (16964). Listed in 40 zones.
+21. Combine in Pottery Wheel (21): "Water Flask" (13006), "Small Block of Clay" (16900), "Ceramic Lining Sketch" (16964). Produces "Unfired Ceramic Lining" (16946). Requires Pottery, trivial 36.
+22. Combine in Kiln (22): "Quality Firing Sheet" (16907), "Unfired Ceramic Lining" (16946). Produces "Ceramic Lining" (16947). Requires Pottery, trivial 17.
+23. Combine in Forge (17): "Pie Tin Mold" (12021), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Pie Tin" (13438). Requires Blacksmithing, trivial 35.
+24. Common item: High Quality Firing Sheet (16908). Listed in 34 zones.
+25. Common item: Pie Tin Sketch (16958). Listed in 29 zones.
+26. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006), "Pie Tin Sketch" (16958). Produces "Unfired Pie Tin" (16926). Requires Pottery, trivial 115.
+27. Combine in Kiln (22): "High Quality Firing Sheet" (16908), "Unfired Pie Tin" (16926). Produces "Pie Tin" (13438). Requires Pottery, trivial 15.
+28. Combine in Oven (15): "Sunless Nectar" (48117), "Spices" (13425), "Pie Tin" (13438). Produces "Sugar and Spice Nectar Pie" (48119). Requires Baking, trivial 176.
 
 ### "Aged Meat and Cheese Sandwich" (48120)
 
@@ -350,39 +276,28 @@ Each list is the order you obtain that item. Later steps point here instead of r
 10. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
 11. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
 12. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-13. Say "Tm Devrak Death" to rujd/"Rujd".
-14. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-15. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-16. 6 alternative loot source(s) also yield Pod of Water (13044).
-17. Forage "Pod of Water" (13044) in `ruja`.
-18. Forage "Pod of Water" (13044) in `uqua`.
-19. Forage "Pod of Water" (13044) in `yxtta`.
-20. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-21. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-22. 17 other recipes also produce Bottle (16598).
-23. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-24. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
-25. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
-26. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
-27. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
-28. Common item: Quality Firing Sheet (16907). Listed in 32 zones.
-29. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-30. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-31. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-32. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-33. Common item: Ceramic Lining Sketch (16964). Listed in 40 zones.
-34. Combine in Pottery Wheel (21): "Water Flask" (13006), "Small Block of Clay" (16900), "Ceramic Lining Sketch" (16964). Produces "Unfired Ceramic Lining" (16946). Requires Pottery, trivial 36.
-35. Combine in Kiln (22): "Quality Firing Sheet" (16907), "Unfired Ceramic Lining" (16946). Produces "Ceramic Lining" (16947). Requires Pottery, trivial 17.
-36. Combine in Forge (17): "Bread Tin Mold" (12025), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Bread Tin" (13440). Requires Blacksmithing, trivial 38.
-37. Combine in "Spit" (17947): "Clump of Dough" (13090), "Bread Tin" (13440). Hands back "Bread Tin" (13440). Produces "Loaf of Bread" (13015). Requires Baking, trivial 115.
-38. Common item: Cheese (8160). Listed in 9 zones.
-39. Combine in "Spit" (17947): "Loaf of Bread" (13015), "Frosting" (13429), "Berry Ice Cream" (75818). Produces "Vegetable Oil" (20386) x2, "Berry Ice Cream Crunch" (75828). Requires Baking, trivial 162.
-40. Combine in "Spit" (17947): "Loaf of Bread" (13015), "Frosting" (13429), "Berry Walnut Ice Cream" (75822). Produces "Vegetable Oil" (20386) x2, "Berry Walnut Crunch" (75832). Requires Baking, trivial 162.
-41. 7 other recipes also produce Vegetable Oil (20386).
-42. Common item: Garlic (58280). Listed in 5 zones.
-43. Combine in Brew Barrel (19): "Vegetable Oil" (20386), "Garlic" (58280). Produces "Grilling Sauce" (58265). Requires Brewing, trivial 54.
-44. Loot "Aged Piece of Meat" (48118) from "Ancient Nobleman" in `veksar`.
-45. Combine in Oven (15): "Loaf of Bread" (13015), "Cheese" (8160), "Grilling Sauce" (58265), "Aged Piece of Meat" (48118). Produces "Aged Meat and Cheese Sandwich" (48120). Requires Baking, trivial 176.
+13. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
+14. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
+15. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
+16. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
+17. Common item: Quality Firing Sheet (16907). Listed in 32 zones.
+18. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
+19. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
+20. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
+21. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
+22. Common item: Ceramic Lining Sketch (16964). Listed in 40 zones.
+23. Combine in Pottery Wheel (21): "Water Flask" (13006), "Small Block of Clay" (16900), "Ceramic Lining Sketch" (16964). Produces "Unfired Ceramic Lining" (16946). Requires Pottery, trivial 36.
+24. Combine in Kiln (22): "Quality Firing Sheet" (16907), "Unfired Ceramic Lining" (16946). Produces "Ceramic Lining" (16947). Requires Pottery, trivial 17.
+25. Combine in Forge (17): "Bread Tin Mold" (12025), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Bread Tin" (13440). Requires Blacksmithing, trivial 38.
+26. Combine in "Spit" (17947): "Clump of Dough" (13090), "Bread Tin" (13440). Hands back "Bread Tin" (13440). Produces "Loaf of Bread" (13015). Requires Baking, trivial 115.
+27. Common item: Cheese (8160). Listed in 9 zones.
+28. Combine in "Spit" (17947): "Loaf of Bread" (13015), "Frosting" (13429), "Berry Ice Cream" (75818). Produces "Vegetable Oil" (20386) x2, "Berry Ice Cream Crunch" (75828). Requires Baking, trivial 162.
+29. Combine in "Spit" (17947): "Loaf of Bread" (13015), "Frosting" (13429), "Berry Walnut Ice Cream" (75822). Produces "Vegetable Oil" (20386) x2, "Berry Walnut Crunch" (75832). Requires Baking, trivial 162.
+30. 7 other recipes also produce Vegetable Oil (20386).
+31. Common item: Garlic (58280). Listed in 5 zones.
+32. Combine in Brew Barrel (19): "Vegetable Oil" (20386), "Garlic" (58280). Produces "Grilling Sauce" (58265). Requires Brewing, trivial 54.
+33. Loot "Aged Piece of Meat" (48118) from "Ancient Nobleman" in `veksar`.
+34. Combine in Oven (15): "Loaf of Bread" (13015), "Cheese" (8160), "Grilling Sauce" (58265), "Aged Piece of Meat" (48118). Produces "Aged Meat and Cheese Sandwich" (48120). Requires Baking, trivial 176.
 
 ### "Polished Symbol of Focus" (48129)
 
@@ -394,38 +309,27 @@ Each list is the order you obtain that item. Later steps point here instead of r
 6. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
 7. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
 8. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-9. Say "Tm Devrak Death" to rujd/"Rujd".
-10. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-11. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-12. 6 alternative loot source(s) also yield Pod of Water (13044).
-13. Forage "Pod of Water" (13044) in `ruja`.
-14. Forage "Pod of Water" (13044) in `uqua`.
-15. Forage "Pod of Water" (13044) in `yxtta`.
-16. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-17. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-18. 17 other recipes also produce Bottle (16598).
-19. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-20. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-21. Common item: Limestone (16844). Listed in 4 zones.
-22. Common item: Lead Sulphide (16845). Listed in 4 zones.
-23. Combine in "Mortar and Pestle" (17904): "Limestone" (16844), "Lead Sulphide" (16845). Produces "White Lead" (16558). Requires Make Poison. The combine does not fail.
-24. Common item: Firing Sheet (16906). Listed in 34 zones.
-25. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-26. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-27. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-28. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-29. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-30. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-31. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-32. Combine in "Mixing Bowl" (17906): "Limestone" (16844), "Lead Sulphide" (16845). Produces "White Lead" (16558). Requires Baking, trivial 15. The combine does not fail.
-33. Ground spawn of "Permafrost Crystals" (22121) in `permafrost`.
-34. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
-35. Loot "Iron Oxide" (22124) from "A Black Reaver".
-36. 4 alternative loot source(s) also yield Iron Oxide (22124).
-37. Ground spawn of "Iron Oxide" (22124) in `steamfont`.
-38. Combine in "Glaze Mortar" (17882): "Water Flask" (13006), "White Lead" (16558), "Permafrost Crystals" (22121), "Iron Oxide" (22124). Produces "Divine Crystalline Glaze" (16578). Requires Pottery. The combine does not fail.
-39. Loot "Symbol of Focus" (48115) from "Disciple of Focus" in `tenebrous`.
-40. Combine in Kiln (22): "Divine Crystalline Glaze" (16578), "Symbol of Focus" (48115). Produces "Polished Symbol of Focus" (48129). Requires Pottery, trivial 138.
+9. Common item: Mortar and Pestle (17904). Listed in 12 zones.
+10. Common item: Limestone (16844). Listed in 4 zones.
+11. Common item: Lead Sulphide (16845). Listed in 4 zones.
+12. Combine in "Mortar and Pestle" (17904): "Limestone" (16844), "Lead Sulphide" (16845). Produces "White Lead" (16558). Requires Make Poison. The combine does not fail.
+13. Common item: Firing Sheet (16906). Listed in 34 zones.
+14. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
+15. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
+16. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
+17. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
+18. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
+19. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
+20. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+21. Combine in "Mixing Bowl" (17906): "Limestone" (16844), "Lead Sulphide" (16845). Produces "White Lead" (16558). Requires Baking, trivial 15. The combine does not fail.
+22. Ground spawn of "Permafrost Crystals" (22121) in `permafrost`.
+23. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
+24. Loot "Iron Oxide" (22124) from "A Black Reaver".
+25. 4 alternative loot source(s) also yield Iron Oxide (22124).
+26. Ground spawn of "Iron Oxide" (22124) in `steamfont`.
+27. Combine in "Glaze Mortar" (17882): "Water Flask" (13006), "White Lead" (16558), "Permafrost Crystals" (22121), "Iron Oxide" (22124). Produces "Divine Crystalline Glaze" (16578). Requires Pottery. The combine does not fail.
+28. Loot "Symbol of Focus" (48115) from "Disciple of Focus" in `tenebrous`.
+29. Combine in Kiln (22): "Divine Crystalline Glaze" (16578), "Symbol of Focus" (48115). Produces "Polished Symbol of Focus" (48129). Requires Pottery, trivial 138.
 
 ### "Polished Symbol of Tranquility" (48130)
 
@@ -437,38 +341,27 @@ Each list is the order you obtain that item. Later steps point here instead of r
 6. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
 7. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
 8. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-9. Say "Tm Devrak Death" to rujd/"Rujd".
-10. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-11. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-12. 6 alternative loot source(s) also yield Pod of Water (13044).
-13. Forage "Pod of Water" (13044) in `ruja`.
-14. Forage "Pod of Water" (13044) in `uqua`.
-15. Forage "Pod of Water" (13044) in `yxtta`.
-16. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-17. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-18. 17 other recipes also produce Bottle (16598).
-19. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-20. Common item: Mortar and Pestle (17904). Listed in 12 zones.
-21. Common item: Limestone (16844). Listed in 4 zones.
-22. Common item: Lead Sulphide (16845). Listed in 4 zones.
-23. Combine in "Mortar and Pestle" (17904): "Limestone" (16844), "Lead Sulphide" (16845). Produces "White Lead" (16558). Requires Make Poison. The combine does not fail.
-24. Common item: Firing Sheet (16906). Listed in 34 zones.
-25. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-26. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-27. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
-28. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-29. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
-30. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-31. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-32. Combine in "Mixing Bowl" (17906): "Limestone" (16844), "Lead Sulphide" (16845). Produces "White Lead" (16558). Requires Baking, trivial 15. The combine does not fail.
-33. Ground spawn of "Permafrost Crystals" (22121) in `permafrost`.
-34. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
-35. Loot "Iron Oxide" (22124) from "A Black Reaver".
-36. 4 alternative loot source(s) also yield Iron Oxide (22124).
-37. Ground spawn of "Iron Oxide" (22124) in `steamfont`.
-38. Combine in "Glaze Mortar" (17882): "Water Flask" (13006), "White Lead" (16558), "Permafrost Crystals" (22121), "Iron Oxide" (22124). Produces "Divine Crystalline Glaze" (16578). Requires Pottery. The combine does not fail.
-39. Loot "Symbol of Tranquility" (48114) from "Disciple of Tranquility" in `povalor`.
-40. Combine in Kiln (22): "Divine Crystalline Glaze" (16578), "Symbol of Tranquility" (48114). Produces "Polished Symbol of Tranquility" (48130). Requires Pottery, trivial 138.
+9. Common item: Mortar and Pestle (17904). Listed in 12 zones.
+10. Common item: Limestone (16844). Listed in 4 zones.
+11. Common item: Lead Sulphide (16845). Listed in 4 zones.
+12. Combine in "Mortar and Pestle" (17904): "Limestone" (16844), "Lead Sulphide" (16845). Produces "White Lead" (16558). Requires Make Poison. The combine does not fail.
+13. Common item: Firing Sheet (16906). Listed in 34 zones.
+14. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
+15. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
+16. Combine in Pottery Wheel (21): "Water Flask" (13006), "Large Block of Clay" (16902). Produces "Block of Clay" (16901) x2. Requires Pottery, trivial 21.
+17. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
+18. Common item: Large Bowl Sketch (16963). Listed in 29 zones.
+19. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
+20. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+21. Combine in "Mixing Bowl" (17906): "Limestone" (16844), "Lead Sulphide" (16845). Produces "White Lead" (16558). Requires Baking, trivial 15. The combine does not fail.
+22. Ground spawn of "Permafrost Crystals" (22121) in `permafrost`.
+23. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
+24. Loot "Iron Oxide" (22124) from "A Black Reaver".
+25. 4 alternative loot source(s) also yield Iron Oxide (22124).
+26. Ground spawn of "Iron Oxide" (22124) in `steamfont`.
+27. Combine in "Glaze Mortar" (17882): "Water Flask" (13006), "White Lead" (16558), "Permafrost Crystals" (22121), "Iron Oxide" (22124). Produces "Divine Crystalline Glaze" (16578). Requires Pottery. The combine does not fail.
+28. Loot "Symbol of Tranquility" (48114) from "Disciple of Tranquility" in `povalor`.
+29. Combine in Kiln (22): "Divine Crystalline Glaze" (16578), "Symbol of Tranquility" (48114). Produces "Polished Symbol of Tranquility" (48130). Requires Pottery, trivial 138.
 
 ## `MnkPre`
 

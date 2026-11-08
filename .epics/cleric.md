@@ -17,27 +17,16 @@ Each list is the order you obtain that item. Later steps point here instead of r
 5. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
 6. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
 7. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-8. Say "Tm Devrak Death" to rujd/"Rujd".
-9. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-10. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-11. 6 alternative loot source(s) also yield Pod of Water (13044).
-12. Forage "Pod of Water" (13044) in `ruja`.
-13. Forage "Pod of Water" (13044) in `uqua`.
-14. Forage "Pod of Water" (13044) in `yxtta`.
-15. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-16. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-17. 17 other recipes also produce Bottle (16598).
-18. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-19. Kill wakening/"Dark Disciple Master". Spawns "A Gilded Chest" (119179).
-20. Loot "Aegis of Chaotic Worship" (9954) from "A Gilded Chest".
-21. wallofslaughter/"A Quivering Egg", on event spawn.
-22. Starts timer `hatch`.
-23. Spawns "A Murk Hatchling" (300084) after `wallofslaughter/a quivering egg#timer:hatch`.
-24. Loot "Murkglider Plasma" (13639) from "A Murk Hatchling".
-25. Loot "Bazu Plasma" (13658) from "Bazu Bonesmasher" (NPC 300000) in `wallofslaughter`. Drop cache: 43.09% chance per kill.
-26. Loot "Pyrilen Plasma" (13667) from "A Dragorn Assassin" in `wallofslaughter`.
-27. Combine in Brew Barrel (19): "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing, trivial 100.
-28. Combine in Forge (17): "Water Flask" (13006), "Aegis of Chaotic Worship" (9954), "Soul Temper" (14047). Produces "Harmony of the Soul" (9955). Requires Blacksmithing. The combine does not fail.
+8. Kill wakening/"Dark Disciple Master". Spawns "A Gilded Chest" (119179).
+9. Loot "Aegis of Chaotic Worship" (9954) from "A Gilded Chest".
+10. wallofslaughter/"A Quivering Egg", on event spawn.
+11. Starts timer `hatch`.
+12. Spawns "A Murk Hatchling" (300084) after `wallofslaughter/a quivering egg#timer:hatch`.
+13. Loot "Murkglider Plasma" (13639) from "A Murk Hatchling".
+14. Loot "Bazu Plasma" (13658) from "Bazu Bonesmasher" (NPC 300000) in `wallofslaughter`. Drop cache: 43.09% chance per kill.
+15. Loot "Pyrilen Plasma" (13667) from "A Dragorn Assassin" in `wallofslaughter`.
+16. Combine in Brew Barrel (19): "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing, trivial 100.
+17. Combine in Forge (17): "Water Flask" (13006), "Aegis of Chaotic Worship" (9954), "Soul Temper" (14047). Produces "Harmony of the Soul" (9955). Requires Blacksmithing. The combine does not fail.
 
 ### "Water Sprinkler of Nem Ankh" (5532)
 
@@ -85,45 +74,34 @@ Each list is the order you obtain that item. Later steps point here instead of r
 5. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
 6. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
 7. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-8. Say "Tm Devrak Death" to rujd/"Rujd".
-9. Spawns "spawn chest with Heavy Orcish Prison Key" (245241).
-10. Loot "Pod of Water" (13044) from "spawn chest with Heavy Orcish Prison Key".
-11. 6 alternative loot source(s) also yield Pod of Water (13044).
-12. Forage "Pod of Water" (13044) in `ruja`.
-13. Forage "Pod of Water" (13044) in `uqua`.
-14. Forage "Pod of Water" (13044) in `yxtta`.
-15. Combine in Brew Barrel (19): "Bottle of Aged Bloodwine" (51163), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aged Bloodwine" (51164). Requires Brewing, trivial 255.
-16. Combine in Brew Barrel (19): "Bottle of Aldo's Bitter Ale" (75805), "Cask" (16580). Produces "Bottle" (16598) x8, "Cork" (16851) x8, "Cask of Aldo's Bitter Ale" (75811). Requires Brewing, trivial 15.
-17. 17 other recipes also produce Bottle (16598).
-18. Combine in Brew Barrel (19): "Pod of Water" (13044), "Bottle" (16598). Produces "Water Flask" (13006). Requires Brewing, trivial 21.
-19. Kill wakening/"Dark Disciple Master". Spawns "A Gilded Chest" (119179).
-20. Loot "Aegis of Chaotic Worship" (9954) from "A Gilded Chest".
-21. wallofslaughter/"A Quivering Egg", on event spawn.
-22. Starts timer `hatch`.
-23. Spawns "A Murk Hatchling" (300084) after `wallofslaughter/a quivering egg#timer:hatch`.
-24. Loot "Murkglider Plasma" (13639) from "A Murk Hatchling".
-25. Loot "Bazu Plasma" (13658) from "Bazu Bonesmasher" (NPC 300000) in `wallofslaughter`. Drop cache: 43.09% chance per kill.
-26. Loot "Pyrilen Plasma" (13667) from "A Dragorn Assassin" in `wallofslaughter`.
-27. Combine in Brew Barrel (19): "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing, trivial 100.
-28. Combine in Forge (17): "Water Flask" (13006), "Aegis of Chaotic Worship" (9954), "Soul Temper" (14047). Produces "Harmony of the Soul" (9955). Requires Blacksmithing. The combine does not fail.
-29. global/"Global Player", combine recipe 19460. Sets `cleric_epic` to `7`.
-30. dranik/"Natvil", say "Hail". Sets `cleric20` to `1`.
-31. timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
-32. timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
-33. Hand "Talisman of the Plasmatic Priests" (56010) to lavastorm/"Laura Rako". Spawns "High Priestess Shima" (27128). Loot "Head of High Priestess Shima" (5768) from "High Priestess Shima".
-34. timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
-35. Hand "Talisman of the Plasmatic Priests" (56010) to greatdivide/"Gavon Morant". Spawns "High Priest Maltan" (118211). Loot "Head of High Priest Maltan" (6505) from "High Priest Maltan".
-36. timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
-37. Hand "Talisman of the Plasmatic Priests" (56010) to scarlet/"Jimmic Adle". Spawns "High Priest Valon" (175308). Loot "Head of High Priest Valon" (6506) from "High Priest Valon".
-38. timorous/"Omat Vastsea", hand "Head of High Priestess Shima" (5768) + "Head of High Priest Maltan" (6505) + "Head of High Priest Valon" (6506) + "Talisman of the Plasmatic Priests" (56010). Sets `cleric15pre` to `1`.
-39. nedaria/"Tavon Vastsea", say "Hail". Sets `cleric_epic` to `1`.
-40. Loot "Encrypted Note" (7135) from "A Noc Bloodluster" (NPC 283111) in `barindu`. Drop cache: 1.58% chance per kill.
-41. abysmal/"Shav The Cryptologist", hand "Encrypted Note" (7135). Sets `cleric_epic` to `2`.
-42. Loot "Ripped Quarter of a Map" (9476) from "A Ra'Tuk Bonebreaker" (NPC 284032) in `ferubi`. Drop cache: 5.6% chance per kill.
-43. Loot "Shredded Quarter of a Map" (9447) from "A Kyv Eyecollector" (NPC 284052) in `ferubi`. Drop cache: 5.09% chance per kill.
-44. Loot "Tattered Quarter of a Map" (9477) from "A Mastruq Warfiend" (NPC 284003) in `ferubi`. Drop cache: 5.33% chance per kill.
-45. Loot "Torn Quarter of a Map" (8778) from "An Aneuk Bone Binder" (NPC 284035) in `ferubi`. Drop cache: 5.18% chance per kill.
-46. abysmal/"Shav The Cryptologist", hand "Torn Quarter of a Map" (8778) + "Shredded Quarter of a Map" (9447) + "Ripped Quarter of a Map" (9476) + "Tattered Quarter of a Map" (9477). Requires `cleric_epic` set. Requires `cleric_epic` ==2. Gives "Assembled Map" (56015).
+8. Kill wakening/"Dark Disciple Master". Spawns "A Gilded Chest" (119179).
+9. Loot "Aegis of Chaotic Worship" (9954) from "A Gilded Chest".
+10. wallofslaughter/"A Quivering Egg", on event spawn.
+11. Starts timer `hatch`.
+12. Spawns "A Murk Hatchling" (300084) after `wallofslaughter/a quivering egg#timer:hatch`.
+13. Loot "Murkglider Plasma" (13639) from "A Murk Hatchling".
+14. Loot "Bazu Plasma" (13658) from "Bazu Bonesmasher" (NPC 300000) in `wallofslaughter`. Drop cache: 43.09% chance per kill.
+15. Loot "Pyrilen Plasma" (13667) from "A Dragorn Assassin" in `wallofslaughter`.
+16. Combine in Brew Barrel (19): "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing, trivial 100.
+17. Combine in Forge (17): "Water Flask" (13006), "Aegis of Chaotic Worship" (9954), "Soul Temper" (14047). Produces "Harmony of the Soul" (9955). Requires Blacksmithing. The combine does not fail.
+18. global/"Global Player", combine recipe 19460. Sets `cleric_epic` to `7`.
+19. dranik/"Natvil", say "Hail". Sets `cleric20` to `1`.
+20. timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
+21. timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
+22. Hand "Talisman of the Plasmatic Priests" (56010) to lavastorm/"Laura Rako". Spawns "High Priestess Shima" (27128). Loot "Head of High Priestess Shima" (5768) from "High Priestess Shima".
+23. timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
+24. Hand "Talisman of the Plasmatic Priests" (56010) to greatdivide/"Gavon Morant". Spawns "High Priest Maltan" (118211). Loot "Head of High Priest Maltan" (6505) from "High Priest Maltan".
+25. timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
+26. Hand "Talisman of the Plasmatic Priests" (56010) to scarlet/"Jimmic Adle". Spawns "High Priest Valon" (175308). Loot "Head of High Priest Valon" (6506) from "High Priest Valon".
+27. timorous/"Omat Vastsea", hand "Head of High Priestess Shima" (5768) + "Head of High Priest Maltan" (6505) + "Head of High Priest Valon" (6506) + "Talisman of the Plasmatic Priests" (56010). Sets `cleric15pre` to `1`.
+28. nedaria/"Tavon Vastsea", say "Hail". Sets `cleric_epic` to `1`.
+29. Loot "Encrypted Note" (7135) from "A Noc Bloodluster" (NPC 283111) in `barindu`. Drop cache: 1.58% chance per kill.
+30. abysmal/"Shav The Cryptologist", hand "Encrypted Note" (7135). Sets `cleric_epic` to `2`.
+31. Loot "Ripped Quarter of a Map" (9476) from "A Ra'Tuk Bonebreaker" (NPC 284032) in `ferubi`. Drop cache: 5.6% chance per kill.
+32. Loot "Shredded Quarter of a Map" (9447) from "A Kyv Eyecollector" (NPC 284052) in `ferubi`. Drop cache: 5.09% chance per kill.
+33. Loot "Tattered Quarter of a Map" (9477) from "A Mastruq Warfiend" (NPC 284003) in `ferubi`. Drop cache: 5.33% chance per kill.
+34. Loot "Torn Quarter of a Map" (8778) from "An Aneuk Bone Binder" (NPC 284035) in `ferubi`. Drop cache: 5.18% chance per kill.
+35. abysmal/"Shav The Cryptologist", hand "Torn Quarter of a Map" (8778) + "Shredded Quarter of a Map" (9447) + "Ripped Quarter of a Map" (9476) + "Tattered Quarter of a Map" (9477). Requires `cleric_epic` set. Requires `cleric_epic` ==2. Gives "Assembled Map" (56015).
 
 ### "Dark Disciples Notice of Service" (9591)
 
