@@ -1438,6 +1438,28 @@ def _emit_span(
                 if op:
                     edge["op"] = op
                 edges.append(edge)
+        # A reward in an inner SAY branch also requires the enclosing guards.
+        # Example: Llara's `ruathey` branch is nested under
+        # `qglobals["Llara"] ~= nil`; item 2417 must not become a leaf.
+        # Restrict propagation to effect-bearing branches to avoid attaching
+        # unrelated outer conditions to every SAY keyword in the file.
+        seen_flags = {(name, at) for name, at in flags}
+        for ancestor in ancestors:
+            for name, at in _flags(text[ancestor[0] : ancestor[1]]):
+                if (name, at) in seen_flags:
+                    continue
+                seen_flags.add((name, at))
+                edge = {
+                    "kind": "edge",
+                    "rel": "needs",
+                    "from": say_id,
+                    "to": f"flag:{name}",
+                    "flag": name,
+                    "at": at,
+                }
+                if holds:
+                    edge["group"] = group
+                edges.append(edge)
     for match in sets_here:
         edge = {
             "kind": "edge",
