@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
 from collections import defaultdict
@@ -108,6 +109,7 @@ def load():
     edges: list[dict] = []
     says: dict[tuple[str, str, str], str] = {}
     world: dict[int, dict] = {}
+    dialogues: dict[str, list[dict]] = defaultdict(list)
     for line in GRAPH.read_text(encoding="utf-8").splitlines():
         if not line.strip():
             continue
@@ -122,6 +124,8 @@ def load():
             }
         elif kind == "edge":
             edges.append(row)
+        elif kind == "dialogue":
+            dialogues[str(row.get("source") or "").lower()].append(row)
         elif kind == "say":
             says[
                 (
@@ -132,7 +136,7 @@ def load():
             ] = (
                 row.get("text") or ""
             )
-    return items, edges, says, world
+    return items, edges, says, world, dialogues
 
 
 def fallback_drop(items, item_id: int) -> str | None:
@@ -520,10 +524,8 @@ def prefers(by_from, by_group, edge: dict, flags: set[str]) -> bool:
     return False
 
 
-def write_class(name, title, mains, prefixes, ctx):
-    items, says, by_from, by_group, sets_of, gives, loots, grounds, produces, recipe = (
-        ctx
-    )
+def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
+    items, says, by_from, by_group, sets_of, gives, loots, grounds, produces, recipe, dialogues = ctx
     flags = class_flags(sets_of, mains, prefixes)
     # A shared player event can contain branches for several classes.  Its
     # graph source (e.g. veksar/player#enter) is not branch-specific; exclude
@@ -553,6 +555,52 @@ def write_class(name, title, mains, prefixes, ctx):
         )
 
     lines: list[str] = []
+    shown_dialogues: set[str] = set()
+
+    def dialogue_lines(who: str, pad: str = "  ") -> list[str]:
+        """Full conversation, including guards and reply effects, at first encounter."""
+        if not verbose:
+            return []
+        key = str(who).lower()
+        if key in shown_dialogues:
+            return []
+        records = dialogues.get(key, ())
+        if not records:
+            return []
+        shown_dialogues.add(key)
+        output = [f"{pad}- Dialogue with {quoted_who(key)}:"]
+        for chain in records:
+            transitions = {(t.get('from'), t.get('to')): t for t in chain.get('transitions', ())}
+            previous = None
+            for turn in chain.get('turns', ()):
+                utterance = str(turn.get('input') or '')
+                entry = f"{pad}  - Player: {quoted(utterance)}"
+                if previous is not None:
+                    transition = transitions.get((previous, utterance), {})
+                    basis = transition.get('basis')
+                    if basis:
+                        entry += f" (link: {basis.replace('_', ' ')})"
+                output.append(entry)
+                for reply in turn.get('reply') or ():
+                    channel = reply.get('channel', 'say')
+                    speech = ' '.join(str(reply.get('text') or '').split())
+                    if speech:
+                        output.append(f"{pad}    - NPC {channel}: {speech}")
+                    for guard in reply.get('guards') or ():
+                        output.append(f"{pad}      - Reply guard: `{guard}`")
+                for guard in turn.get('guards') or ():
+                    output.append(f"{pad}    - Condition: `{guard}`")
+                for effect in turn.get('effects') or ():
+                    rel = effect.get('rel')
+                    if rel == 'gives':
+                        output.append(f"{pad}    - Gives {item_name(items, effect['item'])}.")
+                    elif rel == 'sets':
+                        output.append(f"{pad}    - Sets `{effect['flag']}` to `{effect.get('value')}`.")
+                    elif rel == 'spawns':
+                        output.append(f"{pad}    - Spawns NPC {effect['npc']}.")
+                previous = utterance
+        return output
+
     seen_flags: set[str] = set()
     seen_recipes: set[int] = set()
 
@@ -1485,6 +1533,16 @@ def write_class(name, title, mains, prefixes, ctx):
                 block.append("The graph has no earlier step for this.")
             for number, text in enumerate(steps, 1):
                 block.append(f"{number}. {text}")
+                # Conversation sources in the acquisition path are part of the
+                # journey too, not just the NPCs that write epic flags.
+                if verbose:
+                    match = re.match(r'([^\s/]+)/(?:"([^"]+)"|([^,]+)),\s*(?:say|hand)\b', text)
+                    if match:
+                        zone, quoted_npc, plain_npc = match.groups()
+                        npc = (quoted_npc or plain_npc).strip().lower().replace(' ', '_')
+                        # The graph uses normalized NPC names, not the display names.
+                        key = f"{zone}/{npc.replace('_', ' ')}"
+                        block.extend(dialogue_lines(key, "    "))
             block.append("")
         return block
 
@@ -1671,193 +1729,91 @@ def write_class(name, title, mains, prefixes, ctx):
         render_extras(flag, used, level + 1, lo, hi)
 
     def render_step(group: list[dict], level: int, flag: str) -> None:
+        """Walkthrough-style stage: action, requirements, then effects and subquests."""
         edge = group[0]
-        zones = []
-        for one in group:
-            who, _action, zone = parse_who(one.get("from"))
-            if zone and zone not in zones:
-                zones.append(zone)
-        who, action, _zone = parse_who(edge.get("from"))
-        npc = who.split("/", 1)[-1]
-        title = npc
-        if action:
-            title += f" — {action}"
-        lines.append(f"{'#' * min(level, 6)} {edge.get('value')}. {title}")
-        lines.append("")
-        if len(zones) > 1:
-            lines.append("Zones: " + ", ".join(f"`{zone}`" for zone in zones) + ".")
-        else:
-            lines.append(f"Zone: `{zones[0] if zones else who}`.")
-        lines.append("")
-        spoken = quote_for(says, who, action)
-        if spoken:
-            lines.append(f"> {spoken}")
-            lines.append("")
-        rows = bundle(by_from, by_group, edge.get("from", ""), edge.get("group", ""))
-        lines.append(f"Sets `{flag}` to `{edge.get('value')}`.")
-        lines.append("")
-        ors = []
+        source = str(edge.get("from") or "")
+        who, action, zone = parse_who(source)
+        rows = bundle(by_from, by_group, source, edge.get("group", ""))
+        value = edge.get("value")
+        action_text = quoted_action(items, action) if action else "interact"
+        lines.append(f"{value}. {quoted_who(who)}, {action_text}. Sets `{flag}` to `{value}`.")
+        needs = []
+        or_needs = []
         for row in rows:
             if row.get("rel") != "needs":
                 continue
             if row.get("flag"):
-                text = f"`{row['flag']}` {row.get('at')}"
+                dep = f"`{row['flag']}` {row.get('at') or 'set'}"
             elif row.get("item"):
-                text = item_name(items, row["item"])
-            elif str(row.get("to", "")).startswith("coin:"):
-                text = str(row["to"])
+                dep = quoted_item(items, int(row["item"]))
             else:
                 continue
-            if row.get("op") == "or":
-                ors.append(text)
-            else:
-                lines.append(f"- Needs {text}.")
-        if ors:
-            lines.append("- One of: " + "; ".join(ors) + ".")
+            (or_needs if row.get("op") == "or" else needs).append(dep)
+        for dep in dict.fromkeys(needs):
+            lines.append(f"    - Requires {dep}.")
+        if or_needs:
+            lines.append("    - Requires one of: " + "; ".join(dict.fromkeys(or_needs)) + ".")
+        needed_items: list[int] = []
         for row in rows:
-            if row.get("rel") == "receives" and str(row.get("to", "")).startswith(
-                "item:"
-            ):
-                count = row.get("count") or 1
-                lines.append(
-                    f"- Turn in x{count}: {item_name(items, int(row['to'].split(':', 1)[1]))}."
-                )
-            elif row.get("rel") == "receives" and str(row.get("to", "")).startswith(
-                "coin:"
-            ):
-                lines.append(
-                    f"- Turn in {row.get('count')} {row['to'].split(':', 1)[1]}."
-                )
+            rel = row.get("rel")
+            to = str(row.get("to") or "")
+            if rel == "needs" and row.get("item"):
+                needed_items.append(int(row["item"]))
+            if rel == "receives" and to.startswith("item:"):
+                item_id = int(to.split(":", 1)[1])
+                needed_items.append(item_id)
+                lines.append(f"    - Hand in x{row.get('count') or 1}: {quoted_item(items, item_id)}.")
+            elif rel == "receives" and to.startswith("coin:"):
+                lines.append(f"    - Hand in {row.get('count')} {to.split(':', 1)[1]}.")
+        for item_id in dict.fromkeys(needed_items):
+            for part in cite(item_id):
+                lines.append(f"    {part}")
         recipe_id = 0
-        source = str(edge.get("from") or "")
         if "#recipe:" in source and source.rsplit(":", 1)[-1].isdigit():
             recipe_id = int(source.rsplit(":", 1)[-1])
-        recipe_info = recipe.get(recipe_id) if recipe_id else None
-        spawn_is_result = bool(recipe_info) and not (
-            recipe_info.get("products") or recipe_info.get("produces")
-        )
-        actions = []
-        for row in rows:
-            if row.get("rel") == "gives" and str(row.get("to", "")).startswith("item:"):
-                if _recipe_refund(recipe, row, int(row["to"].split(":", 1)[1])):
-                    continue
-            if row.get("rel") == "spawns" and spawn_is_result:
-                continue
-            if row.get("rel") in {"gives", "spawns", "grounds", "sets"} or (
-                row.get("rel") == "loots" and not row.get("npc")
-            ):
-                actions.append(row)
-        actions.sort(
-            key=lambda row: (0, int(row["order"])) if "order" in row else (1, 0)
-        )
-        loots_of: dict[int, list] = defaultdict(list)
-        for row in rows:
-            if (
-                row.get("rel") == "loots"
-                and row.get("npc")
-                and str(row.get("to", "")).startswith("item:")
-            ):
-                loots_of[int(row["npc"])].append(row)
-        if actions:
-            lines.append("In script order:")
-            lines.append("")
-        seen_action = set()
-        number = 0
-        for row in actions:
-            ident = (
-                row.get("rel"),
-                row.get("to"),
-                row.get("flag"),
-                row.get("value"),
-                row.get("npc"),
-            )
-            if ident in seen_action:
-                continue
-            seen_action.add(ident)
-            if row.get("rel") == "gives" and str(row.get("to", "")).startswith("item:"):
-                text = f"Gives {item_name(items, int(row['to'].split(':', 1)[1]))}."
-            elif row.get("rel") == "spawns":
-                label = row.get("name") or row.get("to")
-                text = f"Spawns {label} ({row.get('npc')})."
-            elif row.get("rel") == "grounds":
-                text = (
-                    f"Ground spawn {item_name(items, int(row['to'].split(':', 1)[1]))}."
-                )
-            elif row.get("rel") == "sets" and row.get("flag"):
-                text = f"Sets `{row['flag']}` to `{row.get('value')}`."
-            elif row.get("rel") == "loots":
-                text = f"Loots {item_name(items, int(row['to'].split(':', 1)[1]))}."
-            else:
-                continue
-            number += 1
-            lines.append(f"{number}. {text}")
-            if row.get("rel") == "spawns" and row.get("npc"):
-                for loot in loots_of.get(int(row["npc"]), []):
-                    lines.append(
-                        f"   - Loots {item_name(items, int(loot['to'].split(':', 1)[1]))}."
-                    )
-        if actions:
-            lines.append("")
-        lines.append("")
         if recipe_id:
             spawned = []
+            loots_by_npc = defaultdict(list)
             for row in rows:
-                if row.get("rel") != "spawns":
+                if row.get('rel') == 'loots' and row.get('npc') and str(row.get('to') or '').startswith('item:'):
+                    loots_by_npc[int(row['npc'])].append(int(str(row['to']).split(':', 1)[1]))
+            for row in rows:
+                if row.get('rel') == 'spawns':
+                    spawned.append({**row, 'loots': loots_by_npc.get(int(row.get('npc') or 0), [])})
+            info = recipe.get(recipe_id) or {}
+            spawn_result = not (info.get('products') or info.get('produces'))
+            for line in render_recipe(recipe_id, 0, set(), spawned if spawn_result else None):
+                lines.append("    " + line)
+        else:
+            ordered = sorted(rows, key=lambda r: int(r.get('order') or 0))
+            seen_effects = set()
+            for row in ordered:
+                rel = row.get("rel")
+                to = str(row.get("to") or "")
+                ident = (rel, to, row.get('value'), row.get('npc'))
+                if ident in seen_effects:
                     continue
-                loots = (
-                    [
-                        int(loot["to"].split(":", 1)[1])
-                        for loot in loots_of.get(int(row["npc"]), [])
-                        if str(loot.get("to", "")).startswith("item:")
-                    ]
-                    if row.get("npc")
-                    else []
-                )
-                spawned.append({**row, "loots": loots})
-            lines.append("Combine:")
-            lines.append("")
-            lines.extend(
-                render_recipe(recipe_id, 0, set(), spawned if spawn_is_result else None)
-            )
-            lines.append("")
-        needed_items = []
-        needed_flags = []
-        for row in rows:
-            if row.get("rel") != "needs":
-                continue
-            if row.get("item"):
-                needed_items.append(int(row["item"]))
-            if row.get("flag") and row.get("flag") != flag:
-                needed_flags.append(row["flag"])
-        for row in rows:
-            if row.get("rel") == "receives" and str(row.get("to", "")).startswith(
-                "item:"
-            ):
-                needed_items.append(int(row["to"].split(":", 1)[1]))
-        shown_items = []
-        for item_id in needed_items:
-            if item_id not in shown_items:
-                shown_items.append(item_id)
-        if shown_items:
-            lines.append("How the items are reached:")
-            lines.append("")
-            for item_id in shown_items:
-                lines.append(f"- {item_name(items, item_id)}")
-                for bit in cite(item_id):
-                    lines.append(f"  {bit}")
-            lines.append("")
-        shown_sub = []
-        for sub in needed_flags:
-            if sub not in shown_sub:
-                shown_sub.append(sub)
-        for sub in shown_sub:
+                seen_effects.add(ident)
+                if rel == "gives" and to.startswith("item:"):
+                    item_id = int(to.split(":", 1)[1])
+                    if not _recipe_refund(recipe, row, item_id):
+                        lines.append(f"    - Gives {quoted_item(items, item_id)}.")
+                elif rel == "spawns":
+                    lines.append(f"    - Spawns {row.get('name') or to} ({row.get('npc')}).")
+                elif rel == "grounds" and to.startswith("item:"):
+                    lines.append(f"    - Ground spawn {quoted_item(items, int(to.split(':', 1)[1]))}.")
+                elif rel == "sets" and row.get("flag") != flag:
+                    lines.append(f"    - Sets `{row['flag']}` to `{row.get('value')}`.")
+        if verbose:
+            lines.extend(dialogue_lines(who, "    "))
+        lines.append("")
+        for sub in dict.fromkeys(row.get('flag') for row in rows if row.get('rel') == 'needs'
+                                 and row.get('flag') and row.get('flag') != flag):
             if sub in seen_flags:
-                lines.append(f"This step also depends on `{sub}`, shown above.")
-                lines.append("")
-                continue
-            lines.append(f"Subquest `{sub}`:")
-            lines.append("")
-            render_flag(sub, level + 1)
+                lines.append(f"    - Subquest `{sub}` documented earlier.")
+            else:
+                lines.append(f"    - Subquest `{sub}`:")
+                render_flag(sub, min(level + 1, 5))
 
     def render_extras(
         flag: str, used: set, level: int, lo: int | None = None, hi: int | None = None
@@ -1980,8 +1936,20 @@ def write_class(name, title, mains, prefixes, ctx):
     return path, len(lines)
 
 
-def main():
-    items, edges, says, world = load()
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="Generate epic quest walkthroughs")
+    parser.add_argument("-c", "--class", dest="class_name", metavar="CLASS",
+                        help="Generate only the named class (e.g. ranger)")
+    parser.add_argument("-v", "--verbose", action="store_true",
+                        help="Inline full NPC dialogue chains and guards")
+    args = parser.parse_args(argv)
+    choices = [row for row in CLASSES if not args.class_name
+               or row[0].casefold() == args.class_name.casefold()
+               or row[1].casefold() == args.class_name.casefold()]
+    if not choices:
+        parser.error(f"Unknown class {args.class_name!r}; choose from: " +
+                     ", ".join(row[0] for row in CLASSES))
+    items, edges, says, world, dialogues = load()
     by_from, by_group, sets_of, gives, loots, grounds, produces, recipe = indexes(
         edges, world
     )
@@ -2001,10 +1969,11 @@ def main():
         grounds,
         produces,
         recipe,
+        dialogues,
     )
     OUT.mkdir(parents=True, exist_ok=True)
-    for slug, title, mains, prefixes in CLASSES:
-        path, count = write_class(slug, title, mains, prefixes, ctx)
+    for slug, title, mains, prefixes in choices:
+        path, count = write_class(slug, title, mains, prefixes, ctx, verbose=args.verbose)
         print(f"{path.name} {count} lines")
 
 
