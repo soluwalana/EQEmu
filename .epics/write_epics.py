@@ -23,16 +23,16 @@ CLASSES = [
     ("druid", "Druid", ["druid_epic"], ("druid_epic_",)),
     ("monk", "Monk", ["MnkPre", "monk_epic", "mnk_epic20"], ("monk_epic_",)),
     ("bard", "Bard", ["bardPQ", "bard15", "Fatestealer_bard", "bard20"], ("bard15_", "bard20_")),
-    ("rogue", "Rogue", ["roguepre"], ("rogue_epic_", "rogue_")),
+    ("rogue", "Rogue", ["roguepre", ("Fatestealer", None, None, "1.5")], ("rogue_epic_", "rogue_", "rog_epic_")),
     ("shaman", "Shaman", ["shaman_pre", "shaman_epic"], ("shaman_epic_",)),
-    ("necromancer", "Necromancer", ["NecroPre", "necro_epic"], ("nec_epic_",)),
+    ("necromancer", "Necromancer", ["NecroPre", ("Soulwhisper", None, None, "1.5"), ("necro_epic", None, None, "2.0")], ("nec_epic_",)),
     (
         "wizard",
         "Wizard",
         ["wiz_epic_pre", "wizepic", "wizepicA", "wizepicB", "wizepicK", "wiz_epic", "wiz_epic20"],
         ("wiz20_", "wiz_epic_s", "wiz_epic_w"),
     ),
-    ("magician", "Magician", ["mage_epic"], ("mage_epic_",)),
+    ("magician", "Magician", [("mage_epic", None, 8, "1.5"), ("mage_epic", 8, None, "2.0")], ("mage_epic_",)),
     ("enchanter", "Enchanter", ["EnchPre", "ench_epic"], ("ench_epic_",)),
     ("beastlord", "Beastlord", ["bstepic", "beast_epic"], ("beast_epic_", "bst_")),
     ("berserker", "Berserker", ["berserk_epic"], ("ber_epic_", "berserk_epic_")),
@@ -319,9 +319,9 @@ def _era_rank(entry) -> tuple:
     """1.0, then 1.5, then 2.0. A pre flag stays in front of the epic in the same era."""
     flag, lo, hi, era = _section(entry)
     name = flag.lower()
-    if era or "20" in name:
+    if era == "2.0" or "20" in name:
         rank = 2
-    elif "15" in name:
+    elif era == "1.5" or "15" in name:
         rank = 1
     else:
         rank = 0
@@ -412,7 +412,14 @@ def write_class(name, title, mains, prefixes, ctx):
             if not _recipe_refund(recipe, edge, item_id) and item_id not in handed(edge)
         ]
         gated = [edge for edge in givers if prefers(by_from, by_group, edge, flags)]
-        return (gated or givers)[:6]
+        candidates = gated or givers
+        # Prefer actions whose prerequisites are present in the graph; avoid
+        # conflating independent reward variants into one linear quest.
+        return sorted(candidates, key=lambda edge: (
+            not bool(handed(edge) or any(row.get("rel") == "needs" for row in
+                bundle(by_from, by_group, edge.get("from", ""), edge.get("group", "")))),
+            str(edge.get("group") or edge.get("from")),
+        ))[:1]
 
     def note_prereq(item_id: int) -> None:
         if item_id and item_id not in prereq_ids:
@@ -541,7 +548,21 @@ def write_class(name, title, mains, prefixes, ctx):
             # new end
         loot_rows = loots.get(item_id, [])
         gated_loot = [edge for edge in loot_rows if prefers(by_from, by_group, edge, flags)]
-        for edge in (gated_loot or loot_rows)[:4]:
+        # One loot path is sufficient to acquire an item. The old code emitted
+        # up to four routes consecutively, falsely implying four required kills.
+        possible_loot = gated_loot or loot_rows
+        unique_loot = list(dict.fromkeys(
+            (str(edge.get("from") or ""), str(edge.get("npc") or ""))
+            for edge in possible_loot
+        ))
+        chosen_loot = next((edge for edge in possible_loot if "#hand:" in str(edge.get("from") or "")), None)
+        if chosen_loot is None:
+            chosen_loot = next((edge for edge in possible_loot if "#timer:" in str(edge.get("from") or "")), None)
+        if chosen_loot is None:
+            chosen_loot = next((edge for edge in possible_loot if "#" in str(edge.get("from") or "")), None)
+        if chosen_loot is None and possible_loot:
+            chosen_loot = possible_loot[0]
+        for edge in ([chosen_loot] if chosen_loot else []):
             source = str(edge.get("from") or "")
             who, action, zone = parse_who(source)
             spawn = str(edge.get("name") or "")
@@ -599,13 +620,15 @@ def write_class(name, title, mains, prefixes, ctx):
                     + (f", {quoted_action(items, action)}" if action else "")
                     + "."
                 )
-        if len(loot_rows) > 4 and not gated_loot:
-            bits.append(f"{len(loot_rows) - 4} other loot steps also yield {item_name(items, item_id)}.")
+        if len(unique_loot) > 1:
+            bits.append(f"{len(unique_loot) - 1} alternative loot source(s) also yield {item_name(items, item_id)}.")
         for edge in grounds.get(item_id, [])[:3]:
             bits.append(
                 f"Ground spawn of {quoted_item(items, item_id)} in `{edge.get('zone') or 'an unstated zone'}`."
             )
         for line in _made_by(items, item_id):
+            if loot_rows and line.startswith("- Loot "):
+                continue
             bits.append(line[2:] if line.startswith("- ") else line)
         made = creating(item_id)
         if not made:
@@ -727,7 +750,7 @@ def write_class(name, title, mains, prefixes, ctx):
         goal: int,
         flag_trail: frozenset[str] = frozenset(),
     ) -> None:
-        if item_id in trail or item_id in seen or len(trail) > 12:
+        if item_id in trail or item_id in seen:
             return
 
         seen.add(item_id)
@@ -780,77 +803,69 @@ def write_class(name, title, mains, prefixes, ctx):
                 flag_trail,
             )
 
-        def expand_flag(flag: str, at: str) -> None:
-            key = ("flag", flag, at)
+        def expand_flag(flag: str, at: str, active: frozenset[tuple[str, str]] = frozenset()) -> None:
+            """Resolve an exact quest-global state, including earlier values of the SAME flag.
 
-            if key in seen:
-                return
-
-            if flag in flag_trail:
+            Different values of Soulwhisper are successive states, not a flag
+            recursion cycle. The active path tracks (flag, predicate), while
+            'seen' tracks only transitions that have actually been emitted.
+            """
+            predicate = at.replace(" ", "")
+            state = (flag, predicate)
+            if state in active:
                 steps.append(f"Unresolved cyclic prerequisite: `{flag}` {at}.")
                 return
-
-            seen.add(key)
-
-            if at == "unset":
-                steps.append(
-                    f"Requires `{flag}` unset; no setter establishes this state."
-                )
+            if ("flag", flag, predicate) in seen:
+                return
+            if predicate == "unset":
+                # An initially unset global is a starting condition, not an action.
                 return
 
-            setters = [
-                edge
-                for edge in sets_of.get(flag, [])
-                if value_matches(str(edge.get("value", "")), at)
+            candidates = [
+                edge for edge in sets_of.get(flag, [])
+                if value_matches(str(edge.get("value", "")), predicate)
             ]
-
-            if not setters:
-                steps.append(
-                    f"Unresolved prerequisite: `{flag}` {at}; "
-                    "no matching setter in graph."
-                )
+            if not candidates:
+                steps.append(f"Unresolved prerequisite: `{flag}` {at}; no matching setter in graph.")
                 return
 
-            # Favor direct, inexpensive prerequisites over long hand-in chains.
-            setters.sort(
-                key=lambda edge: (
-                    len(handed(edge)),
-                    str(edge.get("from", "")),
-                )
-            )
+            def score(edge: dict) -> tuple:
+                value = str(edge.get("value") or "")
+                requirements = dependencies(edge)
+                same = [row for row in requirements if row.get("flag") == flag]
+                prior = []
+                for row in same:
+                    m = re.fullmatch(r"==(\d+)", str(row.get("at") or "").replace(" ", ""))
+                    if m:
+                        prior.append(int(m.group(1)))
+                current = int(value) if value.isdigit() else None
+                # Prefer the immediately preceding value, never a setter that
+                # requires a *later* state (e.g. Tarlang resets 4 -> 3).
+                backward = 0 if current is None else sum(p > current for p in prior)
+                contiguous = 0 if current is not None and current - 1 in prior else 1
+                if predicate == "set":
+                    number = current if current is not None else 999999
+                else:
+                    number = 0
+                return (backward, contiguous, number, len(handed(edge)), str(edge.get("group") or edge.get("from")))
 
-            setter = setters[0]
+            setter = min(candidates, key=score)
             source = str(setter.get("group") or setter.get("from") or "")
-            setter_key = ("setter", source, flag, at)
-
+            setter_key = ("setter", source, flag, str(setter.get("value")))
             if setter_key in seen:
+                seen.add(("flag", flag, predicate))
                 return
 
-            next_flags = flag_trail | {flag}
-
-            # Resolve prerequisites of the action that sets this flag.
-            for row in dependencies(setter):
+            next_active = active | {state}
+            requirements = dependencies(setter)
+            mandatory = [row for row in requirements if row.get("op") != "or"]
+            optional = [row for row in requirements if row.get("op") == "or"]
+            # Recursing through a different value of this same flag is allowed.
+            for row in mandatory + optional[:1]:
                 if row.get("flag"):
-                    forward_flag = row["flag"]
-                    if forward_flag in next_flags:
-                        continue
-
-                    # Recursive flag dependencies use the extended traversal state.
-                    previous = flag_trail
-                    flag_trail_holder[0] = next_flags
-                    try:
-                        resolve_flag(
-                            forward_flag,
-                            str(row.get("at") or "set"),
-                            next_flags,
-                        )
-                    finally:
-                        flag_trail_holder[0] = previous
-
+                    expand_flag(str(row["flag"]), str(row.get("at") or "set"), next_active)
                 elif row.get("item"):
                     expand_item(int(row["item"]))
-
-            # Acquire items that must be handed in to establish the flag.
             for needed in handed(setter):
                 expand_item(needed)
 
@@ -858,40 +873,10 @@ def write_class(name, title, mains, prefixes, ctx):
                 seen.add(setter_key)
                 who, action, _zone = parse_who(source)
                 description = quoted_who(who)
-
                 if action:
                     description += f", {quoted_action(items, action)}"
-
-                steps.append(
-                    f"{description}. "
-                    f"Sets `{flag}` to `{setter.get('value')}`."
-                )
-
-        # Explicit flag recursion avoids confusing item and flag cycle detection.
-        flag_trail_holder = [flag_trail]
-
-        def resolve_flag(
-            flag: str,
-            at: str,
-            active: frozenset[str],
-        ) -> None:
-            if flag in active:
-                return
-            forward_flag_dependency(flag, at, active)
-
-        def forward_flag_dependency(
-            flag: str,
-            at: str,
-            active: frozenset[str],
-        ) -> None:
-            # Re-enter the normal dependency resolver with the current flag path.
-            nonlocal flag_trail
-            previous = flag_trail
-            flag_trail = active
-            try:
-                expand_flag(flag, at)
-            finally:
-                flag_trail = previous
+                steps.append(f"{description}. Sets `{flag}` to `{setter.get('value')}`.")
+            seen.add(("flag", flag, predicate))
 
         def expand_action(edge: dict) -> None:
             requirements = dependencies(edge)
@@ -1152,9 +1137,32 @@ def write_class(name, title, mains, prefixes, ctx):
         for edge in sets:
             key = (str(edge.get("value")), signature(by_from, by_group, edge))
             groups.setdefault(key, []).append(edge)
-        ordered = sorted(groups.values(), key=lambda group: (not str(group[0].get("value", "")).isdigit(), int(group[0]["value"]) if str(group[0].get("value", "")).isdigit() else 0, str(group[0].get("from"))))
+        def stage_sort(group):
+            edge = group[0]
+            value = str(edge.get("value") or "")
+            if not value.isdigit():
+                return (1, float("inf"), str(edge.get("from")))
+            current = int(value)
+            rows = bundle(by_from, by_group, edge.get("from", ""), edge.get("group", ""))
+            predecessors = []
+            for row in rows:
+                if row.get("rel") == "needs" and row.get("flag") == flag:
+                    match = re.fullmatch(r"==(\d+)", str(row.get("at") or "").replace(" ", ""))
+                    if match:
+                        predecessors.append(int(match.group(1)))
+            rollback_from = max((n for n in predecessors if n > current), default=None)
+            position = float(rollback_from) + 0.5 if rollback_from is not None else float(current)
+            return (0, position, str(edge.get("from")))
+
+        ordered = sorted(groups.values(), key=stage_sort)
         used = set()
+        shown_values: set[str] = set()
         for group in ordered:
+            value = str(group[0].get("value") or "")
+            if value in shown_values:
+                lines.append(f"Alternative or repeat transition to `{flag}` = `{value}` (not an additional required stage).")
+                lines.append("")
+            shown_values.add(value)
             render_step(group, level + 1, flag)
             for edge in group:
                 used.add(edge.get("from"))
