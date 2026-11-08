@@ -684,10 +684,17 @@ _QUERY_PREFIXES = (
     ("a",), ("an",), ("the",),
 )
 
+_POSSESSIVE_EQUIV = {
+    "my": "your",
+    "your": "my",
+    "mine": "yours",
+    "yours": "mine",
+}
+
 
 def _lex_tokens(value: str) -> list[str]:
     return re.findall(r"[\w]+", value.casefold().replace("_", " "))
-
+    
 
 def _lex_variants(token: str) -> set[str]:
     """Small inflection set for singular/plural player triggers.
@@ -706,6 +713,12 @@ def _lex_variants(token: str) -> set[str]:
 
 
 def _lex_equiv(a: str, b: str) -> bool:
+    if a == b:
+        return True
+
+    if _POSSESSIVE_EQUIV.get(a) == b:
+        return True
+
     return bool(_lex_variants(a) & _lex_variants(b))
 
 
