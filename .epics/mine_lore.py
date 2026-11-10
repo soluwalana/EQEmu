@@ -26,15 +26,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from urllib import request
 
-# When this file is placed next to graph.py, make eqclient4 importable even
-# when executed directly with `python tests/mock_client/.../mine_lore.py`.
-if __package__ in (None, ""):
-    for parent in Path(__file__).resolve().parents:
-        if (parent / "eqclient4" / "quests" / "graph.py").is_file():
-            sys.path.insert(0, str(parent))
-            break
-
-from eqclient4.quests.graph import dialogue_chains
+from eqclient4.quests.graph import dialogue_chains, DialogueChain, DialogueTurn
 
 WORD = re.compile(r"[a-z][a-z'-]{2,}", re.I)
 COMMON = frozenset("""the and this that with from have your you are was were will would
@@ -58,7 +50,7 @@ def literal_mention(keyword: str, message: str) -> bool:
     )
 
 
-def speech_text(turn: dict) -> str:
+def speech_text(turn: DialogueTurn) -> str:
     return " ".join(
         str(r.get("text", "")) for r in turn.get("reply", ()) if r.get("text")
     )
@@ -70,8 +62,8 @@ def iter_scripts(root: Path):
             yield path
 
 
-def load_dialogues(root: Path, limit: int = 0) -> tuple[list[dict], Counter]:
-    records: list[dict] = []
+def load_dialogues(root: Path, limit: int = 0) -> tuple[list[DialogueChain], Counter]:
+    records: list[DialogueChain] = []
     stats: Counter = Counter()
     for path in iter_scripts(root):
         if limit and stats["files"] >= limit:
@@ -103,7 +95,7 @@ class Passage:
     terms: frozenset[str]
 
 
-def evidence_index(dialogues: list[dict]):
+def evidence_index(dialogues: list[DialogueChain]):
     """Index independent script speech for corroborating facts.
 
     This index proves only that words co-occur in a script passage. It does
@@ -123,7 +115,7 @@ def evidence_index(dialogues: list[dict]):
                         continue
                     passage = Passage(
                         dialogue["source"],
-                        dialogue["file"],
+                        dialogue.get("file") or "",
                         str(turn.get("input", "")),
                         sentence,
                         terms,
@@ -163,7 +155,7 @@ def corroborate(
     ]
 
 
-def candidates(dialogues: list[dict], by_term, lookback: int) -> list[dict]:
+def candidates(dialogues: list[DialogueChain], by_term, lookback: int) -> list[dict]:
     out: list[dict] = []
     for chain in dialogues:
         turns = chain.get("turns", [])
@@ -191,7 +183,7 @@ def candidates(dialogues: list[dict], by_term, lookback: int) -> list[dict]:
                     },
                     "to": {"input": keyword, "response": speech_text(target)},
                     "source": {
-                        "file": chain["file"],
+                        "file": chain.get("file") or "",
                         "npc": chain["source"],
                         "from_offset": prior.get("order"),
                         "to_offset": target.get("order"),
@@ -374,7 +366,7 @@ def main(argv=None):
                 )
         dump_jsonl(args.out / "lore_reviews.jsonl", rows)
     dump_jsonl(args.out / "lore_book.jsonl", book)
-    summary = dict(stats)
+    summary: dict = dict(stats)
     summary.update(
         {
             "candidates": len(rows),

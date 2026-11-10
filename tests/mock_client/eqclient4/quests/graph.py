@@ -10,7 +10,7 @@ import os
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import NotRequired, Sequence, TypedDict
+from typing import NotRequired, TypedDict
 
 from eqclient4.data.catalog import Catalog, load_catalog, named_items
 from eqclient4.log import log
@@ -667,7 +667,7 @@ def _speech_events(text: str, span: tuple[int, int, int, int]) -> list[Speech]:
     branches = _branch_index(text)
     events: list[Speech] = []
     for event in iter_speech_calls(text, body_lo, body_hi):
-        at = event["offset"]
+        at = event.get("offset") or 0
         nested = sorted(
             (b for b in branches if body_lo <= b[0] and b[0] <= at < b[3] and b != span),
             key=lambda b: b[0],
@@ -1085,7 +1085,7 @@ def _non_say_speech(text: str) -> list[Speech]:
         if event not in {"event_item", "event_trade"}:
             continue
         for speech in iter_speech_calls(text, lo, hi):
-            at = speech["offset"]
+            at = speech.get("offset") or 0
             ancestry = sorted(
                 (branch for branch in branches if lo <= branch[0] and branch[0] <= at < branch[3]),
                 key=lambda branch: (branch[0], -branch[3]),
@@ -1109,6 +1109,7 @@ class DialogueChain(TypedDict):
     npc: str
     source: str
     handler: str
+    file: NotRequired[str | None]
     turns: list[DialogueTurn]
     transitions: list[DialogueTransition]
     context_speech: list[Speech]
@@ -1180,7 +1181,7 @@ def dialogue_chains(text: str, filename: str, zone: str) -> list[DialogueChain]:
                         Speech(
                             channel=event["channel"],
                             text=event["text"],
-                            guards=event["guards"],
+                            guards=event.get("guards", []),
                             links=event["links"],
                         )
                         for event in speech
@@ -1246,14 +1247,14 @@ def dialogue_chains(text: str, filename: str, zone: str) -> list[DialogueChain]:
                 if _speech_mentions(target["input"], [cs]):
                     transitions.append(
                         {
-                            "_from": cs["event"],
+                            "_from": cs.get("event", ""),
                             "_to": target["input"],
                             "basis": "external_event_mention",
                             "prompt_pattern": _structured_prompt_response(
                                 target["input"], cs.get("text", "")
                             ),
-                            "event": cs["event"],
-                            "guards": cs["guards"],
+                            "event": cs.get("event", ""),
+                            "guards": cs.get("guards", []),
                             "evidence": cs["text"],
                         }
                     )
@@ -1784,13 +1785,13 @@ def link_script(
                     "kind": "edge",
                     "rel": "speaks",
                     "from": say_id,
-                    "to": f"speech:{say_id}:{event['offset']}",
+                    "to": f"speech:{say_id}:{event.get('offset') or 0}",
                     "group": f"{say_id}#branch:{span[0]}",
                     "channel": event["channel"],
                     "text": event["text"],
                     "links": event.get("links", []),
-                    "guards": event["guards"],
-                    "order": event["offset"],
+                    "guards": event.get("guards", []),
+                    "order": event.get("offset") or 0,
                 }
             )
         spoken = _spoken(block)
@@ -1895,7 +1896,7 @@ def link_script(
     # Event guards remain attached so the graph does not imply unconditional
     # access to these dialogue options.
     for nss in _non_say_speech(text):
-        origin = f"{npc_id}#{nss['event']}"
+        origin = f"{npc_id}#{nss.get('event', '')}"
         for word, _at, _reply in say_turns:
             if _speech_mentions(word, [nss]):
                 edges.append(
@@ -1906,15 +1907,15 @@ def link_script(
                         "to": f"{npc_id}#{word}",
                         "word": word,
                         "basis": "external_event_speech",
-                        "event": nss["event"],
-                        "guards": nss["guards"],
+                        "event": nss.get("event", ""),
+                        "guards": nss.get("guards", []),
                         "evidence": nss["text"],
                     }
                 )
 
     for turn in turn_ins(text):
         ids = tuple(sorted(item for item, _count in turn["items"]))
-        coins = tuple(turn.get("coins") or ())
+        coins: tuple = tuple(turn.get("coins") or ())
         if ids:
             group = f"{npc_id}#hand:{'+'.join(str(item) for item in ids)}"
         else:
@@ -1930,6 +1931,7 @@ def link_script(
                     "group": group,
                 }
             )
+
         for name, amount in coins:
             edges.append(
                 {
@@ -2467,9 +2469,9 @@ def _emit_body(
                     "kind": "edge",
                     "rel": "sets",
                     "from": source,
-                    "to": f"flag:{event['flag']}",
-                    "flag": event["flag"],
-                    "value": event["value"],
+                    "to": f"flag:{event.get('flag', '')}",
+                    "flag": event.get('flag', ''),
+                    "value": event.get('value', ''),
                     "group": source,
                     "order": pos,
                 }
@@ -2480,7 +2482,7 @@ def _emit_body(
                     "kind": "edge",
                     "rel": "gives",
                     "from": npc_id,
-                    "to": f"item:{event['item']}",
+                    "to": f"item:{event.get('item') or 0}",
                     "group": source,
                     "order": pos,
                 }
@@ -2491,14 +2493,14 @@ def _emit_body(
                     "kind": "edge",
                     "rel": "grounds",
                     "from": source,
-                    "to": f"item:{event['item']}",
+                    "to": f"item:{event.get('item') or 0}",
                     "zone": npc_id.split("/", 1)[0],
                     "group": source,
                     "order": pos,
                 }
             )
         elif rel == "spawns":
-            edge = _spawn_edge(source, event["npc"], event.get("name") or "", source)
+            edge = _spawn_edge(source, event.get("npc") or 0, event.get("name") or "", source)
             edge["order"] = pos
             edges.append(edge)
 
@@ -2535,11 +2537,12 @@ def _other_summons(edges: list[dict], text: str, npc_id: str) -> None:
                 if other != span and span[2] <= other[0] and other[3] <= span[3]
             ]
             spans.append((span[2], span[3], holes))
+        
+        group = f"{npc_id}#{name}"
         for lo, hi, holes in spans:
             # EVENT_SIGNAL branches are distinct causal states.  Grouping all
             # of them under #event_signal makes a spawn/loot from signal 1
             # appear available from any signal (or from no signal at all).
-            group = f"{npc_id}#{name}"
             if name == "event_signal":
                 owners = [
                     branch
