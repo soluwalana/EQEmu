@@ -23,6 +23,22 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 11. Spawns "Ulthork Raider" (116608) in `eastwastes` on enter.
 12. Loot "Carved Prexus Totem" (62821) from "Ulthork Raider".
 13. cobaltscar/"Blumblum Swigwater", hand "Carved Prexus Totem" (62821). Gives "Small Trigger Fish" (62820).
+    - Dialogue with cobaltscar/"Blumblum Swigwater":
+      - Player: "Hail"
+        - NPC say: I am very busy. Thank you for taking the time to speak to me, stranger, but I have no time for talk right now. I'm afraid that your business can not be urgent enough.
+        - Condition: `(e.message:findi("hail"))`
+      - Player: "Problem" (link: conversation sequence)
+        - NPC say: I appreciate your warm concern strange one, but the Othmir will handle this ourselves. I am certain that it would be below you to take on such troubles, especially when I have only a paltry few sentences of information to trade for it. That is, unless this is seems like a [fair deal] to you, for who am I to judge such a noble, if unusually depilated, creature such as yourself.
+        - Condition: `(e.message:findi("problem"))`
+      - Player: "Fair Deal" (link: explicit mention)
+        - NPC emote: eyes light up and he smiles warmly. 'Such a kind offer! As you may know, we Othmir are exceptional carvers, though it is at brewing that we excel. Our carvings are made from many things, but most commonly of the gruesome teeth of those disgusting Ulthork. We create these beautiful carvings in tribute to our lord Prexus. Turning the ugly teeth of our enemies into items of worship provides several layers of irony and amusement that we can not resist.'
+        - Condition: `(e.message:findi("fair deal"))`
+      - Player: "Carvings" (link: explicit mention)
+        - NPC say: The Ulthork raid our homes when they become desperate. We always push them back, of course. But lately there has been one of there kind that is unusually powerful and he has managed to breach our defenses by force or trickery. They steal food and kill our young, as they always do. This one, though, is unusual in that he has taken one of our carvings. This concerns us, for we had not thought the beasts smart enough to recognize the irony in what we have done with their tusks. Our concern is that this one may be able to recognize the carving for what it is and will use it to incite his people to be more trouble that they usually are. If you can recover that carving as evidence that this beastly Ulthork is dispensed with, I will gladly share with you what we have seen of sickness in our waters.
+        - Condition: `(e.message:findi("carvings"))`
+      - Player: "Rumors" (link: conversation sequence)
+        - NPC say: I hate to repeat such rudeness, but as you insist. Some of my people witnessed a hairless-one swimming from the grotto just before the first sickness was seen. Of course many of your people come swimming out of the grotto, so I would give it little thought. Some of my people have decided that it must have been that hairless swimmer that cause the illness. They say, and forgive me for repeating this, that the skin of your people is poison in the water, that you expose it because it defends you in such ways. Obvious foolishness, I apologize for repeating it.
+        - Condition: `(e.message:findi("rumors") and e.other:HasItem(62812))`
 14. Buy "Gutting Knife" (62823) from "Tasec Dreeng" (NPC 279113) in `abysmal`. Base price: 40 copper.
 15. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Hands back "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing, trivial 20. The combine does not fail.
 16. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
@@ -35,11 +51,71 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 23. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
 24. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
 25. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
+    - Dialogue with poknowledge/"Pathfinder Arelat":
+      - Player: "Hail"
+        - NPC say: Welcome to New Tanaan, friend, and know us as neither friend nor foe. We are your allies in knowledge and shall guide you wherever we are able. Each citizen of New Tanaan, be them a child of the gods or a creature of the natural wilds, has come forward in these times to offer their wisdom and guidance unto you in any way possible. I traveled Norrath once as a pathfinder of Karana, but my fate would eventually call me here where I progressed beyond my mortal limits. Though you have some time left in you before such possibilities are open to you, perhaps the spells I have penned from memory of my service to Norrath will come to be of some use.
+        - Condition: `(e.message:findi("hail"))`
+      - Player: "Corruption of the Night" (link: conversation sequence)
+        - NPC emote: raises an eyebrow. 'Now where did you hear that name?' He looks intently at you for a moment. 'You've been talking to Beddia. She's been trying to get a copy of that text for a long time. I've been careful not to let her get one, if only for the principle of the thing. It's obvious that she sent you here, or one of her minions. Why would I want to give it to you? More importantly, why would a druid want to give it to her?' Arelat raises a hand, 'No, you don't have to tell me. If I can't trust you, , then I suppose I can't even trust myself. Just tell me that it's worth it.
+        - Condition: `(qglobals["druid_epic"] == "2" and e.message:findi("Corruption of the Night"))`
+      - Player: "Worth It" (link: explicit mention)
+        - NPC say: Then here it is. This is a copy of an ancient text that we have preserved and copied for many long years. The author died generations ago. You should read it before you give it to that witch. Good luck to you, friend.
+        - Condition: `(qglobals["druid_epic"] == "2" and e.message:findi("worth it"))`
+        - Gives Fresh Awakenings vol. 1 (62839).
+        - Gives Fresh Awakenings vol. 2 (62840).
+        - Gives Fresh Awakenings vol. 3 (62841).
 26. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
 27. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
 28. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
+    - Dialogue with poknowledge/"Gravelady Beddia":
+      - Player: "Hail"
+        - NPC say: Hail seeker of knowledge. There is much to be learned here in New Tanaan of the dark gods of Norrath. I have been searching the great library for tomes pertaining to my patron Bertoxxulous. the Plague Lord and made some interesting finds. If you wish to study the tomes I have uncovered you may borrow them and they will be returned to me by the magic of New Tanaan when you are through.
+        - Condition: `(e.message:findi("hail"))`
+      - Player: "What diseases of the skin" (link: conversation sequence)
+        - NPC say: I know much about such things, but what would you want such knowledge for? I can only surmise that your goals would not be such that I would approve of them. You would have to be willing to [sacrifice] something, get me something precious, in order to get any such information from me.
+        - Condition: `(qglobals["druid_epic"] == "2" and e.message:findi("What diseases of the skin"))`
+      - Player: "Sacrifice" (link: explicit mention)
+        - NPC say: Hmmm... since you seem to be a creature of the woods, perhaps you can get something for me that I've wanted to read for a long time. There is a story of a battle between the God of Dribbles and the Lord of Plagues. We call this battle The Corruption of Night. I don't know what you people call it, but I know you must have a text concerning it. Bring me that text and I shall give you something that you probably should not have.
+        - Condition: `(qglobals["druid_epic"] == "2" and e.message:findi("sacrifice"))`
 29. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
 30. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
+    - Dialogue with feerrott/"Corrupted Spirit":
+      - Player: "Who are you?"
+        - NPC say: You don't even know who I am? You summon me back here and you don't even know me? There's no way I'll. . .' The voice wavers as it struggles to deny an answer to your question. The struggle is short, however, and he continues. 'Gah! Fine, my name is Sanmuel Gingerfly of Qeynos.
+        - Condition: `(qglobals["druid_epic"] == "3" and e.message:findi("Who are you?"))`
+      - Player: "What about the disease?" (link: conversation sequence)
+        - NPC say: What do you want to know about disease? I'm kind of an expert. I know something about a great plague that you will soon die from! I helped create it!
+        - Condition: `(e.message:findi("What about the disease?"))`
+      - Player: "What plague?" (link: explicit mention)
+        - NPC say: I know that it is a special plague, designed by. . .' again he tries to resist speaking, but the power of the gem that binds him into his own skull is too powerful, 'Azibelle and the Afflicted. Oh, she's gonna be mad at me. It will grow in the plants and be eaten by the animals. It won't show any signs for a long time. By then you'll all have eaten something with the plague! I got to deliver some of it to the first victims! I even remember one of the key runes. I. . .' again the hesitation, 'can [show it] to you if you want.
+        - Condition: `(qglobals["druid_epic"] == "3" and e.message:findi("What plague?"))`
+      - Player: "Show It" (link: explicit mention)
+        - NPC message: The skull of the dead acolyte glows briefly and all of the remaining flesh falls from it. An ephemeral rune appears in your hand. 'Place that where that horrible stone was before, in my very own head with that nasty scroll, and you will be able to engrave it into my skull. My poor skull! Hurry up, though, that rune won't last forever.
+        - Condition: `(qglobals["druid_epic"] == "3" and e.message:findi("show it"))`
+        - Gives Disease Rune (62837).
+      - Player: "Who are Azibelle and the Afflicted?" (link: prompt response)
+        - Prompted by player input: "What plague?"
+        - NPC say: I won't tell you!' The voice goes silent for a few moments and you fear that he might have broken the spell, but his voice returns. 'The Afflicted were created by Azibelle shortly after Mordavin was killed. When the Bloodsabers refused to protect Mordavin, she broke from them and took some key members with her. Glenfire is her right hand, a wicked woman with great power. The others she has brought in are Finnelzi Springworthy, Rendolf Deathbringer, Tehana Elsent and my brother, Bohab.
+        - Condition: `(qglobals["druid_epic"] == "3" and e.message:findi("Who are Azibelle and the Afflicted?"))`
+      - Player: "Who is Glenfire?" (link: prompt response)
+        - NPC say: She's the most powerful woman I've ever met. She's a dark elven shadowknight and if I were you I'd stay away from her. Nobody has ever beat her in a fight and I don't think she tries her hardest.
+        - Condition: `(qglobals["druid_epic"] == "3" and e.message:findi("Who is Glenfire?"))`
+      - Player: "Who is Finnelzi Springworthy?" (link: prompt response)
+        - Prompted by player input: "Who are Azibelle and the Afflicted?"
+        - NPC say: Fin? He's a gnome. I suppose he's a powerful necromancer, but it's hard to fear someone that can't see over a low hedge. Besides, I always suspected that he had reservations about our work. I should have had his place in the coven!
+        - Condition: `(qglobals["druid_epic"] == "3" and e.message:findi("Who is Finnelzi Springworthy?"))`
+      - Player: "Who is Rendolf Deathbringer?" (link: prompt response)
+        - Prompted by player input: "Who are Azibelle and the Afflicted?"
+        - NPC say: Heh. He used to be called Rendolf Shelton. He changed his name so he'd sound more like a shadowknight. He's a great fighter, though, so nobody teases him about it. I think he has a crush on Glenfire, but she'd rather kill a human than sleep with one.
+        - Condition: `(qglobals["druid_epic"] == "3" and e.message:findi("Who is Rendolf Deathbringer?"))`
+      - Player: "Who is Tehana Elsent?" (link: prompt response)
+        - Prompted by player input: "Who are Azibelle and the Afflicted?"
+        - NPC say: Tehana is a true necromancer. She studies the lore and the spells. She knows everything there is to know about the undead. She has been studying diseases, but I don't think they really meant much to her except that they make people dead. She was the one to recreate some of Mordavin's work from his notes and repurposed it for Azibelle's needs. She's kind of excited about killing everyone. She is inspired by Azibelle and Glenfire and does most of the support work for the coven.
+        - Condition: `(qglobals["druid_epic"] == "3" and e.message:findi("Who is Tehana Elsent?"))`
+      - Player: "Who is Bohab?" (link: prompt response)
+        - Prompted by player input: "Who are Azibelle and the Afflicted?"
+        - NPC say: I won't tell you anything about him. He protected me as a child in the streets of Qeynos and I will not tell you anything about him.
+        - Condition: `(qglobals["druid_epic"] == "3" and e.message:findi("Who is Bohab?"))`
 31. tox/"A Skeleton", say "I Will Do It". Triggers `tox/a skeleton#timer:pathback`.
 32. Starts timer `pathbacktwo`.
 33. Starts timer `pathbackthree`.
@@ -59,6 +135,15 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 4. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
 5. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
 6. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
+    - Dialogue with pojustice/"Great Bear":
+      - Player: "Hail"
+        - NPC say: What do you want? Were you not, what is it you are called, druid? Were you not druid I would rip your head from your torso. What you want had better be important.
+        - Condition: `(qglobals["druid_epic"] == "4" and e.other:GetFaction(e.self) < 5)`
+        - Condition: `( e.message:findi("hail"))`
+      - Player: "What about the Tribe of the Dawn?" (link: conversation sequence)
+        - NPC say: I am the tribe of the Dawn. I have been placed here for killing some beast that entered my territory. The creatures here say that I was unjust in doing so. I don't care about their justice or rules. It was where it did not belong. What do you want of me? I have something I must do soon.
+        - Condition: `(qglobals["druid_epic"] == "4" and e.other:GetFaction(e.self) < 5)`
+        - Condition: `(e.message:findi("What about the Tribe of the Dawn?"))`
 7. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
 8. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Mind Crystal" (62846).
 
@@ -105,12 +190,60 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 3. Spawns "A Cracked Earthshaker" (336214) in `dranik` on enter.
 4. Loot "Chunk of Energized Clay" (62859) from "A Cracked Earthshaker".
 5. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+    - Dialogue with erudnext/"Lumi Stergnon":
+      - Player: "Hail"
+        - NPC say: Peace and tranquility be with you. . Are you a [new acolyte of peace] or are you [here to pay homage] to the child of tranquility?
+        - Condition: `(e.message:findi("hail"))`
+      - Player: "New Acolyte Of Peace" (link: explicit mention)
+        - NPC say: Then you shall learn the ways of Quellious and learn to do as you are told by higher ranking members. It is time for you to do the lesser duties of a young priest. Which will it be? [Retrieve the Peacekeeper staffs] or [battle the undead]?
+        - Condition: `(e.message:findi("new acolyte of peace"))`
+      - Player: "retrieve the Peacekeeper staffs" (link: explicit mention)
+        - NPC say: Then take this note to the woodworker in Toxxulia Forest. His name is Emil Parsini. He shall have the staff to be returned to the temple.
+        - Condition: `(e.message:findi("retrieve the Peacekeeper staffs"))`
+        - Gives Sealed Letter (18833).
+      - Player: "Battle The Undead" (link: explicit mention)
+        - Prompted by player input: "New Acolyte Of Peace"
+        - NPC say: Then you shall venture to Toxxulia Forest. There has been an increase in skeleton sightings lately. I do not know their origin, but I believe that your efforts will reduce their numbers! Take this box. Return it to me when you have filled it with the bones of these undead creatures and combined it. May Quellious' light guide you.
+        - Condition: `(e.message:findi("battle the undead"))`
+        - Gives Box For Bones (17941).
+      - Player: "Important Missions" (link: external event mention)
+        - Prompted by `event_trade`:
+          - NPC say: You have done well, neophyte.Let me add the touch of harmony to finish the job.. Here, then. Take these supplies. I am sure you'll need them. Soon you may be able to assist us in [important missions].
+          - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 13816}))`
+        - NPC say: We have need of skilled priests. We have learned that a High Guard battle staff has been stolen. We require a priest to [track down the staff].
+        - Condition: `(fac <= 4)`
+        - Condition: `(e.message:findi("important missions"))`
+      - Player: "Here To Pay Homage" (link: explicit mention)
+        - Prompted by player input: "Hail"
+        - NPC say: Then respect our temple and keep your prayers silent.
+        - Condition: `(fac <= 4)`
+        - Condition: `(e.message:findi("here to pay homage"))`
 6. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
 7. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
 8. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
 9. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
 10. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
 11. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+    - Dialogue with qeynos/"Wolten Grafe":
+      - Player: "Hail"
+        - NPC say: Hail, noble . Remember to spread the words of Karana throughout the faraway lands on which you shall tread. We of the Temple of Thunder are looking for new members - good people who [wish to join our cause]. Let the call go out!
+        - Condition: `(e.message:findi("hail"))`
+      - Player: "Join The Cause" (link: conversation sequence)
+        - NPC say: That IS good news! If you walk the righteous path of the Rainkeeper, Karana, then you are truly noble. I have need of someone like that. I must find someone to perform a [dangerous mission] or perhaps you would rather seek out the [Rat King] or [crush the undead].
+        - Condition: `(e.message:findi("join the cause"))`
+      - Player: "Crush The Undead" (link: explicit mention)
+        - NPC say: Those who passed generations ago have had their bones exhumed and enchanted. Some evil force plagues this land with these evil skeletons. You will fight for us and crush the skeletons. Take this box and fill it with the bones of those creatures. We will not allow them to rise again and you shall earn our respect. Go forth and fight for Karana!
+        - Condition: `(e.message:findi("crush the undead"))`
+        - Gives Box For Bones (17941).
+      - Player: "Dangerous Mission" (link: explicit mention)
+        - Prompted by player input: "Join The Cause"
+        - NPC say: You must go into the catacombs and find a man named Drosco Finlayer. Pass him this note. He has been deep undercover in the Shrine of Bertoxxulous and will have directions to that vile place. To do this will surely show your allegiance to this temple.
+        - Condition: `(e.message:findi("dangerous mission"))`
+        - Gives Tattered Note (18804).
+      - Player: "Rat King" (link: explicit mention)
+        - Prompted by player input: "Join The Cause"
+        - NPC say: You may try, but no one has truly seen him. I would look in the sewers.
+        - Condition: `(e.message:findi("rat king"))`
 12. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
 13. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
 14. Buy "Aerated Pot Sketch" (62858) from "Elisha Dirtyshoes" (NPC 202134) in `poknowledge`. Base price: 300 copper.
@@ -131,6 +264,16 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 1. Acquisition of "Staff of Living Brambles" (62863) is documented under "Staff of Living Brambles" (62863); obtain another copy if needed.
 2. abysmal/"Reyfin Malakwa", say "Hail". Gives "Ragged Cloth Bag" (62881).
 3. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Threadbare Cloth Bag" (62890).
+    - Dialogue with qinimi/"A Broken Ritesdancer":
+      - Player: "What about the rune fragments?"
+        - NPC message: The worn Taelosian looks up at you defiantly. She studies you a moment and nods. Whatever judgment she was making about you, you seem to have passed. She reaches into her ragged clothing and pulls out a small hunk of rock and hands it to you. She then quickly returns to work.
+          - Reply guard: `(e.other:GetFaction(e.self) <=2)`
+        - NPC message: The worn Taelosian looks up at you discretely, as if looking at you directly would cause physical pain. She shyly hands you a small, worn bag and what appears to be an animal fang. She then holds up six fingers and points at the fang, then points at herself. She then turns quickly away and proceeds to act as if you are not there.
+          - Reply guard: ``
+        - Condition: `(e.message:findi("What about the rune fragments?"))`
+        - Gives Rune Fragment (62867).
+        - Gives Threadbare Cloth Bag (62890).
+        - Gives Undamaged Noc Fang (62864).
 4. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Undamaged Noc Fang" (62864).
 5. Combine in "Threadbare Cloth Bag" (62890): "Undamaged Noc Fang" (62864). Produces "Closed Cloth Bag" (62891). The combine does not fail.
 6. qinimi/"A Broken Ritesdancer", hand "Closed Cloth Bag" (62891). Gives "Rune Fragment" (62867).
@@ -173,6 +316,17 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 26. Alternative: Loot "Chunk of Broken Ancient Stone Worker" (58026) from "A Clay Monolith" (NPC 296051) in `inktuta`; trigger: inktuta/"Zone Status", say "Spawn Golems".
 27. Alternative: Loot "Chunk of Broken Ancient Stone Worker" (58026) from "A Freed Rockbearer" (NPC 291131) in `yxtta`; trigger: yxtta/"Player", say "Stone Attack".
 28. abysmal/"Hiloan O-Yviania", hand "Chunk of Broken Ancient Stone Worker" (58026). Gives "Clump of Refined Ancient Taelosian Clay" (58031).
+    - Dialogue with abysmal/"Hiloan O-Yviania":
+      - Player: "Hail"
+        - NPC emote: glances at you and holds your stare for a moment before speaking.
+        - NPC say: I don't suppose you have any skill at all throwing pots or at the kiln, because if you do I could use your help with some of the more [intricate items] that the fools around here are always breaking.
+        - Condition: `($text=~/hail/i)`
+      - Player: "Intricate Items" (link: explicit mention)
+        - NPC say: I have been given the unsatisfying task of replacing [specialty items] for the gardeners and the folks that deal in poisons and other such things. But I just don't have time for it. I have my own research into the native clay to work on. There appear to be golems made out of a type of clay that was dug up long ago, when this land was much more fertile and magical. The clay of these [ancient golems] is more powerful and useful than the rest. If you are interested in helping Malkidiv out with lesser tasks, talk to him. He can also refine chunks of broken golem for you.
+        - Condition: `($text=~/intricate items/i)`
+      - Player: "Specialty Items" (link: explicit mention)
+        - NPC say: Let's put you to work. You don't have to be a skilled potter to handle this. Oh and, well, I'll need you to get some Clump of Refined Taelosian Golem Clay from Malkidiv. He can refine chunks of golems for you, if you can find some. I won't need the ancient stuff for these tasks. Hand me the clumps and I'll get you started. Work hard for me and I'll reward you with the secret recipe that Malkidiv and I share. And since what I need is more difficult to obtain, I'll be quicker to reward you.
+        - Condition: `($text=~/specialty items/i)`
 29. Combine in Kiln (22): "Insulated Container Sketch" (62875), "Clump of Refined Ancient Taelosian Clay" (58031). Produces "Insulated Container" (62876). Requires Pottery 100. The combine does not fail.
 
 ### "Wrapped Cloth Bag" (62882)
@@ -187,267 +341,227 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 
 Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13.
 
-### 1. althele — say out of balance
+1. eastkarana/"Althele", say "Out Of Balance". Sets `druid_epic` to `1`.
+    - Requires `druid_epic` unset.
+    - Dialogue with eastkarana/"Althele":
+      - Player: "Hail"
+        - NPC say: Hello, friend. Beautiful is what I would call such a day normally, but lately? I sense that something is [out of balance].
+          - Reply guard: `($class eq "Ranger" && (plugin::check_hasitem($client, 20488) || plugin::check_hasitem($client, 62600)))`
+        - Condition: `($text=~/hail/i)`
+        - Sets `ranger_epic` to `1`.
+      - Player: "Your Eyes" (link: conversation sequence)
+        - NPC say: Yes. I cannot see any longer, my sight long since lost in the march of years. By the blessings of Tunare and Karana, though, I still make myself useful.
+        - Condition: `($text=~/your eyes/i)`
+      - Player: "Out Of Balance" (link: explicit mention)
+        - Prompted by player input: "Hail"
+        - NPC say: I don't know for certain what is wrong. It feels like the start of a cold, a sort of tickling at the back of Norrath's throat, if I may make such a poor metaphor. In much the same way that I can sense that you have wielded the power of nature, probably in the form of the weapons known as Swiftwind and Earthcaller, I can sense a power of illness creeping upon the land. Please, if you come across anything suspicious bring it to me. I am worried, this does not feel like a natural sickness to me. Go with the blessing of the Mother and the speed of the Storm, my child.
+          - Reply guard: `($class eq "Ranger" && $client->GetGlobal("ranger_epic") ==1)`
+        - NPC say: I am certain that you would sense it too, had you been so blessed as to be without sight. My sense of the life of Norrath is greatly heightened without the hindrance of vision. As I can sense that you have at your call the power of the lands, perhaps in the form of the Nature Walkers Scimitar. I can feel an unnatural illness creeping about the edges of Norrath. Please, if you come across anything suspicious bring it to me. I am worried about this cold sickness that I can almost taste. Go with the blessing of the Mother and the speed of the Storm, my child.
+          - Reply guard: `($class eq "Druid" && plugin::check_hasitem($client, 20490) or plugin::check_hasitem($client, 62809))`
+        - NPC say: I sense something foreboding, young one, but you should think nothing of it. The sons and daughters of nature will be able to deal with this problem.
+          - Reply guard: ``
+        - Condition: `($text=~/out of balance/i)`
+        - Sets `druid_epic` to `1`.
 
-Zone: `eastkarana`.
+2. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
+    - Hand in x1: "Wrapped Mangled Head" (62848).
+    - Prerequisite: "Wrapped Mangled Head" (62848). See section 0.
+    - Gives "Mangled Head" (62827).
+    - Dialogue with qrg/"Niera Farbreeze":
+      - Player: "Tune"
+        - NPC say: Ohh. Just a little song my mother taught me when I was young. It speaks of the earth, the sky, and the sparkling stars above, always there.
+        - Condition: `(e.message:findi("tune") or e.message:findi("humming"))`
+      - Player: "Humming" (link: conversation sequence)
+        - NPC say: Ohh. Just a little song my mother taught me when I was young. It speaks of the earth, the sky, and the sparkling stars above, always there.
+        - Condition: `(e.message:findi("tune") or e.message:findi("humming"))`
+      - Player: "Always There" (link: explicit mention)
+        - NPC say: Aye, always there. Like this small bag I wear around my neck. The last gift of my dying mother. It holds a fine dust, a dust she collected during her short life, that she believed brought her luck. It's speckled, flecked as the night sky is with stars.
+        - Condition: `(e.message:findi("always there"))`
+      - Player: "Speckled Flecked Dust" (link: conversation sequence)
+        - NPC say: I've had this little bit of dust, all I have of my mother, for many years now. It's the only reminder I have of her. She said it was special, magical, a warmth to help me through the nights. Even if my life were in the balance, I would have a hard time giving it up.
+        - Condition: `(e.message:findi("speckled flecked dust"))`
+      - Player: "Idea" (link: external event mention)
+        - Prompted by `event_trade`:
+          - NPC say: You say that this Bouncer told you that he'd thrown someone in the river with grass in his pants? How very strange. You should search the river, see if you can find anything, though I don't know how you could expect to find anything in that mess. Hmm... these scales give me an [idea].
+          - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 62814}))`
+        - NPC say: Well, you could enlist the aid of the animals. Unfortunately, you can't get a lot of useful information out of a fish or a bird in normal circumstances. There might be a way, however, to get some very specific information. There is lore that suggests that a simple charm can be made that will allow you to know the thoughts of a befriended animal, but only about a particular subject. You need four things, magical clay, a body part from the animal you wish to befriend, something on the subject that you wish to know about and some water. You also need to use a kiln, so I hope you are a talented potter. Now, this only works on the animal from which the body part is taken or one of its direct descendents. You may have to try a lot of animals to find the right one.
+        - NPC say: You already have a body part from an alligator in Feerrott. There is magical clay to be found in Taelosia, from what I hear. All you need then is something to focus the animal's mind on. Food is probably the best thing. Gators eat just about anything, so there's a chance you can find one that knows where that intruder with the grass ended up if you can get an alligator to tell you where it's eaten. I'd suggest a good slab of the best piranha meat you can find. It's worth a try. At this point any help would be good. I've been looking at this disease and it is nasty in a subtle way. It barely infects the plants, causes them little harm, but it spreads quickly. So quickly, in fact, that it must be magical. We need more information to stop it.
+        - Condition: `(e.message:findi("idea") and e.other:HasItem(62817))`
 
-> I don
+3. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
+    - Hand in x1: "Healing Plants" (62842).
+    - Prerequisite: "Healing Plants" (62842). See section 0.
+    - Gives "Niera's Healing Notes" (62849).
 
-Sets `druid_epic` to `1`.
+4. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
+    - Hand in x1: "Runed Skull" (62838).
+    - Hand in x1: "Niera's Healing Notes" (62849).
+    - Prerequisite: "Runed Skull" (62838). See section 0.
+    - Prerequisite: "Niera's Healing Notes" (62849). See section 0.
+    - Gives "Niera's Research Notes" (62843).
 
-- Needs `druid_epic` unset.
-In script order:
+5. freportw/"Shana Liskia", hand "Crystal Fragment" (62852) + "Crystal Fragment" (62852) + "Crystal Fragment" (62852). Sets `druid_epic` to `5`.
+    - Hand in x1: "Crystal Fragment" (62852).
+    - Loot "Crystal Fragment" (62852) from "Finnelzi Springworthy" in `southkarana`.
+    - Loot "Crystal Fragment" (62852) from "Rendolf Deathbringer" in `southkarana`.
+    - Loot "Crystal Fragment" (62852) from "Tehana Elsent" in `southkarana`.
+    - Gives "Crystal Fragment" (62852).
+    - Gives "Small Padded Bag" (62853).
+    - Dialogue with freportw/"Shana Liskia":
+      - Player: "Hail"
+        - NPC say: Hail and well met . I am Shana Liskia. Enchantress of Freeport. I have studied my art for years here in our wonderful academy. I am also delighted to meet and teach those that come here to gain knowledge. My specialty however lies in Beguiling so I like to train young newcomers to our academy. Are you studying the ways of a [Magician] an [Enchanter] or a [Wizard]??
+        - Condition: `(e.message:findi("hail"))`
+      - Player: "Magician" (link: explicit mention)
+        - NPC say: Wonderful! Let me be the first to tell you that your training here will be top notch and you will learn all that is to be known about being an enchanter should you put forth the willingness to learn. I will walk you through your early training and assist you in your hunting and gathering skills. I have created a [special sewing kit] that I present to all of the new initiates.
+        - Condition: `(e.message:findi("magician") or e.message:findi("enchanter") or e.message:findi("wizard"))`
+      - Player: "Enchanter" (link: explicit mention)
+        - NPC say: Wonderful! Let me be the first to tell you that your training here will be top notch and you will learn all that is to be known about being an enchanter should you put forth the willingness to learn. I will walk you through your early training and assist you in your hunting and gathering skills. I have created a [special sewing kit] that I present to all of the new initiates.
+        - Condition: `(e.message:findi("magician") or e.message:findi("enchanter") or e.message:findi("wizard"))`
+      - Player: "Wizard" (link: explicit mention)
+        - Prompted by player input: "Hail"
+        - NPC say: Wonderful! Let me be the first to tell you that your training here will be top notch and you will learn all that is to be known about being an enchanter should you put forth the willingness to learn. I will walk you through your early training and assist you in your hunting and gathering skills. I have created a [special sewing kit] that I present to all of the new initiates.
+        - Condition: `(e.message:findi("magician") or e.message:findi("enchanter") or e.message:findi("wizard"))`
+      - Player: "Diseases Of The Mind" (link: conversation sequence)
+        - NPC say: I study the mind. My most recent research deals with, well, I'd rather not discuss that. Unless you need something specific, I don't really have time for long random conversations right now.
+        - Condition: `(e.message:findi("diseases of the mind"))`
+      - Player: "Special Sewing Kit" (link: explicit mention)
+        - Prompted by player input: "Magician"
+        - NPC say: This kit that I speak of is one that is able to magically infuse different components into materials used for creating Arcane Scientists Armor. The components that you use will be collected from numerous different areas and shops in Freeport. You will use these materials along with patterns that I will present you with to create your armor. Once you are [ready to begin] I will present you with your Enchanted Sewing Kit.
+        - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
+        - Condition: `(e.message:findi("special sewing kit"))`
+      - Player: "Ready To Begin" (link: explicit mention)
+        - NPC say: Very well. Here you are . in this box you will combine specific component recipes as I mentioned before. When you are ready to attempt a specific piece you must tell me what piece you [want] to craft. For example if you had intent on crafting a cap you would say. [I want to craft a cap]. I can offer you the recipes for Arcane Scientists [Caps], [Bracers], [Sleeves], [Sandals], [Trousers], [Gloves] and [Robes]. I must also suggest that you attempt your robe last due to the difficult nature of collecting the correct components.
+        - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
+        - Condition: `(e.message:findi("ready to begin"))`
+        - Gives Enchanted Sewing Kit (17260).
+      - Player: "Sleeve" (link: explicit mention)
+        - NPC say: Sleeves will be a great and necessary addition to your armor. To create your sleeve material you will need to combine 2 Woven Spider Silks, 2 Bone Chips, 1 Spider Legs and Cloth Sleeves in your assembly kit. Once you have created the proper material take it to a loom along with this mold to fashion your very own Arcane Scientists Sleeves.
+        - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
+        - Condition: `(e.message:findi("sleeve"))`
+        - Gives Enchanted Sleeves Pattern (22586).
+      - Player: "Bracer" (link: explicit mention)
+        - Prompted by player input: "Ready To Begin"
+        - NPC say: A wise choice indeed, having the correct wrist protection is very important in spell channeling. To create your bracer material you will need to combine 1 Woven Spider Silk, 1 Desert Tarantula Chitin, 1 Armadillo Tooth and a Cloth wristband in your assembly kit. Once you have created the proper material take it to a loom along with this mold to fashion your very own Arcane Scientists Bracer.
+        - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
+        - Condition: `(e.message:findi("bracer"))`
+        - Gives Enchanted Bracer Pattern (22584).
+      - Player: "Cap" (link: explicit mention)
+        - Prompted by player input: "Ready To Begin"
+        - NPC say: A cap will keep you safe from any attackers as well as the elements. To create your cap material you will need to combine 2 Woven Spider Silks, 1 Snake Fang, 1 Chunk of Meat and a Cloth Cap in your assembly kit. Once you have created the proper material take it to a loom along with this mold to fashion your very own Arcane Scientists Cap.
+        - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
+        - Condition: `(e.message:findi("cap"))`
+        - Gives Enchanted Cap Pattern (22583).
+      - Player: "Glove" (link: explicit mention)
+        - Prompted by player input: "Ready To Begin"
+        - NPC say: Gloves are very important for your early training especially Isola. While you are learning your first set of incantations you should not have to worry about any injuries to your hands. To create your glove material you will need to combine 3 Woven Spider Silks, 1 Giant Scarab Brain, 1 High Quality Cat Pelt 1 Zombie Skin and 1 Large Leaf Scarab Leg in your assembly kit. Once you have created the proper material take it to a loom along with this mold to fashion your very own Arcane Scientists Gloves.
+        - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
+        - Condition: `(e.message:findi("glove"))`
+        - Gives Enchanted Gloves Pattern (22588).
+      - Player: "Sandal" (link: explicit mention)
+        - Prompted by player input: "Ready To Begin"
+        - NPC say: Sandals will keep you save from any harmful things you may walk in, it is a good idea to have them. To create your sandal material you will need to combine 3 Woven Spider Silks, 1 Coyote Pelt, 2 Black Bear Paws, 1 Urticating Hairs and Cloth Sandals in your assembly kit. Once you have created the proper material take it to a loom along with this mold to fashion your very own Arcane Scientists Sandals.
+        - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
+        - Condition: `(e.message:findi("sandal"))`
+        - Gives Enchanted Sandals Pattern (22585).
+      - Player: "Trouser" (link: explicit mention)
+        - Prompted by player input: "Ready To Begin"
+        - NPC say: I would always recommend pants to all my new students since they are a very important part of your armor set. To create your trouser material you will need to combine 4 Woven Spider Silks, 1 Embalming Dust, 1 Rotting Zombie Skull and 1 Armadillo Tail in your assembly kit. Once you have created the proper material take it to a loom along with this mold to fashion your very own Arcane Scientists Trousers.
+        - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
+        - Condition: `(e.message:findi("trouser"))`
+        - Gives Enchanted Trousers Pattern (22587).
+      - Player: "Robe" (link: explicit mention)
+        - Prompted by player input: "Ready To Begin"
+        - NPC say: I am very pleased to see that you have progressed through your armor pieces so quickly. I am also proud to see that you are ready to attempt your robe! To create your robe material you will need to combine 5 Woven Spider Silks, 1 Snake Bile, 1 Cutthroat Golden Tooth, 1 Shadow Wolf Tibia, 1 Orc Prayer Beads and 1 Cloth Shirt in your assembly kit. Once you have created the proper material take it to a loom along with this mold to fashion your very own Arcane Scientists Robe. Be sure to come back to see me for a [final assignment] after you have completed your robe.
+        - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
+        - Condition: `(e.message:findi("robe"))`
+        - Gives Enchanted Robe Pattern (22589).
+      - Player: "Final Assignment" (link: explicit mention)
+        - NPC say: I have a trinket that was given to me by my mother a long time ago. Before she died I told her I would always keep it close to me. Recently, some militia officers came in to our academy and confiscated anything that appeared to be valuable. Fearing for my life I did not fight to keep the necklace my mother gave me. The officer that took it was named Teridsan. If you should find him you have my permission to kill him if that's what it takes to get my necklace back. Return to me when you have my necklace along with 2 Lion Teeth.
+        - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
+        - Condition: `(e.message:findi("final assignment"))`
 
-1. Sets `druid_epic` to `1`.
+6. abysmal/"Silanda Leafdew", hand "Mind Crystal" (62846). Sets `druid_epic` to `6`.
+    - Hand in x1: "Mind Crystal" (62846).
+    - Prerequisite: "Mind Crystal" (62846). See section 0.
+    - Gives "Mind Crystal" (62846).
+    - Dialogue with abysmal/"Silanda Leafdew":
+      - Player: "Hail"
+        - NPC say: Hi. It's a wonderful view. I'm not sure that it makes up for what we've [done] to get here, though.
+        - Condition: `e.message:findi("hail")`
+      - Player: "Stabilizer" (link: conversation sequence)
+        - NPC say: A stabilizer? Well, there are several in nature. What do you need it for?
+        - Condition: `qglobals["druid_epic"] ~= nil and qglobals["druid_epic"] == "5" and e.message:findi("stabilizer")`
+      - Player: "I need to purify a Mind Crystal" (link: conversation sequence)
+        - NPC say: Really? I have been consulted about the Mind Crystal, but I have not had the chance to see it yet. Please, let me see this crystal.
+        - Condition: `qglobals["druid_epic"] ~= nil and qglobals["druid_epic"] == "5" and e.message:findi("I need to purify a Mind Crystal")`
 
-
-### 2. niera farbreeze — hand 62848
-
-Zone: `qrg`.
-
-Sets `druid_epic` to `2`.
-
-- Turn in x1: Wrapped Mangled Head (62848).
-In script order:
-
-1. Sets `druid_epic` to `2`.
-2. Gives Mangled Head (62827).
-
-
-How the items are reached:
-
-- Wrapped Mangled Head (62848)
-  - Prerequisite: "Wrapped Mangled Head" (62848). See section 0.
-
-### 3. niera farbreeze — hand 62842
-
-Zone: `qrg`.
-
-Sets `druid_epic` to `3`.
-
-- Turn in x1: Healing Plants (62842).
-In script order:
-
-1. Sets `druid_epic` to `3`.
-2. Gives Niera's Healing Notes (62849).
-
-
-How the items are reached:
-
-- Healing Plants (62842)
-  - Prerequisite: "Healing Plants" (62842). See section 0.
-
-### 4. niera farbreeze — hand 62838+62849
-
-Zone: `qrg`.
-
-Sets `druid_epic` to `4`.
-
-- Turn in x1: Runed Skull (62838).
-- Turn in x1: Niera's Healing Notes (62849).
-In script order:
-
-1. Sets `druid_epic` to `4`.
-2. Gives Niera's Research Notes (62843).
-
-
-How the items are reached:
-
-- Runed Skull (62838)
-  - Prerequisite: "Runed Skull" (62838). See section 0.
-- Niera's Healing Notes (62849)
-  - Prerequisite: "Niera's Healing Notes" (62849). See section 0.
-
-### 5. shana liskia — hand 62852+62852+62852
-
-Zone: `freportw`.
-
-Sets `druid_epic` to `5`.
-
-- Turn in x1: Crystal Fragment (62852).
-In script order:
-
-1. Sets `druid_epic` to `5`.
-2. Gives Crystal Fragment (62852).
-3. Gives Small Padded Bag (62853).
-
-
-How the items are reached:
-
-- Crystal Fragment (62852)
-  - Loot "Crystal Fragment" (62852) from "Finnelzi Springworthy" in `southkarana`.
-  - Loot "Crystal Fragment" (62852) from "Rendolf Deathbringer" in `southkarana`.
-  - Loot "Crystal Fragment" (62852) from "Tehana Elsent" in `southkarana`.
-
-### 6. silanda leafdew — hand 62846
-
-Zone: `abysmal`.
-
-Sets `druid_epic` to `6`.
-
-- Turn in x1: Mind Crystal (62846).
-In script order:
-
-1. Sets `druid_epic` to `6`.
-2. Gives Mind Crystal (62846).
-
-
-How the items are reached:
-
-- Mind Crystal (62846)
-  - Prerequisite: "Mind Crystal" (62846). See section 0.
-
-### 7. silanda leafdew — hand 62857
-
-Zone: `abysmal`.
-
-Sets `druid_epic` to `7`.
-
-- Turn in x1: Clear Mind Crystal (62857).
-In script order:
-
-1. Sets `druid_epic` to `7`.
-2. Gives Clear Mind Crystal (62857).
-
-
-How the items are reached:
-
-- Clear Mind Crystal (62857)
-  - Prerequisite: "Clear Mind Crystal" (62857). See section 0.
-
-### 8. global player — combine recipe 19892
-
-Zone: `global`.
-
-Sets `druid_epic` to `8`.
-
-In script order:
-
-1. Sets `druid_epic` to `8`.
-
-
-Combine:
-
-- `recipe:19892` is combined in Reinforced Aerated Pot (62861).
-  - Prerequisite: "Reinforced Aerated Pot" (62861). See section 0.
-  - Put in x1: Living Brambles Seed (62850).
-    - Prerequisite: "Living Brambles Seed" (62850). See section 0.
-  - Put in x1: Clear Mind Crystal (62857).
+7. abysmal/"Silanda Leafdew", hand "Clear Mind Crystal" (62857). Sets `druid_epic` to `7`.
+    - Hand in x1: "Clear Mind Crystal" (62857).
     - Prerequisite: "Clear Mind Crystal" (62857). See section 0.
-  - Put in x1: Blackened Earth (62862).
-    - Kill kithicor/"Blackened Tree Limb". Spawns "Blackened Dryad" (20301).
-    - Loot "Blackened Earth" (62862) from "Blackened Dryad".
-  - Produces Staff of Living Brambles (62863).
-  - The combine does not fail.
+    - Gives "Clear Mind Crystal" (62857).
 
-### 9. reyfin malakwa — say hail
+8. global/"Global Player", combine recipe 19892. Sets `druid_epic` to `8`.
+    - `recipe:19892` is combined in Reinforced Aerated Pot (62861).
+      - Prerequisite: "Reinforced Aerated Pot" (62861). See section 0.
+      - Put in x1: Living Brambles Seed (62850).
+        - Prerequisite: "Living Brambles Seed" (62850). See section 0.
+      - Put in x1: Clear Mind Crystal (62857).
+        - Prerequisite: "Clear Mind Crystal" (62857). See section 0.
+      - Put in x1: Blackened Earth (62862).
+        - Kill kithicor/"Blackened Tree Limb". Spawns "Blackened Dryad" (20301).
+        - Loot "Blackened Earth" (62862) from "Blackened Dryad".
+      - Produces Staff of Living Brambles (62863).
+      - The combine does not fail.
 
-Zone: `abysmal`.
+9. abysmal/"Reyfin Malakwa", say "Hail". Sets `druid_epic` to `9`.
+    - Requires `druid_epic` <9.
+    - Dialogue with abysmal/"Reyfin Malakwa":
+      - Player: "Hail"
+        - NPC emote: stares silently out over the ocean towards the magical wards protecting the ship from the unyielding onslaught of the pounding waves. He jumps back terrorized when he realizes your presence. His visage calms a bit when he senses you mean him no immediate harm. He ponders you timidly for a moment and then leans down and begins drawing something in the sea grime that covers one of the boxes. You study his sketch for a moment and begin to understand that it is a rune of sorts. Three arching lines join in the center to form a sort of Y-shape.
+        - NPC message: The bedraggled Taelosian refugee looks up at you after drawing the symbol and looks you directly in the eyes for the first time. He seems to draw strength from your presence and you sense that he feels the power of nature that you carry. He smiles weakly at you and then bends down and erases the symbol by smearing around the surrounding grime. He then draws a new symbol. This symbol is much more complicated, it is an arch with rods protruding from either side at the base. The rod to the right splits into four branches, the one on the left ends in a swirl. He looks up at you with a pleading look in his eyes as he hands you a small bag that appears to be made from his own clothing
+          - Reply guard: `(plugin::check_hasitem($client, 62863))`
+        - Condition: `($text=~/hail/i)`
+        - Sets `druid_epic` to `9`.
+        - Gives Ragged Cloth Bag (62881).
 
-> stares silently out over the ocean towards the magical wards protecting the ship from the unyielding onslaught of the pounding waves. He jumps back terrorize...
-
-Sets `druid_epic` to `9`.
-
-- Needs `druid_epic` <9.
-In script order:
-
-1. Sets `druid_epic` to `9`.
-
-
-### 10. reyfin malakwa — hand 62882
-
-Zone: `abysmal`.
-
-Sets `druid_epic` to `10`.
-
-- Turn in x1: Wrapped Cloth Bag (62882).
-In script order:
-
-1. Sets `druid_epic` to `10`.
-2. Gives Rune of Yuisaha (62868).
-
-
-How the items are reached:
-
-- Wrapped Cloth Bag (62882)
-  - Prerequisite: "Wrapped Cloth Bag" (62882). See section 0.
+10. abysmal/"Reyfin Malakwa", hand "Wrapped Cloth Bag" (62882). Sets `druid_epic` to `10`.
+    - Hand in x1: "Wrapped Cloth Bag" (62882).
+    - Prerequisite: "Wrapped Cloth Bag" (62882). See section 0.
+    - Gives "Rune of Yuisaha" (62868).
 
 Alternative or repeat transition to `druid_epic` = `10` (not an additional required stage).
 
-### 10. historian finrazel — hand 62868
+10. nedaria/"Historian Finrazel", hand "Rune of Yuisaha" (62868). Sets `druid_epic` to `10`.
+    - Hand in x1: "Rune of Yuisaha" (62868).
+    - Prerequisite: "Rune of Yuisaha" (62868). See section 0.
+    - Dialogue with nedaria/"Historian Finrazel":
+      - Player: "Plan To Find" (link: external event mention)
+        - Prompted by `event_trade`:
+          - NPC say: Well, this is an amazing find! I didn't think any of his runes survived the invasion.' The historian cleans the rune with a special solution, then hands it back to you. 'Let me tell you what I know of Yuisaha. He was a great rain spirit, perhaps the greatest patron of the Taelosians. He was manifested when the Muramites invaded Talosia so long ago. He was captured by the army and brought back to the Plane of Discord. What happened to Yuisaha then is hard to say, but there is a separate story of a powerful rain spirit that was frozen during a battle and shattered. The story claims that the frozen shards of the spirit were divided among the leaders of the winning army. Where they have gone since then, or if they still exist, nobody can tell. Do you really [plan to find] him?
+          - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 62868}))`
+        - NPC say: Then you'll need this. I use it to store magical potions, but it might work for holding frozen pieces of a greater rain spirit.' He shrugs. 'I hope so, anyway. I don't exactly see a lot of frozen rain spirits.' He smiles. 'I wish you luck, friend. Rescuing such a being would be a boon for all of Norrath.
+        - Condition: `(e.message:findi("plan to find") and qglobals["druid_epic"] == "10")`
+        - Gives Thick Leather Bag (62884).
 
-Zone: `nedaria`.
+11. nedaria/"Historian Finrazel", hand "Synched Leather Bag" (62885). Sets `druid_epic` to `11`.
+    - Hand in x1: "Synched Leather Bag" (62885).
+    - Prerequisite: "Synched Leather Bag" (62885). See section 0.
+    - Gives "Synched Leather Bag" (62885).
 
-Sets `druid_epic` to `10`.
+12. abysmal/"Reyfin Malakwa", hand "Synched Leather Bag" (62885). Sets `druid_epic` to `12`.
+    - Hand in x1: "Synched Leather Bag" (62885).
+    - Prerequisite: "Synched Leather Bag" (62885). See section 0.
+    - Gives "Synched Leather Bag" (62885).
 
-- Turn in x1: Rune of Yuisaha (62868).
-In script order:
-
-1. Sets `druid_epic` to `10`.
-
-
-How the items are reached:
-
-- Rune of Yuisaha (62868)
-  - Prerequisite: "Rune of Yuisaha" (62868). See section 0.
-
-### 11. historian finrazel — hand 62885
-
-Zone: `nedaria`.
-
-Sets `druid_epic` to `11`.
-
-- Turn in x1: Synched Leather Bag (62885).
-In script order:
-
-1. Sets `druid_epic` to `11`.
-2. Gives Synched Leather Bag (62885).
-
-
-How the items are reached:
-
-- Synched Leather Bag (62885)
-  - Prerequisite: "Synched Leather Bag" (62885). See section 0.
-
-### 12. reyfin malakwa — hand 62885
-
-Zone: `abysmal`.
-
-Sets `druid_epic` to `12`.
-
-- Turn in x1: Synched Leather Bag (62885).
-In script order:
-
-1. Sets `druid_epic` to `12`.
-2. Gives Synched Leather Bag (62885).
-
-
-How the items are reached:
-
-- Synched Leather Bag (62885)
-  - Prerequisite: "Synched Leather Bag" (62885). See section 0.
-
-### 13. global player — combine recipe 19909
-
-Zone: `global`.
-
-Sets `druid_epic` to `13`.
-
-In script order:
-
-1. Sets `druid_epic` to `13`.
-
-
-Combine:
-
-- `recipe:19909` is combined in Insulated Container (62876).
-  - Prerequisite: "Insulated Container" (62876). See section 0.
-  - Put in x1: Essence of Rainfall (62883).
-    - Given by global/"Global Player", combine recipe 19908.
-  - Put in x1: Staff of Living Brambles (62863).
-    - Prerequisite: "Staff of Living Brambles" (62863). See section 0.
-  - Produces Staff of Everliving Brambles (62880).
-  - The combine does not fail.
+13. global/"Global Player", combine recipe 19909. Sets `druid_epic` to `13`.
+    - `recipe:19909` is combined in Insulated Container (62876).
+      - Prerequisite: "Insulated Container" (62876). See section 0.
+      - Put in x1: Essence of Rainfall (62883).
+        - Given by global/"Global Player", combine recipe 19908.
+      - Put in x1: Staff of Living Brambles (62863).
+        - Prerequisite: "Staff of Living Brambles" (62863). See section 0.
+      - Produces Staff of Everliving Brambles (62880).
+      - The combine does not fail.
 
 ### Steps on `druid_epic` that do not change it
 

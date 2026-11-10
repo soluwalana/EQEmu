@@ -11,12 +11,60 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 ### "Water Flask" (13006)
 
 1. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+    - Dialogue with erudnext/"Lumi Stergnon":
+      - Player: "Hail"
+        - NPC say: Peace and tranquility be with you. . Are you a [new acolyte of peace] or are you [here to pay homage] to the child of tranquility?
+        - Condition: `(e.message:findi("hail"))`
+      - Player: "New Acolyte Of Peace" (link: explicit mention)
+        - NPC say: Then you shall learn the ways of Quellious and learn to do as you are told by higher ranking members. It is time for you to do the lesser duties of a young priest. Which will it be? [Retrieve the Peacekeeper staffs] or [battle the undead]?
+        - Condition: `(e.message:findi("new acolyte of peace"))`
+      - Player: "retrieve the Peacekeeper staffs" (link: explicit mention)
+        - NPC say: Then take this note to the woodworker in Toxxulia Forest. His name is Emil Parsini. He shall have the staff to be returned to the temple.
+        - Condition: `(e.message:findi("retrieve the Peacekeeper staffs"))`
+        - Gives Sealed Letter (18833).
+      - Player: "Battle The Undead" (link: explicit mention)
+        - Prompted by player input: "New Acolyte Of Peace"
+        - NPC say: Then you shall venture to Toxxulia Forest. There has been an increase in skeleton sightings lately. I do not know their origin, but I believe that your efforts will reduce their numbers! Take this box. Return it to me when you have filled it with the bones of these undead creatures and combined it. May Quellious' light guide you.
+        - Condition: `(e.message:findi("battle the undead"))`
+        - Gives Box For Bones (17941).
+      - Player: "Important Missions" (link: external event mention)
+        - Prompted by `event_trade`:
+          - NPC say: You have done well, neophyte.Let me add the touch of harmony to finish the job.. Here, then. Take these supplies. I am sure you'll need them. Soon you may be able to assist us in [important missions].
+          - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 13816}))`
+        - NPC say: We have need of skilled priests. We have learned that a High Guard battle staff has been stolen. We require a priest to [track down the staff].
+        - Condition: `(fac <= 4)`
+        - Condition: `(e.message:findi("important missions"))`
+      - Player: "Here To Pay Homage" (link: explicit mention)
+        - Prompted by player input: "Hail"
+        - NPC say: Then respect our temple and keep your prayers silent.
+        - Condition: `(fac <= 4)`
+        - Condition: `(e.message:findi("here to pay homage"))`
 2. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
 3. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
 4. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
 5. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
 6. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
 7. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+    - Dialogue with qeynos/"Wolten Grafe":
+      - Player: "Hail"
+        - NPC say: Hail, noble . Remember to spread the words of Karana throughout the faraway lands on which you shall tread. We of the Temple of Thunder are looking for new members - good people who [wish to join our cause]. Let the call go out!
+        - Condition: `(e.message:findi("hail"))`
+      - Player: "Join The Cause" (link: conversation sequence)
+        - NPC say: That IS good news! If you walk the righteous path of the Rainkeeper, Karana, then you are truly noble. I have need of someone like that. I must find someone to perform a [dangerous mission] or perhaps you would rather seek out the [Rat King] or [crush the undead].
+        - Condition: `(e.message:findi("join the cause"))`
+      - Player: "Crush The Undead" (link: explicit mention)
+        - NPC say: Those who passed generations ago have had their bones exhumed and enchanted. Some evil force plagues this land with these evil skeletons. You will fight for us and crush the skeletons. Take this box and fill it with the bones of those creatures. We will not allow them to rise again and you shall earn our respect. Go forth and fight for Karana!
+        - Condition: `(e.message:findi("crush the undead"))`
+        - Gives Box For Bones (17941).
+      - Player: "Dangerous Mission" (link: explicit mention)
+        - Prompted by player input: "Join The Cause"
+        - NPC say: You must go into the catacombs and find a man named Drosco Finlayer. Pass him this note. He has been deep undercover in the Shrine of Bertoxxulous and will have directions to that vile place. To do this will surely show your allegiance to this temple.
+        - Condition: `(e.message:findi("dangerous mission"))`
+        - Gives Tattered Note (18804).
+      - Player: "Rat King" (link: explicit mention)
+        - Prompted by player input: "Join The Cause"
+        - NPC say: You may try, but no one has truly seen him. I would look in the sewers.
+        - Condition: `(e.message:findi("rat king"))`
 
 ### "Assembled Map" (56015)
 
@@ -78,170 +126,146 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 
 Values written: 1, 2, 3, 4, 5, 7.
 
-### 1. tavon vastsea — say hail
+1. nedaria/"Tavon Vastsea", say "Hail". Sets `cleric_epic` to `1`.
+    - Requires `cleric_epic` unset.
+    - Requires `cleric15pre` ==1.
+    - Dialogue with nedaria/"Tavon Vastsea":
+      - Player: "Hail"
+        - NPC say: I hear you were able to put that shield to some use. That is good to hear. I was able to find some news on the leader, someone matching his description has been seen on the other side of the Wayfarer's portal in the Realm of Discord. Please visit my friend Cryssa, at the camp in Discord. She has been working on tracking the Disciple's movement in Discord.
+          - Reply guard: `(e.other:HasItem(9955) and qglobals["cleric20"] ~= nil)`
+        - NPC say: Greetings , I see you helped my brother in eradicating the Plasmatic Priests, stopping Zordak Ragefire, and saved Norrath from an eternity of flames. We need to [ call you to duty ] again
+          - Reply guard: `(e.other:HasItem(5532) or qglobals["cleric15pre"] == "1")`
+        - NPC say: Greetings , I am afraid that I need someone that I can [trust] with this task, these are dark times, and it is hard to tell friend from foe.
+          - Reply guard: ``
+        - Condition: `(e.other:Class() == "Cleric")`
+        - Condition: `(e.message:findi("hail"))`
+        - Sets `cleric20` to `2`.
+        - Sets `cleric_epic` to `1`.
+      - Player: "Call You To Duty" (link: explicit mention)
+        - NPC say: This time the crisis threatens not only Norrath, but all of existence as we know it. Invaders from the Realm of Discord have transversed time and space to conquer this realm. The invaders, these Muramites, are not where the true threat lies. All of Norrath has banded together to stop these invaders, we have managed to halt their incursion for the time being. There are, however, whispers of a [ dark faction ] within our own, Norrathians who see our fight as futile, and are looking to swear fealty to the forces of the Legion.
+        - Condition: `(e.other:Class() == "Cleric")`
+        - Condition: `(e.message:findi("call you to duty"))`
+      - Player: "Dark Faction" (link: explicit mention)
+        - NPC say: We don't know much more about them. As I said, they are just whispers, but whispers in unison are loud enough for deaf ears. We cannot afford to present anything short of a unified front, should the Legion push toward Norrath with its full force. We need your assistance to find and exterminate these traitors. I can give you what little [ information ] I have, hopefully you will be able to track these betrayers to their leader.
+        - Condition: `(e.other:Class() == "Cleric")`
+        - Condition: `(e.message:findi("dark faction"))`
+      - Player: "Information" (link: explicit mention)
+        - NPC say: Travel to Taelosia. There you will find a young native, named Jomaj who had some suspicious dealings with someone claiming they were with the wayfarer's brotherhood. This is the closest I have to direction, gather information from this Taelosian, and bring it to my friend Shav on the Thorn. Find proof as to whether or not these traitors actually exist and return it to me.
+        - Condition: `(e.other:Class() == "Cleric")`
+        - Condition: `(e.message:findi("information"))`
+      - Player: "Trust" (link: explicit mention)
+        - Prompted by player input: "Hail"
+        - NPC say: Hmmm, well I think I have a task I can entrust you with. Speak to my brother, tell him that I sent you to him. Earn his trust, and you shall have mine
+        - Condition: `(e.other:Class() == "Cleric")`
+        - Condition: `(e.message:findi("trust"))`
 
-Zone: `nedaria`.
-
-> I hear you were able to put that shield to some use. That is good to hear. I was able to find some news on the leader, someone matching his description has b...
-
-Sets `cleric_epic` to `1`.
-
-- Needs `cleric_epic` unset.
-- Needs `cleric15pre` ==1.
-In script order:
-
-1. Sets `cleric_epic` to `1`.
-
-
-Subquest `cleric15pre`:
-
+    - Subquest `cleric15pre`:
 #### `cleric15pre`
 
 Values written: 1.
 
-##### 1. omat vastsea — hand 5768+6505+6506+56010
-
-Zone: `timorous`.
-
-Sets `cleric15pre` to `1`.
-
-- Turn in x1: Head of High Priestess Shima (5768).
-- Turn in x1: Head of High Priest Maltan (6505).
-- Turn in x1: Head of High Priest Valon (6506).
-- Turn in x1: Talisman of the Plasmatic Priests (56010).
-In script order:
-
-1. Sets `cleric15pre` to `1`.
-
-
-How the items are reached:
-
-- Head of High Priestess Shima (5768)
-  - timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
-  - Hand "Talisman of the Plasmatic Priests" (56010) to lavastorm/"Laura Rako". Spawns "High Priestess Shima" (27128). Loot "Head of High Priestess Shima" (5768) from "High Priestess Shima".
-- Head of High Priest Maltan (6505)
-  - timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
-  - Hand "Talisman of the Plasmatic Priests" (56010) to greatdivide/"Gavon Morant". Spawns "High Priest Maltan" (118211). Loot "Head of High Priest Maltan" (6505) from "High Priest Maltan".
-- Head of High Priest Valon (6506)
-  - timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
-  - Hand "Talisman of the Plasmatic Priests" (56010) to scarlet/"Jimmic Adle". Spawns "High Priest Valon" (175308). Loot "Head of High Priest Valon" (6506) from "High Priest Valon".
-- Talisman of the Plasmatic Priests (56010)
-  - Given by timorous/"Omat Vastsea", say "Destruction".
+1. timorous/"Omat Vastsea", hand "Head of High Priestess Shima" (5768) + "Head of High Priest Maltan" (6505) + "Head of High Priest Valon" (6506) + "Talisman of the Plasmatic Priests" (56010). Sets `cleric15pre` to `1`.
+    - Hand in x1: "Head of High Priestess Shima" (5768).
+    - Hand in x1: "Head of High Priest Maltan" (6505).
+    - Hand in x1: "Head of High Priest Valon" (6506).
+    - Hand in x1: "Talisman of the Plasmatic Priests" (56010).
+    - timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
+    - Hand "Talisman of the Plasmatic Priests" (56010) to lavastorm/"Laura Rako". Spawns "High Priestess Shima" (27128). Loot "Head of High Priestess Shima" (5768) from "High Priestess Shima".
+    - timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
+    - Hand "Talisman of the Plasmatic Priests" (56010) to greatdivide/"Gavon Morant". Spawns "High Priest Maltan" (118211). Loot "Head of High Priest Maltan" (6505) from "High Priest Maltan".
+    - timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
+    - Hand "Talisman of the Plasmatic Priests" (56010) to scarlet/"Jimmic Adle". Spawns "High Priest Valon" (175308). Loot "Head of High Priest Valon" (6506) from "High Priest Valon".
+    - Given by timorous/"Omat Vastsea", say "Destruction".
+    - Dialogue with timorous/"Omat Vastsea":
+      - Player: "Hail"
+        - NPC say: Jhassad told me to notify him the minute you returned. Hurry down to the beach so you do not miss him again!
+          - Reply guard: `(plugin::check_hasitem($client,28048) && plugin::check_hasitem($client,28049) && plugin::check_hasitem($client,28050))`
+        - NPC emote: bows deeply. 'I have been expecting you, $name. The waters have foretold your arrival. I am High Priest Omat Vastsea of the Triumvirate missionaries. Please feel free to enjoy the quiet solitude of this inn.'
+          - Reply guard: ``
+        - Condition: `($text=~/hail/i)`
+        - Spawns NPC 96074.
+      - Player: "Triumvirate" (link: explicit mention)
+        - NPC say: The Triumvirate of Water are: E'ci, the mistress of ice; Tarew Marr, the lord of water; and Povar, the formless master of vapor and mist. We Triumvirate missionaries are granted great divinatory powers and wisdom through our devotion to the Triumvirate and must defend the waters of Norrath from the ravages of the Tyrant of Fire, Fennin Ro.
+        - Condition: `($text=~/Triumvirate/i)`
+      - Player: "Fennin Ro" (link: explicit mention)
+        - NPC say: The Tyrant of Fire, Fennin Ro, is the merciless lord of fire in all its forms. The rivalry between the tyrant and the Triumvirate is as old as the gods themselves and is an eternal battle. We witness the struggle every moment of our lives as the Oasis of Marr succumbs to the heat of the surrounding desert and is replenished by the swelling of the Lifire River. That fragile balance between the elements must be maintained but the Plasmatic Priesthood threatens that balance.
+        - Condition: `($text=~/Fennin Ro/i)`
+      - Player: "Plasmatic Priesthood" (link: explicit mention)
+        - NPC say: The Plasmatic Priesthood are worshipers of the Tyrant of Fire, but they have been driven mad by their fanaticism and have forgotten the importance of the balance. In their madness they would set the whole world aflame, leaving nothing but lifeless ash.
+        - Condition: `($text=~/plasmatic priesthood/i)`
+      - Player: "Tavon sent me" (link: conversation sequence)
+        - NPC say: I received word from my brother that you would be coming. I have just the task for you. I am sure you heard of the [Plasmatic Priests]
+        - Condition: `($text=~/Tavon sent me/i)`
+      - Player: "Plasmatic Priests" (link: explicit mention)
+        - NPC say: The Plasmatic Priests were worshippers of Fennin Ro. Their numbers were all but destroyed by adventurers, and with the silence of the Pantheon they no longer draw power from the Tyrant of Fire. However they are still a danger, please find the last remnants of their order and bring me proof of their[destruction]
+        - Condition: `($text=~/Plasmatic Priests/i)`
+      - Player: "Destruction" (link: explicit mention)
+        - NPC say: They are in hiding, the few alcoves that I managed to find were shrouded and hidden. Take this signet and find the keeper for each alcove. Show it to him and he will drop the veil. Strike fast and exterminate the camp before he is able to cloak the camp again. Return the talisman to me with proof of the deaths of the three remaining high priests. Once you have done this, I will send you to my brother with my blessings.
+        - Condition: `($text=~/destruction/i)`
+        - Gives Talisman of the Plasmatic Priests (56010).
 
 ##### Steps on `cleric15pre` that do not change it
 
 - `nedaria` tavon vastsea, say hail needs `cleric15pre` ==1.
   - Sets `cleric_epic` to `1`.
 
-### 2. shav the cryptologist — hand 7135
+2. abysmal/"Shav The Cryptologist", hand "Encrypted Note" (7135). Sets `cleric_epic` to `2`.
+    - Requires `cleric_epic` set.
+    - Requires `cleric_epic` ==1.
+    - Hand in x1: "Encrypted Note" (7135).
+    - Loot "Encrypted Note" (7135) from "A Noc Bloodluster" (NPC 283111) in `barindu`. Drop cache: 1.58% chance per kill.
+    - Dialogue with abysmal/"Shav The Cryptologist":
+      - Player: "Hail"
+        - NPC say: Greetings. I'm a little busy, you have something you need translated?
+        - Condition: `e.message:findi("hail")`
 
-Zone: `abysmal`.
+3. abysmal/"Shav The Cryptologist", hand "Torn Quarter of a Map" (8778) + "Shredded Quarter of a Map" (9447) + "Ripped Quarter of a Map" (9476) + "Tattered Quarter of a Map" (9477). Sets `cleric_epic` to `3`.
+    - Requires `cleric_epic` set.
+    - Requires `cleric_epic` ==2.
+    - Hand in x1: "Ripped Quarter of a Map" (9476).
+    - Hand in x1: "Shredded Quarter of a Map" (9447).
+    - Hand in x1: "Tattered Quarter of a Map" (9477).
+    - Hand in x1: "Torn Quarter of a Map" (8778).
+    - Loot "Ripped Quarter of a Map" (9476) from "A Ra'Tuk Bonebreaker" (NPC 284032) in `ferubi`. Drop cache: 5.6% chance per kill.
+    - Loot "Shredded Quarter of a Map" (9447) from "A Kyv Eyecollector" (NPC 284052) in `ferubi`. Drop cache: 5.09% chance per kill.
+    - Loot "Tattered Quarter of a Map" (9477) from "A Mastruq Warfiend" (NPC 284003) in `ferubi`. Drop cache: 5.33% chance per kill.
+    - Loot "Torn Quarter of a Map" (8778) from "An Aneuk Bone Binder" (NPC 284035) in `ferubi`. Drop cache: 5.18% chance per kill.
+    - Gives "Assembled Map" (56015).
 
-Sets `cleric_epic` to `2`.
+4. nedaria/"Cartographer Tweister", hand "Assembled Map" (56015). Sets `cleric_epic` to `4`.
+    - Requires `cleric_epic` set.
+    - Requires `cleric_epic` >=3.
+    - Hand in x1: "Assembled Map" (56015).
+    - Prerequisite: "Assembled Map" (56015). See section 0.
+    - Dialogue with nedaria/"Cartographer Tweister":
+      - Player: "Hail"
+        - NPC say: Hello there, need something navigated, or mapped, or something of that sort? Hand it over already!
+        - Condition: `(e.message:findi("hail"))`
 
-- Needs `cleric_epic` set.
-- Needs `cleric_epic` ==1.
-- Turn in x1: Encrypted Note (7135).
-In script order:
+5. wakening/"Scout Leader Plavo", hand "Dark Disciples Notice of Service" (9591). Sets `cleric_epic` to `5`.
+    - Requires `cleric_epic` set.
+    - Requires `cleric_epic` >=4.
+    - Hand in x1: "Dark Disciples Notice of Service" (9591).
+    - Prerequisite: "Dark Disciples Notice of Service" (9591). See section 0.
+    - Dialogue with wakening/"Scout Leader Plavo":
+      - Player: "Aid" (link: external event mention)
+        - Prompted by `event_trade`:
+          - NPC say: You are from the Faydwer camp are you? I'm not terribly familiar with the faces from there. Anyway, the scouts have been sent out, and are gathering the "parts" that we believe the Legion will need to prepare for the incursion into our realm. If we are to find their good graces, we must prove that we will stop at nothing to [aid] them.
+          - Event guard: `qglobals["cleric_epic"] ~= nil and qglobals["cleric_epic"] >= "4" and item_lib.check_turn_in(e.trade, {item1 = 9591})`
+        - NPC say: They will research and learn about the greatest mortal beings in this realm. Learning about the creatures that may prove to be friend or foe, so they prepare for either. Our scouts have gathered most of the information that they need, but there are a few creatures that we still need to harvest brains from. Currently scouts are attempting to find the brain of the Shissar, a dragon, and an Akhevan. I am sure any of the scouts would welcome your assistance. I will send runners ahead to notify them you may be arriving.
+        - Condition: `qglobals["cleric_epic"] ~= nil and qglobals["cleric_epic"] >= "5" and e.message:findi("aid")`
 
-1. Sets `cleric_epic` to `2`.
-
-
-How the items are reached:
-
-- Encrypted Note (7135)
-  - Loot "Encrypted Note" (7135) from "A Noc Bloodluster" (NPC 283111) in `barindu`. Drop cache: 1.58% chance per kill.
-
-### 3. shav the cryptologist — hand 8778+9447+9476+9477
-
-Zone: `abysmal`.
-
-Sets `cleric_epic` to `3`.
-
-- Needs `cleric_epic` set.
-- Needs `cleric_epic` ==2.
-- Turn in x1: Ripped Quarter of a Map (9476).
-- Turn in x1: Shredded Quarter of a Map (9447).
-- Turn in x1: Tattered Quarter of a Map (9477).
-- Turn in x1: Torn Quarter of a Map (8778).
-In script order:
-
-1. Sets `cleric_epic` to `3`.
-2. Gives Assembled Map (56015).
-
-
-How the items are reached:
-
-- Ripped Quarter of a Map (9476)
-  - Loot "Ripped Quarter of a Map" (9476) from "A Ra'Tuk Bonebreaker" (NPC 284032) in `ferubi`. Drop cache: 5.6% chance per kill.
-- Shredded Quarter of a Map (9447)
-  - Loot "Shredded Quarter of a Map" (9447) from "A Kyv Eyecollector" (NPC 284052) in `ferubi`. Drop cache: 5.09% chance per kill.
-- Tattered Quarter of a Map (9477)
-  - Loot "Tattered Quarter of a Map" (9477) from "A Mastruq Warfiend" (NPC 284003) in `ferubi`. Drop cache: 5.33% chance per kill.
-- Torn Quarter of a Map (8778)
-  - Loot "Torn Quarter of a Map" (8778) from "An Aneuk Bone Binder" (NPC 284035) in `ferubi`. Drop cache: 5.18% chance per kill.
-
-### 4. cartographer tweister — hand 56015
-
-Zone: `nedaria`.
-
-Sets `cleric_epic` to `4`.
-
-- Needs `cleric_epic` set.
-- Needs `cleric_epic` >=3.
-- Turn in x1: Assembled Map (56015).
-In script order:
-
-1. Sets `cleric_epic` to `4`.
-
-
-How the items are reached:
-
-- Assembled Map (56015)
-  - Prerequisite: "Assembled Map" (56015). See section 0.
-
-### 5. scout leader plavo — hand 9591
-
-Zone: `wakening`.
-
-Sets `cleric_epic` to `5`.
-
-- Needs `cleric_epic` set.
-- Needs `cleric_epic` >=4.
-- Turn in x1: Dark Disciples Notice of Service (9591).
-In script order:
-
-1. Sets `cleric_epic` to `5`.
-
-
-How the items are reached:
-
-- Dark Disciples Notice of Service (9591)
-  - Prerequisite: "Dark Disciples Notice of Service" (9591). See section 0.
-
-### 7. global player — combine recipe 19460
-
-Zone: `global`.
-
-Sets `cleric_epic` to `7`.
-
-In script order:
-
-1. Sets `cleric_epic` to `7`.
-
-
-Combine:
-
-- `recipe:19460` is combined in Forge (17). A container in the world. Placed in abysmal, akanon, bazaar, bloodmoon, brellsrest, brellstemple and 51 more.
-  - Put in x1: Water Flask (13006).
-    - Prerequisite: "Water Flask" (13006). See section 0.
-  - Put in x1: Aegis of Chaotic Worship (9954).
-    - Kill wakening/"Dark Disciple Master". Spawns "A Gilded Chest" (119179).
-    - Loot "Aegis of Chaotic Worship" (9954) from "A Gilded Chest".
-  - Put in x1: Soul Temper (14047).
-    - Prerequisite: "Soul Temper" (14047). See section 0.
-  - Produces Harmony of the Soul (9955).
-  - Requires Blacksmithing. The combine does not fail.
+7. global/"Global Player", combine recipe 19460. Sets `cleric_epic` to `7`.
+    - `recipe:19460` is combined in Forge (17). A container in the world. Placed in abysmal, akanon, bazaar, bloodmoon, brellsrest, brellstemple and 51 more.
+      - Put in x1: Water Flask (13006).
+        - Prerequisite: "Water Flask" (13006). See section 0.
+      - Put in x1: Aegis of Chaotic Worship (9954).
+        - Kill wakening/"Dark Disciple Master". Spawns "A Gilded Chest" (119179).
+        - Loot "Aegis of Chaotic Worship" (9954) from "A Gilded Chest".
+      - Put in x1: Soul Temper (14047).
+        - Prerequisite: "Soul Temper" (14047). See section 0.
+      - Produces Harmony of the Soul (9955).
+      - Requires Blacksmithing. The combine does not fail.
 
 ### Steps on `cleric_epic` that do not change it
 
@@ -318,59 +342,30 @@ See `cleric15pre` earlier in this file.
 
 Values written: 1, 2, 3.
 
-### 1. natvil — say hail
+1. dranik/"Natvil", say "Hail". Sets `cleric20` to `1`.
+    - Requires `cleric20` unset.
+    - Requires `cleric_epic` set.
+    - Requires `cleric_epic` >=5.
+    - Dialogue with dranik/"Natvil":
+      - Player: "Hail"
+        - NPC emote: examines your craftsmanship. 'Impressive, but I'm afraid that the temper was not sufficient to unlock the full potential of the shield. For now you may use it in its current state. I suspect to fully realize the latent potential of the shield you will require a soulstone from the person who it was bound to originally as well as a Globe of Discordant Energy. Return to me when you have that, I will assist you in completing its enhancement.
+          - Reply guard: `e.other:HasItem(9955)`
+        - NPC say: Greetings, well met, salutations, and good day! I hear you are trying to change the resonance on a shield from Discord. Well I believe that is something with which I can assist you. You will need to have a temper made from some of the native creatures of Discord, you'll need the plasma from one of the giants of Discord, one of those flying squids, and the plasma from one of those fiery women. Brewing the temper should prove no trouble for you. Once you have the temper combine it with the shield in the forge with a flask of water, and it should become attuned to you. Once you are finished return to me, so I may evaluate your work.
+          - Reply guard: ``
+        - Condition: `qglobals["cleric_epic"] ~= nil and qglobals["cleric_epic"] >= "5" and e.message:findi("hail")`
+        - Sets `cleric20` to `1`.
 
-Zone: `dranik`.
+    - Subquest `cleric_epic` documented earlier.
+2. nedaria/"Tavon Vastsea", say "Hail". Sets `cleric20` to `2`.
+    - Requires `cleric20` ==1.
+    - Requires `cleric20` set.
 
-> examines your craftsmanship.
-
-Sets `cleric20` to `1`.
-
-- Needs `cleric20` unset.
-- Needs `cleric_epic` set.
-- Needs `cleric_epic` >=5.
-In script order:
-
-1. Sets `cleric20` to `1`.
-
-
-This step also depends on `cleric_epic`, shown above.
-
-### 2. tavon vastsea — say hail
-
-Zone: `nedaria`.
-
-> I hear you were able to put that shield to some use. That is good to hear. I was able to find some news on the leader, someone matching his description has b...
-
-Sets `cleric20` to `2`.
-
-- Needs `cleric20` ==1.
-- Needs `cleric20` set.
-In script order:
-
-1. Sets `cleric20` to `2`.
-
-
-### 3. omat vastsea — hand 56013
-
-Zone: `timorous`.
-
-Sets `cleric20` to `3`.
-
-- Needs `cleric20` >=2.
-- Turn in x1: Ethereal Disciple's Journal (56013).
-In script order:
-
-1. Sets `cleric20` to `3`.
-2. Spawns Gefaari Drokaz (96368).
-   - Loots Soulshard of Zordak (56014).
-3. Gives Ethereal Disciple's Journal (56013).
-
-
-How the items are reached:
-
-- Ethereal Disciple's Journal (56013)
-  - Prerequisite: "Ethereal Disciple's Journal" (56013). See section 0.
+3. timorous/"Omat Vastsea", hand "Ethereal Disciple's Journal" (56013). Sets `cleric20` to `3`.
+    - Requires `cleric20` >=2.
+    - Hand in x1: "Ethereal Disciple's Journal" (56013).
+    - Prerequisite: "Ethereal Disciple's Journal" (56013). See section 0.
+    - Spawns Gefaari Drokaz (96368).
+    - Gives "Ethereal Disciple's Journal" (56013).
 
 ### Steps on `cleric20` that do not change it
 
