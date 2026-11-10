@@ -952,7 +952,8 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
         if any(mark in parent for mark in ("#signal:", "#timer:", "#event:", "#event_", "#kill:")):
             steps = event_chain(parent, expand_item, active)
             if "#kill:" in source:
-                steps.append(f"Kill NPC {source.rsplit(':', 1)[-1]}.")
+                who, _action, _zone = parse_who(source)
+                steps.append(f"Kill {quoted_who(who)}.")
             elif "#timer:" in source:
                 steps.append(f"Starts timer `{source.rsplit(':', 1)[-1]}`.")
             return steps
@@ -2057,6 +2058,36 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
         "**Broken** indicates missing graph provenance."
     )
     lines.append("")
+    def introductory_hail(steps: list[str]) -> str | None:
+        """Find a hail connected to the first encountered hand-in, not a random hail."""
+        # Narrative provenance is distinct from a mechanical prerequisite.
+        for step in steps:
+            if re.search(r', say "Hail"', step, re.I):
+                return step
+            # Event-chain hand-ins are written as: zone/"NPC", hand "Item" (id).
+            match = re.search(
+                r'([a-z0-9_]+)/"([^"]+)", hand "([^"]+)" \(\d+\)', step, re.I,
+            )
+            if not match:
+                continue
+            zone, npc, item = match.groups()
+            key = f"{zone}/{npc.lower()}#hail"
+            speech = " ".join(
+                str(row.get("text") or "")
+                for row in by_from.get(key, ()) if row.get("rel") == "speaks"
+            )
+            if not speech:
+                continue
+            # Both item and introductory dialogue must refer to a specific
+            # object or quest actor. Generic terms (e.g. 'water') are weak.
+            ignored = {"lord", "the", "from", "with", "great", "water", "item"}
+            words = {word for word in re.findall(r"[a-z]{5,}", item.lower())
+                     if word not in ignored}
+            if not words.intersection(re.findall(r"[a-z]{5,}", speech.lower())):
+                continue
+            return f'{zone}/{quoted(npc)}, say "Hail". {speech}'
+        return None
+
     roots = EPIC_ITEMS[name]
     for era in ("1.0", "1.5", "2.0"):
         lines.append(f"## Epic {era}")
@@ -2069,6 +2100,11 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
             first_seen_item.clear()
             steps: list[str] = []
             forward(item_id, set(), steps, set(), item_id)
+            hail = introductory_hail(steps)
+            if hail:
+                steps = [hail] + [step for step in steps if step != hail]
+            else:
+                steps.insert(0, "**Unresolved introduction:** no connected introductory hail in the graph.")
             if not (gives.get(item_id) or loots.get(item_id) or produces.get(item_id)):
                 lines.append(
                     f"**Broken:** no quest hand-in, encounter or recipe produces "

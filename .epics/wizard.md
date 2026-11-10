@@ -6,13 +6,14 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Staff of the Four" (14341)
 
-1. Loot "Blue Crystal Staff" (14337) from "Phinigel Autropos" in `kedge`.
-2. Loot "Gnarled Staff" (14338) from "Venril Sathir" in `karnor`.
-3. Loot "Mistletoe Powder" (14333) from "Tolapumj" in `sebilis`.
-4. Loot "Cazic's Skin" (14332) from "Cazic Thule" in `fearplane`.
-5. butcher/"Kandin Firepot", hand "Cazic's Skin" (14332) + "Mistletoe Powder" (14333). Gives "Staff of Gabstik" (14339).
-6. halas/"Arantir Karondor", hand "Blue Crystal Staff" (14337) + "Gnarled Staff" (14338) + "Staff of Gabstik" (14339). Gives "Magically Sealed Bag" (14340).
-7. soltemple/"Solomen", hand "Magically Sealed Bag" (14340). Gives "Staff of the Four" (14341).
+1. **Unresolved introduction:** no connected introductory hail in the graph.
+2. Loot "Blue Crystal Staff" (14337) from "Phinigel Autropos" in `kedge`.
+3. Loot "Gnarled Staff" (14338) from "Venril Sathir" in `karnor`.
+4. Loot "Mistletoe Powder" (14333) from "Tolapumj" in `sebilis`.
+5. Loot "Cazic's Skin" (14332) from "Cazic Thule" in `fearplane`.
+6. butcher/"Kandin Firepot", hand "Cazic's Skin" (14332) + "Mistletoe Powder" (14333). Gives "Staff of Gabstik" (14339).
+7. halas/"Arantir Karondor", hand "Blue Crystal Staff" (14337) + "Gnarled Staff" (14338) + "Staff of Gabstik" (14339). Gives "Magically Sealed Bag" (14340).
+8. soltemple/"Solomen", hand "Magically Sealed Bag" (14340). Gives "Staff of the Four" (14341).
     - Dialogue with soltemple/"Solomen":
       - Player: "Hail"
         - NPC say: Ah, I see you have found my study. This is where I study and scribe the history of magic in Norrath.
@@ -32,57 +33,57 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Staff of Prismatic Power" (12665)
 
-1. Summon "Collapsible Sewing Kit" (17165) by casting "Unfold Sewing Kit".
-2. Buy "Backpack Pattern" (12089) from "Iala Lenard" (NPC 1141) in `qeynos`. Base price: 500 copper.
-3. Buy "Needle Mold" (12019) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
-4. Buy "Thimble Mold" (12057) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
-5. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-6. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-7. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-8. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-9. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-10. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-11. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-12. **Broken:** nothing in the graph gives, loots, spawns, or combines Notice to Cease and Desist (9590).
-13. Hand "Notice to Cease and Desist" (9590) to freeporteast/"Lythe Songbird". Spawns "a Freeport guard" (382255). Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard".
-14. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
-15. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freportw`; trigger: freportw/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
-16. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freportw`; trigger: freportw/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
-17. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a minion of Meldrath" (NPC 56173) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "We Shall Never Surrender".
-18. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "Meldrath's melded minions" (NPC 56174) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "Your Forces Are Deafeated".
-19. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "Arnold the Gnomeinator" (NPC 56175) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "You Shall Not Break Our Defense".
-20. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", on timer guard.
-21. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", on timer guard.
-22. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freportw`; trigger: freportw/"Lythe Songbird", on timer guard.
-23. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freportw`; trigger: freportw/"Lythe Songbird", on timer guard.
-24. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
-25. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
-26. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
-27. **Broken:** no event trigger found for `misty/misty#timer:Spawn`.
-28. Starts timer `Hatch`.
-29. Spawns "A Vicious Spider" (33167) after `misty/misty#timer:Hatch`.
-30. Loot "Spiderling Silk" (13099) from "A Vicious Spider".
-31. Forage "Spiderling Silk" (13099) in `mistmoore`.
-32. Forage "Spiderling Silk" (13099) in `mmca`.
-33. Forage "Spiderling Silk" (13099) in `mmcb`.
-34. Forage "Spiderling Silk" (13099) in `mmcc`.
-35. Forage "Spiderling Silk" (13099) in `mmcd`.
-36. Forage "Spiderling Silk" (13099) in `mmce`.
-37. Forage "Spiderling Silk" (13099) in `mmcf`.
-38. Forage "Spiderling Silk" (13099) in `mmcg`.
-39. Forage "Spiderling Silk" (13099) in `mmch`.
-40. Forage "Spiderling Silk" (13099) in `mmci`.
-41. Forage "Spiderling Silk" (13099) in `mmcj`.
-42. Combine in "Vale Sewing Kit" (92882): "Spiderling Silk" (13099). Produces "Silk Thread" (16486). Requires Tailoring, trivial 15. The combine does not fail.
-43. Combine in "Vale Sewing Kit" (92882): "Silk Thread" (16486). Produces "Silk Cord" (16489). Requires Tailoring, trivial 26.
-44. potranquility/"Kalym Rasalan", say "Hail". Gives "Silken Tapestry" (12593).
+1. potranquility/"Kalym Rasalan", say "Hail". Gives "Silken Tapestry" (12593).
+2. Summon "Collapsible Sewing Kit" (17165) by casting "Unfold Sewing Kit".
+3. Buy "Backpack Pattern" (12089) from "Iala Lenard" (NPC 1141) in `qeynos`. Base price: 500 copper.
+4. Buy "Needle Mold" (12019) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
+5. Buy "Thimble Mold" (12057) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
+6. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+7. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+8. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+9. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+10. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+11. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+12. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+13. **Broken:** nothing in the graph gives, loots, spawns, or combines Notice to Cease and Desist (9590).
+14. Hand "Notice to Cease and Desist" (9590) to freeporteast/"Lythe Songbird". Spawns "a Freeport guard" (382255). Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard".
+15. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+16. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freportw`; trigger: freportw/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+17. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freportw`; trigger: freportw/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+18. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a minion of Meldrath" (NPC 56173) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "We Shall Never Surrender".
+19. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "Meldrath's melded minions" (NPC 56174) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "Your Forces Are Deafeated".
+20. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "Arnold the Gnomeinator" (NPC 56175) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "You Shall Not Break Our Defense".
+21. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", on timer guard.
+22. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", on timer guard.
+23. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freportw`; trigger: freportw/"Lythe Songbird", on timer guard.
+24. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freportw`; trigger: freportw/"Lythe Songbird", on timer guard.
+25. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
+26. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
+27. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
+28. **Broken:** no event trigger found for `misty/misty#timer:Spawn`.
+29. Starts timer `Hatch`.
+30. Spawns "A Vicious Spider" (33167) after `misty/misty#timer:Hatch`.
+31. Loot "Spiderling Silk" (13099) from "A Vicious Spider".
+32. Forage "Spiderling Silk" (13099) in `mistmoore`.
+33. Forage "Spiderling Silk" (13099) in `mmca`.
+34. Forage "Spiderling Silk" (13099) in `mmcb`.
+35. Forage "Spiderling Silk" (13099) in `mmcc`.
+36. Forage "Spiderling Silk" (13099) in `mmcd`.
+37. Forage "Spiderling Silk" (13099) in `mmce`.
+38. Forage "Spiderling Silk" (13099) in `mmcf`.
+39. Forage "Spiderling Silk" (13099) in `mmcg`.
+40. Forage "Spiderling Silk" (13099) in `mmch`.
+41. Forage "Spiderling Silk" (13099) in `mmci`.
+42. Forage "Spiderling Silk" (13099) in `mmcj`.
+43. Combine in "Vale Sewing Kit" (92882): "Spiderling Silk" (13099). Produces "Silk Thread" (16486). Requires Tailoring, trivial 15. The combine does not fail.
+44. Combine in "Vale Sewing Kit" (92882): "Silk Thread" (16486). Produces "Silk Cord" (16489). Requires Tailoring, trivial 26.
 45. Combine in "Collapsible Sewing Kit" (17165): "Backpack Pattern" (12089), "Silk Cord" (16489), "Silken Tapestry" (12593). Produces "Silken Tapestry Satchel" (12596). Requires Tailoring 128. The combine does not fail.
 46. Ground spawn of "Prismatic Crystal" (12599) in `veksar`.
 47. Ground spawn of "Prismatic Crystal" (12625) in `timorous`.
 48. Ground spawn of "Prismatic Crystal" (12628) in `twilight`.
 49. Loot "Prismatic Crystal" (12662) from "Treasure Sorter Neiben" in `dulak`.
 50. Loot "Cohesion Gem" (67022) from "A Metallic Slime" (NPC 206031) in `poinnovation`. Drop cache: 34.24% chance per kill.
-51. Spawns "Spawn Wiz 1.5; Pure Flame Elemental" (278108) in `soldungc` on event_signal.
+51. **Broken:** no event trigger found for `soldungc/ #event_signal`.
 52. Loot "Wisp of Pure Flame" (11619) from "Spawn Wiz 1.5; Pure Flame Elemental".
 53. lavastorm/"Talwyn Flamecaller", hand "Wisp of Pure Flame" (11619). Sets `wiz_epic_wisp` to `1`.
 54. Spawns "Mistress of the Darkwater Quest-only" (125075) in `sirens` on enter.
@@ -112,8 +113,8 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 8. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
 9. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
 10. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-11. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-12. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+11. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+12. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
 13. lavastorm/"Talwyn Flamecaller", hand "Globe of Discordant Energy" (47100). Sets `wiz_epic20` to `4`.
 14. **Broken:** nothing in the graph gives, loots, spawns, or combines Spacial Distortion (16695).
 15. lavastorm/"Talwyn Flamecaller", hand "Globe of Discordant Energy" (47100). Requires `wiz_epic20` set. Requires `wiz_epic20` >=3. Gives "Broken Orb of Discordant Energy" (16147).
@@ -171,7 +172,7 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 67. Ground spawn of "Prismatic Crystal" (12628) in `twilight`.
 68. Loot "Prismatic Crystal" (12662) from "Treasure Sorter Neiben" in `dulak`.
 69. Loot "Cohesion Gem" (67022) from "A Metallic Slime" (NPC 206031) in `poinnovation`. Drop cache: 34.24% chance per kill.
-70. Spawns "Spawn Wiz 1.5; Pure Flame Elemental" (278108) in `soldungc` on event_signal.
+70. **Broken:** no event trigger found for `soldungc/ #event_signal`.
 71. Loot "Wisp of Pure Flame" (11619) from "Spawn Wiz 1.5; Pure Flame Elemental".
 72. lavastorm/"Talwyn Flamecaller", hand "Wisp of Pure Flame" (11619). Sets `wiz_epic_wisp` to `1`.
 73. Spawns "Mistress of the Darkwater Quest-only" (125075) in `sirens` on enter.
@@ -637,7 +638,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 102. Starts timer `spawn`.
 103. Spawns "A Newly Created Sentry" (128014) after `sleeper/master of the guard#timer:spawn`.
 104. Loot "Rune of Flash" (65279) from "A Newly Created Sentry".
-105. Alternative: Loot "Rune of Flash" (65279) from "An Erratic Arachnid" (NPC 215460) in `poair`; trigger: poair/"Dust Trigger", on event_signal.
+105. Alternative: Loot "Rune of Flash" (65279) from "An Erratic Arachnid" (NPC 215460) in `poair`; trigger: poair/"Dust Trigger", say "Signal:5".
 106. Alternative: Loot "Rune of Flash" (65279) from "An Erratic Arachnid" (NPC 215460) in `poair`; trigger: poair/"An Erratic Arachnid", on event_death_complete.
 107. Alternative: Loot "Rune of Flash" (65279) from "A Noc Havocblade" (NPC 281130) in `qinimi`; trigger: qinimi/"Trigger Qinimi 2", on event_signal.
 108. Alternative: Loot "Rune of Flash" (65279) from "A Ra'Tuk Skullstriker" (NPC 281131) in `qinimi`; trigger: qinimi/"Trigger Qinimi 2", on event_signal.
@@ -692,8 +693,8 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 157. Alternative: Loot "Rune of Impulse" (65282) from "Lhranc" (NPC 90187) in `citymist`; trigger: citymist/"Lhranc", hand "Corrupted Ghoulbane" (14367) + "Heart of the Innocent" (14368) + "Head of the Valiant" (14369) + "Will of Innoruuk" (14370).
 158. Alternative: Loot "Rune of Impulse" (65282) from "Neh'Ashir" (NPC 90184) in `citymist`; trigger: citymist/"90000", on event_death_complete.
 159. Alternative: Loot "Rune of Impulse" (65282) from "Neh'Ashiir" (NPC 90184) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
-160. Alternative: Loot "Rune of Impulse" (65282) from "Pxet Elite Blademaster" (NPC 284039) in `ferubi`; trigger: ferubi/"Event Spawner", on event_signal.
-161. Alternative: Loot "Rune of Impulse" (65282) from "Pxet Elite Spearmaster" (NPC 284091) in `ferubi`; trigger: ferubi/"Event Spawner", on event_signal.
+160. Alternative: Loot "Rune of Impulse" (65282) from "Pxet Elite Blademaster" (NPC 284039) in `ferubi`; trigger: ferubi/"Event Spawner", say "Signal:1".
+161. Alternative: Loot "Rune of Impulse" (65282) from "Pxet Elite Spearmaster" (NPC 284091) in `ferubi`; trigger: ferubi/"Event Spawner", say "Signal:2".
 162. Alternative: Loot "Rune of Impulse" (65282) from "A Soldier Of Madness" (NPC 163185) in `griegsend`; trigger: griegsend/"Trapman", on event_combat.
 163. Alternative: Loot "Rune of Impulse" (65282) from "A Devastating Pooka" (NPC 289037) in `tipt`; trigger: tipt/"Rikabi The Riddler", say "Spawn Devastating Pookas".
 164. Alternative: Loot "Rune of Impulse" (65282) from "A Ra'Tuk Decimator" (NPC 289004) in `tipt`; trigger: tipt/"Zone Status", say "Spawn Keyroom".
@@ -792,7 +793,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 4. Ground spawn of "Prismatic Crystal" (12628) in `twilight`.
 5. Loot "Prismatic Crystal" (12662) from "Treasure Sorter Neiben" in `dulak`.
 6. Loot "Cohesion Gem" (67022) from "A Metallic Slime" (NPC 206031) in `poinnovation`. Drop cache: 34.24% chance per kill.
-7. Spawns "Spawn Wiz 1.5; Pure Flame Elemental" (278108) in `soldungc` on event_signal.
+7. **Broken:** no event trigger found for `soldungc/ #event_signal`.
 8. Loot "Wisp of Pure Flame" (11619) from "Spawn Wiz 1.5; Pure Flame Elemental".
 9. lavastorm/"Talwyn Flamecaller", hand "Wisp of Pure Flame" (11619). Sets `wiz_epic_wisp` to `1`.
 10. Spawns "Mistress of the Darkwater Quest-only" (125075) in `sirens` on enter.
@@ -1235,8 +1236,8 @@ Values written: 1, 2, 3, 4.
     - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
     - Gives "Broken Orb of Discordant Energy" (15836).
     - Gives "Broken Orb of Discordant Energy" (16147).
 

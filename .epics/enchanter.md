@@ -6,73 +6,74 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Staff of the Serpent" (10650)
 
-1. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
-2. akanon/"Rilgor Plegnog", hand "Shining Metallic Robes" (1360). Gives "Mechanical Pen" (10600).
-3. qcat/"Reania Jukle", say "Supply". Gives "Empty Ink Vial" (10626).
-4. gukbottom/"A Ghoul Scribe", hand "Empty Ink Vial" (10626). Gives "Ink of the Dark" (10601).
-5. Buy "Piece of Parchment" (13063) from "Hanlore Escaval" (NPC 1052) in `qeynos`. Base price: 100 copper.
-6. Buy "Quill" (13051) from "Hanlore Escaval" (NPC 1052) in `qeynos`. Base price: 100 copper.
-7. Hand "Quill" (13051) + "Piece of Parchment" (13063) to qey2hh1/"Chrislin Baker". Spawns "Thrackin Griften" (12172). Loot "White Paper" (10602) from "Thrackin Griften".
-8. erudnext/"Stofo Olan", hand "Mechanical Pen" (10600) + "Ink of the Dark" (10601) + "White Paper" (10602). Gives "Copy of Notes" (10603).
-9. burningwood/"A Sarnak Imitator", hand "Copy of Notes" (10603). Gives "Jeb's Seal" (10604).
-10. akanon/"Clockwork Viix", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
-11. Loot "Xolion Rod" (10606) from "Vessel Drozlin" in `cabeast`.
-12. Loot "Innoruuk's Word" (10607) from "Verina Tomb" in `neriakc`.
-13. Loot "Head of a Prince" (10627) from "Prince Selrach Di'zok" in `chardok`.
-14. felwitheb/"Joren Nobleheart", hand "Head of a Prince" (10627). Gives "Chalice of Kings" (10608).
-15. Ground spawn of "Large Muddy Sandals" (10628) in `oggok`.
-16. oggok/"Bozlum Blossom", hand "Large Muddy Sandals" (10628). Gives "Scribbled Parchment" (10629).
-17. oggok/"Brokk Boxtripper", hand "Scribbled Parchment" (10629). Gives "Gift to Bozlum" (10630).
-18. oggok/"Bozlum Blossom", hand "Gift to Bozlum" (10630). Gives "Snow Blossoms" (10609).
-19. Combine in "Enchanters Sack" (17861): "Xolion Rod" (10606), "Innoruuk's Word" (10607), "Chalice of Kings" (10608), "Snow Blossoms" (10609). Produces "Sack For Modani" (10635). The combine does not fail.
-20. overthere/"Modani Qu-Loni", hand "Sack For Modani" (10635). Gives "1st Piece of Staff" (10610).
-21. Loot "Spoon" (10614) from "Cazel" in `oasis`.
-22. Loot "Spoon" (10614) from "Cazel" in `southro`.
-23. Ground spawn of "The One Key" (10615) in `overthere`.
-24. Ground spawn of "Lost Scroll" (10616) in `dalnir`.
-25. Ground spawn of "Charm and Sacrifice" (10617) in `airplane`.
-26. Combine in "Enchanters Sack" (17861): "Spoon" (10614), "The One Key" (10615), "Lost Scroll" (10616), "Charm and Sacrifice" (10617). Produces "Sack For Mizzle" (10636). The combine does not fail.
-27. akanon/"Clockwork Viix", hand "Sack For Mizzle" (10636). Gives "2nd Piece of Staff" (10611).
-28. firiona/"Nadia Starfeast", say "Diamond". Gives "Dull Diamond" (10631).
-29. kaesora/"Spectral Librarian", hand "Dull Diamond" (10631). Gives "Enchanted Diamond" (10618).
-30. firiona/"Nadia Starfeast", say "Sapphire". Gives "Dull Sapphire" (10632).
-31. skyfire/"Felia Goldenwing", hand "Dull Sapphire" (10632). Gives "Enchanted Sapphire" (10619).
-32. firiona/"Nadia Starfeast", say "Ruby". Gives "Dull Ruby" (10633).
-33. citymist/"Wraith Of Jaxion", hand "Dull Ruby" (10633). Gives "Enchanted Ruby" (10620).
-34. firiona/"Nadia Starfeast", say "Emerald". Gives "Dull Emerald" (10634).
-35. overthere/"Impaler Tzilug", hand "Dull Emerald" (10634). Gives "Enchanted Emerald" (10621).
-36. Combine in "Enchanters Sack" (17861): "Enchanted Diamond" (10618), "Enchanted Sapphire" (10619), "Enchanted Ruby" (10620), "Enchanted Emerald" (10621). Produces "Sack For Nadia" (10637). The combine does not fail.
-37. firiona/"Nadia Starfeast", hand "Sack For Nadia" (10637). Gives "3rd Piece of Staff" (10612).
-38. Loot "Head of the Serpent" (10622) from "Wraith of a Shissar" in `fearplane`.
-39. Loot "Essence of a Ghost" (10623) from "the Ghost of Kindle" in `hole`.
-40. Loot "Essence of a Vampire" (10624) from "A Forsaken Revenant" (NPC 76005) in `hateplane`. Drop cache: 10.57% chance per kill.
-41. Loot "Sands of the Mystics" (10625) from "The Tangrin" in `fieldofbone`.
-42. Combine in "Enchanters Sack" (17861): "Head of the Serpent" (10622), "Essence of a Ghost" (10623), "Essence of a Vampire" (10624), "Sands of the Mystics" (10625). Produces "Sack For Polzin" (10638). The combine does not fail.
-43. hole/"Polzin Mrid", hand "Sack For Polzin" (10638). Gives "4th Piece of Staff" (10613).
-44. Combine in "Enchanters Sack" (17861): "1st Piece of Staff" (10610), "2nd Piece of Staff" (10611), "3rd Piece of Staff" (10612), "4th Piece of Staff" (10613). Produces "Bundle of Staves" (10639). The combine does not fail.
-45. burningwood/"A Sarnak Imitator", hand "Bundle of Staves" (10639). Gives "Staff of the Serpent" (10650).
+1. **Unresolved introduction:** no connected introductory hail in the graph.
+2. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
+3. akanon/"Rilgor Plegnog", hand "Shining Metallic Robes" (1360). Gives "Mechanical Pen" (10600).
+4. qcat/"Reania Jukle", say "Supply". Gives "Empty Ink Vial" (10626).
+5. gukbottom/"A Ghoul Scribe", hand "Empty Ink Vial" (10626). Gives "Ink of the Dark" (10601).
+6. Buy "Piece of Parchment" (13063) from "Hanlore Escaval" (NPC 1052) in `qeynos`. Base price: 100 copper.
+7. Buy "Quill" (13051) from "Hanlore Escaval" (NPC 1052) in `qeynos`. Base price: 100 copper.
+8. Hand "Quill" (13051) + "Piece of Parchment" (13063) to qey2hh1/"Chrislin Baker". Spawns "Thrackin Griften" (12172). Loot "White Paper" (10602) from "Thrackin Griften".
+9. erudnext/"Stofo Olan", hand "Mechanical Pen" (10600) + "Ink of the Dark" (10601) + "White Paper" (10602). Gives "Copy of Notes" (10603).
+10. burningwood/"A Sarnak Imitator", hand "Copy of Notes" (10603). Gives "Jeb's Seal" (10604).
+11. akanon/"Clockwork Viix", hand "Jeb's Seal" (10604). Gives "Enchanters Sack" (17861).
+12. Loot "Xolion Rod" (10606) from "Vessel Drozlin" in `cabeast`.
+13. Loot "Innoruuk's Word" (10607) from "Verina Tomb" in `neriakc`.
+14. Loot "Head of a Prince" (10627) from "Prince Selrach Di'zok" in `chardok`.
+15. felwitheb/"Joren Nobleheart", hand "Head of a Prince" (10627). Gives "Chalice of Kings" (10608).
+16. Ground spawn of "Large Muddy Sandals" (10628) in `oggok`.
+17. oggok/"Bozlum Blossom", hand "Large Muddy Sandals" (10628). Gives "Scribbled Parchment" (10629).
+18. oggok/"Brokk Boxtripper", hand "Scribbled Parchment" (10629). Gives "Gift to Bozlum" (10630).
+19. oggok/"Bozlum Blossom", hand "Gift to Bozlum" (10630). Gives "Snow Blossoms" (10609).
+20. Combine in "Enchanters Sack" (17861): "Xolion Rod" (10606), "Innoruuk's Word" (10607), "Chalice of Kings" (10608), "Snow Blossoms" (10609). Produces "Sack For Modani" (10635). The combine does not fail.
+21. overthere/"Modani Qu-Loni", hand "Sack For Modani" (10635). Gives "1st Piece of Staff" (10610).
+22. Loot "Spoon" (10614) from "Cazel" in `oasis`.
+23. Loot "Spoon" (10614) from "Cazel" in `southro`.
+24. Ground spawn of "The One Key" (10615) in `overthere`.
+25. Ground spawn of "Lost Scroll" (10616) in `dalnir`.
+26. Ground spawn of "Charm and Sacrifice" (10617) in `airplane`.
+27. Combine in "Enchanters Sack" (17861): "Spoon" (10614), "The One Key" (10615), "Lost Scroll" (10616), "Charm and Sacrifice" (10617). Produces "Sack For Mizzle" (10636). The combine does not fail.
+28. akanon/"Clockwork Viix", hand "Sack For Mizzle" (10636). Gives "2nd Piece of Staff" (10611).
+29. firiona/"Nadia Starfeast", say "Diamond". Gives "Dull Diamond" (10631).
+30. kaesora/"Spectral Librarian", hand "Dull Diamond" (10631). Gives "Enchanted Diamond" (10618).
+31. firiona/"Nadia Starfeast", say "Sapphire". Gives "Dull Sapphire" (10632).
+32. skyfire/"Felia Goldenwing", hand "Dull Sapphire" (10632). Gives "Enchanted Sapphire" (10619).
+33. firiona/"Nadia Starfeast", say "Ruby". Gives "Dull Ruby" (10633).
+34. citymist/"Wraith Of Jaxion", hand "Dull Ruby" (10633). Gives "Enchanted Ruby" (10620).
+35. firiona/"Nadia Starfeast", say "Emerald". Gives "Dull Emerald" (10634).
+36. overthere/"Impaler Tzilug", hand "Dull Emerald" (10634). Gives "Enchanted Emerald" (10621).
+37. Combine in "Enchanters Sack" (17861): "Enchanted Diamond" (10618), "Enchanted Sapphire" (10619), "Enchanted Ruby" (10620), "Enchanted Emerald" (10621). Produces "Sack For Nadia" (10637). The combine does not fail.
+38. firiona/"Nadia Starfeast", hand "Sack For Nadia" (10637). Gives "3rd Piece of Staff" (10612).
+39. Loot "Head of the Serpent" (10622) from "Wraith of a Shissar" in `fearplane`.
+40. Loot "Essence of a Ghost" (10623) from "the Ghost of Kindle" in `hole`.
+41. Loot "Essence of a Vampire" (10624) from "A Forsaken Revenant" (NPC 76005) in `hateplane`. Drop cache: 10.57% chance per kill.
+42. Loot "Sands of the Mystics" (10625) from "The Tangrin" in `fieldofbone`.
+43. Combine in "Enchanters Sack" (17861): "Head of the Serpent" (10622), "Essence of a Ghost" (10623), "Essence of a Vampire" (10624), "Sands of the Mystics" (10625). Produces "Sack For Polzin" (10638). The combine does not fail.
+44. hole/"Polzin Mrid", hand "Sack For Polzin" (10638). Gives "4th Piece of Staff" (10613).
+45. Combine in "Enchanters Sack" (17861): "1st Piece of Staff" (10610), "2nd Piece of Staff" (10611), "3rd Piece of Staff" (10612), "4th Piece of Staff" (10613). Produces "Bundle of Staves" (10639). The combine does not fail.
+46. burningwood/"A Sarnak Imitator", hand "Bundle of Staves" (10639). Gives "Staff of the Serpent" (10650).
 
 ## Epic 1.5
 
 ### "Oculus of Persuasion" (52952)
 
-1. global/"Global Player", combine recipe 19919. Sets `ench_epic` to `9`.
-2. burningwood/"A Sarnak Imitator", say "Chest". Requires `ench_epic` set. Requires `ench_epic` >=3. Gives "Ornate Staff Chest" (52960).
-3. Ground spawn of "Taste of Enticement" (52964) in `mistmoore`.
-4. frozenshadow/"Advisor Svartmane", hand "Taste of Enticement" (52964). Gives "1st Piece of the Staff" (54289).
-5. Loot "2nd Piece of the Staff" (54310) from "The Yrendan Scarab" in `pojustice`.
-6. Loot "3rd Piece of the Staff" (54299) from "Chavoor the Trickster" in `vxed`.
-7. Loot "3rd Piece of the Staff" (54299) from "Ikaav Firecaller" in `vxed`.
-8. Loot "3rd Piece of the Staff" (54299) from "Kyv Hunter" in `vxed`.
-9. Loot "3rd Piece of the Staff" (54299) from "Ukun Bloodbeast" in `vxed`.
-10. Loot "3rd Piece of the Staff" (54299) from "Umbiki" in `vxed`.
-11. Loot "3rd Piece of the Staff" (54299) from "misguided beludu Creque" in `vxed`.
-12. **Broken:** no event trigger found for `bloodfields/war#timer:reset`.
-13. Spawns "War Caller Kaavi" (301042) after `bloodfields/war#timer:reset`.
-14. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi".
-15. Loot "Ornate Staff Topper" (52961) from "Faleniel of Darkwater" in `sirens`.
-16. Loot "All-Seeing Eye" (54293) from "All-Seeing Eye" in `mischiefplane`.
-17. potranquility/"Elder Fuirstel", say "Hail". Sets `pop_cod_final` to `1`.
+1. potranquility/"Elder Fuirstel", say "Hail". Sets `pop_cod_final` to `1`.
+2. global/"Global Player", combine recipe 19919. Sets `ench_epic` to `9`.
+3. burningwood/"A Sarnak Imitator", say "Chest". Requires `ench_epic` set. Requires `ench_epic` >=3. Gives "Ornate Staff Chest" (52960).
+4. Ground spawn of "Taste of Enticement" (52964) in `mistmoore`.
+5. frozenshadow/"Advisor Svartmane", hand "Taste of Enticement" (52964). Gives "1st Piece of the Staff" (54289).
+6. Loot "2nd Piece of the Staff" (54310) from "The Yrendan Scarab" in `pojustice`.
+7. Loot "3rd Piece of the Staff" (54299) from "Chavoor the Trickster" in `vxed`.
+8. Loot "3rd Piece of the Staff" (54299) from "Ikaav Firecaller" in `vxed`.
+9. Loot "3rd Piece of the Staff" (54299) from "Kyv Hunter" in `vxed`.
+10. Loot "3rd Piece of the Staff" (54299) from "Ukun Bloodbeast" in `vxed`.
+11. Loot "3rd Piece of the Staff" (54299) from "Umbiki" in `vxed`.
+12. Loot "3rd Piece of the Staff" (54299) from "misguided beludu Creque" in `vxed`.
+13. **Broken:** no event trigger found for `bloodfields/war#timer:reset`.
+14. Spawns "War Caller Kaavi" (301042) after `bloodfields/war#timer:reset`.
+15. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi".
+16. Loot "Ornate Staff Topper" (52961) from "Faleniel of Darkwater" in `sirens`.
+17. Loot "All-Seeing Eye" (54293) from "All-Seeing Eye" in `mischiefplane`.
 18. poknowledge/"Aid Grimel", say "Skill In Brewing". Requires `pop_cod_final` ==1. Requires `pop_cod_final` set. Gives "Portable Drink Barrel" (17179).
 19. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
 20. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
@@ -127,13 +128,13 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 65. Combine in Pottery Wheel (21): "Water Flask" (13006), "White Wolf Skin" (13768), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
 66. Buy "High Quality Firing Sheet" (16908) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 40 copper.
 67. Combine in Kiln (22): "Unfired Poison Vial" (16885), "High Quality Firing Sheet" (16908). Produces "Poison Vial" (16965). Requires Pottery, trivial 17.
-68. Spawns "Pxet Elite Blademaster" (284039) in `ferubi` on event_signal.
+68. **Broken:** no event trigger found for `ferubi/a mastruq fiend#event_death_complete`.
 69. Loot "Broken Sword Blade" (67521) from "Pxet Elite Blademaster".
-70. Spawns "Pxet Elite Spearmaster" (284091) in `ferubi` on event_signal.
+70. **Broken:** no event trigger found for `ferubi/a mastruq fiend#event_death_complete`.
 71. Loot "Jagged Spear Tip" (67522) from "Pxet Elite Spearmaster".
-72. Spawns "Pxet Elite Brawler" (284088) in `ferubi` on event_signal.
+72. **Broken:** no event trigger found for `ferubi/a kyv eyecollector#event_death_complete`.
 73. Loot "Tarnished Knuckles" (67523) from "Pxet Elite Brawler".
-74. Spawns "Pxet Elite Hammermaster" (284090) in `ferubi` on event_signal.
+74. **Broken:** no event trigger found for `ferubi/a kyv eyecollector#event_death_complete`.
 75. Loot "Chipped Hammer Head" (67524) from "Pxet Elite Hammermaster".
 76. Hand "Broken Sword Blade" (67521) + "Jagged Spear Tip" (67522) + "Tarnished Knuckles" (67523) + "Chipped Hammer Head" (67524) to ferubi/"Smith Rondo". Spawns "Master's Apprentice" (284093). Loot "Ruby" (10035) from "Master's Apprentice".
 77. Alternative: Loot "Ruby" (10035) from "The Broodqueen" (NPC 337254) in `broodlands`; trigger: broodlands/"Brood Drone", on event_death_complete.
@@ -151,7 +152,7 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 89. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284094) in `ferubi`; trigger: ferubi/"Smith Rondo", hand "Broken Sword Blade" (67521) + "Jagged Spear Tip" (67522) + "Tarnished Knuckles" (67523) + "Chipped Hammer Head" (67524).
 90. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284095) in `ferubi`; trigger: ferubi/"Smith Rondo", hand "Broken Sword Blade" (67521) + "Jagged Spear Tip" (67522) + "Tarnished Knuckles" (67523) + "Chipped Hammer Head" (67524).
 91. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284096) in `ferubi`; trigger: ferubi/"Smith Rondo", hand "Broken Sword Blade" (67521) + "Jagged Spear Tip" (67522) + "Tarnished Knuckles" (67523) + "Chipped Hammer Head" (67524).
-92. Alternative: Loot "Ruby" (10035) from "Pxet Elite Spearmaster" (NPC 284091) in `ferubi`; trigger: ferubi/"Event Spawner", on event_signal.
+92. Alternative: Loot "Ruby" (10035) from "Pxet Elite Spearmaster" (NPC 284091) in `ferubi`; trigger: ferubi/"Event Spawner", say "Signal:2".
 93. Alternative: Loot "Ruby" (10035) from "A Soldier Of Madness" (NPC 163185) in `griegsend`; trigger: griegsend/"Trapman", on event_combat.
 94. Alternative: Loot "Ruby" (10035) from "A Shadowy Figure" (NPC 163190) in `griegsend`; trigger: griegsend/"Trapman Two", on event_combat.
 95. Alternative: Loot "Ruby" (10035) from "Servant Of The Magistrate" (NPC 163189) in `griegsend`; trigger: griegsend/"Trapman Two", on event_combat.
@@ -183,8 +184,8 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 121. Alternative: Loot "Ruby" (10035) from "A Berserk Luggald Abomination" (NPC 226215) in `torgiran`; trigger: torgiran/"A Water Spirit", say "Berserk".
 122. Alternative: Loot "Ruby" (10035) from "A Furious Luggald Abomination" (NPC 226216) in `torgiran`; trigger: torgiran/"A Water Spirit", say "Fury".
 123. Alternative: Loot "Ruby" (10035) from "An Enraged Luggald Abomination" (NPC 226217) in `torgiran`; trigger: torgiran/"A Water Spirit", say "Rage".
-124. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292010) in `uqua`; trigger: uqua/"Gas Chamber 1", on event_signal.
-125. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292007) in `uqua`; trigger: uqua/"Gas Chamber 1", on event_signal.
+124. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292010) in `uqua`; trigger: uqua/"Gas Chamber 1", say "Signal:2".
+125. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292007) in `uqua`; trigger: uqua/"Gas Chamber 1", say "Signal:2".
 126. Alternative: Loot "Ruby" (10035) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 1", on enter.
 127. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292005) in `uqua`; trigger: uqua/"Trap Uqua 1", on enter.
 128. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292006) in `uqua`; trigger: uqua/"Trap Uqua 1", on enter.
@@ -294,246 +295,247 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Staff of Eternal Eloquence" (52962)
 
-1. global/"Global Player", combine recipe 19919. Sets `ench_epic` to `9`.
-2. Loot "Tattered Incantation" (57919) from "Cipheron" in `wallofslaughter`.
-3. Loot "Noxious Secretion" (52951) from "Withering Murkglider" in `causeway`.
-4. nedaria/"Priestess Rakhu", hand "Noxious Secretion" (52951) + "Tattered Incantation" (57919). Requires `ench_epic` ==9. Gives "Channeling Crystal" (57920).
-5. Say "Check Lorb" to anguish/"Zone Status".
-6. Spawns "Orb of Discordant Energy" (317087).
-7. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-8. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
-9. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-10. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-11. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-12. burningwood/"A Sarnak Imitator", say "Chest". Requires `ench_epic` set. Requires `ench_epic` >=3. Gives "Ornate Staff Chest" (52960).
-13. Ground spawn of "Taste of Enticement" (52964) in `mistmoore`.
-14. frozenshadow/"Advisor Svartmane", hand "Taste of Enticement" (52964). Gives "1st Piece of the Staff" (54289).
-15. Loot "2nd Piece of the Staff" (54310) from "The Yrendan Scarab" in `pojustice`.
-16. Loot "3rd Piece of the Staff" (54299) from "Chavoor the Trickster" in `vxed`.
-17. Loot "3rd Piece of the Staff" (54299) from "Ikaav Firecaller" in `vxed`.
-18. Loot "3rd Piece of the Staff" (54299) from "Kyv Hunter" in `vxed`.
-19. Loot "3rd Piece of the Staff" (54299) from "Ukun Bloodbeast" in `vxed`.
-20. Loot "3rd Piece of the Staff" (54299) from "Umbiki" in `vxed`.
-21. Loot "3rd Piece of the Staff" (54299) from "misguided beludu Creque" in `vxed`.
-22. **Broken:** no event trigger found for `bloodfields/war#timer:reset`.
-23. Spawns "War Caller Kaavi" (301042) after `bloodfields/war#timer:reset`.
-24. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi".
-25. Loot "Ornate Staff Topper" (52961) from "Faleniel of Darkwater" in `sirens`.
-26. Loot "All-Seeing Eye" (54293) from "All-Seeing Eye" in `mischiefplane`.
-27. potranquility/"Elder Fuirstel", say "Hail". Sets `pop_cod_final` to `1`.
-28. poknowledge/"Aid Grimel", say "Skill In Brewing". Requires `pop_cod_final` ==1. Requires `pop_cod_final` set. Gives "Portable Drink Barrel" (17179).
-29. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-30. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-31. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-32. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-33. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-34. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-35. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-36. Forage "Dragon Egg" (19139) in `templeveeshan`.
-37. Forage "Dragon Egg" (19139) in `westwastes`.
-38. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Dragon Egg" (19139). Produces "Dragon Egg Oil" (9664). Requires Brewing, trivial 150.
-39. Loot "Glimmering Oil" (52942) from "A Greasy Clockwork" in `poinnovation`.
-40. bazaar/"Caerlyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
-41. bazaar/"Caerlyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
-42. Buy "Firing Sheet" (16906) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 10 copper.
-43. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-44. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-45. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-46. Buy "Large Bowl Sketch" (16963) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 760 copper.
-47. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-48. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-49. Buy "Celestial Solvent" (9731) from "A Goblin Bartender" (NPC 11117) in `runnyeye`. Base price: 120 copper.
-50. Loot "Fetid Skin" (13150) from "A Fetid Fiend" (NPC 72059) in `fearplane`. Drop cache: 35% chance per kill.
-51. Loot "Scare Straw" (13152) from "A Samhain" in `fearplane`.
-52. Loot "Turmoil Warts" (8331) from "A Turmoil Toad" in `fearplane`.
-53. Spawns "Grimling" (154129) in `acrylia` on event_spawn.
-54. Loot "Pearl" (10024) from "Grimling".
-55. Alternative: Loot "Pearl" (10024) from "Grimling" (NPC 154129) in `acrylia`; trigger: acrylia/"Raidman", on event_spawn.
-56. Alternative: Loot "Pearl" (10024) from "Needs Heading Validation" (NPC 154129) in `acrylia`; trigger: acrylia/"Khati Sha The Twisted", on event_signal.
-57. Alternative: Loot "Pearl" (10024) from "a Grelian firelunger" (NPC 337063) in `broodlands`; trigger: broodlands/"Grel Strongboom", on event_spawn.
-58. Alternative: Loot "Pearl" (10024) from "a Grelian woundmender" (NPC 337112) in `broodlands`; trigger: broodlands/"Grel Strongboom", on event_spawn.
-59. Alternative: Loot "Pearl" (10024) from "a Delve spellbinder" (NPC 341091) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
-60. Alternative: Loot "Pearl" (10024) from "a Delve diviner" (NPC 341085) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
-61. Alternative: Loot "Pearl" (10024) from "a Delve evoker" (NPC 341092) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
-62. Alternative: Loot "Pearl" (10024) from "a Delve drake" (NPC 341087) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
-63. Alternative: Loot "Pearl" (10024) from "Drake Matriarch" (NPC 341149) in `delvea`; trigger: delvea/"The Drake Menace", say "Zone Death".
-64. Alternative: Loot "Pearl" (10024) from "a Delve spellbinder" (NPC 341091) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
-65. Alternative: Loot "Pearl" (10024) from "a Delve diviner" (NPC 341085) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
-66. Alternative: Loot "Pearl" (10024) from "a Delve evoker" (NPC 341092) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
-67. Alternative: Loot "Pearl" (10024) from "a Delve drake" (NPC 341087) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
-68. Alternative: Loot "Pearl" (10024) from "A Tar Goo" (NPC 119122) in `wakening`; trigger: wakening/"A Tar Goo", on event_death_complete.
-69. neriaka/"X-Ta Tompi", hand "Turmoil Warts" (8331) + "Pearl" (10024) + "Fetid Skin" (13150) + "Scare Straw" (13152). Gives "Words of Acquisition (Beza)" (11866).
-70. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
-71. Loot "Coalesced Mana" (97042) from "Assistant Gareth" (NPC 371049) in `skylance`. Drop cache: 66.67% chance per kill.
-72. Loot "White Wolf Skin" (13768) from "A Snow Wolf" in `everfrost`.
-73. Loot "White Wolf Skin" (13768) from "A White Wolf" in `everfrost`.
-74. Buy "Vial Sketch" (16968) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 300 copper.
-75. Combine in Pottery Wheel (21): "Water Flask" (13006), "White Wolf Skin" (13768), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
-76. Buy "High Quality Firing Sheet" (16908) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 40 copper.
-77. Combine in Kiln (22): "Unfired Poison Vial" (16885), "High Quality Firing Sheet" (16908). Produces "Poison Vial" (16965). Requires Pottery, trivial 17.
-78. Spawns "Pxet Elite Blademaster" (284039) in `ferubi` on event_signal.
-79. Loot "Broken Sword Blade" (67521) from "Pxet Elite Blademaster".
-80. Spawns "Pxet Elite Spearmaster" (284091) in `ferubi` on event_signal.
-81. Loot "Jagged Spear Tip" (67522) from "Pxet Elite Spearmaster".
-82. Spawns "Pxet Elite Brawler" (284088) in `ferubi` on event_signal.
-83. Loot "Tarnished Knuckles" (67523) from "Pxet Elite Brawler".
-84. Spawns "Pxet Elite Hammermaster" (284090) in `ferubi` on event_signal.
-85. Loot "Chipped Hammer Head" (67524) from "Pxet Elite Hammermaster".
-86. Hand "Broken Sword Blade" (67521) + "Jagged Spear Tip" (67522) + "Tarnished Knuckles" (67523) + "Chipped Hammer Head" (67524) to ferubi/"Smith Rondo". Spawns "Master's Apprentice" (284093). Loot "Ruby" (10035) from "Master's Apprentice".
-87. Alternative: Loot "Ruby" (10035) from "The Broodqueen" (NPC 337254) in `broodlands`; trigger: broodlands/"Brood Drone", on event_death_complete.
-88. Alternative: Loot "Ruby" (10035) from "A parasitic murkglider" (NPC 303121) in `causeway`; trigger: causeway/"Withering Murkglider", on event_hp.
-89. Alternative: Loot "Ruby" (10035) from "a Reanimated Berserker" (NPC 103093) in `chardok`; trigger: chardok/"The Earth", on enter.
-90. Alternative: Loot "Ruby" (10035) from "a Delve spellbinder" (NPC 341091) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
-91. Alternative: Loot "Ruby" (10035) from "a Delve diviner" (NPC 341085) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
-92. Alternative: Loot "Ruby" (10035) from "a Delve evoker" (NPC 341092) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
-93. Alternative: Loot "Ruby" (10035) from "a Delve drake" (NPC 341087) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
-94. Alternative: Loot "Ruby" (10035) from "Drake Matriarch" (NPC 341149) in `delvea`; trigger: delvea/"The Drake Menace", say "Zone Death".
-95. Alternative: Loot "Ruby" (10035) from "a Delve spellbinder" (NPC 341091) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
-96. Alternative: Loot "Ruby" (10035) from "a Delve diviner" (NPC 341085) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
-97. Alternative: Loot "Ruby" (10035) from "a Delve evoker" (NPC 341092) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
-98. Alternative: Loot "Ruby" (10035) from "a Delve drake" (NPC 341087) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
-99. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284094) in `ferubi`; trigger: ferubi/"Smith Rondo", hand "Broken Sword Blade" (67521) + "Jagged Spear Tip" (67522) + "Tarnished Knuckles" (67523) + "Chipped Hammer Head" (67524).
-100. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284095) in `ferubi`; trigger: ferubi/"Smith Rondo", hand "Broken Sword Blade" (67521) + "Jagged Spear Tip" (67522) + "Tarnished Knuckles" (67523) + "Chipped Hammer Head" (67524).
-101. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284096) in `ferubi`; trigger: ferubi/"Smith Rondo", hand "Broken Sword Blade" (67521) + "Jagged Spear Tip" (67522) + "Tarnished Knuckles" (67523) + "Chipped Hammer Head" (67524).
-102. Alternative: Loot "Ruby" (10035) from "Pxet Elite Spearmaster" (NPC 284091) in `ferubi`; trigger: ferubi/"Event Spawner", on event_signal.
-103. Alternative: Loot "Ruby" (10035) from "A Soldier Of Madness" (NPC 163185) in `griegsend`; trigger: griegsend/"Trapman", on event_combat.
-104. Alternative: Loot "Ruby" (10035) from "A Shadowy Figure" (NPC 163190) in `griegsend`; trigger: griegsend/"Trapman Two", on event_combat.
-105. Alternative: Loot "Ruby" (10035) from "Servant Of The Magistrate" (NPC 163189) in `griegsend`; trigger: griegsend/"Trapman Two", on event_combat.
-106. Alternative: Loot "Ruby" (10035) from "A Dragorn Sycophant" (NPC 335023) in `harbingers`; trigger: harbingers/"Attendant Spawner", on event_spawn.
-107. Alternative: Loot "Ruby" (10035) from "Prison Guard Talkor" (NPC 245290) in `rujd`; trigger: rujd/"Rujd", hand "Heavy Orcish Prison Key" (59571).
-108. Alternative: Loot "Ruby" (10035) from "Warden" (NPC 245296) in `rujd`; trigger: rujd/"Rujd", say "Zs Timer".
-109. Alternative: Loot "Ruby" (10035) from "Shaman" (NPC 245284) in `rujd`; trigger: rujd/"Rujd", say "Zs Timer".
-110. Alternative: Loot "Ruby" (10035) from "A Spirit Keeper" (NPC 338169) in `stillmoona`; trigger: stillmoona/"The Keeper Of Strength", hand "Scroll of the Ox" (49007) + "Scroll of the Boar" (49008) + "Scroll of the Dragon" (49009) + "Scroll of the Tiger" (49010).
-111. Alternative: Loot "Ruby" (10035) from "Dark Reign Contact" (NPC 338422) in `stillmoona`; trigger: stillmoona/"Best Laid Plans", hand "Temple Plans" (36214).
-112. Alternative: Loot "Ruby" (10035) from "Dark Reign assistant" (NPC 338421) in `stillmoona`; trigger: stillmoona/"Best Laid Plans", hand "Temple Plans" (36214).
-113. Alternative: Loot "Ruby" (10035) from "Dark Reign Contact" (NPC 338422) in `stillmoona`; trigger: stillmoona/"Best Laid Plans", say "Player Loot".
-114. Alternative: Loot "Ruby" (10035) from "A Drake Conspirator" (NPC 338424) in `stillmoona`; trigger: stillmoona/"Scales Of Justice", hand "Small sack of Koi Food" (36215).
-115. Alternative: Loot "Ruby" (10035) from "Nethran" (NPC 338404) in `stillmoona`; trigger: stillmoona/"Sickness Of The Spirit", say "Wave Proximity".
-116. Alternative: Loot "Ruby" (10035) from "A Goblin Poison Master" (NPC 338425) in `stillmoona`; trigger: stillmoona/"Tea For Thy Master", say "Hail".
-117. Alternative: Loot "Ruby" (10035) from "A Poison Assistant" (NPC 338384) in `stillmoona`; trigger: stillmoona/"Tea For Thy Master", say "Hail".
-118. Alternative: Loot "Ruby" (10035) from "A Goblin Poison Master" (NPC 338425) in `stillmoona`; trigger: stillmoona/"Tea For Thy Master", say "Tea Master Say".
-119. Alternative: Loot "Ruby" (10035) from "A Poison Assistant" (NPC 338384) in `stillmoona`; trigger: stillmoona/"Tea For Thy Master", say "Tea Master Say".
-120. Alternative: Loot "Ruby" (10035) from "Lair Mistress" (NPC 339296) in `stillmoonb`; trigger: stillmoonb/"Death Comes Swiftly", say "Zone Death".
-121. Alternative: Loot "Ruby" (10035) from "a Goblin Guard" (NPC 339114) in `stillmoonb`; trigger: stillmoonb/"Drake Eggs", say "Drake Death".
-122. Alternative: Loot "Ruby" (10035) from "Pixtt Riel Tavas" (NPC 298032) in `tacvi`; trigger: tacvi/"Zone Status", say "Spawn Prt".
-123. Alternative: Loot "Ruby" (10035) from "Zun'Muram Mordl Delt" (NPC 298020) in `tacvi`; trigger: tacvi/"Zone Status", say "Spawn Zmmd".
-124. Alternative: Loot "Ruby" (10035) from "A Blizzard Seeker" (NPC 340029) in `thundercrest`; trigger: thundercrest/"An End To The Storms", say "Yar Timer".
-125. Alternative: Loot "Ruby" (10035) from "Furious Sentry" (NPC 340006) in `thundercrest`; trigger: thundercrest/"The Creator", say "Zone Death".
-126. Alternative: Loot "Ruby" (10035) from "Creator Kro'val" (NPC 340007) in `thundercrest`; trigger: thundercrest/"The Creator", say "Player Cast On".
-127. Alternative: Loot "Ruby" (10035) from "A Stone Sentinel" (NPC 340521) in `thundercrest`; trigger: thundercrest/"The Creator", say "Player Cast On".
-128. Alternative: Loot "Ruby" (10035) from "A Ra'Tuk Decimator" (NPC 289004) in `tipt`; trigger: tipt/"Zone Status", say "Spawn Keyroom".
-129. Alternative: Loot "Ruby" (10035) from "a Broken Skull treasurer" (NPC 226208) in `torgiran`; trigger: torgiran/"The Room", on event_signal.
-130. Alternative: Loot "Ruby" (10035) from "A Frenzied Luggald Abomination" (NPC 226214) in `torgiran`; trigger: torgiran/"A Water Spirit", say "Frenzy".
-131. Alternative: Loot "Ruby" (10035) from "A Berserk Luggald Abomination" (NPC 226215) in `torgiran`; trigger: torgiran/"A Water Spirit", say "Berserk".
-132. Alternative: Loot "Ruby" (10035) from "A Furious Luggald Abomination" (NPC 226216) in `torgiran`; trigger: torgiran/"A Water Spirit", say "Fury".
-133. Alternative: Loot "Ruby" (10035) from "An Enraged Luggald Abomination" (NPC 226217) in `torgiran`; trigger: torgiran/"A Water Spirit", say "Rage".
-134. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292010) in `uqua`; trigger: uqua/"Gas Chamber 1", on event_signal.
-135. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292007) in `uqua`; trigger: uqua/"Gas Chamber 1", on event_signal.
-136. Alternative: Loot "Ruby" (10035) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 1", on enter.
-137. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292005) in `uqua`; trigger: uqua/"Trap Uqua 1", on enter.
-138. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292006) in `uqua`; trigger: uqua/"Trap Uqua 1", on enter.
-139. Alternative: Loot "Ruby" (10035) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 1", on enter.
-140. Alternative: Loot "Ruby" (10035) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 2", on enter.
-141. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292005) in `uqua`; trigger: uqua/"Trap Uqua 2", on enter.
-142. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292006) in `uqua`; trigger: uqua/"Trap Uqua 2", on enter.
-143. Alternative: Loot "Ruby" (10035) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 2", on enter.
-144. Alternative: Loot "Ruby" (10035) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 3", on enter.
-145. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292005) in `uqua`; trigger: uqua/"Trap Uqua 3", on enter.
-146. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292006) in `uqua`; trigger: uqua/"Trap Uqua 3", on enter.
-147. Alternative: Loot "Ruby" (10035) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 3", on enter.
-148. Alternative: Loot "Ruby" (10035) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 4", on enter.
-149. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292005) in `uqua`; trigger: uqua/"Trap Uqua 4", on enter.
-150. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292006) in `uqua`; trigger: uqua/"Trap Uqua 4", on enter.
-151. Alternative: Loot "Ruby" (10035) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 4", on enter.
-152. Alternative: Loot "Ruby" (10035) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 5", on enter.
-153. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292005) in `uqua`; trigger: uqua/"Trap Uqua 5", on enter.
-154. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292006) in `uqua`; trigger: uqua/"Trap Uqua 5", on enter.
-155. Alternative: Loot "Ruby" (10035) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 5", on enter.
-156. Alternative: Loot "Ruby" (10035) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 6", on enter.
-157. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292005) in `uqua`; trigger: uqua/"Trap Uqua 6", on enter.
-158. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292006) in `uqua`; trigger: uqua/"Trap Uqua 6", on enter.
-159. Alternative: Loot "Ruby" (10035) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 6", on enter.
-160. Alternative: Loot "Ruby" (10035) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 7", on enter.
-161. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292005) in `uqua`; trigger: uqua/"Trap Uqua 7", on enter.
-162. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292006) in `uqua`; trigger: uqua/"Trap Uqua 7", on enter.
-163. Alternative: Loot "Ruby" (10035) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 7", on enter.
-164. Alternative: Loot "Ruby" (10035) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 8", on enter.
-165. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292005) in `uqua`; trigger: uqua/"Trap Uqua 8", on enter.
-166. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292006) in `uqua`; trigger: uqua/"Trap Uqua 8", on enter.
-167. Alternative: Loot "Ruby" (10035) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 8", on enter.
-168. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284093) in `ferubi`; trigger: ferubi/"Weapon Master Vtiink Vzaan", on timer repop1.
-169. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284094) in `ferubi`; trigger: ferubi/"Weapon Master Vtiink Vzaan", on timer repop2.
-170. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284095) in `ferubi`; trigger: ferubi/"Weapon Master Vtiink Vzaan", on timer repop3.
-171. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284096) in `ferubi`; trigger: ferubi/"Weapon Master Vtiink Vzaan", on timer repop4.
-172. Alternative: Loot "Ruby" (10035) from "a blade of the First" (NPC 249090) in `guke`; trigger: guke/"Guke", on timer adds_on_granos.
-173. Alternative: Loot "Ruby" (10035) from "A Risen Acolyte" (NPC 249152) in `guke`; trigger: guke/"Guke", on timer spawn_adds.
-174. Alternative: Loot "Ruby" (10035) from "A Risen Champion" (NPC 249154) in `guke`; trigger: guke/"Guke", on timer spawn_adds.
-175. Alternative: Loot "Ruby" (10035) from "A Risen Death Knight" (NPC 249157) in `guke`; trigger: guke/"Guke", on timer spawn_adds.
-176. Alternative: Loot "Ruby" (10035) from "A Risen Deceiver" (NPC 249161) in `guke`; trigger: guke/"Guke", on timer spawn_adds.
-177. Alternative: Loot "Ruby" (10035) from "A Risen Fire Caller" (NPC 249164) in `guke`; trigger: guke/"Guke", on timer spawn_adds.
-178. Alternative: Loot "Ruby" (10035) from "A Risen Partisan" (NPC 249169) in `guke`; trigger: guke/"Guke", on timer spawn_adds.
-179. Alternative: Loot "Ruby" (10035) from "A Risen Stalker" (NPC 249178) in `guke`; trigger: guke/"Guke", on timer spawn_adds.
-180. Alternative: Loot "Ruby" (10035) from "A Risen Witch Doctor" (NPC 249183) in `guke`; trigger: guke/"Guke", on timer spawn_adds.
-181. Alternative: Loot "Ruby" (10035) from "A Malicious Force" (NPC 249128) in `guke`; trigger: guke/"Guke", on timer depop.
-182. Alternative: Loot "Ruby" (10035) from "A Moaning Banshee" (NPC 186193) in `hateplaneb`; trigger: hateplaneb/"Maestro", on event signal:186111.
-183. Alternative: Loot "Ruby" (10035) from "A Screeching Banshee" (NPC 186192) in `hateplaneb`; trigger: hateplaneb/"Maestro", on event signal:186111.
-184. Alternative: Loot "Ruby" (10035) from "A Wailing Banshee" (NPC 186194) in `hateplaneb`; trigger: hateplaneb/"Maestro", on event signal:186111.
-185. Alternative: Loot "Ruby" (10035) from "NPC: ##Pixtt Priest Summoner" (NPC 293220) in `kodtaz`; trigger: kodtaz/"Totd", on event death_complete:293210.
-186. Alternative: Loot "Ruby" (10035) from "Zun'Muram Mordl Delt" (NPC 298020) in `tacvi`; trigger: tacvi/"Zmmd", on timer wipecheck.
-187. Alternative: Loot "Ruby" (10035) from "A Blizzard Seeker" (NPC 340029) in `thundercrest`; trigger: thundercrest/"An End To The Storms", on timer Seekers.
-188. Alternative: Loot "Ruby" (10035) from "Tiv Prayer Chanter" (NPC 297066) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297199.
-189. Alternative: Loot "Ruby" (10035) from "Tiv Prayer Chanter" (NPC 297062) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297061.
-190. Alternative: Loot "Ruby" (10035) from "Tiv Prayer Chanter" (NPC 297063) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297197.
-191. Alternative: Loot "Ruby" (10035) from "Tiv Prayer Chanter" (NPC 297064) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297059.
-192. Alternative: Loot "Ruby" (10035) from "Tiv Prayer Chanter" (NPC 297065) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297057.
-193. Alternative: Loot "Ruby" (10035) from "A Murk Hatchling" (NPC 300084) in `wallofslaughter`; trigger: wallofslaughter/"A Quivering Egg", on timer hatch.
-194. Combine in "Spell Research Kit" (93492): "Celestial Essence" (9650), "Coalesced Mana" (97042), "Poison Vial" (16965), "Ruby" (10035). Produces "Vial of Purified Mana" (10254). Requires Research, trivial 200.
-195. Forage "Glow Lichen" (14925) in `nektulos`.
-196. Loot "Essence of Sunlight" (22527) from "A Faerie Dragon" (NPC 119073) in `wakening`. Drop cache: 55% chance per kill.
-197. Ground spawn of "Abysmal Moonwater" (54298) in `abysmal`.
-198. Combine in Brew Barrel (19): "Vial of Purified Mana" (10254), "Glow Lichen" (14925), "Essence of Sunlight" (22527), "Abysmal Moonwater" (54298). Produces "Glowing Concoction" (52943). Requires Brewing, trivial 116.
-199. Buy "Medicine Bag" (17901) from "Rendallen Ironforge" (NPC 2071) in `qeynos2`. Base price: 1,000 copper.
-200. Buy "Glaze Lacquer" (29355) from "Elisha Dirtyshoes" (NPC 202134) in `poknowledge`. Base price: 8,000 copper.
-201. Buy "Prism Shard" (65469) from "Elisha Dirtyshoes" (NPC 202134) in `poknowledge`. Base price: 5,000 copper.
-202. Combine in "Medicine Bag" (17901): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Alchemy, trivial 54.
-203. Combine in Brew Barrel (19): "Dragon Egg Oil" (9664), "Glimmering Oil" (52942), "Glowing Concoction" (52943), "Prismatic Dye" (65472). Produces "Incandescent Oil" (57924). Requires Brewing, trivial 116. The combine does not fail.
-204. Loot "Dragon Boneshard" (65574) from "A Curate" (NPC 109068) in `veksar`. Drop cache: 10% chance per kill.
-205. Hand "Dragon Boneshard" (65574) to veksar/"Spirit Of Garudon". Spawns "Garudon" (109107). Loot "Garudon's Statue" (52941) from "Garudon".
-206. lakeofillomen/"A Bloodgill Mimic", hand "Garudon's Statue" (52941). Sets `EnchPre` to `1`.
-207. Loot "Crumbling Tome" (54313) from "A Shissar Lorekeeper" in `ssratemple`.
-208. ssratemple/"A Soriz Imitator", hand "Crumbling Tome" (54313). Requires `EnchPre` ==1. Gives "Illegible Tome" (52947).
-209. akanon/"Rilgor Plegnog", say "Insidious". Gives "Compacting Satchel" (54303).
-210. Loot "Fine Insidious Halo" (54384) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2% chance per kill.
-211. Loot "Fine Insidious Sleeves" (54385) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.08% chance per kill.
-212. Loot "Fine Insidious Manacle" (54386) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.09% chance per kill.
-213. Loot "Fine Insidious Gloves" (54387) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.24% chance per kill.
-214. Loot "Fine Insidious Pantaloons" (54388) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.23% chance per kill.
-215. Loot "Fine Insidious Slippers" (54389) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.07% chance per kill.
-216. Combine in "Compacting Satchel" (54303): "Fine Insidious Halo" (54384), "Fine Insidious Sleeves" (54385), "Fine Insidious Manacle" (54386), "Fine Insidious Gloves" (54387), "Fine Insidious Pantaloons" (54388), "Fine Insidious Slippers" (54389). Produces "Insidious Bundle" (54317). The combine does not fail.
-217. akanon/"Rilgor Plegnog", hand "Insidious Bundle" (54317). Gives "Gnomish Translating Device" (52945).
-218. burningwood/"A Sarnak Imitator", hand "Gnomish Translating Device" (52945) + "Illegible Tome" (52947). Sets `EnchPre` to `2`.
-219. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
-220. burningwood/"A Sarnak Imitator", say "Prepared". Requires `ench_epic` set. Requires `ench_epic` >=1. Gives "Tattered Illegible Tome" (57918).
-221. Ground spawn of "Cryptic Page" (52933) in `charasis`.
-222. Ground spawn of "Cryptic Page" (52934) in `sebilis`.
-223. Ground spawn of "Cryptic Page" (52935) in `cazicthule`.
-224. Ground spawn of "Cryptic Page" (52936) in `crystal`.
-225. Ground spawn of "Cryptic Page" (52937) in `skyshrine`.
-226. Ground spawn of "Cryptic Page" (52938) in `velketor`.
-227. Ground spawn of "Cryptic Page" (52939) in `nadox`.
-228. Ground spawn of "Cryptic Page" (54308) in `najena`.
-229. Ground spawn of "Cryptic Page" (57916) in `fungusgrove`.
-230. Ground spawn of "Cryptic Page" (57923) in `oot`.
-231. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). The combine does not fail.
-232. burningwood/"A Sarnak Imitator", hand "Complete Illegible Tome" (54267). Sets `ench_epic` to `2`.
-233. poknowledge/"Grand Librarian Maelin", say "Jeb Lumsed Sent Me". Requires `ench_epic` ==2. Gives "Note to Lobaen" (52950).
-234. poknowledge/"Illusionist Lobaen", hand "Note to Lobaen" (52950). Gives "Sealed Documents" (52959).
-235. burningwood/"A Sarnak Imitator", hand "Sealed Documents" (52959). Gives "Assembling the Staff" (54286).
-236. Loot "Sullied Gold Filigree" (52963) from "An Enticing Potameid" in `natimbi`.
-237. hohonora/"Anthone Chapin", hand "Sullied Gold Filigree" (52963). Gives "Purified Gold Filigree" (52953).
-238. Combine in "Ornate Staff Chest" (52960): "1st Piece of the Staff" (54289), "2nd Piece of the Staff" (54310), "3rd Piece of the Staff" (54299), "4th Piece of the Staff" (54284), "Ornate Staff Topper" (52961), "All-Seeing Eye" (54293), "Incandescent Oil" (57924), "Purified Gold Filigree" (52953). Produces "Latched Ornate Chest" (52966). The combine does not fail.
-239. burningwood/"A Sarnak Imitator", hand "Latched Ornate Chest" (52966). Gives "Oculus of Persuasion" (52952).
-240. Combine in "Channeling Crystal" (57920): "Globe of Discordant Energy" (47100), "Oculus of Persuasion" (52952). Produces "Staff of Eternal Eloquence" (52962). The combine does not fail.
+1. nedaria/"Priestess Rakhu", say "Hail". I have been expecting you. There are still a few things more for you to do before the staff is properly prepared. For the next step you will need to travel into Discord and gather two items that I need to perform the next step in the purification process. A great beast by the name of Cipheron has hoarded an incantation for many years. I believe he killed one of our students who was unfortunate enough to get in his way... Reguardless, I will need it. You will also need to gather a noxious secretion from a withering murkglider. It is a strange fluid they begin to secrete as they are dying, and it is very powerful. Bring me this incantation and the secretion and we shall get started.
+2. global/"Global Player", combine recipe 19919. Sets `ench_epic` to `9`.
+3. Loot "Tattered Incantation" (57919) from "Cipheron" in `wallofslaughter`.
+4. Loot "Noxious Secretion" (52951) from "Withering Murkglider" in `causeway`.
+5. nedaria/"Priestess Rakhu", hand "Noxious Secretion" (52951) + "Tattered Incantation" (57919). Requires `ench_epic` ==9. Gives "Channeling Crystal" (57920).
+6. Say "Check Lorb" to anguish/"Zone Status".
+7. Spawns "Orb of Discordant Energy" (317087).
+8. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+9. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+10. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+11. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+12. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+13. burningwood/"A Sarnak Imitator", say "Chest". Requires `ench_epic` set. Requires `ench_epic` >=3. Gives "Ornate Staff Chest" (52960).
+14. Ground spawn of "Taste of Enticement" (52964) in `mistmoore`.
+15. frozenshadow/"Advisor Svartmane", hand "Taste of Enticement" (52964). Gives "1st Piece of the Staff" (54289).
+16. Loot "2nd Piece of the Staff" (54310) from "The Yrendan Scarab" in `pojustice`.
+17. Loot "3rd Piece of the Staff" (54299) from "Chavoor the Trickster" in `vxed`.
+18. Loot "3rd Piece of the Staff" (54299) from "Ikaav Firecaller" in `vxed`.
+19. Loot "3rd Piece of the Staff" (54299) from "Kyv Hunter" in `vxed`.
+20. Loot "3rd Piece of the Staff" (54299) from "Ukun Bloodbeast" in `vxed`.
+21. Loot "3rd Piece of the Staff" (54299) from "Umbiki" in `vxed`.
+22. Loot "3rd Piece of the Staff" (54299) from "misguided beludu Creque" in `vxed`.
+23. **Broken:** no event trigger found for `bloodfields/war#timer:reset`.
+24. Spawns "War Caller Kaavi" (301042) after `bloodfields/war#timer:reset`.
+25. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi".
+26. Loot "Ornate Staff Topper" (52961) from "Faleniel of Darkwater" in `sirens`.
+27. Loot "All-Seeing Eye" (54293) from "All-Seeing Eye" in `mischiefplane`.
+28. potranquility/"Elder Fuirstel", say "Hail". Sets `pop_cod_final` to `1`.
+29. poknowledge/"Aid Grimel", say "Skill In Brewing". Requires `pop_cod_final` ==1. Requires `pop_cod_final` set. Gives "Portable Drink Barrel" (17179).
+30. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+31. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+32. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+33. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+34. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+35. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+36. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+37. Forage "Dragon Egg" (19139) in `templeveeshan`.
+38. Forage "Dragon Egg" (19139) in `westwastes`.
+39. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Dragon Egg" (19139). Produces "Dragon Egg Oil" (9664). Requires Brewing, trivial 150.
+40. Loot "Glimmering Oil" (52942) from "A Greasy Clockwork" in `poinnovation`.
+41. bazaar/"Caerlyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
+42. bazaar/"Caerlyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
+43. Buy "Firing Sheet" (16906) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 10 copper.
+44. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
+45. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
+46. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
+47. Buy "Large Bowl Sketch" (16963) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 760 copper.
+48. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
+49. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+50. Buy "Celestial Solvent" (9731) from "A Goblin Bartender" (NPC 11117) in `runnyeye`. Base price: 120 copper.
+51. Loot "Fetid Skin" (13150) from "A Fetid Fiend" (NPC 72059) in `fearplane`. Drop cache: 35% chance per kill.
+52. Loot "Scare Straw" (13152) from "A Samhain" in `fearplane`.
+53. Loot "Turmoil Warts" (8331) from "A Turmoil Toad" in `fearplane`.
+54. Spawns "Grimling" (154129) in `acrylia` on event_spawn.
+55. Loot "Pearl" (10024) from "Grimling".
+56. Alternative: Loot "Pearl" (10024) from "Grimling" (NPC 154129) in `acrylia`; trigger: acrylia/"Raidman", on event_spawn.
+57. Alternative: Loot "Pearl" (10024) from "Needs Heading Validation" (NPC 154129) in `acrylia`; trigger: acrylia/"Khati Sha The Twisted", on event_signal.
+58. Alternative: Loot "Pearl" (10024) from "a Grelian firelunger" (NPC 337063) in `broodlands`; trigger: broodlands/"Grel Strongboom", on event_spawn.
+59. Alternative: Loot "Pearl" (10024) from "a Grelian woundmender" (NPC 337112) in `broodlands`; trigger: broodlands/"Grel Strongboom", on event_spawn.
+60. Alternative: Loot "Pearl" (10024) from "a Delve spellbinder" (NPC 341091) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
+61. Alternative: Loot "Pearl" (10024) from "a Delve diviner" (NPC 341085) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
+62. Alternative: Loot "Pearl" (10024) from "a Delve evoker" (NPC 341092) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
+63. Alternative: Loot "Pearl" (10024) from "a Delve drake" (NPC 341087) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
+64. Alternative: Loot "Pearl" (10024) from "Drake Matriarch" (NPC 341149) in `delvea`; trigger: delvea/"The Drake Menace", say "Zone Death".
+65. Alternative: Loot "Pearl" (10024) from "a Delve spellbinder" (NPC 341091) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
+66. Alternative: Loot "Pearl" (10024) from "a Delve diviner" (NPC 341085) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
+67. Alternative: Loot "Pearl" (10024) from "a Delve evoker" (NPC 341092) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
+68. Alternative: Loot "Pearl" (10024) from "a Delve drake" (NPC 341087) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
+69. Alternative: Loot "Pearl" (10024) from "A Tar Goo" (NPC 119122) in `wakening`; trigger: wakening/"A Tar Goo", on event_death_complete.
+70. neriaka/"X-Ta Tompi", hand "Turmoil Warts" (8331) + "Pearl" (10024) + "Fetid Skin" (13150) + "Scare Straw" (13152). Gives "Words of Acquisition (Beza)" (11866).
+71. Combine in "Mixing Bowl" (17906): "Celestial Solvent" (9731), "Words of Acquisition (Beza)" (11866). Produces "Celestial Essence" (9650). Requires Baking, trivial 15. The combine does not fail.
+72. Loot "Coalesced Mana" (97042) from "Assistant Gareth" (NPC 371049) in `skylance`. Drop cache: 66.67% chance per kill.
+73. Loot "White Wolf Skin" (13768) from "A Snow Wolf" in `everfrost`.
+74. Loot "White Wolf Skin" (13768) from "A White Wolf" in `everfrost`.
+75. Buy "Vial Sketch" (16968) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 300 copper.
+76. Combine in Pottery Wheel (21): "Water Flask" (13006), "White Wolf Skin" (13768), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
+77. Buy "High Quality Firing Sheet" (16908) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 40 copper.
+78. Combine in Kiln (22): "Unfired Poison Vial" (16885), "High Quality Firing Sheet" (16908). Produces "Poison Vial" (16965). Requires Pottery, trivial 17.
+79. **Broken:** no event trigger found for `ferubi/a mastruq fiend#event_death_complete`.
+80. Loot "Broken Sword Blade" (67521) from "Pxet Elite Blademaster".
+81. **Broken:** no event trigger found for `ferubi/a mastruq fiend#event_death_complete`.
+82. Loot "Jagged Spear Tip" (67522) from "Pxet Elite Spearmaster".
+83. **Broken:** no event trigger found for `ferubi/a kyv eyecollector#event_death_complete`.
+84. Loot "Tarnished Knuckles" (67523) from "Pxet Elite Brawler".
+85. **Broken:** no event trigger found for `ferubi/a kyv eyecollector#event_death_complete`.
+86. Loot "Chipped Hammer Head" (67524) from "Pxet Elite Hammermaster".
+87. Hand "Broken Sword Blade" (67521) + "Jagged Spear Tip" (67522) + "Tarnished Knuckles" (67523) + "Chipped Hammer Head" (67524) to ferubi/"Smith Rondo". Spawns "Master's Apprentice" (284093). Loot "Ruby" (10035) from "Master's Apprentice".
+88. Alternative: Loot "Ruby" (10035) from "The Broodqueen" (NPC 337254) in `broodlands`; trigger: broodlands/"Brood Drone", on event_death_complete.
+89. Alternative: Loot "Ruby" (10035) from "A parasitic murkglider" (NPC 303121) in `causeway`; trigger: causeway/"Withering Murkglider", on event_hp.
+90. Alternative: Loot "Ruby" (10035) from "a Reanimated Berserker" (NPC 103093) in `chardok`; trigger: chardok/"The Earth", on enter.
+91. Alternative: Loot "Ruby" (10035) from "a Delve spellbinder" (NPC 341091) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
+92. Alternative: Loot "Ruby" (10035) from "a Delve diviner" (NPC 341085) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
+93. Alternative: Loot "Ruby" (10035) from "a Delve evoker" (NPC 341092) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
+94. Alternative: Loot "Ruby" (10035) from "a Delve drake" (NPC 341087) in `delvea`; trigger: delvea/"A Drake Egg", on event_death_complete.
+95. Alternative: Loot "Ruby" (10035) from "Drake Matriarch" (NPC 341149) in `delvea`; trigger: delvea/"The Drake Menace", say "Zone Death".
+96. Alternative: Loot "Ruby" (10035) from "a Delve spellbinder" (NPC 341091) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
+97. Alternative: Loot "Ruby" (10035) from "a Delve diviner" (NPC 341085) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
+98. Alternative: Loot "Ruby" (10035) from "a Delve evoker" (NPC 341092) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
+99. Alternative: Loot "Ruby" (10035) from "a Delve drake" (NPC 341087) in `delvea`; trigger: delvea/"Lava Rock", on event_death.
+100. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284094) in `ferubi`; trigger: ferubi/"Smith Rondo", hand "Broken Sword Blade" (67521) + "Jagged Spear Tip" (67522) + "Tarnished Knuckles" (67523) + "Chipped Hammer Head" (67524).
+101. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284095) in `ferubi`; trigger: ferubi/"Smith Rondo", hand "Broken Sword Blade" (67521) + "Jagged Spear Tip" (67522) + "Tarnished Knuckles" (67523) + "Chipped Hammer Head" (67524).
+102. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284096) in `ferubi`; trigger: ferubi/"Smith Rondo", hand "Broken Sword Blade" (67521) + "Jagged Spear Tip" (67522) + "Tarnished Knuckles" (67523) + "Chipped Hammer Head" (67524).
+103. Alternative: Loot "Ruby" (10035) from "Pxet Elite Spearmaster" (NPC 284091) in `ferubi`; trigger: ferubi/"Event Spawner", say "Signal:2".
+104. Alternative: Loot "Ruby" (10035) from "A Soldier Of Madness" (NPC 163185) in `griegsend`; trigger: griegsend/"Trapman", on event_combat.
+105. Alternative: Loot "Ruby" (10035) from "A Shadowy Figure" (NPC 163190) in `griegsend`; trigger: griegsend/"Trapman Two", on event_combat.
+106. Alternative: Loot "Ruby" (10035) from "Servant Of The Magistrate" (NPC 163189) in `griegsend`; trigger: griegsend/"Trapman Two", on event_combat.
+107. Alternative: Loot "Ruby" (10035) from "A Dragorn Sycophant" (NPC 335023) in `harbingers`; trigger: harbingers/"Attendant Spawner", on event_spawn.
+108. Alternative: Loot "Ruby" (10035) from "Prison Guard Talkor" (NPC 245290) in `rujd`; trigger: rujd/"Rujd", hand "Heavy Orcish Prison Key" (59571).
+109. Alternative: Loot "Ruby" (10035) from "Warden" (NPC 245296) in `rujd`; trigger: rujd/"Rujd", say "Zs Timer".
+110. Alternative: Loot "Ruby" (10035) from "Shaman" (NPC 245284) in `rujd`; trigger: rujd/"Rujd", say "Zs Timer".
+111. Alternative: Loot "Ruby" (10035) from "A Spirit Keeper" (NPC 338169) in `stillmoona`; trigger: stillmoona/"The Keeper Of Strength", hand "Scroll of the Ox" (49007) + "Scroll of the Boar" (49008) + "Scroll of the Dragon" (49009) + "Scroll of the Tiger" (49010).
+112. Alternative: Loot "Ruby" (10035) from "Dark Reign Contact" (NPC 338422) in `stillmoona`; trigger: stillmoona/"Best Laid Plans", hand "Temple Plans" (36214).
+113. Alternative: Loot "Ruby" (10035) from "Dark Reign assistant" (NPC 338421) in `stillmoona`; trigger: stillmoona/"Best Laid Plans", hand "Temple Plans" (36214).
+114. Alternative: Loot "Ruby" (10035) from "Dark Reign Contact" (NPC 338422) in `stillmoona`; trigger: stillmoona/"Best Laid Plans", say "Player Loot".
+115. Alternative: Loot "Ruby" (10035) from "A Drake Conspirator" (NPC 338424) in `stillmoona`; trigger: stillmoona/"Scales Of Justice", hand "Small sack of Koi Food" (36215).
+116. Alternative: Loot "Ruby" (10035) from "Nethran" (NPC 338404) in `stillmoona`; trigger: stillmoona/"Sickness Of The Spirit", say "Wave Proximity".
+117. Alternative: Loot "Ruby" (10035) from "A Goblin Poison Master" (NPC 338425) in `stillmoona`; trigger: stillmoona/"Tea For Thy Master", say "Hail".
+118. Alternative: Loot "Ruby" (10035) from "A Poison Assistant" (NPC 338384) in `stillmoona`; trigger: stillmoona/"Tea For Thy Master", say "Hail".
+119. Alternative: Loot "Ruby" (10035) from "A Goblin Poison Master" (NPC 338425) in `stillmoona`; trigger: stillmoona/"Tea For Thy Master", say "Tea Master Say".
+120. Alternative: Loot "Ruby" (10035) from "A Poison Assistant" (NPC 338384) in `stillmoona`; trigger: stillmoona/"Tea For Thy Master", say "Tea Master Say".
+121. Alternative: Loot "Ruby" (10035) from "Lair Mistress" (NPC 339296) in `stillmoonb`; trigger: stillmoonb/"Death Comes Swiftly", say "Zone Death".
+122. Alternative: Loot "Ruby" (10035) from "a Goblin Guard" (NPC 339114) in `stillmoonb`; trigger: stillmoonb/"Drake Eggs", say "Drake Death".
+123. Alternative: Loot "Ruby" (10035) from "Pixtt Riel Tavas" (NPC 298032) in `tacvi`; trigger: tacvi/"Zone Status", say "Spawn Prt".
+124. Alternative: Loot "Ruby" (10035) from "Zun'Muram Mordl Delt" (NPC 298020) in `tacvi`; trigger: tacvi/"Zone Status", say "Spawn Zmmd".
+125. Alternative: Loot "Ruby" (10035) from "A Blizzard Seeker" (NPC 340029) in `thundercrest`; trigger: thundercrest/"An End To The Storms", say "Yar Timer".
+126. Alternative: Loot "Ruby" (10035) from "Furious Sentry" (NPC 340006) in `thundercrest`; trigger: thundercrest/"The Creator", say "Zone Death".
+127. Alternative: Loot "Ruby" (10035) from "Creator Kro'val" (NPC 340007) in `thundercrest`; trigger: thundercrest/"The Creator", say "Player Cast On".
+128. Alternative: Loot "Ruby" (10035) from "A Stone Sentinel" (NPC 340521) in `thundercrest`; trigger: thundercrest/"The Creator", say "Player Cast On".
+129. Alternative: Loot "Ruby" (10035) from "A Ra'Tuk Decimator" (NPC 289004) in `tipt`; trigger: tipt/"Zone Status", say "Spawn Keyroom".
+130. Alternative: Loot "Ruby" (10035) from "a Broken Skull treasurer" (NPC 226208) in `torgiran`; trigger: torgiran/"The Room", on event_signal.
+131. Alternative: Loot "Ruby" (10035) from "A Frenzied Luggald Abomination" (NPC 226214) in `torgiran`; trigger: torgiran/"A Water Spirit", say "Frenzy".
+132. Alternative: Loot "Ruby" (10035) from "A Berserk Luggald Abomination" (NPC 226215) in `torgiran`; trigger: torgiran/"A Water Spirit", say "Berserk".
+133. Alternative: Loot "Ruby" (10035) from "A Furious Luggald Abomination" (NPC 226216) in `torgiran`; trigger: torgiran/"A Water Spirit", say "Fury".
+134. Alternative: Loot "Ruby" (10035) from "An Enraged Luggald Abomination" (NPC 226217) in `torgiran`; trigger: torgiran/"A Water Spirit", say "Rage".
+135. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292010) in `uqua`; trigger: uqua/"Gas Chamber 1", say "Signal:2".
+136. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292007) in `uqua`; trigger: uqua/"Gas Chamber 1", say "Signal:2".
+137. Alternative: Loot "Ruby" (10035) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 1", on enter.
+138. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292005) in `uqua`; trigger: uqua/"Trap Uqua 1", on enter.
+139. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292006) in `uqua`; trigger: uqua/"Trap Uqua 1", on enter.
+140. Alternative: Loot "Ruby" (10035) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 1", on enter.
+141. Alternative: Loot "Ruby" (10035) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 2", on enter.
+142. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292005) in `uqua`; trigger: uqua/"Trap Uqua 2", on enter.
+143. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292006) in `uqua`; trigger: uqua/"Trap Uqua 2", on enter.
+144. Alternative: Loot "Ruby" (10035) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 2", on enter.
+145. Alternative: Loot "Ruby" (10035) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 3", on enter.
+146. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292005) in `uqua`; trigger: uqua/"Trap Uqua 3", on enter.
+147. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292006) in `uqua`; trigger: uqua/"Trap Uqua 3", on enter.
+148. Alternative: Loot "Ruby" (10035) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 3", on enter.
+149. Alternative: Loot "Ruby" (10035) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 4", on enter.
+150. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292005) in `uqua`; trigger: uqua/"Trap Uqua 4", on enter.
+151. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292006) in `uqua`; trigger: uqua/"Trap Uqua 4", on enter.
+152. Alternative: Loot "Ruby" (10035) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 4", on enter.
+153. Alternative: Loot "Ruby" (10035) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 5", on enter.
+154. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292005) in `uqua`; trigger: uqua/"Trap Uqua 5", on enter.
+155. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292006) in `uqua`; trigger: uqua/"Trap Uqua 5", on enter.
+156. Alternative: Loot "Ruby" (10035) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 5", on enter.
+157. Alternative: Loot "Ruby" (10035) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 6", on enter.
+158. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292005) in `uqua`; trigger: uqua/"Trap Uqua 6", on enter.
+159. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292006) in `uqua`; trigger: uqua/"Trap Uqua 6", on enter.
+160. Alternative: Loot "Ruby" (10035) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 6", on enter.
+161. Alternative: Loot "Ruby" (10035) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 7", on enter.
+162. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292005) in `uqua`; trigger: uqua/"Trap Uqua 7", on enter.
+163. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292006) in `uqua`; trigger: uqua/"Trap Uqua 7", on enter.
+164. Alternative: Loot "Ruby" (10035) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 7", on enter.
+165. Alternative: Loot "Ruby" (10035) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 8", on enter.
+166. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292005) in `uqua`; trigger: uqua/"Trap Uqua 8", on enter.
+167. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292006) in `uqua`; trigger: uqua/"Trap Uqua 8", on enter.
+168. Alternative: Loot "Ruby" (10035) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 8", on enter.
+169. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284093) in `ferubi`; trigger: ferubi/"Weapon Master Vtiink Vzaan", on timer repop1.
+170. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284094) in `ferubi`; trigger: ferubi/"Weapon Master Vtiink Vzaan", on timer repop2.
+171. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284095) in `ferubi`; trigger: ferubi/"Weapon Master Vtiink Vzaan", on timer repop3.
+172. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284096) in `ferubi`; trigger: ferubi/"Weapon Master Vtiink Vzaan", on timer repop4.
+173. Alternative: Loot "Ruby" (10035) from "a blade of the First" (NPC 249090) in `guke`; trigger: guke/"Guke", on timer adds_on_granos.
+174. Alternative: Loot "Ruby" (10035) from "A Risen Acolyte" (NPC 249152) in `guke`; trigger: guke/"Guke", on timer spawn_adds.
+175. Alternative: Loot "Ruby" (10035) from "A Risen Champion" (NPC 249154) in `guke`; trigger: guke/"Guke", on timer spawn_adds.
+176. Alternative: Loot "Ruby" (10035) from "A Risen Death Knight" (NPC 249157) in `guke`; trigger: guke/"Guke", on timer spawn_adds.
+177. Alternative: Loot "Ruby" (10035) from "A Risen Deceiver" (NPC 249161) in `guke`; trigger: guke/"Guke", on timer spawn_adds.
+178. Alternative: Loot "Ruby" (10035) from "A Risen Fire Caller" (NPC 249164) in `guke`; trigger: guke/"Guke", on timer spawn_adds.
+179. Alternative: Loot "Ruby" (10035) from "A Risen Partisan" (NPC 249169) in `guke`; trigger: guke/"Guke", on timer spawn_adds.
+180. Alternative: Loot "Ruby" (10035) from "A Risen Stalker" (NPC 249178) in `guke`; trigger: guke/"Guke", on timer spawn_adds.
+181. Alternative: Loot "Ruby" (10035) from "A Risen Witch Doctor" (NPC 249183) in `guke`; trigger: guke/"Guke", on timer spawn_adds.
+182. Alternative: Loot "Ruby" (10035) from "A Malicious Force" (NPC 249128) in `guke`; trigger: guke/"Guke", on timer depop.
+183. Alternative: Loot "Ruby" (10035) from "A Moaning Banshee" (NPC 186193) in `hateplaneb`; trigger: hateplaneb/"Maestro", on event signal:186111.
+184. Alternative: Loot "Ruby" (10035) from "A Screeching Banshee" (NPC 186192) in `hateplaneb`; trigger: hateplaneb/"Maestro", on event signal:186111.
+185. Alternative: Loot "Ruby" (10035) from "A Wailing Banshee" (NPC 186194) in `hateplaneb`; trigger: hateplaneb/"Maestro", on event signal:186111.
+186. Alternative: Loot "Ruby" (10035) from "NPC: ##Pixtt Priest Summoner" (NPC 293220) in `kodtaz`; trigger: kodtaz/"Totd", on event death_complete:293210.
+187. Alternative: Loot "Ruby" (10035) from "Zun'Muram Mordl Delt" (NPC 298020) in `tacvi`; trigger: tacvi/"Zmmd", on timer wipecheck.
+188. Alternative: Loot "Ruby" (10035) from "A Blizzard Seeker" (NPC 340029) in `thundercrest`; trigger: thundercrest/"An End To The Storms", on timer Seekers.
+189. Alternative: Loot "Ruby" (10035) from "Tiv Prayer Chanter" (NPC 297066) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297199.
+190. Alternative: Loot "Ruby" (10035) from "Tiv Prayer Chanter" (NPC 297062) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297061.
+191. Alternative: Loot "Ruby" (10035) from "Tiv Prayer Chanter" (NPC 297063) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297197.
+192. Alternative: Loot "Ruby" (10035) from "Tiv Prayer Chanter" (NPC 297064) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297059.
+193. Alternative: Loot "Ruby" (10035) from "Tiv Prayer Chanter" (NPC 297065) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297057.
+194. Alternative: Loot "Ruby" (10035) from "A Murk Hatchling" (NPC 300084) in `wallofslaughter`; trigger: wallofslaughter/"A Quivering Egg", on timer hatch.
+195. Combine in "Spell Research Kit" (93492): "Celestial Essence" (9650), "Coalesced Mana" (97042), "Poison Vial" (16965), "Ruby" (10035). Produces "Vial of Purified Mana" (10254). Requires Research, trivial 200.
+196. Forage "Glow Lichen" (14925) in `nektulos`.
+197. Loot "Essence of Sunlight" (22527) from "A Faerie Dragon" (NPC 119073) in `wakening`. Drop cache: 55% chance per kill.
+198. Ground spawn of "Abysmal Moonwater" (54298) in `abysmal`.
+199. Combine in Brew Barrel (19): "Vial of Purified Mana" (10254), "Glow Lichen" (14925), "Essence of Sunlight" (22527), "Abysmal Moonwater" (54298). Produces "Glowing Concoction" (52943). Requires Brewing, trivial 116.
+200. Buy "Medicine Bag" (17901) from "Rendallen Ironforge" (NPC 2071) in `qeynos2`. Base price: 1,000 copper.
+201. Buy "Glaze Lacquer" (29355) from "Elisha Dirtyshoes" (NPC 202134) in `poknowledge`. Base price: 8,000 copper.
+202. Buy "Prism Shard" (65469) from "Elisha Dirtyshoes" (NPC 202134) in `poknowledge`. Base price: 5,000 copper.
+203. Combine in "Medicine Bag" (17901): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Alchemy, trivial 54.
+204. Combine in Brew Barrel (19): "Dragon Egg Oil" (9664), "Glimmering Oil" (52942), "Glowing Concoction" (52943), "Prismatic Dye" (65472). Produces "Incandescent Oil" (57924). Requires Brewing, trivial 116. The combine does not fail.
+205. Loot "Dragon Boneshard" (65574) from "A Curate" (NPC 109068) in `veksar`. Drop cache: 10% chance per kill.
+206. Hand "Dragon Boneshard" (65574) to veksar/"Spirit Of Garudon". Spawns "Garudon" (109107). Loot "Garudon's Statue" (52941) from "Garudon".
+207. lakeofillomen/"A Bloodgill Mimic", hand "Garudon's Statue" (52941). Sets `EnchPre` to `1`.
+208. Loot "Crumbling Tome" (54313) from "A Shissar Lorekeeper" in `ssratemple`.
+209. ssratemple/"A Soriz Imitator", hand "Crumbling Tome" (54313). Requires `EnchPre` ==1. Gives "Illegible Tome" (52947).
+210. akanon/"Rilgor Plegnog", say "Insidious". Gives "Compacting Satchel" (54303).
+211. Loot "Fine Insidious Halo" (54384) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2% chance per kill.
+212. Loot "Fine Insidious Sleeves" (54385) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.08% chance per kill.
+213. Loot "Fine Insidious Manacle" (54386) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.09% chance per kill.
+214. Loot "Fine Insidious Gloves" (54387) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.24% chance per kill.
+215. Loot "Fine Insidious Pantaloons" (54388) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.23% chance per kill.
+216. Loot "Fine Insidious Slippers" (54389) from "A Forsaken Revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.07% chance per kill.
+217. Combine in "Compacting Satchel" (54303): "Fine Insidious Halo" (54384), "Fine Insidious Sleeves" (54385), "Fine Insidious Manacle" (54386), "Fine Insidious Gloves" (54387), "Fine Insidious Pantaloons" (54388), "Fine Insidious Slippers" (54389). Produces "Insidious Bundle" (54317). The combine does not fail.
+218. akanon/"Rilgor Plegnog", hand "Insidious Bundle" (54317). Gives "Gnomish Translating Device" (52945).
+219. burningwood/"A Sarnak Imitator", hand "Gnomish Translating Device" (52945) + "Illegible Tome" (52947). Sets `EnchPre` to `2`.
+220. burningwood/"A Sarnak Imitator", say "Hail". Sets `ench_epic` to `1`.
+221. burningwood/"A Sarnak Imitator", say "Prepared". Requires `ench_epic` set. Requires `ench_epic` >=1. Gives "Tattered Illegible Tome" (57918).
+222. Ground spawn of "Cryptic Page" (52933) in `charasis`.
+223. Ground spawn of "Cryptic Page" (52934) in `sebilis`.
+224. Ground spawn of "Cryptic Page" (52935) in `cazicthule`.
+225. Ground spawn of "Cryptic Page" (52936) in `crystal`.
+226. Ground spawn of "Cryptic Page" (52937) in `skyshrine`.
+227. Ground spawn of "Cryptic Page" (52938) in `velketor`.
+228. Ground spawn of "Cryptic Page" (52939) in `nadox`.
+229. Ground spawn of "Cryptic Page" (54308) in `najena`.
+230. Ground spawn of "Cryptic Page" (57916) in `fungusgrove`.
+231. Ground spawn of "Cryptic Page" (57923) in `oot`.
+232. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). The combine does not fail.
+233. burningwood/"A Sarnak Imitator", hand "Complete Illegible Tome" (54267). Sets `ench_epic` to `2`.
+234. poknowledge/"Grand Librarian Maelin", say "Jeb Lumsed Sent Me". Requires `ench_epic` ==2. Gives "Note to Lobaen" (52950).
+235. poknowledge/"Illusionist Lobaen", hand "Note to Lobaen" (52950). Gives "Sealed Documents" (52959).
+236. burningwood/"A Sarnak Imitator", hand "Sealed Documents" (52959). Gives "Assembling the Staff" (54286).
+237. Loot "Sullied Gold Filigree" (52963) from "An Enticing Potameid" in `natimbi`.
+238. hohonora/"Anthone Chapin", hand "Sullied Gold Filigree" (52963). Gives "Purified Gold Filigree" (52953).
+239. Combine in "Ornate Staff Chest" (52960): "1st Piece of the Staff" (54289), "2nd Piece of the Staff" (54310), "3rd Piece of the Staff" (54299), "4th Piece of the Staff" (54284), "Ornate Staff Topper" (52961), "All-Seeing Eye" (54293), "Incandescent Oil" (57924), "Purified Gold Filigree" (52953). Produces "Latched Ornate Chest" (52966). The combine does not fail.
+240. burningwood/"A Sarnak Imitator", hand "Latched Ornate Chest" (52966). Gives "Oculus of Persuasion" (52952).
+241. Combine in "Channeling Crystal" (57920): "Globe of Discordant Energy" (47100), "Oculus of Persuasion" (52952). Produces "Staff of Eternal Eloquence" (52962). The combine does not fail.
 
 ## Quest-state progression
 
@@ -821,13 +823,13 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 66. Combine in Pottery Wheel (21): "Water Flask" (13006), "White Wolf Skin" (13768), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery, trivial 148.
 67. Buy "High Quality Firing Sheet" (16908) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 40 copper.
 68. Combine in Kiln (22): "Unfired Poison Vial" (16885), "High Quality Firing Sheet" (16908). Produces "Poison Vial" (16965). Requires Pottery, trivial 17.
-69. Spawns "Pxet Elite Blademaster" (284039) in `ferubi` on event_signal.
+69. **Broken:** no event trigger found for `ferubi/a mastruq fiend#event_death_complete`.
 70. Loot "Broken Sword Blade" (67521) from "Pxet Elite Blademaster".
-71. Spawns "Pxet Elite Spearmaster" (284091) in `ferubi` on event_signal.
+71. **Broken:** no event trigger found for `ferubi/a mastruq fiend#event_death_complete`.
 72. Loot "Jagged Spear Tip" (67522) from "Pxet Elite Spearmaster".
-73. Spawns "Pxet Elite Brawler" (284088) in `ferubi` on event_signal.
+73. **Broken:** no event trigger found for `ferubi/a kyv eyecollector#event_death_complete`.
 74. Loot "Tarnished Knuckles" (67523) from "Pxet Elite Brawler".
-75. Spawns "Pxet Elite Hammermaster" (284090) in `ferubi` on event_signal.
+75. **Broken:** no event trigger found for `ferubi/a kyv eyecollector#event_death_complete`.
 76. Loot "Chipped Hammer Head" (67524) from "Pxet Elite Hammermaster".
 77. Hand "Broken Sword Blade" (67521) + "Jagged Spear Tip" (67522) + "Tarnished Knuckles" (67523) + "Chipped Hammer Head" (67524) to ferubi/"Smith Rondo". Spawns "Master's Apprentice" (284093). Loot "Ruby" (10035) from "Master's Apprentice".
 78. Alternative: Loot "Ruby" (10035) from "The Broodqueen" (NPC 337254) in `broodlands`; trigger: broodlands/"Brood Drone", on event_death_complete.
@@ -845,7 +847,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 90. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284094) in `ferubi`; trigger: ferubi/"Smith Rondo", hand "Broken Sword Blade" (67521) + "Jagged Spear Tip" (67522) + "Tarnished Knuckles" (67523) + "Chipped Hammer Head" (67524).
 91. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284095) in `ferubi`; trigger: ferubi/"Smith Rondo", hand "Broken Sword Blade" (67521) + "Jagged Spear Tip" (67522) + "Tarnished Knuckles" (67523) + "Chipped Hammer Head" (67524).
 92. Alternative: Loot "Ruby" (10035) from "Master's Apprentice" (NPC 284096) in `ferubi`; trigger: ferubi/"Smith Rondo", hand "Broken Sword Blade" (67521) + "Jagged Spear Tip" (67522) + "Tarnished Knuckles" (67523) + "Chipped Hammer Head" (67524).
-93. Alternative: Loot "Ruby" (10035) from "Pxet Elite Spearmaster" (NPC 284091) in `ferubi`; trigger: ferubi/"Event Spawner", on event_signal.
+93. Alternative: Loot "Ruby" (10035) from "Pxet Elite Spearmaster" (NPC 284091) in `ferubi`; trigger: ferubi/"Event Spawner", say "Signal:2".
 94. Alternative: Loot "Ruby" (10035) from "A Soldier Of Madness" (NPC 163185) in `griegsend`; trigger: griegsend/"Trapman", on event_combat.
 95. Alternative: Loot "Ruby" (10035) from "A Shadowy Figure" (NPC 163190) in `griegsend`; trigger: griegsend/"Trapman Two", on event_combat.
 96. Alternative: Loot "Ruby" (10035) from "Servant Of The Magistrate" (NPC 163189) in `griegsend`; trigger: griegsend/"Trapman Two", on event_combat.
@@ -877,8 +879,8 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 122. Alternative: Loot "Ruby" (10035) from "A Berserk Luggald Abomination" (NPC 226215) in `torgiran`; trigger: torgiran/"A Water Spirit", say "Berserk".
 123. Alternative: Loot "Ruby" (10035) from "A Furious Luggald Abomination" (NPC 226216) in `torgiran`; trigger: torgiran/"A Water Spirit", say "Fury".
 124. Alternative: Loot "Ruby" (10035) from "An Enraged Luggald Abomination" (NPC 226217) in `torgiran`; trigger: torgiran/"A Water Spirit", say "Rage".
-125. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292010) in `uqua`; trigger: uqua/"Gas Chamber 1", on event_signal.
-126. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292007) in `uqua`; trigger: uqua/"Gas Chamber 1", on event_signal.
+125. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292010) in `uqua`; trigger: uqua/"Gas Chamber 1", say "Signal:2".
+126. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292007) in `uqua`; trigger: uqua/"Gas Chamber 1", say "Signal:2".
 127. Alternative: Loot "Ruby" (10035) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 1", on enter.
 128. Alternative: Loot "Ruby" (10035) from "A Trusik Ritualist" (NPC 292005) in `uqua`; trigger: uqua/"Trap Uqua 1", on enter.
 129. Alternative: Loot "Ruby" (10035) from "A Trusik Stalker" (NPC 292006) in `uqua`; trigger: uqua/"Trap Uqua 1", on enter.
@@ -1323,8 +1325,8 @@ Values written: 1, 2, 3, 7, 8, 9, 10.
         - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
         - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
         - Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-        - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-        - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+        - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+        - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
       - Put in x1: Oculus of Persuasion (52952).
         - Prerequisite: "Oculus of Persuasion" (52952). See section 0.
       - Produces Staff of Eternal Eloquence (52962).

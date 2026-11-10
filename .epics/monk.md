@@ -6,98 +6,99 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Celestial Fists" (10652)
 
-1. Kill lakeofillomen/"Vorash". Spawns "Xenevorash" (85208).
-2. Loot "Demon Fangs" (1688) from "Xenevorash".
-3. Loot "Metal Pipe" (12979) from "A Drolvarg Pawbuster" in `karnor`.
-4. Loot "Metal Pipe" (12980) from "An Iksar Betrayer" in `chardok`.
-5. Buy "King's Court Token" (66616) from "Keiya Oakwood" (NPC 150311) in `shadowhaven`. Base price: 95,239 copper.
-6. shadowhaven/"Gralin Silvertooth", hand "King's Court Token" (66616). Gives "Deluxe Sewing Kit" (17966).
-7. Loot "Code of Zan Fi" (12316) from "Targin the Rock" in `soldungb`.
-8. Loot "Blackburrow Gnoll Pelt" (13027) from "Refugee Splitpaw" (NPC 17023) in `blackburrow`. Drop cache: 55% chance per kill.
-9. Loot "Blackburrow Gnoll Skin" (13028) from "The Gnoll High Shaman" (NPC 17042) in `blackburrow`. Drop cache: 55% chance per kill.
-10. Loot "Putrid Rib Bone" (13722) from "A Putrid Skeleton" in `qeytoqrg`.
-11. Loot "Gnoll Pup Scalp" (13789) from "A Gnoll Pup" in `blackburrow`.
-12. Loot "Gnoll Pup Scalp" (13789) from "A Gnoll Pup" in `everfrost`.
-13. Loot "Gnoll Pup Scalp" (13789) from "A Gnoll Pup" in `qeynos2`.
-14. Loot "Gnoll Pup Scalp" (13789) from "A Gnoll Pup" in `qeytoqrg`.
-15. qeynos2/"Phin Esrinap", hand "Gnoll Pup Scalp" (13789) + "Gnoll Pup Scalp" (13789) + "Gnoll Pup Scalp" (13789) + "Gnoll Pup Scalp" (13789). Gives "White Headband" (10110).
-16. qeynos2/"Phin Esrinap", hand "White Headband" (10110) + "Putrid Rib Bone" (13722) + "Putrid Rib Bone" (13722) + "Putrid Rib Bone" (13722). Gives "Yellow Headband" (10111).
-17. qeynos2/"Phin Esrinap", hand "Yellow Headband" (10111) + "Blackburrow Gnoll Pelt" (13027) + "Blackburrow Gnoll Pelt" (13027) + "Blackburrow Gnoll Skin" (13028). Gives "Orange Headband" (10112).
-18. Loot "Head of Ghanex Drah" (13165) from "Ghanex Drah" in `southkarana`.
-19. Loot "Dareb's Skull" (13166) from "High Shaman Phido" in `southkarana`.
-20. Loot "Dareb's Skull" (13166) from "An Undead Cyclops" in `southkarana`.
-21. Loot "Head of Shen" (13167) from "High Shaman Grisok" in `southkarana`.
-22. qeynos2/"Togahn Sorast", hand "Orange Headband" (10112) + "Head of Ghanex Drah" (13165) + "Dareb's Skull" (13166) + "Head of Shen" (13167). Gives "Red Headband" (10113).
-23. Loot "Skull of Jhen'Tra" (13168) from "A Gnoll Embalmer" in `lakerathe`.
-24. Loot "Dagger of Marnek" (13169) from "The Fabled Thaumaturgist".
-25. Loot "Dagger of Marnek" (13169) from "The Thaumaturgist" in `befallen`.
-26. Loot "Zaharn's Coronet" (3000) from "High Priest Zaharn" in `permafrost`.
-27. qeynos2/"Togahn Sorast", hand "Zaharn's Coronet" (3000) + "Red Headband" (10113) + "Skull of Jhen'Tra" (13168) + "Dagger of Marnek" (13169). Gives "Purple Headband" (10114).
-28. southkarana/"Brother Qwinn", hand "Purple Headband" (10114) + "Code of Zan Fi" (12316). Gives "Needle of the Void" (12314).
-29. Loot "The Idol" (12317) from "Raster of Guk" in `gukbottom`.
-30. Loot "Blackened Wand" (13237) from "Priest Amiaz" in `befallen`.
-31. Loot "Blackened Sapphire" (13238) from "Ekeros" in `najena`.
-32. Buy "Greater Lightstone" (10400) from "Gliblixl Rocktok" (NPC 151204) in `bazaar`. Base price: 4,500 copper.
-33. Loot "Cutthroat Insignia Ring" (1903) from "a Dervish Cutthroat" (NPC 457074) in `oldcommons`. Drop cache: 55.56% chance per kill.
-34. Loot "Legionnaire's Bracer" (2299) from "Orc Legionnaire" (NPC 21119) in `commons`. Drop cache: 84% chance per kill.
-35. Loot "Deathfist Pawn Scalp" (13794) from "Orc Pawn" (NPC 415088) in `mistythicket`. Drop cache: 50% chance per kill.
-36. Loot "Snake Fang" (13067) from "A Giant Briar Snake" (NPC 414061) in `toxxulia`. Drop cache: 58.21% chance per kill.
-37. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-38. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-39. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-40. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-41. freeportwest/"Velan Torresk", hand "Snake Fang" (13067) + "Bone Chips" (13073) + "Deathfist Pawn Scalp" (13794) + "Deathfist Pawn Scalp" (13794). Gives "White Training Sash" (10130).
-42. Loot "Giant Snake Rattle" (13058) from "A Darkweed Snake" (NPC 457018) in `oldcommons`. Drop cache: 43.94% chance per kill.
-43. misty/"Misty", on event signal:33161.
-44. Starts timer `Adds`.
-45. Spawns "A Scarecrow" (33168) after `misty/misty#timer:Adds`.
-46. Loot "Deathfist Slashed Belt" (13916) from "A Scarecrow".
-47. Loot "Desert Tarantula Chitin" (20901) from "A Dune Tarantula" (NPC 392086) in `northro`. Drop cache: 45.56% chance per kill.
-48. freeportwest/"Velan Torresk", hand "White Training Sash" (10130) + "Giant Snake Rattle" (13058) + "Deathfist Slashed Belt" (13916) + "Desert Tarantula Chitin" (20901). Gives "Yellow Sash of Order" (10131).
-49. freeportwest/"Reyia Beslin", hand "Cutthroat Insignia Ring" (1903) + "Legionnaire's Bracer" (2299) + "Yellow Sash of Order" (10131) + "Greater Lightstone" (10400). Gives "Orange Sash of Order" (10132).
-50. freeportwest/"Reyia Beslin", hand "Orange Sash of Order" (10132) + "Blackened Wand" (13237) + "Blackened Sapphire" (13238). Gives "Red Sash of Order" (10133).
-51. rathemtn/"Brother Zephyl", hand "Red Sash of Order" (10133) + "The Idol" (12317). Gives "Rare Robe Pattern" (12315).
-52. Buy "Song: Jonthan's Whistling Warsong" (15734) from "Lysric Loresinger" (NPC 1035) in `qeynos`. Base price: 43 copper.
-53. Buy "Needle Mold" (12019) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
-54. Buy "Thimble Mold" (12057) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
-55. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-56. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-57. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-58. **Broken:** nothing in the graph gives, loots, spawns, or combines Notice to Cease and Desist (9590).
-59. Hand "Notice to Cease and Desist" (9590) to freeporteast/"Lythe Songbird". Spawns "a Freeport guard" (382255). Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard".
-60. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
-61. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freportw`; trigger: freportw/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
-62. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freportw`; trigger: freportw/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
-63. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a minion of Meldrath" (NPC 56173) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "We Shall Never Surrender".
-64. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "Meldrath's melded minions" (NPC 56174) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "Your Forces Are Deafeated".
-65. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "Arnold the Gnomeinator" (NPC 56175) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "You Shall Not Break Our Defense".
-66. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", on timer guard.
-67. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", on timer guard.
-68. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freportw`; trigger: freportw/"Lythe Songbird", on timer guard.
-69. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freportw`; trigger: freportw/"Lythe Songbird", on timer guard.
-70. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
-71. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
-72. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
-73. Loot "Shadow Wolf Pelt" (13779) from "A Shadow Wolf" (NPC 408093) in `commonlands`. Drop cache: 7.64% chance per kill.
-74. Buy "Spell: Gather Shadows" (15522) from "Tagus Wunne" (NPC 10030) in `freporte`. Base price: 43 copper.
-75. Forage "Spider Silk" (13041) in `mistmoore`.
-76. Forage "Spider Silk" (13041) in `mmca`.
-77. Forage "Spider Silk" (13041) in `mmcb`.
-78. Forage "Spider Silk" (13041) in `mmcc`.
-79. Forage "Spider Silk" (13041) in `mmcd`.
-80. Forage "Spider Silk" (13041) in `mmce`.
-81. Forage "Spider Silk" (13041) in `mmcf`.
-82. Forage "Spider Silk" (13041) in `mmcg`.
-83. Forage "Spider Silk" (13041) in `mmch`.
-84. Forage "Spider Silk" (13041) in `mmci`.
-85. Forage "Spider Silk" (13041) in `mmcj`.
-86. Combine in "Vale Sewing Kit" (92882): "Spider Silk" (13041). Produces "Silk Swatch" (16482). Requires Tailoring, trivial 15. The combine does not fail.
-87. Combine in "Vale Sewing Kit" (92882): "Shadow Wolf Pelt" (13779), "Spell: Gather Shadows" (15522), "Silk Swatch" (16482). Produces "Shadow Silk" (16483). Requires Tailoring, trivial 36.
-88. Combine in "Deluxe Sewing Kit" (17966): "Needle of the Void" (12314), "Rare Robe Pattern" (12315), "Song: Jonthan's Whistling Warsong" (15734), "Shadow Silk" (16483). Produces "Robe of the Lost Circle" (12256). Requires Tailoring. The combine does not fail.
-89. dreadlands/"Brother Balatin", hand "Robe of the Lost Circle" (12256) + "Metal Pipe" (12979) + "Metal Pipe" (12980). Gives "Robe of the Whistling Fists" (12970).
-90. Loot "Immortals" (18195) from "Faerie of Dismay" (NPC 91012) in `skyfire`. Drop cache: 35% chance per kill.
-91. erudnext/"Tomekeeper Danl", hand "Immortals" (18195). Gives "Danl's Reference" (1682).
-92. timorous/"Lheao", hand "Danl's Reference" (1682) + "Robe of the Whistling Fists" (12970). Gives "Celestial Fists" (1683).
+1. shadowhaven/"Gralin Silvertooth", say "Hail". Thank you for coming to Shandeling's Casino! If you would like to try your luck at a game of chance, I can offer you a game of King's Court with prizes best suited for any Shadowknight, Ranger, Beastlord, Bard, or Paladin. To play, buy a token from any of the waitresses and hand it to me when ready.
+2. Kill lakeofillomen/"Vorash". Spawns "Xenevorash" (85208).
+3. Loot "Demon Fangs" (1688) from "Xenevorash".
+4. Loot "Metal Pipe" (12979) from "A Drolvarg Pawbuster" in `karnor`.
+5. Loot "Metal Pipe" (12980) from "An Iksar Betrayer" in `chardok`.
+6. Buy "King's Court Token" (66616) from "Keiya Oakwood" (NPC 150311) in `shadowhaven`. Base price: 95,239 copper.
+7. shadowhaven/"Gralin Silvertooth", hand "King's Court Token" (66616). Gives "Deluxe Sewing Kit" (17966).
+8. Loot "Code of Zan Fi" (12316) from "Targin the Rock" in `soldungb`.
+9. Loot "Blackburrow Gnoll Pelt" (13027) from "Refugee Splitpaw" (NPC 17023) in `blackburrow`. Drop cache: 55% chance per kill.
+10. Loot "Blackburrow Gnoll Skin" (13028) from "The Gnoll High Shaman" (NPC 17042) in `blackburrow`. Drop cache: 55% chance per kill.
+11. Loot "Putrid Rib Bone" (13722) from "A Putrid Skeleton" in `qeytoqrg`.
+12. Loot "Gnoll Pup Scalp" (13789) from "A Gnoll Pup" in `blackburrow`.
+13. Loot "Gnoll Pup Scalp" (13789) from "A Gnoll Pup" in `everfrost`.
+14. Loot "Gnoll Pup Scalp" (13789) from "A Gnoll Pup" in `qeynos2`.
+15. Loot "Gnoll Pup Scalp" (13789) from "A Gnoll Pup" in `qeytoqrg`.
+16. qeynos2/"Phin Esrinap", hand "Gnoll Pup Scalp" (13789) + "Gnoll Pup Scalp" (13789) + "Gnoll Pup Scalp" (13789) + "Gnoll Pup Scalp" (13789). Gives "White Headband" (10110).
+17. qeynos2/"Phin Esrinap", hand "White Headband" (10110) + "Putrid Rib Bone" (13722) + "Putrid Rib Bone" (13722) + "Putrid Rib Bone" (13722). Gives "Yellow Headband" (10111).
+18. qeynos2/"Phin Esrinap", hand "Yellow Headband" (10111) + "Blackburrow Gnoll Pelt" (13027) + "Blackburrow Gnoll Pelt" (13027) + "Blackburrow Gnoll Skin" (13028). Gives "Orange Headband" (10112).
+19. Loot "Head of Ghanex Drah" (13165) from "Ghanex Drah" in `southkarana`.
+20. Loot "Dareb's Skull" (13166) from "High Shaman Phido" in `southkarana`.
+21. Loot "Dareb's Skull" (13166) from "An Undead Cyclops" in `southkarana`.
+22. Loot "Head of Shen" (13167) from "High Shaman Grisok" in `southkarana`.
+23. qeynos2/"Togahn Sorast", hand "Orange Headband" (10112) + "Head of Ghanex Drah" (13165) + "Dareb's Skull" (13166) + "Head of Shen" (13167). Gives "Red Headband" (10113).
+24. Loot "Skull of Jhen'Tra" (13168) from "A Gnoll Embalmer" in `lakerathe`.
+25. Loot "Dagger of Marnek" (13169) from "The Fabled Thaumaturgist".
+26. Loot "Dagger of Marnek" (13169) from "The Thaumaturgist" in `befallen`.
+27. Loot "Zaharn's Coronet" (3000) from "High Priest Zaharn" in `permafrost`.
+28. qeynos2/"Togahn Sorast", hand "Zaharn's Coronet" (3000) + "Red Headband" (10113) + "Skull of Jhen'Tra" (13168) + "Dagger of Marnek" (13169). Gives "Purple Headband" (10114).
+29. southkarana/"Brother Qwinn", hand "Purple Headband" (10114) + "Code of Zan Fi" (12316). Gives "Needle of the Void" (12314).
+30. Loot "The Idol" (12317) from "Raster of Guk" in `gukbottom`.
+31. Loot "Blackened Wand" (13237) from "Priest Amiaz" in `befallen`.
+32. Loot "Blackened Sapphire" (13238) from "Ekeros" in `najena`.
+33. Buy "Greater Lightstone" (10400) from "Gliblixl Rocktok" (NPC 151204) in `bazaar`. Base price: 4,500 copper.
+34. Loot "Cutthroat Insignia Ring" (1903) from "a Dervish Cutthroat" (NPC 457074) in `oldcommons`. Drop cache: 55.56% chance per kill.
+35. Loot "Legionnaire's Bracer" (2299) from "Orc Legionnaire" (NPC 21119) in `commons`. Drop cache: 84% chance per kill.
+36. Loot "Deathfist Pawn Scalp" (13794) from "Orc Pawn" (NPC 415088) in `mistythicket`. Drop cache: 50% chance per kill.
+37. Loot "Snake Fang" (13067) from "A Giant Briar Snake" (NPC 414061) in `toxxulia`. Drop cache: 58.21% chance per kill.
+38. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+39. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+40. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+41. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+42. freeportwest/"Velan Torresk", hand "Snake Fang" (13067) + "Bone Chips" (13073) + "Deathfist Pawn Scalp" (13794) + "Deathfist Pawn Scalp" (13794). Gives "White Training Sash" (10130).
+43. Loot "Giant Snake Rattle" (13058) from "A Darkweed Snake" (NPC 457018) in `oldcommons`. Drop cache: 43.94% chance per kill.
+44. misty/"Misty", on event signal:33161.
+45. Starts timer `Adds`.
+46. Spawns "A Scarecrow" (33168) after `misty/misty#timer:Adds`.
+47. Loot "Deathfist Slashed Belt" (13916) from "A Scarecrow".
+48. Loot "Desert Tarantula Chitin" (20901) from "A Dune Tarantula" (NPC 392086) in `northro`. Drop cache: 45.56% chance per kill.
+49. freeportwest/"Velan Torresk", hand "White Training Sash" (10130) + "Giant Snake Rattle" (13058) + "Deathfist Slashed Belt" (13916) + "Desert Tarantula Chitin" (20901). Gives "Yellow Sash of Order" (10131).
+50. freeportwest/"Reyia Beslin", hand "Cutthroat Insignia Ring" (1903) + "Legionnaire's Bracer" (2299) + "Yellow Sash of Order" (10131) + "Greater Lightstone" (10400). Gives "Orange Sash of Order" (10132).
+51. freeportwest/"Reyia Beslin", hand "Orange Sash of Order" (10132) + "Blackened Wand" (13237) + "Blackened Sapphire" (13238). Gives "Red Sash of Order" (10133).
+52. rathemtn/"Brother Zephyl", hand "Red Sash of Order" (10133) + "The Idol" (12317). Gives "Rare Robe Pattern" (12315).
+53. Buy "Song: Jonthan's Whistling Warsong" (15734) from "Lysric Loresinger" (NPC 1035) in `qeynos`. Base price: 43 copper.
+54. Buy "Needle Mold" (12019) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
+55. Buy "Thimble Mold" (12057) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
+56. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+57. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+58. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+59. **Broken:** nothing in the graph gives, loots, spawns, or combines Notice to Cease and Desist (9590).
+60. Hand "Notice to Cease and Desist" (9590) to freeporteast/"Lythe Songbird". Spawns "a Freeport guard" (382255). Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard".
+61. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+62. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freportw`; trigger: freportw/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+63. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freportw`; trigger: freportw/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+64. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a minion of Meldrath" (NPC 56173) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "We Shall Never Surrender".
+65. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "Meldrath's melded minions" (NPC 56174) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "Your Forces Are Deafeated".
+66. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "Arnold the Gnomeinator" (NPC 56175) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "You Shall Not Break Our Defense".
+67. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", on timer guard.
+68. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", on timer guard.
+69. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freportw`; trigger: freportw/"Lythe Songbird", on timer guard.
+70. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freportw`; trigger: freportw/"Lythe Songbird", on timer guard.
+71. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
+72. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
+73. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
+74. Loot "Shadow Wolf Pelt" (13779) from "A Shadow Wolf" (NPC 408093) in `commonlands`. Drop cache: 7.64% chance per kill.
+75. Buy "Spell: Gather Shadows" (15522) from "Tagus Wunne" (NPC 10030) in `freporte`. Base price: 43 copper.
+76. Forage "Spider Silk" (13041) in `mistmoore`.
+77. Forage "Spider Silk" (13041) in `mmca`.
+78. Forage "Spider Silk" (13041) in `mmcb`.
+79. Forage "Spider Silk" (13041) in `mmcc`.
+80. Forage "Spider Silk" (13041) in `mmcd`.
+81. Forage "Spider Silk" (13041) in `mmce`.
+82. Forage "Spider Silk" (13041) in `mmcf`.
+83. Forage "Spider Silk" (13041) in `mmcg`.
+84. Forage "Spider Silk" (13041) in `mmch`.
+85. Forage "Spider Silk" (13041) in `mmci`.
+86. Forage "Spider Silk" (13041) in `mmcj`.
+87. Combine in "Vale Sewing Kit" (92882): "Spider Silk" (13041). Produces "Silk Swatch" (16482). Requires Tailoring, trivial 15. The combine does not fail.
+88. Combine in "Vale Sewing Kit" (92882): "Shadow Wolf Pelt" (13779), "Spell: Gather Shadows" (15522), "Silk Swatch" (16482). Produces "Shadow Silk" (16483). Requires Tailoring, trivial 36.
+89. Combine in "Deluxe Sewing Kit" (17966): "Needle of the Void" (12314), "Rare Robe Pattern" (12315), "Song: Jonthan's Whistling Warsong" (15734), "Shadow Silk" (16483). Produces "Robe of the Lost Circle" (12256). Requires Tailoring. The combine does not fail.
+90. dreadlands/"Brother Balatin", hand "Robe of the Lost Circle" (12256) + "Metal Pipe" (12979) + "Metal Pipe" (12980). Gives "Robe of the Whistling Fists" (12970).
+91. Loot "Immortals" (18195) from "Faerie of Dismay" (NPC 91012) in `skyfire`. Drop cache: 35% chance per kill.
+92. erudnext/"Tomekeeper Danl", hand "Immortals" (18195). Gives "Danl's Reference" (1682).
+93. timorous/"Lheao", hand "Danl's Reference" (1682) + "Robe of the Whistling Fists" (12970). Gives "Celestial Fists" (1683).
     - Dialogue with timorous/"Lheao":
       - Player: "Hail"
         - NPC emote: jumps at your voice and begins laughing at his skittishness.
@@ -113,7 +114,7 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
       - Player: "Celestial Fists" (link: explicit mention)
         - NPC say: The Celestial Fists is the title of a book written by an unknown author. His writing is sub par but the legend is interesting from a biographical standpoint alone. Its rarity commands top dollar in the scholarly community but the secrets revealed in the book are what truely makes it dangerous. I hope Im able to find someone to watch over it soon.
         - Condition: `($text=~/celestial fists/i)`
-93. trakanon/"Kaiaren", hand "Celestial Fists" (1683). Gives "Book of Celestial Fists" (1689).
+94. trakanon/"Kaiaren", hand "Celestial Fists" (1683). Gives "Book of Celestial Fists" (1689).
     - Dialogue with trakanon/"Kaiaren":
       - Player: "Lheao"
         - NPC say: Hmmm, never heard of him. Well, it doesn't matter, the book is here now. Curse that idiot for writing it in the first place. Not even sure why I let him stick around. If you ever see that clown monk Aradiel kick him in the shins for me! At any rate, I suppose you'd like to find the Fists and [have a nice chat with them], eh? Their master owes me much. I would reward you well if you were to bring me proof of the master's defeat.
@@ -133,42 +134,43 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
       - Player: "Celestial Fists" (link: conversation sequence)
         - NPC say: Eh? What's that? Bah! That was destroyed long ago. Don't waste my time with fairy taAAAAAGGHHH GET IT AWAY!!!! HELP!!! They're all over MEHEHEHEHEEEEEEee!!
         - Condition: `($text=~/celestial fists/i)`
-94. trakanon/"Kaiaren", hand "Demon Fangs" (1688) + "Book of Celestial Fists" (1689). Gives "Celestial Fists" (10652).
+95. trakanon/"Kaiaren", hand "Demon Fangs" (1688) + "Book of Celestial Fists" (1689). Gives "Celestial Fists" (10652).
 
 ## Epic 1.5
 
 ### "Fistwraps of Celestial Discipline" (61025)
 
-1. bazaar/"Eryke Stremstin", hand "Letter to Stremstin" (48128). Sets `monk_epic` to `6`.
-2. Loot "Sunless Nectar" (48117) from "An Ancient Shrieker" (NPC 164049) in `thedeep`. Drop cache: 11.17% chance per kill.
-3. Buy "Spices" (13425) from "Pincia Brownloe" (NPC 9088) in `freportw`. Base price: 7 copper.
-4. Buy "High Quality Firing Sheet" (16908) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 40 copper.
-5. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-6. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-7. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-8. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-9. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-10. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-11. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-12. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-13. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-14. Buy "Pie Tin Sketch" (16958) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 490 copper.
-15. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006), "Pie Tin Sketch" (16958). Produces "Unfired Pie Tin" (16926). Requires Pottery, trivial 115.
-16. Combine in Kiln (22): "High Quality Firing Sheet" (16908), "Unfired Pie Tin" (16926). Produces "Pie Tin" (13438). Requires Pottery, trivial 15.
-17. Combine in Oven (15): "Sunless Nectar" (48117), "Spices" (13425), "Pie Tin" (13438). Produces "Sugar and Spice Nectar Pie" (48119). Requires Baking, trivial 176.
-18. Buy "Spit" (17947) from "Frannie" (NPC 3020) in `qrg`. Base price: 200 copper.
-19. Buy "Firing Sheet" (16906) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 10 copper.
-20. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-21. Buy "Large Bowl Sketch" (16963) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 760 copper.
-22. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-23. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-24. Spawns "Disciple Okarote" (100133) in `stonebrunt` on event_waypoint_arrive.
-25. Loot "Bottle of Milk" (13087) from "Disciple Okarote".
-26. Loot "Snake Egg" (13088) from "A Female Razorback" (NPC 403032) in `sunderock`. Drop cache: 75.06% chance per kill.
-27. Buy "Cup of Flour" (13193) from "Karn Tassen" (NPC 1110) in `qeynos`. Base price: 1 copper.
-28. Combine in "Mixing Bowl" (17906): "Bottle of Milk" (13087), "Snake Egg" (13088), "Cup of Flour" (13193). Produces "Clump of Dough" (13090). Requires Baking, trivial 17.
-29. Buy "Bread Tin Mold" (12025) from "Frannie" (NPC 3020) in `qrg`. Base price: 400 copper.
-30. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
+1. potranquility/"Elder Fuirstel", say "Hail". Sets `pop_cod_final` to `1`.
+2. bazaar/"Eryke Stremstin", hand "Letter to Stremstin" (48128). Sets `monk_epic` to `6`.
+3. Loot "Sunless Nectar" (48117) from "An Ancient Shrieker" (NPC 164049) in `thedeep`. Drop cache: 11.17% chance per kill.
+4. Buy "Spices" (13425) from "Pincia Brownloe" (NPC 9088) in `freportw`. Base price: 7 copper.
+5. Buy "High Quality Firing Sheet" (16908) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 40 copper.
+6. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+7. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+8. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+9. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+10. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+11. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+12. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+13. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
+14. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
+15. Buy "Pie Tin Sketch" (16958) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 490 copper.
+16. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006), "Pie Tin Sketch" (16958). Produces "Unfired Pie Tin" (16926). Requires Pottery, trivial 115.
+17. Combine in Kiln (22): "High Quality Firing Sheet" (16908), "Unfired Pie Tin" (16926). Produces "Pie Tin" (13438). Requires Pottery, trivial 15.
+18. Combine in Oven (15): "Sunless Nectar" (48117), "Spices" (13425), "Pie Tin" (13438). Produces "Sugar and Spice Nectar Pie" (48119). Requires Baking, trivial 176.
+19. Buy "Spit" (17947) from "Frannie" (NPC 3020) in `qrg`. Base price: 200 copper.
+20. Buy "Firing Sheet" (16906) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 10 copper.
+21. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
+22. Buy "Large Bowl Sketch" (16963) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 760 copper.
+23. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
+24. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+25. Spawns "Disciple Okarote" (100133) in `stonebrunt` on event_waypoint_arrive.
+26. Loot "Bottle of Milk" (13087) from "Disciple Okarote".
+27. Loot "Snake Egg" (13088) from "A Female Razorback" (NPC 403032) in `sunderock`. Drop cache: 75.06% chance per kill.
+28. Buy "Cup of Flour" (13193) from "Karn Tassen" (NPC 1110) in `qeynos`. Base price: 1 copper.
+29. Combine in "Mixing Bowl" (17906): "Bottle of Milk" (13087), "Snake Egg" (13088), "Cup of Flour" (13193). Produces "Clump of Dough" (13090). Requires Baking, trivial 17.
+30. Buy "Bread Tin Mold" (12025) from "Frannie" (NPC 3020) in `qrg`. Base price: 400 copper.
+31. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
     - Dialogue with kaladimb/"Jeet":
       - Player: "Hail"
         - NPC say: What business do you have here?!! This here is the mine and that means if you ain't a [member of Miner's Guild 628], you'd best be moving on!!
@@ -221,17 +223,16 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
         - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
           - Reply guard: ``
         - Condition: `(($text=~/cleaner/i))`
-31. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
-32. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
-33. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
-34. Buy "Quality Firing Sheet" (16907) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 20 copper.
-35. Buy "Ceramic Lining Sketch" (16964) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 25 copper.
-36. Combine in Pottery Wheel (21): "Water Flask" (13006), "Small Block of Clay" (16900), "Ceramic Lining Sketch" (16964). Produces "Unfired Ceramic Lining" (16946). Requires Pottery, trivial 36.
-37. Combine in Kiln (22): "Quality Firing Sheet" (16907), "Unfired Ceramic Lining" (16946). Produces "Ceramic Lining" (16947). Requires Pottery, trivial 17.
-38. Combine in Forge (17): "Bread Tin Mold" (12025), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Bread Tin" (13440). Requires Blacksmithing, trivial 38.
-39. Combine in "Spit" (17947): "Clump of Dough" (13090), "Bread Tin" (13440). Hands back "Bread Tin" (13440). Produces "Loaf of Bread" (13015). Requires Baking, trivial 115.
-40. Buy "Cheese" (8160) from "A Goblin Bartender" (NPC 11071) in `runnyeye`. Base price: 15 copper.
-41. potranquility/"Elder Fuirstel", say "Hail". Sets `pop_cod_final` to `1`.
+32. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
+33. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
+34. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
+35. Buy "Quality Firing Sheet" (16907) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 20 copper.
+36. Buy "Ceramic Lining Sketch" (16964) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 25 copper.
+37. Combine in Pottery Wheel (21): "Water Flask" (13006), "Small Block of Clay" (16900), "Ceramic Lining Sketch" (16964). Produces "Unfired Ceramic Lining" (16946). Requires Pottery, trivial 36.
+38. Combine in Kiln (22): "Quality Firing Sheet" (16907), "Unfired Ceramic Lining" (16946). Produces "Ceramic Lining" (16947). Requires Pottery, trivial 17.
+39. Combine in Forge (17): "Bread Tin Mold" (12025), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Bread Tin" (13440). Requires Blacksmithing, trivial 38.
+40. Combine in "Spit" (17947): "Clump of Dough" (13090), "Bread Tin" (13440). Hands back "Bread Tin" (13440). Produces "Loaf of Bread" (13015). Requires Baking, trivial 115.
+41. Buy "Cheese" (8160) from "A Goblin Bartender" (NPC 11071) in `runnyeye`. Base price: 15 copper.
 42. poknowledge/"Aid Grimel", say "Skill In Brewing". Requires `pop_cod_final` ==1. Requires `pop_cod_final` set. Gives "Portable Drink Barrel" (17179).
 43. Buy "Lettuce" (13976) from "Cleet Miller Jr" (NPC 12029) in `qey2hh1`. Base price: 25 copper.
 44. rivervale/"Ilscent Tagglefoot", say "Jumjum Juice". Gives "Case of Jumjum Juice" (13411).
@@ -386,8 +387,8 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 64. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
 65. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
 66. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-67. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-68. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+67. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+68. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
 69. potranquility/"Vortix", hand "Globe of Discordant Energy" (47100). Sets `mnk_epic20` to `6`.
 70. oceanoftears/"Kaiaren", say "Choose To Continue". Requires `mnk_epic20` ==2. Requires `mnk_epic20` set. Requires `monk_epic` ==9. Requires `mnk_epic20` >=2. Gives "Initiate's Sash of the Celestial Order" (48127).
 71. lakerathe/"Vortix", say "Diary". Sets `monk_epic` to `4`.
@@ -408,57 +409,57 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Transcended Fistwraps of Immortality" (67742)
 
-1. Unresolved cyclic prerequisite: `mnk_epic20` >=5.
-2. oceanoftears/"Kaiaren", on event_death_complete. Sets `mnk_epic20` to `5`.
-3. Say "Check Lorb" to anguish/"Zone Status".
-4. Spawns "Orb of Discordant Energy" (317087).
-5. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-6. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
-7. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-8. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-9. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-10. potranquility/"Vortix", hand "Globe of Discordant Energy" (47100). Sets `mnk_epic20` to `6`.
-11. bazaar/"Eryke Stremstin", hand "Letter to Stremstin" (48128). Sets `monk_epic` to `6`.
-12. Loot "Sunless Nectar" (48117) from "An Ancient Shrieker" (NPC 164049) in `thedeep`. Drop cache: 11.17% chance per kill.
-13. Buy "Spices" (13425) from "Pincia Brownloe" (NPC 9088) in `freportw`. Base price: 7 copper.
-14. Buy "High Quality Firing Sheet" (16908) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 40 copper.
-15. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-16. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-17. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-18. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-19. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-20. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-21. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-22. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
-23. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
-24. Buy "Pie Tin Sketch" (16958) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 490 copper.
-25. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006), "Pie Tin Sketch" (16958). Produces "Unfired Pie Tin" (16926). Requires Pottery, trivial 115.
-26. Combine in Kiln (22): "High Quality Firing Sheet" (16908), "Unfired Pie Tin" (16926). Produces "Pie Tin" (13438). Requires Pottery, trivial 15.
-27. Combine in Oven (15): "Sunless Nectar" (48117), "Spices" (13425), "Pie Tin" (13438). Produces "Sugar and Spice Nectar Pie" (48119). Requires Baking, trivial 176.
-28. Buy "Spit" (17947) from "Frannie" (NPC 3020) in `qrg`. Base price: 200 copper.
-29. Buy "Firing Sheet" (16906) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 10 copper.
-30. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
-31. Buy "Large Bowl Sketch" (16963) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 760 copper.
-32. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
-33. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
-34. Spawns "Disciple Okarote" (100133) in `stonebrunt` on event_waypoint_arrive.
-35. Loot "Bottle of Milk" (13087) from "Disciple Okarote".
-36. Loot "Snake Egg" (13088) from "A Female Razorback" (NPC 403032) in `sunderock`. Drop cache: 75.06% chance per kill.
-37. Buy "Cup of Flour" (13193) from "Karn Tassen" (NPC 1110) in `qeynos`. Base price: 1 copper.
-38. Combine in "Mixing Bowl" (17906): "Bottle of Milk" (13087), "Snake Egg" (13088), "Cup of Flour" (13193). Produces "Clump of Dough" (13090). Requires Baking, trivial 17.
-39. Buy "Bread Tin Mold" (12025) from "Frannie" (NPC 3020) in `qrg`. Base price: 400 copper.
-40. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
-41. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
-42. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
-43. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
-44. Buy "Quality Firing Sheet" (16907) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 20 copper.
-45. Buy "Ceramic Lining Sketch" (16964) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 25 copper.
-46. Combine in Pottery Wheel (21): "Water Flask" (13006), "Small Block of Clay" (16900), "Ceramic Lining Sketch" (16964). Produces "Unfired Ceramic Lining" (16946). Requires Pottery, trivial 36.
-47. Combine in Kiln (22): "Quality Firing Sheet" (16907), "Unfired Ceramic Lining" (16946). Produces "Ceramic Lining" (16947). Requires Pottery, trivial 17.
-48. Combine in Forge (17): "Bread Tin Mold" (12025), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Bread Tin" (13440). Requires Blacksmithing, trivial 38.
-49. Combine in "Spit" (17947): "Clump of Dough" (13090), "Bread Tin" (13440). Hands back "Bread Tin" (13440). Produces "Loaf of Bread" (13015). Requires Baking, trivial 115.
-50. Buy "Cheese" (8160) from "A Goblin Bartender" (NPC 11071) in `runnyeye`. Base price: 15 copper.
-51. potranquility/"Elder Fuirstel", say "Hail". Sets `pop_cod_final` to `1`.
+1. potranquility/"Elder Fuirstel", say "Hail". Sets `pop_cod_final` to `1`.
+2. Unresolved cyclic prerequisite: `mnk_epic20` >=5.
+3. oceanoftears/"Kaiaren", on event_death_complete. Sets `mnk_epic20` to `5`.
+4. Say "Check Lorb" to anguish/"Zone Status".
+5. Spawns "Orb of Discordant Energy" (317087).
+6. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+7. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+8. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+9. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+10. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+11. potranquility/"Vortix", hand "Globe of Discordant Energy" (47100). Sets `mnk_epic20` to `6`.
+12. bazaar/"Eryke Stremstin", hand "Letter to Stremstin" (48128). Sets `monk_epic` to `6`.
+13. Loot "Sunless Nectar" (48117) from "An Ancient Shrieker" (NPC 164049) in `thedeep`. Drop cache: 11.17% chance per kill.
+14. Buy "Spices" (13425) from "Pincia Brownloe" (NPC 9088) in `freportw`. Base price: 7 copper.
+15. Buy "High Quality Firing Sheet" (16908) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 40 copper.
+16. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+17. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+18. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+19. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+20. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+21. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+22. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+23. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
+24. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
+25. Buy "Pie Tin Sketch" (16958) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 490 copper.
+26. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006), "Pie Tin Sketch" (16958). Produces "Unfired Pie Tin" (16926). Requires Pottery, trivial 115.
+27. Combine in Kiln (22): "High Quality Firing Sheet" (16908), "Unfired Pie Tin" (16926). Produces "Pie Tin" (13438). Requires Pottery, trivial 15.
+28. Combine in Oven (15): "Sunless Nectar" (48117), "Spices" (13425), "Pie Tin" (13438). Produces "Sugar and Spice Nectar Pie" (48119). Requires Baking, trivial 176.
+29. Buy "Spit" (17947) from "Frannie" (NPC 3020) in `qrg`. Base price: 200 copper.
+30. Buy "Firing Sheet" (16906) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 10 copper.
+31. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
+32. Buy "Large Bowl Sketch" (16963) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 760 copper.
+33. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
+34. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+35. Spawns "Disciple Okarote" (100133) in `stonebrunt` on event_waypoint_arrive.
+36. Loot "Bottle of Milk" (13087) from "Disciple Okarote".
+37. Loot "Snake Egg" (13088) from "A Female Razorback" (NPC 403032) in `sunderock`. Drop cache: 75.06% chance per kill.
+38. Buy "Cup of Flour" (13193) from "Karn Tassen" (NPC 1110) in `qeynos`. Base price: 1 copper.
+39. Combine in "Mixing Bowl" (17906): "Bottle of Milk" (13087), "Snake Egg" (13088), "Cup of Flour" (13193). Produces "Clump of Dough" (13090). Requires Baking, trivial 17.
+40. Buy "Bread Tin Mold" (12025) from "Frannie" (NPC 3020) in `qrg`. Base price: 400 copper.
+41. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
+42. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
+43. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
+44. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
+45. Buy "Quality Firing Sheet" (16907) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 20 copper.
+46. Buy "Ceramic Lining Sketch" (16964) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 25 copper.
+47. Combine in Pottery Wheel (21): "Water Flask" (13006), "Small Block of Clay" (16900), "Ceramic Lining Sketch" (16964). Produces "Unfired Ceramic Lining" (16946). Requires Pottery, trivial 36.
+48. Combine in Kiln (22): "Quality Firing Sheet" (16907), "Unfired Ceramic Lining" (16946). Produces "Ceramic Lining" (16947). Requires Pottery, trivial 17.
+49. Combine in Forge (17): "Bread Tin Mold" (12025), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Bread Tin" (13440). Requires Blacksmithing, trivial 38.
+50. Combine in "Spit" (17947): "Clump of Dough" (13090), "Bread Tin" (13440). Hands back "Bread Tin" (13440). Produces "Loaf of Bread" (13015). Requires Baking, trivial 115.
+51. Buy "Cheese" (8160) from "A Goblin Bartender" (NPC 11071) in `runnyeye`. Base price: 15 copper.
 52. poknowledge/"Aid Grimel", say "Skill In Brewing". Requires `pop_cod_final` ==1. Requires `pop_cod_final` set. Gives "Portable Drink Barrel" (17179).
 53. Buy "Lettuce" (13976) from "Cleet Miller Jr" (NPC 12029) in `qey2hh1`. Base price: 25 copper.
 54. rivervale/"Ilscent Tagglefoot", say "Jumjum Juice". Gives "Case of Jumjum Juice" (13411).
@@ -725,8 +726,8 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 64. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
 65. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
 66. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-67. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-68. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+67. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+68. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
 69. potranquility/"Vortix", hand "Globe of Discordant Energy" (47100). Sets `mnk_epic20` to `6`.
 70. oceanoftears/"Kaiaren", say "Choose To Continue". Requires `mnk_epic20` ==2. Requires `mnk_epic20` set. Requires `monk_epic` ==9. Requires `mnk_epic20` >=2. Gives "Initiate's Sash of the Celestial Order" (48127).
 71. lakerathe/"Vortix", say "Diary". Sets `monk_epic` to `4`.
@@ -1456,8 +1457,8 @@ Alternative or repeat transition to `mnk_epic20` = `3` (not an additional requir
     - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
     - Gives "Globe of Discordant Energy" (47100).
 
 #### Steps on `mnk_epic20` that do not change it

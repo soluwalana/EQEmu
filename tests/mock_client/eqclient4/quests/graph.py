@@ -2525,13 +2525,15 @@ def _other_summons(edges: list[dict], text: str, npc_id: str) -> None:
             group = f"{npc_id}#{name}"
             if name == "event_signal":
                 owners = [
-                    branch for branch in inside
-                    if branch[2] <= lo and hi <= branch[3]
-                    and _SIGNAL_CONDITION.search(text[branch[0]:branch[1]])
+                    branch
+                    for branch in inside
+                    if branch[2] <= lo
+                    and hi <= branch[3]
+                    and _SIGNAL_CONDITION.search(text[branch[0] : branch[1]])
                 ]
                 if owners:
                     owner = min(owners, key=lambda branch: branch[3] - branch[0])
-                    values = _SIGNAL_CONDITION.findall(text[owner[0]:owner[1]])
+                    values = _SIGNAL_CONDITION.findall(text[owner[0] : owner[1]])
                     if len(values) == 1:
                         group = f"{npc_id}#signal:{values[0]}"
             snippet = _without(text, lo, hi, holes)
@@ -2861,7 +2863,8 @@ class QuestGraph:
 # Event causality. A direct spawn in EVENT_TIMER is not a quest entry point:
 # find who starts the timer, including signals sent by a different NPC script.
 _NPC_FOOTER = re.compile(
-    r"(?im)^\s*(?:#\s*EOF\s+zone:|--\s*(?:END\s+of\s+FILE|EOF)\s+Zone:)" r"[^\n]*?\bID:\s*(\d+)"
+    r"(?im)^\s*(?:#\s*EOF\s+zone:|--\s*(?:END\s+of\s+FILE|EOF)\s+Zone:|"
+    r"#\s*End\s+of\s+File,\s*Zone:)[^\n]*?\b(?:ID|NPC):\s*(\d+)"
 )
 _SIGNAL_WITH = re.compile(r"(?:quest::signalwith|eq\.signal)\s*\(\s*(\d+)\s*,\s*(\d+)", re.I)
 # Perl quest::signal(npc_id) sends signal zero. It is distinct from signalwith.
@@ -2900,7 +2903,7 @@ def _signal_origin(text: str, offset: int, npc_id: str) -> str:
             (b for b in _branch_index(text) if lo <= b[0] and b[2] <= offset < b[3]),
             key=lambda b: b[3] - b[2],
         ):
-            signals = _SIGNAL_CONDITION.findall(text[branch[0]:branch[1]])
+            signals = _SIGNAL_CONDITION.findall(text[branch[0] : branch[1]])
             if len(signals) == 1:
                 return f"{npc_id}#signal:{signals[0]}"
     return f"{npc_id}#{func}"
@@ -3185,13 +3188,56 @@ def _timer_starters(graph: QuestGraph, npc_id: str, text: str) -> None:
             )
 
 
-def _link_event_causality(graph: QuestGraph, scripts: list[tuple[str, str, str]]) -> None:
-    """Resolve per-zone NPC-type signals and named timers across scripts."""
+def _link_event_causality(
+    graph: QuestGraph, scripts: list[tuple[str, str, str]], catalog: Catalog | None = None
+) -> None:
+    """Resolve signals by filename/NPC name, using catalog IDs when available."""
+
+    def normalize(name: str) -> str:
+        return re.sub(r"[_\s]+", " ", name).strip().lstrip("#").strip().lower()
+
+    named_receivers = {
+        (zone, normalize(npc_id.rsplit("/", 1)[-1])): (npc_id, body)
+        for zone, npc_id, body in scripts
+    }
     receivers: dict[tuple[str, int], tuple[str, str]] = {}
-    for zone, npc_id, text in scripts:
-        footer = _NPC_FOOTER.search(text)
+    script_ids: dict[str, int] = {}
+
+    def register(zone: str, npc_type: int, receiver: tuple[str, str]) -> None:
+        receivers.setdefault((zone, npc_type), receiver)
+        script_ids.setdefault(receiver[0], npc_type)
+
+    # Catalog npc_types names resolve filenames. The footer is only a fallback:
+    # most Perl and Lua scripts have no footer at all.
+    ids_by_name: dict[str, list[int]] = {}
+    for npc_type, name in (catalog.npc_names.items() if catalog else ()):
+        ids_by_name.setdefault(normalize(str(name)), []).append(int(npc_type))
+    for (zone, name), receiver in named_receivers.items():
+        for npc_type in ids_by_name.get(name, ()):
+            register(zone, npc_type, receiver)
+
+    for zone, npc_id, body in scripts:
+        stem = npc_id.rsplit("/", 1)[-1]
+        if stem.isdigit():
+            register(zone, int(stem), (npc_id, body))
+        footer = _NPC_FOOTER.search(body)
         if footer:
-            receivers[(zone, int(footer.group(1)))] = (npc_id, text)
+            register(zone, int(footer.group(1)), (npc_id, body))
+
+    # Signal comments also identify targets, including scripts without a
+    # catalog entry. They are hints only; the target must be a real script.
+    for zone, _npc_id, body in scripts:
+        for match in re.finditer(
+            r"(?m)^[^#\n]*?(?:quest::signalwith|eq\.signal)\s*\(\s*(\d+)"
+            r"[^\n]*?(?:#|--)\s*NPC:\s*([^\r\n]+)",
+            body,
+            re.I,
+        ):
+            target = int(match.group(1))
+            name = normalize(match.group(2))
+            receiver = named_receivers.get((zone, name))
+            if receiver:
+                register(zone, target, receiver)
 
     # Record each timer's spawns even if the initiating event is unresolved.
     # An orphan timer is an unresolved event dependency, not a free-world spawn.
@@ -3206,11 +3252,46 @@ def _link_event_causality(graph: QuestGraph, scripts: list[tuple[str, str, str]]
         _timer_rewards(graph, npc_id, text)
         _timer_starters(graph, npc_id, text)
 
-    named_receivers = {
-        (zone, re.sub(r"[_\s]+", " ", npc_id.split("/", 1)[-1]).strip().lower()): (npc_id, body)
-        for zone, npc_id, body in scripts
-    }
-    # Spawned NPCs run EVENT_SPAWN. If their death handler is scripted,
+    # A natural-spawn NPC's death is reachable only after its encounter
+    # activates combat. Link its specific death handler after an AddToHateList
+    # targeting $npc; ordinary death events are not automatic quest roots.
+    for zone, npc_id, body in scripts:
+        if _event_functions(body, "event_death_complete") is None:
+            continue
+        npc_type = script_ids.get(npc_id)
+        if npc_type is None:
+            continue
+        scope = _event_functions(body, "event_signal")
+        if not scope:
+            continue
+        lo, hi = scope
+        for branch in _branch_index(body):
+            if not (lo <= branch[0] and branch[3] <= hi):
+                continue
+            values = _SIGNAL_CONDITION.findall(body[branch[0] : branch[1]])
+            if len(values) != 1 or not re.search(
+                r"->AddToHateList\s*\(\s*\$npc\b",
+                body[branch[2] : branch[3]],
+                re.I,
+            ):
+                continue
+            trigger = f"{npc_id}#signal:{values[0]}"
+            kill = f"{npc_id}#kill:{npc_type}"
+            death = f"{npc_id}#event_death_complete"
+            graph.edges.extend(
+                (
+                    {
+                        "kind": "edge",
+                        "rel": "triggers",
+                        "from": trigger,
+                        "to": kill,
+                        "npc": npc_type,
+                        "combat": True,
+                    },
+                    {"kind": "edge", "rel": "triggers", "from": kill, "to": death, "npc": npc_type},
+                )
+            )
+    # Spawned NPCs run EVENT_SPAWN.
     # reaching its effects requires killing that NPC first. Previously these
     # callbacks were isolated roots, so backward loot traversal stopped there.
     lifecycle_links: set[tuple[str, str]] = set()
@@ -3223,8 +3304,7 @@ def _link_event_causality(graph: QuestGraph, scripts: list[tuple[str, str, str]]
         receiver = receivers.get((zone, npc_type))
         if receiver is None:
             name = re.sub(r"\s*\(\d+\).*", "", str(edge.get("name") or ""))
-            name = re.sub(r"[_\s]+", " ", name).strip().lower()
-            receiver = named_receivers.get((zone, name))
+            receiver = named_receivers.get((zone, normalize(name)))
         if receiver is None:
             continue
         target_npc, body = receiver
@@ -3239,10 +3319,15 @@ def _link_event_causality(graph: QuestGraph, scripts: list[tuple[str, str, str]]
             for source, destination in path:
                 if source != destination and (source, destination) not in lifecycle_links:
                     lifecycle_links.add((source, destination))
-                    graph.edges.append({
-                        "kind": "edge", "rel": "triggers", "from": source,
-                        "to": destination, "npc": npc_type,
-                    })
+                    graph.edges.append(
+                        {
+                            "kind": "edge",
+                            "rel": "triggers",
+                            "from": source,
+                            "to": destination,
+                            "npc": npc_type,
+                        }
+                    )
     sent = set()
     for zone, origin_npc, text in scripts:
         for source, target, signal in _outgoing_signals(text, origin_npc):
@@ -3261,8 +3346,7 @@ def _link_event_causality(graph: QuestGraph, scripts: list[tuple[str, str, str]]
                     re.I,
                 )
                 for match in pattern.finditer(text):
-                    name = re.sub(r"[_\s]+", " ", match.group(1)).strip().lower()
-                    receiver = named_receivers.get((zone, name))
+                    receiver = named_receivers.get((zone, normalize(match.group(1))))
                     if receiver is not None:
                         break
             if receiver is None:
@@ -3324,7 +3408,7 @@ def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
                 for zone_id in destinations:
                     if zone_id not in known:
                         known.append(zone_id)
-    _link_event_causality(graph, scripts)
+    _link_event_causality(graph, scripts, catalog)
     # Event-linked rewards are added after per-file link_script(); include them
     # in the catalog metadata emitted for the graph.
     item_ids.update(

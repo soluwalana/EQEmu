@@ -6,11 +6,12 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Swiftwind" (20487)
 
-1. burningwood/"Telin Darkforest", say "Action". Gives "Worn Note" (20472).
-2. gfaydark/"Faelin Bloodbriar", hand "Worn Note" (20472). Gives "Faelin's Ring" (20446).
-3. kithicor/"Giz X-Tin", hand "Faelin's Ring" (20446). Gives "Dark Metal Coin" (20447).
-4. burningwood/"Telin Darkforest", hand "Dark Metal Coin" (20447). Gives "Worn Dark Metal Coin" (20448).
-5. eastkarana/"Althele", hand "Worn Dark Metal Coin" (20448). Gives "Braided Grass Amulet" (20450).
+1. kaladimb/"Usbak The Old", say "Hail". Took ya long enough! Ye'd think ya had an Orc head on them shoulders there. I'm owin' ya for yer help though. Else I'd have been on that darn hammer for ages. Ye said ya had an ancient blade or somethin ta be smithin. If so lemme see it.
+2. burningwood/"Telin Darkforest", say "Action". Gives "Worn Note" (20472).
+3. gfaydark/"Faelin Bloodbriar", hand "Worn Note" (20472). Gives "Faelin's Ring" (20446).
+4. kithicor/"Giz X-Tin", hand "Faelin's Ring" (20446). Gives "Dark Metal Coin" (20447).
+5. burningwood/"Telin Darkforest", hand "Dark Metal Coin" (20447). Gives "Worn Dark Metal Coin" (20448).
+6. eastkarana/"Althele", hand "Worn Dark Metal Coin" (20448). Gives "Braided Grass Amulet" (20450).
     - Dialogue with eastkarana/"Althele":
       - Player: "Hail"
         - NPC say: Hello, friend. Beautiful is what I would call such a day normally, but lately? I sense that something is [out of balance].
@@ -30,75 +31,76 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
           - Reply guard: ``
         - Condition: `($text=~/out of balance/i)`
         - Sets `druid_epic` to `1`.
-6. eastkarana/"Sionae", hand "Braided Grass Amulet" (20450). Gives "Frayed Braided Grass Amulet" (20451).
-7. eastkarana/"Teloa", hand "Frayed Braided Grass Amulet" (20451). Triggers `eastkarana/althele#signal:1`.
-8. Starts timer `attack`.
-9. Spawns "Corruptor" (15153) after `eastkarana/althele#timer:attack`.
-10. Loot "Fleshbound Tome" (20452) from "Corruptor".
-11. eastkarana/"Althele", hand "Fleshbound Tome" (20452). Gives "Earth Stained Note" (18959).
-12. misty/"Ella Foodcrafter", hand "Earth Stained Note" (18959). Sets `shiny_tin_bowl` to `1`.
-13. misty/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
-14. Forage "Ripened Heartfruit" (20464) in `gfaydark`.
-15. Forage "Sweetened Mudroot" (20465) in `misty`.
-16. Forage "Sweetened Mudroot" (20465) in `mistythicket`.
-17. Forage "Speckled Molded Mushroom" (20466) in `innothule`.
-18. Forage "Chilled Tundra Root" (20467) in `everfrost`.
-19. Combine in "Shiny Tin Bowl" (17860): "Ripened Heartfruit" (20464), "Sweetened Mudroot" (20465), "Speckled Molded Mushroom" (20466), "Chilled Tundra Root" (20467). Produces "Hardened Mixture" (20473). Requires Pottery. The combine does not fail.
-20. timorous/"Alrik Farsight", say "Take The Artifact". Gives "Crushed Pot" (20457).
-21. felwitheb/"Farios Elianos", hand "Crushed Pot" (20457). Gives "Grocery List" (20458).
-22. felwithea/"Merchant Nora", hand "Grocery List" (20458). Gives "Bag of Provisions" (20459).
-23. felwitheb/"Farios Elianos", hand "Bag of Provisions" (20459). Gives "Receipt" (20474).
-24. timorous/"Alrik Farsight", hand "Receipt" (20474). Gives "Ancient Pattern" (18960).
-25. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
-26. Loot "Jade Reaver" (5664) from "A Black Reaver".
-27. Alternative: Loot "Jade Reaver" (5664) from "A Black Reaver" (NPC 90005) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
-28. Alternative: Loot "Jade Reaver" (5664) from "A Black Reaver" (NPC 90192) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
-29. kaladimb/"Kinlo Strongarm", hand "Jade Reaver" (5664). Gives "Enchanted Clay" (20455).
-30. Forage "Rose of Firiona" (12774) in `firiona`.
-31. qrg/"Merdan Fleetfoot", hand "Rose of Firiona" (12774). Gives "Wood Painting" (20475).
-32. frontiermtns/"A Human Skeleton", hand "Wood Painting" (20475). Gives "Silver Chained Locket" (20476).
-33. qrg/"Niera Farbreeze", hand "Silver Chained Locket" (20476). Gives "Platinum Speckled Powder" (20456).
-34. Combine in Pottery Wheel (21): "Ancient Pattern" (18960), "Enchanted Clay" (20455), "Platinum Speckled Powder" (20456). Produces "Runecrested Bowl" (20460). Requires Pottery. The combine does not fail.
-35. misty/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
-36. Buy "Spell: Resurrection" (15392) from "Henlom Visrek" (NPC 2054) in `qeynos2`. Base price: 18,936 copper.
-37. Hand "Spell: Resurrection" (15392) to karnor/"Spirit Of Venril Sathir". Spawns "Venril Sathir" (102126). Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
-38. firiona/"Foloal Stormforest", hand "Pulsing Green Stone" (20461) + "Softly Glowing Stone" (20462). Gives "Warmly Glowing Stone" (20468).
-39. burningwood/"Telin Darkforest", hand "Warmly Glowing Stone" (20468). Gives "Ancient Longsword" (20477).
-40. kaladimb/"Usbak The Old", hand "Ancient Longsword" (20477). Gives "Refined Ancient Sword" (20481).
-41. burningwood/"Faelin Bloodbriar", hand "Refined Ancient Sword" (20481). Gives "Swiftwind" (20487).
+7. eastkarana/"Sionae", hand "Braided Grass Amulet" (20450). Gives "Frayed Braided Grass Amulet" (20451).
+8. eastkarana/"Teloa", hand "Frayed Braided Grass Amulet" (20451). Triggers `eastkarana/althele#signal:1`.
+9. Starts timer `attack`.
+10. Spawns "Corruptor" (15153) after `eastkarana/althele#timer:attack`.
+11. Loot "Fleshbound Tome" (20452) from "Corruptor".
+12. eastkarana/"Althele", hand "Fleshbound Tome" (20452). Gives "Earth Stained Note" (18959).
+13. misty/"Ella Foodcrafter", hand "Earth Stained Note" (18959). Sets `shiny_tin_bowl` to `1`.
+14. misty/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
+15. Forage "Ripened Heartfruit" (20464) in `gfaydark`.
+16. Forage "Sweetened Mudroot" (20465) in `misty`.
+17. Forage "Sweetened Mudroot" (20465) in `mistythicket`.
+18. Forage "Speckled Molded Mushroom" (20466) in `innothule`.
+19. Forage "Chilled Tundra Root" (20467) in `everfrost`.
+20. Combine in "Shiny Tin Bowl" (17860): "Ripened Heartfruit" (20464), "Sweetened Mudroot" (20465), "Speckled Molded Mushroom" (20466), "Chilled Tundra Root" (20467). Produces "Hardened Mixture" (20473). Requires Pottery. The combine does not fail.
+21. timorous/"Alrik Farsight", say "Take The Artifact". Gives "Crushed Pot" (20457).
+22. felwitheb/"Farios Elianos", hand "Crushed Pot" (20457). Gives "Grocery List" (20458).
+23. felwithea/"Merchant Nora", hand "Grocery List" (20458). Gives "Bag of Provisions" (20459).
+24. felwitheb/"Farios Elianos", hand "Bag of Provisions" (20459). Gives "Receipt" (20474).
+25. timorous/"Alrik Farsight", hand "Receipt" (20474). Gives "Ancient Pattern" (18960).
+26. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
+27. Loot "Jade Reaver" (5664) from "A Black Reaver".
+28. Alternative: Loot "Jade Reaver" (5664) from "A Black Reaver" (NPC 90005) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
+29. Alternative: Loot "Jade Reaver" (5664) from "A Black Reaver" (NPC 90192) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
+30. kaladimb/"Kinlo Strongarm", hand "Jade Reaver" (5664). Gives "Enchanted Clay" (20455).
+31. Forage "Rose of Firiona" (12774) in `firiona`.
+32. qrg/"Merdan Fleetfoot", hand "Rose of Firiona" (12774). Gives "Wood Painting" (20475).
+33. frontiermtns/"A Human Skeleton", hand "Wood Painting" (20475). Gives "Silver Chained Locket" (20476).
+34. qrg/"Niera Farbreeze", hand "Silver Chained Locket" (20476). Gives "Platinum Speckled Powder" (20456).
+35. Combine in Pottery Wheel (21): "Ancient Pattern" (18960), "Enchanted Clay" (20455), "Platinum Speckled Powder" (20456). Produces "Runecrested Bowl" (20460). Requires Pottery. The combine does not fail.
+36. misty/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
+37. Buy "Spell: Resurrection" (15392) from "Henlom Visrek" (NPC 2054) in `qeynos2`. Base price: 18,936 copper.
+38. Hand "Spell: Resurrection" (15392) to karnor/"Spirit Of Venril Sathir". Spawns "Venril Sathir" (102126). Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
+39. firiona/"Foloal Stormforest", hand "Pulsing Green Stone" (20461) + "Softly Glowing Stone" (20462). Gives "Warmly Glowing Stone" (20468).
+40. burningwood/"Telin Darkforest", hand "Warmly Glowing Stone" (20468). Gives "Ancient Longsword" (20477).
+41. kaladimb/"Usbak The Old", hand "Ancient Longsword" (20477). Gives "Refined Ancient Sword" (20481).
+42. burningwood/"Faelin Bloodbriar", hand "Refined Ancient Sword" (20481). Gives "Swiftwind" (20487).
 
 ### "Earthcaller" (20488)
 
-1. burningwood/"Telin Darkforest", say "Action". Gives "Worn Note" (20472).
-2. gfaydark/"Faelin Bloodbriar", hand "Worn Note" (20472). Gives "Faelin's Ring" (20446).
-3. kithicor/"Giz X-Tin", hand "Faelin's Ring" (20446). Gives "Dark Metal Coin" (20447).
-4. burningwood/"Telin Darkforest", hand "Dark Metal Coin" (20447). Gives "Worn Dark Metal Coin" (20448).
-5. eastkarana/"Althele", hand "Worn Dark Metal Coin" (20448). Gives "Braided Grass Amulet" (20450).
-6. eastkarana/"Sionae", hand "Braided Grass Amulet" (20450). Gives "Frayed Braided Grass Amulet" (20451).
-7. eastkarana/"Teloa", hand "Frayed Braided Grass Amulet" (20451). Triggers `eastkarana/althele#signal:1`.
-8. Starts timer `attack`.
-9. Spawns "Corruptor" (15153) after `eastkarana/althele#timer:attack`.
-10. Loot "Fleshbound Tome" (20452) from "Corruptor".
-11. eastkarana/"Althele", hand "Fleshbound Tome" (20452). Gives "Earth Stained Note" (18959).
-12. misty/"Ella Foodcrafter", hand "Earth Stained Note" (18959). Sets `shiny_tin_bowl` to `1`.
-13. misty/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
-14. Hand "Shiny Tin Bowl" (17860) to hole/"Jaeil The Wretched". Spawns "Jaeil the Insane" (39154). Loot "Soulbound Hammer" (20478) from "Jaeil the Insane".
-15. erudnint/"Mairee Silentone", hand "Soulbound Hammer" (20478). Gives "Dwarven Smiths Hammer" (20479).
-16. Kill airplane/"An Essence Carrier". Spawns "An Essence Tamer" (71071).
-17. Loot "Swirling Sphere of Color" (20494) from "An Essence Tamer".
-18. erudnint/"Mairee Silentone", hand "Dwarven Smiths Hammer" (20479) + "Swirling Sphere of Color" (20494). Gives "Hammer of the Ancients" (20485).
-19. kaladimb/"Kinlo Strongarm", hand "Hammer of the Ancients" (20485). Gives "Small bit of Mithril Ore" (20482).
-20. kaladimb/"Kinlo Strongarm", hand "Small bit of Mithril Ore" (20482). Gives "Refined Mithril Blade" (20483).
-21. Encounter starts when NPC 186201 spawns in `hateplaneb`.
-22. Starts timer `popinny`.
-23. Kill NPC 186158.
-24. Starts timer `text`.
-25. Starts timer `text2`.
-26. Starts timer `spawninny`.
-27. Spawns "Innoruuk" (186107) after `hateplaneb/inny#timer:spawninny`.
-28. Loot "Shattered Emerald of Corruption" (20484) from "Innoruuk".
-29. Alternative: Loot "Shattered Emerald of Corruption" (20484) from "Maestro of Rancor" (NPC 186111) in `hateplaneb`; trigger: hateplaneb/"Maestro", on timer popmaestro.
-30. northkarana/"Xanuusus", hand "Refined Mithril Blade" (20483) + "Shattered Emerald of Corruption" (20484). Gives "Earthcaller" (20488).
+1. **Unresolved introduction:** no connected introductory hail in the graph.
+2. burningwood/"Telin Darkforest", say "Action". Gives "Worn Note" (20472).
+3. gfaydark/"Faelin Bloodbriar", hand "Worn Note" (20472). Gives "Faelin's Ring" (20446).
+4. kithicor/"Giz X-Tin", hand "Faelin's Ring" (20446). Gives "Dark Metal Coin" (20447).
+5. burningwood/"Telin Darkforest", hand "Dark Metal Coin" (20447). Gives "Worn Dark Metal Coin" (20448).
+6. eastkarana/"Althele", hand "Worn Dark Metal Coin" (20448). Gives "Braided Grass Amulet" (20450).
+7. eastkarana/"Sionae", hand "Braided Grass Amulet" (20450). Gives "Frayed Braided Grass Amulet" (20451).
+8. eastkarana/"Teloa", hand "Frayed Braided Grass Amulet" (20451). Triggers `eastkarana/althele#signal:1`.
+9. Starts timer `attack`.
+10. Spawns "Corruptor" (15153) after `eastkarana/althele#timer:attack`.
+11. Loot "Fleshbound Tome" (20452) from "Corruptor".
+12. eastkarana/"Althele", hand "Fleshbound Tome" (20452). Gives "Earth Stained Note" (18959).
+13. misty/"Ella Foodcrafter", hand "Earth Stained Note" (18959). Sets `shiny_tin_bowl` to `1`.
+14. misty/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
+15. Hand "Shiny Tin Bowl" (17860) to hole/"Jaeil The Wretched". Spawns "Jaeil the Insane" (39154). Loot "Soulbound Hammer" (20478) from "Jaeil the Insane".
+16. erudnint/"Mairee Silentone", hand "Soulbound Hammer" (20478). Gives "Dwarven Smiths Hammer" (20479).
+17. Kill airplane/"An Essence Carrier". Spawns "An Essence Tamer" (71071).
+18. Loot "Swirling Sphere of Color" (20494) from "An Essence Tamer".
+19. erudnint/"Mairee Silentone", hand "Dwarven Smiths Hammer" (20479) + "Swirling Sphere of Color" (20494). Gives "Hammer of the Ancients" (20485).
+20. kaladimb/"Kinlo Strongarm", hand "Hammer of the Ancients" (20485). Gives "Small bit of Mithril Ore" (20482).
+21. kaladimb/"Kinlo Strongarm", hand "Small bit of Mithril Ore" (20482). Gives "Refined Mithril Blade" (20483).
+22. Encounter starts when NPC 186201 spawns in `hateplaneb`.
+23. Starts timer `popinny`.
+24. Kill hateplaneb/"Inny".
+25. Starts timer `text`.
+26. Starts timer `text2`.
+27. Starts timer `spawninny`.
+28. Spawns "Innoruuk" (186107) after `hateplaneb/inny#timer:spawninny`.
+29. Loot "Shattered Emerald of Corruption" (20484) from "Innoruuk".
+30. Alternative: Loot "Shattered Emerald of Corruption" (20484) from "Maestro of Rancor" (NPC 186111) in `hateplaneb`; trigger: hateplaneb/"Maestro", on timer popmaestro.
+31. northkarana/"Xanuusus", hand "Refined Mithril Blade" (20483) + "Shattered Emerald of Corruption" (20484). Gives "Earthcaller" (20488).
     - Dialogue with northkarana/"Xanuusus":
       - Player: "Hail"
         - NPC say: I see you have purified that stone. Can I look at it?
@@ -128,9 +130,9 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Heartwood Blade" (62627)
 
-1. Buy "Planar Fletching Kit" (17762) from "Ellis Cloudchaser" (NPC 202076) in `poknowledge`. Base price: 1,000 copper.
-2. global/"Global Player", combine recipe 13412. Sets `ranger_epic` to `3`.
-3. jaggedpine/"Red Dogwood Treant", say "Hail". Requires `ranger_epic` ==3. Gives "Red Dogwood Heartwood" (62623).
+1. jaggedpine/"Red Dogwood Treant", say "Hail". Requires `ranger_epic` ==3. Gives "Red Dogwood Heartwood" (62623).
+2. Buy "Planar Fletching Kit" (17762) from "Ellis Cloudchaser" (NPC 202076) in `poknowledge`. Base price: 1,000 copper.
+3. global/"Global Player", combine recipe 13412. Sets `ranger_epic` to `3`.
 4. dranik/"Ranger 1 5", hand "Red Dogwood Heartwood" (62623). Requires `ranger_dranik_chest` unset. Gives "Wind-blessed Heartwood" (62626).
 5. jaggedpine/"Red Dogwood Treant", say "Hail". Requires `ranger_epic` ==3. Gives "Spring Dogwood Seed" (62624).
 6. qrg/"Corun Finisc", hand "Spring Dogwood Seed" (62624). Gives "Block of Purest Silver" (62625).
@@ -140,101 +142,102 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Aurora, the Heartwood Blade" (62649)
 
-1. global/"Global Player", combine recipe 19914. Sets `ranger_epic` to `8`.
-2. Loot "Crooked Cage" (32042) from "a Broken Skull bruiser" in `torgiran`.
-3. burningwood/"Telin Darkforest", say "Action". Gives "Worn Note" (20472).
-4. gfaydark/"Faelin Bloodbriar", hand "Worn Note" (20472). Gives "Faelin's Ring" (20446).
-5. kithicor/"Giz X-Tin", hand "Faelin's Ring" (20446). Gives "Dark Metal Coin" (20447).
-6. burningwood/"Telin Darkforest", hand "Dark Metal Coin" (20447). Gives "Worn Dark Metal Coin" (20448).
-7. eastkarana/"Althele", hand "Worn Dark Metal Coin" (20448). Gives "Braided Grass Amulet" (20450).
-8. eastkarana/"Sionae", hand "Braided Grass Amulet" (20450). Gives "Frayed Braided Grass Amulet" (20451).
-9. eastkarana/"Teloa", hand "Frayed Braided Grass Amulet" (20451). Triggers `eastkarana/althele#signal:1`.
-10. Starts timer `attack`.
-11. Spawns "Corruptor" (15153) after `eastkarana/althele#timer:attack`.
-12. Loot "Fleshbound Tome" (20452) from "Corruptor".
-13. eastkarana/"Althele", hand "Fleshbound Tome" (20452). Gives "Earth Stained Note" (18959).
-14. misty/"Ella Foodcrafter", hand "Earth Stained Note" (18959). Sets `shiny_tin_bowl` to `1`.
-15. misty/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
-16. Hand "Shiny Tin Bowl" (17860) to hole/"Jaeil The Wretched". Spawns "Jaeil the Insane" (39154). Loot "Soulbound Hammer" (20478) from "Jaeil the Insane".
-17. erudnint/"Mairee Silentone", hand "Soulbound Hammer" (20478). Gives "Dwarven Smiths Hammer" (20479).
-18. Kill airplane/"An Essence Carrier". Spawns "An Essence Tamer" (71071).
-19. Loot "Swirling Sphere of Color" (20494) from "An Essence Tamer".
-20. erudnint/"Mairee Silentone", hand "Dwarven Smiths Hammer" (20479) + "Swirling Sphere of Color" (20494). Gives "Hammer of the Ancients" (20485).
-21. kaladimb/"Kinlo Strongarm", hand "Hammer of the Ancients" (20485). Gives "Small bit of Mithril Ore" (20482).
-22. kaladimb/"Kinlo Strongarm", hand "Small bit of Mithril Ore" (20482). Gives "Refined Mithril Blade" (20483).
-23. Encounter starts when NPC 186201 spawns in `hateplaneb`.
-24. Starts timer `popinny`.
-25. Kill NPC 186158.
-26. Starts timer `text`.
-27. Starts timer `text2`.
-28. Starts timer `spawninny`.
-29. Spawns "Innoruuk" (186107) after `hateplaneb/inny#timer:spawninny`.
-30. Loot "Shattered Emerald of Corruption" (20484) from "Innoruuk".
-31. Alternative: Loot "Shattered Emerald of Corruption" (20484) from "Maestro of Rancor" (NPC 186111) in `hateplaneb`; trigger: hateplaneb/"Maestro", on timer popmaestro.
-32. northkarana/"Xanuusus", hand "Refined Mithril Blade" (20483) + "Shattered Emerald of Corruption" (20484). Gives "Earthcaller" (20488).
-33. Forage "Ripened Heartfruit" (20464) in `gfaydark`.
-34. Forage "Sweetened Mudroot" (20465) in `misty`.
-35. Forage "Sweetened Mudroot" (20465) in `mistythicket`.
-36. Forage "Speckled Molded Mushroom" (20466) in `innothule`.
-37. Forage "Chilled Tundra Root" (20467) in `everfrost`.
-38. Combine in "Shiny Tin Bowl" (17860): "Ripened Heartfruit" (20464), "Sweetened Mudroot" (20465), "Speckled Molded Mushroom" (20466), "Chilled Tundra Root" (20467). Produces "Hardened Mixture" (20473). Requires Pottery. The combine does not fail.
-39. timorous/"Alrik Farsight", say "Take The Artifact". Gives "Crushed Pot" (20457).
-40. felwitheb/"Farios Elianos", hand "Crushed Pot" (20457). Gives "Grocery List" (20458).
-41. felwithea/"Merchant Nora", hand "Grocery List" (20458). Gives "Bag of Provisions" (20459).
-42. felwitheb/"Farios Elianos", hand "Bag of Provisions" (20459). Gives "Receipt" (20474).
-43. timorous/"Alrik Farsight", hand "Receipt" (20474). Gives "Ancient Pattern" (18960).
-44. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
-45. Loot "Jade Reaver" (5664) from "A Black Reaver".
-46. Alternative: Loot "Jade Reaver" (5664) from "A Black Reaver" (NPC 90005) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
-47. Alternative: Loot "Jade Reaver" (5664) from "A Black Reaver" (NPC 90192) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
-48. kaladimb/"Kinlo Strongarm", hand "Jade Reaver" (5664). Gives "Enchanted Clay" (20455).
-49. Forage "Rose of Firiona" (12774) in `firiona`.
-50. qrg/"Merdan Fleetfoot", hand "Rose of Firiona" (12774). Gives "Wood Painting" (20475).
-51. frontiermtns/"A Human Skeleton", hand "Wood Painting" (20475). Gives "Silver Chained Locket" (20476).
-52. qrg/"Niera Farbreeze", hand "Silver Chained Locket" (20476). Gives "Platinum Speckled Powder" (20456).
-53. Combine in Pottery Wheel (21): "Ancient Pattern" (18960), "Enchanted Clay" (20455), "Platinum Speckled Powder" (20456). Produces "Runecrested Bowl" (20460). Requires Pottery. The combine does not fail.
-54. misty/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
-55. Buy "Spell: Resurrection" (15392) from "Henlom Visrek" (NPC 2054) in `qeynos2`. Base price: 18,936 copper.
-56. Hand "Spell: Resurrection" (15392) to karnor/"Spirit Of Venril Sathir". Spawns "Venril Sathir" (102126). Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
-57. firiona/"Foloal Stormforest", hand "Pulsing Green Stone" (20461) + "Softly Glowing Stone" (20462). Gives "Warmly Glowing Stone" (20468).
-58. burningwood/"Telin Darkforest", hand "Warmly Glowing Stone" (20468). Gives "Ancient Longsword" (20477).
-59. kaladimb/"Usbak The Old", hand "Ancient Longsword" (20477). Gives "Refined Ancient Sword" (20481).
-60. burningwood/"Faelin Bloodbriar", hand "Refined Ancient Sword" (20481). Gives "Swiftwind" (20487).
-61. Loot "Living Fragment of Fire" (28294) from "A Jopal Mystic" (NPC 217026) in `pofire`. Drop cache: 5.04% chance per kill.
-62. Loot "Living Fragment of Water" (28293) from "A Triloun Diviner" in `powater`.
-63. Loot "Living Fragment of Water" (28293) from "A Triloun Keeper" in `powater`.
-64. Loot "Living Fragment of Water" (28293) from "A Triloun Water Guardian" in `powater`.
-65. global/"Global Player", combine recipe 13413. Sets `ranger_epic` to `5`.
-66. nedaria/"A Wayfarers Brotherhood Officer", say "Hail". Sets `ranger_epic` to `6`.
-67. causeway/"Siflu", say "Adventurers". Requires `ranger_epic` ==6. Gives "Heated Loadstone" (62628).
+1. kaladimb/"Usbak The Old", say "Hail". Took ya long enough! Ye'd think ya had an Orc head on them shoulders there. I'm owin' ya for yer help though. Else I'd have been on that darn hammer for ages. Ye said ya had an ancient blade or somethin ta be smithin. If so lemme see it.
+2. global/"Global Player", combine recipe 19914. Sets `ranger_epic` to `8`.
+3. Loot "Crooked Cage" (32042) from "a Broken Skull bruiser" in `torgiran`.
+4. burningwood/"Telin Darkforest", say "Action". Gives "Worn Note" (20472).
+5. gfaydark/"Faelin Bloodbriar", hand "Worn Note" (20472). Gives "Faelin's Ring" (20446).
+6. kithicor/"Giz X-Tin", hand "Faelin's Ring" (20446). Gives "Dark Metal Coin" (20447).
+7. burningwood/"Telin Darkforest", hand "Dark Metal Coin" (20447). Gives "Worn Dark Metal Coin" (20448).
+8. eastkarana/"Althele", hand "Worn Dark Metal Coin" (20448). Gives "Braided Grass Amulet" (20450).
+9. eastkarana/"Sionae", hand "Braided Grass Amulet" (20450). Gives "Frayed Braided Grass Amulet" (20451).
+10. eastkarana/"Teloa", hand "Frayed Braided Grass Amulet" (20451). Triggers `eastkarana/althele#signal:1`.
+11. Starts timer `attack`.
+12. Spawns "Corruptor" (15153) after `eastkarana/althele#timer:attack`.
+13. Loot "Fleshbound Tome" (20452) from "Corruptor".
+14. eastkarana/"Althele", hand "Fleshbound Tome" (20452). Gives "Earth Stained Note" (18959).
+15. misty/"Ella Foodcrafter", hand "Earth Stained Note" (18959). Sets `shiny_tin_bowl` to `1`.
+16. misty/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
+17. Hand "Shiny Tin Bowl" (17860) to hole/"Jaeil The Wretched". Spawns "Jaeil the Insane" (39154). Loot "Soulbound Hammer" (20478) from "Jaeil the Insane".
+18. erudnint/"Mairee Silentone", hand "Soulbound Hammer" (20478). Gives "Dwarven Smiths Hammer" (20479).
+19. Kill airplane/"An Essence Carrier". Spawns "An Essence Tamer" (71071).
+20. Loot "Swirling Sphere of Color" (20494) from "An Essence Tamer".
+21. erudnint/"Mairee Silentone", hand "Dwarven Smiths Hammer" (20479) + "Swirling Sphere of Color" (20494). Gives "Hammer of the Ancients" (20485).
+22. kaladimb/"Kinlo Strongarm", hand "Hammer of the Ancients" (20485). Gives "Small bit of Mithril Ore" (20482).
+23. kaladimb/"Kinlo Strongarm", hand "Small bit of Mithril Ore" (20482). Gives "Refined Mithril Blade" (20483).
+24. Encounter starts when NPC 186201 spawns in `hateplaneb`.
+25. Starts timer `popinny`.
+26. Kill hateplaneb/"Inny".
+27. Starts timer `text`.
+28. Starts timer `text2`.
+29. Starts timer `spawninny`.
+30. Spawns "Innoruuk" (186107) after `hateplaneb/inny#timer:spawninny`.
+31. Loot "Shattered Emerald of Corruption" (20484) from "Innoruuk".
+32. Alternative: Loot "Shattered Emerald of Corruption" (20484) from "Maestro of Rancor" (NPC 186111) in `hateplaneb`; trigger: hateplaneb/"Maestro", on timer popmaestro.
+33. northkarana/"Xanuusus", hand "Refined Mithril Blade" (20483) + "Shattered Emerald of Corruption" (20484). Gives "Earthcaller" (20488).
+34. Forage "Ripened Heartfruit" (20464) in `gfaydark`.
+35. Forage "Sweetened Mudroot" (20465) in `misty`.
+36. Forage "Sweetened Mudroot" (20465) in `mistythicket`.
+37. Forage "Speckled Molded Mushroom" (20466) in `innothule`.
+38. Forage "Chilled Tundra Root" (20467) in `everfrost`.
+39. Combine in "Shiny Tin Bowl" (17860): "Ripened Heartfruit" (20464), "Sweetened Mudroot" (20465), "Speckled Molded Mushroom" (20466), "Chilled Tundra Root" (20467). Produces "Hardened Mixture" (20473). Requires Pottery. The combine does not fail.
+40. timorous/"Alrik Farsight", say "Take The Artifact". Gives "Crushed Pot" (20457).
+41. felwitheb/"Farios Elianos", hand "Crushed Pot" (20457). Gives "Grocery List" (20458).
+42. felwithea/"Merchant Nora", hand "Grocery List" (20458). Gives "Bag of Provisions" (20459).
+43. felwitheb/"Farios Elianos", hand "Bag of Provisions" (20459). Gives "Receipt" (20474).
+44. timorous/"Alrik Farsight", hand "Receipt" (20474). Gives "Ancient Pattern" (18960).
+45. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
+46. Loot "Jade Reaver" (5664) from "A Black Reaver".
+47. Alternative: Loot "Jade Reaver" (5664) from "A Black Reaver" (NPC 90005) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
+48. Alternative: Loot "Jade Reaver" (5664) from "A Black Reaver" (NPC 90192) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
+49. kaladimb/"Kinlo Strongarm", hand "Jade Reaver" (5664). Gives "Enchanted Clay" (20455).
+50. Forage "Rose of Firiona" (12774) in `firiona`.
+51. qrg/"Merdan Fleetfoot", hand "Rose of Firiona" (12774). Gives "Wood Painting" (20475).
+52. frontiermtns/"A Human Skeleton", hand "Wood Painting" (20475). Gives "Silver Chained Locket" (20476).
+53. qrg/"Niera Farbreeze", hand "Silver Chained Locket" (20476). Gives "Platinum Speckled Powder" (20456).
+54. Combine in Pottery Wheel (21): "Ancient Pattern" (18960), "Enchanted Clay" (20455), "Platinum Speckled Powder" (20456). Produces "Runecrested Bowl" (20460). Requires Pottery. The combine does not fail.
+55. misty/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
+56. Buy "Spell: Resurrection" (15392) from "Henlom Visrek" (NPC 2054) in `qeynos2`. Base price: 18,936 copper.
+57. Hand "Spell: Resurrection" (15392) to karnor/"Spirit Of Venril Sathir". Spawns "Venril Sathir" (102126). Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
+58. firiona/"Foloal Stormforest", hand "Pulsing Green Stone" (20461) + "Softly Glowing Stone" (20462). Gives "Warmly Glowing Stone" (20468).
+59. burningwood/"Telin Darkforest", hand "Warmly Glowing Stone" (20468). Gives "Ancient Longsword" (20477).
+60. kaladimb/"Usbak The Old", hand "Ancient Longsword" (20477). Gives "Refined Ancient Sword" (20481).
+61. burningwood/"Faelin Bloodbriar", hand "Refined Ancient Sword" (20481). Gives "Swiftwind" (20487).
+62. Loot "Living Fragment of Fire" (28294) from "A Jopal Mystic" (NPC 217026) in `pofire`. Drop cache: 5.04% chance per kill.
+63. Loot "Living Fragment of Water" (28293) from "A Triloun Diviner" in `powater`.
+64. Loot "Living Fragment of Water" (28293) from "A Triloun Keeper" in `powater`.
+65. Loot "Living Fragment of Water" (28293) from "A Triloun Water Guardian" in `powater`.
+66. global/"Global Player", combine recipe 13413. Sets `ranger_epic` to `5`.
+67. nedaria/"A Wayfarers Brotherhood Officer", say "Hail". Sets `ranger_epic` to `6`.
+68. causeway/"Siflu", say "Adventurers". Requires `ranger_epic` ==6. Gives "Heated Loadstone" (62628).
     - Dialogue with causeway/"Siflu":
       - Player: "Adventurers"
         - NPC say: There have been plenty of those, that's for sure. If you mean recently, then, I suppose I know the group you're talking about. They were hunting us, just as I suspect you are. I was sent to kill anyone that might be on our trail. They gave me a loadstone that I could use to find them again. Here, you take it; I'm getting out of here while I still can.
         - Condition: `(e.message:findi("adventurers") and qglobals["ranger_epic"] == "6")`
         - Gives Heated Loadstone (62628).
-68. Spawns "A Mangled Muramite Captain" (300069) in `wallofslaughter` on enter.
-69. Loot "Spirit Manacles" (72340) from "A Mangled Muramite Captain".
-70. Combine in "Crooked Cage" (32042): "Earthcaller" (20488), "Swiftwind" (20487), "Living Fragment of Fire" (28294), "Living Fragment of Water" (28293), "Heated Loadstone" (62628), "Spirit Manacles" (72340). Hands back "Earthcaller" (20488), "Swiftwind" (20487). Produces "Spirit Cage" (62656). The combine does not fail.
-71. Spawns "Craftmaster Tieranu" (334087) in `riftseekers` on enter.
-72. Loot "Ring of Warmth" (11427) from "Craftmaster Tieranu".
-73. Spawns "Herrian Warfrost" (300057) in `wallofslaughter` on enter.
-74. Loot "Hoarfrost Wand" (76999) from "Herrian Warfrost".
-75. Combine in "Spirit Cage" (62656): "Ring of Warmth" (11427), "Hoarfrost Wand" (76999). Produces "Elemental Ice Spirit Cage" (62647). The combine does not fail.
-76. Say "Check Lorb" to anguish/"Zone Status".
-77. Spawns "Orb of Discordant Energy" (317087).
-78. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-79. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
-80. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-81. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-82. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-83. Buy "Planar Fletching Kit" (17762) from "Ellis Cloudchaser" (NPC 202076) in `poknowledge`. Base price: 1,000 copper.
-84. global/"Global Player", combine recipe 13412. Sets `ranger_epic` to `3`.
-85. jaggedpine/"Red Dogwood Treant", say "Hail". Requires `ranger_epic` ==3. Gives "Red Dogwood Heartwood" (62623).
-86. dranik/"Ranger 1 5", hand "Red Dogwood Heartwood" (62623). Requires `ranger_dranik_chest` unset. Gives "Wind-blessed Heartwood" (62626).
-87. jaggedpine/"Red Dogwood Treant", say "Hail". Requires `ranger_epic` ==3. Gives "Spring Dogwood Seed" (62624).
-88. qrg/"Corun Finisc", hand "Spring Dogwood Seed" (62624). Gives "Block of Purest Silver" (62625).
-89. Combine in "Planar Fletching Kit" (17762): "Wind-blessed Heartwood" (62626), "Block of Purest Silver" (62625). Produces "Heartwood Blade" (62627). Requires Fletching. The combine does not fail.
-90. anguish/"Oshimai Spirit Of The High Air", hand "Globe of Discordant Energy" (47100) + "Heartwood Blade" (62627) + "Elemental Ice Spirit Cage" (62647). Requires `ranger_epic` ==8. Gives "Aurora, the Heartwood Blade" (62649).
+69. Spawns "A Mangled Muramite Captain" (300069) in `wallofslaughter` on enter.
+70. Loot "Spirit Manacles" (72340) from "A Mangled Muramite Captain".
+71. Combine in "Crooked Cage" (32042): "Earthcaller" (20488), "Swiftwind" (20487), "Living Fragment of Fire" (28294), "Living Fragment of Water" (28293), "Heated Loadstone" (62628), "Spirit Manacles" (72340). Hands back "Earthcaller" (20488), "Swiftwind" (20487). Produces "Spirit Cage" (62656). The combine does not fail.
+72. Spawns "Craftmaster Tieranu" (334087) in `riftseekers` on enter.
+73. Loot "Ring of Warmth" (11427) from "Craftmaster Tieranu".
+74. Spawns "Herrian Warfrost" (300057) in `wallofslaughter` on enter.
+75. Loot "Hoarfrost Wand" (76999) from "Herrian Warfrost".
+76. Combine in "Spirit Cage" (62656): "Ring of Warmth" (11427), "Hoarfrost Wand" (76999). Produces "Elemental Ice Spirit Cage" (62647). The combine does not fail.
+77. Say "Check Lorb" to anguish/"Zone Status".
+78. Spawns "Orb of Discordant Energy" (317087).
+79. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+80. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+81. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+82. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+83. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+84. Buy "Planar Fletching Kit" (17762) from "Ellis Cloudchaser" (NPC 202076) in `poknowledge`. Base price: 1,000 copper.
+85. global/"Global Player", combine recipe 13412. Sets `ranger_epic` to `3`.
+86. jaggedpine/"Red Dogwood Treant", say "Hail". Requires `ranger_epic` ==3. Gives "Red Dogwood Heartwood" (62623).
+87. dranik/"Ranger 1 5", hand "Red Dogwood Heartwood" (62623). Requires `ranger_dranik_chest` unset. Gives "Wind-blessed Heartwood" (62626).
+88. jaggedpine/"Red Dogwood Treant", say "Hail". Requires `ranger_epic` ==3. Gives "Spring Dogwood Seed" (62624).
+89. qrg/"Corun Finisc", hand "Spring Dogwood Seed" (62624). Gives "Block of Purest Silver" (62625).
+90. Combine in "Planar Fletching Kit" (17762): "Wind-blessed Heartwood" (62626), "Block of Purest Silver" (62625). Produces "Heartwood Blade" (62627). Requires Fletching. The combine does not fail.
+91. anguish/"Oshimai Spirit Of The High Air", hand "Globe of Discordant Energy" (47100) + "Heartwood Blade" (62627) + "Elemental Ice Spirit Cage" (62647). Requires `ranger_epic` ==8. Gives "Aurora, the Heartwood Blade" (62649).
 
 ## Quest-state progression
 
@@ -457,7 +460,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 8. kaladimb/"Kinlo Strongarm", hand "Small bit of Mithril Ore" (20482). Gives "Refined Mithril Blade" (20483).
 9. Encounter starts when NPC 186201 spawns in `hateplaneb`.
 10. Starts timer `popinny`.
-11. Kill NPC 186158.
+11. Kill hateplaneb/"Inny".
 12. Starts timer `text`.
 13. Starts timer `text2`.
 14. Starts timer `spawninny`.
@@ -1227,8 +1230,8 @@ Alternative or repeat transition to `ranger_epic` = `8` (not an additional requi
     - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
     - Prerequisite: "Heartwood Blade" (62627). See section 0.
     - Gives "Aurora, the Heartwood Blade" (62649).
 

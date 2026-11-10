@@ -646,13 +646,34 @@ def _link_dialogue(conn: sqlite3.Connection) -> None:
 _OBJECT_KINDS = {"type", "kind", "sort"}
 _OBJECT_ARTICLES = {"a", "an", "the"}
 _OBJECT_MODIFIERS_GENERIC = {
-    "a", "an", "the", "some", "any", "this", "that", "another", "other",
-    "different", "new", "old", "good", "bad", "special", "certain",
-    "first", "second", "many", "one", "same", "strange", "very",
+    "a",
+    "an",
+    "the",
+    "some",
+    "any",
+    "this",
+    "that",
+    "another",
+    "other",
+    "different",
+    "new",
+    "old",
+    "good",
+    "bad",
+    "special",
+    "certain",
+    "first",
+    "second",
+    "many",
+    "one",
+    "same",
+    "strange",
+    "very",
 }
 _OBJECT_SEARCH = re.compile(
     r"\b(?:seek|find|search|locate|discover|look\s+for|hunt\s+for|"
-    r"track\s+down|find\s+out|seek\s+out)\b", re.I
+    r"track\s+down|find\s+out|seek\s+out)\b",
+    re.I,
 )
 
 
@@ -693,18 +714,24 @@ def _link_quest_objects(conn: sqlite3.Connection) -> None:
     question_starts = {"what", "who", "where", "which", "how", "why"}
     for target in target_rows:
         words = _lex_tokens(target["input"])
-        if (len(words) != 2 or min(map(len, words)) < 4
-                or words[0] in question_starts
-                or words[0] in _OBJECT_MODIFIERS_GENERIC
-                or _norm(target["input"]) in _GENERIC_SAY_INPUTS):
+        if (
+            len(words) != 2
+            or min(map(len, words)) < 4
+            or words[0] in question_starts
+            or words[0] in _OBJECT_MODIFIERS_GENERIC
+            or _norm(target["input"]) in _GENERIC_SAY_INPUTS
+        ):
             continue
         target_counts[tuple(words)] += 1
     for target in target_rows:
         words = _lex_tokens(target["input"])
         if len(words) != 2 or target_counts[tuple(words)] > 3:
             continue
-        if (words[0] in _OBJECT_MODIFIERS_GENERIC or words[0] in question_starts
-                or min(map(len, words)) < 4):
+        if (
+            words[0] in _OBJECT_MODIFIERS_GENERIC
+            or words[0] in question_starts
+            or min(map(len, words)) < 4
+        ):
             continue
         by_modifier[words[0]].append((target["npc_id"], target["input"], target["say_source"]))
 
@@ -721,16 +748,29 @@ def _link_quest_objects(conn: sqlite3.Connection) -> None:
                 target_noun = _lex_tokens(accepted)[1]
                 if not (_lex_variants(noun) & _lex_variants(target_noun)):
                     continue
-                inserts.append((
-                    speech["npc_id"], dest, "cross_npc_dialogue", "candidate",
-                    utterance, None, speech["event_key"], say_source,
-                    speech["id"], accepted, "quest_object_reference",
-                    "distinctive_object_phrase",
-                ))
-    conn.executemany("""INSERT OR IGNORE INTO quest_edge
+                inserts.append(
+                    (
+                        speech["npc_id"],
+                        dest,
+                        "cross_npc_dialogue",
+                        "candidate",
+                        utterance,
+                        None,
+                        speech["event_key"],
+                        say_source,
+                        speech["id"],
+                        accepted,
+                        "quest_object_reference",
+                        "distinctive_object_phrase",
+                    )
+                )
+    conn.executemany(
+        """INSERT OR IGNORE INTO quest_edge
         (from_npc,to_npc,relation,confidence,evidence,item_id,source_event,
          target_event,speech_id,matched_input,basis,relationship_basis)
-        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""", inserts)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""",
+        inserts,
+    )
 
 
 def query_npc(db: Path, npc: str) -> dict:

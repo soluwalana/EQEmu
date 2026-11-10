@@ -6,10 +6,11 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Innoruuk's Curse" (14383)
 
-1. neriakc/"Selzar L-Crit", say "Armor". Gives "Note to Kanthuk" (2416).
-2. butcher/"Kanthuk Ogrebane", hand "Note to Kanthuk" (2416). Sets `Kanthuk` to `ghoul`.
-3. butcher/"Kanthuk Ogrebane", say "Strange Image". Requires `Kanthuk` set. Gives "Pendant" (2414).
-4. cauldron/"Llara", hand "Pendant" (2414). Sets `Llara` to `ghoul`.
+1. citymist/"Marl Kastane", say "Hail". Alas, I cannot be the one to carry the sword back to my people as proof in fear they will kill me to possess it for their own. I think a simple trade is in order. Perhaps you have a symbol or token of Lhanrc's that I could take back to the others to ease their worries?
+2. neriakc/"Selzar L-Crit", say "Armor". Gives "Note to Kanthuk" (2416).
+3. butcher/"Kanthuk Ogrebane", hand "Note to Kanthuk" (2416). Sets `Kanthuk` to `ghoul`.
+4. butcher/"Kanthuk Ogrebane", say "Strange Image". Requires `Kanthuk` set. Gives "Pendant" (2414).
+5. cauldron/"Llara", hand "Pendant" (2414). Sets `Llara` to `ghoul`.
     - Dialogue with cauldron/"Llara":
       - Player: "Kanthuk"
         - NPC say: I take it you're here to find out more about [Amstaf].
@@ -36,8 +37,8 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
         - Condition: `(qglobals["Llara"] ~= nil)`
         - Condition: `(e.message:findi("ruathey"))`
         - Gives Note to Ruathey (2417).
-5. cauldron/"Llara", say "Ruathey". Requires `Llara` set. Gives "Note to Ruathey" (2417).
-6. lavastorm/"Ruathey", hand "Note to Ruathey" (2417). Sets `ruathey_note` to `1`.
+6. cauldron/"Llara", say "Ruathey". Requires `Llara` set. Gives "Note to Ruathey" (2417).
+7. lavastorm/"Ruathey", hand "Note to Ruathey" (2417). Sets `ruathey_note` to `1`.
     - Dialogue with lavastorm/"Ruathey":
       - Player: "Hail"
         - NPC say: Hello
@@ -64,36 +65,36 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
         - NPC say: Take this bag and gather the items I've mentioned. I've been told that the Ghoul's Heart can be found in the estate of the undead, while the scroll can be found in the Keep not far from the Karanas. One of the others are rumored to be found near the dwarven city among the goblins. While the last should be found in the caverns of Najena.
         - Condition: `($text =~ /bag/i && defined($qglobals{ruathey_note}) && $qglobals{ruathey_note} == 1)`
         - Gives Nobleman's Bag (17878).
-7. lavastorm/"Ruathey", say "Bag". Requires `ruathey_note` ==1. Requires `ruathey_note` set. Gives "Nobleman's Bag" (17878).
-8. Loot "Ghoul's Heart" (2410) from "A Ghoul" (NPC 63011) in `unrest`. Drop cache: 25% chance per kill.
-9. Loot "Amstaf's Scroll" (2411) from "A Goblin Thief" (NPC 6150) in `highkeep`. Drop cache: 35% chance per kill.
-10. Loot "Blade of Nobility" (2412) from "A Crazed Goblin" (NPC 68162) in `butcher`. Drop cache: 10.57% chance per kill.
-11. Loot "Hilt of the Nobleman" (2413) from "Ekeros" in `najena`.
-12. Loot "Hilt of the Nobleman" (2413) from "A Skeleton" in `najena`.
-13. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). The combine does not fail.
-14. Loot "Soul Leech, Dark Sword of Blood" (11609) from "Dread" in `fearplane`.
-15. Loot "Soul Leech, Dark Sword of Blood" (11609) from "Fright" in `fearplane`.
-16. Loot "Soul Leech, Dark Sword of Blood" (11609) from "Terror" in `fearplane`.
-17. airplane/"A Soul Carrier", on event_death_complete. Triggers `airplane/key master#signal:2`.
-18. Starts timer `87`.
-19. Spawns "Keeper of Souls" (71075) after `airplane/key master#timer:87`.
-20. Loot "Blade of Abrogation" (5430) from "Keeper of Souls".
-21. Alternative: Loot "Blade of Abrogation" (5430) from "Bazzazzt --1-1" (NPC 71103) in `airplane`; trigger: airplane/"Bzzazzt", on event_death_complete.
-22. Alternative: Loot "Blade of Abrogation" (5430) from "Bazzazzt --2-1" (NPC 71106) in `airplane`; trigger: airplane/"Bzzazzt", on event_death_complete.
-23. Alternative: Loot "Blade of Abrogation" (5430) from "Bizazzzt" (NPC 71102) in `airplane`; trigger: airplane/"Bazzzazzt", on event_death_complete.
-24. Alternative: Loot "Blade of Abrogation" (5430) from "Bazzazzt --3-1" (NPC 71107) in `airplane`; trigger: airplane/"Bzzazzt", on event_death_complete.
-25. Alternative: Loot "Blade of Abrogation" (5430) from "Bazzt Zzzt" (NPC 71072) in `airplane`; trigger: airplane/"Bzzzt", on event_death_complete.
-26. Alternative: Loot "Blade of Abrogation" (5430) from "A Soul Harvester" (NPC 71110) in `airplane`; trigger: airplane/"Eternal Spirit", on event_death_complete.
-27. Alternative: Loot "Blade of Abrogation" (5430) from "Protector of Sky" (NPC 71059) in `airplane`; trigger: airplane/"Key Master", on event_signal.
-28. Alternative: Loot "Blade of Abrogation" (5430) from "used Magelo to get the closest loc as possible." (NPC 71076) in `airplane`; trigger: airplane/"Sirran The Lunatic", say "Llaw Eht Htiw Eno I Ma".
-29. Alternative: Loot "Blade of Abrogation" (5430) from "An Essence Carrier" (NPC 71070) in `airplane`; trigger: airplane/"A Soul Carrier", on event_death_complete.
-30. Alternative: Loot "Blade of Abrogation" (5430) from "A Soul Tamer" (NPC 71100) in `airplane`; trigger: airplane/"A Soul Harvester", on event_death_complete.
-31. Alternative: Loot "Blade of Abrogation" (5430) from "An Essence Tamer" (NPC 71071) in `airplane`; trigger: airplane/"An Essence Carrier", on event_death_complete.
-32. Alternative: Loot "Blade of Abrogation" (5430) from "A Soul Harvester" (NPC 71110) in `airplane`; trigger: airplane/"An Essence Harvester", on event_death_complete.
-33. Loot "Drake Spine" (14372) from "Rharzar" in `rathemtn`.
-34. Loot "Decrepit Hide" (14371) from "An Ashenbone Drake" (NPC 186049) in `hateplaneb`. Drop cache: 11.2% chance per kill.
-35. Summon "Enchanted Platinum Bar" (16507) by casting "Enchant Platinum", "Mass Enchant Platinum", "Greater Mass Enchant Platinum".
-36. qcat/"Teydar", hand "Decrepit Hide" (14371) + "Drake Spine" (14372) + "Enchanted Platinum Bar" (16507). Gives "Decrepit Sheath" (14366).
+8. lavastorm/"Ruathey", say "Bag". Requires `ruathey_note` ==1. Requires `ruathey_note` set. Gives "Nobleman's Bag" (17878).
+9. Loot "Ghoul's Heart" (2410) from "A Ghoul" (NPC 63011) in `unrest`. Drop cache: 25% chance per kill.
+10. Loot "Amstaf's Scroll" (2411) from "A Goblin Thief" (NPC 6150) in `highkeep`. Drop cache: 35% chance per kill.
+11. Loot "Blade of Nobility" (2412) from "A Crazed Goblin" (NPC 68162) in `butcher`. Drop cache: 10.57% chance per kill.
+12. Loot "Hilt of the Nobleman" (2413) from "Ekeros" in `najena`.
+13. Loot "Hilt of the Nobleman" (2413) from "A Skeleton" in `najena`.
+14. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). The combine does not fail.
+15. Loot "Soul Leech, Dark Sword of Blood" (11609) from "Dread" in `fearplane`.
+16. Loot "Soul Leech, Dark Sword of Blood" (11609) from "Fright" in `fearplane`.
+17. Loot "Soul Leech, Dark Sword of Blood" (11609) from "Terror" in `fearplane`.
+18. **Broken:** no event trigger found for `airplane/a soul carrier#event_death_complete`.
+19. Starts timer `87`.
+20. Spawns "Keeper of Souls" (71075) after `airplane/key master#timer:87`.
+21. Loot "Blade of Abrogation" (5430) from "Keeper of Souls".
+22. Alternative: Loot "Blade of Abrogation" (5430) from "Bazzazzt --1-1" (NPC 71103) in `airplane`; trigger: airplane/"Bzzazzt", on event_death_complete.
+23. Alternative: Loot "Blade of Abrogation" (5430) from "Bazzazzt --2-1" (NPC 71106) in `airplane`; trigger: airplane/"Bzzazzt", on event_death_complete.
+24. Alternative: Loot "Blade of Abrogation" (5430) from "Bizazzzt" (NPC 71102) in `airplane`; trigger: airplane/"Bazzzazzt", on event_death_complete.
+25. Alternative: Loot "Blade of Abrogation" (5430) from "Bazzazzt --3-1" (NPC 71107) in `airplane`; trigger: airplane/"Bzzazzt", on event_death_complete.
+26. Alternative: Loot "Blade of Abrogation" (5430) from "Bazzt Zzzt" (NPC 71072) in `airplane`; trigger: airplane/"Bzzzt", on event_death_complete.
+27. Alternative: Loot "Blade of Abrogation" (5430) from "A Soul Harvester" (NPC 71110) in `airplane`; trigger: airplane/"Eternal Spirit", on event_death_complete.
+28. Alternative: Loot "Blade of Abrogation" (5430) from "Protector of Sky" (NPC 71059) in `airplane`; trigger: airplane/"Key Master", say "Signal:1".
+29. Alternative: Loot "Blade of Abrogation" (5430) from "used Magelo to get the closest loc as possible." (NPC 71076) in `airplane`; trigger: airplane/"Sirran The Lunatic", say "Llaw Eht Htiw Eno I Ma".
+30. Alternative: Loot "Blade of Abrogation" (5430) from "An Essence Carrier" (NPC 71070) in `airplane`; trigger: airplane/"A Soul Carrier", on event_death_complete.
+31. Alternative: Loot "Blade of Abrogation" (5430) from "A Soul Tamer" (NPC 71100) in `airplane`; trigger: airplane/"A Soul Harvester", on event_death_complete.
+32. Alternative: Loot "Blade of Abrogation" (5430) from "An Essence Tamer" (NPC 71071) in `airplane`; trigger: airplane/"An Essence Carrier", on event_death_complete.
+33. Alternative: Loot "Blade of Abrogation" (5430) from "A Soul Harvester" (NPC 71110) in `airplane`; trigger: airplane/"An Essence Harvester", on event_death_complete.
+34. Loot "Drake Spine" (14372) from "Rharzar" in `rathemtn`.
+35. Loot "Decrepit Hide" (14371) from "An Ashenbone Drake" (NPC 186049) in `hateplaneb`. Drop cache: 11.2% chance per kill.
+36. Summon "Enchanted Platinum Bar" (16507) by casting "Enchant Platinum", "Mass Enchant Platinum", "Greater Mass Enchant Platinum".
+37. qcat/"Teydar", hand "Decrepit Hide" (14371) + "Drake Spine" (14372) + "Enchanted Platinum Bar" (16507). Gives "Decrepit Sheath" (14366).
     - Dialogue with qcat/"Teydar":
       - Player: "Hail"
         - NPC say: Hello $name, it's good to see another shadowknight around here. I'm Teydar. I've made it my life to fashion suitable scabbards and sheaths for our order.
@@ -101,18 +102,18 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
       - Player: "Decrepit Sheath" (link: conversation sequence)
         - NPC say: The object you desire is very difficult to fashion. Nearly impossible, really. All I can offer to do is try. The real difficulty is the contents that give the sheath its power. They have to be of an almost equal evil. I think some kind of decrepit hide and a drake spine, along with a bar of enchanted platinum, should prove enough to make this item.
         - Condition: `($text=~/decrepit sheath/i && $faction >= 28)`
-37. paineel/"Duriek Bloodpool", hand "Ghoulbane" (5403) + "Blade of Abrogation" (5430) + "Soul Leech, Dark Sword of Blood" (11609) + "Decrepit Sheath" (14366). Gives "Corrupted Ghoulbane" (14367).
-38. tox/"Knarthenne Skurl", say "Heart Of An Innocent". Gives "Soulcase" (17051).
-39. Loot "Cell Key" (14373) from "A Chest" in `hole`.
-40. Hand "Cell Key" (14373) to hole/"Caradon". Spawns "Kyrenna" (39155). Loot "Heart of Kyrenna" (14380) from "Kyrenna".
-41. Combine in "Soulcase" (17051): "Heart of Kyrenna" (14380). Produces "Heart of the Innocent" (14368). The combine does not fail.
-42. Hand "Cell Key" (14373) to hole/"Caradon". Spawns "Kyrenna" (39155). Loot "Blood of Kyrenna" (14381) from "Kyrenna".
-43. kerraridge/"Marl Kastane", hand "Blood of Kyrenna" (14381). Gives "Dark Shroud" (14377).
-44. Hand "Dark Shroud" (14377) to hole/"Ghost Of Glohnor". Spawns "Mummy of Glohnor" (39165). Loot "Head of Glohnor" (14378) from "Mummy of Glohnor".
-45. paineel/"Gerot Kastane", hand "Head of Glohnor" (14378). Gives "Head of the Valiant" (14369).
-46. Hand "Dark Shroud" (14377) to hole/"Ghost Of Glohnor". Spawns "Mummy of Glohnor" (39165). Loot "Glohnor wrappings" (14379) from "Mummy of Glohnor".
-47. kerraridge/"Marl Kastane", hand "Glohnor wrappings" (14379). Gives "Will of Innoruuk" (14370).
-48. citymist/"Lhranc", hand "Corrupted Ghoulbane" (14367) + "Heart of the Innocent" (14368) + "Head of the Valiant" (14369) + "Will of Innoruuk" (14370). Gives "Lhranc's Token" (14384).
+38. paineel/"Duriek Bloodpool", hand "Ghoulbane" (5403) + "Blade of Abrogation" (5430) + "Soul Leech, Dark Sword of Blood" (11609) + "Decrepit Sheath" (14366). Gives "Corrupted Ghoulbane" (14367).
+39. tox/"Knarthenne Skurl", say "Heart Of An Innocent". Gives "Soulcase" (17051).
+40. Loot "Cell Key" (14373) from "A Chest" in `hole`.
+41. Hand "Cell Key" (14373) to hole/"Caradon". Spawns "Kyrenna" (39155). Loot "Heart of Kyrenna" (14380) from "Kyrenna".
+42. Combine in "Soulcase" (17051): "Heart of Kyrenna" (14380). Produces "Heart of the Innocent" (14368). The combine does not fail.
+43. Hand "Cell Key" (14373) to hole/"Caradon". Spawns "Kyrenna" (39155). Loot "Blood of Kyrenna" (14381) from "Kyrenna".
+44. kerraridge/"Marl Kastane", hand "Blood of Kyrenna" (14381). Gives "Dark Shroud" (14377).
+45. Hand "Dark Shroud" (14377) to hole/"Ghost Of Glohnor". Spawns "Mummy of Glohnor" (39165). Loot "Head of Glohnor" (14378) from "Mummy of Glohnor".
+46. paineel/"Gerot Kastane", hand "Head of Glohnor" (14378). Gives "Head of the Valiant" (14369).
+47. Hand "Dark Shroud" (14377) to hole/"Ghost Of Glohnor". Spawns "Mummy of Glohnor" (39165). Loot "Glohnor wrappings" (14379) from "Mummy of Glohnor".
+48. kerraridge/"Marl Kastane", hand "Glohnor wrappings" (14379). Gives "Will of Innoruuk" (14370).
+49. citymist/"Lhranc", hand "Corrupted Ghoulbane" (14367) + "Heart of the Innocent" (14368) + "Head of the Valiant" (14369) + "Will of Innoruuk" (14370). Gives "Lhranc's Token" (14384).
     - Dialogue with citymist/"Lhranc":
       - Player: "Hail"
         - NPC say: Ahh, finally! He has sent you. No time to waste now, you must help me lift the curse at once!
@@ -126,7 +127,7 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
         - NPC say: I require only four things of you, dark one, and one of them you hold now. Bring me the heart of an innocent, the head of the valiant, and the will of Innoruuk. With these, my curse shall be lifted at last and I will craft a weapon that will cast a shadow over all of Norrath.
         - Condition: `(e.other:GetModCharacterFactionLevel(e.self:GetPrimaryFaction()) > 42)`
         - Condition: `(e.message:findi("cure"))`
-49. citymist/"Marl Kastane", hand "Lhranc's Token" (14384). Gives "Innoruuk's Curse" (14383).
+50. citymist/"Marl Kastane", hand "Lhranc's Token" (14384). Gives "Innoruuk's Curse" (14383).
 
 ## Epic 1.5
 
@@ -192,27 +193,27 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Innoruuk's Dark Blessing" (48136)
 
-1. poknowledge/"Gilina Yilzior", say "Vision". Sets `shadowknight_epic` to `9`.
-2. Loot "Kilidna's Head" (19098) from "Kilidna" in `citymist`.
-3. poknowledge/"Gilina Yilzior", hand "Kilidna's Head" (19098). Sets `shadowknight_epic` to `10`.
-4. Loot "Lhranc's Corroded Bracer" (24612) from "A Mortiferous Golem" in `charasis`.
-5. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
-6. Loot "Lhranc's Pendant" (23489) from "A Black Reaver".
-7. Alternative: Loot "Lhranc's Pendant" (23489) from "A Black Reaver" (NPC 90005) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
-8. Alternative: Loot "Lhranc's Pendant" (23489) from "A Black Reaver" (NPC 90192) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
-9. Loot "Lhranc's Ring" (24632) from "Risen Corporal" (NPC 20107) in `kithicor`. Drop cache: 19.56% chance per kill.
-10. poknowledge/"Gilina Yilzior", hand "Lhranc's Pendant" (23489) + "Lhranc's Corroded Bracer" (24612) + "Lhranc's Ring" (24632). Requires `shadowknight_epic` ==10. Gives "Lhranc's Earthly Anchor" (24584).
-11. Say "Check Lorb" to anguish/"Zone Status".
-12. Spawns "Orb of Discordant Energy" (317087).
-13. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-14. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
-15. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-16. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-17. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-18. dranik/"Filligno The Slayer", hand "Lhranc's Earthly Anchor" (24584) + "Globe of Discordant Energy" (47100). Sets `shadowknight_epic` to `11`.
-19. Spawns "Lhranc" (336250) in `dranik` on event_signal.
-20. Loot "Essence of the Shadowknight" (55903) from "Lhranc".
-21. dulak/"Ritald", say "Hail". Sets `shadowknight_pre` to `1`.
+1. dulak/"Ritald", say "Hail". Sets `shadowknight_pre` to `1`.
+2. poknowledge/"Gilina Yilzior", say "Vision". Sets `shadowknight_epic` to `9`.
+3. Loot "Kilidna's Head" (19098) from "Kilidna" in `citymist`.
+4. poknowledge/"Gilina Yilzior", hand "Kilidna's Head" (19098). Sets `shadowknight_epic` to `10`.
+5. Loot "Lhranc's Corroded Bracer" (24612) from "A Mortiferous Golem" in `charasis`.
+6. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
+7. Loot "Lhranc's Pendant" (23489) from "A Black Reaver".
+8. Alternative: Loot "Lhranc's Pendant" (23489) from "A Black Reaver" (NPC 90005) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
+9. Alternative: Loot "Lhranc's Pendant" (23489) from "A Black Reaver" (NPC 90192) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
+10. Loot "Lhranc's Ring" (24632) from "Risen Corporal" (NPC 20107) in `kithicor`. Drop cache: 19.56% chance per kill.
+11. poknowledge/"Gilina Yilzior", hand "Lhranc's Pendant" (23489) + "Lhranc's Corroded Bracer" (24612) + "Lhranc's Ring" (24632). Requires `shadowknight_epic` ==10. Gives "Lhranc's Earthly Anchor" (24584).
+12. Say "Check Lorb" to anguish/"Zone Status".
+13. Spawns "Orb of Discordant Energy" (317087).
+14. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+15. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+16. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+17. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+18. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+19. dranik/"Filligno The Slayer", hand "Lhranc's Earthly Anchor" (24584) + "Globe of Discordant Energy" (47100). Sets `shadowknight_epic` to `11`.
+20. dranik/"Filligno The Slayer", say "Ready". Triggers `dranik/a minion of lhranc#kill:336251`.
+21. Loot "Essence of the Shadowknight" (55903) from "Lhranc".
 22. Loot "Ancient Flamberge of Hatred" (55902) from "Captain Varns" in `dulak`.
 23. Loot "Essence of Hate" (21870) from "Mistress of Malevolence" in `hateplaneb`.
 24. Loot "Essence of Hate" (21870) from "Overlord R'Gahbsa" in `hateplaneb`.
@@ -535,8 +536,8 @@ Alternative or repeat transition to `shadowknight_epic` = `1` (not an additional
     - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
     - Dialogue with dranik/"Filligno The Slayer":
       - Player: "Ready" (link: external event mention)
         - Prompted by `event_trade`:
@@ -553,7 +554,7 @@ Alternative or repeat transition to `shadowknight_epic` = `1` (not an additional
     - Requires `shadowknight_epic` ==11.
     - Hand in x1: "Essence of the Shadowknight" (55903).
     - Hand in x1: "Innoruuk's Voice" (50003).
-    - Spawns "Lhranc" (336250) in `dranik` on event_signal.
+    - dranik/"Filligno The Slayer", say "Ready". Triggers `dranik/a minion of lhranc#kill:336251`.
     - Loot "Essence of the Shadowknight" (55903) from "Lhranc".
     - Prerequisite: "Innoruuk's Voice" (50003). See section 0.
     - Gives "Innoruuk's Dark Blessing" (48136).

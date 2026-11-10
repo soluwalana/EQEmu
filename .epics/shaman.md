@@ -6,154 +6,157 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Spear of Fate" (10651)
 
-1. Kill fearplane/"Dread". Spawns "Iksar broodling" (72105).
-2. Loot "Child's Tear" (1673) from "Iksar broodling".
-3. Alternative: Loot "Child's Tear" (1673) from "Iksar broodling" (NPC 72105) in `fearplane`; trigger: fearplane/"Fright", on event_death_complete.
-4. Alternative: Loot "Child's Tear" (1673) from "Iksar broodling" (NPC 72105) in `fearplane`; trigger: fearplane/"Terror", on event_death_complete.
-5. Hand "Child's Tear" (1673) to citymist/"Lord Rak-Ashiir". Spawns "Lord Rak'Ashiir" (90183). Loot "Iksar Scale" (1674) from "Lord Rak'Ashiir".
-6. emeraldjungle/"Spirit Sentinel", hand "Iksar Scale" (1674). Gives "Spear of Fate" (10651).
+1. **Unresolved introduction:** no connected introductory hail in the graph.
+2. Kill fearplane/"Dread". Spawns "Iksar broodling" (72105).
+3. Loot "Child's Tear" (1673) from "Iksar broodling".
+4. Alternative: Loot "Child's Tear" (1673) from "Iksar broodling" (NPC 72105) in `fearplane`; trigger: fearplane/"Fright", on event_death_complete.
+5. Alternative: Loot "Child's Tear" (1673) from "Iksar broodling" (NPC 72105) in `fearplane`; trigger: fearplane/"Terror", on event_death_complete.
+6. Hand "Child's Tear" (1673) to citymist/"Lord Rak-Ashiir". Spawns "Lord Rak'Ashiir" (90183). Loot "Iksar Scale" (1674) from "Lord Rak'Ashiir".
+7. emeraldjungle/"Spirit Sentinel", hand "Iksar Scale" (1674). Gives "Spear of Fate" (10651).
 
 ## Epic 1.5
 
 ### "Crafted Talisman of Fates" (57400)
 
-1. Loot "Crystallized Blood" (57988) from "A Crystalline Arachnae" in `povalor`.
-2. southro/"Bratoq Jiplup", hand platinum:2000. Gives "Clouded Glass Vial" (57991).
-3. Loot "Stonemite Antennae" (57990) from "A Shore Stonemite" (NPC 280005) in `natimbi`. Drop cache: 93.14% chance per kill.
-4. Loot "Mellian Leaf" (57989) from "A Malarian Crysalis" in `podisease`.
-5. lakeofillomen/"Spirit Sentinel", hand "Crystallized Blood" (57988) + "Mellian Leaf" (57989) + "Stonemite Antennae" (57990) + "Clouded Glass Vial" (57991). Sets `shaman_pre` to `3`.
-6. Kill fearplane/"Dread". Spawns "Iksar broodling" (72105).
-7. Loot "Child's Tear" (1673) from "Iksar broodling".
-8. Alternative: Loot "Child's Tear" (1673) from "Iksar broodling" (NPC 72105) in `fearplane`; trigger: fearplane/"Fright", on event_death_complete.
-9. Alternative: Loot "Child's Tear" (1673) from "Iksar broodling" (NPC 72105) in `fearplane`; trigger: fearplane/"Terror", on event_death_complete.
-10. Hand "Child's Tear" (1673) to citymist/"Lord Rak-Ashiir". Spawns "Lord Rak'Ashiir" (90183). Loot "Iksar Scale" (1674) from "Lord Rak'Ashiir".
-11. emeraldjungle/"Spirit Sentinel", hand "Iksar Scale" (1674). Gives "Spear of Fate" (10651).
-12. freeportwest/"Elder Spirit Of Enlightenment", say "Shaman". Sets `shaman_epic` to `1`.
-13. shadeweaver/"Wunshi Kashra", hand platinum:1000. Gives "Thatched Medicine Bag" (57704).
-14. Loot "Bleak Fungus" (57620) from "Shuddering Fungus" in `fungusgrove`.
-15. Say "Up To It" to lakerathe/"Kimm Mcshannel".
-16. Spawns "Ancient Megalodon" (51160).
-17. Loot "Lustrous Seaweed" (52926) from "Ancient Megalodon".
-18. lakerathe/"Kimm Mcshannel", hand "Lustrous Seaweed" (52926). Gives "Twine-Wrapped Lustrous Seaweed" (57600).
-19. Combine in "Thatched Medicine Bag" (57704): "Bleak Fungus" (57620), "Twine-Wrapped Lustrous Seaweed" (57600). Produces "Shadowed Pulp" (57550). Requires Alchemy 100. Trivial at 175. The combine does not fail.
-20. Ground spawn of "Twinkling Shrub" (57080) in `twilight`.
-21. twilight/"Tikl Huk", hand "Twinkling Shrub" (57080). Gives "Tied Twinkling Shrubs" (52920).
-22. Say "Elder Spirit Sent Me" to cobaltscar/"Yoppa Greenthumb".
-23. Spawns "Gnashing Killer Shark" (117091).
-24. Loot "Brittle Burned Bark" (57086) from "Gnashing Killer Shark".
-25. Combine in "Thatched Medicine Bag" (57704): "Tied Twinkling Shrubs" (52920), "Brittle Burned Bark" (57086). Produces "Brittle Twigs" (57369). Requires Alchemy 100. Trivial at 175. The combine does not fail.
-26. warrens/"Wilslik Gissu", hand "Brittle Twigs" (57369) + "Shadowed Pulp" (57550). Requires `shaman_epic` ==1. Gives "Distilled Potion of Endurance" (52921).
-27. freeportwest/"Elder Spirit Of Enlightenment", hand "Distilled Potion of Endurance" (52921). Sets `shaman_epic` to `2`.
-28. freeportwest/"Elder Spirit Of Enlightenment", say "Rare Gift". Requires `shaman_epic` ==2. Gives "Potion of Sustenance" (57081).
-29. airplane/"Eternal Spirit", hand "Potion of Sustenance" (57081). Gives "Blessed Talisman of Wisdom" (57083).
-30. Loot "Blessed Talisman of Patience" (57084) from "Punisher Veshtaq".
-31. freeportwest/"Elder Spirit Of Enlightenment", hand "Blessed Talisman of Wisdom" (57083) + "Blessed Talisman of Patience" (57084). Sets `shaman_epic` to `3`.
-32. Loot "Amulet of the Spiritist" (57087) from "Netherbian Swarmfiend" in `umbral`.
-33. shadeweaver/"Wunshi Kashra", say "Stolen". Sets `shaman_epic_nadox` to `1`.
-34. Spawns "Spiritseeker Nadox" (227319) in `nadox` on enter.
-35. Loot "Ring of the Undead Spiritcharmer" (57085) from "Spiritseeker Nadox".
-36. shadeweaver/"Wunshi Kashra", hand "Ring of the Undead Spiritcharmer" (57085) + "Amulet of the Spiritist" (57087). Sets `shaman_epic` to `4`.
-37. freeportwest/"Elder Spirit Of Enlightenment", say "Business With Wunshi Is Finished". Requires `shaman_epic` ==4. Gives "Gemmed Bangle of Enlightenment" (57088).
-38. lakerathe/"Kimm Mcshannel", hand "Gemmed Bangle of Enlightenment" (57088). Sets `shaman_epic` to `5`.
-39. lakerathe/"Kimm Mcshannel", say "Break Down". Requires `shaman_epic` ==3. Requires `shaman_epic` set. Gives "Heyokah Medicine Bag" (52922).
-40. Loot "Revenant Tooth" (57500) from "A Sun Revenant" in `thegrey`.
-41. Loot "Perfect Marked Ukun Skin" (57701) from "Fang" in `draniksscar`.
-42. Loot "Perfect Marked Ukun Skin" (57701) from "Ukun Gutfeaster" in `draniksscar`.
-43. Loot "Perfect Marked Ukun Skin" (57701) from "Ukun Slavehunter" in `draniksscar`.
-44. Loot "Corrosive Goo" (57100) from "A Pulsating Bile" in `charasis`.
-45. Loot "Corruption Powder" (57520) from "Elite Corrupted Knight" in `codecay`.
-46. Combine in "Heyokah Medicine Bag" (52922): "Revenant Tooth" (57500), "Perfect Marked Ukun Skin" (57701), "Corrosive Goo" (57100), "Corruption Powder" (57520). Produces "Shaman's Precious Diffusing Agent" (57560). Requires Alchemy 100. The combine does not fail.
-47. lakerathe/"Kimm Mcshannel", hand "Shaman's Precious Diffusing Agent" (57560). Gives "Runed Purse of the McShannels" (57614).
-48. freeportwest/"Elder Spirit Of Enlightenment", hand "Runed Purse of the McShannels" (57614). Sets `shaman_epic` to `6`.
-49. freeportwest/"Elder Spirit Of Enlightenment", say "Acknowledge". Requires `shaman_epic` ==6. Gives "Crafted Talisman of Fates" (57400).
+1. freeportwest/"Elder Spirit Of Enlightenment", say "Hail". eyes you with an ageless wisdom. Ah, your spirit shines brightly. Should I know you? Should you choose to continue your journey, tell me that you are [prepared to carry on] and save the spirits. It appears you are not yet ready for the great tasks that I require to be done. There are others lesser than me that can guide you and prepare you to walk a greater path should you choose. You should seek them out. You can perhaps seek knowledge from your elders and peers.
+2. Loot "Crystallized Blood" (57988) from "A Crystalline Arachnae" in `povalor`.
+3. southro/"Bratoq Jiplup", hand platinum:2000. Gives "Clouded Glass Vial" (57991).
+4. Loot "Stonemite Antennae" (57990) from "A Shore Stonemite" (NPC 280005) in `natimbi`. Drop cache: 93.14% chance per kill.
+5. Loot "Mellian Leaf" (57989) from "A Malarian Crysalis" in `podisease`.
+6. lakeofillomen/"Spirit Sentinel", hand "Crystallized Blood" (57988) + "Mellian Leaf" (57989) + "Stonemite Antennae" (57990) + "Clouded Glass Vial" (57991). Sets `shaman_pre` to `3`.
+7. Kill fearplane/"Dread". Spawns "Iksar broodling" (72105).
+8. Loot "Child's Tear" (1673) from "Iksar broodling".
+9. Alternative: Loot "Child's Tear" (1673) from "Iksar broodling" (NPC 72105) in `fearplane`; trigger: fearplane/"Fright", on event_death_complete.
+10. Alternative: Loot "Child's Tear" (1673) from "Iksar broodling" (NPC 72105) in `fearplane`; trigger: fearplane/"Terror", on event_death_complete.
+11. Hand "Child's Tear" (1673) to citymist/"Lord Rak-Ashiir". Spawns "Lord Rak'Ashiir" (90183). Loot "Iksar Scale" (1674) from "Lord Rak'Ashiir".
+12. emeraldjungle/"Spirit Sentinel", hand "Iksar Scale" (1674). Gives "Spear of Fate" (10651).
+13. freeportwest/"Elder Spirit Of Enlightenment", say "Shaman". Sets `shaman_epic` to `1`.
+14. shadeweaver/"Wunshi Kashra", hand platinum:1000. Gives "Thatched Medicine Bag" (57704).
+15. Loot "Bleak Fungus" (57620) from "Shuddering Fungus" in `fungusgrove`.
+16. Say "Up To It" to lakerathe/"Kimm Mcshannel".
+17. Spawns "Ancient Megalodon" (51160).
+18. Loot "Lustrous Seaweed" (52926) from "Ancient Megalodon".
+19. lakerathe/"Kimm Mcshannel", hand "Lustrous Seaweed" (52926). Gives "Twine-Wrapped Lustrous Seaweed" (57600).
+20. Combine in "Thatched Medicine Bag" (57704): "Bleak Fungus" (57620), "Twine-Wrapped Lustrous Seaweed" (57600). Produces "Shadowed Pulp" (57550). Requires Alchemy 100. Trivial at 175. The combine does not fail.
+21. Ground spawn of "Twinkling Shrub" (57080) in `twilight`.
+22. twilight/"Tikl Huk", hand "Twinkling Shrub" (57080). Gives "Tied Twinkling Shrubs" (52920).
+23. Say "Elder Spirit Sent Me" to cobaltscar/"Yoppa Greenthumb".
+24. Spawns "Gnashing Killer Shark" (117091).
+25. Loot "Brittle Burned Bark" (57086) from "Gnashing Killer Shark".
+26. Combine in "Thatched Medicine Bag" (57704): "Tied Twinkling Shrubs" (52920), "Brittle Burned Bark" (57086). Produces "Brittle Twigs" (57369). Requires Alchemy 100. Trivial at 175. The combine does not fail.
+27. warrens/"Wilslik Gissu", hand "Brittle Twigs" (57369) + "Shadowed Pulp" (57550). Requires `shaman_epic` ==1. Gives "Distilled Potion of Endurance" (52921).
+28. freeportwest/"Elder Spirit Of Enlightenment", hand "Distilled Potion of Endurance" (52921). Sets `shaman_epic` to `2`.
+29. freeportwest/"Elder Spirit Of Enlightenment", say "Rare Gift". Requires `shaman_epic` ==2. Gives "Potion of Sustenance" (57081).
+30. airplane/"Eternal Spirit", hand "Potion of Sustenance" (57081). Gives "Blessed Talisman of Wisdom" (57083).
+31. Loot "Blessed Talisman of Patience" (57084) from "Punisher Veshtaq".
+32. freeportwest/"Elder Spirit Of Enlightenment", hand "Blessed Talisman of Wisdom" (57083) + "Blessed Talisman of Patience" (57084). Sets `shaman_epic` to `3`.
+33. Loot "Amulet of the Spiritist" (57087) from "Netherbian Swarmfiend" in `umbral`.
+34. shadeweaver/"Wunshi Kashra", say "Stolen". Sets `shaman_epic_nadox` to `1`.
+35. Spawns "Spiritseeker Nadox" (227319) in `nadox` on enter.
+36. Loot "Ring of the Undead Spiritcharmer" (57085) from "Spiritseeker Nadox".
+37. shadeweaver/"Wunshi Kashra", hand "Ring of the Undead Spiritcharmer" (57085) + "Amulet of the Spiritist" (57087). Sets `shaman_epic` to `4`.
+38. freeportwest/"Elder Spirit Of Enlightenment", say "Business With Wunshi Is Finished". Requires `shaman_epic` ==4. Gives "Gemmed Bangle of Enlightenment" (57088).
+39. lakerathe/"Kimm Mcshannel", hand "Gemmed Bangle of Enlightenment" (57088). Sets `shaman_epic` to `5`.
+40. lakerathe/"Kimm Mcshannel", say "Break Down". Requires `shaman_epic` ==3. Requires `shaman_epic` set. Gives "Heyokah Medicine Bag" (52922).
+41. Loot "Revenant Tooth" (57500) from "A Sun Revenant" in `thegrey`.
+42. Loot "Perfect Marked Ukun Skin" (57701) from "Fang" in `draniksscar`.
+43. Loot "Perfect Marked Ukun Skin" (57701) from "Ukun Gutfeaster" in `draniksscar`.
+44. Loot "Perfect Marked Ukun Skin" (57701) from "Ukun Slavehunter" in `draniksscar`.
+45. Loot "Corrosive Goo" (57100) from "A Pulsating Bile" in `charasis`.
+46. Loot "Corruption Powder" (57520) from "Elite Corrupted Knight" in `codecay`.
+47. Combine in "Heyokah Medicine Bag" (52922): "Revenant Tooth" (57500), "Perfect Marked Ukun Skin" (57701), "Corrosive Goo" (57100), "Corruption Powder" (57520). Produces "Shaman's Precious Diffusing Agent" (57560). Requires Alchemy 100. The combine does not fail.
+48. lakerathe/"Kimm Mcshannel", hand "Shaman's Precious Diffusing Agent" (57560). Gives "Runed Purse of the McShannels" (57614).
+49. freeportwest/"Elder Spirit Of Enlightenment", hand "Runed Purse of the McShannels" (57614). Sets `shaman_epic` to `6`.
+50. freeportwest/"Elder Spirit Of Enlightenment", say "Acknowledge". Requires `shaman_epic` ==6. Gives "Crafted Talisman of Fates" (57400).
 
 ## Epic 2.0
 
 ### "Blessed Spiritstaff of the Heyokah" (57405)
 
-1. freeportwest/"Elder Spirit Of Enlightenment", say "Prepared To Carry On". Sets `shaman_epic` to `8`.
-2. fungusgrove/"Lupot Nukla", say "Taken By Force". Sets `shaman_epic` to `9`.
-3. Say "Hail" to kodtaz/"Undari Perunea".
-4. Spawns "Ikaav Spiritstealer" (293233).
-5. Loot "Necklace of Perseverance" (57401) from "Ikaav Spiritstealer".
-6. fungusgrove/"Lupot Nukla", hand "Necklace of Perseverance" (57401). Sets `shaman_epic` to `10`.
-7. Spawns "Darkened Chanting Woodspirit" (210250) in `postorms` on enter.
-8. Loot "Piece of Moaning Timber" (57403) from "Darkened Chanting Woodspirit".
-9. fungusgrove/"Lupot Nukla", hand "Piece of Moaning Timber" (57403). Requires `shaman_epic` ==10. Gives "Impervious Medicine Bag" (57551).
-10. freeportwest/"Elder Spirit Of Enlightenment", hand "Impervious Medicine Bag" (57551). Sets `shaman_epic` to `11`.
-11. freeportwest/"Elder Spirit Of Enlightenment", say "Seek". Requires `shaman_epic` ==11. Gives "Pouch of Spirit Dust" (57710).
-12. Spawns "A Phase Spider" (123190) in `necropolis` on event_combat.
-13. Loot "Spirit-Touched Phased Spider Thorax" (57562) from "A Phase Spider".
-14. Spawns "Lightning Warrior Spiritseeker" (316073) in `provinggrounds` on enter.
-15. Loot "Glowing Trace of Might" (57250) from "Lightning Warrior Spiritseeker".
-16. Say "Ready" to causeway/"Kupiop Iku".
-17. Spawns "epic version of Murkglider School Leader" (303116).
-18. Loot "Slight Trace of a Spirit" (57800) from "epic version of Murkglider School Leader".
-19. Loot "Reviving Potion of Might" (57315) from "Bloated Girplan" in `dranik`.
-20. Combine in "Pouch of Spirit Dust" (57710): "Spirit-Touched Phased Spider Thorax" (57562), "Glowing Trace of Might" (57250), "Slight Trace of a Spirit" (57800), "Reviving Potion of Might" (57315). Produces "Glowing Spirit Charm of Might" (57987). The combine does not fail.
-21. freeportwest/"Elder Spirit Of Enlightenment", hand "Glowing Spirit Charm of Might" (57987). Sets `shaman_epic` to `12`.
-22. Say "Fooled" to wallofslaughter/"Hudar Trittan".
-23. Spawns "Discordling Spiritcaller" (300091).
-24. Loot "Spiritcaller Beads" (57404) from "Discordling Spiritcaller".
-25. freeportwest/"Elder Spirit Of Enlightenment", hand "Spiritcaller Beads" (57404). Sets `shaman_epic` to `13`.
-26. Say "Check Lorb" to anguish/"Zone Status".
-27. Spawns "Orb of Discordant Energy" (317087).
-28. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-29. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
-30. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-31. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-32. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-33. freeportwest/"Elder Spirit Of Enlightenment", hand "Globe of Discordant Energy" (47100). Sets `shaman_epic` to `14`.
-34. Loot "Crystallized Blood" (57988) from "A Crystalline Arachnae" in `povalor`.
-35. southro/"Bratoq Jiplup", hand platinum:2000. Gives "Clouded Glass Vial" (57991).
-36. Loot "Stonemite Antennae" (57990) from "A Shore Stonemite" (NPC 280005) in `natimbi`. Drop cache: 93.14% chance per kill.
-37. Loot "Mellian Leaf" (57989) from "A Malarian Crysalis" in `podisease`.
-38. lakeofillomen/"Spirit Sentinel", hand "Crystallized Blood" (57988) + "Mellian Leaf" (57989) + "Stonemite Antennae" (57990) + "Clouded Glass Vial" (57991). Sets `shaman_pre` to `3`.
-39. Kill fearplane/"Dread". Spawns "Iksar broodling" (72105).
-40. Loot "Child's Tear" (1673) from "Iksar broodling".
-41. Alternative: Loot "Child's Tear" (1673) from "Iksar broodling" (NPC 72105) in `fearplane`; trigger: fearplane/"Fright", on event_death_complete.
-42. Alternative: Loot "Child's Tear" (1673) from "Iksar broodling" (NPC 72105) in `fearplane`; trigger: fearplane/"Terror", on event_death_complete.
-43. Hand "Child's Tear" (1673) to citymist/"Lord Rak-Ashiir". Spawns "Lord Rak'Ashiir" (90183). Loot "Iksar Scale" (1674) from "Lord Rak'Ashiir".
-44. emeraldjungle/"Spirit Sentinel", hand "Iksar Scale" (1674). Gives "Spear of Fate" (10651).
-45. freeportwest/"Elder Spirit Of Enlightenment", say "Shaman". Sets `shaman_epic` to `1`.
-46. shadeweaver/"Wunshi Kashra", hand platinum:1000. Gives "Thatched Medicine Bag" (57704).
-47. Loot "Bleak Fungus" (57620) from "Shuddering Fungus" in `fungusgrove`.
-48. Say "Up To It" to lakerathe/"Kimm Mcshannel".
-49. Spawns "Ancient Megalodon" (51160).
-50. Loot "Lustrous Seaweed" (52926) from "Ancient Megalodon".
-51. lakerathe/"Kimm Mcshannel", hand "Lustrous Seaweed" (52926). Gives "Twine-Wrapped Lustrous Seaweed" (57600).
-52. Combine in "Thatched Medicine Bag" (57704): "Bleak Fungus" (57620), "Twine-Wrapped Lustrous Seaweed" (57600). Produces "Shadowed Pulp" (57550). Requires Alchemy 100. Trivial at 175. The combine does not fail.
-53. Ground spawn of "Twinkling Shrub" (57080) in `twilight`.
-54. twilight/"Tikl Huk", hand "Twinkling Shrub" (57080). Gives "Tied Twinkling Shrubs" (52920).
-55. Say "Elder Spirit Sent Me" to cobaltscar/"Yoppa Greenthumb".
-56. Spawns "Gnashing Killer Shark" (117091).
-57. Loot "Brittle Burned Bark" (57086) from "Gnashing Killer Shark".
-58. Combine in "Thatched Medicine Bag" (57704): "Tied Twinkling Shrubs" (52920), "Brittle Burned Bark" (57086). Produces "Brittle Twigs" (57369). Requires Alchemy 100. Trivial at 175. The combine does not fail.
-59. warrens/"Wilslik Gissu", hand "Brittle Twigs" (57369) + "Shadowed Pulp" (57550). Requires `shaman_epic` ==1. Gives "Distilled Potion of Endurance" (52921).
-60. freeportwest/"Elder Spirit Of Enlightenment", hand "Distilled Potion of Endurance" (52921). Sets `shaman_epic` to `2`.
-61. freeportwest/"Elder Spirit Of Enlightenment", say "Rare Gift". Requires `shaman_epic` ==2. Gives "Potion of Sustenance" (57081).
-62. airplane/"Eternal Spirit", hand "Potion of Sustenance" (57081). Gives "Blessed Talisman of Wisdom" (57083).
-63. Loot "Blessed Talisman of Patience" (57084) from "Punisher Veshtaq".
-64. freeportwest/"Elder Spirit Of Enlightenment", hand "Blessed Talisman of Wisdom" (57083) + "Blessed Talisman of Patience" (57084). Sets `shaman_epic` to `3`.
-65. Loot "Amulet of the Spiritist" (57087) from "Netherbian Swarmfiend" in `umbral`.
-66. shadeweaver/"Wunshi Kashra", say "Stolen". Sets `shaman_epic_nadox` to `1`.
-67. Spawns "Spiritseeker Nadox" (227319) in `nadox` on enter.
-68. Loot "Ring of the Undead Spiritcharmer" (57085) from "Spiritseeker Nadox".
-69. shadeweaver/"Wunshi Kashra", hand "Ring of the Undead Spiritcharmer" (57085) + "Amulet of the Spiritist" (57087). Sets `shaman_epic` to `4`.
-70. freeportwest/"Elder Spirit Of Enlightenment", say "Business With Wunshi Is Finished". Requires `shaman_epic` ==4. Gives "Gemmed Bangle of Enlightenment" (57088).
-71. lakerathe/"Kimm Mcshannel", hand "Gemmed Bangle of Enlightenment" (57088). Sets `shaman_epic` to `5`.
-72. lakerathe/"Kimm Mcshannel", say "Break Down". Requires `shaman_epic` ==3. Requires `shaman_epic` set. Gives "Heyokah Medicine Bag" (52922).
-73. Loot "Revenant Tooth" (57500) from "A Sun Revenant" in `thegrey`.
-74. Loot "Perfect Marked Ukun Skin" (57701) from "Fang" in `draniksscar`.
-75. Loot "Perfect Marked Ukun Skin" (57701) from "Ukun Gutfeaster" in `draniksscar`.
-76. Loot "Perfect Marked Ukun Skin" (57701) from "Ukun Slavehunter" in `draniksscar`.
-77. Loot "Corrosive Goo" (57100) from "A Pulsating Bile" in `charasis`.
-78. Loot "Corruption Powder" (57520) from "Elite Corrupted Knight" in `codecay`.
-79. Combine in "Heyokah Medicine Bag" (52922): "Revenant Tooth" (57500), "Perfect Marked Ukun Skin" (57701), "Corrosive Goo" (57100), "Corruption Powder" (57520). Produces "Shaman's Precious Diffusing Agent" (57560). Requires Alchemy 100. The combine does not fail.
-80. lakerathe/"Kimm Mcshannel", hand "Shaman's Precious Diffusing Agent" (57560). Gives "Runed Purse of the McShannels" (57614).
-81. freeportwest/"Elder Spirit Of Enlightenment", hand "Runed Purse of the McShannels" (57614). Sets `shaman_epic` to `6`.
-82. freeportwest/"Elder Spirit Of Enlightenment", say "Acknowledge". Requires `shaman_epic` ==6. Gives "Crafted Talisman of Fates" (57400).
-83. freeportwest/"Elder Spirit Of Enlightenment", hand "Crafted Talisman of Fates" (57400). Requires `shaman_epic` ==14. Gives "Blessed Spiritstaff of the Heyokah" (57405).
+1. freeportwest/"Elder Spirit Of Enlightenment", say "Hail". eyes you with an ageless wisdom. Ah, your spirit shines brightly. Should I know you? Should you choose to continue your journey, tell me that you are [prepared to carry on] and save the spirits. It appears you are not yet ready for the great tasks that I require to be done. There are others lesser than me that can guide you and prepare you to walk a greater path should you choose. You should seek them out. You can perhaps seek knowledge from your elders and peers.
+2. freeportwest/"Elder Spirit Of Enlightenment", say "Prepared To Carry On". Sets `shaman_epic` to `8`.
+3. fungusgrove/"Lupot Nukla", say "Taken By Force". Sets `shaman_epic` to `9`.
+4. Say "Hail" to kodtaz/"Undari Perunea".
+5. Spawns "Ikaav Spiritstealer" (293233).
+6. Loot "Necklace of Perseverance" (57401) from "Ikaav Spiritstealer".
+7. fungusgrove/"Lupot Nukla", hand "Necklace of Perseverance" (57401). Sets `shaman_epic` to `10`.
+8. Spawns "Darkened Chanting Woodspirit" (210250) in `postorms` on enter.
+9. Loot "Piece of Moaning Timber" (57403) from "Darkened Chanting Woodspirit".
+10. fungusgrove/"Lupot Nukla", hand "Piece of Moaning Timber" (57403). Requires `shaman_epic` ==10. Gives "Impervious Medicine Bag" (57551).
+11. freeportwest/"Elder Spirit Of Enlightenment", hand "Impervious Medicine Bag" (57551). Sets `shaman_epic` to `11`.
+12. freeportwest/"Elder Spirit Of Enlightenment", say "Seek". Requires `shaman_epic` ==11. Gives "Pouch of Spirit Dust" (57710).
+13. Spawns "A Phase Spider" (123190) in `necropolis` on event_combat.
+14. Loot "Spirit-Touched Phased Spider Thorax" (57562) from "A Phase Spider".
+15. Spawns "Lightning Warrior Spiritseeker" (316073) in `provinggrounds` on enter.
+16. Loot "Glowing Trace of Might" (57250) from "Lightning Warrior Spiritseeker".
+17. Say "Ready" to causeway/"Kupiop Iku".
+18. Spawns "epic version of Murkglider School Leader" (303116).
+19. Loot "Slight Trace of a Spirit" (57800) from "epic version of Murkglider School Leader".
+20. Loot "Reviving Potion of Might" (57315) from "Bloated Girplan" in `dranik`.
+21. Combine in "Pouch of Spirit Dust" (57710): "Spirit-Touched Phased Spider Thorax" (57562), "Glowing Trace of Might" (57250), "Slight Trace of a Spirit" (57800), "Reviving Potion of Might" (57315). Produces "Glowing Spirit Charm of Might" (57987). The combine does not fail.
+22. freeportwest/"Elder Spirit Of Enlightenment", hand "Glowing Spirit Charm of Might" (57987). Sets `shaman_epic` to `12`.
+23. Say "Fooled" to wallofslaughter/"Hudar Trittan".
+24. Spawns "Discordling Spiritcaller" (300091).
+25. Loot "Spiritcaller Beads" (57404) from "Discordling Spiritcaller".
+26. freeportwest/"Elder Spirit Of Enlightenment", hand "Spiritcaller Beads" (57404). Sets `shaman_epic` to `13`.
+27. Say "Check Lorb" to anguish/"Zone Status".
+28. Spawns "Orb of Discordant Energy" (317087).
+29. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+30. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+31. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+32. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+33. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+34. freeportwest/"Elder Spirit Of Enlightenment", hand "Globe of Discordant Energy" (47100). Sets `shaman_epic` to `14`.
+35. Loot "Crystallized Blood" (57988) from "A Crystalline Arachnae" in `povalor`.
+36. southro/"Bratoq Jiplup", hand platinum:2000. Gives "Clouded Glass Vial" (57991).
+37. Loot "Stonemite Antennae" (57990) from "A Shore Stonemite" (NPC 280005) in `natimbi`. Drop cache: 93.14% chance per kill.
+38. Loot "Mellian Leaf" (57989) from "A Malarian Crysalis" in `podisease`.
+39. lakeofillomen/"Spirit Sentinel", hand "Crystallized Blood" (57988) + "Mellian Leaf" (57989) + "Stonemite Antennae" (57990) + "Clouded Glass Vial" (57991). Sets `shaman_pre` to `3`.
+40. Kill fearplane/"Dread". Spawns "Iksar broodling" (72105).
+41. Loot "Child's Tear" (1673) from "Iksar broodling".
+42. Alternative: Loot "Child's Tear" (1673) from "Iksar broodling" (NPC 72105) in `fearplane`; trigger: fearplane/"Fright", on event_death_complete.
+43. Alternative: Loot "Child's Tear" (1673) from "Iksar broodling" (NPC 72105) in `fearplane`; trigger: fearplane/"Terror", on event_death_complete.
+44. Hand "Child's Tear" (1673) to citymist/"Lord Rak-Ashiir". Spawns "Lord Rak'Ashiir" (90183). Loot "Iksar Scale" (1674) from "Lord Rak'Ashiir".
+45. emeraldjungle/"Spirit Sentinel", hand "Iksar Scale" (1674). Gives "Spear of Fate" (10651).
+46. freeportwest/"Elder Spirit Of Enlightenment", say "Shaman". Sets `shaman_epic` to `1`.
+47. shadeweaver/"Wunshi Kashra", hand platinum:1000. Gives "Thatched Medicine Bag" (57704).
+48. Loot "Bleak Fungus" (57620) from "Shuddering Fungus" in `fungusgrove`.
+49. Say "Up To It" to lakerathe/"Kimm Mcshannel".
+50. Spawns "Ancient Megalodon" (51160).
+51. Loot "Lustrous Seaweed" (52926) from "Ancient Megalodon".
+52. lakerathe/"Kimm Mcshannel", hand "Lustrous Seaweed" (52926). Gives "Twine-Wrapped Lustrous Seaweed" (57600).
+53. Combine in "Thatched Medicine Bag" (57704): "Bleak Fungus" (57620), "Twine-Wrapped Lustrous Seaweed" (57600). Produces "Shadowed Pulp" (57550). Requires Alchemy 100. Trivial at 175. The combine does not fail.
+54. Ground spawn of "Twinkling Shrub" (57080) in `twilight`.
+55. twilight/"Tikl Huk", hand "Twinkling Shrub" (57080). Gives "Tied Twinkling Shrubs" (52920).
+56. Say "Elder Spirit Sent Me" to cobaltscar/"Yoppa Greenthumb".
+57. Spawns "Gnashing Killer Shark" (117091).
+58. Loot "Brittle Burned Bark" (57086) from "Gnashing Killer Shark".
+59. Combine in "Thatched Medicine Bag" (57704): "Tied Twinkling Shrubs" (52920), "Brittle Burned Bark" (57086). Produces "Brittle Twigs" (57369). Requires Alchemy 100. Trivial at 175. The combine does not fail.
+60. warrens/"Wilslik Gissu", hand "Brittle Twigs" (57369) + "Shadowed Pulp" (57550). Requires `shaman_epic` ==1. Gives "Distilled Potion of Endurance" (52921).
+61. freeportwest/"Elder Spirit Of Enlightenment", hand "Distilled Potion of Endurance" (52921). Sets `shaman_epic` to `2`.
+62. freeportwest/"Elder Spirit Of Enlightenment", say "Rare Gift". Requires `shaman_epic` ==2. Gives "Potion of Sustenance" (57081).
+63. airplane/"Eternal Spirit", hand "Potion of Sustenance" (57081). Gives "Blessed Talisman of Wisdom" (57083).
+64. Loot "Blessed Talisman of Patience" (57084) from "Punisher Veshtaq".
+65. freeportwest/"Elder Spirit Of Enlightenment", hand "Blessed Talisman of Wisdom" (57083) + "Blessed Talisman of Patience" (57084). Sets `shaman_epic` to `3`.
+66. Loot "Amulet of the Spiritist" (57087) from "Netherbian Swarmfiend" in `umbral`.
+67. shadeweaver/"Wunshi Kashra", say "Stolen". Sets `shaman_epic_nadox` to `1`.
+68. Spawns "Spiritseeker Nadox" (227319) in `nadox` on enter.
+69. Loot "Ring of the Undead Spiritcharmer" (57085) from "Spiritseeker Nadox".
+70. shadeweaver/"Wunshi Kashra", hand "Ring of the Undead Spiritcharmer" (57085) + "Amulet of the Spiritist" (57087). Sets `shaman_epic` to `4`.
+71. freeportwest/"Elder Spirit Of Enlightenment", say "Business With Wunshi Is Finished". Requires `shaman_epic` ==4. Gives "Gemmed Bangle of Enlightenment" (57088).
+72. lakerathe/"Kimm Mcshannel", hand "Gemmed Bangle of Enlightenment" (57088). Sets `shaman_epic` to `5`.
+73. lakerathe/"Kimm Mcshannel", say "Break Down". Requires `shaman_epic` ==3. Requires `shaman_epic` set. Gives "Heyokah Medicine Bag" (52922).
+74. Loot "Revenant Tooth" (57500) from "A Sun Revenant" in `thegrey`.
+75. Loot "Perfect Marked Ukun Skin" (57701) from "Fang" in `draniksscar`.
+76. Loot "Perfect Marked Ukun Skin" (57701) from "Ukun Gutfeaster" in `draniksscar`.
+77. Loot "Perfect Marked Ukun Skin" (57701) from "Ukun Slavehunter" in `draniksscar`.
+78. Loot "Corrosive Goo" (57100) from "A Pulsating Bile" in `charasis`.
+79. Loot "Corruption Powder" (57520) from "Elite Corrupted Knight" in `codecay`.
+80. Combine in "Heyokah Medicine Bag" (52922): "Revenant Tooth" (57500), "Perfect Marked Ukun Skin" (57701), "Corrosive Goo" (57100), "Corruption Powder" (57520). Produces "Shaman's Precious Diffusing Agent" (57560). Requires Alchemy 100. The combine does not fail.
+81. lakerathe/"Kimm Mcshannel", hand "Shaman's Precious Diffusing Agent" (57560). Gives "Runed Purse of the McShannels" (57614).
+82. freeportwest/"Elder Spirit Of Enlightenment", hand "Runed Purse of the McShannels" (57614). Sets `shaman_epic` to `6`.
+83. freeportwest/"Elder Spirit Of Enlightenment", say "Acknowledge". Requires `shaman_epic` ==6. Gives "Crafted Talisman of Fates" (57400).
+84. freeportwest/"Elder Spirit Of Enlightenment", hand "Crafted Talisman of Fates" (57400). Requires `shaman_epic` ==14. Gives "Blessed Spiritstaff of the Heyokah" (57405).
 
 ## Quest-state progression
 
@@ -926,8 +929,8 @@ Alternative or repeat transition to `shaman_epic` = `7` (not an additional requi
     - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
 
 15. freeportwest/"Elder Spirit Of Enlightenment", hand "Crafted Talisman of Fates" (57400). Sets `shaman_epic` to `15`.
     - Requires `shaman_epic` ==14.

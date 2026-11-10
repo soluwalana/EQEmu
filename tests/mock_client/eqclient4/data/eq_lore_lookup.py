@@ -77,6 +77,7 @@ STOP_WORDS = {
     "sighs",
 }
 
+
 class Chunk(TypedDict):
     id: str
     entity: str
@@ -218,12 +219,10 @@ def read_chunks(
 # Every extracted name and connection must be supported by original text.
 NAME = r"[A-Z][A-Za-z'`-]{2,}(?:\s+(?:(?:of|the)\s+)?[A-Z][A-Za-z'`-]{2,}){0,2}"
 NAMED_ROLE = re.compile(
-    rf"\b(?i:avatar|servant|follower|followers|worshippers|priests)\s+"
-    rf"(?i:of)\s+({NAME})",
+    rf"\b(?i:avatar|servant|follower|followers|worshippers|priests)\s+" rf"(?i:of)\s+({NAME})",
 )
 APPOSITION = re.compile(
-    rf"\b(?i:god|goddess|prince|lord|deity)\s+(?i:of)\s+"
-    rf"([A-Za-z -]{{3,40}}),\s*({NAME})",
+    rf"\b(?i:god|goddess|prince|lord|deity)\s+(?i:of)\s+" rf"([A-Za-z -]{{3,40}}),\s*({NAME})",
 )
 TITLE_NAME = re.compile(r"^([^:]{3,70}):\s*(.+)$")
 SENTENCES = re.compile(r"(?<=[.!?])\s+(?=[A-Z\"'])")
@@ -298,25 +297,39 @@ def discover_entities(chunks: list[Chunk]) -> list[Entity]:
     for aliases, category in zip(groups, categories):
         # The heading-first sorting determines preferred spelling.
         canonical = aliases[0]
-        patterns = [re.compile(r"(?<!\w)" + re.escape(alias) + r"(?!\w)", re.I) for alias in aliases]
+        patterns = [
+            re.compile(r"(?<!\w)" + re.escape(alias) + r"(?!\w)", re.I) for alias in aliases
+        ]
         evidence: list[tuple[int, str, str]] = []
         for chunk in chunks:
             for sentence in _sentences(chunk["text"]):
                 if any(pattern.search(sentence) for pattern in patterns):
                     # Prefer explicit definitional/domain statements and passages
                     # where this entity is the subject; never invent predicates.
-                    score = (2 if re.search(r"\b(?:god|goddess|deity|created|plane|worship|avatar|lord|prince)\b", sentence, re.I) else 0)
-                    score += (2 if sentence.casefold().startswith(canonical.casefold()) else 0)
-                    score += (5 if any(
-                        match.group(2).casefold() in {alias.casefold() for alias in aliases}
-                        for match in APPOSITION.finditer(sentence)
-                    ) else 0)
-                    score += (1 if chunk["entity"] in aliases else 0)
+                    score = (
+                        2
+                        if re.search(
+                            r"\b(?:god|goddess|deity|created|plane|worship|avatar|lord|prince)\b",
+                            sentence,
+                            re.I,
+                        )
+                        else 0
+                    )
+                    score += 2 if sentence.casefold().startswith(canonical.casefold()) else 0
+                    score += (
+                        5
+                        if any(
+                            match.group(2).casefold() in {alias.casefold() for alias in aliases}
+                            for match in APPOSITION.finditer(sentence)
+                        )
+                        else 0
+                    )
+                    score += 1 if chunk["entity"] in aliases else 0
                     evidence.append((score, chunk["id"], sentence))
-        
+
         if not evidence:
             continue
-        
+
         evidence.sort(key=lambda item: (-item[0], len(item[2])))
         selected: list[tuple[str, str]] = []
         used_passages: set[str] = set()
@@ -328,9 +341,16 @@ def discover_entities(chunks: list[Chunk]) -> list[Entity]:
                 break
         summary = f"{canonical}. " + " ".join(sentence[:350] for _, sentence in selected)
         uid = hashlib.sha1(_name_key(canonical).encode()).hexdigest()[:20]
-        entities.append(Entity(id=uid, name=canonical, category=category,
-                               aliases=aliases, summary=summary,
-                               evidence=[pid for pid, _ in selected]))
+        entities.append(
+            Entity(
+                id=uid,
+                name=canonical,
+                category=category,
+                aliases=aliases,
+                summary=summary,
+                evidence=[pid for pid, _ in selected],
+            )
+        )
     return entities
 
 
@@ -363,8 +383,7 @@ def build(
     vectors = encode_texts([c["searchable"] for c in chunks], model)
     entity_vectors = encode_texts([e["summary"] for e in entities], model)
     with sqlite3.connect(path) as con:
-        con.executescript(
-            """
+        con.executescript("""
             DROP TABLE IF EXISTS passages_fts;
             DROP TABLE IF EXISTS passages;
             DROP TABLE IF EXISTS metadata;
@@ -400,16 +419,20 @@ def build(
                 relation TEXT NOT NULL DEFAULT 'co_mentioned',
                 PRIMARY KEY (source_entity_id, target_entity_id, passage_id)
             );
-            """
-        )
+            """)
         for i, chunk in enumerate(chunks):
             embedding = vectors[i].tobytes()
             con.execute(
                 "INSERT INTO passages VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                 (
-                    chunk["id"], chunk["entity"], chunk["category"],
-                    chunk["source_title"], chunk["url"], chunk["text"],
-                    chunk["searchable"], embedding,
+                    chunk["id"],
+                    chunk["entity"],
+                    chunk["category"],
+                    chunk["source_title"],
+                    chunk["url"],
+                    chunk["text"],
+                    chunk["searchable"],
+                    embedding,
                 ),
             )
             con.execute(
@@ -419,11 +442,19 @@ def build(
         for entity, vector in zip(entities, entity_vectors):
             con.execute(
                 "INSERT INTO entities VALUES (?, ?, ?, ?, ?, ?)",
-                (entity["id"], entity["name"], entity["category"],
-                 json.dumps(entity["aliases"]), entity["summary"], vector.tobytes()),
+                (
+                    entity["id"],
+                    entity["name"],
+                    entity["category"],
+                    json.dumps(entity["aliases"]),
+                    entity["summary"],
+                    vector.tobytes(),
+                ),
             )
-            con.execute("INSERT INTO entity_fts VALUES (?, ?, ?)",
-                        (entity["id"], entity["name"], entity["summary"]))
+            con.execute(
+                "INSERT INTO entity_fts VALUES (?, ?, ?)",
+                (entity["id"], entity["name"], entity["summary"]),
+            )
             for pid in entity["evidence"]:
                 con.execute("INSERT INTO entity_evidence VALUES (?, ?)", (entity["id"], pid))
         # Corpus-derived, provenance-backed association graph. A link means
@@ -501,10 +532,9 @@ class LoreLookup:
             "SELECT * FROM entities ORDER BY rowid"
         ).fetchall()
         self.entity_by_id: dict[str, sqlite3.Row] = {r["id"]: r for r in self.entities}
-        self.entity_matrix = np.vstack([
-            np.frombuffer(row["embedding"], dtype=np.float32)
-            for row in self.entities
-        ])
+        self.entity_matrix = np.vstack(
+            [np.frombuffer(row["embedding"], dtype=np.float32) for row in self.entities]
+        )
         self.evidence: dict[str, list[str]] = defaultdict(list)
         for entity_id, passage_id in self.con.execute(
             "SELECT entity_id, passage_id FROM entity_evidence ORDER BY rowid"
@@ -515,9 +545,7 @@ class LoreLookup:
         embeddings = [r["embedding"] for r in self.records]
         if any(blob is None for blob in embeddings):
             raise ValueError("Lore index has missing embeddings; rebuild the index")
-        self.matrix = np.vstack(
-            [np.frombuffer(blob, dtype=np.float32) for blob in embeddings]
-        )
+        self.matrix = np.vstack([np.frombuffer(blob, dtype=np.float32) for blob in embeddings])
         if self.matrix.shape[1] != int(meta["dimensions"]):
             raise ValueError("Stored vector dimension mismatch")
         stored_model = str(meta.get("model", DEFAULT_MODEL))
@@ -536,17 +564,13 @@ class LoreLookup:
         self.close()
 
     def _semantic(self, query: str, limit: int) -> list[str]:
-        vector = self.encoder.encode(
-            [query], normalize_embeddings=True, convert_to_numpy=True
-        )[0]
+        vector = self.encoder.encode([query], normalize_embeddings=True, convert_to_numpy=True)[0]
         similarity = self.matrix @ vector
         order = np.argsort(-similarity)[:limit]
         return [str(self.records[int(i)]["id"]) for i in order]
 
     def _entity_semantic(self, query: str, limit: int) -> list[str]:
-        vector = self.encoder.encode(
-            [query], normalize_embeddings=True, convert_to_numpy=True
-        )[0]
+        vector = self.encoder.encode([query], normalize_embeddings=True, convert_to_numpy=True)[0]
         order = np.argsort(-(self.entity_matrix @ vector))[:limit]
         return [str(self.entities[int(i)]["id"]) for i in order]
 
@@ -555,14 +579,16 @@ class LoreLookup:
         if not terms:
             return []
         match = " OR ".join(f'"{term}"' for term in terms[:16])
-        return [str(row["id"]) for row in self.con.execute(
-            "SELECT id FROM entity_fts WHERE entity_fts MATCH ? "
-            "ORDER BY bm25(entity_fts, 0, 6.0, 1.0) LIMIT ?", (match, limit)
-        )]
+        return [
+            str(row["id"])
+            for row in self.con.execute(
+                "SELECT id FROM entity_fts WHERE entity_fts MATCH ? "
+                "ORDER BY bm25(entity_fts, 0, 6.0, 1.0) LIMIT ?",
+                (match, limit),
+            )
+        ]
 
-    def search_entities(
-        self, query: str, top_k: int = 8
-    ) -> list[EntityResult]:
+    def search_entities(self, query: str, top_k: int = 8) -> list[EntityResult]:
         """Rank corpus-discovered entities, retaining supporting source passages."""
         if not query.strip() or top_k <= 0:
             return []
@@ -575,7 +601,7 @@ class LoreLookup:
         for weight, ids in zip((1.0, 0.75), rankings):
             for rank, eid in enumerate(ids, 1):
                 scores[eid] += weight / (60 + rank)
-        candidates = sorted(scores, key=lambda eid: -scores[eid])[:max(40, top_k * 4)]
+        candidates = sorted(scores, key=lambda eid: -scores[eid])[: max(40, top_k * 4)]
         if candidates:
             pairs = [(focused, str(self.entity_by_id[eid]["summary"])) for eid in candidates]
             values = np.asarray(self.reranker.predict(pairs), dtype=np.float64).reshape(-1)
@@ -594,14 +620,16 @@ class LoreLookup:
                 }
                 for pid in self.evidence[eid]
             ]
-            results.append(EntityResult(
-                entity=str(entity["name"]),
-                category=str(entity["category"]),
-                aliases=json.loads(str(entity["aliases"])),
-                summary=str(entity["summary"]),
-                score=round(float(score), 6),
-                sources=sources,
-            ))
+            results.append(
+                EntityResult(
+                    entity=str(entity["name"]),
+                    category=str(entity["category"]),
+                    aliases=json.loads(str(entity["aliases"])),
+                    summary=str(entity["summary"]),
+                    score=round(float(score), 6),
+                    sources=sources,
+                )
+            )
         return results
 
     def _lexical(self, query: str, limit: int) -> list[str]:
@@ -660,7 +688,9 @@ class LoreLookup:
                 existing = entity_for_passage.get(pid)
                 if existing is None or contribution > existing[2]:
                     entity_for_passage[pid] = (
-                        str(entity["name"]), str(entity["category"]), contribution
+                        str(entity["name"]),
+                        str(entity["category"]),
+                        contribution,
                     )
         allowed = set(categories) if categories else None
         candidates = [
@@ -673,13 +703,9 @@ class LoreLookup:
         # Rerank more than top_k, but not the entire indexed corpus.
         candidates = candidates[: max(limit, top_k)]
         if candidates:
-            pairs = [
-                (focused, str(self.by_id[pid]["searchable"])) for pid in candidates
-            ]
+            pairs = [(focused, str(self.by_id[pid]["searchable"])) for pid in candidates]
             raw = np.asarray(self.reranker.predict(pairs), dtype=np.float64).reshape(-1)
-            ranked = sorted(
-                zip(candidates, raw), key=lambda pair: float(pair[1]), reverse=True
-            )
+            ranked = sorted(zip(candidates, raw), key=lambda pair: float(pair[1]), reverse=True)
         else:
             ranked = sorted(
                 ((pid, score) for pid, score in fused.items() if pid in candidates),
@@ -744,20 +770,21 @@ def main() -> None:
             )
         )
     else:
-        with LoreLookup(
-            args.db, reranker=DEFAULT_RERANKER
-        ) as lookup:
+        with LoreLookup(args.db, reranker=DEFAULT_RERANKER) as lookup:
             print(
                 json.dumps(
-                    (lookup.search_entities(args.query, top_k=args.top_k)
-                     if args.entities else lookup.search(
-                        args.query,
-                        top_k=args.top_k,
-                        categories=args.category,
-                        candidate_limit=args.candidate_limit,
-                        per_entity=args.per_entity,
-                        rerank=not args.no_rerank,
-                    )),
+                    (
+                        lookup.search_entities(args.query, top_k=args.top_k)
+                        if args.entities
+                        else lookup.search(
+                            args.query,
+                            top_k=args.top_k,
+                            categories=args.category,
+                            candidate_limit=args.candidate_limit,
+                            per_entity=args.per_entity,
+                            rerank=not args.no_rerank,
+                        )
+                    ),
                     ensure_ascii=False,
                     indent=2,
                 )

@@ -6,23 +6,24 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Scythe of the Shadowed Soul" (20544)
 
-1. Loot "Silver Disc" (20938) from "An Azarack" in `airplane`.
-2. Loot "Spiroc Feathers" (20782) from "An Avenging Gazer" (NPC 71027) in `airplane`. Drop cache: 10.63% chance per kill.
-3. airplane/"A Soul Carrier", on event_death_complete. Triggers `airplane/key master#signal:2`.
-4. Starts timer `87`.
-5. Spawns "Keeper of Souls" (71075) after `airplane/key master#timer:87`.
-6. Loot "Black Silk Cape" (20783) from "Keeper of Souls".
-7. airplane/"Jzil Gsix", hand "Spiroc Feathers" (20782) + "Black Silk Cape" (20783) + "Silver Disc" (20938). Gives "Cloak of Spiroc Feathers" (1278).
-8. Loot "Eye of Innoruuk" (20656) from "Innoruuk" (NPC 76007) in `hateplane`. Drop cache: 40.73% chance per kill.
-9. Loot "Slime Blood of Cazic-Thule" (20655) from "Dread" in `fearplane`.
-10. Loot "Slime Blood of Cazic-Thule" (20655) from "Fright" in `fearplane`.
-11. Loot "Slime Blood of Cazic-Thule" (20655) from "Terror" in `fearplane`.
-12. Kill lakerathe/"A Failed Apprentice". Spawns "A Tortured Soul" (51144).
-13. Loot "Symbol of Insanity" (20648) from "A Tortured Soul".
-14. timorous/"Drendico Metalbones", hand "Symbol of Insanity" (20648). Gives "Journal of Drendico" (18086).
-15. timorous/"Drendico Metalbones", hand "Cloak of Spiroc Feathers" (1278) + "Journal of Drendico" (18086) + "Slime Blood of Cazic-Thule" (20655) + "Eye of Innoruuk" (20656). Gives "Prepared Reagent Box" (20653).
-16. lakerathe/"Kazen Fecae", hand "Prepared Reagent Box" (20653). Gives "Tome of Instruction" (18087).
-17. airplane/"Gkzzallk", hand "Tome of Instruction" (18087). Gives "Gkzzallk in a Box" (20652).
+1. **Unresolved introduction:** no connected introductory hail in the graph.
+2. Loot "Silver Disc" (20938) from "An Azarack" in `airplane`.
+3. Loot "Spiroc Feathers" (20782) from "An Avenging Gazer" (NPC 71027) in `airplane`. Drop cache: 10.63% chance per kill.
+4. **Broken:** no event trigger found for `airplane/a soul carrier#event_death_complete`.
+5. Starts timer `87`.
+6. Spawns "Keeper of Souls" (71075) after `airplane/key master#timer:87`.
+7. Loot "Black Silk Cape" (20783) from "Keeper of Souls".
+8. airplane/"Jzil Gsix", hand "Spiroc Feathers" (20782) + "Black Silk Cape" (20783) + "Silver Disc" (20938). Gives "Cloak of Spiroc Feathers" (1278).
+9. Loot "Eye of Innoruuk" (20656) from "Innoruuk" (NPC 76007) in `hateplane`. Drop cache: 40.73% chance per kill.
+10. Loot "Slime Blood of Cazic-Thule" (20655) from "Dread" in `fearplane`.
+11. Loot "Slime Blood of Cazic-Thule" (20655) from "Fright" in `fearplane`.
+12. Loot "Slime Blood of Cazic-Thule" (20655) from "Terror" in `fearplane`.
+13. Kill lakerathe/"A Failed Apprentice". Spawns "A Tortured Soul" (51144).
+14. Loot "Symbol of Insanity" (20648) from "A Tortured Soul".
+15. timorous/"Drendico Metalbones", hand "Symbol of Insanity" (20648). Gives "Journal of Drendico" (18086).
+16. timorous/"Drendico Metalbones", hand "Cloak of Spiroc Feathers" (1278) + "Journal of Drendico" (18086) + "Slime Blood of Cazic-Thule" (20655) + "Eye of Innoruuk" (20656). Gives "Prepared Reagent Box" (20653).
+17. lakerathe/"Kazen Fecae", hand "Prepared Reagent Box" (20653). Gives "Tome of Instruction" (18087).
+18. airplane/"Gkzzallk", hand "Tome of Instruction" (18087). Gives "Gkzzallk in a Box" (20652).
     - Dialogue with airplane/"Gkzzallk":
       - Player: "Hail"
         - NPC say: Greetings, would you care for some tea?
@@ -30,31 +31,31 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
       - Player: "Tea" (link: explicit mention)
         - NPC say: The fairies should be bringing me some tea soon.
         - Condition: `(e.message:findi("tea"))`
-18. lakerathe/"Kazen Fecae", hand "Gkzzallk in a Box" (20652). Gives "Scythe of the Shadowed Soul" (20544).
+19. lakerathe/"Kazen Fecae", hand "Gkzzallk in a Box" (20652). Gives "Scythe of the Shadowed Soul" (20544).
 
 ## Epic 1.5
 
 ### "Soulwhisper" (62581)
 
-1. Loot "Silver Disc" (20938) from "An Azarack" in `airplane`.
-2. Loot "Spiroc Feathers" (20782) from "An Avenging Gazer" (NPC 71027) in `airplane`. Drop cache: 10.63% chance per kill.
-3. airplane/"A Soul Carrier", on event_death_complete. Triggers `airplane/key master#signal:2`.
-4. Starts timer `87`.
-5. Spawns "Keeper of Souls" (71075) after `airplane/key master#timer:87`.
-6. Loot "Black Silk Cape" (20783) from "Keeper of Souls".
-7. airplane/"Jzil Gsix", hand "Spiroc Feathers" (20782) + "Black Silk Cape" (20783) + "Silver Disc" (20938). Gives "Cloak of Spiroc Feathers" (1278).
-8. Loot "Eye of Innoruuk" (20656) from "Innoruuk" (NPC 76007) in `hateplane`. Drop cache: 40.73% chance per kill.
-9. Loot "Slime Blood of Cazic-Thule" (20655) from "Dread" in `fearplane`.
-10. Loot "Slime Blood of Cazic-Thule" (20655) from "Fright" in `fearplane`.
-11. Loot "Slime Blood of Cazic-Thule" (20655) from "Terror" in `fearplane`.
-12. Kill lakerathe/"A Failed Apprentice". Spawns "A Tortured Soul" (51144).
-13. Loot "Symbol of Insanity" (20648) from "A Tortured Soul".
-14. timorous/"Drendico Metalbones", hand "Symbol of Insanity" (20648). Gives "Journal of Drendico" (18086).
-15. timorous/"Drendico Metalbones", hand "Cloak of Spiroc Feathers" (1278) + "Journal of Drendico" (18086) + "Slime Blood of Cazic-Thule" (20655) + "Eye of Innoruuk" (20656). Gives "Prepared Reagent Box" (20653).
-16. lakerathe/"Kazen Fecae", hand "Prepared Reagent Box" (20653). Gives "Tome of Instruction" (18087).
-17. airplane/"Gkzzallk", hand "Tome of Instruction" (18087). Gives "Gkzzallk in a Box" (20652).
-18. lakerathe/"Kazen Fecae", hand "Gkzzallk in a Box" (20652). Gives "Scythe of the Shadowed Soul" (20544).
-19. lakerathe/"Kazen Fecae", say "Hail". Sets `Soulwhisper` to `1`.
+1. lakerathe/"Kazen Fecae", say "Hail". Sets `Soulwhisper` to `1`.
+2. Loot "Silver Disc" (20938) from "An Azarack" in `airplane`.
+3. Loot "Spiroc Feathers" (20782) from "An Avenging Gazer" (NPC 71027) in `airplane`. Drop cache: 10.63% chance per kill.
+4. **Broken:** no event trigger found for `airplane/a soul carrier#event_death_complete`.
+5. Starts timer `87`.
+6. Spawns "Keeper of Souls" (71075) after `airplane/key master#timer:87`.
+7. Loot "Black Silk Cape" (20783) from "Keeper of Souls".
+8. airplane/"Jzil Gsix", hand "Spiroc Feathers" (20782) + "Black Silk Cape" (20783) + "Silver Disc" (20938). Gives "Cloak of Spiroc Feathers" (1278).
+9. Loot "Eye of Innoruuk" (20656) from "Innoruuk" (NPC 76007) in `hateplane`. Drop cache: 40.73% chance per kill.
+10. Loot "Slime Blood of Cazic-Thule" (20655) from "Dread" in `fearplane`.
+11. Loot "Slime Blood of Cazic-Thule" (20655) from "Fright" in `fearplane`.
+12. Loot "Slime Blood of Cazic-Thule" (20655) from "Terror" in `fearplane`.
+13. Kill lakerathe/"A Failed Apprentice". Spawns "A Tortured Soul" (51144).
+14. Loot "Symbol of Insanity" (20648) from "A Tortured Soul".
+15. timorous/"Drendico Metalbones", hand "Symbol of Insanity" (20648). Gives "Journal of Drendico" (18086).
+16. timorous/"Drendico Metalbones", hand "Cloak of Spiroc Feathers" (1278) + "Journal of Drendico" (18086) + "Slime Blood of Cazic-Thule" (20655) + "Eye of Innoruuk" (20656). Gives "Prepared Reagent Box" (20653).
+17. lakerathe/"Kazen Fecae", hand "Prepared Reagent Box" (20653). Gives "Tome of Instruction" (18087).
+18. airplane/"Gkzzallk", hand "Tome of Instruction" (18087). Gives "Gkzzallk in a Box" (20652).
+19. lakerathe/"Kazen Fecae", hand "Gkzzallk in a Box" (20652). Gives "Scythe of the Shadowed Soul" (20544).
 20. lakerathe/"Kazen Fecae", say "Hail". Requires `Soulwhisper` unset. Gives "Note to Biddliss" (9831).
 21. steamfont/"Biddliss Sperandu", hand "Note to Biddliss" (9831). Gives "Gleaming Ore Satchel" (9579).
 22. Loot "Old Waterlogged Lute" (59025) from "A Shady Treasure Sorter" in `dulak`.
@@ -137,25 +138,25 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Deathwhisper" (64067)
 
-1. Loot "Silver Disc" (20938) from "An Azarack" in `airplane`.
-2. Loot "Spiroc Feathers" (20782) from "An Avenging Gazer" (NPC 71027) in `airplane`. Drop cache: 10.63% chance per kill.
-3. airplane/"A Soul Carrier", on event_death_complete. Triggers `airplane/key master#signal:2`.
-4. Starts timer `87`.
-5. Spawns "Keeper of Souls" (71075) after `airplane/key master#timer:87`.
-6. Loot "Black Silk Cape" (20783) from "Keeper of Souls".
-7. airplane/"Jzil Gsix", hand "Spiroc Feathers" (20782) + "Black Silk Cape" (20783) + "Silver Disc" (20938). Gives "Cloak of Spiroc Feathers" (1278).
-8. Loot "Eye of Innoruuk" (20656) from "Innoruuk" (NPC 76007) in `hateplane`. Drop cache: 40.73% chance per kill.
-9. Loot "Slime Blood of Cazic-Thule" (20655) from "Dread" in `fearplane`.
-10. Loot "Slime Blood of Cazic-Thule" (20655) from "Fright" in `fearplane`.
-11. Loot "Slime Blood of Cazic-Thule" (20655) from "Terror" in `fearplane`.
-12. Kill lakerathe/"A Failed Apprentice". Spawns "A Tortured Soul" (51144).
-13. Loot "Symbol of Insanity" (20648) from "A Tortured Soul".
-14. timorous/"Drendico Metalbones", hand "Symbol of Insanity" (20648). Gives "Journal of Drendico" (18086).
-15. timorous/"Drendico Metalbones", hand "Cloak of Spiroc Feathers" (1278) + "Journal of Drendico" (18086) + "Slime Blood of Cazic-Thule" (20655) + "Eye of Innoruuk" (20656). Gives "Prepared Reagent Box" (20653).
-16. lakerathe/"Kazen Fecae", hand "Prepared Reagent Box" (20653). Gives "Tome of Instruction" (18087).
-17. airplane/"Gkzzallk", hand "Tome of Instruction" (18087). Gives "Gkzzallk in a Box" (20652).
-18. lakerathe/"Kazen Fecae", hand "Gkzzallk in a Box" (20652). Gives "Scythe of the Shadowed Soul" (20544).
-19. lakerathe/"Kazen Fecae", say "Hail". Sets `Soulwhisper` to `1`.
+1. lakerathe/"Kazen Fecae", say "Hail". Sets `Soulwhisper` to `1`.
+2. Loot "Silver Disc" (20938) from "An Azarack" in `airplane`.
+3. Loot "Spiroc Feathers" (20782) from "An Avenging Gazer" (NPC 71027) in `airplane`. Drop cache: 10.63% chance per kill.
+4. **Broken:** no event trigger found for `airplane/a soul carrier#event_death_complete`.
+5. Starts timer `87`.
+6. Spawns "Keeper of Souls" (71075) after `airplane/key master#timer:87`.
+7. Loot "Black Silk Cape" (20783) from "Keeper of Souls".
+8. airplane/"Jzil Gsix", hand "Spiroc Feathers" (20782) + "Black Silk Cape" (20783) + "Silver Disc" (20938). Gives "Cloak of Spiroc Feathers" (1278).
+9. Loot "Eye of Innoruuk" (20656) from "Innoruuk" (NPC 76007) in `hateplane`. Drop cache: 40.73% chance per kill.
+10. Loot "Slime Blood of Cazic-Thule" (20655) from "Dread" in `fearplane`.
+11. Loot "Slime Blood of Cazic-Thule" (20655) from "Fright" in `fearplane`.
+12. Loot "Slime Blood of Cazic-Thule" (20655) from "Terror" in `fearplane`.
+13. Kill lakerathe/"A Failed Apprentice". Spawns "A Tortured Soul" (51144).
+14. Loot "Symbol of Insanity" (20648) from "A Tortured Soul".
+15. timorous/"Drendico Metalbones", hand "Symbol of Insanity" (20648). Gives "Journal of Drendico" (18086).
+16. timorous/"Drendico Metalbones", hand "Cloak of Spiroc Feathers" (1278) + "Journal of Drendico" (18086) + "Slime Blood of Cazic-Thule" (20655) + "Eye of Innoruuk" (20656). Gives "Prepared Reagent Box" (20653).
+17. lakerathe/"Kazen Fecae", hand "Prepared Reagent Box" (20653). Gives "Tome of Instruction" (18087).
+18. airplane/"Gkzzallk", hand "Tome of Instruction" (18087). Gives "Gkzzallk in a Box" (20652).
+19. lakerathe/"Kazen Fecae", hand "Gkzzallk in a Box" (20652). Gives "Scythe of the Shadowed Soul" (20544).
 20. lakerathe/"Kazen Fecae", say "Hail". Requires `Soulwhisper` unset. Gives "Note to Biddliss" (9831).
 21. steamfont/"Biddliss Sperandu", hand "Note to Biddliss" (9831). Gives "Gleaming Ore Satchel" (9579).
 22. Loot "Old Waterlogged Lute" (59025) from "A Shady Treasure Sorter" in `dulak`.
@@ -207,8 +208,8 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 68. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
 69. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
 70. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-71. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-72. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+71. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+72. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
 73. natimbi/"Whiahdi", hand "Globe of Discordant Energy" (47100) + "Staff Piece Number Three" (55932) + "Staff Piece Number Two" (55940) + "Soulwhisper" (62581). Gives "Deathwhisper" (64067).
 
 ## Quest-state progression
@@ -221,7 +222,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 
 1. Loot "Silver Disc" (20938) from "An Azarack" in `airplane`.
 2. Loot "Spiroc Feathers" (20782) from "An Avenging Gazer" (NPC 71027) in `airplane`. Drop cache: 10.63% chance per kill.
-3. airplane/"A Soul Carrier", on event_death_complete. Triggers `airplane/key master#signal:2`.
+3. **Broken:** no event trigger found for `airplane/a soul carrier#event_death_complete`.
 4. Starts timer `87`.
 5. Spawns "Keeper of Souls" (71075) after `airplane/key master#timer:87`.
 6. Loot "Black Silk Cape" (20783) from "Keeper of Souls".
@@ -332,7 +333,7 @@ Values written: 1, 2.
     - Requires `NecroPre` ==1.
     - Requires `NecroPre` set.
     - Hand in x1: "Piece of the Staff" (20612).
-    - Spawns "Man-eating Freshwater Shark" (51158) in `lakerathe` on event_signal.
+    - **Broken:** no event trigger found for `lakerathe/worboli#event_signal`.
     - Loot "Piece of the Staff" (20612) from "Man-eating Freshwater Shark".
     - Gives "Piece of the Staff" (20612).
     - Dialogue with poknowledge/"Geboron":
@@ -409,7 +410,7 @@ Alternative or repeat transition to `Soulwhisper` = `1` (not an additional requi
     - Requires `NecroPre` ==2.
     - Requires `NecroPre` set.
     - Hand in x1: "Piece of the Staff" (20612).
-    - Spawns "Man-eating Freshwater Shark" (51158) in `lakerathe` on event_signal.
+    - **Broken:** no event trigger found for `lakerathe/worboli#event_signal`.
     - Loot "Piece of the Staff" (20612) from "Man-eating Freshwater Shark".
     - Gives "Note to Biddliss" (9831).
     - Gives "Piece of the Staff" (20612).
@@ -507,8 +508,8 @@ Values written: 5, 6.
     - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
     - Prerequisite: "Soulwhisper" (62581). See section 0.
     - Gives "Deathwhisper" (64067).
 

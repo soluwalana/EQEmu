@@ -6,55 +6,57 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Ragebringer" (11057)
 
-1. Loot "Bayle List I" (18808) from "Mutt Rootlit" in `highpass`.
-2. qrg/"Gerael Woodone", say "Deliver A Flask". Gives "Flask of Nitrates" (13945).
-3. akanon/"Kimble Nogflop", hand "Flask of Nitrates" (13945). Gives "Regurgitonic" (12140).
-4. qrg/"Mammoth", hand "Regurgitonic" (12140). Gives "Bayle List II" (18809).
-5. Loot "Bayle List III" (18810) from "Dyllin Starsine" in `highpass`.
-6. Loot "Bayle List III" (18810) from "Dyllin Starsine" in `highpasshold`.
-7. southro/"Rathmana Allin", hand "Bayle List I" (18808) + "Bayle List II" (18809) + "Bayle List III" (18810). Gives "Translated Parchment" (18961).
-8. highpass/"Stanos Herkanor", hand "Translated Parchment" (18961). Gives "Sealed Box" (28057).
-9. Hand "Sealed Box" (28057) to kithicor/"Adjutant D-Kan". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
-10. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Advisor C-Zatl", hand "Sealed Box" (28057).
-11. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Brigadier G-Tav", hand "Sealed Box" (28057).
-12. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Coercer Q-Ioul", hand "Sealed Box" (28057).
-13. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Ioltos V-Ghera", hand "Sealed Box" (28057).
-14. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Tasi V-Ghera", hand "Sealed Box" (28057).
-15. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"War Priestess T-Zan", hand "Sealed Box" (28057).
-16. Loot "Fleshripper" (5411) from "Solusek kobold king" in `soldungb`.
-17. Loot "Painbringer" (5410) from "Kobold Champion" in `soldungb`.
-18. Loot "Mithril Two-Handed Sword" (5401) from "The Froglok King" in `gukbottom`.
-19. Loot "Gigantic Zweihander" (5308) from "Karg IceBear" in `everfrost`.
-20. qey2hh1/"Vilnius The Small", hand "Gigantic Zweihander" (5308) + "Mithril Two-Handed Sword" (5401) + "Painbringer" (5410) + "Fleshripper" (5411). Gives "Jagged Diamond Dagger" (7506).
-21. Loot "Robe of the Ishva" (1357) from "Coercer Q'ioul" in `kithicor`.
-22. Loot "Robe of the Ishva" (1357) from "Jinalis Andir" in `cauldron`.
-23. Loot "Robe of the Ishva" (1357) from "The Ishva Mal" in `southkarana`.
-24. Loot "Robe of the Kedge" (1253) from "Kubaria" (NPC 309002) in `chambersf`. Drop cache: 100% chance per kill.
-25. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oceanoftears`.
-26. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oot`.
-27. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
-28. qey2hh1/"Vilnius The Small", hand "Robe of the Kedge" (1253) + "Robe of the Oracle" (1354) + "Robe of the Ishva" (1357) + "Shining Metallic Robes" (1360). Gives "Cazic Quill" (7505).
-29. highpass/"Stanos Herkanor", hand "Cazic Quill" (7505) + "Jagged Diamond Dagger" (7506) + "General's Pouch" (28013). Gives "Ragebringer" (11057).
+1. **Unresolved introduction:** no connected introductory hail in the graph.
+2. Loot "Bayle List I" (18808) from "Mutt Rootlit" in `highpass`.
+3. qrg/"Gerael Woodone", say "Deliver A Flask". Gives "Flask of Nitrates" (13945).
+4. akanon/"Kimble Nogflop", hand "Flask of Nitrates" (13945). Gives "Regurgitonic" (12140).
+5. qrg/"Mammoth", hand "Regurgitonic" (12140). Gives "Bayle List II" (18809).
+6. Loot "Bayle List III" (18810) from "Dyllin Starsine" in `highpass`.
+7. Loot "Bayle List III" (18810) from "Dyllin Starsine" in `highpasshold`.
+8. southro/"Rathmana Allin", hand "Bayle List I" (18808) + "Bayle List II" (18809) + "Bayle List III" (18810). Gives "Translated Parchment" (18961).
+9. highpass/"Stanos Herkanor", hand "Translated Parchment" (18961). Gives "Sealed Box" (28057).
+10. Hand "Sealed Box" (28057) to kithicor/"Adjutant D-Kan". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
+11. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Advisor C-Zatl", hand "Sealed Box" (28057).
+12. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Brigadier G-Tav", hand "Sealed Box" (28057).
+13. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Coercer Q-Ioul", hand "Sealed Box" (28057).
+14. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Ioltos V-Ghera", hand "Sealed Box" (28057).
+15. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Tasi V-Ghera", hand "Sealed Box" (28057).
+16. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"War Priestess T-Zan", hand "Sealed Box" (28057).
+17. Loot "Fleshripper" (5411) from "Solusek kobold king" in `soldungb`.
+18. Loot "Painbringer" (5410) from "Kobold Champion" in `soldungb`.
+19. Loot "Mithril Two-Handed Sword" (5401) from "The Froglok King" in `gukbottom`.
+20. Loot "Gigantic Zweihander" (5308) from "Karg IceBear" in `everfrost`.
+21. qey2hh1/"Vilnius The Small", hand "Gigantic Zweihander" (5308) + "Mithril Two-Handed Sword" (5401) + "Painbringer" (5410) + "Fleshripper" (5411). Gives "Jagged Diamond Dagger" (7506).
+22. Loot "Robe of the Ishva" (1357) from "Coercer Q'ioul" in `kithicor`.
+23. Loot "Robe of the Ishva" (1357) from "Jinalis Andir" in `cauldron`.
+24. Loot "Robe of the Ishva" (1357) from "The Ishva Mal" in `southkarana`.
+25. Loot "Robe of the Kedge" (1253) from "Kubaria" (NPC 309002) in `chambersf`. Drop cache: 100% chance per kill.
+26. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oceanoftears`.
+27. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oot`.
+28. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
+29. qey2hh1/"Vilnius The Small", hand "Robe of the Kedge" (1253) + "Robe of the Oracle" (1354) + "Robe of the Ishva" (1357) + "Shining Metallic Robes" (1360). Gives "Cazic Quill" (7505).
+30. highpass/"Stanos Herkanor", hand "Cazic Quill" (7505) + "Jagged Diamond Dagger" (7506) + "General's Pouch" (28013). Gives "Ragebringer" (11057).
 
 ## Epic 1.5
 
 ### "Fatestealer" (52347)
 
-1. **Broken:** nothing in the graph gives, loots, spawns, or combines Fatestealer (52347).
+1. **Unresolved introduction:** no connected introductory hail in the graph.
+2. **Broken:** nothing in the graph gives, loots, spawns, or combines Fatestealer (52347).
 
 ## Epic 2.0
 
 ### "Nightshade, Blade of Entropy" (52348)
 
-1. **Broken:** nothing in the graph gives, loots, spawns, or combines Fatestealer (52347).
-2. nedaria/"Lirprin, Head Of Affairs", say "Hail". Sets `Fatestealer` to `3`.
+1. nedaria/"Lirprin, Head Of Affairs", say "Hail". Sets `Fatestealer` to `3`.
+2. **Broken:** nothing in the graph gives, loots, spawns, or combines Fatestealer (52347).
 3. Say "Check Lorb" to anguish/"Zone Status".
 4. Spawns "Orb of Discordant Energy" (317087).
 5. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
 6. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
 7. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-8. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-9. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+8. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+9. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
 10. iceclad/"Lookout Larithim", say "What Happened Then". Requires `rogue_epic_iceclad` unset. Requires `Fatestealer` ==3. Gives "Air-Tight Strongbox" (52339).
 11. Say "What Happened Then" to iceclad/"Lookout Larithim".
 12. Spawns "Polar Kraken" (110131).
@@ -62,7 +64,7 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 14. Combine in "Air-Tight Strongbox" (52339): "Lump of Raw Alloy" (52340). Produces "Strongbox Full of Alloy" (52341). The combine does not fail.
 15. iceclad/"Lookout Larithim", hand "Strongbox Full of Alloy" (52341). Gives "Strongbox Half Full of Velixite" (52342).
 16. bloodfields/"Keetra The Lost", say "Lirprin Sent Me". Sets `rogue_epic_keetra` to `1`.
-17. Spawns "Krill the Backbleeder" (224436) in `gunthak` on event_signal.
+17. **Broken:** no event trigger found for `gunthak/a shadowed assassin#event_death_complete`.
 18. Loot "Krill's Head" (52344) from "Krill the Backbleeder".
 19. gunthak/"Lairyn Debeian", hand "Krill's Head" (52344). Sets `rogue_epic_lairyn` to `1`.
 20. iceclad/"Lookout Larithim", hand "Strongbox Full of Alloy" (52341). Sets `rogue_epic_larithim` to `1`.
@@ -712,8 +714,8 @@ Values written: 1.
     - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
     - Prerequisite: "Strongbox Half Full of Velixite" (52342). See section 0.
     - Spawns "Wren Simsy" (336253) in `dranik` on kill.
     - Loot "Wren's Fatestealer" (21346) from "Wren Simsy".

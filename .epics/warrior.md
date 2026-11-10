@@ -6,53 +6,54 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Jagged Blade of War" (10908)
 
-1. freeporteast/"Kargek Redblade", say "Favor". Gives "Wax Sealed Note" (20673).
-2. feerrott/"Oknoggin Stonesmacker", hand "Wax Sealed Note" (20673). Gives "Tiny Lute" (20674).
-3. freeporteast/"Kargek Redblade", hand "Tiny Lute" (20674). Gives "Redblade's Legacy" (18083).
-4. eastkarana/"Tenal Redblade", hand "Redblade's Legacy" (18083). Gives "Totem of the Freezing War" (20680).
-5. Loot "Heart of Frost" (10549) from "A Goblin Wizard" in `permafrost`.
-6. eastkarana/"Tenal Redblade", hand "Heart of Frost" (10549) + "Totem of the Freezing War" (20680). Gives "Totem of Fiery War" (20681).
-7. Loot "Red Dragon Scales" (11622) from "Echo of Nortlav" in `hole`.
-8. Loot "Red Dragon Scales" (11622) from "Lord Nagafen" in `soldungb`.
-9. Loot "Red Dragon Scales" (11622) from "Melalafen" in `westwastes`.
-10. Loot "Red Dragon Scales" (11622) from "Talendor" in `skyfire`.
-11. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-12. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-13. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-14. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-15. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-16. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-17. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-18. northro/"Verrell Cogswin", hand "Water Flask" (13006). Sets `Green_Scale_Quest` to `1`.
-19. northro/"Verrell Cogswin", hand "Red Dragon Scales" (11622). Sets `Green_Scale_Quest` to `2`.
-20. northro/"Verrell Cogswin", say "Adhesive". Requires `Green_Scale_Quest` ==2. Requires `Green_Scale_Quest` set. Gives "Verrell's Box of Potions" (67387).
-21. Loot "Fractured Centaur Hoof" (67388) from "Centaur Archer" in `southkarana`.
-22. Loot "Fractured Centaur Hoof" (67388) from "Centaur Charger" in `southkarana`.
-23. Loot "Fractured Centaur Hoof" (67388) from "Centaur Courser" in `southkarana`.
-24. Loot "Fractured Centaur Hoof" (67388) from "Centaur Foal" in `southkarana`.
-25. Loot "Fractured Centaur Hoof" (67388) from "Centaur Sheltie" in `southkarana`.
-26. Loot "Fire Giant Embers" (67389) from "A Fire Giant Warlord" (NPC 278023) in `soldungc`. Drop cache: 28.35% chance per kill.
-27. Loot "Jagged Permafrost Shards" (67390) from "The Chilling Terror" in `permafrost`.
-28. Combine in Oven (15): "Fractured Centaur Hoof" (67388), "Fire Giant Embers" (67389), "Jagged Permafrost Shards" (67390). Produces "Glue Powder" (67391). Requires Baking. The combine does not fail.
-29. Buy "Barley" (16590) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 15 copper.
-30. Buy "Deep Fungus Mold" (67393) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 50,000 copper.
-31. Buy "Distilled Spirits" (67394) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 5,000 copper.
-32. Combine in Brew Barrel (19): "Barley" (16590), "Deep Fungus Mold" (67393), "Distilled Spirits" (67394). Produces "Deep Barley Brew" (67392). Requires Brewing, trivial 110.
-33. northro/"Verrell Cogswin", say "Adhesive". Requires `Green_Scale_Quest` ==2. Requires `Green_Scale_Quest` set. Gives "Potion Vial" (67395).
-34. Combine in "Verrell's Box of Potions" (67387): "Glue Powder" (67391), "Deep Barley Brew" (67392), "Potion Vial" (67395). Produces "Thick Adhesive" (67386). The combine does not fail.
-35. northro/"Verrell Cogswin", hand "Thick Adhesive" (67386). Gives "Grey Scale Pieces" (67385).
-36. northro/"Verrell Cogswin", hand "Thick Adhesive" (67386). Gives "Thick Adhesive" (67396).
-37. Combine in "Verrell's Box of Potions" (67387): "Grey Scale Pieces" (67385), "Thick Adhesive" (67396). Produces "Grey Colored Scales" (67384). The combine does not fail.
-38. northro/"Verrell Cogswin", hand "Grey Colored Scales" (67384). Gives "Green Dragon Scales" (11582).
-39. eastkarana/"Tenal Redblade", hand "Green Dragon Scales" (11582) + "Red Dragon Scales" (11622) + "Totem of Fiery War" (20681). Gives "Mark of the Sword" (20683).
-40. Loot "Hand of the Maestro" (20676) from "Hand of the Maestro" in `hateplane`.
-41. Loot "Hand of the Maestro" (20676) from "Hand of the Maestro" in `hateplaneb`.
-42. eastkarana/"Tenal Redblade", hand "Hand of the Maestro" (20676) + "Mark of the Sword" (20683). Gives "Tenal's note to Kargek" (20684).
-43. Loot "Spiroc Wingblade" (20679) from "The Spiroc Lord" in `airplane`.
-44. freeporteast/"Kargek Redblade", hand "Spiroc Wingblade" (20679) + "Tenal's note to Kargek" (20684). Gives "Red Scabbard" (17859).
-45. Loot "Blade of Tactics" (10909) from "Reattim Heftsteel" (NPC 309005) in `chambersf`. Drop cache: 100% chance per kill.
-46. Loot "Blade of Strategy" (10910) from "Reattim Heftsteel" (NPC 309005) in `chambersf`. Drop cache: 100% chance per kill.
-47. Combine in "Red Scabbard" (17859): "Blade of Tactics" (10909), "Blade of Strategy" (10910). Produces "Jagged Blade of War" (10908). The combine does not fail.
+1. **Unresolved introduction:** no connected introductory hail in the graph.
+2. freeporteast/"Kargek Redblade", say "Favor". Gives "Wax Sealed Note" (20673).
+3. feerrott/"Oknoggin Stonesmacker", hand "Wax Sealed Note" (20673). Gives "Tiny Lute" (20674).
+4. freeporteast/"Kargek Redblade", hand "Tiny Lute" (20674). Gives "Redblade's Legacy" (18083).
+5. eastkarana/"Tenal Redblade", hand "Redblade's Legacy" (18083). Gives "Totem of the Freezing War" (20680).
+6. Loot "Heart of Frost" (10549) from "A Goblin Wizard" in `permafrost`.
+7. eastkarana/"Tenal Redblade", hand "Heart of Frost" (10549) + "Totem of the Freezing War" (20680). Gives "Totem of Fiery War" (20681).
+8. Loot "Red Dragon Scales" (11622) from "Echo of Nortlav" in `hole`.
+9. Loot "Red Dragon Scales" (11622) from "Lord Nagafen" in `soldungb`.
+10. Loot "Red Dragon Scales" (11622) from "Melalafen" in `westwastes`.
+11. Loot "Red Dragon Scales" (11622) from "Talendor" in `skyfire`.
+12. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+13. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+14. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+15. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+16. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+17. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+18. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+19. northro/"Verrell Cogswin", hand "Water Flask" (13006). Sets `Green_Scale_Quest` to `1`.
+20. northro/"Verrell Cogswin", hand "Red Dragon Scales" (11622). Sets `Green_Scale_Quest` to `2`.
+21. northro/"Verrell Cogswin", say "Adhesive". Requires `Green_Scale_Quest` ==2. Requires `Green_Scale_Quest` set. Gives "Verrell's Box of Potions" (67387).
+22. Loot "Fractured Centaur Hoof" (67388) from "Centaur Archer" in `southkarana`.
+23. Loot "Fractured Centaur Hoof" (67388) from "Centaur Charger" in `southkarana`.
+24. Loot "Fractured Centaur Hoof" (67388) from "Centaur Courser" in `southkarana`.
+25. Loot "Fractured Centaur Hoof" (67388) from "Centaur Foal" in `southkarana`.
+26. Loot "Fractured Centaur Hoof" (67388) from "Centaur Sheltie" in `southkarana`.
+27. Loot "Fire Giant Embers" (67389) from "A Fire Giant Warlord" (NPC 278023) in `soldungc`. Drop cache: 28.35% chance per kill.
+28. Loot "Jagged Permafrost Shards" (67390) from "The Chilling Terror" in `permafrost`.
+29. Combine in Oven (15): "Fractured Centaur Hoof" (67388), "Fire Giant Embers" (67389), "Jagged Permafrost Shards" (67390). Produces "Glue Powder" (67391). Requires Baking. The combine does not fail.
+30. Buy "Barley" (16590) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 15 copper.
+31. Buy "Deep Fungus Mold" (67393) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 50,000 copper.
+32. Buy "Distilled Spirits" (67394) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 5,000 copper.
+33. Combine in Brew Barrel (19): "Barley" (16590), "Deep Fungus Mold" (67393), "Distilled Spirits" (67394). Produces "Deep Barley Brew" (67392). Requires Brewing, trivial 110.
+34. northro/"Verrell Cogswin", say "Adhesive". Requires `Green_Scale_Quest` ==2. Requires `Green_Scale_Quest` set. Gives "Potion Vial" (67395).
+35. Combine in "Verrell's Box of Potions" (67387): "Glue Powder" (67391), "Deep Barley Brew" (67392), "Potion Vial" (67395). Produces "Thick Adhesive" (67386). The combine does not fail.
+36. northro/"Verrell Cogswin", hand "Thick Adhesive" (67386). Gives "Grey Scale Pieces" (67385).
+37. northro/"Verrell Cogswin", hand "Thick Adhesive" (67386). Gives "Thick Adhesive" (67396).
+38. Combine in "Verrell's Box of Potions" (67387): "Grey Scale Pieces" (67385), "Thick Adhesive" (67396). Produces "Grey Colored Scales" (67384). The combine does not fail.
+39. northro/"Verrell Cogswin", hand "Grey Colored Scales" (67384). Gives "Green Dragon Scales" (11582).
+40. eastkarana/"Tenal Redblade", hand "Green Dragon Scales" (11582) + "Red Dragon Scales" (11622) + "Totem of Fiery War" (20681). Gives "Mark of the Sword" (20683).
+41. Loot "Hand of the Maestro" (20676) from "Hand of the Maestro" in `hateplane`.
+42. Loot "Hand of the Maestro" (20676) from "Hand of the Maestro" in `hateplaneb`.
+43. eastkarana/"Tenal Redblade", hand "Hand of the Maestro" (20676) + "Mark of the Sword" (20683). Gives "Tenal's note to Kargek" (20684).
+44. Loot "Spiroc Wingblade" (20679) from "The Spiroc Lord" in `airplane`.
+45. freeporteast/"Kargek Redblade", hand "Spiroc Wingblade" (20679) + "Tenal's note to Kargek" (20684). Gives "Red Scabbard" (17859).
+46. Loot "Blade of Tactics" (10909) from "Reattim Heftsteel" (NPC 309005) in `chambersf`. Drop cache: 100% chance per kill.
+47. Loot "Blade of Strategy" (10910) from "Reattim Heftsteel" (NPC 309005) in `chambersf`. Drop cache: 100% chance per kill.
+48. Combine in "Red Scabbard" (17859): "Blade of Tactics" (10909), "Blade of Strategy" (10910). Produces "Jagged Blade of War" (10908). The combine does not fail.
 
 ## Epic 1.5
 
@@ -60,20 +61,21 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 **Broken:** no quest hand-in, encounter or recipe produces "Champion's Sword of Eternal Power" (60321) in the graph. Catalog drops/spells below are not proof of the epic quest.
 
-1. Loot "Champion's Sword of Eternal Power" (60321) from "Krekk Brimblade" in `dranik`.
+1. **Unresolved introduction:** no connected introductory hail in the graph.
+2. Loot "Champion's Sword of Eternal Power" (60321) from "Krekk Brimblade" in `dranik`.
 
 ## Epic 2.0
 
 ### "Kreljnok's Sword of Eternal Power" (60332)
 
-1. Kill causeway/"Korbuk Brimblade". Spawns "Essence of Kreljnok" (303129).
-2. Loot "Brimblade's Scabbard" (60331) from "Essence of Kreljnok".
-3. Kill causeway/"Korbuk Brimblade". Spawns "Essence of Kreljnok" (303129).
-4. Loot "Kreljnok's Essence" (60330) from "Essence of Kreljnok".
-5. global/"Global Player", combine recipe 19902. Sets `warrior_epic` to `21`.
-6. Loot "Champion's Sword of Eternal Power" (60321) from "Krekk Brimblade" in `dranik`.
-7. Unresolved cyclic prerequisite: `warrior_epic` ==15.
-8. draniksscar/"Korbuk Brimblade", say "Hail". Sets `warrior_epic` to `16`.
+1. draniksscar/"Korbuk Brimblade", say "Hail". Sets `warrior_epic` to `16`.
+2. Kill causeway/"Korbuk Brimblade". Spawns "Essence of Kreljnok" (303129).
+3. Loot "Brimblade's Scabbard" (60331) from "Essence of Kreljnok".
+4. Kill causeway/"Korbuk Brimblade". Spawns "Essence of Kreljnok" (303129).
+5. Loot "Kreljnok's Essence" (60330) from "Essence of Kreljnok".
+6. global/"Global Player", combine recipe 19902. Sets `warrior_epic` to `21`.
+7. Loot "Champion's Sword of Eternal Power" (60321) from "Krekk Brimblade" in `dranik`.
+8. Unresolved cyclic prerequisite: `warrior_epic` ==15.
 9. draniksscar/"Korbuk Brimblade", say "Work". Sets `warrior_pre` to `1`.
 10. Loot "Korbuk's Weapon Plans" (60285) from "The Diaku Overseer" in `potactics`.
 11. draniksscar/"Korbuk Brimblade", hand "Korbuk's Weapon Plans" (60285). Sets `warrior_pre` to `2`.
@@ -809,8 +811,8 @@ Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 1
     - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
 
 20. draniksscar/"Korbuk Brimblade", hand "Champion's Sword of Eternal Power" (60321) + "Kreljnok's Focused Rage" (60327). Sets `warrior_epic` to `20`.
     - Requires `warrior_epic` >=19.

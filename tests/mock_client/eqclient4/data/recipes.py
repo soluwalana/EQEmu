@@ -88,10 +88,10 @@ class RecipeBook:
             for item_id in made:
                 if item_id > 0:
                     self.by_result.setdefault(item_id, []).append(recipe_id)
-            
+
             if recipe.skill and recipe.enabled and recipe.components:
                 self.by_skill.setdefault(int(recipe.skill), []).append(recipe_id)
-            
+
             self.by_container.setdefault(recipe.container, []).append(recipe_id)
 
     def practice(self, skill_id: int, current: int, want: int, skip: int = 0) -> Recipe | None:
@@ -130,15 +130,15 @@ class RecipeBook:
             inputs = {comp for comp, _count in recipe.components}
             if recipe.container and recipe.container not in _WORLD_CONTAINER:
                 inputs.add(recipe.container)
-            
+
             if recipe.result in inputs:
                 continue
-            
+
             if recipe.container in _WORLD_CONTAINER:
                 continue
-            
+
             candidates.append(recipe)
-        
+
         if not candidates:
             return None
 

@@ -6,14 +6,15 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Singing Short Sword" (20542)
 
-1. qey2hh1/"Konia Swiftfoot", say "Ready". Gives "Torch of Misty" (20532).
-2. misty/"Fajio Knejo", hand "Torch of Misty" (20532). Gives "Torch of Ro" (20533).
-3. southro/"Andad Filla", hand "Torch of Ro" (20533). Gives "Torch of Rathe" (20534).
-4. lakerathe/"Misty Tekcihta", hand "Torch of Rathe" (20534). Gives "Proof of Speed" (20379).
-5. qey2hh1/"Konia Swiftfoot", hand "Proof of Speed" (20379). Gives "Maestro's Symphony Page 24 Top" (20376).
-6. southkarana/"Baenar Swiftsong", say "Doll". Gives "Solusek Mining Company Invoice" (20372).
-7. soldunga/"Marfen Binkdirple", hand "Solusek Mining Company Invoice" (20372). Gives "Mechanical Doll" (20370).
-8. unrest/"Serra", hand "Mechanical Doll" (20370). Gives "Note for Baenar" (20371).
+1. dreadlands/"Baldric Slezaf", say "Hail". Hello, $name. Don't you think this would be a wonderful place to perform a [symphony]?
+2. qey2hh1/"Konia Swiftfoot", say "Ready". Gives "Torch of Misty" (20532).
+3. misty/"Fajio Knejo", hand "Torch of Misty" (20532). Gives "Torch of Ro" (20533).
+4. southro/"Andad Filla", hand "Torch of Ro" (20533). Gives "Torch of Rathe" (20534).
+5. lakerathe/"Misty Tekcihta", hand "Torch of Rathe" (20534). Gives "Proof of Speed" (20379).
+6. qey2hh1/"Konia Swiftfoot", hand "Proof of Speed" (20379). Gives "Maestro's Symphony Page 24 Top" (20376).
+7. southkarana/"Baenar Swiftsong", say "Doll". Gives "Solusek Mining Company Invoice" (20372).
+8. soldunga/"Marfen Binkdirple", hand "Solusek Mining Company Invoice" (20372). Gives "Mechanical Doll" (20370).
+9. unrest/"Serra", hand "Mechanical Doll" (20370). Gives "Note for Baenar" (20371).
     - Dialogue with unrest/"Serra":
       - Player: "Hail"
         - NPC say: H..h..hello? Can you help me? I lost [something] and I need it so I can go back home.
@@ -28,32 +29,32 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
         - NPC say: I hope it will help you out. Please find him so I can leave this place?
         - Condition: `(e.message:findi("note"))`
         - Gives Ripped Qeynos Bards Guild Flyer (20374).
-9. southkarana/"Baenar Swiftsong", hand "Note for Baenar" (20371). Gives "Note to Maligar" (20368).
-10. Hand "Note to Maligar" (20368) to qey2hh1/"Maligar". Spawns "Maligars Enraged Doppleganger" (12173). Loot "Maligar's Head" (20367) from "Maligars Enraged Doppleganger".
-11. southkarana/"Baenar Swiftsong", hand "Maligar's Head" (20367). Gives "Mahlin's Mystical Bongos" (20366).
-12. qey2hh1/"Konia Swiftfoot", hand "Mahlin's Mystical Bongos" (20366). Gives "Maestro's Symphony Page 24 Bottom" (20383).
-13. Loot "Chromodrac Gut" (20527) from "Eldrig the Old" in `skyfire`.
-14. Loot "Red Wurm Gut" (20528) from "Nezekezena" in `burningwood`.
-15. Loot "Onyx Drake Gut" (20529) from "Blackwing".
-16. Loot "Onyx Drake Gut" (20529) from "Blackwing" in `rathemtn`.
-17. southkarana/"Kelkim Menkia", hand "Chromodrac Gut" (20527) + "Red Wurm Gut" (20528) + "Onyx Drake Gut" (20529). Gives "Maestro's Symphony Page 25" (20377).
-18. Loot "Alluring Horn" (20530) from "Quag Maelstrom" in `oceanoftears`.
-19. Loot "Alluring Horn" (20530) from "Quag Maelstrom" in `oot`.
-20. butcher/"Vedico Windwisper", hand "Alluring Horn" (20530). Gives "Note to Forpar Fizfla" (20378).
-21. steamfont/"Forpar Fizfla", hand "Note to Forpar Fizfla" (20378). Gives "Forpar's Note to Himself" (20380).
-22. Loot "Kedge Backbone" (20524) from "Phinigel Autropos" in `kedge`.
-23. Loot "Petrified Werewolf Skull" (20525) from "The Fabled Drolvarg Warlord".
-24. Loot "Petrified Werewolf Skull" (20525) from "a Drolvarg warlord" in `karnor`.
-25. Loot "Amygdalan Tendril" (5520) from "Amygdalan warrior" (NPC 72015) in `fearplane`. Drop cache: 8.14% chance per kill.
-26. steamfont/"Forpar Fizfla", hand "Amygdalan Tendril" (5520) + "Forpar's Note to Himself" (20380) + "Kedge Backbone" (20524) + "Petrified Werewolf Skull" (20525). Gives "Mystical Lute Head" (20535).
-27. Loot "White Dragon Scales" (11602) from "Gorenaire" in `dreadlands`.
-28. Loot "White Dragon Scales" (11602) from "Lady Vox" in `permafrost`.
-29. Loot "White Dragon Scales" (11602) from "The Fabled Gorenaire".
-30. Loot "Red Dragon Scales" (11622) from "Echo of Nortlav" in `hole`.
-31. Loot "Red Dragon Scales" (11622) from "Lord Nagafen" in `soldungb`.
-32. Loot "Red Dragon Scales" (11622) from "Melalafen" in `westwastes`.
-33. Loot "Red Dragon Scales" (11622) from "Talendor" in `skyfire`.
-34. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
+10. southkarana/"Baenar Swiftsong", hand "Note for Baenar" (20371). Gives "Note to Maligar" (20368).
+11. Hand "Note to Maligar" (20368) to qey2hh1/"Maligar". Spawns "Maligars Enraged Doppleganger" (12173). Loot "Maligar's Head" (20367) from "Maligars Enraged Doppleganger".
+12. southkarana/"Baenar Swiftsong", hand "Maligar's Head" (20367). Gives "Mahlin's Mystical Bongos" (20366).
+13. qey2hh1/"Konia Swiftfoot", hand "Mahlin's Mystical Bongos" (20366). Gives "Maestro's Symphony Page 24 Bottom" (20383).
+14. Loot "Chromodrac Gut" (20527) from "Eldrig the Old" in `skyfire`.
+15. Loot "Red Wurm Gut" (20528) from "Nezekezena" in `burningwood`.
+16. Loot "Onyx Drake Gut" (20529) from "Blackwing".
+17. Loot "Onyx Drake Gut" (20529) from "Blackwing" in `rathemtn`.
+18. southkarana/"Kelkim Menkia", hand "Chromodrac Gut" (20527) + "Red Wurm Gut" (20528) + "Onyx Drake Gut" (20529). Gives "Maestro's Symphony Page 25" (20377).
+19. Loot "Alluring Horn" (20530) from "Quag Maelstrom" in `oceanoftears`.
+20. Loot "Alluring Horn" (20530) from "Quag Maelstrom" in `oot`.
+21. butcher/"Vedico Windwisper", hand "Alluring Horn" (20530). Gives "Note to Forpar Fizfla" (20378).
+22. steamfont/"Forpar Fizfla", hand "Note to Forpar Fizfla" (20378). Gives "Forpar's Note to Himself" (20380).
+23. Loot "Kedge Backbone" (20524) from "Phinigel Autropos" in `kedge`.
+24. Loot "Petrified Werewolf Skull" (20525) from "The Fabled Drolvarg Warlord".
+25. Loot "Petrified Werewolf Skull" (20525) from "a Drolvarg warlord" in `karnor`.
+26. Loot "Amygdalan Tendril" (5520) from "Amygdalan warrior" (NPC 72015) in `fearplane`. Drop cache: 8.14% chance per kill.
+27. steamfont/"Forpar Fizfla", hand "Amygdalan Tendril" (5520) + "Forpar's Note to Himself" (20380) + "Kedge Backbone" (20524) + "Petrified Werewolf Skull" (20525). Gives "Mystical Lute Head" (20535).
+28. Loot "White Dragon Scales" (11602) from "Gorenaire" in `dreadlands`.
+29. Loot "White Dragon Scales" (11602) from "Lady Vox" in `permafrost`.
+30. Loot "White Dragon Scales" (11602) from "The Fabled Gorenaire".
+31. Loot "Red Dragon Scales" (11622) from "Echo of Nortlav" in `hole`.
+32. Loot "Red Dragon Scales" (11622) from "Lord Nagafen" in `soldungb`.
+33. Loot "Red Dragon Scales" (11622) from "Melalafen" in `westwastes`.
+34. Loot "Red Dragon Scales" (11622) from "Talendor" in `skyfire`.
+35. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
     - Dialogue with kaladimb/"Jeet":
       - Player: "Hail"
         - NPC say: What business do you have here?!! This here is the mine and that means if you ain't a [member of Miner's Guild 628], you'd best be moving on!!
@@ -106,27 +107,28 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
         - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
           - Reply guard: ``
         - Condition: `(($text=~/cleaner/i))`
-35. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
-36. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
-37. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-38. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-39. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-40. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-41. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-42. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-43. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-44. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
-45. steamfont/"Forpar Fizfla", hand "White Dragon Scales" (11602) + "Red Dragon Scales" (11622) + "Metal Bits" (16905). Gives "Mystical Lute Body" (20536).
-46. Kill sebilis/"An Undead Bard". Spawns "Trakanon" (89181).
-47. Loot "Undead Dragongut Strings" (20526) from "Trakanon".
-48. steamfont/"Forpar Fizfla", hand "Undead Dragongut Strings" (20526) + "Mystical Lute Head" (20535) + "Mystical Lute Body" (20536). Gives "Mystical Lute" (20538).
-49. dreadlands/"Baldric Slezaf", hand "Maestro's Symphony Page 24 Top" (20376) + "Maestro's Symphony Page 25" (20377) + "Maestro's Symphony Page 24 Bottom" (20383) + "Mystical Lute" (20538). Gives "Singing Short Sword" (20542).
+36. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
+37. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
+38. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+39. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+40. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+41. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+42. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+43. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+44. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+45. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
+46. steamfont/"Forpar Fizfla", hand "White Dragon Scales" (11602) + "Red Dragon Scales" (11622) + "Metal Bits" (16905). Gives "Mystical Lute Body" (20536).
+47. Kill sebilis/"An Undead Bard". Spawns "Trakanon" (89181).
+48. Loot "Undead Dragongut Strings" (20526) from "Trakanon".
+49. steamfont/"Forpar Fizfla", hand "Undead Dragongut Strings" (20526) + "Mystical Lute Head" (20535) + "Mystical Lute Body" (20536). Gives "Mystical Lute" (20538).
+50. dreadlands/"Baldric Slezaf", hand "Maestro's Symphony Page 24 Top" (20376) + "Maestro's Symphony Page 25" (20377) + "Maestro's Symphony Page 24 Bottom" (20383) + "Mystical Lute" (20538). Gives "Singing Short Sword" (20542).
 
 ## Epic 1.5
 
 ### "Prismatic Dragon Blade" (77631)
 
-1. wakening/"Lantaric-Dar", say "Baldric Slezaf". Sets `bard15` to `1`.
+1. soltemple/"Walthin Fireweaver", say "Hail". Sets `bard15` to `5`.
+2. wakening/"Lantaric-Dar", say "Baldric Slezaf". Sets `bard15` to `1`.
     - Dialogue with wakening/"Lantaric-Dar":
       - Player: "Hail"
         - NPC say: Journey to the necropolis and stop the mercenaries . May Veeshan protect you.
@@ -172,16 +174,15 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
         - NPC say: Excellent . I have a matter that I believe you would be suited for. The children of Zek have been strangely silent over the last few days. While your attacks on the couriers certainly slowed them down, I suspect there is something else going on. If you can uncover what they're up to, I will be most pleased. The area around Kael Drakkel is most likely to yield information.
         - Condition: `e.other:Class() == "Bard"`
         - Condition: `e.message:findi("continue to aid")  and qglobals["bardPQ"] == "1"`
-2. Kill necropolis/"Excavator Quellin". Spawns "Tarn Macklin" (123164).
-3. Loot "Cracked Dragon Bone" (77608) from "Tarn Macklin".
-4. wakening/"Lantaric-Dar", hand "Cracked Dragon Bone" (77608). Sets `bard15` to `2`.
-5. Spawns "Vesthon's Draconic Abomination" (123171) in `necropolis` on event_hp.
-6. Loot "Blackened Dragon Bone" (77612) from "Vesthon's Draconic Abomination".
-7. wakening/"Lantaric-Dar", hand "Blackened Dragon Bone" (77612). Sets `bard15` to `3`.
-8. Spawns "Needs Heading Validation" (123189) in `necropolis` on event death_complete:123173.
-9. Loot "Dark Orb" (77613) from "Needs Heading Validation".
-10. wakening/"Lantaric-Dar", hand "Dark Orb" (77613). Sets `bard15` to `4`.
-11. soltemple/"Walthin Fireweaver", say "Hail". Sets `bard15` to `5`.
+3. Kill necropolis/"Excavator Quellin". Spawns "Tarn Macklin" (123164).
+4. Loot "Cracked Dragon Bone" (77608) from "Tarn Macklin".
+5. wakening/"Lantaric-Dar", hand "Cracked Dragon Bone" (77608). Sets `bard15` to `2`.
+6. Spawns "Vesthon's Draconic Abomination" (123171) in `necropolis` on event_hp.
+7. Loot "Blackened Dragon Bone" (77612) from "Vesthon's Draconic Abomination".
+8. wakening/"Lantaric-Dar", hand "Blackened Dragon Bone" (77612). Sets `bard15` to `3`.
+9. Spawns "Needs Heading Validation" (123189) in `necropolis` on event death_complete:123173.
+10. Loot "Dark Orb" (77613) from "Needs Heading Validation".
+11. wakening/"Lantaric-Dar", hand "Dark Orb" (77613). Sets `bard15` to `4`.
 12. Spawns "A Shadow Thief" (20292) in `kithicor` on event death_complete:20291.
 13. Loot "Note from Metala" (77627) from "A Shadow Thief".
 14. southkarana/"Vhalen Nostrolo", hand "Note from Metala" (77627). Requires `bard15` ==5. Gives "Vhalen's Necklace" (77629).
@@ -225,37 +226,37 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Blade of Vesagran" (77640)
 
-1. Loot "Black Chaos Gauntlets" (77641) from "Stone Thrower" in `causeway`.
-2. Loot "Black Chaos Gauntlets" (77641) from "A Battle-Scarred Bazu" in `causeway`.
-3. Loot "Black Chaos Gauntlets" (77641) from "A Mountain Bazu" in `causeway`.
-4. Loot "Black Chaos Gauntlets" (77641) from "A Murkglider Stalker" in `causeway`.
-5. Loot "Black Chaos Boots" (77642) from "A Discordling Enchainer" in `wallofslaughter`.
-6. Loot "Black Chaos Boots" (77642) from "A Discordling Taskfiend" in `wallofslaughter`.
-7. Loot "Black Chaos Boots" (77642) from "A Dragorn Darkwarrior" in `wallofslaughter`.
-8. Loot "Black Chaos Boots" (77642) from "A Dragorn Ireknight" in `wallofslaughter`.
-9. Loot "Black Chaos Breastplate" (77643) from "A Gelidran Flamefreeze" (NPC 334016) in `riftseekers`. Drop cache: 4.49% chance per kill.
-10. Say "Check Lorb" to anguish/"Zone Status".
-11. Spawns "Orb of Discordant Energy" (317087).
-12. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-13. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
-14. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-15. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-16. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-17. causeway/"Alkron Wyrmsong", hand "Globe of Discordant Energy" (47100) + "Black Chaos Gauntlets" (77641) + "Black Chaos Boots" (77642) + "Black Chaos Breastplate" (77643). Sets `bard20` to `1`.
-18. Say "Summon" to causeway/"Alkron Wyrmsong".
-19. Spawns "Oshiruk" (303125).
-20. Loot "Dragorn Essence" (77644) from "Oshiruk".
-21. Spawns "Needs Heading Validation" (123189) in `necropolis` on event death_complete:123173.
-22. Loot "Dark Orb" (77613) from "Needs Heading Validation".
-23. wakening/"Lantaric-Dar", say "Baldric Slezaf". Sets `bard15` to `1`.
-24. Kill necropolis/"Excavator Quellin". Spawns "Tarn Macklin" (123164).
-25. Loot "Cracked Dragon Bone" (77608) from "Tarn Macklin".
-26. wakening/"Lantaric-Dar", hand "Cracked Dragon Bone" (77608). Sets `bard15` to `2`.
-27. Spawns "Vesthon's Draconic Abomination" (123171) in `necropolis` on event_hp.
-28. Loot "Blackened Dragon Bone" (77612) from "Vesthon's Draconic Abomination".
-29. wakening/"Lantaric-Dar", hand "Blackened Dragon Bone" (77612). Sets `bard15` to `3`.
-30. wakening/"Lantaric-Dar", hand "Dark Orb" (77613). Sets `bard15` to `4`.
-31. soltemple/"Walthin Fireweaver", say "Hail". Sets `bard15` to `5`.
+1. soltemple/"Walthin Fireweaver", say "Hail". Sets `bard15` to `5`.
+2. Loot "Black Chaos Gauntlets" (77641) from "Stone Thrower" in `causeway`.
+3. Loot "Black Chaos Gauntlets" (77641) from "A Battle-Scarred Bazu" in `causeway`.
+4. Loot "Black Chaos Gauntlets" (77641) from "A Mountain Bazu" in `causeway`.
+5. Loot "Black Chaos Gauntlets" (77641) from "A Murkglider Stalker" in `causeway`.
+6. Loot "Black Chaos Boots" (77642) from "A Discordling Enchainer" in `wallofslaughter`.
+7. Loot "Black Chaos Boots" (77642) from "A Discordling Taskfiend" in `wallofslaughter`.
+8. Loot "Black Chaos Boots" (77642) from "A Dragorn Darkwarrior" in `wallofslaughter`.
+9. Loot "Black Chaos Boots" (77642) from "A Dragorn Ireknight" in `wallofslaughter`.
+10. Loot "Black Chaos Breastplate" (77643) from "A Gelidran Flamefreeze" (NPC 334016) in `riftseekers`. Drop cache: 4.49% chance per kill.
+11. Say "Check Lorb" to anguish/"Zone Status".
+12. Spawns "Orb of Discordant Energy" (317087).
+13. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+14. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+15. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+16. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+17. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+18. causeway/"Alkron Wyrmsong", hand "Globe of Discordant Energy" (47100) + "Black Chaos Gauntlets" (77641) + "Black Chaos Boots" (77642) + "Black Chaos Breastplate" (77643). Sets `bard20` to `1`.
+19. Say "Summon" to causeway/"Alkron Wyrmsong".
+20. Spawns "Oshiruk" (303125).
+21. Loot "Dragorn Essence" (77644) from "Oshiruk".
+22. Spawns "Needs Heading Validation" (123189) in `necropolis` on event death_complete:123173.
+23. Loot "Dark Orb" (77613) from "Needs Heading Validation".
+24. wakening/"Lantaric-Dar", say "Baldric Slezaf". Sets `bard15` to `1`.
+25. Kill necropolis/"Excavator Quellin". Spawns "Tarn Macklin" (123164).
+26. Loot "Cracked Dragon Bone" (77608) from "Tarn Macklin".
+27. wakening/"Lantaric-Dar", hand "Cracked Dragon Bone" (77608). Sets `bard15` to `2`.
+28. Spawns "Vesthon's Draconic Abomination" (123171) in `necropolis` on event_hp.
+29. Loot "Blackened Dragon Bone" (77612) from "Vesthon's Draconic Abomination".
+30. wakening/"Lantaric-Dar", hand "Blackened Dragon Bone" (77612). Sets `bard15` to `3`.
+31. wakening/"Lantaric-Dar", hand "Dark Orb" (77613). Sets `bard15` to `4`.
 32. Spawns "A Shadow Thief" (20292) in `kithicor` on event death_complete:20291.
 33. Loot "Note from Metala" (77627) from "A Shadow Thief".
 34. southkarana/"Vhalen Nostrolo", hand "Note from Metala" (77627). Requires `bard15` ==5. Gives "Vhalen's Necklace" (77629).
@@ -482,7 +483,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 21. Alternative: Loot "Stack of Pages" (52335) from "a Teir'Dal guardian" (NPC 186190) in `hateplaneb`; trigger: hateplaneb/"Rogue 1 5", on event death_complete:186098.
 22. Alternative: Loot "Stack of Pages" (52335) from "a Teir'Dal guardian" (NPC 186190) in `hateplaneb`; trigger: hateplaneb/"Rogue 1 5", on event death_complete:186115.
 23. steamfont/"Yendar Starpyre", hand "Stack of Pages" (52335). Sets `Fatestealer_page` to `1`.
-24. Spawns "A Furious Magma Guardian" (278123) in `soldungc` on event_signal.
+24. **Broken:** no event trigger found for `soldungc/ #event_signal`.
 25. Loot "Crystallized Shard of Doomfire" (21339) from "A Furious Magma Guardian".
 26. Alternative: Loot "Crystallized Shard of Doomfire" (21339) from "Spawn Wiz 1.5; Pure Flame Elemental" (NPC 278108) in `soldungc`; trigger: soldungc/, on event_signal.
 27. Loot "Foul Doomfire Brimstone" (21342) from "A Pool Of Living Lava" (NPC 278043) in `soldungc`. Drop cache: 15.97% chance per kill.
@@ -887,8 +888,8 @@ Values written: 1.
     - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
     - Prerequisite: "Strongbox Half Full of Velixite" (52342). See section 0.
     - No quest step gives Wren's Fatestealer (21346). The dump lists it in dranik.
     - Prerequisite: "Fatestealer" (52347). See section 0.
@@ -1415,8 +1416,8 @@ Values written: 1.
     - Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+    - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
     - Spawns Oshiruk (303125).
     - Dialogue with causeway/"Alkron Wyrmsong":
       - Player: "Hail"

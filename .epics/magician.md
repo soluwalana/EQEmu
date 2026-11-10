@@ -8,27 +8,29 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 **Broken:** no quest hand-in, encounter or recipe produces "Orb of Mastery" (28034) in the graph. Catalog drops/spells below are not proof of the epic quest.
 
-1. Summon "Orb of Mastery" (28034) by casting "Summon Orb".
-2. Loot "Orb of Mastery" (28034) from "Carreenu Opulaae" in `chambersf`.
-3. Loot "Orb of Mastery" (28034) from "Gaelin" in `chambersf`.
-4. Loot "Orb of Mastery" (28034) from "Ipputs Dagglebrap" in `chambersf`.
-5. Loot "Orb of Mastery" (28034) from "Melodite Arinal" in `chambersf`.
-6. Loot "Orb of Mastery" (28034) from "Nakert Grimmagus" in `chambersf`.
+1. **Unresolved introduction:** no connected introductory hail in the graph.
+2. Summon "Orb of Mastery" (28034) by casting "Summon Orb".
+3. Loot "Orb of Mastery" (28034) from "Carreenu Opulaae" in `chambersf`.
+4. Loot "Orb of Mastery" (28034) from "Gaelin" in `chambersf`.
+5. Loot "Orb of Mastery" (28034) from "Ipputs Dagglebrap" in `chambersf`.
+6. Loot "Orb of Mastery" (28034) from "Melodite Arinal" in `chambersf`.
+7. Loot "Orb of Mastery" (28034) from "Nakert Grimmagus" in `chambersf`.
 
 ## Epic 1.5
 
 ### "Staff of Elemental Essence" (19092)
 
-1. Loot "Journal of Magus Tvish" (15639) from "Danvi's Corpse" (NPC 179132) in `akheva`. Drop cache: 100% chance per kill.
-2. poknowledge/"Bantil Io'Tuv", hand "Journal of Magus Tvish" (15639). Sets `mage_epic` to `2`.
-3. westwastes/"A Lost Tomekeeper", say "Violet Roses". Requires `mage_epic` ==2. Gives "Tome of Primal Fires" (15769).
-4. poknowledge/"Bantil Io'Tuv", hand "Tome of Primal Fires" (15769). Sets `mage_epic` to `3`.
-5. Ground spawn of "Book of Bindings and Incantations" (15772) in `charasis`.
-6. poknowledge/"Bantil Io'Tuv", hand "Book of Bindings and Incantations" (15772). Sets `mage_epic` to `4`.
-7. Loot "Codex of Ice and Ether" (15775) from "Grigor Rojha" in `thedeep`.
-8. poknowledge/"Bantil Io'Tuv", hand "Codex of Ice and Ether" (15775). Sets `mage_epic` to `5`.
-9. najena/"Akksstaff'S Minion", on event_death_complete. Sets `ask_minion_dead` to `1`.
-10. najena/"Akksstaff", say "Demise". Requires `ask_minion_dead` set. Gives "Sentience of Elements" (15778).
+1. **Unresolved introduction:** no connected introductory hail in the graph.
+2. Loot "Journal of Magus Tvish" (15639) from "Danvi's Corpse" (NPC 179132) in `akheva`. Drop cache: 100% chance per kill.
+3. poknowledge/"Bantil Io'Tuv", hand "Journal of Magus Tvish" (15639). Sets `mage_epic` to `2`.
+4. westwastes/"A Lost Tomekeeper", say "Violet Roses". Requires `mage_epic` ==2. Gives "Tome of Primal Fires" (15769).
+5. poknowledge/"Bantil Io'Tuv", hand "Tome of Primal Fires" (15769). Sets `mage_epic` to `3`.
+6. Ground spawn of "Book of Bindings and Incantations" (15772) in `charasis`.
+7. poknowledge/"Bantil Io'Tuv", hand "Book of Bindings and Incantations" (15772). Sets `mage_epic` to `4`.
+8. Loot "Codex of Ice and Ether" (15775) from "Grigor Rojha" in `thedeep`.
+9. poknowledge/"Bantil Io'Tuv", hand "Codex of Ice and Ether" (15775). Sets `mage_epic` to `5`.
+10. najena/"Akksstaff'S Minion", on event_death_complete. Sets `ask_minion_dead` to `1`.
+11. najena/"Akksstaff", say "Demise". Requires `ask_minion_dead` set. Gives "Sentience of Elements" (15778).
     - Dialogue with najena/"Akksstaff":
       - Player: "Hail"
         - NPC say: How is this possible? I cannot be defeated. Spare my life and I will tell you the truth of Magi'kot's [demise].
@@ -47,26 +49,25 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
         - NPC say: My, you are persistent aren't you? Well you have found more trouble than you expected, now haven't you? Prepare to witness the true power of a master of the elements!
         - Condition: `(e.message:findi("bantil sent me") and qglobals["mage_epic"] ~= nil and qglobals["mage_epic"] >= "5")`
         - Spawns NPC 44108.
-11. poknowledge/"Bantil Io'Tuv", hand "Sentience of Elements" (15778). Sets `mage_epic` to `6`.
-12. potranquility/"Jurmak The Undertow", say "Elemental Essences". Sets `mage_epic_water1` to `1`.
-13. Loot "Ice Burrower Meat" (19022) from "An Ice Burrower" in `westwastes`.
-14. Hand "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) to cobaltscar/"High Priest Margle". Spawns "Tiknonmanin" (117094). Loot "Elemental Essence of Water" (19086) from "Tiknonmanin".
-15. Spawns "Elemental Essence of Fire" (214127) in `potactics` on event_waypoint_arrive.
-16. Loot "Elemental Essence of Fire" (16807) from "Elemental Essence of Fire".
-17. potranquility/"Sarhya The Dawnbreeze", say "Elemental Essences". Sets `mage_epic_air1` to `1`.
-18. Spawns "Elemental Essence of Air" (303100) in `causeway` on enter.
-19. Loot "Elemental Essence of Air" (16773) from "Elemental Essence of Air".
-20. potranquility/"Taq'Aal Emeraldshard", say "Elemental Essences". Sets `mage_epic_earth1` to `1`.
-21. Spawns "Elemental Essence of Earth" (169127) in `letalis` on enter.
-22. Loot "Elemental Essence of Earth" (19087) from "Elemental Essence of Earth".
-23. poknowledge/"Bantil Io'Tuv", hand "Elemental Essence of Air" (16773) + "Elemental Essence of Fire" (16807) + "Elemental Essence of Water" (19086) + "Elemental Essence of Earth" (19087). Requires `mage_epic` ==6. Gives "Staff of Elemental Essence" (19092).
+12. poknowledge/"Bantil Io'Tuv", hand "Sentience of Elements" (15778). Sets `mage_epic` to `6`.
+13. potranquility/"Jurmak The Undertow", say "Elemental Essences". Sets `mage_epic_water1` to `1`.
+14. Loot "Ice Burrower Meat" (19022) from "An Ice Burrower" in `westwastes`.
+15. Hand "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) to cobaltscar/"High Priest Margle". Spawns "Tiknonmanin" (117094). Loot "Elemental Essence of Water" (19086) from "Tiknonmanin".
+16. Spawns "Elemental Essence of Fire" (214127) in `potactics` on event_waypoint_arrive.
+17. Loot "Elemental Essence of Fire" (16807) from "Elemental Essence of Fire".
+18. potranquility/"Sarhya The Dawnbreeze", say "Elemental Essences". Sets `mage_epic_air1` to `1`.
+19. Spawns "Elemental Essence of Air" (303100) in `causeway` on enter.
+20. Loot "Elemental Essence of Air" (16773) from "Elemental Essence of Air".
+21. potranquility/"Taq'Aal Emeraldshard", say "Elemental Essences". Sets `mage_epic_earth1` to `1`.
+22. Spawns "Elemental Essence of Earth" (169127) in `letalis` on enter.
+23. Loot "Elemental Essence of Earth" (19087) from "Elemental Essence of Earth".
+24. poknowledge/"Bantil Io'Tuv", hand "Elemental Essence of Air" (16773) + "Elemental Essence of Fire" (16807) + "Elemental Essence of Water" (19086) + "Elemental Essence of Earth" (19087). Requires `mage_epic` ==6. Gives "Staff of Elemental Essence" (19092).
 
 ## Epic 2.0
 
 ### "Focus of Primal Elements" (19839)
 
-1. Unresolved cyclic prerequisite: `mage_epic` >=9.
-2. draniksscar/"Iilivina", say "Primals". Sets `mage_epic` to `10`.
+1. draniksscar/"Iilivina", say "Hail". Hello again. So, you are looking for the Primal Elemental essences? That has a nice ring to it Transon has always had a penchant for the dramatic. I do not believe that you will find these beings in Discord however, if they exist at all. I do believe that your staff will resonate when you approach the creatures, so travel the world you know. Elementals tend to gravitate to areas that reflect their element best, I don't see why the [Primals] would behave any differently. The magic here is quite unique. I am thrilled I've had the opportunity to study it.
     - Dialogue with draniksscar/"Iilivina":
       - Player: "Hail"
         - NPC say: Hello again. So, you are looking for the Primal Elemental essences? That has a nice ring to it Transon has always had a penchant for the dramatic. I do not believe that you will find these beings in Discord however, if they exist at all. I do believe that your staff will resonate when you approach the creatures, so travel the world you know. Elementals tend to gravitate to areas that reflect their element best, I don't see why the [Primals] would behave any differently.
@@ -85,46 +86,48 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
         - NPC say: Were I to venture a guess, I'd say look for Chaos near the ruins of a fallen empire, as order would tend to oppose chaos, I would look for the Order elemental near the ranks of a well regimented army, probably an ancient army, it is a creature of prestige. The Spirit elemental would find someplace where death and decay have a strong foothold. The Body Elemental may be the most elusive, as there is life everywhere. I would assume that its strong ties with this realm would pull it to a place where there are Muramites. When you find them, bring their remains to me and I'll see what else needs to be done.
         - Condition: `(qglobals["mage_epic"] >= "9" and e.message:findi("Primals"))`
         - Sets `mage_epic` to `10`.
-3. Spawns "Order Elemental" (211057) in `hohonora` on enter.
-4. Loot "Element of Order" (19547) from "Order Elemental".
-5. Spawns "Body Elemental" (284105) in `ferubi` on enter.
-6. Loot "Element of Body" (19447) from "Body Elemental".
-7. Spawns "Chaos Elemental" (86174) in `dreadlands` on enter.
-8. Loot "Element of Chaos" (19444) from "Chaos Elemental".
-9. Spawns "Spirit Elemental" (200060) in `codecay` on enter.
-10. Loot "Element of Spirit" (19544) from "Spirit Elemental".
-11. draniksscar/"Iilivina", hand "Element of Chaos" (19444) + "Element of Body" (19447) + "Element of Spirit" (19544) + "Element of Order" (19547). Sets `mage_epic` to `11`.
-12. Say "Check Lorb" to anguish/"Zone Status".
-13. Spawns "Orb of Discordant Energy" (317087).
-14. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
-15. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
-16. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-17. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-18. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-19. Loot "Journal of Magus Tvish" (15639) from "Danvi's Corpse" (NPC 179132) in `akheva`. Drop cache: 100% chance per kill.
-20. poknowledge/"Bantil Io'Tuv", hand "Journal of Magus Tvish" (15639). Sets `mage_epic` to `2`.
-21. westwastes/"A Lost Tomekeeper", say "Violet Roses". Requires `mage_epic` ==2. Gives "Tome of Primal Fires" (15769).
-22. poknowledge/"Bantil Io'Tuv", hand "Tome of Primal Fires" (15769). Sets `mage_epic` to `3`.
-23. Ground spawn of "Book of Bindings and Incantations" (15772) in `charasis`.
-24. poknowledge/"Bantil Io'Tuv", hand "Book of Bindings and Incantations" (15772). Sets `mage_epic` to `4`.
-25. Loot "Codex of Ice and Ether" (15775) from "Grigor Rojha" in `thedeep`.
-26. poknowledge/"Bantil Io'Tuv", hand "Codex of Ice and Ether" (15775). Sets `mage_epic` to `5`.
-27. najena/"Akksstaff'S Minion", on event_death_complete. Sets `ask_minion_dead` to `1`.
-28. najena/"Akksstaff", say "Demise". Requires `ask_minion_dead` set. Gives "Sentience of Elements" (15778).
-29. poknowledge/"Bantil Io'Tuv", hand "Sentience of Elements" (15778). Sets `mage_epic` to `6`.
-30. potranquility/"Jurmak The Undertow", say "Elemental Essences". Sets `mage_epic_water1` to `1`.
-31. Loot "Ice Burrower Meat" (19022) from "An Ice Burrower" in `westwastes`.
-32. Hand "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) to cobaltscar/"High Priest Margle". Spawns "Tiknonmanin" (117094). Loot "Elemental Essence of Water" (19086) from "Tiknonmanin".
-33. Spawns "Elemental Essence of Fire" (214127) in `potactics` on event_waypoint_arrive.
-34. Loot "Elemental Essence of Fire" (16807) from "Elemental Essence of Fire".
-35. potranquility/"Sarhya The Dawnbreeze", say "Elemental Essences". Sets `mage_epic_air1` to `1`.
-36. Spawns "Elemental Essence of Air" (303100) in `causeway` on enter.
-37. Loot "Elemental Essence of Air" (16773) from "Elemental Essence of Air".
-38. potranquility/"Taq'Aal Emeraldshard", say "Elemental Essences". Sets `mage_epic_earth1` to `1`.
-39. Spawns "Elemental Essence of Earth" (169127) in `letalis` on enter.
-40. Loot "Elemental Essence of Earth" (19087) from "Elemental Essence of Earth".
-41. poknowledge/"Bantil Io'Tuv", hand "Elemental Essence of Air" (16773) + "Elemental Essence of Fire" (16807) + "Elemental Essence of Water" (19086) + "Elemental Essence of Earth" (19087). Requires `mage_epic` ==6. Gives "Staff of Elemental Essence" (19092).
-42. poknowledge/"Bantil Io'Tuv", hand "Staff of Elemental Essence" (19092) + "Globe of Discordant Energy" (47100). Requires `mage_epic` ==11. Gives "Focus of Primal Elements" (19839).
+2. Unresolved cyclic prerequisite: `mage_epic` >=9.
+3. draniksscar/"Iilivina", say "Primals". Sets `mage_epic` to `10`.
+4. Spawns "Order Elemental" (211057) in `hohonora` on enter.
+5. Loot "Element of Order" (19547) from "Order Elemental".
+6. Spawns "Body Elemental" (284105) in `ferubi` on enter.
+7. Loot "Element of Body" (19447) from "Body Elemental".
+8. Spawns "Chaos Elemental" (86174) in `dreadlands` on enter.
+9. Loot "Element of Chaos" (19444) from "Chaos Elemental".
+10. Spawns "Spirit Elemental" (200060) in `codecay` on enter.
+11. Loot "Element of Spirit" (19544) from "Spirit Elemental".
+12. draniksscar/"Iilivina", hand "Element of Chaos" (19444) + "Element of Body" (19447) + "Element of Spirit" (19544) + "Element of Order" (19547). Sets `mage_epic` to `11`.
+13. Say "Check Lorb" to anguish/"Zone Status".
+14. Spawns "Orb of Discordant Energy" (317087).
+15. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+16. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+17. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+18. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+19. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+20. Loot "Journal of Magus Tvish" (15639) from "Danvi's Corpse" (NPC 179132) in `akheva`. Drop cache: 100% chance per kill.
+21. poknowledge/"Bantil Io'Tuv", hand "Journal of Magus Tvish" (15639). Sets `mage_epic` to `2`.
+22. westwastes/"A Lost Tomekeeper", say "Violet Roses". Requires `mage_epic` ==2. Gives "Tome of Primal Fires" (15769).
+23. poknowledge/"Bantil Io'Tuv", hand "Tome of Primal Fires" (15769). Sets `mage_epic` to `3`.
+24. Ground spawn of "Book of Bindings and Incantations" (15772) in `charasis`.
+25. poknowledge/"Bantil Io'Tuv", hand "Book of Bindings and Incantations" (15772). Sets `mage_epic` to `4`.
+26. Loot "Codex of Ice and Ether" (15775) from "Grigor Rojha" in `thedeep`.
+27. poknowledge/"Bantil Io'Tuv", hand "Codex of Ice and Ether" (15775). Sets `mage_epic` to `5`.
+28. najena/"Akksstaff'S Minion", on event_death_complete. Sets `ask_minion_dead` to `1`.
+29. najena/"Akksstaff", say "Demise". Requires `ask_minion_dead` set. Gives "Sentience of Elements" (15778).
+30. poknowledge/"Bantil Io'Tuv", hand "Sentience of Elements" (15778). Sets `mage_epic` to `6`.
+31. potranquility/"Jurmak The Undertow", say "Elemental Essences". Sets `mage_epic_water1` to `1`.
+32. Loot "Ice Burrower Meat" (19022) from "An Ice Burrower" in `westwastes`.
+33. Hand "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) to cobaltscar/"High Priest Margle". Spawns "Tiknonmanin" (117094). Loot "Elemental Essence of Water" (19086) from "Tiknonmanin".
+34. Spawns "Elemental Essence of Fire" (214127) in `potactics` on event_waypoint_arrive.
+35. Loot "Elemental Essence of Fire" (16807) from "Elemental Essence of Fire".
+36. potranquility/"Sarhya The Dawnbreeze", say "Elemental Essences". Sets `mage_epic_air1` to `1`.
+37. Spawns "Elemental Essence of Air" (303100) in `causeway` on enter.
+38. Loot "Elemental Essence of Air" (16773) from "Elemental Essence of Air".
+39. potranquility/"Taq'Aal Emeraldshard", say "Elemental Essences". Sets `mage_epic_earth1` to `1`.
+40. Spawns "Elemental Essence of Earth" (169127) in `letalis` on enter.
+41. Loot "Elemental Essence of Earth" (19087) from "Elemental Essence of Earth".
+42. poknowledge/"Bantil Io'Tuv", hand "Elemental Essence of Air" (16773) + "Elemental Essence of Fire" (16807) + "Elemental Essence of Water" (19086) + "Elemental Essence of Earth" (19087). Requires `mage_epic` ==6. Gives "Staff of Elemental Essence" (19092).
+43. poknowledge/"Bantil Io'Tuv", hand "Staff of Elemental Essence" (19092) + "Globe of Discordant Energy" (47100). Requires `mage_epic` ==11. Gives "Focus of Primal Elements" (19839).
 
 ## Quest-state progression
 

@@ -6,59 +6,63 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Water Sprinkler of Nem Ankh" (5532)
 
-1. Loot "Singed Scroll" (18170) from "Overking Bathezid" in `chardok`.
-2. Loot "Lord Gimblox's Signet Ring" (28018) from "Lord Gimblox" in `soldunga`.
-3. timorous/"Natasha Whitewater", hand "Lord Gimblox's Signet Ring" (28018). Gives "Ornate Sea Shell" (28056).
-4. Hand "Ornate Sea Shell" (28056) to burningwood/"Naxot Deepwater". Spawns "Ixiblat Fer, kill him, loot scepter of I.F." (87151). Loot "Sceptre of Ixiblat Fer" (28017) from "Ixiblat Fer, kill him, loot scepter of I.F.".
-5. timorous/"Omat Vastsea", hand "Singed Scroll" (18170) + "Sceptre of Ixiblat Fer" (28017). Gives "Orb of Clear Water" (28048).
-6. Spawns "A Spirit Of Flame" (51145) in `lakerathe` on event_signal.
-7. Loot "Damaged Goblin Crown" (28046) from "A Spirit Of Flame".
-8. lakerathe/"Natasha Whitewater", hand "Damaged Goblin Crown" (28046). Gives "Ornate Sea Shell" (28047).
-9. timorous/"Omat Vastsea", hand "Ornate Sea Shell" (28047). Gives "Coral Statue of Tarew" (28051).
-10. Hand "Coral Statue of Tarew" (28051) to soltemple/"A Seeker". Spawns "A Plasmatic Priest" (80042). Loot "Blood Soaked Plasmatic Priest Robe" (1299) from "A Plasmatic Priest".
-11. timorous/"Omat Vastsea", hand "Blood Soaked Plasmatic Priest Robe" (1299). Gives "Orb of Frozen Water" (28049).
-12. Kill skyfire/"Zordak Ragefire". Spawns "Zordakalicus Ragefire" (91090).
-13. Loot "Impure Heart of Zordak Ragefire" (17122) from "Zordakalicus Ragefire".
-14. burningwood/"Naxot Deepwater", hand "Ornate Sea Shell" (28056). Gives "Message to Natasha" (28052).
-15. timorous/"Natasha Whitewater", hand "Message to Natasha" (28052). Gives "Shimmering Pearl" (28054).
-16. soldungb/"Zordak Ragefire", hand "Shimmering Pearl" (28054). Gives "Swirling Pearl" (28059).
-17. skyfire/"Warder Cecilia", say "Hail". Gives "Zordak's Box of Bindings" (17175).
-18. Loot "Pearlescent Fragment" (24995) from "A Skyfire Drake" (NPC 91038) in `skyfire`. Drop cache: 1.12% chance per kill.
-19. Combine in "Zordak's Box of Bindings" (17175): "Pearlescent Fragment" (24995). Produces "Assembled Pearlescent Shard" (24996). The combine does not fail.
-20. skyfire/"Warder Cecilia", hand "Assembled Pearlescent Shard" (24996). Gives "Pearlescent Seal" (24997).
-21. Combine in "Impure Heart of Zordak Ragefire" (17122): "Pearlescent Seal" (24997), "Swirling Pearl" (28059). Produces "Zordak Ragefire's Heart" (28019). The combine does not fail.
-22. timorous/"Omat Vastsea", hand "Zordak Ragefire's Heart" (28019). Gives "Orb of Vapor" (28050).
-23. timorous/"Jhassad Oceanson", hand "Orb of Clear Water" (28048) + "Orb of Frozen Water" (28049) + "Orb of Vapor" (28050). Gives "Orb of the Triumvirate" (28023).
-24. timorous/"Avatar Of Water", hand "Orb of the Triumvirate" (28023). Gives "Water Sprinkler of Nem Ankh" (5532).
+1. lakerathe/"Shmendrik Lavawalker", say "Hail". Hail, good $name!! Be wary near the waters of Lake Rathe! The Riptide goblin king, Lord Bergurgle, has been commanding his minions to murder and rob all who come near it! I am here seeking his death but I am afraid I am no match for all of his subjects. I shall reward you greatly for the death of Lord Bergurgle. I simply ask that you bring me his crown as proof.
+2. Loot "Singed Scroll" (18170) from "Overking Bathezid" in `chardok`.
+3. Loot "Lord Gimblox's Signet Ring" (28018) from "Lord Gimblox" in `soldunga`.
+4. timorous/"Natasha Whitewater", hand "Lord Gimblox's Signet Ring" (28018). Gives "Ornate Sea Shell" (28056).
+5. Hand "Ornate Sea Shell" (28056) to burningwood/"Naxot Deepwater". Spawns "Ixiblat Fer, kill him, loot scepter of I.F." (87151). Loot "Sceptre of Ixiblat Fer" (28017) from "Ixiblat Fer, kill him, loot scepter of I.F.".
+6. timorous/"Omat Vastsea", hand "Singed Scroll" (18170) + "Sceptre of Ixiblat Fer" (28017). Gives "Orb of Clear Water" (28048).
+7. Loot "Lord Bergurgle's Crown" (28044) from "Lord Bergurgle".
+8. Loot "Lord Bergurgle's Crown" (28044) from "Lord Bergurgle" in `lakerathe`.
+9. lakerathe/"Shmendrik Lavawalker", hand "Lord Bergurgle's Crown" (28044). Triggers `lakerathe/natasha whitewater#event_spawn`.
+10. Kill lakerathe/"Shmendrik Lavawalker".
+11. Loot "Damaged Goblin Crown" (28046) from "A Spirit Of Flame".
+12. lakerathe/"Natasha Whitewater", hand "Damaged Goblin Crown" (28046). Gives "Ornate Sea Shell" (28047).
+13. timorous/"Omat Vastsea", hand "Ornate Sea Shell" (28047). Gives "Coral Statue of Tarew" (28051).
+14. Hand "Coral Statue of Tarew" (28051) to soltemple/"A Seeker". Spawns "A Plasmatic Priest" (80042). Loot "Blood Soaked Plasmatic Priest Robe" (1299) from "A Plasmatic Priest".
+15. timorous/"Omat Vastsea", hand "Blood Soaked Plasmatic Priest Robe" (1299). Gives "Orb of Frozen Water" (28049).
+16. Kill skyfire/"Zordak Ragefire". Spawns "Zordakalicus Ragefire" (91090).
+17. Loot "Impure Heart of Zordak Ragefire" (17122) from "Zordakalicus Ragefire".
+18. burningwood/"Naxot Deepwater", hand "Ornate Sea Shell" (28056). Gives "Message to Natasha" (28052).
+19. timorous/"Natasha Whitewater", hand "Message to Natasha" (28052). Gives "Shimmering Pearl" (28054).
+20. soldungb/"Zordak Ragefire", hand "Shimmering Pearl" (28054). Gives "Swirling Pearl" (28059).
+21. skyfire/"Warder Cecilia", say "Hail". Gives "Zordak's Box of Bindings" (17175).
+22. Loot "Pearlescent Fragment" (24995) from "A Skyfire Drake" (NPC 91038) in `skyfire`. Drop cache: 1.12% chance per kill.
+23. Combine in "Zordak's Box of Bindings" (17175): "Pearlescent Fragment" (24995). Produces "Assembled Pearlescent Shard" (24996). The combine does not fail.
+24. skyfire/"Warder Cecilia", hand "Assembled Pearlescent Shard" (24996). Gives "Pearlescent Seal" (24997).
+25. Combine in "Impure Heart of Zordak Ragefire" (17122): "Pearlescent Seal" (24997), "Swirling Pearl" (28059). Produces "Zordak Ragefire's Heart" (28019). The combine does not fail.
+26. timorous/"Omat Vastsea", hand "Zordak Ragefire's Heart" (28019). Gives "Orb of Vapor" (28050).
+27. timorous/"Jhassad Oceanson", hand "Orb of Clear Water" (28048) + "Orb of Frozen Water" (28049) + "Orb of Vapor" (28050). Gives "Orb of the Triumvirate" (28023).
+28. timorous/"Avatar Of Water", hand "Orb of the Triumvirate" (28023). Gives "Water Sprinkler of Nem Ankh" (5532).
 
 ## Epic 1.5
 
 ### "Harmony of the Soul" (9955)
 
-1. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-2. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-3. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-4. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-5. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-6. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-7. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-8. Kill wakening/"Dark Disciple Master". Spawns "A Gilded Chest" (119179).
-9. Loot "Aegis of Chaotic Worship" (9954) from "A Gilded Chest".
-10. wallofslaughter/"A Quivering Egg", on event spawn.
-11. Starts timer `hatch`.
-12. Spawns "A Murk Hatchling" (300084) after `wallofslaughter/a quivering egg#timer:hatch`.
-13. Loot "Murkglider Plasma" (13639) from "A Murk Hatchling".
-14. Loot "Bazu Plasma" (13658) from "Bazu Bonesmasher" (NPC 300000) in `wallofslaughter`. Drop cache: 43.09% chance per kill.
-15. Loot "Pyrilen Plasma" (13667) from "A Dragorn Assassin" in `wallofslaughter`.
-16. Combine in Brew Barrel (19): "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing, trivial 100.
-17. Combine in Forge (17): "Water Flask" (13006), "Aegis of Chaotic Worship" (9954), "Soul Temper" (14047). Produces "Harmony of the Soul" (9955). Requires Blacksmithing. The combine does not fail.
+1. **Unresolved introduction:** no connected introductory hail in the graph.
+2. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+3. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+4. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+5. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+6. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+7. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+8. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+9. Kill wakening/"Dark Disciple Master". Spawns "A Gilded Chest" (119179).
+10. Loot "Aegis of Chaotic Worship" (9954) from "A Gilded Chest".
+11. wallofslaughter/"A Quivering Egg", on event spawn.
+12. Starts timer `hatch`.
+13. Spawns "A Murk Hatchling" (300084) after `wallofslaughter/a quivering egg#timer:hatch`.
+14. Loot "Murkglider Plasma" (13639) from "A Murk Hatchling".
+15. Loot "Bazu Plasma" (13658) from "Bazu Bonesmasher" (NPC 300000) in `wallofslaughter`. Drop cache: 43.09% chance per kill.
+16. Loot "Pyrilen Plasma" (13667) from "A Dragorn Assassin" in `wallofslaughter`.
+17. Combine in Brew Barrel (19): "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing, trivial 100.
+18. Combine in Forge (17): "Water Flask" (13006), "Aegis of Chaotic Worship" (9954), "Soul Temper" (14047). Produces "Harmony of the Soul" (9955). Requires Blacksmithing. The combine does not fail.
 
 ## Epic 2.0
 
 ### "Aegis of Superior Divinity" (20076)
 
-1. global/"Global Player", combine recipe 19460. Sets `cleric_epic` to `7`.
-2. dranik/"Natvil", say "Hail". Sets `cleric20` to `1`.
+1. dranik/"Natvil", say "Hail". Sets `cleric20` to `1`.
     - Dialogue with dranik/"Natvil":
       - Player: "Hail"
         - NPC emote: examines your craftsmanship. 'Impressive, but I'm afraid that the temper was not sufficient to unlock the full potential of the shield. For now you may use it in its current state. I suspect to fully realize the latent potential of the shield you will require a soulstone from the person who it was bound to originally as well as a Globe of Discordant Energy. Return to me when you have that, I will assist you in completing its enhancement.
@@ -67,6 +71,7 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
           - Reply guard: ``
         - Condition: `qglobals["cleric_epic"] ~= nil and qglobals["cleric_epic"] >= "5" and e.message:findi("hail")`
         - Sets `cleric20` to `1`.
+2. global/"Global Player", combine recipe 19460. Sets `cleric_epic` to `7`.
 3. nedaria/"Tavon Vastsea", say "Hail". Sets `cleric20` to `2`.
 4. Loot "Journal of the Prime Disciple" (56016) at chambersa/"Mpg Fear", say "Chest Spawn".
 5. Alternative: Loot "Journal of the Prime Disciple" (56016) from chambersb/"Mpg Weaponry" in `chambersb`; trigger: chambersb/"Mpg Weaponry", say "Chest Spawn".
@@ -90,8 +95,8 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 23. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
 24. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
 25. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
-26. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
-27. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+26. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
+27. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", say "Signal:999999".
 28. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
 29. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
 30. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
@@ -215,9 +220,10 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 
 ### "Dark Disciples Notice of Service" (9591)
 
-1. Spawns "Taskmaster Mirot" (57151) in `lfaydark` on event_signal.
-2. Loot "Magically Sealed Letter" (9585) from "Taskmaster Mirot".
-3. nedaria/"Tavon Vastsea", hand "Magically Sealed Letter" (9585). Gives "Dark Disciples Notice of Service" (9591).
+1. **Broken:** cyclic event trigger at `lfaydark/taskmaster mirot#signal:1`.
+2. Kill lfaydark/"A Wayfarer".
+3. Loot "Magically Sealed Letter" (9585) from "Taskmaster Mirot".
+4. nedaria/"Tavon Vastsea", hand "Magically Sealed Letter" (9585). Gives "Dark Disciples Notice of Service" (9591).
 
 ### "Soul Temper" (14047)
 
