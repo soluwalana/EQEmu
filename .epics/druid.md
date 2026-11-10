@@ -234,78 +234,58 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
     - event_trade NPC emote: looks at the crystal for a moment; confusion, disgust and curiosity chasing each other across his tired face. After reading the letter, he looks up at you.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 62846,item2 = 62655}))`
     - event_trade NPC say: This crystal seems strange, but if you and this Shana believe that it will help, then I know just the person to put it to work.' Corun puts the note and the crystal into a pouch. He reaches into another pouch to retrieve something small and hands it to you. 'This seed was brought to us by a druid of great skill. It should provide the cure we seek, but we do not know the place or circumstances under which to plant it. We have agreed to leave it to you to find that place and that time. I urge you to hasten, we do not know how long it will be until the plague is released upon us in earnest. The only thing that I know is that there may be a link between those that created the disease and the Plane of Discord. A very tenuous link, but keep the seed with you at all times, you never know when you will need it. May the Mother smile on your effort.
-39. qrg/"Niera Farbreeze", hand "Tuft of Sickly Maiden's Hair" (62811). Gives "Waterproof Collection Bag" (62812).
-    - event_trade NPC say: Well, this is certainly new to me. It's hard to tell if this is a real concern though. Diseases of all sorts exist in the world and we can't make every one of them a priority. But then perhaps I spend too much time thinking about it. Some great druids and scholars have told me that diseases can start out as helpful things, like parasite fish that clean other fish. But sometimes they change and become harmful because they are trying to clean the wrong kind of things off the fish. They've told me that this is just the way that life tries out new things to see if they work. That might be true, but I don't believe it. Tunare isn't that cruel. And I know at least one god that is.
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 62811}))`
-    - event_trade NPC say: See if you can find other infected plants or any other evidence of this infection. If you can find enough of them, you may be able to see a pattern. It should spread out from one point. Knowing the first location might help me a lot in trying to discover what this gunk started out as, which parasite fish it is, so-to-speak. Here, take this bag. Put the diseased plants and other evidence you find in here. Make sure to remember where you found them. Keep the bag with you at all times on your search, you never know when you will come across evidence of value. When you think you have enough to see a pattern, seal up the bag and bring it back to me and let me know what you've found.
-40. **Unresolved acquisition:** "Bag of Diseased Maiden's Hair" (62826) has no graph or catalog producer.
-41. Spawns "a bloodgill forager" (npc:85234) via `lakeofillomen/player#enter`.
-42. Kill "a bloodgill forager" (NPC 85234) in `lakeofillomen` and loot "Handful of Diseased Maiden's Hair" (62825).
-43. Buy "Tackle Box" (17048) from "Misla McMannus" (NPC 12094) in `qey2hh1`. Base price: 1,000 copper.
-44. Spawns "Ulthork Raider" (npc:116608) via `eastwastes/player#enter`.
-45. Kill "Ulthork Raider" (NPC 116608) in `eastwastes` and loot "Carved Prexus Totem" (62821).
-46. cobaltscar/"Blumblum Swigwater", hand "Carved Prexus Totem" (62821). Gives "Small Trigger Fish" (62820).
-    - event_trade NPC say: Wonderful! You are indeed a creature of your word. Not only have you defeated an enemy of the Othmir, but you have returned to us this most precious statue. I thank you. It is unfortunate that the only thing I have to give you in return is some information and a small fish.
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 62821}))`
-47. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820). Produces "Gutting Knife" (62823). Requires Fishing.
-48. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing.
-49. Spawns "spawn #Swamp Terror" (npc:47208) via `feerrott/druid epic trap#enter`.
-50. Kill "spawn #Swamp Terror" (NPC 47208) in `feerrott` and loot "Partially Digested Maiden's Hair" (62819).
-51. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). Requires Remove Traps.
-52. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
-    - event_trade NPC emote: examines the contents of the bag. She also asks you about where you found each item. Your answers bring a puzzled look to her face. 'There does not appear to be any rhyme or reason to the locations where you found these. The stories you tell me indicate that these plants were introduced artificially to the environment. I will pass the samples on to others, they will be very useful, thank you for your help. I am, however, more interested in finding out who did this. Take this and wrap up that disgusting head that you said you found with one of the specimens then give it to me. I want to look at it.
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 62813}))`
-53. Kill "spawn #Swamp Terror" (NPC 47208) in `feerrott` and loot "Mangled Head" (62818).
-54. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). Requires Remove Traps.
-55. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
+39. Spawns "spawn #Swamp Terror" (npc:47208) via `feerrott/druid epic trap#enter`.
+40. Kill "spawn #Swamp Terror" (NPC 47208) in `feerrott` and loot "Mangled Head" (62818).
+41. Combine recipe 19887 (container 62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). Requires Remove Traps.
+42. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
     - event_trade NPC emote: examines the head. You say that this might belong to one of those that is involved in all of this? Even if we had seen this person before we'd never be able to recognize it. I don't know how you'll be able to get any information from that, but it's our only clue. See if you can find a way to learn the identity of that head, but first I need you to learn as much as you can about diseases of the skin. Others have come up with some useful information about diseases of the mind and we need your research to put this puzzle together.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 62848}))`
-56. poknowledge/"Pathfinder Arelat", say "Worth It". Gives "Fresh Awakenings vol. 1" (62839).
+43. poknowledge/"Pathfinder Arelat", say "Worth It". Gives "Fresh Awakenings vol. 1" (62839).
     - Player: "worth it"
       - NPC say: Then here it is. This is a copy of an ancient text that we have preserved and copied for many long years. The author died generations ago. You should read it before you give it to that witch. Good luck to you, friend.
       - Condition: `(qglobals["druid_epic"] == "2" and e.message:findi("worth it"))`
       - Linked from "Corruption of the Night" (explicit prompt).
-57. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
-58. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
+44. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
+45. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
     - event_trade NPC say: That's great! Niera scribbles some notes as she flips through the text. She then hands the notes to you, keeping the book herself. There is some useful information in there. Hold onto these notes until later, you may need them. Give them back to me when you've discovered the identity of that skull.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 62842}))`
-59. feerrott/"Corrupted Spirit", say "Show It". Gives "Disease Rune" (62837).
+46. feerrott/"Corrupted Spirit", say "Show It". Gives "Disease Rune" (62837).
     - Player: "show it"
       - NPC message: The skull of the dead acolyte glows briefly and all of the remaining flesh falls from it. An ephemeral rune appears in your hand. 'Place that where that horrible stone was before, in my very own head with that nasty scroll, and you will be able to engrave it into my skull. My poor skull! Hurry up, though, that rune won't last forever.
       - Condition: `(qglobals["druid_epic"] == "3" and e.message:findi("show it"))`
       - Linked from "What plague?" (explicit prompt).
-60. tox/"A Skeleton", say "". Gives "Animating Heads" (62828).
-61. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). Requires Remove Traps.
-62. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
+47. tox/"A Skeleton", say "". Gives "Animating Heads" (62828).
+48. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). Requires Remove Traps.
+49. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
     - event_trade NPC say: That's an amazing story. So there is a coven of Mordavin's followers out there. This is indeed bad news.' She gathers all of the information she has gained so far. She examines the rune on the skull and the text on healing plants. She then pulls out a worn bag and shows you several blood and skin samples from various creatures. All look sickly to you. Niera looks at you and sighs. 'We have a lot of information now, thanks to you and one of our Rangers. We know the nature of the disease and we know the identity of those that created it. Now we need to find the cure. A council of the learned has reviewed all of the information brought to us so far, and this text confirms our suspicions. We need the help of the Unkempt to find a cure. That is your task now. Find the Unkempt and ask them for help. Take these notes, they will explain the details, if you can find someone to give them to.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 62838, item2 = 62849}))`
-63. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Gives "Living Brambles Seed" (62845).
+50. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Gives "Living Brambles Seed" (62845).
     - event_trade NPC emote: looks at the paper you hand him. 'I can almost understand this writing. This is not a natural disease. I see that you understand the seed rituals, this is good.' The ursine waves his arms in a way that might indicate that he is casting a spell, though it looks little like the sort of spell casting you know. Two seeds appear in his hands. 'Good. I was not sure that I could grow these here. Take them. One is for your cause, one is for you.
       - Event guard: `(qglobals["druid_epic"] == "4" and e.other:GetFaction(e.self) < 5 and item_lib.check_turn_in(e.trade, {item1 = 62843}) )`
-64. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Gives "Living Brambles Seed" (62850).
+51. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Gives "Living Brambles Seed" (62850).
     - event_trade NPC say: Wonderful! These are amazing seeds! I've never seen any just like them before. And you got them from one of the Unkempt. Amazing.' Niera examines the seeds closely while referring to a book called Unkempt Seed Rituals. She wraps both seeds in a soft, moist cloth and hands one of them to you. 'I think I know what the Unkempt meant. This one is for you. Keep it safe. I believe that I know where the other is needed. I have learned much while you were gone and I need to tell you about it.
       - Event guard: `(qglobals["druid_epic"] == "4" and item_lib.check_turn_in(e.trade, {item1 = 62844, item2 = 62845}))`
     - event_trade NPC say: Others have discovered a method for locating the virus. Our brothers and sisters, along with the help of Shana Liskia in Freeport, have grown a crystal from traces of the disease and that crystal can find the disease. They have called it a Mind Crystal, though I'm not sure why. Take it. I need you to put it to work for us. Go out and use it to find the members of that coven and destroy them. I know that we have few clues as to where to look, but you have been wonderfully clever so far and we're relying on you to hunt them down.
-65. Loot "Crystal Fragment" (62852) from "Finnelzi Springworthy" (NPC 14190) in `southkarana`. Drop cache: 100% chance per kill.
-66. freportw/"Shana Liskia", hand "Crystal Fragment" (62852). Gives "Small Padded Bag" (62853).
+52. Loot "Crystal Fragment" (62852) from "Finnelzi Springworthy" (NPC 14190) in `southkarana`. Drop cache: 100% chance per kill.
+53. freportw/"Shana Liskia", hand "Crystal Fragment" (62852). Gives "Small Padded Bag" (62853).
     - event_trade NPC say: Well these certainly are interesting. You say there might be more of them on those necromancers that escaped? Well here, take this. Find all of them and place them into this bag to keep them safe. Then bring them all to me and I'll examine them more closely. I can tell you that they are similiar to the Mind Crystal, but it appears to have different magical properties. I have never seen anything like them and I suspect that they are not from Norrath.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 62852,item2 = 62852,item3 = 62852}))`
-67. Spawns "Azibelle Spavin" (npc:335064) via `harbingers/druid epic trap#enter`.
-68. Kill "Azibelle Spavin" (NPC 335064) in `harbingers` and loot "Bohab's Crystal Fragment" (62886).
-69. Kill "Azibelle Spavin" (NPC 335064) in `harbingers` and loot "Azibelle's Crystal Fragment" (62887).
-70. Kill "Glenfire Telzir" (NPC 335065) in `harbingers` and loot "Glenfire's Crystal Fragment" (62888).
-71. Combine in "Small Padded Bag" (62853): "Bohab's Crystal Fragment" (62886), "Azibelle's Crystal Fragment" (62887), "Glenfire's Crystal Fragment" (62888), "Crystal Fragment" (62852). Produces "Full Padded Bag" (62854). Requires Remove Traps.
-72. freportw/"Shana Liskia", hand "Full Padded Bag" (62854). Gives "Bowl of Foul-smelling Liquid" (62855).
+54. Spawns "Azibelle Spavin" (npc:335064) via `harbingers/druid epic trap#enter`.
+55. Kill "Azibelle Spavin" (NPC 335064) in `harbingers` and loot "Bohab's Crystal Fragment" (62886).
+56. Kill "Azibelle Spavin" (NPC 335064) in `harbingers` and loot "Azibelle's Crystal Fragment" (62887).
+57. Kill "Glenfire Telzir" (NPC 335065) in `harbingers` and loot "Glenfire's Crystal Fragment" (62888).
+58. Combine in "Small Padded Bag" (62853): "Bohab's Crystal Fragment" (62886), "Azibelle's Crystal Fragment" (62887), "Glenfire's Crystal Fragment" (62888), "Crystal Fragment" (62852). Produces "Full Padded Bag" (62854). Requires Remove Traps.
+59. freportw/"Shana Liskia", hand "Full Padded Bag" (62854). Gives "Bowl of Foul-smelling Liquid" (62855).
     - event_trade NPC emote: takes the crystal fragments from the pouch. She applies a drop of liquid to it. The liquid turns the crystal white where it spreads.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 62854}))`
     - event_trade NPC say: These small crystals are easier to work with than the Mind Crystal. They also differ from the Mind Crystal in that they are from the Plane of Discord. Take this mixture and find something to enhance its magical power and you just might be able to purify the Mind Crystal. I have no idea what that might be, but I know what it should be. You'll need two components. One will increase the power of the mixture, something with a lot of magical power. It needs to be a liquid or powder to integrate properly. And you'll need a stabilizer, something to help the mixture and the new material to remain stable. This influences the kind of attunement that the crystal takes on during the process. It should be something from nature if you want the result to suit your tastes. You'll have to find someone that knows of something about it among the druids for help on what to use.
-73. Loot "Energized Noc Blood" (62889) from "Noc Juggernaut".
-74. Forage "Emerald Moss" (62856) in `emeraldjungle`.
-75. Combine in "Bowl of Foul-smelling Liquid" (62855): "Energized Noc Blood" (62889), "Emerald Moss" (62856), "Mind Crystal" (62846). Produces "Clear Mind Crystal" (62857). Requires Remove Traps.
-76. Kill kithicor/"Blackened Treant".
-77. Spawns "Blackened Dryad" (npc:20301) via `kithicor/blackened tree limb#event_death_complete`.
-78. Kill "Blackened Dryad" (NPC 20301) in `kithicor` and loot "Blackened Earth" (62862).
-79. Combine in "Reinforced Aerated Pot" (62861): "Living Brambles Seed" (62850), "Clear Mind Crystal" (62857), "Blackened Earth" (62862). Produces "Staff of Living Brambles" (62863). Requires Remove Traps.
+60. Loot "Energized Noc Blood" (62889) from "Noc Juggernaut".
+61. Forage "Emerald Moss" (62856) in `emeraldjungle`.
+62. Combine in "Bowl of Foul-smelling Liquid" (62855): "Energized Noc Blood" (62889), "Emerald Moss" (62856), "Mind Crystal" (62846). Produces "Clear Mind Crystal" (62857). Requires Remove Traps.
+63. Kill kithicor/"Blackened Treant".
+64. Spawns "Blackened Dryad" (npc:20301) via `kithicor/blackened tree limb#event_death_complete`.
+65. Kill "Blackened Dryad" (NPC 20301) in `kithicor` and loot "Blackened Earth" (62862).
+66. Combine in "Reinforced Aerated Pot" (62861): "Living Brambles Seed" (62850), "Clear Mind Crystal" (62857), "Blackened Earth" (62862). Produces "Staff of Living Brambles" (62863). Requires Remove Traps.
 
 ## Epic 2.0
 

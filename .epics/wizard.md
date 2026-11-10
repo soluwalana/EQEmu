@@ -118,15 +118,13 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 **Earlier reward routes required by this graph path:** ["Staff of Prismatic Power" (12665)](#epic-item-12665).
 Revisit those instructions if another copy of a consumed item is needed.
 
-1. **Unresolved acquisition:** "Spacial Distortion" (16695) has no graph or catalog producer.
-2. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
-3. lavastorm/"Talwyn Flamecaller", hand "Globe of Discordant Energy" (47100). Gives "Broken Orb of Discordant Energy" (16147) + "Broken Orb of Discordant Energy" (15836).
+1. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
+2. lavastorm/"Talwyn Flamecaller", hand "Globe of Discordant Energy" (47100). Gives "Broken Orb of Discordant Energy" (16147) + "Broken Orb of Discordant Energy" (15836).
     - event_trade NPC say: To obtain this globe was no trivial task, yet you have prevailed! Your staff is nearly complete now, you have only two final tasks remaining.', he says as he begins to murmur a brief incantation. Without warning, the orb splits into two equal halves and are then given to you. They will infuse your staff with one of the most useful powers of a wizard; teleportation.'
       - Event guard: `(qglobals["wiz_epic20"] ~= nil and qglobals["wiz_epic20"] >= "3" and item_lib.check_turn_in(e.trade, {item1 = 47100}))`
-4. Combine in "Spacial Distortion" (16695): "Broken Orb of Discordant Energy" (16147). Produces "Infused Orb of Discordant Energy" (16451). Requires Remove Traps.
-5. **Unresolved acquisition:** "Spacial Distortion" (16765) has no graph or catalog producer.
-6. Combine in "Spacial Distortion" (16765): "Broken Orb of Discordant Energy" (15836). Produces "Infused Orb of Discordant Energy" (16334). Requires Remove Traps.
-7. lavastorm/"Talwyn Flamecaller", hand "Infused Orb of Discordant Energy" (16451) + "Infused Orb of Discordant Energy" (16334) + "Staff of Prismatic Power" (12665). Gives "Staff of Phenomenal Power" (16576).
+3. Combine recipe 19894 (container 16695): "Broken Orb of Discordant Energy" (16147). Produces "Infused Orb of Discordant Energy" (16451). Requires Remove Traps.
+4. Combine recipe 19895 (container 16765): "Broken Orb of Discordant Energy" (15836). Produces "Infused Orb of Discordant Energy" (16334). Requires Remove Traps.
+5. lavastorm/"Talwyn Flamecaller", hand "Infused Orb of Discordant Energy" (16451) + "Infused Orb of Discordant Energy" (16334) + "Staff of Prismatic Power" (12665). Gives "Staff of Phenomenal Power" (16576).
     - event_trade NPC say: With these Infused Orbs, your path to becoming a soldier of Solusek's legions has been completed. You have surpassed even my expectations!' he says. You hear Talwyn chant in low, almost inaudible tones. His hands glow bright with power as he assembles a weapon worthy of Solusek himself. 'Take this staff as a symbol of your loyalty to Solusek and wield it proudly, wizard!
       - Event guard: `(qglobals["wiz_epic20"] == "4" and item_lib.check_turn_in(e.trade, {item1 = 16451, item2 = 16334, item3 = 12665}))`
     - event_trade NPC message: You have gained 10 ability points!

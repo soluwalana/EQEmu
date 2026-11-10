@@ -138,38 +138,37 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 5. Kill "Metala Von Korach" (NPC 207084) in `potorment` and loot "Rusted Bile Etched Blade" (77630).
 6. Loot "Crest of Rizlona" (77626) from "a shadow thief".
 7. Loot "Dragorn Blood" (77639) from "a dragorn serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.5158% chance per kill.
-8. Buy "Spell: Enchant Velium" (15797) from "Nimren Stonecutter" (NPC 115170) in `thurgadina`. Base price: 16,089 copper.
-9. Learn "Spell: Enchant Velium" (15797) and cast "Enchant Velium" to summon "Enchanted Velium Bar" (22099).
-10. Summon "Cloudy Diamond of Air" (29989) by casting "Imbue Air".
-11. Forage "Wind Dragon Crystal" (12783) in `skyfire`.
-12. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Cloudy Diamond of Air" (29989), "Wind Dragon Crystal" (12783). Produces "Wind Dragon Prism" (77618). Requires Jewelry Making.
-13. Summon "Red Diamond of Fire" (29986) by casting "Imbue Fire".
-14. Forage "Fire Dragon Crystal" (12487) in `skyfire`.
-15. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Red Diamond of Fire" (29986), "Fire Dragon Crystal" (12487). Produces "Fire Dragon Prism" (77619). Requires Jewelry Making.
-16. Summon "Aqua Diamond of Water" (29987) by casting "Imbue Water".
-17. Forage "Ice Dragon Crystal" (12781) in `skyfire`.
-18. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Aqua Diamond of Water" (29987), "Ice Dragon Crystal" (12781). Produces "Water Dragon Prism" (77620). Requires Jewelry Making.
-19. Summon "Brown Diamond of Earth" (29988) by casting "Imbue Earth".
-20. Forage "Earth Dragon Crystal" (12782) in `skyfire`.
-21. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Brown Diamond of Earth" (29988), "Earth Dragon Crystal" (12782). Produces "Earth Dragon Prism" (77621). Requires Jewelry Making.
-22. Summon "Green Diamond of Disease" (30118) by casting "Imbue Disease".
-23. Spawns "a swamp dragon" (npc:83249) via `swampofnohope/a dire leech#event_hp`.
-24. Kill "a swamp dragon" (NPC 83249) in `swampofnohope` and loot "Swamp Dragon Crystal" (77614).
-25. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Green Diamond of Disease" (30118), "Swamp Dragon Crystal" (77614). Produces "Swamp Dragon Prism" (77622). Requires Jewelry Making.
-26. Summon "Gray Diamond of Storms" (29991) by casting "Imbue Storm".
-27. Spawns "a plains dragon" (npc:13130) via `northkarana/a dire griffon#event_hp`.
-28. Kill "a plains dragon" (NPC 13130) in `northkarana` and loot "Plains Dragon Crystal" (77615).
-29. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Gray Diamond of Storms" (29991), "Plains Dragon Crystal" (77615). Produces "Plains Dragon Prism" (77623). Requires Jewelry Making.
-30. Summon "Yellow Diamond of Valor" (30489) by casting "Imbue Valor".
-31. Spawns "a forest dragon" (npc:181224) via `jaggedpine/a dire kodiak#event_hp`.
-32. Kill "a forest dragon" (NPC 181224) in `jaggedpine` and loot "Forest Dragon Crystal" (77616).
-33. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Yellow Diamond of Valor" (30489), "Forest Dragon Crystal" (77616). Produces "Forest Dragon Prism" (77624). Requires Jewelry Making.
-34. Summon "White Diamond of Justice" (29494) by casting "Imbue Justice".
-35. Spawns "a mountain dragon" (npc:100227) via `stonebrunt/a dire panda#event_hp`.
-36. Kill "a mountain dragon" (NPC 100227) in `stonebrunt` and loot "Mountain Dragon Crystal" (77617).
-37. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "White Diamond of Justice" (29494), "Mountain Dragon Crystal" (77617). Produces "Mountain Dragon Prism" (77625). Requires Jewelry Making.
-38. Combine in "Crest of Rizlona" (77626): "Wind Dragon Prism" (77618), "Fire Dragon Prism" (77619), "Water Dragon Prism" (77620), "Earth Dragon Prism" (77621), "Swamp Dragon Prism" (77622), "Plains Dragon Prism" (77623), "Forest Dragon Prism" (77624), "Mountain Dragon Prism" (77625). Produces "Draconic Prism" (77628). Requires Remove Traps.
-39. Combine in "Rusted Bile Etched Blade" (77630): "Draconic Prism" (77628). Produces "Prismatic Dragon Blade" (77631). Requires Remove Traps.
+8. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium" or "Greater Mass Enchant Velium" or "Mass Enchant Velium".
+9. Summon "Cloudy Diamond of Air" (29989) by casting "Imbue Air".
+10. Forage "Wind Dragon Crystal" (12783) in `skyfire`.
+11. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Cloudy Diamond of Air" (29989), "Wind Dragon Crystal" (12783). Produces "Wind Dragon Prism" (77618). Requires Jewelry Making.
+12. Summon "Red Diamond of Fire" (29986) by casting "Imbue Fire".
+13. Forage "Fire Dragon Crystal" (12487) in `skyfire`.
+14. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Red Diamond of Fire" (29986), "Fire Dragon Crystal" (12487). Produces "Fire Dragon Prism" (77619). Requires Jewelry Making.
+15. Summon "Aqua Diamond of Water" (29987) by casting "Imbue Water".
+16. Forage "Ice Dragon Crystal" (12781) in `skyfire`.
+17. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Aqua Diamond of Water" (29987), "Ice Dragon Crystal" (12781). Produces "Water Dragon Prism" (77620). Requires Jewelry Making.
+18. Summon "Brown Diamond of Earth" (29988) by casting "Imbue Earth".
+19. Forage "Earth Dragon Crystal" (12782) in `skyfire`.
+20. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Brown Diamond of Earth" (29988), "Earth Dragon Crystal" (12782). Produces "Earth Dragon Prism" (77621). Requires Jewelry Making.
+21. Summon "Green Diamond of Disease" (30118) by casting "Imbue Disease".
+22. Spawns "a swamp dragon" (npc:83249) via `swampofnohope/a dire leech#event_hp`.
+23. Kill "a swamp dragon" (NPC 83249) in `swampofnohope` and loot "Swamp Dragon Crystal" (77614).
+24. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Green Diamond of Disease" (30118), "Swamp Dragon Crystal" (77614). Produces "Swamp Dragon Prism" (77622). Requires Jewelry Making.
+25. Summon "Gray Diamond of Storms" (29991) by casting "Imbue Storm".
+26. Spawns "a plains dragon" (npc:13130) via `northkarana/a dire griffon#event_hp`.
+27. Kill "a plains dragon" (NPC 13130) in `northkarana` and loot "Plains Dragon Crystal" (77615).
+28. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Gray Diamond of Storms" (29991), "Plains Dragon Crystal" (77615). Produces "Plains Dragon Prism" (77623). Requires Jewelry Making.
+29. Summon "Yellow Diamond of Valor" (30489) by casting "Imbue Valor".
+30. Spawns "a forest dragon" (npc:181224) via `jaggedpine/a dire kodiak#event_hp`.
+31. Kill "a forest dragon" (NPC 181224) in `jaggedpine` and loot "Forest Dragon Crystal" (77616).
+32. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Yellow Diamond of Valor" (30489), "Forest Dragon Crystal" (77616). Produces "Forest Dragon Prism" (77624). Requires Jewelry Making.
+33. Summon "White Diamond of Justice" (29494) by casting "Imbue Justice".
+34. Spawns "a mountain dragon" (npc:100227) via `stonebrunt/a dire panda#event_hp`.
+35. Kill "a mountain dragon" (NPC 100227) in `stonebrunt` and loot "Mountain Dragon Crystal" (77617).
+36. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "White Diamond of Justice" (29494), "Mountain Dragon Crystal" (77617). Produces "Mountain Dragon Prism" (77625). Requires Jewelry Making.
+37. Combine in "Crest of Rizlona" (77626): "Wind Dragon Prism" (77618), "Fire Dragon Prism" (77619), "Water Dragon Prism" (77620), "Earth Dragon Prism" (77621), "Swamp Dragon Prism" (77622), "Plains Dragon Prism" (77623), "Forest Dragon Prism" (77624), "Mountain Dragon Prism" (77625). Produces "Draconic Prism" (77628). Requires Remove Traps.
+38. Combine in "Rusted Bile Etched Blade" (77630): "Draconic Prism" (77628). Produces "Prismatic Dragon Blade" (77631). Requires Remove Traps.
 
 ## Epic 2.0
 

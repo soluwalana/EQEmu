@@ -102,86 +102,95 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 39. freeportwest/"Merko Quetalis", hand "Spider Venom Sac" (14018). Gives "Token of Bravery" (12144).
     - event_trade NPC say: You have earned the token of bravery. Now you must ask yourself if you are ready to face true fear. You will have but one chance. If you feel you are powerful enough to easily slay that desert tarantula, then hand me both tokens earned and you shall face the Test of Truth.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 14018}))`
-40. **Unresolved acquisition:** "Blackbox XIVD" (13344) has no graph or catalog producer.
-41. akanon/"Baxok Curhunter", hand "Blackbox XIVD" (13344). Gives "Cloth Shirt" (1004).
-42. commonlands/"Altunic Jartin", hand "Cloth Shirt" (1004). Gives "Token of Generosity" (13865).
+40. neriakb/"Seloxia Punox", say "Venture To Oggok". Gives "Sealed Letter" (18842).
+    - Player: "venture to oggok"
+      - NPC say: Then you will go at once. Find your own way. Deliver this note to Ambassador K'Rynn and he shall give you the note to return to me. Do not stop to practice your skills. I offer this test to only the young warriors. If you die, then so be it. We need not inferior warriors. Now go!!
+      - Condition: `($text=~/venture to oggok/i)`
+      - Linked from "little test" (explicit prompt).
+41. oggok/"Ambassador K-Ryn", hand "Sealed Letter" (18842). Gives "Sealed Letter" (18843).
+    - event_trade NPC say: Another young warrior. I pray you shall not meet the fate of the last twelve. Here then. Take this report to Mistress Seloxia at once. And stay clear of the Froglok lair called Gukk.
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 18842}))`
+42. neriakb/"Seloxia Punox", hand "Sealed Letter" (18843). Gives "Cloth Shirt" (1004).
+    - event_item NPC say: Very fine work my young warrior. You may soon be ready to become a Teir'Dal courier. For now we shall reward you. This will assist you in further service to the Indigo Brotherhood and King Naythox Thex.
+      - Event guard: `(plugin::check_handin(\%itemcount, 18843 => 1))`
+43. commonlands/"Altunic Jartin", hand "Cloth Shirt" (1004). Gives "Token of Generosity" (13865).
     - event_item NPC say: Thank you. You are very noble for a squire. I can see you becoming a very valuable asset to the Hall of Truth. Take this token. Tell Merko that you have [earned the Token of Generosity].
       - Event guard: `(plugin::check_handin(\%itemcount, 1004 => 1))`
-43. freeportwest/"Merko Quetalis", hand "Token of Bravery" (12144) + "Token of Generosity" (13865).
+44. freeportwest/"Merko Quetalis", hand "Token of Bravery" (12144) + "Token of Generosity" (13865).
     - event_trade NPC say: Go to the open sewer across the way. Inside you shall find your opponent. Victory shall bring your final token. Return it to me. Remember our ways and remember our foes. Send them to their judgement in the afterlife. Be swift with your thoughts. May Marr be with you.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 12144, item2 = 13865}))`
-44. Spawns "spawns Guard Willia" (npc:383270) after the hand-in.
-45. Kill "spawns Guard Willia" (NPC 383270) in `freeportwest` and loot "Token of Truth" (13866).
-46. freeportwest/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
+45. Spawns "spawns Guard Willia" (npc:383270) after the hand-in.
+46. Kill "spawns Guard Willia" (NPC 383270) in `freeportwest` and loot "Token of Truth" (13866).
+47. freeportwest/"Merko Quetalis", hand "Token of Truth" (13866). Gives "Testimony" (18828).
     - event_trade NPC say: You have performed well. You have shown your allegiance to truth and cast aside the Freeport Militia. The militia will surely despise you from now on. This is how they treat the Knights of Truth. Beware. The followers of Marr stand alone in this city.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 13866}))`
-47. Loot "Glowing Sword Hilt" (12197) from "Xicotl" (NPC 59152) in `mistmoore`. Drop cache: 100% chance per kill.
-48. paw/"Brother Hayle", hand "Note" (18937) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Glowing Sword Hilt" (12197). Gives "SoulFire" (5504).
+48. Loot "Glowing Sword Hilt" (12197) from "Xicotl" (NPC 59152) in `mistmoore`. Drop cache: 100% chance per kill.
+49. paw/"Brother Hayle", hand "Note" (18937) + "Brilliant Sword of Faith" (13947) + "Testimony" (18828) + "Glowing Sword Hilt" (12197). Gives "SoulFire" (5504).
     - event_trade NPC say: You have proven yourself worthy to hold Soulfire. Do not let her slip into the hands of evil. There are many who wish to free the many trapped souls of shadowknights and necromancers trapped inside the blade. The power of the blade can be called upon to heal you if need be. May Rodcet Nife and the twins of Marr hold you in their glory.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 18937,item2 = 13947,item3 = 18828,item4 = 12197}))`
       - Event guard: `(e.other:GetModCharacterFactionLevel(e.self:GetPrimaryFaction()) >= 750)`
     - event_trade NPC say: Your mere presence disgusts me.  Please remove yourself from my sight.  Until you change yourself and your ways, you are unwelcome in the Temple of Life.
       - Event guard: ``
-49. airplane/"Inte Akera", hand "SoulFire" (5504). Gives "Inte's First Blessing" (18033).
+50. airplane/"Inte Akera", hand "SoulFire" (5504). Gives "Inte's First Blessing" (18033).
     - event_trade NPC say: You have chosen wisely, my friend. Take this note as a token of my blessing upon you.
       - Event guard: `(e.other:GetFaction(e.self) == 1)`
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 5504}))`
-50. neriakc/"Selzar L-Crit", say "Armor". Gives "Note to Kanthuk" (2416).
+51. neriakc/"Selzar L-Crit", say "Armor". Gives "Note to Kanthuk" (2416).
     - Player: "armor"
       - NPC say: Seek Kanthu M'Rekkor and give him this request parchment. When you have outfitted yourself in a suit of armor return to the House of the Ebon Mask and I will grant you [another task].
       - Condition: `($text=~/armor/i)`
       - Linked from "hail" (explicit prompt).
-51. butcher/"Kanthuk Ogrebane", hand "Note to Kanthuk" (2416).
+52. butcher/"Kanthuk Ogrebane", hand "Note to Kanthuk" (2416).
     - event_trade NPC say: Ahh, I see you have spoken to Ryshon. You seem tired from your long journey. Sit with me as I tell you a tale. A tale about a true friend of mine, a great man known as [Amstaf Trunolis].
       - Event guard: `item_lib.check_turn_in(e.trade, {item1 = 2416})`
-52. butcher/"Kanthuk Ogrebane", say "Strange Image". Gives "Pendant" (2414).
+53. butcher/"Kanthuk Ogrebane", say "Strange Image". Gives "Pendant" (2414).
     - Player: "strange image"
       - NPC say: I saw Amstaf lower his head and walked away in silence. He was surronded by two beings carrying a torch. I don't know what it meant, but I swear it was so real. When I awoke both Amstaf and Ambreen were gone. Please find Llara and give this pendant to her. This pendant belonged to Amstaf. She too had a vision that night that may clear things up. If she asks where you got it from, mention my name.
       - Condition: `qglobals["Kanthuk"] ~= nil`
       - Condition: `e.message:findi("strange image")`
       - Linked from "slumber" (explicit prompt).
-53. cauldron/"Llara", hand "Pendant" (2414).
+54. cauldron/"Llara", hand "Pendant" (2414).
     - event_trade NPC say: Oh my, this belongs to Amstaf! Where did you get it?
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 2414}))`
-54. cauldron/"Llara", say "Ruathey". Gives "Note to Ruathey" (2417).
+55. cauldron/"Llara", say "Ruathey". Gives "Note to Ruathey" (2417).
     - Player: "ruathey"
       - NPC say: Ruathey is known for her ability to look into people's souls and find truth. Though I wasn't able to find Amstaf, I was able to recover his sword. I believe that by having his sword I am closer to finding him. Take this note to Ruathey and tell her that I sent you.
       - Condition: `(qglobals["Llara"] ~= nil)`
       - Condition: `(e.message:findi("ruathey"))`
       - Linked from "see" (explicit prompt).
-55. lavastorm/"Ruathey", hand "Note to Ruathey" (2417).
+56. lavastorm/"Ruathey", hand "Note to Ruathey" (2417).
     - event_trade NPC say: I see that you've spoken to Llara. She too came to me looking for Amstaf. Though she wasn't able to find her friend, she was able to recover his [sword].
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 2417}))`
     - event_item NPC say: I see that you've spoken to Llara. She too came to me looking for Amstaf. Though she wasn't able to find her friend, she was able to recover his [sword].
       - Event guard: `(plugin::check_handin(\%itemcount, 2417 => 1))`
-56. lavastorm/"Ruathey", say "Bag". Gives "Nobleman's Bag" (17878).
+57. lavastorm/"Ruathey", say "Bag". Gives "Nobleman's Bag" (17878).
     - Player: "bag"
       - NPC say: Take this bag and gather the items I've mentioned. I've been told that the Ghoul's Heart can be found in the estate of the undead, while the scroll can be found in the Keep not far from the Karanas. One of the others are rumored to be found near the dwarven city among the goblins. While the last should be found in the caverns of Najena.
       - Condition: `(qglobals["Ruathey"] ~= nil)`
       - Condition: `(e.message:findi("bag"))`
       - Linked from "sword" (explicit prompt).
-57. Loot "Ghoul's Heart" (2410) from "a ghoul" (NPC 63011) in `unrest`. Drop cache: 25% chance per kill.
-58. Loot "Amstaf's Scroll" (2411) from "a goblin thief" (NPC 6150) in `highkeep`. Drop cache: 35% chance per kill.
-59. Loot "Blade of Nobility" (2412) from "a crazed goblin" (NPC 68162) in `butcher`. Drop cache: 10.5658% chance per kill.
-60. Loot "Hilt of the Nobleman" (2413) from "a skeleton" (NPC 44025) in `najena`. Drop cache: 11.946% chance per kill.
-61. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). Requires Remove Traps.
-62. airplane/"Inte Akera", hand "Ghoulbane" (5403). Gives "Inte's Second Blessing" (18034).
+58. Loot "Ghoul's Heart" (2410) from "a ghoul" (NPC 63011) in `unrest`. Drop cache: 25% chance per kill.
+59. Loot "Amstaf's Scroll" (2411) from "a goblin thief" (NPC 6150) in `highkeep`. Drop cache: 35% chance per kill.
+60. Loot "Blade of Nobility" (2412) from "a crazed goblin" (NPC 68162) in `butcher`. Drop cache: 10.5658% chance per kill.
+61. Loot "Hilt of the Nobleman" (2413) from "a skeleton" (NPC 44025) in `najena`. Drop cache: 11.946% chance per kill.
+62. Combine in "Nobleman's Bag" (17878): "Ghoul's Heart" (2410), "Amstaf's Scroll" (2411), "Blade of Nobility" (2412), "Hilt of the Nobleman" (2413). Produces "Ghoulbane" (5403). Requires Remove Traps.
+63. airplane/"Inte Akera", hand "Ghoulbane" (5403). Gives "Inte's Second Blessing" (18034).
     - event_trade NPC say: You have chosen wisely, my friend. Take this note as a token of my blessing upon you.
       - Event guard: `(e.other:GetFaction(e.self) == 1)`
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 5403}))`
-63. Loot "Torn, Burnt Book" (19071) from "Lord Nagafen" (NPC 32040) in `soldungb`. Drop cache: 38.525% chance per kill.
-64. Loot "Torn, Frost-covered Book" (19070) from "Gorenaire" (NPC 86014) in `dreadlands`. Drop cache: 26.3971% chance per kill.
-65. neriakb/"Rysva To-Biath", hand "Torn, Burnt Book" (19071) + "Torn, Frost-covered Book" (19070). Gives "Book of Scale" (18302).
-66. oceanoftears/"Oracle Of K-Arnon", hand "Book of Scale" (18302). Gives "Miragul's Phylactery" (19072).
-67. everfrost/"Lich Of Miragul", hand "Miragul's Phylactery" (19072).
-68. Spawns "Spawn Miragul" (npc:30094) after the hand-in.
-69. Kill "Spawn Miragul" (NPC 30094) in `everfrost` and loot "Miragul's Head" (19073).
-70. Kill "Spawn Miragul" (NPC 30094) in `everfrost` and loot "Miragul's Robe" (1254).
-71. airplane/"Inte Akera", hand "Inte's First Blessing" (18033) + "Inte's Second Blessing" (18034) + "Miragul's Head" (19073) + "Miragul's Robe" (1254). Gives "Fiery Avenger" (11050).
+64. Loot "Torn, Burnt Book" (19071) from "Lord Nagafen" (NPC 32040) in `soldungb`. Drop cache: 38.525% chance per kill.
+65. Loot "Torn, Frost-covered Book" (19070) from "Gorenaire" (NPC 86014) in `dreadlands`. Drop cache: 26.3971% chance per kill.
+66. neriakb/"Rysva To-Biath", hand "Torn, Burnt Book" (19071) + "Torn, Frost-covered Book" (19070). Gives "Book of Scale" (18302).
+67. oceanoftears/"Oracle Of K-Arnon", hand "Book of Scale" (18302). Gives "Miragul's Phylactery" (19072).
+68. everfrost/"Lich Of Miragul", hand "Miragul's Phylactery" (19072).
+69. Spawns "Spawn Miragul" (npc:30094) after the hand-in.
+70. Kill "Spawn Miragul" (NPC 30094) in `everfrost` and loot "Miragul's Head" (19073).
+71. Kill "Spawn Miragul" (NPC 30094) in `everfrost` and loot "Miragul's Robe" (1254).
+72. airplane/"Inte Akera", hand "Inte's First Blessing" (18033) + "Inte's Second Blessing" (18034) + "Miragul's Head" (19073) + "Miragul's Robe" (1254). Gives "Fiery Avenger" (11050).
     - event_trade NPC say: Long have I awaited this moment. You have done what even I thought impossible. Take this sword, the Fiery Avenger. You have earned both it and my deepest respect.
       - Event guard: `(e.other:GetFaction(e.self) == 1)`
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 18033, item2 = 18034, item3 = 19073, item4 = 1254}))`
-72. fearplane/"Irak Altil", hand "Mark of Atonement" (29010) + "Fiery Avenger" (11050). Gives "Fiery Defender" (10099).
+73. fearplane/"Irak Altil", hand "Mark of Atonement" (29010) + "Fiery Avenger" (11050). Gives "Fiery Defender" (10099).
     - event_trade NPC emote: screams so loudly it echoes across the valley as the mark and flames of your holy sword touch his rotted bones. As his body twists he quiets and then speaks. 'Your selflessness has made it possible to redeem my honor. With the cleansing of my corruption your own soul has been strengthened. Your power comes from your devotion to your god and with this you have been rewarded. Remember always your purity, devotion, and why you have sacrificed. I must go now to sacrifice myself upon the spear of pain.'
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 29010, item2 = 11050}))`
 

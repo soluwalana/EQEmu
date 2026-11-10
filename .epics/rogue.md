@@ -45,14 +45,8 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 16. qey2hh1/"Vilnius The Small", hand "Fleshripper" (5411) + "Painbringer" (5410) + "Mithril Two-Handed Sword" (5401) + "Gigantic Zweihander" (5308). Gives "Jagged Diamond Dagger" (7506).
     - event_trade NPC say: Very good, though how you managed to lug around all these oversized blades amazes me. I feel we can do business now, and Malka still has not shown up. Take this dagger. I had an old client who didn't, um.. pay.. so this was extracted from him. Right after it was inserted in him. For your next job, I need a collection of robes. The Robe of the Ishva, some Shining Metallic robes, an Oracle robe, and a Robe of the Kedge. I am not even sure where all these come from, but they are on my list here, and Rokyl is one of my best clients, so I figure that is your job.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 5411,item2 = 5410,item3 = 5401,item4 = 5308}))`
-17. Loot "Robe of the Ishva" (1357) from "Coercer Q`ioul" (NPC 20054) in `kithicor`. Drop cache: 100% chance per kill.
-18. **Unresolved acquisition:** "Robe of the Kedge" (1253) has no graph or catalog producer.
-19. Loot "Robe of the Oracle" (1354) from "Oracle of K`Arnon" (NPC 69044) in `oot`. Drop cache: 100% chance per kill.
-20. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
-21. qey2hh1/"Vilnius The Small", hand "Robe of the Ishva" (1357) + "Robe of the Kedge" (1253) + "Robe of the Oracle" (1354) + "Shining Metallic Robes" (1360). Gives "Cazic Quill" (7505).
-    - event_trade NPC say: You do good work, . Here is another trinket for your trouble, you should be able to make use of it. Malka still hasn't made it back yet, and I have one more order to fill, if you're willing. This one should be easy. My sword collector has decided he wants rapiers now, of all things. He has asked for an Eyerazzia, a Martune Rapier, a Burning Rapier, and a well balanced rapier.
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 1357,item2 = 1253,item3 = 1354,item4 = 1360}))`
-22. highpass/"Stanos Herkanor", hand "General's Pouch" (28013) + "Jagged Diamond Dagger" (7506) + "Cazic Quill" (7505). Gives "Ragebringer" (11057).
+17. Kill "General V`ghera" (NPC 20205) in `kithicor` and loot "Cazic Quill" (7505).
+18. highpass/"Stanos Herkanor", hand "General's Pouch" (28013) + "Jagged Diamond Dagger" (7506) + "Cazic Quill" (7505). Gives "Ragebringer" (11057).
     - event_trade NPC say: Very well done. I leave now to confront Hanns with this evidence. Even so, it will not be easy to regain his trust. That is why I need those daggers, in case all else fails. Bristlebane grant me luck - I can no longer live like a hunted dog. In any case, I am grateful for your aid. Take this wretched blade, I can bear it no longer. I must warn you, I feel it carries Innoruuk's curse; all who are near it learn the meaning of hate. Ironic, isn't it? You went to all that work to redeem yourself for a rapier, yet the true reward came when you redeemed another..Good luck, , for much as I, you will need it.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 28013,item2 = 7506,item3 = 7505}))`
 

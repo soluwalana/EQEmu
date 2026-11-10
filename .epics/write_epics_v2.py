@@ -89,6 +89,7 @@ class Step:
     utterance: str = ""
     group: str = ""
     evidence: list[str] = field(default_factory=list)
+    produced_items: set[int] = field(default_factory=set)
 
 
 class Graph:
@@ -229,12 +230,32 @@ class Graph:
         )
 
 
-class AcquisitionCatalog:
-    """Existing EQEmu acquisition catalogs, independently loaded.
+@dataclass(frozen=True)
+class CatalogDrop:
+    npc: int
+    name: str
+    zone: str
+    chance: float
 
-    Each optional path overrides only its corresponding default cache.
-    Keep parsing, index construction and schema handling in eqclient4.data.
-    """
+
+@dataclass(frozen=True)
+class CatalogMerchant:
+    npc: int
+    name: str
+    zone: str
+    cost: int | None
+
+
+@dataclass(frozen=True)
+class CatalogRecipe:
+    id: int
+    components: tuple[tuple[int, int], ...]
+    container: int
+    name: str
+
+
+class AcquisitionCatalog:
+    """Normalize the EQEmu caches before their records reach the planner."""
 
     def __init__(
         self,
@@ -246,14 +267,38 @@ class AcquisitionCatalog:
         self._merchants = ensure_merchants(path=str(merchants) if merchants else None)
         self._recipes = ensure_recipes(path=str(recipes) if recipes else None)
 
-    def drop(self, iid: int):
-        return self._drops.best(iid)
+    def drop(self, iid: int) -> CatalogDrop | None:
+        row = self._drops.best(iid)
+        if row is None:
+            return None
+        if isinstance(row, dict):
+            return CatalogDrop(int(row["npc"]), str(row.get("name") or ""),
+                               str(row.get("where") or "?"), float(row["chance"]))
+        return CatalogDrop(int(row.npc_id), str(row.name or ""),
+                           str(row.zone or "?"), float(row.chance))
 
-    def merchant(self, iid: int):
-        return self._merchants.best(iid)
+    def merchant(self, iid: int) -> CatalogMerchant | None:
+        found = self._merchants.best(iid)
+        if found is None:
+            return None
+        if isinstance(found, tuple):
+            row, cost = found
+            return CatalogMerchant(int(row.npc_id), str(row.name or ""),
+                                   str(row.zone or "?"), cost)
+        return CatalogMerchant(int(found["npc"]), str(found.get("name") or ""),
+                               str(found.get("where") or "?"), None)
 
-    def recipe(self, iid: int):
-        return self._recipes.for_item(iid)
+    def recipe(self, iid: int) -> CatalogRecipe | None:
+        row = self._recipes.for_item(iid)
+        if row is None:
+            return None
+        if isinstance(row, dict):
+            return CatalogRecipe(int(row["id"]),
+                                 tuple((int(i), int(n)) for i, n in row["components"]),
+                                 int(row.get("container") or 0), str(row.get("name") or ""))
+        return CatalogRecipe(int(row.id),
+                             tuple((int(i), int(n)) for i, n in row.components),
+                             int(row.container or 0), str(row.name or ""))
 
 
 class AcquisitionCycle(Exception):
@@ -284,11 +329,17 @@ class Planner:
         payload: tuple[int, ...] = (),
         utterance: str = "",
         group: str = "",
+        produced_items: tuple[int, ...] = (),
     ) -> None:
         if key not in self.emitted:
             self.emitted.add(key)
-            self.steps.append(Step(key, text, actor, action, payload, utterance, group))
+            self.steps.append(Step(key, text, actor, action, payload, utterance, group,
+                                   produced_items=set(produced_items)))
             return
+
+        # An existing step can acquire additional rewards via the same action.
+        if produced_items:
+            next(step for step in self.steps if step.key == key).produced_items.update(produced_items)
 
         # A spawn/signal traversal may emit a hand-in before its reward is
         # discovered. Preserve the same action, but enrich it with graph gifts.
@@ -307,114 +358,124 @@ class Planner:
             if payload and not existing.payload:
                 existing.payload = payload
 
+    def eligible_producer(self, row: dict, iid: int) -> bool:
+        """Reject producers that cannot establish an independent acquisition."""
+        rel = row.get("rel")
+        if rel == "gives" and iid in self.g.inputs(row):
+            return False
+        if rel != "loots":
+            return True
+        if (str(row.get("name") or "").lower() == "needs heading validation"
+                and any(source.startswith("loot:")
+                        for source in self.g.item_sources.get(iid, ()))):
+            return False
+        if row.get("npc") and not row.get("reachable"):
+            zone = actor_of(str(row.get("from") or "")).split("/", 1)[0]
+            return (zone, int(row["npc"])) not in self.g.blocked_loot_npcs
+        return True
+
+    def producer_rank(self, row: dict, iid: int) -> tuple[int, int, str]:
+        """Order eligible graph routes without deciding their eligibility."""
+        rel = row.get("rel")
+        inputs = self.g.inputs(row) if rel == "gives" else []
+        if rel == "produces":
+            inputs = [item_id(r.get("to", "")) or 0
+                      for r in self.g.recipes.get(row.get("from", ""), [])
+                      if r.get("rel") == "consumes"]
+        group = str(row.get("group") or "")
+        other_gifts = sum(r.get("rel") == "gives" and r.get("to") != f"item:{iid}"
+                          for r in self.g.group_rows(row))
+        priority = (0 if rel == "gives" and "#hand:" in group and not other_gifts
+                    else 1 if rel == "gives" and not other_gifts
+                    else 2 if rel == "gives"
+                    else 3 if rel == "produces"
+                    else 4 if rel == "loots" else 5)
+        return (100 if iid in inputs else priority, len(inputs), str(row.get("from", "")))
+
     def candidates(self, iid: int) -> list[dict]:
-        options = self.g.producers.get(iid, [])
-        if not options:
-            return []
-
-        # Reliable, explicitly scripted rewards precede recipe and drop alternatives.
-        # Skip self-consuming recipes and prefer less ambiguous sources.
-        def rank(r: dict) -> tuple[int, int, str]:
-            rel = r.get("rel")
-            ins = self.g.inputs(r) if rel == "gives" else []
-            if rel == "produces":
-                ins = [
-                    item_id(x.get("to", "")) or 0
-                    for x in self.g.recipes.get(r.get("from", ""), [])
-                    if x.get("rel") == "consumes"
-                ]
-            cyc = iid in ins
-            # An explicitly witnessed item hand-in is a stronger producer
-            # than a coincidental SAY branch from another quest.
-            group = str(r.get("group") or "")
-            other_gifts = sum(
-                r2.get("rel") == "gives" and r2.get("to") != f"item:{iid}"
-                for r2 in self.g.group_rows(r)
-            )
-            primary = (
-                0
-                if rel == "gives" and "#hand:" in group and not other_gifts
-                else (
-                    1
-                    if rel == "gives" and not other_gifts
-                    else (
-                        2
-                        if rel == "gives"
-                        else 3 if rel == "produces" else 4 if rel == "loots" else 5
-                    )
-                )
-            )
-            return (100 if cyc else primary, len(ins), str(r.get("from", "")))
-
-        # Returning an item in exchange for that same item changes quest state,
-        # but cannot supply the first copy of the item.
         return sorted(
-            (
-                r
-                for r in options
-                if not (
-                    # A hand-in returning the same item cannot acquire the first copy.
-                    (r.get("rel") == "gives" and iid in self.g.inputs(r))
-                    or
-                    # An unnamed NPC in an inferred death chain is weaker evidence
-                    # than an explicit, named loot source in the graph item catalog.
-                    (
-                        r.get("rel") == "loots"
-                        and str(r.get("name") or "").lower()
-                        == "needs heading validation"
-                        and any(
-                            x.startswith("loot:")
-                            for x in self.g.item_sources.get(iid, ())
-                        )
-                    )
-                    or (
-                        r.get("rel") == "loots"
-                        and r.get("npc")
-                        and not r.get("reachable")
-                        and (
-                            actor_of(str(r.get("from") or "")).split("/", 1)[0],
-                            int(r["npc"]),
-                        )
-                        in self.g.blocked_loot_npcs
-                    )
-                )
-            ),
-            key=rank,
+            (row for row in self.g.producers.get(iid, ())
+             if self.eligible_producer(row, iid)),
+            key=lambda row: self.producer_rank(row, iid),
         )
 
     def candidate(self, iid: int) -> dict | None:
         """First-ranked producer, for inspection; acquisition tries alternatives."""
         return next(iter(self.candidates(iid)), None)
 
-    def summon_from_spell(self, iid: int) -> bool:
-        """Prefer an explicit summon spell's acquisition chain over stray loot.
+    def _restore(self, snapshot: tuple) -> None:
+        mark, prior_steps, emitted, done, events, used, flags, errors_len = snapshot
+        del self.steps[mark:]
+        for step, text, payload, produced in prior_steps:
+            step.text, step.payload = text, payload
+            step.produced_items = produced
+        self.emitted = emitted
+        self.done_items = done
+        self.active_events = events
+        self.used_edges = used
+        self.done_flags = flags
+        del self.errors[errors_len:]
 
-        For example the Magician epic's Orb of Mastery is summoned by
-        Spell: Summon Orb, rewarded by the Master of Elements hand-in.
-        """
-        spells = [
-            source.partition(":")[2]
-            for source in self.g.item_sources.get(iid, ())
-            if source.startswith("spell:") and source.partition(":")[2]
-        ]
-        for spell in spells:
+    def _snapshot(self) -> tuple:
+        return (
+            len(self.steps),
+            [(step, step.text, step.payload, step.produced_items.copy())
+             for step in self.steps],
+            self.emitted.copy(),
+            self.done_items.copy(),
+            self.active_events.copy(),
+            self.used_edges.copy(),
+            self.done_flags.copy(),
+            len(self.errors),
+        )
+
+    def graph_acquire(self, iid: int) -> tuple[bool, list[str]]:
+        """Try causally connected graph routes, restoring state on failed branches."""
+        rejected: list[str] = []
+
+        # Spell: Summon Orb is itself earned from a quest graph. Prefer that
+        # causal chain to unrelated direct drops of Orb of Mastery.
+        for source in self.g.item_sources.get(iid, ()):
+            if not source.startswith("spell:"):
+                continue
+            spell = source.partition(":")[2]
             scroll = next(
-                (
-                    sid
-                    for sid, name in self.g.items.items()
-                    if name.casefold() == ("Spell: " + spell).casefold()
-                ),
+                (sid for sid, name in self.g.items.items()
+                 if name.casefold() == ("Spell: " + spell).casefold()),
                 None,
             )
-            if scroll is None or scroll == iid:
+            if scroll is None or scroll == iid or not self.g.producers.get(scroll):
                 continue
-            self.acquire(scroll)
-            self.put(
-                f"summon-spell:{iid}:{scroll}",
-                f'Learn {self.g.name(scroll)} and cast "{spell}" to summon {self.g.name(iid)}.',
-            )
-            return True
-        return False
+            snapshot = self._snapshot()
+            try:
+                self.acquire(scroll)
+                self.put(
+                    f"summon-spell:{iid}:{scroll}",
+                    f'Learn {self.g.name(scroll)} and cast "{spell}" to summon {self.g.name(iid)}.',
+                    produced_items=(iid,),
+                )
+                return True, rejected
+            except AcquisitionCycle as cycle:
+                self._restore(snapshot)
+                rejected.append(str(cycle))
+
+        for row in self.candidates(iid):
+            snapshot = self._snapshot()
+            try:
+                rel = row.get("rel")
+                if rel == "gives":
+                    self.giver(row, iid)
+                elif rel == "produces":
+                    self.recipe(row, iid)
+                elif rel in ("loots", "grounds"):
+                    self.loot(row, iid)
+                else:
+                    continue
+                return True, rejected
+            except AcquisitionCycle as cycle:
+                self._restore(snapshot)
+                rejected.append(str(cycle))
+        return False, rejected
 
     def acquire(self, iid: int) -> None:
         if iid in self.done_items:
@@ -423,187 +484,113 @@ class Planner:
             raise AcquisitionCycle(self.g.name(iid))
         self.active_items.add(iid)
         try:
-            # A named summoning spell is a causally connected acquisition
-            # route; incidental loot-table drops are not the epic quest chain.
-            if self.summon_from_spell(iid):
-                self.done_items.add(iid)
-                return
-            options = self.candidates(iid)
-            if not options:
-                self.catalog_acquire(iid)
-            else:
-                rejected = []
-                for row in options:
-                    # Candidate speculation must not leak steps, emitted events,
-                    # flags, or completed items into the next candidate.
-                    mark = len(self.steps)
-                    emitted = self.emitted.copy()
-                    done = self.done_items.copy()
-                    events = self.active_events.copy()
-                    used = self.used_edges.copy()
-                    done_flags = self.done_flags.copy()
-                    errors_len = len(self.errors)
-                    try:
-                        rel = row.get("rel")
-                        if rel == "gives":
-                            self.giver(row, iid)
-                        elif rel == "produces":
-                            self.recipe(row, iid)
-                        elif rel in ("loots", "grounds"):
-                            self.loot(row, iid)
-                        else:
-                            continue
-                    except AcquisitionCycle as cycle:
-                        del self.steps[mark:]
-                        self.emitted = emitted
-                        self.done_items = done
-                        self.active_events = events
-                        self.used_edges = used
-                        self.done_flags = done_flags
-                        del self.errors[errors_len:]
-                        rejected.append(str(cycle))
-                        continue
-                    break
-                else:
-                    # Graph actions can exchange an item, or depend on a later
-                    # quest state. Only if every usable producer fails, consult
-                    # independent acquisition catalogs before reporting a cycle.
-                    if not self.catalog_acquire(iid, allow_missing=False):
-                        raise AcquisitionCycle(
-                            f"{self.g.name(iid)}: no acyclic graph or catalog producer"
-                            + (f" (via {rejected[0]})" if rejected else "")
-                        )
+            found, rejected = self.graph_acquire(iid)
+            if not found:
+                # Independent catalog acquisition is considered exactly once,
+                # whether the graph has no producers or all of them cycle.
+                found = self.catalog_acquire(iid)
+            if not found:
+                reason = f"{self.g.name(iid)}: no graph or catalog acquisition route"
+                if rejected:
+                    reason += f" (graph route rejected: {rejected[0]})"
+                raise AcquisitionCycle(reason)
             self.done_items.add(iid)
         finally:
             self.active_items.remove(iid)
 
-    def item_source_acquire(self, iid: int, *, include_loot: bool = False) -> bool:
-        """Use acquisition metadata embedded in the graph's item catalog.
-
-        These are independent ways of obtaining an item, not cumulative quest
-        requirements.  V1's `_made_by` used the same `sources` field.
-        """
+    def catalog_acquire(self, iid: int) -> bool:
+        """Independent sources only: item metadata, drops, merchants, recipes."""
         sources = self.g.item_sources.get(iid, ())
-        for kind in (
-            ("forage", "fishing", "ground", "spell", "loot")
-            if include_loot
-            else ("forage", "fishing", "ground", "spell")
-        ):
-            values = list(
-                dict.fromkeys(
-                    source.partition(":")[2]
-                    for source in sources
-                    if source.startswith(kind + ":") and source.partition(":")[2]
-                )
-            )
-            if kind == "loot":
-                values = [
-                    value
-                    for value in values
-                    if (value.partition("@")[2], ident(value.partition("@")[0]))
-                    not in self.g.blocked_loot_names
-                ]
+        # Non-loot item metadata is generally more specific than a random mob
+        # drop. Collect candidates once; don't run two source passes.
+        by_kind: dict[str, list[str]] = defaultdict(list)
+        for source in sources:
+            kind, sep, value = source.partition(":")
+            if sep and value and value not in by_kind[kind]:
+                by_kind[kind].append(value)
+
+        for kind in ("forage", "fishing", "ground", "spell"):
+            values = by_kind.get(kind, [])
             if not values:
                 continue
-            item = self.g.name(iid)
             if kind in ("forage", "fishing", "ground"):
-                l0 = " or ".join(f"`{zone}`" for zone in values)
-                verb = {
-                    "forage": "Forage",
-                    "fishing": "Fish for",
-                    "ground": "Collect ground spawn",
-                }[kind]
-                description = f"{verb} {item} in {l0}."
-            elif kind == "spell":
-                description = (
-                    f"Summon {item} by casting "
-                    + " or ".join(f'"{name}"' for name in values)
-                    + "."
-                )
+                verb = {"forage": "Forage", "fishing": "Fish for",
+                        "ground": "Collect ground spawn"}[kind]
+                text = f'{verb} {self.g.name(iid)} in ' + " or ".join(
+                    f"`{zone}`" for zone in values
+                ) + "."
             else:
-                l1 = []
-                for value in values:
-                    npc, _, zone = value.partition("@")
-                    l1.append(f'"{npc}"' + (f" in `{zone}`" if zone else ""))
-                description = f"Loot {item} from " + " or ".join(l1) + "."
-            self.put(f"item-source:{kind}:{iid}", description)
+                text = f'Summon {self.g.name(iid)} by casting ' + " or ".join(
+                    f'"{name}"' for name in values
+                ) + "."
+            self.put(f"item-source:{kind}:{iid}", text, produced_items=(iid,))
             return True
-        return False
 
-    def catalog_acquire(self, iid: int, *, allow_missing: bool = True) -> bool:
-        """Try independent item sources; optionally leave a missing-item marker."""
-        if self.item_source_acquire(iid):
-            return True
         drop = self.catalog.drop(iid)
         if drop:
-            if isinstance(drop, dict):
-                npc, name = int(drop["npc"]), str(drop.get("name") or "")
-                zone, chance = str(drop.get("where") or "?"), float(drop["chance"])
-            else:
-                npc, name = int(drop.npc_id), str(drop.name or "")
-                zone, chance = str(drop.zone or "?"), float(drop.chance)
+            npc, name, zone, chance = drop.npc, drop.name, drop.zone, drop.chance
             if (zone, npc) not in self.g.blocked_loot_npcs:
                 self.put(
                     f"catalog-drop:{iid}",
                     f'Loot {self.g.name(iid)} from "{name or f"NPC {npc}"}" '
-                    f"(NPC {npc}) in `{zone}`. Drop cache: {chance:g}% chance per kill.",
+                    f'(NPC {npc}) in `{zone}`. Drop cache: {chance:g}% chance per kill.',
+                    produced_items=(iid,),
                 )
                 return True
 
         seller = self.catalog.merchant(iid)
         if seller:
-            if isinstance(seller, tuple):
-                row, cost = seller
-                name, npc, zone = row.name, row.npc_id, row.zone
-            else:
-                name, npc, zone, cost = (
-                    seller.get("name") or "",
-                    seller["npc"],
-                    seller.get("where") or "?",
-                    None,
-                )
+            npc, name, zone, cost = seller.npc, seller.name, seller.zone, seller.cost
             cost_text = f" Base price: {cost:,} copper." if cost else ""
             self.put(
                 f"catalog-merchant:{iid}",
                 f'Buy {self.g.name(iid)} from "{name}" (NPC {npc}) in `{zone}`.{cost_text}',
+                produced_items=(iid,),
             )
             return True
+
         recipe = self.catalog.recipe(iid)
-        if recipe and iid not in [
-            int(x)
-            for x, _ in (
-                recipe["components"] if isinstance(recipe, dict) else recipe.components
-            )
-        ]:
-            if isinstance(recipe, dict):
-                rid = int(recipe["id"])
-                parts = [(int(x), int(count)) for x, count in recipe["components"]]
-                container = int(recipe.get("container") or 0)
-                skill = str(recipe.get("name") or "")
-            else:
-                rid, parts = int(recipe.id), list(recipe.components)
-                container, skill = int(recipe.container or 0), str(recipe.name or "")
-            for component, _count in parts:
-                self.acquire(component)
-            # Containers may be tradeskill stations rather than inventory items;
-            # don't invent a missing item for an unspecified world container.
-            inputs = ", ".join(
-                self.g.name(x) + (f" x{n}" if n != 1 else "") for x, n in parts
-            )
-            extra = f" Requires {skill}." if skill else ""
+        if recipe:
+            rid, parts, container, skill = (recipe.id, recipe.components,
+                                            recipe.container, recipe.name)
+            if iid not in (component for component, _ in parts):
+                snapshot = self._snapshot()
+                try:
+                    for component, _count in parts:
+                        self.acquire(component)
+                    inputs = ", ".join(
+                        self.g.name(x) + (f" x{n}" if n != 1 else "")
+                        for x, n in parts
+                    )
+                    extra = f" Requires {skill}." if skill else ""
+                    self.put(
+                        f"catalog-recipe:{rid}:{iid}",
+                        f"Combine recipe {rid} (container {container}): {inputs}. "
+                        f"Produces {self.g.name(iid)}.{extra}",
+                        produced_items=(iid,),
+                    )
+                    return True
+                except AcquisitionCycle:
+                    self._restore(snapshot)
+
+        # The graph's item-source hints are an independent fallback, not a
+        # producer edge. Filter out sources explicitly blocked by scripts.
+        loot = [
+            value for value in by_kind.get("loot", [])
+            if (value.partition("@")[2], ident(value.partition("@")[0]))
+            not in self.g.blocked_loot_names
+        ]
+        if loot:
+            places = []
+            for value in loot:
+                npc, _, zone = value.partition("@")
+                places.append(f'"{npc}"' + (f" in `{zone}`" if zone else ""))
             self.put(
-                f"catalog-recipe:{rid}:{iid}",
-                f"Combine recipe {rid} (container {container}): {inputs}. "
-                f"Produces {self.g.name(iid)}.{extra}",
+                f"item-source:loot:{iid}",
+                f'Loot {self.g.name(iid)} from ' + " or ".join(places) + ".",
+                produced_items=(iid,),
             )
             return True
-        if self.item_source_acquire(iid, include_loot=True):
-            return True
-        if allow_missing:
-            self.put(
-                f"missing:{iid}",
-                f"**Unresolved acquisition:** {self.g.name(iid)} has no graph or catalog producer.",
-            )
         return False
 
     def has_connected_intro(self, root: int) -> bool:
@@ -707,6 +694,7 @@ class Planner:
                 action="hand",
                 payload=tuple(ins),
                 group=group,
+                produced_items=(iid,),
             )
         else:
             word = (
@@ -722,6 +710,7 @@ class Planner:
                     f"give:{group}:{iid}",
                     f"{label(actor)} produces {self.g.name(iid)} on `{src}`.",
                     actor=actor,
+                    produced_items=(iid,),
                 )
             else:
                 self.put(
@@ -731,6 +720,7 @@ class Planner:
                     action="say",
                     utterance=word,
                     group=group,
+                    produced_items=(iid,),
                 )
 
     def flag(self, name: str, at: str) -> None:
@@ -784,16 +774,7 @@ class Planner:
             )
 
             for row in setters:
-                mark = len(self.steps)
-                original_steps = [
-                    (step, step.text, step.payload) for step in self.steps
-                ]
-                emitted = self.emitted.copy()
-                done = self.done_items.copy()
-                events = self.active_events.copy()
-                used = self.used_edges.copy()
-                done_flags = self.done_flags.copy()
-                errors_len = len(self.errors)
+                snapshot = self._snapshot()
                 src = str(row.get("from") or "")
                 try:
                     if "#hand:" in src:
@@ -826,15 +807,7 @@ class Planner:
                     self.done_flags.add(state)
                     return
                 except AcquisitionCycle:
-                    del self.steps[mark:]
-                    for step, text, payload in original_steps:
-                        step.text, step.payload = text, payload
-                    self.emitted = emitted
-                    self.done_items = done
-                    self.active_events = events
-                    self.used_edges = used
-                    self.done_flags = done_flags
-                    del self.errors[errors_len:]
+                    self._restore(snapshot)
             raise AcquisitionCycle(f"quest flag `{name}` {at}: all setters are cyclic")
         finally:
             self.active_flags.remove(state)
@@ -867,7 +840,7 @@ class Planner:
         desc = f"Combine in {container}: {parts}. Produces {self.g.name(iid)}."
         if skill:
             desc += f" Requires {skill}."
-        self.put(f"recipe:{src}:{iid}", desc)
+        self.put(f"recipe:{src}:{iid}", desc, produced_items=(iid,))
 
     def loot(self, row: dict, iid: int) -> None:
         src = str(row.get("from") or "")
@@ -878,7 +851,8 @@ class Planner:
         elif "#" in src:
             self.event(src, target_npc=npc)
         if row.get("rel") == "grounds":
-            self.put(f"ground:{src}:{iid}", f"Collect {self.g.name(iid)} at `{src}`.")
+            self.put(f"ground:{src}:{iid}", f"Collect {self.g.name(iid)} at `{src}`.",
+                     produced_items=(iid,))
             return
         place = actor_of(src).split("/", 1)[0]
         if (
@@ -904,11 +878,13 @@ class Planner:
             self.put(
                 f"kill-loot:{src}:{iid}",
                 f'{verb} "{target}" (NPC {npc}) in `{place}` and loot {self.g.name(iid)}.',
+                produced_items=(iid,),
             )
         else:
             self.put(
                 f"loot:{src}:{iid}",
                 f'Loot {self.g.name(iid)} from "{target}" in `{place}`.',
+                produced_items=(iid,),
             )
 
     def event(self, node: str, target_npc: int | None = None) -> None:
@@ -1313,26 +1289,8 @@ def render(g: Graph, class_name: str, catalog: AcquisitionCatalog) -> str:
             if planner.errors:
                 out.extend(["", "**Unresolved graph dependencies:**"])
                 out.extend(f"- {e}" for e in dict.fromkeys(planner.errors))
-            # Final rewards may come from a corpse rather than a quest hand-in.
-            # A loot action with the reward's item ID is equally verified.
-            if not any(
-                str(reward) in step.text
-                and (
-                    "Gives " in step.text
-                    or "Produces " in step.text
-                    or step.key.startswith(
-                        (
-                            "kill-loot:",
-                            "catalog-drop:",
-                            "loot:",
-                            "item-source:loot:",
-                            "item-source:spell:",
-                            "summon-spell:",
-                        )
-                    )
-                )
-                for step in steps
-            ):
+            # Verify the reward using structured acquisition metadata, not prose.
+            if not any(reward in step.produced_items for step in steps):
                 out.append(f"**Unverified final reward:** {g.name(reward)}")
             out.append("")
     return "\n".join(out).rstrip() + "\n"
