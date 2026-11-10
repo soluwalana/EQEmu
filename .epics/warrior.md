@@ -6,7 +6,7 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Jagged Blade of War" (10908)
 
-1. **Unresolved introduction:** no connected introductory hail in the graph.
+1. freeporteast/"Kargek Redblade", say "Hail". looks up from his forge and says, 'Hello there, can I help you?' Your eyes are drawn to an extremely large red sword scabbard strapped to his back with no sword in it. Kargek speaks again, 'I said, can I help you or do you need help from Wenden?'
 2. freeporteast/"Kargek Redblade", say "Favor". Gives "Wax Sealed Note" (20673).
 3. feerrott/"Oknoggin Stonesmacker", hand "Wax Sealed Note" (20673). Gives "Tiny Lute" (20674).
 4. freeporteast/"Kargek Redblade", hand "Tiny Lute" (20674). Gives "Redblade's Legacy" (18083).

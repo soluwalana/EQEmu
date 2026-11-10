@@ -7,20 +7,20 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 ### "Water Sprinkler of Nem Ankh" (5532)
 
 1. lakerathe/"Shmendrik Lavawalker", say "Hail". Hail, good $name!! Be wary near the waters of Lake Rathe! The Riptide goblin king, Lord Bergurgle, has been commanding his minions to murder and rob all who come near it! I am here seeking his death but I am afraid I am no match for all of his subjects. I shall reward you greatly for the death of Lord Bergurgle. I simply ask that you bring me his crown as proof.
-2. Loot "Singed Scroll" (18170) from "Overking Bathezid" in `chardok`.
-3. Loot "Lord Gimblox's Signet Ring" (28018) from "Lord Gimblox" in `soldunga`.
-4. timorous/"Natasha Whitewater", hand "Lord Gimblox's Signet Ring" (28018). Gives "Ornate Sea Shell" (28056).
-5. Hand "Ornate Sea Shell" (28056) to burningwood/"Naxot Deepwater". Spawns "Ixiblat Fer, kill him, loot scepter of I.F." (87151). Loot "Sceptre of Ixiblat Fer" (28017) from "Ixiblat Fer, kill him, loot scepter of I.F.".
-6. timorous/"Omat Vastsea", hand "Singed Scroll" (18170) + "Sceptre of Ixiblat Fer" (28017). Gives "Orb of Clear Water" (28048).
-7. Loot "Lord Bergurgle's Crown" (28044) from "Lord Bergurgle".
-8. Loot "Lord Bergurgle's Crown" (28044) from "Lord Bergurgle" in `lakerathe`.
-9. lakerathe/"Shmendrik Lavawalker", hand "Lord Bergurgle's Crown" (28044). Triggers `lakerathe/natasha whitewater#event_spawn`.
-10. Kill lakerathe/"Shmendrik Lavawalker".
-11. Loot "Damaged Goblin Crown" (28046) from "A Spirit Of Flame".
-12. lakerathe/"Natasha Whitewater", hand "Damaged Goblin Crown" (28046). Gives "Ornate Sea Shell" (28047).
-13. timorous/"Omat Vastsea", hand "Ornate Sea Shell" (28047). Gives "Coral Statue of Tarew" (28051).
-14. Hand "Coral Statue of Tarew" (28051) to soltemple/"A Seeker". Spawns "A Plasmatic Priest" (80042). Loot "Blood Soaked Plasmatic Priest Robe" (1299) from "A Plasmatic Priest".
-15. timorous/"Omat Vastsea", hand "Blood Soaked Plasmatic Priest Robe" (1299). Gives "Orb of Frozen Water" (28049).
+2. Loot "Lord Bergurgle's Crown" (28044) from "Lord Bergurgle".
+3. Loot "Lord Bergurgle's Crown" (28044) from "Lord Bergurgle" in `lakerathe`.
+4. lakerathe/"Shmendrik Lavawalker", hand "Lord Bergurgle's Crown" (28044). Triggers `lakerathe/natasha whitewater#event_spawn`.
+5. Kill lakerathe/"Shmendrik Lavawalker".
+6. Loot "Damaged Goblin Crown" (28046) from "A Spirit Of Flame".
+7. lakerathe/"Natasha Whitewater", hand "Damaged Goblin Crown" (28046). Gives "Ornate Sea Shell" (28047).
+8. timorous/"Omat Vastsea", hand "Ornate Sea Shell" (28047). Gives "Coral Statue of Tarew" (28051).
+9. Hand "Coral Statue of Tarew" (28051) to soltemple/"A Seeker". Spawns "A Plasmatic Priest" (80042). Loot "Blood Soaked Plasmatic Priest Robe" (1299) from "A Plasmatic Priest".
+10. timorous/"Omat Vastsea", hand "Blood Soaked Plasmatic Priest Robe" (1299). Gives "Orb of Frozen Water" (28049).
+11. Loot "Singed Scroll" (18170) from "Overking Bathezid" in `chardok`.
+12. Loot "Lord Gimblox's Signet Ring" (28018) from "Lord Gimblox" in `soldunga`.
+13. timorous/"Natasha Whitewater", hand "Lord Gimblox's Signet Ring" (28018). Gives "Ornate Sea Shell" (28056).
+14. Hand "Ornate Sea Shell" (28056) to burningwood/"Naxot Deepwater". Spawns "Ixiblat Fer, kill him, loot scepter of I.F." (87151). Loot "Sceptre of Ixiblat Fer" (28017) from "Ixiblat Fer, kill him, loot scepter of I.F.".
+15. timorous/"Omat Vastsea", hand "Singed Scroll" (18170) + "Sceptre of Ixiblat Fer" (28017). Gives "Orb of Clear Water" (28048).
 16. Kill skyfire/"Zordak Ragefire". Spawns "Zordakalicus Ragefire" (91090).
 17. Loot "Impure Heart of Zordak Ragefire" (17122) from "Zordakalicus Ragefire".
 18. burningwood/"Naxot Deepwater", hand "Ornate Sea Shell" (28056). Gives "Message to Natasha" (28052).
@@ -39,7 +39,7 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Harmony of the Soul" (9955)
 
-1. **Unresolved introduction:** no connected introductory hail in the graph.
+1. erudnext/"Lumi Stergnon", say "Hail". Peace and tranquility be with you. .  Are you a [new acolyte of peace] or are you [here to pay homage] to the child of tranquility?
 2. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
 3. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
 4. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.

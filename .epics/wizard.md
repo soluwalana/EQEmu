@@ -33,7 +33,7 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Staff of Prismatic Power" (12665)
 
-1. potranquility/"Kalym Rasalan", say "Hail". Gives "Silken Tapestry" (12593).
+1. erudnext/"Lumi Stergnon", say "Hail". Peace and tranquility be with you. .  Are you a [new acolyte of peace] or are you [here to pay homage] to the child of tranquility?
 2. Summon "Collapsible Sewing Kit" (17165) by casting "Unfold Sewing Kit".
 3. Buy "Backpack Pattern" (12089) from "Iala Lenard" (NPC 1141) in `qeynos`. Base price: 500 copper.
 4. Buy "Needle Mold" (12019) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
@@ -77,27 +77,28 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 42. Forage "Spiderling Silk" (13099) in `mmcj`.
 43. Combine in "Vale Sewing Kit" (92882): "Spiderling Silk" (13099). Produces "Silk Thread" (16486). Requires Tailoring, trivial 15. The combine does not fail.
 44. Combine in "Vale Sewing Kit" (92882): "Silk Thread" (16486). Produces "Silk Cord" (16489). Requires Tailoring, trivial 26.
-45. Combine in "Collapsible Sewing Kit" (17165): "Backpack Pattern" (12089), "Silk Cord" (16489), "Silken Tapestry" (12593). Produces "Silken Tapestry Satchel" (12596). Requires Tailoring 128. The combine does not fail.
-46. Ground spawn of "Prismatic Crystal" (12599) in `veksar`.
-47. Ground spawn of "Prismatic Crystal" (12625) in `timorous`.
-48. Ground spawn of "Prismatic Crystal" (12628) in `twilight`.
-49. Loot "Prismatic Crystal" (12662) from "Treasure Sorter Neiben" in `dulak`.
-50. Loot "Cohesion Gem" (67022) from "A Metallic Slime" (NPC 206031) in `poinnovation`. Drop cache: 34.24% chance per kill.
-51. **Broken:** no event trigger found for `soldungc/ #event_signal`.
-52. Loot "Wisp of Pure Flame" (11619) from "Spawn Wiz 1.5; Pure Flame Elemental".
-53. lavastorm/"Talwyn Flamecaller", hand "Wisp of Pure Flame" (11619). Sets `wiz_epic_wisp` to `1`.
-54. Spawns "Mistress of the Darkwater Quest-only" (125075) in `sirens` on enter.
-55. Loot "Shard of Pure Ice" (11599) from "Mistress of the Darkwater Quest-only".
-56. Loot "Fluxing Staff" (11445) from "Girplan Guardian" in `wallofslaughter`.
-57. lavastorm/"Talwyn Flamecaller", say "Hail". Sets `wiz_epic` to `1`.
-58. Say "Gem" to scarlet/"The Gem Guardian".
-59. Spawns "Elite Sun Revenant" (175306).
-60. Loot "Fluxing Gem" (11448) from "Elite Sun Revenant".
-61. Loot "Fluxing Rune" (11474) from "Hobgoblin Horrorfiend" in `ponightmare`.
-62. Ground spawn of "Fluxing Chunk of Ore" (11576) in `dranik`.
-63. lavastorm/"Talwyn Flamecaller", hand "Fluxing Staff" (11445) + "Fluxing Gem" (11448) + "Fluxing Rune" (11474) + "Fluxing Chunk of Ore" (11576). Gives "Staff of Fluxing Power" (11596).
-64. Combine in "Silken Tapestry Satchel" (12596): "Prismatic Crystal" (12599), "Prismatic Crystal" (12625), "Prismatic Crystal" (12628), "Prismatic Crystal" (12662), "Cohesion Gem" (67022), "Shard of Pure Ice" (11599), "Wisp of Pure Flame" (11619), "Staff of Fluxing Power" (11596). Produces "Full Tapestry Satchel" (16753). The combine does not fail.
-65. lavastorm/"Talwyn Flamecaller", hand "Full Tapestry Satchel" (16753). Gives "Staff of Prismatic Power" (12665).
+45. potranquility/"Kalym Rasalan", say "Hail". Gives "Silken Tapestry" (12593).
+46. Combine in "Collapsible Sewing Kit" (17165): "Backpack Pattern" (12089), "Silk Cord" (16489), "Silken Tapestry" (12593). Produces "Silken Tapestry Satchel" (12596). Requires Tailoring 128. The combine does not fail.
+47. Ground spawn of "Prismatic Crystal" (12599) in `veksar`.
+48. Ground spawn of "Prismatic Crystal" (12625) in `timorous`.
+49. Ground spawn of "Prismatic Crystal" (12628) in `twilight`.
+50. Loot "Prismatic Crystal" (12662) from "Treasure Sorter Neiben" in `dulak`.
+51. Loot "Cohesion Gem" (67022) from "A Metallic Slime" (NPC 206031) in `poinnovation`. Drop cache: 34.24% chance per kill.
+52. **Broken:** no event trigger found for `soldungc/ #event_signal`.
+53. Loot "Wisp of Pure Flame" (11619) from "Spawn Wiz 1.5; Pure Flame Elemental".
+54. lavastorm/"Talwyn Flamecaller", hand "Wisp of Pure Flame" (11619). Sets `wiz_epic_wisp` to `1`.
+55. Spawns "Mistress of the Darkwater Quest-only" (125075) in `sirens` on enter.
+56. Loot "Shard of Pure Ice" (11599) from "Mistress of the Darkwater Quest-only".
+57. Loot "Fluxing Staff" (11445) from "Girplan Guardian" in `wallofslaughter`.
+58. lavastorm/"Talwyn Flamecaller", say "Hail". Sets `wiz_epic` to `1`.
+59. Say "Gem" to scarlet/"The Gem Guardian".
+60. Spawns "Elite Sun Revenant" (175306).
+61. Loot "Fluxing Gem" (11448) from "Elite Sun Revenant".
+62. Loot "Fluxing Rune" (11474) from "Hobgoblin Horrorfiend" in `ponightmare`.
+63. Ground spawn of "Fluxing Chunk of Ore" (11576) in `dranik`.
+64. lavastorm/"Talwyn Flamecaller", hand "Fluxing Staff" (11445) + "Fluxing Gem" (11448) + "Fluxing Rune" (11474) + "Fluxing Chunk of Ore" (11576). Gives "Staff of Fluxing Power" (11596).
+65. Combine in "Silken Tapestry Satchel" (12596): "Prismatic Crystal" (12599), "Prismatic Crystal" (12625), "Prismatic Crystal" (12628), "Prismatic Crystal" (12662), "Cohesion Gem" (67022), "Shard of Pure Ice" (11599), "Wisp of Pure Flame" (11619), "Staff of Fluxing Power" (11596). Produces "Full Tapestry Satchel" (16753). The combine does not fail.
+66. lavastorm/"Talwyn Flamecaller", hand "Full Tapestry Satchel" (16753). Gives "Staff of Prismatic Power" (12665).
 
 ## Epic 2.0
 

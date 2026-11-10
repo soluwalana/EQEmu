@@ -6,7 +6,7 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Singing Short Sword" (20542)
 
-1. dreadlands/"Baldric Slezaf", say "Hail". Hello, $name. Don't you think this would be a wonderful place to perform a [symphony]?
+1. qey2hh1/"Konia Swiftfoot", say "Hail". Hello there, .  I am hosting a relay running contest.  Would you like to participate?
 2. qey2hh1/"Konia Swiftfoot", say "Ready". Gives "Torch of Misty" (20532).
 3. misty/"Fajio Knejo", hand "Torch of Misty" (20532). Gives "Torch of Ro" (20533).
 4. southro/"Andad Filla", hand "Torch of Ro" (20533). Gives "Torch of Rathe" (20534).

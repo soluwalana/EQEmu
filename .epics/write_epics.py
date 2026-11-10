@@ -8,6 +8,7 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
+from epic_dependency_order import ItemPrecedence, opening_dialogue_actor
 from eqclient4.data.drops import ensure_drops
 from eqclient4.data.merchants import ensure_merchants
 from eqclient4.data.recipes import ensure_recipes
@@ -560,6 +561,9 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
         dialogues,
     ) = ctx
     flags = class_flags(sets_of, mains, prefixes)
+    # Built once for this class; uses bounded breadth-first reachability rather
+    # than recursively enumerating alternative producers for every hand-in.
+    precedence = ItemPrecedence(by_from)
     triggered = {
         str(row.get("to"))
         for rows in by_from.values()
@@ -1521,7 +1525,7 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
                 elif selected.get("item"):
                     expand_item(int(selected["item"]))
 
-            for needed in handed(edge):
+            for needed in precedence.order(handed(edge)):
                 expand_item(needed)
 
         made_here = False
@@ -2059,8 +2063,14 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
     )
     lines.append("")
     def introductory_hail(steps: list[str]) -> str | None:
-        """Find a hail connected to the first encountered hand-in, not a random hail."""
-        # Narrative provenance is distinct from a mechanical prerequisite.
+        """Find the starter's hail, not one from a later quest NPC."""
+        # If the acquisition begins with productive dialogue (Telin's
+        # "action" gives the Worn Note), its actor is the quest introducer.
+        opening = opening_dialogue_actor(steps, by_from)
+        if opening is not None:
+            zone, npc, speech = opening
+            return f'{zone}/{quoted(npc)}, say "Hail". {speech}'
+        # Otherwise preserve the item-linked introductory hail heuristic.
         for step in steps:
             if re.search(r', say "Hail"', step, re.I):
                 return step

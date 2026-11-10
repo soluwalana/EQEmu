@@ -6,7 +6,7 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Swiftwind" (20487)
 
-1. kaladimb/"Usbak The Old", say "Hail". Took ya long enough! Ye'd think ya had an Orc head on them shoulders there. I'm owin' ya for yer help though. Else I'd have been on that darn hammer for ages. Ye said ya had an ancient blade or somethin ta be smithin. If so lemme see it.
+1. burningwood/"Telin Darkforest", say "Hail". looks at you serenely. 'Hello, wanderer.'
 2. burningwood/"Telin Darkforest", say "Action". Gives "Worn Note" (20472).
 3. gfaydark/"Faelin Bloodbriar", hand "Worn Note" (20472). Gives "Faelin's Ring" (20446).
 4. kithicor/"Giz X-Tin", hand "Faelin's Ring" (20446). Gives "Dark Metal Coin" (20447).
@@ -70,7 +70,7 @@ Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags
 
 ### "Earthcaller" (20488)
 
-1. **Unresolved introduction:** no connected introductory hail in the graph.
+1. burningwood/"Telin Darkforest", say "Hail". looks at you serenely. 'Hello, wanderer.'
 2. burningwood/"Telin Darkforest", say "Action". Gives "Worn Note" (20472).
 3. gfaydark/"Faelin Bloodbriar", hand "Worn Note" (20472). Gives "Faelin's Ring" (20446).
 4. kithicor/"Giz X-Tin", hand "Faelin's Ring" (20446). Gives "Dark Metal Coin" (20447).
@@ -469,6 +469,191 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 17. Alternative: Loot "Shattered Emerald of Corruption" (20484) from "Maestro of Rancor" (NPC 186111) in `hateplaneb`; trigger: hateplaneb/"Maestro", on timer popmaestro.
 18. northkarana/"Xanuusus", hand "Refined Mithril Blade" (20483) + "Shattered Emerald of Corruption" (20484). Gives "Earthcaller" (20488).
 
+### "Senvial's Blessing" (62621)
+
+1. eastkarana/"Tholris", say "You Are Diseased". Gives "Red Crystal" (62618).
+    - Dialogue with eastkarana/"Tholris":
+      - Player: "You Are Diseased"
+        - NPC emote: looks at you indignantly
+          - Reply guard: `($saydisease==1)`
+        - NPC emote: kicks dirt at your feet
+          - Reply guard: `($saydisease==2)`
+        - NPC emote: shakes his head. Then he catches a glimpse of the Mind Crystal and looks thoughtful for a moment. Then he reaches into his pocket and produces two unusual crystals and hands them to you.
+          - Reply guard: `($saydisease==3)`
+        - Condition: `(($text=~/you are diseased/i) && plugin::check_hasitem($client, 62846))`
+        - Gives Red Crystal (62618).
+        - Gives Violet Crystal (62619).
+2. eastkarana/"Tholris", say "You Are Diseased". Gives "Violet Crystal" (62619).
+3. freeportwest/"Shana Liskia", hand "Red Crystal" (62618) + "Violet Crystal" (62619). Gives "Letter to Corun" (62655).
+4. Spawns "An Ancient Thought Horror" (164122) in `thedeep` on enter.
+5. Loot "Thick Spinal Fluid" (40420) from "An Ancient Thought Horror".
+6. Forage "Sickly Maiden's Hair" (62810) in `rathemtn`.
+7. eastkarana/"Althele", hand "Sickly Maiden's Hair" (62810). Gives "Tuft of Sickly Maiden's Hair" (62811).
+8. qrg/"Corun Finisc", hand "Tuft of Sickly Maiden's Hair" (62811). Gives "Borrowed Medicine Bag" (62605).
+    - Dialogue with qrg/"Corun Finisc":
+      - Player: "Hail"
+        - NPC say: Hello. My name is Corun Finisc and I am one of the Jaggedpine Treefolk. It is our divine responsibility to watch over and protect Surefall Glade and its [inhabitants] from those who seek to [destroy] them.
+        - Condition: `(e.message:findi("hail"))`
+      - Player: "Inhabitants" (link: explicit mention)
+        - NPC say: The bears of Surefall Glade are our brothers. We are all children of [Tunare]. We would gladly die in their defense.
+        - Condition: `(e.message:findi("inhabitants"))`
+      - Player: "Tunare" (link: explicit mention)
+        - NPC say: Tunare is the Mother of All. It is though Her will that we protect this land and its many creatures.
+        - Condition: `(e.message:findi("tunare"))`
+      - Player: "Destroy" (link: explicit mention)
+        - Prompted by player input: "Hail"
+        - NPC say: Poachers in seach of bear skins and [gnolls] who attack us unprovoked. We are doing all we can to stop them. May [Tunare] give me the strength needed to smite them dead with my [crook].
+        - Condition: `(e.message:findi("destroy"))`
+      - Player: "Crook" (link: explicit mention)
+        - NPC say: My crook? The Jaggedpine crook is an enchanted weapon of the Jaggedpine Treefolk. The [Sabertooths] take great pleasure in destroying the crooks of any Treefolk they manage to slay. If you were to recover the pieces of a broken crook, I would gladly mend it for you.
+        - Condition: `(e.message:findi("crook"))`
+      - Player: "Sabertooths" (link: explicit mention)
+        - NPC say: The Sabertooths are a vicious band of gnolls who live in Blackburrow, to the east of Surefall Glade. They constantly attack us when we only seek to share this land with them. They also send many patrols out into the Qeynos Hills to the south. We have even seen a Sabertooth skulking about in the caves behind Grizzly Falls. There is a [reward] for his hide.
+        - Condition: `(e.message:findi("Sabertooths"))`
+      - Player: "Reward" (link: explicit mention)
+        - NPC say: Yes. We are offering a small reward for slaying the skulking gnoll in the bear caves. Bring me his paw to claim your bounty. The Jaggedpine Treefolk remember well those who aid their cause.
+        - Condition: `(e.message:findi("reward"))`
+      - Player: "Sabertooths" (link: explicit mention)
+        - Prompted by player input: "Crook"
+        - NPC say: The gnolls of Blackburrow are called Sabertooths. They have been seen in force on a regular basis. They are surely up to something.
+        - Condition: `(e.message:findi("sabertooths"))`
+9. eastkarana/"Althele", say "Hail". Sets `ranger_epic` to `1`.
+10. Spawns "An Asteatotic Highborn" (109907) in `veksar` on enter.
+11. Loot "Asteatotic Veksar Blood" (35100) from "An Asteatotic Highborn".
+12. Spawns "A Neuralgic Huntress" (120136) in `westwastes` on enter.
+13. Loot "Neuralgic Wyvern Blood" (72605) from "A Neuralgic Huntress".
+14. Summon "Collapsible Fletching Kit" (17189) by casting "Unfold Fletching Kit".
+15. qrg/"Corun Finisc", hand "Tuft of Sickly Maiden's Hair" (62811). Gives "Magical Sample Vial" (62657).
+16. cazicthule/"A Sickly Mosquito", on event hp.
+17. Starts timer `check`.
+18. Buy "Planar Fletching Kit" (17762) from "Ellis Cloudchaser" (NPC 202076) in `poknowledge`. Base price: 1,000 copper.
+19. Buy "Whittling Knife" (62608) from "Yoen Ormard" (NPC 279110) in `abysmal`. Base price: 50 copper.
+20. Forage "Fallen Tree Branch" (62652) in `dranik`.
+21. Forage "Fallen Tree Branch" (62652) in `draniksscar`.
+22. Combine in "Planar Fletching Kit" (17762): "Whittling Knife" (62608), "Fallen Tree Branch" (62652). Produces "Long Net Pole" (62607). Requires Fletching 100. Trivial at 15. The combine does not fail.
+23. Spawns "A Phase Spider" (123190) in `necropolis` on event_combat.
+24. Loot "Phase Spider Silk" (55303) from "A Phase Spider".
+25. Forage "Pine Sap" (62650) in `jaggedpine`.
+26. Forage "Pine Sap" (62650) in `nedaria`.
+27. Forage "Pine Sap" (62650) in `qrg`.
+28. Combine in "Planar Fletching Kit" (17762): "Phase Spider Silk" (55303), "Pine Sap" (62650). Produces "Phase Netting" (62651). Requires Fletching 100. Trivial at 15. The combine does not fail.
+29. Combine in "Planar Fletching Kit" (17762): "Long Net Pole" (62607), "Phase Netting" (62651). Produces "Large Butterfly Net" (62646). Requires Fletching 100. Trivial at 15. The combine does not fail.
+30. Equip "Large Butterfly Net" (62646) in primary slot.
+31. cazicthule/"A Sickly Mosquito", on timer check. Gives "Captured Mosquito" (62642).
+32. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Mosquito" (62642). Produces "Sickly Mosquito Blood Sample" (62611). Requires Fletching. The combine does not fail.
+33. sirens/"A Twitching Swordfish", on event hp.
+34. Starts timer `check`.
+35. Equip "Large Butterfly Net" (62646) in primary slot.
+36. sirens/"A Twitching Swordfish", on timer check. Gives "Captured Swordfish" (62643).
+37. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Swordfish" (62643). Produces "Twitching Swordfish Blood Sample" (62612). Requires Fletching. The combine does not fail.
+38. chardokb/"A Leprous Chokidai", on event hp.
+39. Starts timer `check`.
+40. Buy "Hinge Mold" (12027) from "Frannie" (NPC 3020) in `qrg`. Base price: 10 copper.
+41. Buy "Container Base Mold" (12062) from "Tislan" (NPC 10077) in `freporte`. Base price: 110 copper.
+42. Buy "Container Lid Mold" (12069) from "Tislan" (NPC 10077) in `freporte`. Base price: 110 copper.
+43. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+    - Dialogue with erudnext/"Lumi Stergnon":
+      - Player: "Hail"
+        - NPC say: Peace and tranquility be with you. . Are you a [new acolyte of peace] or are you [here to pay homage] to the child of tranquility?
+        - Condition: `(e.message:findi("hail"))`
+      - Player: "New Acolyte Of Peace" (link: explicit mention)
+        - NPC say: Then you shall learn the ways of Quellious and learn to do as you are told by higher ranking members. It is time for you to do the lesser duties of a young priest. Which will it be? [Retrieve the Peacekeeper staffs] or [battle the undead]?
+        - Condition: `(e.message:findi("new acolyte of peace"))`
+      - Player: "retrieve the Peacekeeper staffs" (link: explicit mention)
+        - NPC say: Then take this note to the woodworker in Toxxulia Forest. His name is Emil Parsini. He shall have the staff to be returned to the temple.
+        - Condition: `(e.message:findi("retrieve the Peacekeeper staffs"))`
+        - Gives Sealed Letter (18833).
+      - Player: "Battle The Undead" (link: explicit mention)
+        - Prompted by player input: "New Acolyte Of Peace"
+        - NPC say: Then you shall venture to Toxxulia Forest. There has been an increase in skeleton sightings lately. I do not know their origin, but I believe that your efforts will reduce their numbers! Take this box. Return it to me when you have filled it with the bones of these undead creatures and combined it. May Quellious' light guide you.
+        - Condition: `(e.message:findi("battle the undead"))`
+        - Gives Box For Bones (17941).
+      - Player: "Important Missions" (link: external event mention)
+        - Prompted by `event_trade`:
+          - NPC say: You have done well, neophyte.Let me add the touch of harmony to finish the job.. Here, then. Take these supplies. I am sure you'll need them. Soon you may be able to assist us in [important missions].
+          - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 13816}))`
+        - NPC say: We have need of skilled priests. We have learned that a High Guard battle staff has been stolen. We require a priest to [track down the staff].
+        - Condition: `(fac <= 4)`
+        - Condition: `(e.message:findi("important missions"))`
+      - Player: "Here To Pay Homage" (link: explicit mention)
+        - Prompted by player input: "Hail"
+        - NPC say: Then respect our temple and keep your prayers silent.
+        - Condition: `(fac <= 4)`
+        - Condition: `(e.message:findi("here to pay homage"))`
+44. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+45. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+46. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+47. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+48. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+49. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+    - Dialogue with qeynos/"Wolten Grafe":
+      - Player: "Hail"
+        - NPC say: Hail, noble . Remember to spread the words of Karana throughout the faraway lands on which you shall tread. We of the Temple of Thunder are looking for new members - good people who [wish to join our cause]. Let the call go out!
+        - Condition: `(e.message:findi("hail"))`
+      - Player: "Join The Cause" (link: conversation sequence)
+        - NPC say: That IS good news! If you walk the righteous path of the Rainkeeper, Karana, then you are truly noble. I have need of someone like that. I must find someone to perform a [dangerous mission] or perhaps you would rather seek out the [Rat King] or [crush the undead].
+        - Condition: `(e.message:findi("join the cause"))`
+      - Player: "Crush The Undead" (link: explicit mention)
+        - NPC say: Those who passed generations ago have had their bones exhumed and enchanted. Some evil force plagues this land with these evil skeletons. You will fight for us and crush the skeletons. Take this box and fill it with the bones of those creatures. We will not allow them to rise again and you shall earn our respect. Go forth and fight for Karana!
+        - Condition: `(e.message:findi("crush the undead"))`
+        - Gives Box For Bones (17941).
+      - Player: "Dangerous Mission" (link: explicit mention)
+        - Prompted by player input: "Join The Cause"
+        - NPC say: You must go into the catacombs and find a man named Drosco Finlayer. Pass him this note. He has been deep undercover in the Shrine of Bertoxxulous and will have directions to that vile place. To do this will surely show your allegiance to this temple.
+        - Condition: `(e.message:findi("dangerous mission"))`
+        - Gives Tattered Note (18804).
+      - Player: "Rat King" (link: explicit mention)
+        - Prompted by player input: "Join The Cause"
+        - NPC say: You may try, but no one has truly seen him. I would look in the sewers.
+        - Condition: `(e.message:findi("rat king"))`
+50. Buy "Small Brick of Steel" (66168) from "Qaelin Hailstorm" (NPC 3042) in `qrg`. Base price: 5,890 copper.
+51. qrg/"Qaelin Hailstorm", say "Need A Mark". Gives "Mark of Karana" (66172).
+    - Dialogue with qrg/"Qaelin Hailstorm":
+      - Player: "Hail"
+        - NPC say: Welcome to Surefall Glade. I have the great honor of bestowing these small but powerful Marks of Karana to those who follow him. With it they can use fletching to create bows and arrorws. If you [need a mark] and are a true follower of Karana, I will give you all that you need. There is no fear running out.
+        - Condition: `(e.message:findi("hail"))`
+      - Player: "Need A Mark" (link: explicit mention)
+        - NPC say: Here you go, if you need another please let me know.
+          - Reply guard: `(deity == 207)`
+        - NPC say: How dare you state that you are something that you aren't! You are no follower of the Rainbringer!
+          - Reply guard: ``
+        - Condition: `(e.message:findi("need a mark"))`
+        - Gives Mark of Karana (66172).
+52. Combine in Forge (17): "Hinge Mold" (12027), "Container Base Mold" (12062), "Container Lid Mold" (12069), "Water Flask" (13006), "Small Brick of Steel" (66168), "Mark of Karana" (66172). Hands back "Mark of Karana" (66172). Produces "Surefall Fletching Kit" (66163). Requires Blacksmithing, trivial 163.
+53. Loot "Smithy Hammer" (10489) from "Gliblixl Rocktok" in `bazaar`.
+54. Forage "Golanda Nut" (62610) in `causeway`.
+55. Forage "Golanda Nut" (62610) in `dranik`.
+56. Forage "Golanda Nut" (62610) in `draniksscar`.
+57. Forage "Golanda Nut" (62610) in `provinggrounds`.
+58. Forage "Golanda Nut" (62610) in `riftseekers`.
+59. Forage "Golanda Nut" (62610) in `wallofslaughter`.
+60. Combine in "Surefall Fletching Kit" (66163): "Smithy Hammer" (10489), "Golanda Nut" (62610). Hands back "Smithy Hammer" (10489). Produces "Fibrous Rope" (62609). Requires Fletching 100. Trivial at 15. The combine does not fail.
+61. Combine in "Surefall Fletching Kit" (66163): "Fibrous Rope" (62609). Produces "Eight-loop Lasso" (62648). Requires Fletching 100. Trivial at 15. The combine does not fail.
+62. Equip "Eight-loop Lasso" (62648) in primary slot.
+63. chardokb/"A Leprous Chokidai", on timer check. Gives "Captured Chokidai" (62645).
+64. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Chokidai" (62645). Produces "Leprous Chokidai Blood Sample" (62614). Requires Fletching. The combine does not fail.
+65. droga/"A Bloated Drogan Spider", on event hp.
+66. Starts timer `check`.
+67. Equip "Eight-loop Lasso" (62648) in primary slot.
+68. droga/"A Bloated Drogan Spider", on timer check. Gives "Captured Spider" (62644).
+69. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Spider" (62644). Produces "Bloated Drogan Spider Blood Sample" (62613). Requires Fletching. The combine does not fail.
+70. Combine in "Borrowed Medicine Bag" (62605): "Asteatotic Veksar Blood" (35100), "Neuralgic Wyvern Blood" (72605), "Sickly Mosquito Blood Sample" (62611), "Twitching Swordfish Blood Sample" (62612), "Leprous Chokidai Blood Sample" (62614), "Bloated Drogan Spider Blood Sample" (62613). Produces "Full Medicine Bag" (62616). The combine does not fail.
+71. qrg/"Corun Finisc", hand "Full Medicine Bag" (62616). Gives "Corun's Notes" (62617).
+72. freeportwest/"Shana Liskia", hand "Corun's Notes" (62617). Gives "Corun's Notes - annotated" (62654).
+73. freeportwest/"Shana Liskia", hand "Thick Spinal Fluid" (40420) + "Corun's Notes - annotated" (62654). Gives "Mind Crystal" (62846).
+74. qrg/"Corun Finisc", hand "Letter to Corun" (62655) + "Mind Crystal" (62846). Gives "Red Dogwood Seed" (62844).
+75. freeportwest/"Shana Liskia", hand "Corun's Notes" (62617). Sets `ranger_epic` to `2`.
+76. natimbi/"Ranger 1 5", say "Hail". Requires `ranger_epic` set. Requires `ranger_epic` ==2. Gives "Senvial's Blessing" (62621).
+
+### "Grinbik's Blessing" (62622)
+
+1. Acquisition of "Red Dogwood Seed" (62844) is documented under "Senvial's Blessing" (62621); obtain another copy if needed.
+2. bloodfields/"Ranger 1 5", say "Hail". Requires `ranger_epic` ==2. Gives "Grinbik's Blessing" (62622).
+
+### "Red Dogwood Seed" (62844)
+
+1. Acquisition of "Red Dogwood Seed" (62844) is documented under "Senvial's Blessing" (62621); obtain another copy if needed.
+
 ### "Polished Blasted Stone" (62603)
 
 1. nedaria/"Targen Stonefall", say "Native Stones". Sets `ranger_epic15_pre` to `1`.
@@ -523,7 +708,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 
 ### "Heartwood Blade" (62627)
 
-1. Buy "Planar Fletching Kit" (17762) from "Ellis Cloudchaser" (NPC 202076) in `poknowledge`. Base price: 1,000 copper.
+1. Acquisition of "Planar Fletching Kit" (17762) is documented under "Senvial's Blessing" (62621); obtain another copy if needed.
 2. global/"Global Player", combine recipe 13412. Sets `ranger_epic` to `3`.
 3. jaggedpine/"Red Dogwood Treant", say "Hail". Requires `ranger_epic` ==3. Gives "Red Dogwood Heartwood" (62623).
     - Dialogue with jaggedpine/"Red Dogwood Treant":
@@ -535,162 +720,11 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 4. dranik/"Ranger 1 5", hand "Red Dogwood Heartwood" (62623). Requires `ranger_dranik_chest` unset. Gives "Wind-blessed Heartwood" (62626).
 5. jaggedpine/"Red Dogwood Treant", say "Hail". Requires `ranger_epic` ==3. Gives "Spring Dogwood Seed" (62624).
 6. qrg/"Corun Finisc", hand "Spring Dogwood Seed" (62624). Gives "Block of Purest Silver" (62625).
-    - Dialogue with qrg/"Corun Finisc":
-      - Player: "Hail"
-        - NPC say: Hello. My name is Corun Finisc and I am one of the Jaggedpine Treefolk. It is our divine responsibility to watch over and protect Surefall Glade and its [inhabitants] from those who seek to [destroy] them.
-        - Condition: `(e.message:findi("hail"))`
-      - Player: "Inhabitants" (link: explicit mention)
-        - NPC say: The bears of Surefall Glade are our brothers. We are all children of [Tunare]. We would gladly die in their defense.
-        - Condition: `(e.message:findi("inhabitants"))`
-      - Player: "Tunare" (link: explicit mention)
-        - NPC say: Tunare is the Mother of All. It is though Her will that we protect this land and its many creatures.
-        - Condition: `(e.message:findi("tunare"))`
-      - Player: "Destroy" (link: explicit mention)
-        - Prompted by player input: "Hail"
-        - NPC say: Poachers in seach of bear skins and [gnolls] who attack us unprovoked. We are doing all we can to stop them. May [Tunare] give me the strength needed to smite them dead with my [crook].
-        - Condition: `(e.message:findi("destroy"))`
-      - Player: "Crook" (link: explicit mention)
-        - NPC say: My crook? The Jaggedpine crook is an enchanted weapon of the Jaggedpine Treefolk. The [Sabertooths] take great pleasure in destroying the crooks of any Treefolk they manage to slay. If you were to recover the pieces of a broken crook, I would gladly mend it for you.
-        - Condition: `(e.message:findi("crook"))`
-      - Player: "Sabertooths" (link: explicit mention)
-        - NPC say: The Sabertooths are a vicious band of gnolls who live in Blackburrow, to the east of Surefall Glade. They constantly attack us when we only seek to share this land with them. They also send many patrols out into the Qeynos Hills to the south. We have even seen a Sabertooth skulking about in the caves behind Grizzly Falls. There is a [reward] for his hide.
-        - Condition: `(e.message:findi("Sabertooths"))`
-      - Player: "Reward" (link: explicit mention)
-        - NPC say: Yes. We are offering a small reward for slaying the skulking gnoll in the bear caves. Bring me his paw to claim your bounty. The Jaggedpine Treefolk remember well those who aid their cause.
-        - Condition: `(e.message:findi("reward"))`
-      - Player: "Sabertooths" (link: explicit mention)
-        - Prompted by player input: "Crook"
-        - NPC say: The gnolls of Blackburrow are called Sabertooths. They have been seen in force on a regular basis. They are surely up to something.
-        - Condition: `(e.message:findi("sabertooths"))`
 7. Combine in "Planar Fletching Kit" (17762): "Wind-blessed Heartwood" (62626), "Block of Purest Silver" (62625). Produces "Heartwood Blade" (62627). Requires Fletching. The combine does not fail.
 
 ### "Corun's Notes" (62617)
 
-1. Forage "Sickly Maiden's Hair" (62810) in `rathemtn`.
-2. eastkarana/"Althele", hand "Sickly Maiden's Hair" (62810). Gives "Tuft of Sickly Maiden's Hair" (62811).
-3. qrg/"Corun Finisc", hand "Tuft of Sickly Maiden's Hair" (62811). Gives "Borrowed Medicine Bag" (62605).
-4. eastkarana/"Althele", say "Hail". Sets `ranger_epic` to `1`.
-5. Spawns "An Asteatotic Highborn" (109907) in `veksar` on enter.
-6. Loot "Asteatotic Veksar Blood" (35100) from "An Asteatotic Highborn".
-7. Spawns "A Neuralgic Huntress" (120136) in `westwastes` on enter.
-8. Loot "Neuralgic Wyvern Blood" (72605) from "A Neuralgic Huntress".
-9. Summon "Collapsible Fletching Kit" (17189) by casting "Unfold Fletching Kit".
-10. qrg/"Corun Finisc", hand "Tuft of Sickly Maiden's Hair" (62811). Gives "Magical Sample Vial" (62657).
-11. cazicthule/"A Sickly Mosquito", on event hp.
-12. Starts timer `check`.
-13. Acquisition of "Planar Fletching Kit" (17762) is documented under "Heartwood Blade" (62627); obtain another copy if needed.
-14. Buy "Whittling Knife" (62608) from "Yoen Ormard" (NPC 279110) in `abysmal`. Base price: 50 copper.
-15. Forage "Fallen Tree Branch" (62652) in `dranik`.
-16. Forage "Fallen Tree Branch" (62652) in `draniksscar`.
-17. Combine in "Planar Fletching Kit" (17762): "Whittling Knife" (62608), "Fallen Tree Branch" (62652). Produces "Long Net Pole" (62607). Requires Fletching 100. Trivial at 15. The combine does not fail.
-18. Spawns "A Phase Spider" (123190) in `necropolis` on event_combat.
-19. Loot "Phase Spider Silk" (55303) from "A Phase Spider".
-20. Forage "Pine Sap" (62650) in `jaggedpine`.
-21. Forage "Pine Sap" (62650) in `nedaria`.
-22. Forage "Pine Sap" (62650) in `qrg`.
-23. Combine in "Planar Fletching Kit" (17762): "Phase Spider Silk" (55303), "Pine Sap" (62650). Produces "Phase Netting" (62651). Requires Fletching 100. Trivial at 15. The combine does not fail.
-24. Combine in "Planar Fletching Kit" (17762): "Long Net Pole" (62607), "Phase Netting" (62651). Produces "Large Butterfly Net" (62646). Requires Fletching 100. Trivial at 15. The combine does not fail.
-25. Equip "Large Butterfly Net" (62646) in primary slot.
-26. cazicthule/"A Sickly Mosquito", on timer check. Gives "Captured Mosquito" (62642).
-27. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Mosquito" (62642). Produces "Sickly Mosquito Blood Sample" (62611). Requires Fletching. The combine does not fail.
-28. sirens/"A Twitching Swordfish", on event hp.
-29. Starts timer `check`.
-30. Equip "Large Butterfly Net" (62646) in primary slot.
-31. sirens/"A Twitching Swordfish", on timer check. Gives "Captured Swordfish" (62643).
-32. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Swordfish" (62643). Produces "Twitching Swordfish Blood Sample" (62612). Requires Fletching. The combine does not fail.
-33. chardokb/"A Leprous Chokidai", on event hp.
-34. Starts timer `check`.
-35. Buy "Hinge Mold" (12027) from "Frannie" (NPC 3020) in `qrg`. Base price: 10 copper.
-36. Buy "Container Base Mold" (12062) from "Tislan" (NPC 10077) in `freporte`. Base price: 110 copper.
-37. Buy "Container Lid Mold" (12069) from "Tislan" (NPC 10077) in `freporte`. Base price: 110 copper.
-38. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-    - Dialogue with erudnext/"Lumi Stergnon":
-      - Player: "Hail"
-        - NPC say: Peace and tranquility be with you. . Are you a [new acolyte of peace] or are you [here to pay homage] to the child of tranquility?
-        - Condition: `(e.message:findi("hail"))`
-      - Player: "New Acolyte Of Peace" (link: explicit mention)
-        - NPC say: Then you shall learn the ways of Quellious and learn to do as you are told by higher ranking members. It is time for you to do the lesser duties of a young priest. Which will it be? [Retrieve the Peacekeeper staffs] or [battle the undead]?
-        - Condition: `(e.message:findi("new acolyte of peace"))`
-      - Player: "retrieve the Peacekeeper staffs" (link: explicit mention)
-        - NPC say: Then take this note to the woodworker in Toxxulia Forest. His name is Emil Parsini. He shall have the staff to be returned to the temple.
-        - Condition: `(e.message:findi("retrieve the Peacekeeper staffs"))`
-        - Gives Sealed Letter (18833).
-      - Player: "Battle The Undead" (link: explicit mention)
-        - Prompted by player input: "New Acolyte Of Peace"
-        - NPC say: Then you shall venture to Toxxulia Forest. There has been an increase in skeleton sightings lately. I do not know their origin, but I believe that your efforts will reduce their numbers! Take this box. Return it to me when you have filled it with the bones of these undead creatures and combined it. May Quellious' light guide you.
-        - Condition: `(e.message:findi("battle the undead"))`
-        - Gives Box For Bones (17941).
-      - Player: "Important Missions" (link: external event mention)
-        - Prompted by `event_trade`:
-          - NPC say: You have done well, neophyte.Let me add the touch of harmony to finish the job.. Here, then. Take these supplies. I am sure you'll need them. Soon you may be able to assist us in [important missions].
-          - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 13816}))`
-        - NPC say: We have need of skilled priests. We have learned that a High Guard battle staff has been stolen. We require a priest to [track down the staff].
-        - Condition: `(fac <= 4)`
-        - Condition: `(e.message:findi("important missions"))`
-      - Player: "Here To Pay Homage" (link: explicit mention)
-        - Prompted by player input: "Hail"
-        - NPC say: Then respect our temple and keep your prayers silent.
-        - Condition: `(fac <= 4)`
-        - Condition: `(e.message:findi("here to pay homage"))`
-39. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
-40. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
-41. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
-42. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-43. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
-44. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-    - Dialogue with qeynos/"Wolten Grafe":
-      - Player: "Hail"
-        - NPC say: Hail, noble . Remember to spread the words of Karana throughout the faraway lands on which you shall tread. We of the Temple of Thunder are looking for new members - good people who [wish to join our cause]. Let the call go out!
-        - Condition: `(e.message:findi("hail"))`
-      - Player: "Join The Cause" (link: conversation sequence)
-        - NPC say: That IS good news! If you walk the righteous path of the Rainkeeper, Karana, then you are truly noble. I have need of someone like that. I must find someone to perform a [dangerous mission] or perhaps you would rather seek out the [Rat King] or [crush the undead].
-        - Condition: `(e.message:findi("join the cause"))`
-      - Player: "Crush The Undead" (link: explicit mention)
-        - NPC say: Those who passed generations ago have had their bones exhumed and enchanted. Some evil force plagues this land with these evil skeletons. You will fight for us and crush the skeletons. Take this box and fill it with the bones of those creatures. We will not allow them to rise again and you shall earn our respect. Go forth and fight for Karana!
-        - Condition: `(e.message:findi("crush the undead"))`
-        - Gives Box For Bones (17941).
-      - Player: "Dangerous Mission" (link: explicit mention)
-        - Prompted by player input: "Join The Cause"
-        - NPC say: You must go into the catacombs and find a man named Drosco Finlayer. Pass him this note. He has been deep undercover in the Shrine of Bertoxxulous and will have directions to that vile place. To do this will surely show your allegiance to this temple.
-        - Condition: `(e.message:findi("dangerous mission"))`
-        - Gives Tattered Note (18804).
-      - Player: "Rat King" (link: explicit mention)
-        - Prompted by player input: "Join The Cause"
-        - NPC say: You may try, but no one has truly seen him. I would look in the sewers.
-        - Condition: `(e.message:findi("rat king"))`
-45. Buy "Small Brick of Steel" (66168) from "Qaelin Hailstorm" (NPC 3042) in `qrg`. Base price: 5,890 copper.
-46. qrg/"Qaelin Hailstorm", say "Need A Mark". Gives "Mark of Karana" (66172).
-    - Dialogue with qrg/"Qaelin Hailstorm":
-      - Player: "Hail"
-        - NPC say: Welcome to Surefall Glade. I have the great honor of bestowing these small but powerful Marks of Karana to those who follow him. With it they can use fletching to create bows and arrorws. If you [need a mark] and are a true follower of Karana, I will give you all that you need. There is no fear running out.
-        - Condition: `(e.message:findi("hail"))`
-      - Player: "Need A Mark" (link: explicit mention)
-        - NPC say: Here you go, if you need another please let me know.
-          - Reply guard: `(deity == 207)`
-        - NPC say: How dare you state that you are something that you aren't! You are no follower of the Rainbringer!
-          - Reply guard: ``
-        - Condition: `(e.message:findi("need a mark"))`
-        - Gives Mark of Karana (66172).
-47. Combine in Forge (17): "Hinge Mold" (12027), "Container Base Mold" (12062), "Container Lid Mold" (12069), "Water Flask" (13006), "Small Brick of Steel" (66168), "Mark of Karana" (66172). Hands back "Mark of Karana" (66172). Produces "Surefall Fletching Kit" (66163). Requires Blacksmithing, trivial 163.
-48. Loot "Smithy Hammer" (10489) from "Gliblixl Rocktok" in `bazaar`.
-49. Forage "Golanda Nut" (62610) in `causeway`.
-50. Forage "Golanda Nut" (62610) in `dranik`.
-51. Forage "Golanda Nut" (62610) in `draniksscar`.
-52. Forage "Golanda Nut" (62610) in `provinggrounds`.
-53. Forage "Golanda Nut" (62610) in `riftseekers`.
-54. Forage "Golanda Nut" (62610) in `wallofslaughter`.
-55. Combine in "Surefall Fletching Kit" (66163): "Smithy Hammer" (10489), "Golanda Nut" (62610). Hands back "Smithy Hammer" (10489). Produces "Fibrous Rope" (62609). Requires Fletching 100. Trivial at 15. The combine does not fail.
-56. Combine in "Surefall Fletching Kit" (66163): "Fibrous Rope" (62609). Produces "Eight-loop Lasso" (62648). Requires Fletching 100. Trivial at 15. The combine does not fail.
-57. Equip "Eight-loop Lasso" (62648) in primary slot.
-58. chardokb/"A Leprous Chokidai", on timer check. Gives "Captured Chokidai" (62645).
-59. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Chokidai" (62645). Produces "Leprous Chokidai Blood Sample" (62614). Requires Fletching. The combine does not fail.
-60. droga/"A Bloated Drogan Spider", on event hp.
-61. Starts timer `check`.
-62. Equip "Eight-loop Lasso" (62648) in primary slot.
-63. droga/"A Bloated Drogan Spider", on timer check. Gives "Captured Spider" (62644).
-64. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Spider" (62644). Produces "Bloated Drogan Spider Blood Sample" (62613). Requires Fletching. The combine does not fail.
-65. Combine in "Borrowed Medicine Bag" (62605): "Asteatotic Veksar Blood" (35100), "Neuralgic Wyvern Blood" (72605), "Sickly Mosquito Blood Sample" (62611), "Twitching Swordfish Blood Sample" (62612), "Leprous Chokidai Blood Sample" (62614), "Bloated Drogan Spider Blood Sample" (62613). Produces "Full Medicine Bag" (62616). The combine does not fail.
-66. qrg/"Corun Finisc", hand "Full Medicine Bag" (62616). Gives "Corun's Notes" (62617).
+1. Acquisition of "Corun's Notes" (62617) is documented under "Senvial's Blessing" (62621); obtain another copy if needed.
 
 ### "Block of Purest Silver" (62625)
 
@@ -725,40 +759,6 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 15. Spawns "Herrian Warfrost" (300057) in `wallofslaughter` on enter.
 16. Loot "Hoarfrost Wand" (76999) from "Herrian Warfrost".
 17. Combine in "Spirit Cage" (62656): "Ring of Warmth" (11427), "Hoarfrost Wand" (76999). Produces "Elemental Ice Spirit Cage" (62647). The combine does not fail.
-
-### "Senvial's Blessing" (62621)
-
-1. Spawns "An Ancient Thought Horror" (164122) in `thedeep` on enter.
-2. Loot "Thick Spinal Fluid" (40420) from "An Ancient Thought Horror".
-3. Acquisition of "Corun's Notes" (62617) is documented under "Corun's Notes" (62617); obtain another copy if needed.
-4. freeportwest/"Shana Liskia", hand "Corun's Notes" (62617). Gives "Corun's Notes - annotated" (62654).
-5. freeportwest/"Shana Liskia", hand "Thick Spinal Fluid" (40420) + "Corun's Notes - annotated" (62654). Gives "Mind Crystal" (62846).
-6. eastkarana/"Tholris", say "You Are Diseased". Gives "Red Crystal" (62618).
-    - Dialogue with eastkarana/"Tholris":
-      - Player: "You Are Diseased"
-        - NPC emote: looks at you indignantly
-          - Reply guard: `($saydisease==1)`
-        - NPC emote: kicks dirt at your feet
-          - Reply guard: `($saydisease==2)`
-        - NPC emote: shakes his head. Then he catches a glimpse of the Mind Crystal and looks thoughtful for a moment. Then he reaches into his pocket and produces two unusual crystals and hands them to you.
-          - Reply guard: `($saydisease==3)`
-        - Condition: `(($text=~/you are diseased/i) && plugin::check_hasitem($client, 62846))`
-        - Gives Red Crystal (62618).
-        - Gives Violet Crystal (62619).
-7. eastkarana/"Tholris", say "You Are Diseased". Gives "Violet Crystal" (62619).
-8. freeportwest/"Shana Liskia", hand "Red Crystal" (62618) + "Violet Crystal" (62619). Gives "Letter to Corun" (62655).
-9. qrg/"Corun Finisc", hand "Letter to Corun" (62655) + "Mind Crystal" (62846). Gives "Red Dogwood Seed" (62844).
-10. freeportwest/"Shana Liskia", hand "Corun's Notes" (62617). Sets `ranger_epic` to `2`.
-11. natimbi/"Ranger 1 5", say "Hail". Requires `ranger_epic` set. Requires `ranger_epic` ==2. Gives "Senvial's Blessing" (62621).
-
-### "Grinbik's Blessing" (62622)
-
-1. Acquisition of "Red Dogwood Seed" (62844) is documented under "Senvial's Blessing" (62621); obtain another copy if needed.
-2. bloodfields/"Ranger 1 5", say "Hail". Requires `ranger_epic` ==2. Gives "Grinbik's Blessing" (62622).
-
-### "Red Dogwood Seed" (62844)
-
-1. Acquisition of "Red Dogwood Seed" (62844) is documented under "Senvial's Blessing" (62621); obtain another copy if needed.
 
 ### `ranger_epic`
 
