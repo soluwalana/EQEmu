@@ -12,11 +12,11 @@ from eqclient4.structs import OP_ZoneChange
 
 
 class Travel(LevelHoldAction):
-    def __init__(self, destination: str) -> None:
-        super().__init__()
+    def __init__(self, world: World, loop: Loop, zone: str) -> None:
+        super().__init__(world, loop)
         self.priority = 0
         self.durable = True
-        self.destination = destination
+        self.destination = zone
         self.active_path = None
 
     def opcodes(self) -> tuple[str, ...]:
@@ -26,26 +26,18 @@ class Travel(LevelHoldAction):
         self.active_path = None
         self.suspended = True
 
-    def step(self, loop: Loop, world: World) -> None:
-        if world.zone == self.destination:
+    def step(self) -> None:
+        if self._world.zone == self.destination:
             self.complete = True
             return
 
         if self.hold_for_level(self.destination):
             return
 
-        in_tutorial = self._world.zone == "tutorialb"
-
-        source = self.source or ""
-
-        if in_tutorial and "#gold:" in source:
-            self._loop.forget(self)
-            return
-
         self.suspended = False
 
         point = self.next_zoneline(self.destination)
-        if point is None:
+        if not point:
             return
 
         if self.exit_kind(self.destination) == "point":
@@ -54,17 +46,19 @@ class Travel(LevelHoldAction):
                 point = painted
             if self._crossing(point):
                 return
+
         self._drop_stale_path(point)
         if not self.active_path:
             self.move_closer(point, "run")
             return
-        self.suspended = False
-        self._world.movement.advance(self._loop, self.active_path)
+
+        self.move_closer(self.active_path.destination, "run")
 
     def _drop_stale_path(self, point: tuple[float, float, float]) -> None:
         path = self.active_path
-        if path is None:
+        if not path:
             return
+
         dest = path.destination
         if (dest[0] - point[0]) ** 2 + (dest[1] - point[1]) ** 2 > 400.0:
             self.active_path = None
@@ -75,14 +69,18 @@ class Travel(LevelHoldAction):
             if self._world.zone == self.destination or self.consume("OP_NewZone"):
                 self.complete = True
                 return True
+
             self.waited += 1
             if self.waited < 40:
                 return True
+
             self.unwait("ZONE")
             self.waited = 0
+
         here = self._world.position
         if (here[0] - point[0]) ** 2 + (here[1] - point[1]) ** 2 > 625.0:
             return False
+
         if not self._loop.session_open():
             return True
 
@@ -113,3 +111,8 @@ class Travel(LevelHoldAction):
         self.waited = 0
         self.active_path = None
         return True
+
+    def report(self) -> str:
+        return (
+            f"{super().report()} destination={self.destination} zoneline_dest={self.zoneline_dest}"
+        )

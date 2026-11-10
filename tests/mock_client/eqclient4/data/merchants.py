@@ -19,6 +19,7 @@ from pathlib import Path
 from eqclient4.data.cache_builders.common import peq_path
 from eqclient4.data.catalog import _table, _tuple
 from eqclient4.log import log
+from eqclient4.utils import normalize_name
 
 DEFAULT_MERCHANTS = str(Path.home() / ".eqclient" / "merchants.jsonl")
 # items.price. merchantlist.item is column 2, alt_currency_cost is column 7.
@@ -48,14 +49,6 @@ def zone_aliases(zone: str) -> frozenset[str]:
     return frozenset({home})
 
 
-def _norm_name(name: str) -> str:
-    """Fold EQ spawn names: underscores, backticks, and trailing instance digits."""
-    folded = " ".join(
-        (name or "").lower().replace("_", " ").replace("`", " ").replace("#", " ").split()
-    )
-    return re.sub(r"\s*\d+$", "", folded).strip()
-
-
 @dataclass
 class MerchantBook:
     """npc id → stock, and item id → sellers plus one copper cost."""
@@ -75,7 +68,7 @@ class MerchantBook:
         for npc_id, row in self.by_npc.items():
             zone = str(row.get("where") or "").lower()
             zones[zone].append(int(npc_id))
-            folded = _norm_name(str(row.get("name") or ""))
+            folded = normalize_name(str(row.get("name") or ""))
             if folded:
                 names.add(folded)
                 names_in[zone].add(folded)
@@ -131,11 +124,11 @@ class MerchantBook:
             for alias in zone_aliases(zone):
                 found.update(self._names_in.get(alias, ()))
             return found
-        return {_norm_name(seller.name) for seller in self.in_zone(zone) if seller.name}
+        return {normalize_name(seller.name) for seller in self.in_zone(zone) if seller.name}
 
     def is_merchant_name(self, name: str, zone: str = "") -> bool:
         """True when `name` is a known seller, optionally restricted to `zone`."""
-        folded = _norm_name(name)
+        folded = normalize_name(name)
         if not folded:
             return False
         if self._indexed:
@@ -145,7 +138,7 @@ class MerchantBook:
         if zone:
             return folded in self.names_in(zone)
         for row in self.by_npc.values():
-            if _norm_name(str(row.get("name") or "")) == folded:
+            if normalize_name(str(row.get("name") or "")) == folded:
                 return True
         return False
 

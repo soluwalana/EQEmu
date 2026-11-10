@@ -31,6 +31,42 @@ COLLECT = 13
 EXPLORE = 5
 
 
+_WORN = (
+    "Charm",
+    "Left Ear",
+    "Head",
+    "Face",
+    "Right Ear",
+    "Neck",
+    "Shoulders",
+    "Arms",
+    "Back",
+    "Left Wrist",
+    "Right Wrist",
+    "Ranged",
+    "Hands",
+    "Primary",
+    "Secondary",
+    "Left Finger",
+    "Right Finger",
+    "Chest",
+    "Legs",
+    "Feet",
+    "Waist",
+    "Power Source",
+    "Ammo",
+)
+_BANK_SLOTS = 24
+_SHARED_BANK_SLOTS = 2
+
+POSSESSIONS_ADDRESS = 0
+BANK_ADDRESS = 1
+SHARED_BANK_ADDRESS = 2
+TRADE_ADDRESS = 3
+WORLD_CONTAINER_ADDRESS = 4
+LIMBO_ADDRESS = 5
+
+
 class Skill(IntEnum):
     ONE_H_BLUNT = 0
     ONE_H_SLASHING = 1

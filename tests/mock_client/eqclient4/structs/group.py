@@ -66,8 +66,8 @@ class OP_GroupUpdate(EQStruct):
         action, your_name, members, leader, full = _read_group(data, full_opcode=True)
         return cls(action, your_name, members, leader, full)
 
-@dataclass
 
+@dataclass
 class OP_GroupUpdateB(OP_GroupUpdate):
     """RoF2 variable-length group roster."""
 
@@ -85,14 +85,14 @@ class OP_GroupUpdateB(OP_GroupUpdate):
             # offline flag, timestamp.
             out += struct.pack(
                 "<H B I BBB II",
-                0,     # merc owner
-                0,     # string marker
+                0,  # merc owner
+                0,  # string marker
                 0x46,  # level
-                0,     # tank
-                0,     # assist
-                0,     # puller
-                0,     # offline
-                0,     # timestamp
+                0,  # tank
+                0,  # assist
+                0,  # puller
+                0,  # offline
+                0,  # timestamp
             )
 
         return bytes(out)
@@ -121,6 +121,7 @@ class OP_GroupUpdateB(OP_GroupUpdate):
             leader=leader,
             full=True,
         )
+
 
 @dataclass
 class OP_GroupDisbandYou(EQStruct):

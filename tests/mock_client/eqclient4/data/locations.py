@@ -60,8 +60,8 @@ class LocationBook:
 
     by_item: dict[int, tuple[SpawnPoint, ...]] = field(default_factory=dict)
 
-    def points(self, item_id: int) -> list[dict]:
-        return [point.row() for point in self.by_item.get(int(item_id), ())]
+    def points(self, item_id: int) -> list[SpawnPoint]:
+        return [point for point in self.by_item.get(int(item_id), ())]
 
 
 class MappedLocations:
@@ -90,12 +90,12 @@ class MappedLocations:
     def _text(self, rel: int) -> str:
         return read_string(self._mm, self._strings, rel)
 
-    def points(self, item_id: int) -> list[dict]:
+    def points(self, item_id: int) -> list[SpawnPoint]:
         span = self.by_item.span(int(item_id))
         if span is None:
             return []
         start, count = span
-        found: list[dict] = []
+        found: list[SpawnPoint] = []
         for index in range(count):
             _item, zone_i, level, x, y, z, npc, name_off, chance = _RECORD.unpack_from(
                 self._mm, self._records + (start + index) * _RECORD.size
@@ -105,16 +105,16 @@ class MappedLocations:
                 rel = struct.unpack_from("<I", self._mm, self._zones + zone_i * 4)[0]
                 zone = self._text(rel)
             found.append(
-                {
-                    "zone": zone,
-                    "x": x,
-                    "y": y,
-                    "z": z,
-                    "npc_id": npc,
-                    "name": self._text(name_off),
-                    "npc_level": level,
-                    "chance": chance,
-                }
+                SpawnPoint(
+                    zone=zone,
+                    x=x,
+                    y=y,
+                    z=z,
+                    npc_id=npc,
+                    name=self._text(name_off),
+                    level=level,
+                    chance=chance,
+                )
             )
         return found
 

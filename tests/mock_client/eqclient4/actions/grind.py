@@ -8,7 +8,8 @@ if TYPE_CHECKING:
 
 from eqclient4.action import Action
 from eqclient4.actions.kill import Kill
-from eqclient4.camps import grind_zones, zone_reachable
+from eqclient4.camps import camp_for_level, zone_reachable, zone_recommended_level
+from eqclient4.log import log
 
 
 class Grind(Action):
@@ -28,56 +29,60 @@ class Grind(Action):
         self.suspended = True
 
     def step(self) -> None:
+        if not self._world.zone:
+            log.error(f"Not zoned in yet to grind level {self.level}")
+            return
+
         target = int(self.level or 0)
-        if int(self._world.level or 0) >= target:
+        current_level = self._world.character.level
+        if current_level >= target:
             self.complete = True
             return
 
         self.suspended = False
-        zones = grind_zones(int(self._world.level or 1))
-        if not zones:
-            return
 
-        here = (self._world.zone or "").lower()
-        if here in zones:
-            self.camp = here
-            self.active_path = None
-            source = f"{self.source}#kill:{here}"
-            if self._loop.source_open(source):
-                self.yielding = True
+        if self.camp and self.camp != self._world.zone:
+            point = self.next_zoneline(self.camp)
+            if not point:
+                log.error(f"No zoneline found to grind in {self.camp}")
+                self.crash()
                 return
-            self.yield_to(Kill(camp=here, level=target), source)
-            return
 
-        zone = zones[0]
-        if self.camp != zone:
-            self.camp = zone
-            self.active_path = None
-
-        point = self.next_zoneline(zone)
-        if not point:
-            return
-
-        if not self.active_path:
             self.move_closer(point)
             return
 
-        self._world.movement.advance(self._loop, self.active_path)
+        zone = camp_for_level(current_level, self._world.zone or "")
+        if not zone:
+            log.error(f"No zones to grind in for level {current_level}")
+            self.crash()
+            return
+
+        self.camp = zone.zone
+
+        if self.camp != self._world.zone:
+            log.info(f"Moving to zone {self.camp} to grind level {self.level}")
+            return
+
+        self.active_path = None
+        source = f"{self.source}#kill:{self.camp}"
+        k = Kill(camp=self.camp, level=target)
+        k.source = source
+        self.yield_to(k)
+        return
+
+    def report(self) -> str:
+        return f"{super().report()} level={self._world.character.level} -> {self.level}  camp={self.camp}"
 
 
 class LevelHoldAction(Action):
     def hold_for_level(self, zone: str) -> bool:
         """Queue a grind when the zone requires a higher level."""
-        reason = zone_reachable(zone, int(self._world.level or 0))
 
-        if not reason.startswith("level:"):
+        if not zone_reachable(zone, self._world.character.level):
             return False
 
-        need = int(reason.split(":", 1)[1])
-        source = f"grind:{need}"
-
-        if self._loop.source_open(source):
-            self.yielding = True
-            return True
-
-        return self.yield_to(Grind(need), source)
+        need = zone_recommended_level(zone)
+        g = Grind(self._world, self._loop, need)
+        g.source = f"grind:{need}"
+        g.priority = self.priority + 1
+        return self.yield_to(g)

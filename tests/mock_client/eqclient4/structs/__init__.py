@@ -107,6 +107,7 @@ from eqclient4.structs.messages import (
     channel_bucket,
     saylink_plain,
     saylink_words,
+    simple_id_matcher,
     special_bucket,
 )
 from eqclient4.structs.mobs import (
@@ -245,7 +246,7 @@ from eqclient4.structs.tasks import (
     TaskChoice,
     TaskElement,
 )
-from eqclient4.structs.wire import OPERATIONS, EQStruct, cstring
+from eqclient4.structs.wire import OPERATIONS, EQStruct, InventorySlot, cstring
 from eqclient4.structs.world import (
     DOOR_SIZE,
     Door,
@@ -524,8 +525,10 @@ __all__ = [
     "OP_AAExpUpdate",
     "OP_Save",
     "OP_ItemLinkText",
+    "InventorySlot",
     "BuffIconEntry",
     "ProfileBind",
+    "simple_id_matcher",
 ]
 
 

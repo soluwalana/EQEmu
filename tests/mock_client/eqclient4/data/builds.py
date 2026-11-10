@@ -8,8 +8,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from eqclient4.data.items import HeldGear
-
 S1HB, S1HS, S2HB, S2HS = 0, 1, 2, 3
 ABJ, ALT, POISON, ARCHERY, BACKSTAB, BIND = 4, 5, 6, 7, 8, 9
 BASH, DEFENSE, DODGE, DOUBLE, DUAL = 10, 15, 19, 20, 22
@@ -247,21 +245,3 @@ def gear_value(
     if build.stats[0] in ("wisdom", "intelligence", "charisma"):
         return damage * 10 + ac + stat_score * 3 + vitals
     return ac * 3 + damage + stat_score * 2 + vitals
-
-
-def held_gear_value(build: Build | None, held: HeldGear) -> int:
-    """gear_value from a Held (after item-cache enrich)."""
-    return gear_value(
-        build,
-        held.ac,
-        held.damage,
-        strength=held.astr,
-        stamina=held.asta,
-        agility=held.aagi,
-        dexterity=held.adex,
-        wisdom=held.awis,
-        intelligence=held.aint,
-        charisma=held.acha,
-        hp=held.hp,
-        mana=held.mana,
-    )

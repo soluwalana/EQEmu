@@ -27,9 +27,10 @@ def ensure_recipes(
     if file.is_file() and not rebuild:
         return read_recipes(path)
     dump = peq_path(peq)
-    book = build_recipes(dump) if dump.is_file() else RecipeBook()
-    if book.by_id:
-        write_recipes(book, path)
+    if not dump.is_file():
+        raise FileNotFoundError(f"PEQ file not found: {dump}")
+    book = build_recipes(dump)
+    write_recipes(book, path)
     return book
 
 

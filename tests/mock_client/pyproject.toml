@@ -2,12 +2,20 @@
 name = "eqclient"
 version = "0.1.0"
 description = "Titanium EQEmu client for integration tests"
-requires-python = ">=3.9"
-dependencies = ["pycryptodome"]
+requires-python = ">=3.14,<3.15"
+dependencies = [
+    "pycryptodome",
+    "requests",
+    "beautifulsoup4",
+    "lxml",
+    "numpy",
+    "sentence-transformers",
+    "torch",
+]
 
 [project.optional-dependencies]
 test = ["pytest"]
-lint = ["black>=24.10.0", "mypy>=1.13"]
+lint = ["black>=24.10.0", "mypy>=1.13", "isort>=9.0.2"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -33,3 +41,6 @@ strict_equality = true
 [[tool.mypy.overrides]]
 module = ["Crypto", "Crypto.*"]
 ignore_missing_imports = true
+
+[tool.uv.sources]
+torch = { path = "torch-2.15.0a0+git31a77fc-cp314-cp314-macosx_15_0_x86_64.whl" }

@@ -4,16 +4,16 @@ Handles literal concatenations and quest::saylink/eq.say_link in speech
 calls. Dynamic expressions remain in the output as placeholders, so this
 is a conservative static renderer, not a Perl/Lua evaluator.
 """
-from __future__ import annotations
 
 import re
 from collections.abc import Iterator
+from typing import NotRequired, TypedDict
 
 _SPEECH_CALL = re.compile(
     r"(?<![\w:])(?P<call>quest::say|quest:say|quest::emote|quest:emote|e\.self:Say|e\.self:Emote|e\.self:QuestSay|eq\.say|eq\.emote|e\.other:Message|\$client->Message|:MessageClose)\s*\(",
     re.IGNORECASE,
 )
-_STRING = re.compile(r'''"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*' ''', re.X | re.S)
+_STRING = re.compile(r""""(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*' """, re.X | re.S)
 _VARIABLE = re.compile(r"\$[A-Za-z_]\w*(?:\{[^}]+\})?")
 
 
@@ -32,13 +32,13 @@ def _end_call(text: str, opener: int) -> int:
                 quote = None
         elif ch in ('"', "'"):
             quote = ch
-        elif ch == "(" :
+        elif ch == "(":
             depth += 1
         elif ch == ")":
             depth -= 1
             if depth == 0:
                 return i
-        elif ch == "#" and (i == 0 or text[i-1].isspace()):
+        elif ch == "#" and (i == 0 or text[i - 1].isspace()):
             # Perl line comments outside strings.
             end = text.find("\n", i)
             i = end if end >= 0 else len(text)
@@ -51,10 +51,11 @@ def _unquote(value: str) -> str:
     quote = value[0]
     inner = value[1:-1]
     # Keep unknown escapes verbatim, but unescape literal quote/backslash.
-    inner = inner.replace('\\' + quote, quote).replace('\\\\', '\\')
+    inner = inner.replace("\\" + quote, quote).replace("\\\\", "\\")
     if quote == '"':
-        inner = inner.replace(r'\n', '\n').replace(r'\t', '\t')
+        inner = inner.replace(r"\n", "\n").replace(r"\t", "\t")
     return inner
+
 
 # A say link contains a target, a boolean flag, and optionally an explicit
 # visible label. It contributes ONE visible phrase, not each argument.
@@ -70,22 +71,26 @@ def _literal_link(expr: str) -> str:
     return _unquote(expr) if match else ""
 
 
-def _say_links(expr: str) -> list[dict[str, str]]:
+class SayLink(TypedDict):
+    target: str
+    label: str
+
+
+def _say_links(expr: str) -> list[SayLink]:
     """Return link command and displayed text independently, in source order."""
-    result: list[dict[str, str]] = []
+    result: list[SayLink] = []
     for found in _SAY_LINK.finditer(expr):
         end = _end_call(expr, found.end() - 1)
         if end < 0:
             continue
-        args = _top_level_arguments(expr[found.end():end])
+        args = _top_level_arguments(expr[found.end() : end])
         if not args:
             continue
         target = _literal_link(args[0])
         label = _literal_link(args[2]) if len(args) >= 3 else target
         if target:
-            result.append({'target': target, 'label': label or target})
+            result.append({"target": target, "label": label or target})
     return result
-
 
 
 def _render_lua_format(expr: str) -> str:
@@ -137,7 +142,7 @@ def _render(expr: str) -> str:
         if link:
             close = _end_call(expr, link.end() - 1)
             if close >= 0:
-                arguments = _top_level_arguments(expr[link.end():close])
+                arguments = _top_level_arguments(expr[link.end() : close])
                 # The third argument is the display label, not a second link.
                 # If it is dynamic, fall back to the link's first argument.
                 shown = (arguments[2] if len(arguments) >= 3 else arguments[0]) if arguments else ""
@@ -151,7 +156,7 @@ def _render(expr: str) -> str:
         if formatted:
             close = _end_call(expr, formatted.end() - 1)
             if close >= 0:
-                out.append(_render_lua_format(expr[formatted.end():close]))
+                out.append(_render_lua_format(expr[formatted.end() : close]))
                 i = close + 1
                 continue
         call = _CALL.match(expr, i)
@@ -168,7 +173,7 @@ def _render(expr: str) -> str:
             i = variable.end()
             continue
         i += 1
-    return ''.join(out)
+    return "".join(out)
 
 
 def _top_level_arguments(expr: str) -> list[str]:
@@ -188,11 +193,11 @@ def _top_level_arguments(expr: str) -> list[str]:
                 quote = None
         elif char in ('"', "'"):
             quote = char
-        elif char == '(':
+        elif char == "(":
             depth += 1
-        elif char == ')':
+        elif char == ")":
             depth -= 1
-        elif char == ',' and depth == 0:
+        elif char == "," and depth == 0:
             parts.append(expr[start:i].strip())
             start = i + 1
         i += 1
@@ -200,8 +205,17 @@ def _top_level_arguments(expr: str) -> list[str]:
     return parts
 
 
+class Speech(TypedDict):
+    channel: str
+    text: str
+    links: list[SayLink]
+    guards: NotRequired[list[str]]
+    offset: NotRequired[int]
+    event: NotRequired[str]
+    order: NotRequired[int]
 
-def iter_speech_calls(text: str, lo: int = 0, hi: int | None = None) -> Iterator[dict]:
+
+def iter_speech_calls(text: str, lo: int = 0, hi: int | None = None) -> Iterator[Speech]:
     """Yield full static speech records with original source offsets."""
     hi = len(text) if hi is None else hi
     for match in _SPEECH_CALL.finditer(text, lo, hi):
@@ -209,34 +223,36 @@ def iter_speech_calls(text: str, lo: int = 0, hi: int | None = None) -> Iterator
         end = _end_call(text, opener)
         if end < 0 or end >= hi:
             continue
-        name = match.group('call').lower()
-        expression = text[opener + 1:end]
+        name = match.group("call").lower()
+        expression = text[opener + 1 : end]
         # Player-directed messages have a leading color/type argument.
         # e.other:Message(MT.DarkGray, "NPC says ...")
         # $client->Message(15, "NPC says ...")
         # QuestSay(client, text) is another NPC speech API. Its first
         # argument selects the recipient and is not part of the dialogue.
-        if name.endswith('messageclose'):
+        if name.endswith("messageclose"):
             # EntityList:MessageClose(sender, skip_sender, distance, color, text).
             # Keep only the fifth argument, never the sender/range/color.
             arguments = _top_level_arguments(expression)
             if len(arguments) < 5:
                 continue
             expression = arguments[4]
-        elif name.endswith('message') or name.endswith('questsay'):
+        elif name.endswith("message") or name.endswith("questsay"):
             arguments = _top_level_arguments(expression)
             if len(arguments) < 2:
                 continue
             expression = arguments[1]
-        
-        msg = 'say'
-        if name.endswith('message') or name.endswith('messageclose'):
-            msg = 'message'
-        elif name.endswith('emote'):
-            msg = 'emote'
-        yield {
-            'offset': match.start(),
-            'channel': msg,
-            'text': _render(expression),
-            'links': _say_links(expression),
-        }
+
+        msg = "say"
+        if name.endswith("message") or name.endswith("messageclose"):
+            msg = "message"
+        elif name.endswith("emote"):
+            msg = "emote"
+        yield Speech(
+            {
+                "offset": match.start(),
+                "channel": msg,
+                "text": _render(expression),
+                "links": _say_links(expression),
+            }
+        )

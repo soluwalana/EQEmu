@@ -14,13 +14,14 @@ A script's elseif order is NOT necessarily a conversation path. Thus the
 candidate file is not a set of true links, and without --llm the lore book is
 empty. No deity/name associations are hardcoded here.
 """
+
 from __future__ import annotations
 
 import argparse
-from collections import Counter, defaultdict
 import json
 import re
 import sys
+from collections import Counter, defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from urllib import request
@@ -52,11 +53,15 @@ def tokens(text: str) -> set[str]:
 
 
 def literal_mention(keyword: str, message: str) -> bool:
-    return bool(re.search(r"(?<!\w)" + re.escape(keyword.strip()) + r"(?!\w)", message, re.I))
+    return bool(
+        re.search(r"(?<!\w)" + re.escape(keyword.strip()) + r"(?!\w)", message, re.I)
+    )
 
 
 def speech_text(turn: dict) -> str:
-    return " ".join(str(r.get("text", "")) for r in turn.get("reply", ()) if r.get("text"))
+    return " ".join(
+        str(r.get("text", "")) for r in turn.get("reply", ()) if r.get("text")
+    )
 
 
 def iter_scripts(root: Path):
@@ -116,15 +121,21 @@ def evidence_index(dialogues: list[dict]):
                     terms = frozenset(tokens(sentence))
                     if not terms:
                         continue
-                    passage = Passage(dialogue["source"], dialogue["file"],
-                                      str(turn.get("input", "")), sentence, terms)
+                    passage = Passage(
+                        dialogue["source"],
+                        dialogue["file"],
+                        str(turn.get("input", "")),
+                        sentence,
+                        terms,
+                    )
                     for term in terms:
                         by_term[term].append(passage)
     return by_term
 
 
-def corroborate(keyword: str, context: str, by_term, current_source: str,
-                max_count: int = 4) -> list[dict]:
+def corroborate(
+    keyword: str, context: str, by_term, current_source: str, max_count: int = 4
+) -> list[dict]:
     key = tokens(keyword)
     surrounding = tokens(context) - key
     if not key or not surrounding:
@@ -141,9 +152,15 @@ def corroborate(keyword: str, context: str, by_term, current_source: str,
             if overlap:
                 matches.append((len(overlap), passage))
     matches.sort(key=lambda pair: (-pair[0], pair[1].file, pair[1].text))
-    return [{"file": p.file, "npc": p.source, "text": p.text,
-             "shared_terms": sorted(surrounding & p.terms)}
-            for _score, p in matches[:max_count]]
+    return [
+        {
+            "file": p.file,
+            "npc": p.source,
+            "text": p.text,
+            "shared_terms": sorted(surrounding & p.terms),
+        }
+        for _score, p in matches[:max_count]
+    ]
 
 
 def candidates(dialogues: list[dict], by_term, lookback: int) -> list[dict]:
@@ -166,18 +183,24 @@ def candidates(dialogues: list[dict], by_term, lookback: int) -> list[dict]:
                 # as they are not nonobvious transitions.
                 record = {
                     "kind": "lore_candidate",
-                    "from": {"zone": chain["zone"], "npc": chain["npc"],
-                             "input": prior.get("input"), "response": utterance},
-                    "to": {"input": keyword,
-                           "response": speech_text(target)},
-                    "source": {"file": chain["file"],
-                               "npc": chain["source"],
-                               "from_offset": prior.get("order"),
-                               "to_offset": target.get("order")},
+                    "from": {
+                        "zone": chain["zone"],
+                        "npc": chain["npc"],
+                        "input": prior.get("input"),
+                        "response": utterance,
+                    },
+                    "to": {"input": keyword, "response": speech_text(target)},
+                    "source": {
+                        "file": chain["file"],
+                        "npc": chain["source"],
+                        "from_offset": prior.get("order"),
+                        "to_offset": target.get("order"),
+                    },
                     "script_distance": j - i,
                     "relationship": "candidate_only",
-                    "corroboration": corroborate(keyword, utterance, by_term,
-                                                  chain["source"]),
+                    "corroboration": corroborate(
+                        keyword, utterance, by_term, chain["source"]
+                    ),
                 }
                 out.append(record)
     return out
@@ -201,8 +224,9 @@ support model_knowledge. An unsupported guess must not become a lore fact.
 Do not blindly infer links between successive elseif branches."""
 
 
-def ask_local_model(candidate: dict, api_base: str, model: str,
-                    timeout: int, temperature: float = 0.0) -> dict:
+def ask_local_model(
+    candidate: dict, api_base: str, model: str, timeout: int, temperature: float = 0.0
+) -> dict:
     prompt = {
         "prior_player": candidate["from"]["input"],
         "npc_response": candidate["from"]["response"],
@@ -216,12 +240,17 @@ def ask_local_model(candidate: dict, api_base: str, model: str,
     payload = {
         "model": model,
         "temperature": temperature,
-        "messages": [{"role": "system", "content": SYSTEM_PROMPT},
-                     {"role": "user", "content": json.dumps(prompt, ensure_ascii=False)}],
+        "messages": [
+            {"role": "system", "content": SYSTEM_PROMPT},
+            {"role": "user", "content": json.dumps(prompt, ensure_ascii=False)},
+        ],
         "max_tokens": 250,
     }
-    req = request.Request(url, data=json.dumps(payload).encode(),
-                          headers={"Content-Type": "application/json"})
+    req = request.Request(
+        url,
+        data=json.dumps(payload).encode(),
+        headers={"Content-Type": "application/json"},
+    )
     with request.urlopen(req, timeout=timeout) as response:
         result = json.load(response)
     raw = result["choices"][0]["message"]["content"].strip()
@@ -233,9 +262,17 @@ def ask_local_model(candidate: dict, api_base: str, model: str,
     if parsed.get("classification") not in allowed:
         raise ValueError(f"unexpected classification: {parsed!r}")
     parsed["confidence"] = max(0.0, min(1.0, float(parsed.get("confidence", 0))))
-    if parsed.get("cue") and parsed["cue"].lower() not in candidate["from"]["response"].lower():
+    if (
+        parsed.get("cue")
+        and parsed["cue"].lower() not in candidate["from"]["response"].lower()
+    ):
         raise ValueError("fabricated cue: not present in source NPC response")
-    if parsed.get("support") not in {"script", "corroborated", "model_knowledge", "none"}:
+    if parsed.get("support") not in {
+        "script",
+        "corroborated",
+        "model_knowledge",
+        "none",
+    }:
         raise ValueError("invalid support")
     return parsed
 
@@ -248,20 +285,41 @@ def dump_jsonl(path: Path, records: list[dict]):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--quests", type=Path, required=True,
-                        help="path to ProjectEQ/projecteqquests checkout")
-    parser.add_argument("--out", type=Path, default=Path.home()/".eqclient")
-    parser.add_argument("--lookback", type=int, default=2,
-                        help="number of prior turns to consider per response (default 2)")
-    parser.add_argument("--limit-files", type=int, default=0,
-                        help="debug: process at most N script files")
-    parser.add_argument("--llm", action="store_true", help="classify with local Qwen server")
-    parser.add_argument("--model", default="Qwen3.5-9B",
-                        help="model identifier exposed by local OpenAI-compatible server")
+    parser.add_argument(
+        "--quests",
+        type=Path,
+        required=True,
+        help="path to ProjectEQ/projecteqquests checkout",
+    )
+    parser.add_argument("--out", type=Path, default=Path.home() / ".eqclient")
+    parser.add_argument(
+        "--lookback",
+        type=int,
+        default=2,
+        help="number of prior turns to consider per response (default 2)",
+    )
+    parser.add_argument(
+        "--limit-files",
+        type=int,
+        default=0,
+        help="debug: process at most N script files",
+    )
+    parser.add_argument(
+        "--llm", action="store_true", help="classify with local Qwen server"
+    )
+    parser.add_argument(
+        "--model",
+        default="Qwen3.5-9B",
+        help="model identifier exposed by local OpenAI-compatible server",
+    )
     parser.add_argument("--api-base", default="http://127.0.0.1:8000/v1")
     parser.add_argument("--timeout", type=int, default=90)
-    parser.add_argument("--max-infer", type=int, default=0,
-                        help="limit model calls for development; 0 = all")
+    parser.add_argument(
+        "--max-infer",
+        type=int,
+        default=0,
+        help="limit model calls for development; 0 = all",
+    )
     parser.add_argument("--min-confidence", type=float, default=0.8)
     args = parser.parse_args(argv)
     if not args.quests.is_dir():
@@ -273,43 +331,58 @@ def main(argv=None):
     index = evidence_index(dialogues)
     rows = candidates(dialogues, index, args.lookback)
     # Always keep all raw candidates for reprocessing after model upgrades.
-    candidate_path = args.out/"lore_candidates.jsonl"
+    candidate_path = args.out / "lore_candidates.jsonl"
     dump_jsonl(candidate_path, rows)
-    print(f"Scanned {stats['files']} files, {stats['chains']} dialogue handlers, "
-          f"{stats['turns']} turns, {len(rows)} nonliteral candidates", flush=True)
+    print(
+        f"Scanned {stats['files']} files, {stats['chains']} dialogue handlers, "
+        f"{stats['turns']} turns, {len(rows)} nonliteral candidates",
+        flush=True,
+    )
     book: list[dict] = []
     results = Counter()
     if args.llm:
-        for i, entry in enumerate(rows[:args.max_infer or None]):
+        for i, entry in enumerate(rows[: args.max_infer or None]):
             try:
-                inference = ask_local_model(entry, args.api_base, args.model, args.timeout)
+                inference = ask_local_model(
+                    entry, args.api_base, args.model, args.timeout
+                )
             except Exception as exc:
                 results["inference_error"] += 1
                 print(f"WARN candidate {i}: {exc}", file=sys.stderr)
                 continue
             entry["review"] = inference
             results[inference["classification"]] += 1
-            if (inference["classification"] == "semantic_lore"
-                    and inference["confidence"] >= args.min_confidence
-                    and inference.get("fact") and inference.get("cue")):
-                book.append({
-                    "kind": "lore_relation",
-                    "cue": inference["cue"],
-                    "concept": entry["to"]["input"],
-                    "fact": inference["fact"],
-                    "confidence": inference["confidence"],
-                    "support": inference["support"],
-                    "provenance": entry["source"],
-                    "evidence": entry["from"]["response"],
-                    "corroboration": entry["corroboration"],
-                    "review_status": "model_proposed",  # not human verified
-                })
-        dump_jsonl(args.out/"lore_reviews.jsonl", rows)
-    dump_jsonl(args.out/"lore_book.jsonl", book)
+            if (
+                inference["classification"] == "semantic_lore"
+                and inference["confidence"] >= args.min_confidence
+                and inference.get("fact")
+                and inference.get("cue")
+            ):
+                book.append(
+                    {
+                        "kind": "lore_relation",
+                        "cue": inference["cue"],
+                        "concept": entry["to"]["input"],
+                        "fact": inference["fact"],
+                        "confidence": inference["confidence"],
+                        "support": inference["support"],
+                        "provenance": entry["source"],
+                        "evidence": entry["from"]["response"],
+                        "corroboration": entry["corroboration"],
+                        "review_status": "model_proposed",  # not human verified
+                    }
+                )
+        dump_jsonl(args.out / "lore_reviews.jsonl", rows)
+    dump_jsonl(args.out / "lore_book.jsonl", book)
     summary = dict(stats)
-    summary.update({"candidates": len(rows), "proposed_lore": len(book),
-                    "review_counts": dict(results)})
-    (args.out/"lore_stats.json").write_text(json.dumps(summary, indent=2) + "\n")
+    summary.update(
+        {
+            "candidates": len(rows),
+            "proposed_lore": len(book),
+            "review_counts": dict(results),
+        }
+    )
+    (args.out / "lore_stats.json").write_text(json.dumps(summary, indent=2) + "\n")
     print(f"{len(book)} model-proposed lore relations. Files in {args.out}")
 
 

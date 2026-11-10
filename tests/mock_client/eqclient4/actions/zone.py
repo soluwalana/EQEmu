@@ -30,16 +30,13 @@ class Zone(LevelHoldAction):
         self.suspended = True
 
     def step(self) -> None:
-        if self.gear_vendor_trip():
-            self._loop.forget(self)
-            return
-
         if self.waiting_for("ZONE"):
             if self.consume("OP_NewZone"):
                 self.waited = 0
                 self.unwait("ZONE")
                 self.complete = True
             return
+
         if not self._loop.session_open():
             return
 
@@ -65,24 +62,5 @@ class Zone(LevelHoldAction):
         self.wait("ZONE")
         self.suspended = False
 
-    def gear_vendor_trip(self) -> bool:
-        """A zone change that only exists to buy level-up gear. A quest exit uses another source."""
-        if self._world.zone == "tutorialb" or not self.destination:
-            return False
-
-        if "#zone:" in self.source or "#gold:" in self.source:
-            return True
-
-        if self.source != f"zone:{self.destination}":
-            return False
-
-        for queued in self._loop.queue:
-            if not queued.task_text.startswith("gear "):
-                continue
-
-            log.error("implmenet fetch_plan to get the vendor zone or station zone")
-            # plan = fetch_plan(world, queued.item_id)
-            # vendor = plan.vendor_zone or plan.station_zone
-            # if vendor == destination:
-            #     return True
-        return False
+    def report(self) -> str:
+        return f"{super().report()} destination={self.destination} asked_for_zone={self.asked}"

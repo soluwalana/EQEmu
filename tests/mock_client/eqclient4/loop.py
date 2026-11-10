@@ -64,8 +64,7 @@ class Schedule:
         self._next += 1
         action.insert = self._next
         action.started = time.time()
-        action.zone = str(self.world.zone or "")
-        action._world = self.world
+        action.zone = self.world.zone or ""
         if source and not self.journal.open_action(action):
             return False
         self._actions.append(action)
@@ -160,6 +159,19 @@ class Loop:
         self.tick: int = 0
         self._status = ""
 
+    def clear_volatile(self) -> None:
+        self.world.self_id = 0
+        self.world.zone_id = -1
+        self.world.zone = ""
+        self.world.zone_formed = None
+        self.world.safe = None
+        self.world.ground_spawns.clear()
+        self.world.mobs.clear()
+        self.world.aggro_mobs.clear()
+        self.world.exit_doors.clear()
+        self.world.doors.clear()
+        self.world.active_merchants.clear()
+
     def start(self, login: Login, creation: CreateCharacter) -> Client:
         for action in self.journal.load_actions():
             self.queue.restore(action)
@@ -210,11 +222,10 @@ class Loop:
 
         edges = len(graph.edges)
         log.info(
-            "loaded quest graph edges=%s zones=%s transits=%s exits=%s",
-            edges,
-            len(self.world.zone_graph.zones),
-            len(self.world.zone_graph.transits),
-            len(self.world.exit_doors),
+            f"loaded quest graph edges={edges} "
+            f"zones={len(self.world.zone_graph.zones)} "
+            f"transits={len(self.world.zone_graph.transits)} "
+            f"exits={len(self.world.exit_doors)}",
         )
 
     def play(self) -> None:
@@ -256,7 +267,7 @@ class Loop:
                     self.capture.record("recv", opcode, payload)
                     self.bus.publish(opcode, payload)
                 case _:
-                    log.error("unknown packet: %s", packet)
+                    log.error(f"unknown packet: {packet}")
                     raise RuntimeError("unknown packet")
 
         winner = self.queue.head()
@@ -359,13 +370,8 @@ class Loop:
             except SessionError:
                 point = self.world.position
                 log.info(
-                    "zone socket closed sending %s pos (%.1f, %.1f, %.1f) sent=%s recv=%s",
-                    opcode,
-                    point[0],
-                    point[1],
-                    point[2],
-                    self.sent_count,
-                    self.recv_count,
+                    f"zone socket closed sending {opcode} pos ({short_point(point)}) "
+                    f"sent={self.sent_count} recv={self.recv_count}",
                 )
                 self.flushed = []
                 self._transfer_once()
@@ -377,18 +383,10 @@ class Loop:
         if self.tick % 20:
             return
         point = self.world.position
-        wait_list = self.active.wait_label() if self.active else "[]"
         log.info(
-            "cycle %s %s waiting=%s pos (%.1f, %.1f, %.1f) sent=%s recv=%s%s",
-            self.tick,
-            self._action_name(self.active),
-            wait_list,
-            point[0],
-            point[1],
-            point[2],
-            self.sent_count,
-            self.recv_count,
-            self._target_note(self.active),
+            f"cycle {self.tick} {self._action_name(self.active)} "
+            f"pos ({short_point(point)}) "
+            f"sent={self.sent_count} recv={self.recv_count}",
         )
 
     def _transfer_once(self) -> None:
@@ -400,6 +398,7 @@ class Loop:
         # The zone-in that follows is a new entrance. A same-zone weather refresh
         # does not come through here, so the party has to be built again.
         self.world.zone_formed = None
+        self.clear_volatile()
         transfer_zone(self.client)
 
     def _note(self, action: Action | None) -> None:
@@ -415,16 +414,12 @@ class Loop:
         self.current = action
         self.head = action
         self._status = label
-        log.info("action %s -> %s", previous, label)
+        log.info(f"action {previous} -> {label}")
 
     def _action_name(self, action: Action | None) -> str:
         if action is None:
             return "idle"
-        kind = type(action).__name__
-        source = action.source
-        base = kind if not source else f"{kind} {source}"
-        named = self._item_suffix(action)
-        return base if not named else f"{base} {named}"
+        return action.report()
 
     def _action_label(self, action: Action | None) -> str:
         label = self._action_name(action)
@@ -432,67 +427,15 @@ class Loop:
             label = f"{label} wait={action.wait_label()}"
         return label
 
-    def _item_suffix(self, action: Action) -> str:
-        """Cache name and item number for each item this action is working on.
-
-        A cursor line also names the item sitting on each slot of the move.
-        """
-        parts: list[str] = []
-        source = action.source or ""
-        for item_id in _item_ids(action):
-            parts.append(self._named_item(item_id, source))
-        return " ".join(part for part in parts if part)
-
-    def _named_item(self, item_id: int, source: str) -> str:
-        row = self.world.item_book.get(item_id)
-        name = row.name if row else ""
-        if name:
-            return f"{name} ({item_id})"
-        if f":{item_id}" in source or f"={item_id}" in source:
-            return ""
-        return f"({item_id})"
-
-    def _target_note(self, action: Action | None) -> str:
-        """Distance and hit points for the spawn an Attack is standing on."""
-        if action is None or type(action).__name__ != "Attack":
-            return ""
-        spawn = action.spawn_id or 0
-        mob = self.world.mobs.get(spawn)
-        if mob is None:
-            return f" target={spawn} missing"
-        return f" target={mob.spoken_name()} d={mob.distance:.0f} hp={mob.hp}"
-
 
 def _quiet[T](load: Callable[[str], T], zone: str) -> T | None:
     try:
         return load(zone)
     except (OSError, ValueError):
         name = load.__name__ if isinstance(load, types.FunctionType) else "map"
-        log.error("%s failed to load for %s", name, zone, exc_info=True)
+        log.error(f"{name} failed to load for {zone}", exc_info=True)
         return None
 
 
-_ITEM_KEY = re.compile(
-    r"(?:fetch|trade|sell|camp):(\d+(?:,\d+)*)|item=(\d+)|distribute:[^:#\s]+:(\d+)"
-)
-
-
-def _item_ids(action: Action) -> list[int]:
-    found: list[int] = []
-    if action.item_id:
-        found.append(action.item_id)
-    if hasattr(action, "item") and action.item and action.item not in found:
-        found.append(action.item)
-    if hasattr(action, "item_ids") and action.item_ids:
-        for item_id in action.item_ids:
-            if item_id and item_id not in found:
-                found.append(item_id)
-    for match in _ITEM_KEY.finditer(action.source or ""):
-        raw = match.group(1) or match.group(2) or match.group(3) or ""
-        for part in raw.split(","):
-            if not part.isdigit():
-                continue
-            item_id = int(part)
-            if item_id not in found:
-                found.append(item_id)
-    return found
+def short_point(point: tuple[float, ...]) -> str:
+    return f"({', '.join(f'{x:.1f}' for x in point)})"

@@ -1,4 +1,7 @@
 import math
+import re
+
+NAME_RE = re.compile(r"\s*\d+$")
 
 
 def eq_heading(x1: float, y1: float, x2: float, y2: float) -> int:
@@ -290,3 +293,11 @@ def crc32(data: bytes, key: int | None = None) -> int:
     for byte in data:
         crc = ((crc >> 8) & 0x00FFFFFF) ^ CRC32_TABLE[(crc ^ byte) & 0xFF]
     return (~crc) & 0xFFFFFFFF
+
+
+def normalize_name(name: str) -> str:
+    """Fold EQ spawn names: underscores, backticks, and trailing instance digits."""
+    folded = " ".join(
+        (name or "").lower().replace("_", " ").replace("`", " ").replace("#", " ").split()
+    )
+    return NAME_RE.sub("", folded).strip()

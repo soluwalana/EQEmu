@@ -1,7 +1,7 @@
 import re
 import struct
 from dataclasses import dataclass, field
-from typing import TypeVar
+from typing import Callable, TypeVar
 
 from eqclient4.structs.wire import (
     EQStruct,
@@ -151,6 +151,17 @@ class OP_SimpleMessage(EQStruct):
     @property
     def text_parts(self) -> tuple[tuple[MessagePart, ...], ...]:
         return tuple(parse_message_parts(text) for text in self.texts)
+
+
+def simple_id_matcher(string_id: int) -> Callable[[EQStruct], bool]:
+    def matcher(message: EQStruct) -> bool:
+        match message:
+            case OP_SimpleMessage():
+                return int(message.string_id) == string_id
+            case _:
+                return False
+
+    return matcher
 
 
 @dataclass

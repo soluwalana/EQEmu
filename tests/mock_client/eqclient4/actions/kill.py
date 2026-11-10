@@ -10,22 +10,21 @@ if TYPE_CHECKING:
 
 from eqclient4.action import Action
 from eqclient4.actions.attack import Attack
-from eqclient4.actions.support import (
-    INTERACT,
-    has_soulbind,
-    spawn_of,
-    standing_of,
-    walk,
-    yards,
-    yield_to,
-)
-from eqclient4.actions.talk import append_soulbind
+
+# from eqclient4.actions.support import (
+#     INTERACT,
+#     has_soulbind,
+#     spawn_of,
+#     standing_of,
+#     walk,
+#     yards,
+#     yield_to,
+# )
+# from eqclient4.actions.talk import append_soulbind
 from eqclient4.actions.travel import Travel
-from eqclient4.data.locations import read_locations
 from eqclient4.log import log
 from eqclient4.nav.navmesh import load_nav
 from eqclient4.nav.path import STRIDE, straight
-from eqclient4.nav.travel import ensure_zone_graph
 from eqclient4.world import Mob
 
 
@@ -33,6 +32,8 @@ class Kill(Action):
 
     def __init__(
         self,
+        world: World,
+        loop: Loop,
         spawn_id: int | None = None,
         camp: str | tuple[int, ...] | None = None,
         level: int | None = None,
@@ -42,7 +43,6 @@ class Kill(Action):
         self.spawn_id = spawn_id or None
         self.camp = camp
         self.level = level
-        self.active_path = None
         self.roaming = False
         self.anchor: tuple[float, float] | None = None
         self.still = 0
@@ -76,11 +76,7 @@ class Kill(Action):
             self.force = False
 
     def opcodes(self) -> tuple[str, ...]:
-        return ("OP_BecomeCorpse",)
-
-    def suspend(self) -> None:
-        self.active_path = None
-        self.suspended = True
+        return super().opcodes() + ("OP_BecomeCorpse",)
 
     def step(self, loop: Loop, world: World) -> None:
         if self.spawn_id and self._corpse():

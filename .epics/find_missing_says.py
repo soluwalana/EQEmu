@@ -3,6 +3,7 @@
 
 Run with PYTHONPATH=tests/mock_client if this script is outside the package.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -38,15 +39,23 @@ def missing_links(path: Path, scope: str, include_hail: bool = False):
                     continue
                 observed_turns = (
                     [other for j, other in enumerate(turns) if j != index]
-                    if scope == "all" else
-                    turns[:index] if scope == "history" else turns[index - 1:index]
+                    if scope == "all"
+                    else (
+                        turns[:index]
+                        if scope == "history"
+                        else turns[index - 1 : index]
+                    )
                 )
                 # With --scope all, include text from item/trade events.
                 # Do not merge those event-gated replies into chronological
                 # --scope history/previous conversations.
-                context = (chain.get('context_speech') or []) if scope == 'all' else []
-                event_evidence = _turn_mentions(keyword, [{'reply': context}]) if context else False
-                if index > 0 and not (_turn_mentions(keyword, observed_turns) or event_evidence):
+                context = (chain.get("context_speech") or []) if scope == "all" else []
+                event_evidence = (
+                    _turn_mentions(keyword, [{"reply": context}]) if context else False
+                )
+                if index > 0 and not (
+                    _turn_mentions(keyword, observed_turns) or event_evidence
+                ):
                     prev = turns[index - 1]
                     yield {
                         "source": chain.get("source", ""),
@@ -66,12 +75,21 @@ def missing_links(path: Path, scope: str, include_hail: bool = False):
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("graph", type=Path, help="Path to quest_graph.jsonl")
-    parser.add_argument("--scope", choices=("all", "history", "previous"), default="all",
-                        help="Check all branches, earlier branches, or preceding branch (default: all)")
-    parser.add_argument("--include-hail", action="store_true",
-                        help="Include universal hail entry points in missing-link reports")
+    parser.add_argument(
+        "--scope",
+        choices=("all", "history", "previous"),
+        default="all",
+        help="Check all branches, earlier branches, or preceding branch (default: all)",
+    )
+    parser.add_argument(
+        "--include-hail",
+        action="store_true",
+        help="Include universal hail entry points in missing-link reports",
+    )
     parser.add_argument("--format", choices=("csv", "jsonl"), default="csv")
-    parser.add_argument("-o", "--output", type=Path, help="Output file (default: stdout)")
+    parser.add_argument(
+        "-o", "--output", type=Path, help="Output file (default: stdout)"
+    )
     args = parser.parse_args(argv)
     try:
         rows = list(missing_links(args.graph, args.scope, args.include_hail))
@@ -87,8 +105,15 @@ def main(argv=None) -> int:
             for row in rows:
                 stream.write(json.dumps(row, ensure_ascii=False) + "\n")
         else:
-            columns = ("source", "previous_input", "missing_input", "previous_reply",
-                       "scope", "turn_index", "guards")
+            columns = (
+                "source",
+                "previous_input",
+                "missing_input",
+                "previous_reply",
+                "scope",
+                "turn_index",
+                "guards",
+            )
             writer = csv.DictWriter(stream, fieldnames=columns, extrasaction="ignore")
             writer.writeheader()
             for row in rows:
@@ -96,7 +121,10 @@ def main(argv=None) -> int:
     finally:
         if args.output:
             stream.close()
-    print(f"Found {len(rows)} dialogue inputs absent from {args.scope} NPC speech.", file=sys.stderr)
+    print(
+        f"Found {len(rows)} dialogue inputs absent from {args.scope} NPC speech.",
+        file=sys.stderr,
+    )
     return 0
 
 

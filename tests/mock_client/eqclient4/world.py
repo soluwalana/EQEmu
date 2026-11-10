@@ -20,10 +20,11 @@ from eqclient4.character import Character
 from eqclient4.data.bot_spells import BotSpellBook, ensure_bot_spells
 from eqclient4.data.drops import DropBook, MappedDrops, ensure_drops
 from eqclient4.data.factions import FactionBook, ensure_factions
-from eqclient4.data.ground import GroundSpawn, GroundSpawnBook, ensure_ground_spawns
+from eqclient4.data.ground import GroundSpawnBook, LiveGroundSpawn, ensure_ground_spawns
 from eqclient4.data.items import ItemBook, ensure_items
 from eqclient4.data.locations import LocationBook, MappedLocations, ensure_locations
 from eqclient4.data.merchants import MerchantBook, ensure_merchants
+from eqclient4.data.npcs import NPC, ensure_npcs
 from eqclient4.data.recipes import RecipeBook, ensure_recipes
 from eqclient4.data.spells import SpellBook, ensure_spells
 from eqclient4.inventory import CharacterInventory, Merchant
@@ -252,26 +253,22 @@ class World:
 
         self.self_id = 0
 
-        # Mobs in the zone
-        self.mobs = MobMap(self)
-        # tracking pending mobs that have attacked us
-        self.aggro_mobs: dict[int, Mob] = {}
-
         # Group Rosters and Bots
         self.group = GroupRoster("party")
         self.raid = GroupRoster("raid")
         self.bots = Bots()
 
-        # Inventory Managment
-        self.inventory: CharacterInventory = CharacterInventory()
-
-        # Character Management
+        # <Character Management>
         self.character = Character(name)
         # Total faction standing isn't knowable,
         # just what can be gleaned from considerations
         self.discovered_factions: dict[int, Faction] = {}
 
-        # Caches
+        # Inventory
+        self.inventory: CharacterInventory = CharacterInventory()
+        # </Character Management>
+
+        # <Caches>
         self.tasks: TaskBook = TaskBook()
         self.item_book: ItemBook = ensure_items()
         self.quest_graph: QuestGraph = ensure_graph()
@@ -283,35 +280,51 @@ class World:
         self.item_locations: LocationBook | MappedLocations = ensure_locations()
         self.spells: SpellBook = ensure_spells()
         self.bot_spells: BotSpellBook = ensure_bot_spells()
+        self.npcs: NPCCache = NPCCache(self.quest_graph)
         self.drops: MappedDrops | DropBook = ensure_drops()
+        # </Caches>
 
-        # Merchants
-        self.active_merchants: dict[int, Merchant] = {}
+        # <Volatile Data>
+        # Volatile Data should be cleared on Zone Change
 
-        # Movement and Position
-        self.movement = Movement(self)
         #   Current Zone
         self.zone: str | None = None
         self.zone_id = -1
         self.zone_formed: str | None = None
-        #   Water Maps loaded from zoning in this session
-        self.water_maps: dict[str, WaterMap] = {}
+
         #   Active mesh
         self.mesh: ZoneMap | None = None
+
         #   Zone in point, considered safe normally
         self.safe: tuple[float, float, float] | None = None
         self.exit_doors: dict[str, dict[int, list[int]]] = {}
         self.at_water = False
+
+        #   Water Maps loaded from zoning in this session
+        self.water_maps: dict[str, WaterMap] = {}
+
+        # Live Ground Spawns in this Zone
+        self.ground_spawns: dict[int, list[LiveGroundSpawn]] = {}
+
+        # Mobs in the zone
+        self.mobs = MobMap(self)
+        # tracking pending mobs that have attacked us
+        self.aggro_mobs: dict[int, Mob] = {}
+
+        # Live Doors in this zone
+        self.doors: dict[int, Door] = {}
+        # Merchants
+        self.active_merchants: dict[int, Merchant] = {}
+
         #   Current Position during Gameplay
         self._x = float(0)
         self._y = float(0)
         self._z = float(0)
 
-        # Doors from the server for this zone
-        self.doors: dict[int, Door] = {}
+        # Movement and Position
+        self.movement = Movement(self)
 
-        # Live Ground Spawns in this Zone
-        self.ground: dict[int, GroundSpawn] = {}
+        # </Volatile Data>
 
     def active_merchant(self) -> Merchant | None:
         for merchant in self.active_merchants.values():
@@ -424,6 +437,21 @@ class World:
             return None
         self.water_maps[zone] = water
         return water
+
+
+class NPCCache:
+    def __init__(self, quest_graph: QuestGraph) -> None:
+        self.npc_cache: dict[int, NPC] = ensure_npcs()
+        for zone, npc_ids in quest_graph.spawned_npcs().items():
+            for npc_id in npc_ids:
+                if npc_id not in self.npc_cache:
+                    log.warning(f"NPC {npc_id} not found in NPC cache - zone {zone}")
+                    continue
+
+                self.npc_cache[npc_id].zones.append(zone)
+
+    def get_npc(self, npc_id: int) -> NPC | None:
+        return self.npc_cache.get(npc_id)
 
 
 STRIDE_TIMEOUT = 3

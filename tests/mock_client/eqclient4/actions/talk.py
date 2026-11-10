@@ -2,6 +2,8 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from eqclient4.world import Mob
+    from eqclient4.loop import Loop
+    from eqclient4.world import World
 
 from eqclient4.action import Action
 from eqclient4.structs.tasks import OP_TaskActivity
@@ -10,9 +12,15 @@ from eqclient4.structs.tasks import OP_TaskActivity
 class Talk(Action):
 
     def __init__(
-        self, npc: Mob, task_text: str, priority: int = 0, activity: OP_TaskActivity | None = None
+        self,
+        world: World,
+        loop: Loop,
+        npc: Mob,
+        task_text: str,
+        priority: int = 0,
+        activity: OP_TaskActivity | None = None,
     ) -> None:
-        super().__init__()
+        super().__init__(world, loop)
         self.priority = priority
         self.npc = npc
         self.active_path = None
@@ -35,8 +43,11 @@ class Talk(Action):
 
     def step(self) -> None:
 
-        if self.active_path is None:
+        if not self.active_path:
             self.active_path = self._world.movement.plan(self.npc, "run")
-            self._world.movement.advance(self.active_path)
-        else:
-            self._world.movement.advance(self.active_path)
+            self.move_closer(self.active_path.destination, "run")
+            return
+
+        if self.sent:
+            self.move_closer(self.active_path.destination, "run")
+            return

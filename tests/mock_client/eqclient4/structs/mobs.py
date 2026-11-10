@@ -38,10 +38,7 @@ def _pack_spawn(spawn: Spawn) -> bytes:
     out += struct.pack(
         "<IBfB", spawn.spawn_id & 0xFFFFFFFF, spawn.level & 0xFF, 0.0, spawn.npc & 0xFF
     )
-    other = (
-        (0x10 if spawn.title else 0)
-        | (0x20 if spawn.suffix else 0)
-    )
+    other = (0x10 if spawn.title else 0) | (0x20 if spawn.suffix else 0)
     out += bytes(4) + bytes((other,))
     # common/patches/rof2.cpp:4735 unknown3
     out += struct.pack("<ff", -1.0, 0.0)
@@ -77,9 +74,9 @@ def _pack_spawn(spawn: Spawn) -> bytes:
     if spawn.suffix:
         out += put_cstr(spawn.suffix)
 
-    out += bytes(8)                    # unknown IDs
-    out += b"\x00"                     # IsMercenary
-    out += b"0000000000000000\x00"     # RealEstateItemGuid
+    out += bytes(8)  # unknown IDs
+    out += b"\x00"  # IsMercenary
+    out += b"0000000000000000\x00"  # RealEstateItemGuid
     out += struct.pack("<II", 0xFFFFFFFF, 0xFFFFFFFF)
     out += bytes(29)
     return bytes(out)
@@ -87,7 +84,7 @@ def _pack_spawn(spawn: Spawn) -> bytes:
 
 def _read_spawn(data: bytes, offset: int) -> tuple[Spawn, int]:
     """Walk the RoF2 OP_ZoneSpawns encode. One spawn, starting at offset."""
-    
+
     name, offset = cstring(data, offset)
     offset = advance(data, offset, 10, "spawn")
     spawn_id, level, _bounds, npc = struct.unpack_from("<IBfB", data, offset - 10)
@@ -165,7 +162,7 @@ class Spawn(EQStruct):
     last_name: str = ""
     title: str = ""
     suffix: str = ""
-    
+
     def serialize(self) -> bytes:
         return _pack_spawn(self)
 
@@ -312,9 +309,7 @@ class OP_ZoneSpawns(EQStruct):
             spawn, next_offset = _read_spawn(data, offset)
 
             if next_offset <= offset:
-                raise ValueError(
-                    f"OP_ZoneSpawns made no progress at offset {offset}"
-                )
+                raise ValueError(f"OP_ZoneSpawns made no progress at offset {offset}")
 
             spawns.append(spawn)
             offset = next_offset
@@ -524,6 +519,7 @@ class OP_Assist(EQStruct):
             return cls(struct.unpack_from("<H", data)[0])
         raise ValueError(f"OP_Assist is {len(data)} bytes")
 
+
 @dataclass
 class TrackDetails:
     level: int = 0
@@ -572,9 +568,7 @@ class OP_Track(EQStruct):
         details = []
 
         for _ in range(count):
-            entity_id, distance, level, is_npc = struct.unpack_from(
-                "<IfBB", data, offset
-            )
+            entity_id, distance, level, is_npc = struct.unpack_from("<IfBB", data, offset)
             offset += 10
 
             name, offset = cstring(data, offset)

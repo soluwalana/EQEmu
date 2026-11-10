@@ -8,13 +8,25 @@ InventorySlot is the wire-address type, *not* eqclient4.journal.InventorySlot.
 Item instances are the existing eqclient4.structs.items.Item objects.
 """
 
+import json
 import pickle
 from copy import copy
 from dataclasses import dataclass, field
 from struct import unpack_from
-from typing import Iterator
+from typing import Iterator, NotRequired, TypedDict
 
-from eqclient4.structs.constants import CURSOR_SLOT, GENERAL_SLOTS
+from eqclient4.structs.constants import (
+    _BANK_SLOTS,
+    _SHARED_BANK_SLOTS,
+    _WORN,
+    BANK_ADDRESS,
+    CURSOR_SLOT,
+    GENERAL_SLOTS,
+    LIMBO_ADDRESS,
+    POSSESSIONS_ADDRESS,
+    SHARED_BANK_ADDRESS,
+    TRADE_ADDRESS,
+)
 from eqclient4.structs.items import (
     Item,
     OP_CancelTrade,
@@ -23,45 +35,9 @@ from eqclient4.structs.items import (
     OP_FinishTrade,
     OP_ItemPacket,
     OP_MoveItem,
-    OP_ShopPlayerBuy,
     OP_ShopPlayerSell,
 )
 from eqclient4.structs.wire import EQStruct, InventorySlot
-
-_WORN = (
-    "Charm",
-    "Left Ear",
-    "Head",
-    "Face",
-    "Right Ear",
-    "Neck",
-    "Shoulders",
-    "Arms",
-    "Back",
-    "Left Wrist",
-    "Right Wrist",
-    "Ranged",
-    "Hands",
-    "Primary",
-    "Secondary",
-    "Left Finger",
-    "Right Finger",
-    "Chest",
-    "Legs",
-    "Feet",
-    "Waist",
-    "Power Source",
-    "Ammo",
-)
-_BANK_SLOTS = 24
-_SHARED_BANK_SLOTS = 2
-
-POSSESSIONS_ADDRESS = 0
-BANK_ADDRESS = 1
-SHARED_BANK_ADDRESS = 2
-TRADE_ADDRESS = 3
-WORLD_CONTAINER_ADDRESS = 4
-LIMBO_ADDRESS = 5
 
 
 def _item_address(item: Item) -> InventorySlot:
@@ -654,6 +630,32 @@ class CharacterInventory:
         """Total quantity held across all indexed inventory locations."""
         return sum(item.stack for item in self.slots.values() if item.item_id == item_id)
 
+    def can_acquire_lore_item(self, item: Item) -> bool:
+        """Checks the lore constraints and whether the item is already held with the same lore group."""
+
+        if item.lore_group == 0:
+            return True
+
+        if item.lore_group == -1:
+            address = self.find(item.item_id)
+            if not address:
+                # Item not held so lore constraints are met
+                return True
+
+            held_item = self.get(address)
+            if not held_item:
+                return True
+
+            # Item Held and lore -1 so can't get another
+            return False
+
+        for _, held_item in self.items():
+            if held_item.lore_group == item.lore_group:
+                # Can only hold one item with the same lore group
+                return False
+
+        return True
+
     def find(self, item_id: int) -> InventorySlot | None:
         """Return the address of the first matching item, or None."""
         for addr, item in self.slots.items():
@@ -679,6 +681,87 @@ class CharacterInventory:
         c.__dict__.clear()
         c.__dict__.update(state)
         return c
+
+    def render_json(self) -> str:
+        """LLM-friendly JSON inventory with nested bags and augments."""
+
+        def encode(address: InventorySlot, item: Item) -> InventoryEntry:
+            result: InventoryEntry = {
+                "slot": _slot_id(address),
+                "name": item.name,
+                "item_id": str(item.item_id),
+                "quantity": str(item.stack),
+            }
+
+            if item.bag_slots > 0:
+                result["capacity"] = str(item.bag_slots)
+                contents: list[InventoryEntry] = []
+
+                for index in range(item.bag_slots):
+                    child_address = self.cell(address, index)
+                    child = self.get(child_address)
+                    if child is not None:
+                        contents.append(encode(child_address, child))
+
+                if contents:
+                    result["contents"] = contents
+
+            augments: list[InventoryEntry] = []
+
+            for child_address, child in self.items():
+                if (
+                    child_address.type == address.type
+                    and child_address.main_slot == address.main_slot
+                    and child_address.sub_index == address.sub_index
+                    and child_address.aug_index >= 0
+                ):
+                    augments.append(encode(child_address, child))
+
+            if augments:
+                result["augments"] = augments
+
+            return result
+
+        result: dict[str, dict[str, InventoryEntry]] = {
+            "worn": {},
+            "general": {},
+            "bank": {},
+            "shared_bank": {},
+        }
+
+        for address, item in self.items():
+            if address.sub_index >= 0 or address.aug_index >= 0:
+                continue
+
+            if address.type == POSSESSIONS_ADDRESS:
+                if address.main_slot < len(_WORN):
+                    section = "worn"
+                else:
+                    section = "general"
+            elif address.type == BANK_ADDRESS:
+                section = "bank"
+            elif address.type == SHARED_BANK_ADDRESS:
+                section = "shared_bank"
+            else:
+                continue
+
+            result[section][_format_address(address)] = encode(address, item)
+
+        return json.dumps(
+            {key: value for key, value in result.items() if value},
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )
+
+
+class InventoryEntry(TypedDict):
+    slot: str
+    name: str
+    item_id: str
+    quantity: str
+    capacity: NotRequired[str]
+    contents: NotRequired[list["InventoryEntry"]]
+    augments: NotRequired[list["InventoryEntry"]]
 
 
 def _slot_id(address: InventorySlot) -> str:
@@ -717,12 +800,9 @@ class Merchant:
         """Find every merchant slot containing an item ID."""
         return [slot for slot, item in self.items.items() if item.item_id == item_id]
 
-
     def render_json(self) -> str:
         """Compact, LLM-friendly inventory snapshot."""
-        import json
-
-        inventory = {
+        inventory: dict[str, list[dict[str, str]]] = {
             "worn": [],
             "general": [],
             "bank": [],
@@ -730,29 +810,31 @@ class Merchant:
             "other": [],
         }
 
-        for address, item in self.items():
-            if address.type == 0:
-                if address.main_slot < len(_WORN):
+        for item in self.items.values():
+            if not item.address:
+                continue
+
+            section = "other"
+            if item.address.type == 0:
+                if item.address.main_slot < len(_WORN):
                     section = "worn"
                 else:
                     section = "general"
-            elif address.type == BANK_ADDRESS:
+            elif item.address.type == BANK_ADDRESS:
                 section = "bank"
-            elif address.type == SHARED_BANK_ADDRESS:
+            elif item.address.type == SHARED_BANK_ADDRESS:
                 section = "shared_bank"
-            else:
-                section = "other"
 
-            entry = {
-                "slot": _slot_id(address),
-                "location": _format_address(address),
-                "item_id": item.item_id,
+            entry: dict[str, str] = {
+                "slot": _slot_id(item.address),
+                "location": _format_address(item.address),
+                "item_id": str(item.item_id),
                 "name": item.name,
-                "quantity": item.stack,
+                "quantity": str(item.stack),
             }
 
             if item.bag_slots:
-                entry["bag_slots"] = item.bag_slots
+                entry["bag_slots"] = str(item.bag_slots)
 
             inventory[section].append(entry)
 

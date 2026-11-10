@@ -78,21 +78,21 @@ class RecipeBook:
     by_id: dict[int, Recipe] = field(default_factory=dict)
     by_result: dict[int, list[int]] = field(default_factory=dict)
     by_skill: dict[int, list[int]] = field(default_factory=dict)
+    by_container: dict[int, list[int]] = field(default_factory=dict)
 
     def index(self) -> None:
         """item id → recipe ids that produce it, including multi-result combines."""
-        found: dict[int, list[int]] = {}
-        by_skill: dict[int, list[int]] = {}
         for recipe_id, recipe in self.by_id.items():
             made = {recipe.result}
             made.update(item_id for item_id, _count in recipe.results)
             for item_id in made:
                 if item_id > 0:
-                    found.setdefault(item_id, []).append(recipe_id)
+                    self.by_result.setdefault(item_id, []).append(recipe_id)
+            
             if recipe.skill and recipe.enabled and recipe.components:
-                by_skill.setdefault(int(recipe.skill), []).append(recipe_id)
-        self.by_result = found
-        self.by_skill = by_skill
+                self.by_skill.setdefault(int(recipe.skill), []).append(recipe_id)
+            
+            self.by_container.setdefault(recipe.container, []).append(recipe_id)
 
     def practice(self, skill_id: int, current: int, want: int, skip: int = 0) -> Recipe | None:
         """A moderately hard combine for skillups (EQ: skillups only while skill < trivial).
@@ -130,11 +130,15 @@ class RecipeBook:
             inputs = {comp for comp, _count in recipe.components}
             if recipe.container and recipe.container not in _WORLD_CONTAINER:
                 inputs.add(recipe.container)
+            
             if recipe.result in inputs:
                 continue
+            
             if recipe.container in _WORLD_CONTAINER:
                 continue
+            
             candidates.append(recipe)
+        
         if not candidates:
             return None
 
@@ -177,13 +181,10 @@ class RecipeBook:
             out.append((recipe.result, recipe.id, recipe.components))
         return out
 
-
-def load_recipes(path: str) -> list[tuple[int, int, tuple[tuple[int, int], ...]]]:
-    """Result item, recipe id, and components. Prefers a recipes.jsonl cache; else peq dump."""
-    file = Path(path)
-    if file.suffix == ".jsonl" or file.name == "recipes.jsonl":
-        return read_recipes(str(file)).craft_list()
-    return recipes_from_lines(_lines(path))
+    def container_crafts(self, container_id: int) -> list[Recipe]:
+        if container_id not in self.by_container:
+            return []
+        return [self.by_id[recipe_id] for recipe_id in self.by_container[container_id]]
 
 
 def recipes_from_lines(lines: Iterable[str]) -> list[tuple[int, int, tuple[tuple[int, int], ...]]]:

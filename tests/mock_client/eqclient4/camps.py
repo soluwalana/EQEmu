@@ -13,8 +13,8 @@ class XpCamp:
 
 # Class-agnostic outdoor / dungeon bands from eqprogression zone leveling guide.
 # Agent returns to safe to sell/bank between pulls.
-# tutorialb is not an XP camp — unfinished mines are routed by the tutorial gate only.
 XP_CAMPS: tuple[XpCamp, ...] = (
+    XpCamp("tutorialb", 1, 10, "tutorial"),
     XpCamp("qeynos", 1, 3, "city rats"),
     XpCamp("freporte", 1, 3, "city"),
     XpCamp("freportw", 1, 3, "city"),
@@ -360,17 +360,20 @@ def camp_for_level(level: int, here: str = "") -> XpCamp | None:
     """XP camp for `level`. Prefer current zone, then a one-hop neighbor, else band[0]."""
     band = [camp for camp in XP_CAMPS if camp.min_level <= max(level, 1) <= camp.max_level]
     if not band:
-        return XP_CAMPS[-1]
-    home = (here or "").lower()
+        return None
+
+    home = here.lower()
     if home:
         for camp in band:
             if camp.zone == home:
                 return camp
+
         near = set(_CAMP_NEAR.get(home, ()))
         if near:
             for camp in band:
                 if camp.zone in near:
                     return camp
+
     return band[0]
 
 
@@ -380,7 +383,7 @@ def needs_level(current: int, required: int) -> bool:
 
 def zone_recommended_level(zone: str) -> int:
     """Outdoor floor for `zone`, or 0 when unknown (no gate)."""
-    return int(ZONE_LEVEL.get((zone or "").lower(), 0) or 0)
+    return int(ZONE_LEVEL.get(zone.lower(), 0) or 0)
 
 
 def grind_zones(level: int) -> list[str]:
@@ -402,12 +405,14 @@ def zone_needs_swim(zone: str) -> bool:
     return (zone or "").lower() in SWIM_ZONES
 
 
-def zone_reachable(zone: str, level: int) -> str:
-    """Empty when travel is fine; otherwise a gate reason such as 'level:N'."""
-    home = (zone or "").lower()
-    if not home:
-        return ""
-    need = zone_recommended_level(home)
-    if need and level < need:
-        return f"level:{need}"
-    return ""
+def zone_reachable(zone: str, level: int) -> bool:
+    """True when travel is fine; otherwise False."""
+    zone = zone.lower()
+    if not zone:
+        raise ValueError(f"Zone is required to check reachability")
+
+    need = zone_recommended_level(zone)
+    if need and level >= need:
+        return True
+
+    return False

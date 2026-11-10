@@ -178,6 +178,7 @@ class ZoneGraph:
         for transit in self.transits:
             grouped.setdefault(transit.zone, []).append(transit)
             at.setdefault((transit.zone, int(transit.door_id)), transit)
+
         self._at = at
         self._from = {zone: tuple(rows) for zone, rows in grouped.items()}
         self._by_id = {zone_id: name for name, zone_id in self.zones.items() if zone_id}
@@ -432,15 +433,19 @@ def build_zone_graph(
     peq = Path(peq)
     graph = ZoneGraph()
     if not peq.is_file():
-        return graph
+        raise FileNotFoundError(f"PEQ file not found: {peq}")
+
     text = peq.read_text(encoding="latin1", errors="replace")
     graph.zones, graph.flagged = _parse_zones(text)
     for name, zone_id in graph.zones.items():
         remember(name, zone_id)
+
     for transit in _parse_doors(text, graph.zones, graph.flagged):
         _add_transit(graph, transit)
+
     for transit in _parse_zone_points(text, graph.zones, graph.flagged):
         _add_transit(graph, transit)
+
     if quest_doors:
         for zone, by_door in quest_doors.items():
             home = (zone or "").lower()
@@ -492,13 +497,15 @@ def read_zone_graph(path: str) -> ZoneGraph:
     graph = ZoneGraph()
     file = Path(path)
     if not file.is_file():
-        graph.index()
-        return graph
+        raise FileNotFoundError(f"Zone graph file not found: {path}")
+
     for line in file.read_text(encoding="utf-8").splitlines():
         if not line.strip():
             continue
+
         row = json.loads(line)
         kind = row.get("kind", "")
+
         if kind == "zone":
             name = str(row.get("name") or "").lower()
             zone_id = int(row.get("id") or 0)
@@ -507,9 +514,11 @@ def read_zone_graph(path: str) -> ZoneGraph:
                 if row.get("flag_needed") in (1, "1", True):
                     graph.flagged[name] = zone_id
             continue
+
         if kind == "edge" or row.get("rel") == "travel":
             _add_transit(graph, Transit.from_edge(row))
             continue
+
         if kind == "door" and "to" in row:
             zone = str(row.get("zone") or "").lower()
             door_id = int(row.get("door") or 0)
@@ -529,6 +538,7 @@ def read_zone_graph(path: str) -> ZoneGraph:
                     ),
                 )
             continue
+
     graph.remember_all()
     graph.index()
     return graph
@@ -546,10 +556,12 @@ def ensure_zone_graph(
     file = Path(path)
     if file.is_file() and (not rebuild):
         return read_zone_graph(path)
+
     dump = peq_path(peq)
     graph = build_zone_graph(dump, quest_doors) if dump.is_file() else ZoneGraph()
     if graph.zones or graph.transits:
         write_zone_graph(graph, path)
+
     return graph
 
 

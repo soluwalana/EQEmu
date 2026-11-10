@@ -10,11 +10,12 @@ import os
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import NotRequired, Sequence, TypedDict
 
-from eqclient4.data.catalog import Catalog, named_items, load_catalog
+from eqclient4.data.catalog import Catalog, load_catalog, named_items
 from eqclient4.log import log
 from eqclient4.nav.travel import ensure_zone_graph
-from eqclient4.quests.speech_expr import iter_speech_calls
+from eqclient4.quests.speech_expr import Speech, iter_speech_calls
 
 _SAY = re.compile(
     r"""\$text\s*=~\s*/([^/]+)/i|findi\(\s*["']([^"']+)["']\s*\)""",
@@ -372,7 +373,11 @@ def _compute_branches(
 
     while index < limit:
         char = text[index]
-        if perl and char == "/" and text[max(0, index - 12):index].rstrip().endswith(("=~", "!~")):
+        if (
+            perl
+            and char == "/"
+            and text[max(0, index - 12) : index].rstrip().endswith(("=~", "!~"))
+        ):
             # Skip regex bodies: words such as "do" or "end" are not syntax.
             pos = index + 1
             while pos < limit:
@@ -655,19 +660,20 @@ def _spoken(block: str) -> str:
     return next((event["text"] for event in iter_speech_calls(block)), "")
 
 
-def _speech_events(text: str, span: tuple[int, int, int, int]) -> list[dict]:
+def _speech_events(text: str, span: tuple[int, int, int, int]) -> list[Speech]:
     """Full Say/Emote expressions, including nested saylink labels and guards."""
     body_lo, body_hi = span[2], span[3]
     branches = _branch_index(text)
-    events = []
+    events: list[Speech] = []
     for event in iter_speech_calls(text, body_lo, body_hi):
         at = event["offset"]
         nested = sorted(
-            (b for b in branches
-             if body_lo <= b[0] and b[0] <= at < b[3] and b != span),
+            (b for b in branches if body_lo <= b[0] and b[0] <= at < b[3] and b != span),
             key=lambda b: b[0],
         )
-        events.append({**event, "guards": [text[b[0]:b[1]].strip() for b in nested]})
+        event["guards"] = [text[b[0] : b[1]].strip() for b in nested]
+        events.append(event)
+
     return events
 
 
@@ -679,9 +685,16 @@ _OPTION_LIST = re.compile(
 
 
 _QUERY_PREFIXES = (
-    ("what",), ("who",), ("where",), ("which",),
-    ("what", "is"), ("what", "are"), ("tell", "me", "about"),
-    ("a",), ("an",), ("the",),
+    ("what",),
+    ("who",),
+    ("where",),
+    ("which",),
+    ("what", "is"),
+    ("what", "are"),
+    ("tell", "me", "about"),
+    ("a",),
+    ("an",),
+    ("the",),
 )
 
 _POSSESSIVE_EQUIV = {
@@ -694,7 +707,7 @@ _POSSESSIVE_EQUIV = {
 
 def _lex_tokens(value: str) -> list[str]:
     return re.findall(r"[\w]+", value.casefold().replace("_", " "))
-    
+
 
 def _lex_variants(token: str) -> set[str]:
     """Small inflection set for singular/plural player triggers.
@@ -724,7 +737,7 @@ def _lex_equiv(a: str, b: str) -> bool:
 
 def _lex_sequence(needle: list[str], haystack: list[str]) -> bool:
     return any(
-        all(_lex_equiv(a, b) for a, b in zip(needle, haystack[start:start + len(needle)]))
+        all(_lex_equiv(a, b) for a, b in zip(needle, haystack[start : start + len(needle)]))
         for start in range(len(haystack) - len(needle) + 1)
     )
 
@@ -733,8 +746,8 @@ def _lex_queries(value: str) -> list[list[str]]:
     words = _lex_tokens(value)
     candidates = [words]
     for prefix in _QUERY_PREFIXES:
-        if words[:len(prefix)] == list(prefix) and len(words) > len(prefix):
-            candidates.append(words[len(prefix):])
+        if words[: len(prefix)] == list(prefix) and len(words) > len(prefix):
+            candidates.append(words[len(prefix) :])
     # A quest script may test `make the shaft` after the NPC explicitly
     # lists the weapon's parts as `shaft, blade, fittings, hilt`.
     if words[:2] == ["make", "the"] and len(words) > 2:
@@ -755,8 +768,8 @@ def _answer_to_question(phrase: str, reply: str) -> bool:
     for question in re.findall(r"[^?]*\?", reply):
         tokens = _lex_tokens(question)
         for i in range(len(tokens) - 2):
-            if tokens[i:i + 3] in (["are", "you", "a"], ["are", "you", "an"]):
-                if _lex_sequence(profession, tokens[i + 3:]):
+            if tokens[i : i + 3] in (["are", "you", "a"], ["are", "you", "an"]):
+                if _lex_sequence(profession, tokens[i + 3 :]):
                     return True
     return False
 
@@ -773,60 +786,73 @@ def _reply_intent(phrase: str, reply: str) -> bool:
     if not words or not tokens:
         return False
 
-    def adjacent_after(starts: tuple[tuple[str, ...], ...], answer: list[str],
-                       max_gap: int = 0) -> bool:
+    def adjacent_after(
+        starts: tuple[tuple[str, ...], ...], answer: list[str], max_gap: int = 0
+    ) -> bool:
         for start in starts:
             for i in range(len(tokens) - len(start) + 1):
-                if tokens[i:i + len(start)] != list(start):
+                if tokens[i : i + len(start)] != list(start):
                     continue
                 for gap in range(max_gap + 1):
-                    if _lex_sequence(answer, tokens[i + len(start) + gap:
-                                                   i + len(start) + gap + len(answer)]):
+                    if _lex_sequence(
+                        answer, tokens[i + len(start) + gap : i + len(start) + gap + len(answer)]
+                    ):
                         return True
         return False
 
     # A reply to an explicit second-person question/offer, not an
     # arbitrary assertion of the same topic.
-    if words[:2] == ['i', 'am'] and len(words) > 2:
+    if words[:2] == ["i", "am"] and len(words) > 2:
         answer = words[2:]
-        if adjacent_after((('are', 'you'), ('you', 'are'),
-                           ('do', 'you', 'call', 'yourself'),
-                           ('you', 'must', 'be'), ('you', 'happen', 'to', 'be'),
-                           ('if', 'you', 'are')), answer, 2):
+        if adjacent_after(
+            (
+                ("are", "you"),
+                ("you", "are"),
+                ("do", "you", "call", "yourself"),
+                ("you", "must", "be"),
+                ("you", "happen", "to", "be"),
+                ("if", "you", "are"),
+            ),
+            answer,
+            2,
+        ):
             return True
         # An explicitly bracketed option can be paraphrased as `I am ...`.
-        for m in re.finditer(r'\[([^]\n]+)\]', reply):
+        for m in re.finditer(r"\[([^]\n]+)\]", reply):
             if _lex_sequence(answer, _lex_tokens(m.group(1))):
                 return True
 
-    if words[:2] == ['i', 'will'] and len(words) > 2:
-        if adjacent_after((('will', 'you'), ('would', 'you'),
-                           ('can', 'you')), words[2:], 1):
+    if words[:2] == ["i", "will"] and len(words) > 2:
+        if adjacent_after((("will", "you"), ("would", "you"), ("can", "you")), words[2:], 1):
             return True
 
-    if words[:2] == ['i', 'seek'] and len(words) > 2:
+    if words[:2] == ["i", "seek"] and len(words) > 2:
         answer = words[2:]
-        if adjacent_after((('you', 'seek'), ('seek',), ('seeking',),
-                           ('looking', 'for')), answer, 2):
+        if adjacent_after(
+            (("you", "seek"), ("seek",), ("seeking",), ("looking", "for")), answer, 2
+        ):
             return True
 
     # EQ mail scripts often split the command between a verb and a city:
     # `Will you [deliver] mail to [Qeynos] for me?` -> `deliver to qeynos`.
-    if words[:2] == ['deliver', 'to'] and len(words) > 2:
+    if words[:2] == ["deliver", "to"] and len(words) > 2:
         destination = words[2:]
         for i, token in enumerate(tokens):
-            if token != 'deliver':
+            if token != "deliver":
                 continue
             for j in range(i + 1, min(i + 7, len(tokens))):
-                if tokens[j] == 'to' and _lex_sequence(destination,
-                             tokens[j + 1:j + 1 + len(destination)]):
+                if tokens[j] == "to" and _lex_sequence(
+                    destination, tokens[j + 1 : j + 1 + len(destination)]
+                ):
                     return True
 
     # The menu must explicitly concern crafting, not merely mention armor.
-    offset = 1 if words[:1] == ['i'] else 0
-    if words[offset:offset + 3] == ['want', 'to', 'craft'] and len(words) > offset + 3:
-        item = words[offset + 3:]
-        if any(verb in tokens for verb in ('craft', 'make', 'fashion')) and _lex_sequence(item, tokens):
+    offset = 1 if words[:1] == ["i"] else 0
+    if words[offset : offset + 3] == ["want", "to", "craft"] and len(words) > offset + 3:
+        item = words[offset + 3 :]
+        if any(verb in tokens for verb in ("craft", "make", "fashion")) and _lex_sequence(
+            item, tokens
+        ):
             return True
     return False
 
@@ -844,59 +870,86 @@ def _prompt_response(phrase: str, reply: str) -> bool:
 
     # A named character/location explicitly introduced by the NPC can be
     # queried as `who is <name>` or `where is <name>`.
-    if len(words) >= 3 and words[:2] in (
-        ['who', 'is'], ['who', 'are'], ['where', 'is'], ['where', 'are']
-    ) and words[2:] not in (['you'], ['he'], ['she'], ['they'], ['it']):
+    if (
+        len(words) >= 3
+        and words[:2] in (["who", "is"], ["who", "are"], ["where", "is"], ["where", "are"])
+        and words[2:] not in (["you"], ["he"], ["she"], ["they"], ["it"])
+    ):
         if _lex_sequence(words[2:], tokens):
             return True
 
     # The player may turn a visible option into a first-person response:
     # `do you follow [Justice]` -> `I follow justice`.
     if len(words) >= 3 and words[:2] in (
-        ['i', 'follow'], ['i', 'want'], ['i', 'wish'], ['i', 'seek'],
-        ['i', 'will'], ['i', 'am'], ['i', 'need'], ['i', 'have'],
+        ["i", "follow"],
+        ["i", "want"],
+        ["i", "wish"],
+        ["i", "seek"],
+        ["i", "will"],
+        ["i", "am"],
+        ["i", "need"],
+        ["i", "have"],
     ):
         tail = words[2:]
-        for match in re.finditer(r'\[([^\]\n]+)\]', reply):
+        for match in re.finditer(r"\[([^\]\n]+)\]", reply):
             option = _lex_tokens(match.group(1))
             if len(option) >= len(tail) and _lex_sequence(tail, option):
                 return True
-        if words[:2] == ['i', 'follow'] and _lex_sequence(tail, tokens):
-            if re.search(r'\b(?:do you follow|you follow|follow one of)\b', reply, re.I):
+        if words[:2] == ["i", "follow"] and _lex_sequence(tail, tokens):
+            if re.search(r"\b(?:do you follow|you follow|follow one of)\b", reply, re.I):
                 return True
 
     # Simple yes/no answers are warranted by a real interrogative, not an
     # incidental mention of the concepts yes or no.
-    if words in (['yes'], ['no']):
-        for clause in re.findall(r'[^.!?]*\?', reply):
-            if re.search(r'\b(?:are|do|did|will|would|can|could|shall|have|has|is|was|should)\s+(?:you|your|there|it|he|she|they)\b', clause, re.I):
+    if words in (["yes"], ["no"]):
+        for clause in re.findall(r"[^.!?]*\?", reply):
+            if re.search(
+                r"\b(?:are|do|did|will|would|can|could|shall|have|has|is|was|should)\s+(?:you|your|there|it|he|she|they)\b",
+                clause,
+                re.I,
+            ):
                 return True
 
     # Pronouns in an explicitly selectable command can change speaker:
     # `[lunatic sent you]` -> `lunatic sent me`. Do not switch isolated
     # pronouns or unrelated words elsewhere in a long NPC speech.
-    if len(words) >= 3 and 'me' in words:
-        changed = ['you' if part == 'me' else part for part in words]
-        for match in re.finditer(r'\[([^\]\n]+)\]', reply):
+    if len(words) >= 3 and "me" in words:
+        changed = ["you" if part == "me" else part for part in words]
+        for match in re.finditer(r"\[([^\]\n]+)\]", reply):
             if _lex_sequence(changed, _lex_tokens(match.group(1))):
                 return True
     return False
 
 
 # Syntactically grounded conversation acts, retained as separate labels for SDG.
-_DIALOGUE_PROFESSIONS = frozenset({
-    "warrior", "cleric", "paladin", "ranger", "shadowknight", "shadow", "druid",
-    "monk", "bard", "rogue", "shaman", "necromancer", "wizard", "magician",
-    "enchanter", "beastlord", "berserker",
-})
+_DIALOGUE_PROFESSIONS = frozenset(
+    {
+        "warrior",
+        "cleric",
+        "paladin",
+        "ranger",
+        "shadowknight",
+        "shadow",
+        "druid",
+        "monk",
+        "bard",
+        "rogue",
+        "shaman",
+        "necromancer",
+        "wizard",
+        "magician",
+        "enchanter",
+        "beastlord",
+        "berserker",
+    }
+)
 
 
 def _dialect_words(text: str) -> list[str]:
     """Normalize only a few attested EQ dialect spellings for prompt analysis."""
     text = re.sub(r"\bo['’]\s+", "of ", text, flags=re.I)
     words = _lex_tokens(text)
-    return [{"ye": "you", "yer": "your", "fer": "for", "yoo": "you"}.get(w, w)
-            for w in words]
+    return [{"ye": "you", "yer": "your", "fer": "for", "yoo": "you"}.get(w, w) for w in words]
 
 
 def _structured_prompt_response(phrase: str, reply: str) -> str | None:
@@ -912,25 +965,27 @@ def _structured_prompt_response(phrase: str, reply: str) -> str | None:
 
     # `Leave me be, ye ... son o' Innoruuk!` -> `I am not a son of Innoruuk`.
     # Demand an *addressed* attribution, not a mere mention of a third party.
-    if len(words) >= 5 and words[:4] in (["i", "am", "not", "a"],
-                                           ["i", "am", "not", "an"]):
+    if len(words) >= 5 and words[:4] in (["i", "am", "not", "a"], ["i", "am", "not", "an"]):
         subject = words[4:]
         for start in range(len(spoken)):
             if spoken[start] not in {"you", "your"}:
                 continue
-            window = spoken[start + 1:start + 14]
+            window = spoken[start + 1 : start + 14]
             if _lex_sequence(subject, window):
                 return "identity_denial"
 
     # `I ain't the one ye be needin' t' talk to` -> `who do I need to talk to`.
-    if words in (["who", "do", "i", "need", "to", "talk", "to"],
-                 ["who", "should", "i", "talk", "to"],
-                 ["who", "do", "i", "talk", "to"]):
-        has_referral = ("talk" in spoken and "to" in spoken and
-                        ("one" in spoken or "someone" in spoken or
-                         "another" in spoken))
-        denied = ("ain" in spoken and "t" in spoken or
-                  "not" in spoken or "else" in spoken)
+    if words in (
+        ["who", "do", "i", "need", "to", "talk", "to"],
+        ["who", "should", "i", "talk", "to"],
+        ["who", "do", "i", "talk", "to"],
+    ):
+        has_referral = (
+            "talk" in spoken
+            and "to" in spoken
+            and ("one" in spoken or "someone" in spoken or "another" in spoken)
+        )
+        denied = "ain" in spoken and "t" in spoken or "not" in spoken or "else" in spoken
         if has_referral and denied:
             return "referral_question"
 
@@ -939,12 +994,28 @@ def _structured_prompt_response(phrase: str, reply: str) -> str | None:
     if len(words) >= 4 and words[:3] in (["i", "am", "a"], ["i", "am", "an"]):
         profession = words[3:]
         if len(profession) == 1 and profession[0] in _DIALOGUE_PROFESSIONS:
-            question_or_gate = any(_lex_sequence(_lex_tokens(q), spoken) for q in (
-                "are you", "if you are", "you are a", "you need be",
-                "one who", "those who", "one that", "who calls", "you be a",
-                "seek one", "seek those", "speak to a", "known as a",
-                "a guest of", "be ye a", "happen to be", "appear to be",
-            ))
+            question_or_gate = any(
+                _lex_sequence(_lex_tokens(q), spoken)
+                for q in (
+                    "are you",
+                    "if you are",
+                    "you are a",
+                    "you need be",
+                    "one who",
+                    "those who",
+                    "one that",
+                    "who calls",
+                    "you be a",
+                    "seek one",
+                    "seek those",
+                    "speak to a",
+                    "known as a",
+                    "a guest of",
+                    "be ye a",
+                    "happen to be",
+                    "appear to be",
+                )
+            )
             if question_or_gate and _lex_sequence(profession, spoken):
                 return "profession_response"
 
@@ -963,9 +1034,12 @@ def _lex_mentioned(phrase: str, replies: list[str]) -> bool:
         return False
     for reply in replies:
         tokens = _lex_tokens(reply)
-        if (_answer_to_question(phrase, reply) or _reply_intent(phrase, reply)
-                or _prompt_response(phrase, reply)
-                or _structured_prompt_response(phrase, reply)):
+        if (
+            _answer_to_question(phrase, reply)
+            or _reply_intent(phrase, reply)
+            or _prompt_response(phrase, reply)
+            or _structured_prompt_response(phrase, reply)
+        ):
             return True
         if any(_lex_sequence(query, tokens) for query in queries):
             return True
@@ -978,28 +1052,32 @@ def _lex_mentioned(phrase: str, replies: list[str]) -> bool:
                     continue
                 for start in range(len(first) - 1):
                     expansion = first[start:-1] + [option]
-                    if any(len(query) == len(expansion) and
-                           all(_lex_equiv(a, b) for a, b in zip(query, expansion))
-                           for query in queries):
+                    if any(
+                        len(query) == len(expansion)
+                        and all(_lex_equiv(a, b) for a, b in zip(query, expansion))
+                        for query in queries
+                    ):
                         return True
     return False
 
 
-def _speech_mentions(word: str, speech: list[dict]) -> bool:
+def _speech_mentions(word: str, speech: list[Speech]) -> bool:
     # Link *targets* are executable player inputs, even when the visible
     # label differs. Also recognize naturally phrased visible options.
-    return (any(_lex_mentioned(word, [str(link.get("target") or "")])
-                for event in speech for link in event.get("links", ()))
-            or _lex_mentioned(word, [str(event.get("text") or "") for event in speech]))
+    return any(
+        _lex_mentioned(word, [str(link.get("target") or "")])
+        for event in speech
+        for link in event.get("links", ())
+    ) or _lex_mentioned(word, [str(event.get("text") or "") for event in speech])
 
 
-def _non_say_speech(text: str) -> list[dict]:
+def _non_say_speech(text: str) -> list[Speech]:
     """Quest dialogue unlocked by item hand-ins, not by player /say.
 
     Preserve event names and guards; do not invent a preceding SAY turn.
     Restrict to player-facing item/trade events, rather than all NPC events.
     """
-    found = []
+    found: list[Speech] = []
     branches = _branch_index(text)
     for name, lo, hi in _functions(text):
         event = name.lower()
@@ -1008,22 +1086,54 @@ def _non_say_speech(text: str) -> list[dict]:
         for speech in iter_speech_calls(text, lo, hi):
             at = speech["offset"]
             ancestry = sorted(
-                (branch for branch in branches
-                 if lo <= branch[0] and branch[0] <= at < branch[3]),
+                (branch for branch in branches if lo <= branch[0] and branch[0] <= at < branch[3]),
                 key=lambda branch: (branch[0], -branch[3]),
             )
-            found.append({
-                "event": event,
-                "channel": speech["channel"],
-                "text": speech["text"],
-                "links": speech["links"],
-                "guards": [text[b[0]:b[1]].strip() for b in ancestry],
-                "order": at,
-            })
+            found.append(
+                {
+                    "event": event,
+                    "channel": speech["channel"],
+                    "text": speech["text"],
+                    "links": speech["links"],
+                    "guards": [text[b[0] : b[1]].strip() for b in ancestry],
+                    "order": at,
+                }
+            )
     return found
 
 
-def dialogue_chains(text: str, filename: str, zone: str) -> list[dict]:
+class DialogueChain(TypedDict):
+    kind: str
+    zone: str
+    npc: str
+    source: str
+    handler: str
+    turns: list[DialogueTurn]
+    transitions: list[DialogueTransition]
+    context_speech: list[Speech]
+
+
+class DialogueTransition(TypedDict):
+    _from: str
+    _to: str
+    basis: str
+    prompt_pattern: NotRequired[str | None]
+    evidence: NotRequired[str | None]
+    source_order: NotRequired[str | None]
+    event: NotRequired[str | None]
+    guards: NotRequired[list[str] | None]
+
+
+class DialogueTurn(TypedDict):
+    input: str
+    source: str
+    reply: list[Speech]
+    guards: list[str]
+    effects: list[BodyEvent]
+    order: int
+
+
+def dialogue_chains(text: str, filename: str, zone: str) -> list[DialogueChain]:
     """Extract complete EVENT_SAY conversations with response-grounded transitions.
 
     Script order is a potential dialogue path, NOT proof that the player has
@@ -1034,12 +1144,13 @@ def dialogue_chains(text: str, filename: str, zone: str) -> list[dict]:
     home = zone.lower()
     source = f"{home}/{npc.lower()}"
     branches = _branch_index(text)
-    context_speech = _non_say_speech(text)
-    chains = []
+    context_speech: list[Speech] = _non_say_speech(text)
+    chains: list[DialogueChain] = []
     for function_name, lo, hi in _functions(text):
         if function_name.lower() != "event_say":
             continue
-        turns = []
+
+        turns: list[DialogueTurn] = []
         for match in _SAY.finditer(text, lo, hi):
             input_text = (match.group(1) or match.group(2) or "").strip()
             if not input_text:
@@ -1049,43 +1160,40 @@ def dialogue_chains(text: str, filename: str, zone: str) -> list[dict]:
                 continue
             # All ancestor conditions apply, including the external faction gate.
             parents = sorted(
-                (b for b in branches if lo <= b[0] <= span[0]
-                 and span[3] <= b[3] and b != span),
+                (b for b in branches if lo <= b[0] <= span[0] and span[3] <= b[3] and b != span),
                 key=lambda b: (b[0], -b[3]),
             )
-            guards = [text[b[0]:b[1]].strip() for b in parents]
-            guards.append(text[span[0]:span[1]].strip())
+            guards = [text[b[0] : b[1]].strip() for b in parents]
+            guards.append(text[span[0] : span[1]].strip())
             speech = _speech_events(text, span)
             # Restrict effects to this SAY branch, including any nested guards.
-            branch_events = _body_events(text[span[2]:span[3]], span[2])
-            effects = [dict(event) for _at, event in branch_events
-                       if event['rel'] in {'gives', 'sets', 'spawns'}]
-            turns.append({
-                'input': input_text,
-                'source': f'{source}#{input_text.lower()}',
-                'reply': [{k: event[k] for k in ('channel', 'text', 'guards', 'links')}
-                          for event in speech],
-                'guards': guards,
-                'effects': effects,
-                'order': match.start(),
-            })
+            branch_events = _body_events(text[span[2] : span[3]], span[2])
+            effects = [
+                event for _at, event in branch_events if event["rel"] in {"gives", "sets", "spawns"}
+            ]
+            turns.append(
+                {
+                    "input": input_text,
+                    "source": f"{source}#{input_text.lower()}",
+                    "reply": [
+                        Speech(
+                            channel=event["channel"],
+                            text=event["text"],
+                            guards=event["guards"],
+                            links=event["links"],
+                        )
+                        for event in speech
+                    ],
+                    "guards": guards,
+                    "effects": effects,
+                    "order": match.start(),
+                }
+            )
+
         if not turns:
             continue
-        transitions = []
-        # for earlier, later in zip(turns, turns[1:]):
-        #     utterances = [event['text'] for event in earlier['reply']]
-        #     target = later['input'].lower()
-        #     basis = 'conversation_sequence'
-        #     evidence = ''
-        #     for utterance in utterances:
-        #         if re.search(r'(?<!\w)' + re.escape(target) + r'(?!\w)', utterance, re.I):
-        #             basis = 'explicit_mention'
-        #             evidence = utterance
-        #             break
-        #     transitions.append({
-        #         'from': earlier['input'], 'to': later['input'],
-        #         'basis': basis, 'evidence': evidence,
-        #     })
+
+        transitions: list[DialogueTransition] = []
 
         # A SAY handler is a set of possible choices, not a linear conversation.
         # Search all earlier replies for an explicit cue. A later sibling is
@@ -1096,50 +1204,82 @@ def dialogue_chains(text: str, filename: str, zone: str) -> list[dict]:
             for parent_index, parent in enumerate(turns):
                 if parent_index == index:
                     continue
-                if _speech_mentions(target['input'], parent['reply']):
-                    transitions.append({
-                        'from': parent['input'], 'to': target['input'],
-                        'basis': ('prompt_response' if any(
-                            _prompt_response(target['input'], event.get('text', '')) or
-                            _structured_prompt_response(target['input'], event.get('text', ''))
-                            for event in parent['reply']) else 'explicit_mention'),
-                        'prompt_pattern': next((
-                            pattern for event in parent['reply']
-                            if (pattern := _structured_prompt_response(
-                                target['input'], event.get('text', '')))
-                        ), None),
-                        'evidence': '\n'.join(r['text'] for r in parent['reply']),
-                        'source_order': 'earlier' if parent_index < index else 'later',
-                    })
+
+                if _speech_mentions(target["input"], parent["reply"]):
+                    transitions.append(
+                        {
+                            "_from": parent["input"],
+                            "_to": target["input"],
+                            "basis": (
+                                "prompt_response"
+                                if any(
+                                    _prompt_response(target["input"], event.get("text", ""))
+                                    or _structured_prompt_response(
+                                        target["input"], event.get("text", "")
+                                    )
+                                    for event in parent["reply"]
+                                )
+                                else "explicit_mention"
+                            ),
+                            "prompt_pattern": next(
+                                (
+                                    pattern
+                                    for event in parent["reply"]
+                                    if (
+                                        pattern := _structured_prompt_response(
+                                            target["input"], event.get("text", "")
+                                        )
+                                    )
+                                ),
+                                None,
+                            ),
+                            "evidence": "\n".join(r["text"] for r in parent["reply"]),
+                            "source_order": "earlier" if parent_index < index else "later",
+                        }
+                    )
                     found = True
 
             # Event-triggered dialogue (a completed item hand-in, for example)
             # can supply the first choice. This is not a SAY-to-SAY edge.
-            for speech in context_speech:
-                if _speech_mentions(target['input'], [speech]):
-                    transitions.append({
-                        'from': speech['event'], 'to': target['input'],
-                        'basis': 'external_event_mention',
-                        'prompt_pattern': _structured_prompt_response(
-                            target['input'], speech.get('text', '')),
-                        'event': speech['event'],
-                        'guards': speech['guards'],
-                        'evidence': speech['text'],
-                    })
+            for cs in context_speech:
+                if _speech_mentions(target["input"], [cs]):
+                    transitions.append(
+                        {
+                            "_from": cs["event"],
+                            "_to": target["input"],
+                            "basis": "external_event_mention",
+                            "prompt_pattern": _structured_prompt_response(
+                                target["input"], cs.get("text", "")
+                            ),
+                            "event": cs["event"],
+                            "guards": cs["guards"],
+                            "evidence": cs["text"],
+                        }
+                    )
                     found = True
 
             if not found and index:
-                transitions.append({
-                    'from': turns[index - 1]['input'], 'to': target['input'],
-                    'basis': 'conversation_sequence', 'evidence': '',
-                })
+                transitions.append(
+                    {
+                        "_from": turns[index - 1]["input"],
+                        "_to": target["input"],
+                        "basis": "conversation_sequence",
+                        "evidence": "",
+                    }
+                )
 
-        chains.append({
-            'kind': 'dialogue', 'zone': home, 'npc': npc,
-            'source': source, 'handler': function_name,
-            'turns': turns, 'transitions': transitions,
-            'context_speech': context_speech,
-        })
+        chains.append(
+            {
+                "kind": "dialogue",
+                "zone": home,
+                "npc": npc,
+                "source": source,
+                "handler": function_name,
+                "turns": turns,
+                "transitions": transitions,
+                "context_speech": context_speech,
+            }
+        )
     return chains
 
 
@@ -1162,10 +1302,12 @@ def _flags(text: str) -> list[tuple[str, str]]:
         found.append((name, f"{op}{value}"))
 
     for match in _FLAG_DEFINED.finditer(text):
-        found.append((
-            match.group("name"),
-            "unset" if match.group("neg") else "set",
-        ))
+        found.append(
+            (
+                match.group("name"),
+                "unset" if match.group("neg") else "set",
+            )
+        )
     for name, op, value in _FLAG_GET.findall(text):
         if value.lower() in {"undef", "nil"}:
             if op == "==":
@@ -1599,27 +1741,41 @@ def link_script(
         gate = cond + "\n" + block
         say_id = f"{home}/{npc.lower()}#{word.lower()}"
         span = _chosen_branch(text, match.start())
-        speech = _speech_events(text, span) if span else []
+        if not span:
+            continue
+
+        speech = _speech_events(text, span)
         if previous:
             prior = f"{home}/{npc.lower()}#{previous}"
             # File order is not proof of dialogue causality. Keep the weak
             # sequence edge, but emit a separate grounded cue when the NPC
             # actually uttered the next player's keyword.
-            edges.append({
-                "kind": "edge", "rel": "then", "from": prior,
-                "to": say_id, "basis": "script_order",
-            })
+            edges.append(
+                {
+                    "kind": "edge",
+                    "rel": "then",
+                    "from": prior,
+                    "to": say_id,
+                    "basis": "script_order",
+                }
+            )
         # The reply is associated with the player input that elicited it.
         # Include every Emote/Say call, not just the first one.
         for event in speech:
-            edges.append({
-                "kind": "edge", "rel": "speaks", "from": say_id,
-                "to": f"speech:{say_id}:{event['offset']}",
-                "group": f"{say_id}#branch:{span[0]}",
-                "channel": event['channel'], "text": event['text'],
-                "links": event.get('links', []),
-                "guards": event['guards'], "order": event['offset'],
-            })
+            edges.append(
+                {
+                    "kind": "edge",
+                    "rel": "speaks",
+                    "from": say_id,
+                    "to": f"speech:{say_id}:{event['offset']}",
+                    "group": f"{say_id}#branch:{span[0]}",
+                    "channel": event["channel"],
+                    "text": event["text"],
+                    "links": event.get("links", []),
+                    "guards": event["guards"],
+                    "order": event["offset"],
+                }
+            )
         spoken = _spoken(block)
         if catalog and spoken:
             for item_id in named_items(spoken, catalog):
@@ -1689,41 +1845,55 @@ def link_script(
     # Resolve ALL lexical follow-ups in the same event_say function, not
     # merely adjacent elseif branches. Weak script-order links remain tagged.
     say_turns = []
-    say_ranges = [span for name, lo, hi in _functions(text) if name == 'event_say'
-                  for span in [(lo, hi)]]
+    say_ranges = [
+        span for name, lo, hi in _functions(text) if name == "event_say" for span in [(lo, hi)]
+    ]
     for match in _SAY.finditer(text):
         if say_ranges and not any(lo <= match.start() < hi for lo, hi in say_ranges):
             continue
-        key = (match.group(1) or match.group(2) or '').strip().lower()
+        key = (match.group(1) or match.group(2) or "").strip().lower()
         branch = _chosen_branch(text, match.start())
         if key and branch:
             say_turns.append((key, match.start(), _speech_events(text, branch)))
-    for i, (word, at, speech) in enumerate(say_turns):
 
-        for j, (other, _other_at, _reply) in enumerate(say_turns):
-            if i == j or not _speech_mentions(other, speech):
+    for idx, (_word, _at, _speech) in enumerate(say_turns):
+
+        for jdx, (_other, _other_at, _reply) in enumerate(say_turns):
+            if idx == jdx or not _speech_mentions(_other, _speech):
                 continue
-            edges.append({
-                'kind': 'edge', 'rel': 'suggests',
-                'from': f'{npc_id}#{word}', 'to': f'{npc_id}#{other}',
-                'word': other, 'basis': 'spoken_text',
-                'source_order': 'earlier' if i < j else 'later',
-            })
+
+            edges.append(
+                {
+                    "kind": "edge",
+                    "rel": "suggests",
+                    "from": f"{npc_id}#{_word}",
+                    "to": f"{npc_id}#{_other}",
+                    "word": _other,
+                    "basis": "spoken_text",
+                    "source_order": "earlier" if idx < jdx else "later",
+                }
+            )
 
     # Source is an external event, never the previous player SAY branch.
     # Event guards remain attached so the graph does not imply unconditional
     # access to these dialogue options.
-    for speech in _non_say_speech(text):
-        origin = f"{npc_id}#{speech['event']}"
+    for nss in _non_say_speech(text):
+        origin = f"{npc_id}#{nss['event']}"
         for word, _at, _reply in say_turns:
-            if _speech_mentions(word, [speech]):
-                edges.append({
-                    'kind': 'edge', 'rel': 'suggests',
-                    'from': origin, 'to': f'{npc_id}#{word}',
-                    'word': word, 'basis': 'external_event_speech',
-                    'event': speech['event'], 'guards': speech['guards'],
-                    'evidence': speech['text'],
-                })
+            if _speech_mentions(word, [nss]):
+                edges.append(
+                    {
+                        "kind": "edge",
+                        "rel": "suggests",
+                        "from": origin,
+                        "to": f"{npc_id}#{word}",
+                        "word": word,
+                        "basis": "external_event_speech",
+                        "event": nss["event"],
+                        "guards": nss["guards"],
+                        "evidence": nss["text"],
+                    }
+                )
 
     for turn in turn_ins(text):
         ids = tuple(sorted(item for item, _count in turn["items"]))
@@ -2179,15 +2349,37 @@ def _recipe_owner(
     return 0
 
 
-def _body_events(block: str, origin: int) -> list[tuple[int, dict]]:
+class BodyEvent(TypedDict):
+    rel: str
+    item: NotRequired[int]
+    flag: NotRequired[str]
+    value: NotRequired[str]
+    npc: NotRequired[int]
+    name: NotRequired[str]
+
+
+def _body_events(block: str, origin: int) -> list[tuple[int, BodyEvent]]:
     """Gives, spawns, and flag writes in the order they appear in this branch."""
-    found: list[tuple[int, dict]] = []
+    found: list[tuple[int, BodyEvent]] = []
+
     for pos, item_id in _summon_items(block):
-        found.append((origin + pos, {"rel": "gives", "item": item_id}))
+        found.append(
+            (
+                origin + pos,
+                {"rel": "gives", "item": item_id},
+            )
+        )
+
     for match in _QUEST_REWARD.finditer(block):
         body, _end = _paren(block, match.end() - 1)
         for offset, item_id in enumerate(_quest_reward_items(body)):
-            found.append((origin + match.start() + offset, {"rel": "gives", "item": item_id}))
+            found.append(
+                (
+                    origin + match.start() + offset,
+                    {"rel": "gives", "item": item_id},
+                )
+            )
+
     for match in _GLOBAL.finditer(block):
         found.append(
             (
@@ -2195,6 +2387,7 @@ def _body_events(block: str, origin: int) -> list[tuple[int, dict]]:
                 {"rel": "sets", "flag": match.group(1), "value": match.group(2)},
             )
         )
+
     for match in _ZONE_FLAG_SET.finditer(block):
         found.append(
             (
@@ -2202,10 +2395,18 @@ def _body_events(block: str, origin: int) -> list[tuple[int, dict]]:
                 {"rel": "sets", "flag": _zoneflag_name(match.group(1)), "value": "1"},
             )
         )
+
     for match in _GROUND.finditer(block):
-        found.append((origin + match.start(), {"rel": "grounds", "item": int(match.group(1))}))
+        found.append(
+            (
+                origin + match.start(),
+                {"rel": "grounds", "item": int(match.group(1))},
+            )
+        )
+
     spawned: set[int] = set()
     constants: dict[str, int] = _spawn_calls.constants
+
     for match in _SPAWN.finditer(block):
         token = match.group(1)
         if token.isdigit():
@@ -2227,12 +2428,20 @@ def _body_events(block: str, origin: int) -> list[tuple[int, dict]]:
         if npc_type in spawned:
             continue
         spawned.add(npc_type)
-        found.append((origin + len(block), {"rel": "spawns", "npc": npc_type, "name": name}))
+        found.append(
+            (
+                origin + len(block),
+                {"rel": "spawns", "npc": npc_type, "name": name},
+            )
+        )
+
     found.sort(key=lambda item: item[0])
     return found
 
 
-def _emit_body(edges: list[dict], events: list[tuple[int, dict]], source: str, npc_id: str) -> None:
+def _emit_body(
+    edges: list[dict], events: list[tuple[int, BodyEvent]], source: str, npc_id: str
+) -> None:
     for pos, event in events:
         rel = event["rel"]
         if rel == "sets":
@@ -2502,7 +2711,7 @@ class QuestGraph:
     nodes: dict[tuple[str, str], list[QuestNode]] = field(default_factory=dict)
     doors: dict[str, dict[int, list[int]]] = field(default_factory=dict)
     edges: list[dict] = field(default_factory=list)
-    dialogues: list[dict] = field(default_factory=list)
+    dialogues: list[DialogueChain] = field(default_factory=list)
     items: dict[int, dict] = field(default_factory=dict)
     world: dict[int, dict] = field(default_factory=dict)
     by_zone: dict[str, dict[str, list[QuestNode]]] = field(default_factory=dict)
@@ -2609,12 +2818,36 @@ class QuestGraph:
             return None
         return sorted(found, key=lambda node: (node.zone, node.npc, node.word, node.item_id))[0]
 
+    def spawned_npcs(self) -> dict[str, list[int]]:
+        """Return quest-spawned NPC type IDs grouped by zone.
+
+        Includes direct event spawns and deferred spawns through signals,
+        timers, and encounter callbacks. Excludes NPCs appearing only
+        in static spawn tables or as trigger recipients.
+        """
+        zones: dict[str, set[int]] = {}
+
+        for edge in self.edges:
+            if edge.get("rel") != "spawns":
+                continue
+
+            source = str(edge.get("from") or "")
+            if "/" not in source:
+                continue
+
+            zone = source.split("/", 1)[0].lower()
+            npc_id = int(edge.get("npc") or 0)
+
+            if zone and npc_id > 0:
+                zones.setdefault(zone, set()).add(npc_id)
+
+        return {zone: sorted(npc_ids) for zone, npc_ids in sorted(zones.items())}
+
 
 # Event causality. A direct spawn in EVENT_TIMER is not a quest entry point:
 # find who starts the timer, including signals sent by a different NPC script.
 _NPC_FOOTER = re.compile(
-    r"(?im)^\s*(?:#\s*EOF\s+zone:|--\s*(?:END\s+of\s+FILE|EOF)\s+Zone:)"
-    r"[^\n]*?\bID:\s*(\d+)"
+    r"(?im)^\s*(?:#\s*EOF\s+zone:|--\s*(?:END\s+of\s+FILE|EOF)\s+Zone:)" r"[^\n]*?\bID:\s*(\d+)"
 )
 _SIGNAL_WITH = re.compile(r"(?:quest::signalwith|eq\.signal)\s*\(\s*(\d+)\s*,\s*(\d+)", re.I)
 _SIGNAL_NPC = re.compile(r"\$(\w+)\s*->\s*SignalNPC\s*\(\s*(\d+)\s*\)", re.I)
@@ -2629,17 +2862,21 @@ def _event_functions(text: str, name: str) -> tuple[int, int] | None:
 
 def _signal_origin(text: str, offset: int, npc_id: str) -> str:
     """Attribute a signal to its enclosing hand-in, if one exists."""
-    function = next(((func, lo, hi) for func, lo, hi in _functions(text)
-                     if lo <= offset < hi), None)
+    function = next(
+        ((func, lo, hi) for func, lo, hi in _functions(text) if lo <= offset < hi), None
+    )
     if function is None:
         return npc_id
     func, lo, _hi = function
     if func in {"event_item", "event_trade"}:
         # The innermost hand-in branch contains the signal call.
-        candidates = [branch for branch in _branch_index(text)
-                      if branch[2] <= offset < branch[3] and lo <= branch[0]]
+        candidates = [
+            branch
+            for branch in _branch_index(text)
+            if branch[2] <= offset < branch[3] and lo <= branch[0]
+        ]
         for branch in sorted(candidates, key=lambda b: b[3] - b[2]):
-            ids = sorted({int(item) for item, _n in _HANDIN.findall(text[branch[0]:branch[1]])})
+            ids = sorted({int(item) for item, _n in _HANDIN.findall(text[branch[0] : branch[1]])})
             if ids:
                 return f"{npc_id}#hand:{'+'.join(map(str, ids))}"
     return f"{npc_id}#{func}"
@@ -2649,14 +2886,17 @@ def _outgoing_signals(text: str, npc_id: str) -> list[tuple[str, int, int]]:
     """(origin group, recipient NPC type, signal value)."""
     found = []
     for match in _SIGNAL_WITH.finditer(text):
-        found.append((_signal_origin(text, match.start(), npc_id),
-                      int(match.group(1)), int(match.group(2))))
+        found.append(
+            (_signal_origin(text, match.start(), npc_id), int(match.group(1)), int(match.group(2)))
+        )
     # Resolve $a = GetMobByNpcTypeID(id); $b = $a->CastToNPC(); $b->SignalNPC(n).
     for match in _SIGNAL_NPC.finditer(text):
-        func = next(((lo, hi) for _name, lo, hi in _functions(text) if lo <= match.start() < hi), None)
+        func = next(
+            ((lo, hi) for _name, lo, hi in _functions(text) if lo <= match.start() < hi), None
+        )
         if func is None:
             continue
-        prefix = text[func[0]:match.start()]
+        prefix = text[func[0] : match.start()]
         lookup = {name: int(npc) for name, npc in _MOB_LOOKUP.findall(prefix)}
         aliases = {cast: source for cast, source in _CAST_NPC.findall(prefix)}
         var = match.group(1)
@@ -2675,9 +2915,9 @@ def _signal_body(text: str, signal: int) -> str:
     fragment = text[lo:hi]
     branches = [b for b in _branch_index(text) if lo <= b[0] and b[3] <= hi]
     for branch in branches:
-        cond = text[branch[0]:branch[1]]
+        cond = text[branch[0] : branch[1]]
         if signal in (int(n) for n in _SIGNAL_CONDITION.findall(cond)):
-            return text[branch[2]:branch[3]]
+            return text[branch[2] : branch[3]]
     # Only use a fallback if none of the explicit signal comparisons matched.
     # Perl else after the signal if/elsif chain (not an unrelated nested else).
     if re.search(r"\$signal\s*==", fragment):
@@ -2692,13 +2932,16 @@ def _signal_body(text: str, signal: int) -> str:
 # Unlike EVENT_TIMER, callback names such as Evangelist_Timer are NOT dialogue.
 _REGISTER_EVENT = re.compile(
     r"eq\.register_npc_event\s*\(\s*['\"][^'\"]+['\"]\s*,\s*"
-    r"Event\.(\w+)\s*,\s*(\d+)\s*,\s*(\w+)\s*\)", re.I,
+    r"Event\.(\w+)\s*,\s*(\d+)\s*,\s*(\w+)\s*\)",
+    re.I,
 )
 
 
 def _registered_npc_events(text: str) -> list[tuple[str, int, str]]:
-    return [(kind.lower(), int(npc), callback.lower())
-            for kind, npc, callback in _REGISTER_EVENT.findall(text)]
+    return [
+        (kind.lower(), int(npc), callback.lower())
+        for kind, npc, callback in _REGISTER_EVENT.findall(text)
+    ]
 
 
 def _callback_timer_bodies(text: str, callback: str) -> list[tuple[str, str]]:
@@ -2710,8 +2953,8 @@ def _callback_timer_bodies(text: str, callback: str) -> list[tuple[str, str]]:
     result = []
     for b in _branch_index(text):
         if lo <= b[0] and b[3] <= hi:
-            for timer in _TIMER_IS.findall(text[b[0]:b[1]]):
-                result.append((timer, text[b[2]:b[3]]))
+            for timer in _TIMER_IS.findall(text[b[0] : b[1]]):
+                result.append((timer, text[b[2] : b[3]]))
     return result
 
 
@@ -2720,52 +2963,56 @@ def _link_registered_encounter(graph: QuestGraph, npc_id: str, text: str) -> Non
     registrations = _registered_npc_events(text)
     if not registrations:
         return
-    zone = npc_id.split('/', 1)[0]
+    zone = npc_id.split("/", 1)[0]
     registered = {(kind, npc): callback for kind, npc, callback in registrations}
 
     def trigger(source: str, target: str, **detail: object) -> None:
-        graph.edges.append({"kind": "edge", "rel": "triggers",
-                            "from": source, "to": target, **detail})
+        graph.edges.append(
+            {"kind": "edge", "rel": "triggers", "from": source, "to": target, **detail}
+        )
 
     for (kind, npc), callback in registered.items():
         scope = _event_functions(text, callback)
         if not scope:
             continue
-        body = text[scope[0]:scope[1]]
-        if kind == 'timer':
+        body = text[scope[0] : scope[1]]
+        if kind == "timer":
             for timer, branch_body in _callback_timer_bodies(text, callback):
-                source = f'{npc_id}#timer:{timer}'
+                source = f"{npc_id}#timer:{timer}"
                 # Child timers are created only after this named timer fires.
                 for following in dict.fromkeys(_SET_TIMER.findall(branch_body)):
-                    trigger(source, f'{npc_id}#timer:{following}', timer=following)
+                    trigger(source, f"{npc_id}#timer:{following}", timer=following)
                 for spawned, name in _spawn_calls(branch_body):
                     graph.edges.append(_spawn_edge(source, spawned, name, source))
-        elif kind in {'spawn', 'death_complete', 'signal'}:
-            event = f'{npc_id}#event:{kind}:{npc}'
+        elif kind in {"spawn", "death_complete", "signal"}:
+            event = f"{npc_id}#event:{kind}:{npc}"
             # Ignore nested conditional bodies here only if the condition is
             # signal-specific; for spawn/death use the entire callback.
             for timer in dict.fromkeys(_SET_TIMER.findall(body)):
-                trigger(event, f'{npc_id}#timer:{timer}', timer=timer)
+                trigger(event, f"{npc_id}#timer:{timer}", timer=timer)
             for spawned, name in _spawn_calls(body):
                 graph.edges.append(_spawn_edge(event, spawned, name, event))
 
     # An NPC spawned by a timer or death callback invokes its Event.spawn.
     # A death callback is *not* automatic: killing the NPC is mandatory.
-    spawns = [row for row in graph.edges if row.get('rel') == 'spawns'
-              and str(row.get('from', '')).startswith(zone + '/')]
+    spawns = [
+        row
+        for row in graph.edges
+        if row.get("rel") == "spawns" and str(row.get("from", "")).startswith(zone + "/")
+    ]
     seen = set()
     for edge in spawns:
-        npc = int(edge['npc'])
-        origin = str(edge['from'])
-        for kind in ('spawn', 'death_complete'):
+        npc = int(edge["npc"])
+        origin = str(edge["from"])
+        for kind in ("spawn", "death_complete"):
             if (kind, npc) not in registered:
                 continue
-            if kind == 'spawn':
-                target = f'{npc_id}#event:spawn:{npc}'
+            if kind == "spawn":
+                target = f"{npc_id}#event:spawn:{npc}"
                 pairs = [(origin, target)]
             else:
-                kill = f'{npc_id}#kill:{npc}'
-                target = f'{npc_id}#event:death_complete:{npc}'
+                kill = f"{npc_id}#kill:{npc}"
+                target = f"{npc_id}#event:death_complete:{npc}"
                 pairs = [(origin, kill), (kill, target)]
             for src, dst in pairs:
                 if src == dst or (src, dst) in seen:
@@ -2773,11 +3020,10 @@ def _link_registered_encounter(graph: QuestGraph, npc_id: str, text: str) -> Non
                 seen.add((src, dst))
                 trigger(src, dst, npc=npc)
 
+
 # Event-timer rewards are distinct from timer spawns.  The generic _other_summons
 # intentionally skips event_timer; capture each reward on its named timer instead.
-_EQUIPPED_ITEM = re.compile(
-    r"GetItemIDAt\s*\(\s*Slot\.([A-Za-z_]+)\s*\)\s*==\s*(\d+)", re.I
-)
+_EQUIPPED_ITEM = re.compile(r"GetItemIDAt\s*\(\s*Slot\.([A-Za-z_]+)\s*\)\s*==\s*(\d+)", re.I)
 
 
 def _timer_rewards(graph: QuestGraph, npc_id: str, text: str) -> None:
@@ -2790,26 +3036,53 @@ def _timer_rewards(graph: QuestGraph, npc_id: str, text: str) -> None:
     for pos, item_id in _summon_items(text):
         if not lo <= pos < hi:
             continue
-        parents = [branch for branch in branches
-                   if lo <= branch[0] and branch[2] <= pos < branch[3] and branch[3] <= hi]
-        timers = [(branch, timer)
-                  for branch in parents
-                  for timer in _TIMER_IS.findall(text[branch[0]:branch[1]])]
+        parents = [
+            branch
+            for branch in branches
+            if lo <= branch[0] and branch[2] <= pos < branch[3] and branch[3] <= hi
+        ]
+        timers = [
+            (branch, timer)
+            for branch in parents
+            for timer in _TIMER_IS.findall(text[branch[0] : branch[1]])
+        ]
         if not timers:
             # No matching named timer: don't pretend this reward is available unconditionally.
             continue
         timer = min(timers, key=lambda pair: pair[0][3] - pair[0][0])[1]
         source = f"{npc_id}#timer:{timer}"
-        graph.edges.append({"kind": "edge", "rel": "gives", "from": npc_id,
-                            "to": f"item:{item_id}", "group": source})
-        conditions = "\n".join(text[b[0]:b[1]] for b in parents)
+        graph.edges.append(
+            {
+                "kind": "edge",
+                "rel": "gives",
+                "from": npc_id,
+                "to": f"item:{item_id}",
+                "group": source,
+            }
+        )
+        conditions = "\n".join(text[b[0] : b[1]] for b in parents)
         for slot, required in dict.fromkeys(_EQUIPPED_ITEM.findall(conditions)):
-            graph.edges.append({"kind": "edge", "rel": "needs", "from": source,
-                                "to": f"item:{required}", "item": int(required),
-                                "slot": slot.lower(), "equipped": True})
+            graph.edges.append(
+                {
+                    "kind": "edge",
+                    "rel": "needs",
+                    "from": source,
+                    "to": f"item:{required}",
+                    "item": int(required),
+                    "slot": slot.lower(),
+                    "equipped": True,
+                }
+            )
         if re.search(r"(?:->|:)IsSitting\s*\(\s*\)", conditions, re.I):
-            graph.edges.append({"kind": "edge", "rel": "needs", "from": source,
-                                "to": "state:sitting", "state": "sitting"})
+            graph.edges.append(
+                {
+                    "kind": "edge",
+                    "rel": "needs",
+                    "from": source,
+                    "to": "state:sitting",
+                    "state": "sitting",
+                }
+            )
 
 
 def _timer_starters(graph: QuestGraph, npc_id: str, text: str) -> None:
@@ -2818,52 +3091,72 @@ def _timer_starters(graph: QuestGraph, npc_id: str, text: str) -> None:
     branches = _branch_index(text)
     for match in _SET_TIMER.finditer(text):
         timer = match.group(1)
-        owner = next(((name, lo, hi) for name, lo, hi in functions
-                      if lo <= match.start() < hi), None)
+        owner = next(
+            ((name, lo, hi) for name, lo, hi in functions if lo <= match.start() < hi), None
+        )
         if owner is None:
             continue
         name, lo, hi = owner
-        if name == 'event_timer':
-            enclosing = sorted((b for b in branches
-                                if lo <= b[0] and b[2] <= match.start() < b[3]),
-                               key=lambda b: b[3] - b[0])
-            running = [timer for b in enclosing
-                       for timer in _TIMER_IS.findall(text[b[0]:b[1]])]
+        if name == "event_timer":
+            enclosing = sorted(
+                (b for b in branches if lo <= b[0] and b[2] <= match.start() < b[3]),
+                key=lambda b: b[3] - b[0],
+            )
+            running = [timer for b in enclosing for timer in _TIMER_IS.findall(text[b[0] : b[1]])]
             if not running:
                 continue
             origin = f"{npc_id}#timer:{running[0]}"
-        elif name in {'event_say', 'event_trade', 'event_item'}:
-            enclosing = sorted((b for b in branches
-                                if lo <= b[0] and b[2] <= match.start() < b[3]),
-                               key=lambda b: b[3] - b[0])
-            if name == 'event_say':
-                words = [word for b in enclosing
-                         for word in (m.group(1) or m.group(2) for m in _SAY.finditer(text[b[0]:b[1]]))]
+        elif name in {"event_say", "event_trade", "event_item"}:
+            enclosing = sorted(
+                (b for b in branches if lo <= b[0] and b[2] <= match.start() < b[3]),
+                key=lambda b: b[3] - b[0],
+            )
+            if name == "event_say":
+                words = [
+                    word
+                    for b in enclosing
+                    for word in (m.group(1) or m.group(2) for m in _SAY.finditer(text[b[0] : b[1]]))
+                ]
                 if not words:
                     continue
                 origin = f"{npc_id}#{words[-1].lower()}"
             else:
-                ids = [int(item) for b in enclosing
-                       for item, _count in _HANDIN.findall(text[b[0]:b[1]])]
-                origin = (f"{npc_id}#hand:{'+'.join(map(str, sorted(set(ids))))}"
-                          if ids else f"{npc_id}#{name}")
-        elif name == 'event_signal':
-            enclosing = sorted((b for b in branches
-                                if lo <= b[0] and b[2] <= match.start() < b[3]),
-                               key=lambda b: b[3] - b[0])
-            signals = [value for b in enclosing
-                       for value in _SIGNAL_CONDITION.findall(text[b[0]:b[1]])]
+                ids = [
+                    int(item)
+                    for b in enclosing
+                    for item, _count in _HANDIN.findall(text[b[0] : b[1]])
+                ]
+                origin = (
+                    f"{npc_id}#hand:{'+'.join(map(str, sorted(set(ids))))}"
+                    if ids
+                    else f"{npc_id}#{name}"
+                )
+        elif name == "event_signal":
+            enclosing = sorted(
+                (b for b in branches if lo <= b[0] and b[2] <= match.start() < b[3]),
+                key=lambda b: b[3] - b[0],
+            )
+            signals = [
+                value for b in enclosing for value in _SIGNAL_CONDITION.findall(text[b[0] : b[1]])
+            ]
             if not signals:
                 continue
             origin = f"{npc_id}#signal:{signals[0]}"
         else:
             origin = f"{npc_id}#{name}"
-            if name.startswith('event_'):
+            if name.startswith("event_"):
                 origin = f"{npc_id}#event:{name[6:]}"
         destination = f"{npc_id}#timer:{timer}"
         if origin != destination:
-            graph.edges.append({"kind": "edge", "rel": "triggers",
-                                "from": origin, "to": destination, "timer": timer})
+            graph.edges.append(
+                {
+                    "kind": "edge",
+                    "rel": "triggers",
+                    "from": origin,
+                    "to": destination,
+                    "timer": timer,
+                }
+            )
 
 
 def _link_event_causality(graph: QuestGraph, scripts: list[tuple[str, str, str]]) -> None:
@@ -2900,9 +3193,13 @@ def _link_event_causality(graph: QuestGraph, scripts: list[tuple[str, str, str]]
                 # Lua quest footer still contains an obsolete ID. Its sender
                 # frequently documents the target via `-- NPC: Name`.
                 pattern = re.compile(
-                    r"(?:quest::signalwith|eq\.signal)\s*\(\s*" + str(target)
-                    + r"\s*,\s*" + str(signal) + r"(?:\s*[,)]|\s*\))[^\n]*?"
-                    + r"(?:#|--)\s*NPC:\s*([^\r\n]+)", re.I,
+                    r"(?:quest::signalwith|eq\.signal)\s*\(\s*"
+                    + str(target)
+                    + r"\s*,\s*"
+                    + str(signal)
+                    + r"(?:\s*[,)]|\s*\))[^\n]*?"
+                    + r"(?:#|--)\s*NPC:\s*([^\r\n]+)",
+                    re.I,
                 )
                 for match in pattern.finditer(text):
                     name = re.sub(r"[_\s]+", " ", match.group(1)).strip().lower()
@@ -2914,8 +3211,16 @@ def _link_event_causality(graph: QuestGraph, scripts: list[tuple[str, str, str]]
             npc_id, receiver_text = receiver
             event = f"{npc_id}#signal:{signal}"
             sent.add((npc_id, signal))
-            graph.edges.append({"kind": "edge", "rel": "triggers", "from": source,
-                                "to": event, "signal": signal, "npc": target})
+            graph.edges.append(
+                {
+                    "kind": "edge",
+                    "rel": "triggers",
+                    "from": source,
+                    "to": event,
+                    "signal": signal,
+                    "npc": target,
+                }
+            )
 
     for npc_id, signal in sorted(sent):
         receiver_text = next(text for _zone, name, text in scripts if name == npc_id)
@@ -2923,8 +3228,9 @@ def _link_event_causality(graph: QuestGraph, scripts: list[tuple[str, str, str]]
         for timer in dict.fromkeys(_SET_TIMER.findall(body)):
             event = f"{npc_id}#signal:{signal}"
             timer_id = f"{npc_id}#timer:{timer}"
-            graph.edges.append({"kind": "edge", "rel": "triggers", "from": event,
-                                "to": timer_id, "timer": timer})
+            graph.edges.append(
+                {"kind": "edge", "rel": "triggers", "from": event, "to": timer_id, "timer": timer}
+            )
 
 
 def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
@@ -2943,6 +3249,7 @@ def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
         for path in _quest_scripts(folder):
             text = path.read_text(encoding="utf-8", errors="replace")
             scripts.append((zone, f"{zone}/{npc_name(path.name, catalog).lower()}", text))
+
             graph.dialogues.extend(dialogue_chains(text, path.name, zone))
             nodes = parse_chain(text, path.name, zone)
             if nodes:
@@ -2961,8 +3268,11 @@ def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
     _link_event_causality(graph, scripts)
     # Event-linked rewards are added after per-file link_script(); include them
     # in the catalog metadata emitted for the graph.
-    item_ids.update(int(str(edge['to']).split(':', 1)[1])
-                    for edge in graph.edges if str(edge.get('to', '')).startswith('item:'))
+    item_ids.update(
+        int(str(edge["to"]).split(":", 1)[1])
+        for edge in graph.edges
+        if str(edge.get("to", "")).startswith("item:")
+    )
     _add_spawn_loot(graph, catalog, item_ids)
     _add_recipes(graph, catalog, item_ids)
     ground_zones: dict[int, list[str]] = {}
@@ -3328,7 +3638,9 @@ def ensure_graph(
     source = root or os.environ.get("EQEMU_QUESTS", "")
     if not source:
         raise SystemExit("EQEMU_QUESTS (or --root) is required to build the quest graph")
-    built = build_graph(source, load_catalog("/Users/samo/work/EQEmu/peq-dump/create_tables_content.sql"))
+    built = build_graph(
+        source, load_catalog("/Users/samo/work/EQEmu/peq-dump/create_tables_content.sql")
+    )
     write_graph(built, path)
     _graph = built
     return _graph

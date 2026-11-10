@@ -1,8 +1,7 @@
-"""Item combat stats from peq, cached beside the quest graph.
+"""PEQ item definitions cached as eqclient4.structs.Item objects.
 
-Packet AC/damage often lands as 0 on Titanium ItemPackets. Equip/upgrade scoring
-reads this cache so Gloomiron Greaves beat Stitched Burlap Pants using real AC,
-aagi/astr/…, hp, and mana.
+The cache stores item definitions, not inventory/wire instances.
+Unknown instance-specific integer fields are initialized to -1.
 """
 
 from __future__ import annotations
@@ -10,223 +9,156 @@ from __future__ import annotations
 import json
 import os
 from collections.abc import Iterable
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Protocol
 
 from eqclient4.data.cache_builders.common import peq_path
 from eqclient4.data.catalog import _table, _tuple
+from eqclient4.structs import Item
 
 DEFAULT_ITEMS = str(Path.home() / ".eqclient" / "items.jsonl")
 
+# Item attribute -> zero-based column index in the supplied PEQ items schema.
+_OFFSETS: dict[str, int] = {
+    "name": 2,
+    "id_file": 80,
+    "slots": 112,
+    "classes": 44,
+    "races": 102,
+    "ac": 4,
+    "damage": 51,
+    "required_level": 106,
+    "size": 109,
+    "bag_slots": 30,
+    "bag_size": 29,
+    "item_type": 82,
+    "scroll_effect": 159,
+    "price": 49,
+    "lore_group": 88,
+    "weight": 120,
+    "stack_size": 140,
+    "bag_type": 31,
+    "bag_weight_reduction": 32,
+    "delay": 54,
+    "range": 103,
+    "magic": 89,
+    "elemental_damage_type": 60,
+    "elemental_damage": 61,
+    "strength": 11,
+    "stamina": 10,
+    "agility": 3,
+    "dexterity": 7,
+    "wisdom": 28,
+    "intelligence": 8,
+    "charisma": 6,
+    "hp": 77,
+    "mana": 90,
+    "endurance": 62,
+    "resist_magic": 96,
+    "resist_fire": 73,
+    "resist_cold": 50,
+    "resist_poison": 100,
+    "resist_disease": 57,
+    "resist_corruption": 171,
+    "deity": 53,
+    "recommended_level": 104,
+    "attack": 12,
+    "haste": 75,
+    "damage_shield": 52,
+    "shielding": 108,
+    "avoidance": 27,
+    "accuracy": 5,
+    "item_class": 81,
+    "click_effect": 113,
+    "proc_effect": 145,
+    "worn_effect": 150,
+    "focus_effect": 72,
+    "bard_effect": 249,
+    "aug_type": 26,
+    "aug_restrict": 13,
+    "no_drop": 97,
+    "no_transfer": 141,
+    "item_id": 0,
+}
 
-class HeldGear(Protocol):
-    item_id: int
-    name: str
-    ac: int
-    damage: int
-    req_level: int
-    slots: int
-    classes: int
-    races: int
-    bag_slots: int
-    size: int
-    item_type: int
-    nodrop: int
-    astr: int
-    asta: int
-    aagi: int
-    adex: int
-    awis: int
-    aint: int
-    acha: int
-    hp: int
-    mana: int
-    delay: int
+_INSTANCE_DEFAULTS = {"kind": -1, "slot": -1, "stack": -1, "charges": -1}
 
 
-# peq `items` column indices (create_tables_content.sql).
-_COL_ID = 0
-_COL_NAME = 2
-_COL_AAGI = 3
-_COL_AC = 4
-_COL_ACHA = 6
-_COL_ADEX = 7
-_COL_AINT = 8
-_COL_ASTA = 10
-_COL_ASTR = 11
-_COL_AWIS = 28
-_COL_BAGSLOTS = 30
-_COL_CLASSES = 44
-_COL_DAMAGE = 51
-_COL_DELAY = 54
-_COL_HP = 77
-_COL_ITEMTYPE = 82
-_COL_MANA = 90
-_COL_RACES = 102
-_COL_REQLEVEL = 106
-_COL_SIZE = 109
-_COL_SLOTS = 112
-_COL_NODROP = 97
+def _type_cast(key: str, value: str) -> int | str | bool:
+    if key in {"name", "id_file"}:
+        return str(value)
+
+    if key == "no_drop":
+        return int(value) == 0  # PEQ nodrop=0 means NO DROP.
+
+    if key == "no_transfer":
+        return int(value) != 0
+
+    return int(value)
 
 
-@dataclass(frozen=True)
-class ItemStats:
-    item_id: int
-    name: str = ""
-    ac: int = 0
-    damage: int = 0
-    delay: int = 0
-    astr: int = 0
-    asta: int = 0
-    aagi: int = 0
-    adex: int = 0
-    awis: int = 0
-    aint: int = 0
-    acha: int = 0
-    hp: int = 0
-    mana: int = 0
-    reqlevel: int = 0
-    slots: int = 0
-    classes: int = 0
-    races: int = 0
-    bagslots: int = 0
-    itemtype: int = 0
-    size: int = 0
-    nodrop: int = 255
+def _from_peq(values: list[str]) -> Item:
+    payload = {key: _type_cast(key, values[offset]) for key, offset in _OFFSETS.items()}
+    return Item(**_INSTANCE_DEFAULTS, **payload)  # type: ignore[arg-type]
 
 
 @dataclass
 class ItemBook:
-    """item id → combat / wear stats from peq."""
+    """Item ID -> item definition from PEQ."""
 
-    by_id: dict[int, ItemStats] = field(default_factory=dict)
+    by_id: dict[int, Item] = field(default_factory=dict)
+    _by_name: dict[str, int] | None = field(default=None, repr=False)
 
-    def get(self, item_id: int) -> ItemStats | None:
+    def get(self, item_id: int) -> Item | None:
         return self.by_id.get(int(item_id))
 
-    _by_name: dict[str, int] | None = None
-
     def id_named(self, name: str) -> int:
-        """Item id for this display name. The index is built on the first lookup."""
-        key = " ".join((name or "").lower().split())
+        key = " ".join((name or "").casefold().split())
         if not key:
             return 0
-        index = self._by_name
-        if index is None:
-            index = {}
-            for row in self.by_id.values():
-                index.setdefault(" ".join(row.name.lower().split()), row.item_id)
-            self._by_name = index
-        return index.get(key, 0)
-
-    def enrich(self, held: HeldGear) -> None:
-        """Overlay peq cache fields on a Held (packet AC/slots are often wrong)."""
-        row = self.get(held.item_id)
-        if row is None:
-            return
-        if row.name and (not held.name or held.name.endswith("*")):
-            held.name = row.name
-        # Prefer peq combat/wear fields — Titanium ItemPackets routinely zero or skew these.
-        if row.ac:
-            held.ac = row.ac
-        if row.damage:
-            held.damage = row.damage
-        if row.reqlevel:
-            held.req_level = row.reqlevel
-        if row.slots:
-            held.slots = row.slots
-        if row.classes:
-            held.classes = row.classes
-        if row.races:
-            held.races = row.races
-        if row.bagslots:
-            held.bag_slots = row.bagslots
-        if row.size:
-            held.size = row.size
-        if row.itemtype:
-            held.item_type = row.itemtype
-        held.nodrop = row.nodrop
-        held.astr = row.astr
-        held.asta = row.asta
-        held.aagi = row.aagi
-        held.adex = row.adex
-        held.awis = row.awis
-        held.aint = row.aint
-        held.acha = row.acha
-        held.hp = row.hp
-        held.mana = row.mana
-        held.delay = row.delay
-
-
-def _int(fields: list[str], index: int) -> int:
-    if index >= len(fields):
-        return 0
-    raw = fields[index]
-    if not raw or not raw.lstrip("-").isdigit():
-        return 0
-    return int(raw)
+        if self._by_name is None:
+            self._by_name = {}
+            for item in self.by_id.values():
+                normalized = " ".join(item.name.casefold().split())
+                self._by_name.setdefault(normalized, item.item_id)
+        return self._by_name.get(key, 0)
 
 
 def items_from_lines(lines: Iterable[str]) -> ItemBook:
-    mode = ""
     book = ItemBook()
+    mode = ""
+    minimum_fields = max(_OFFSETS.values()) + 1
     for raw in lines:
         line = raw.strip()
         if line.startswith("INSERT INTO `"):
-            mode = _table(line)
+            mode = _table(line).lower()
             continue
         if mode != "items" or not line.startswith("("):
             continue
-        fields = _tuple(line)
-        if len(fields) <= _COL_SLOTS or not fields[_COL_ID].isdigit():
-            continue
-        item_id = int(fields[_COL_ID])
-        if item_id <= 0:
-            continue
-        book.by_id[item_id] = ItemStats(
-            item_id=item_id,
-            name=fields[_COL_NAME],
-            ac=_int(fields, _COL_AC),
-            damage=_int(fields, _COL_DAMAGE),
-            delay=_int(fields, _COL_DELAY),
-            astr=_int(fields, _COL_ASTR),
-            asta=_int(fields, _COL_ASTA),
-            aagi=_int(fields, _COL_AAGI),
-            adex=_int(fields, _COL_ADEX),
-            awis=_int(fields, _COL_AWIS),
-            aint=_int(fields, _COL_AINT),
-            acha=_int(fields, _COL_ACHA),
-            hp=_int(fields, _COL_HP),
-            mana=_int(fields, _COL_MANA),
-            reqlevel=_int(fields, _COL_REQLEVEL),
-            slots=_int(fields, _COL_SLOTS),
-            classes=_int(fields, _COL_CLASSES),
-            races=_int(fields, _COL_RACES),
-            bagslots=_int(fields, _COL_BAGSLOTS),
-            itemtype=_int(fields, _COL_ITEMTYPE),
-            size=_int(fields, _COL_SIZE),
-            nodrop=_int(fields, _COL_NODROP) if len(fields) > _COL_NODROP else 255,
-        )
+        values = _tuple(line)
+        if len(values) < minimum_fields:
+            raise ValueError(
+                f"Item row has {len(values)} fields; expected at least {minimum_fields}"
+            )
+        item = _from_peq(values)
+        if item.item_id > 0:
+            book.by_id[item.item_id] = item
     return book
 
 
 def build_items(peq: str | Path) -> ItemBook:
-    path = Path(peq)
-    with open(path, encoding="latin1", errors="replace") as handle:
+    with open(peq, encoding="latin1", errors="replace") as handle:
         return items_from_lines(handle)
 
 
 def write_items(book: ItemBook, path: str) -> None:
     destination = Path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
-    lines = []
-    for item_id, row in sorted(book.by_id.items()):
-        payload = {"kind": "item", **asdict(row)}
-        # Compact key name for the jsonl schema used elsewhere.
-        payload["item"] = payload.pop("item_id")
-        lines.append(json.dumps(payload, separators=(",", ":")))
-    destination.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
+    with destination.open("w", encoding="utf-8") as output:
+        for _, item in sorted(book.by_id.items()):
+            payload = {**_INSTANCE_DEFAULTS}
+            payload.update({key: getattr(item, key) for key in _OFFSETS})
+            output.write(json.dumps(payload, separators=(",", ":"), ensure_ascii=True) + "\n")
 
 
 def read_items(path: str) -> ItemBook:
@@ -234,39 +166,12 @@ def read_items(path: str) -> ItemBook:
     file = Path(path)
     if not file.is_file():
         return book
-    for line in file.read_text(encoding="utf-8").splitlines():
-        if not line.strip():
-            continue
-        row = json.loads(line)
-        if row.get("kind") not in (None, "item"):
-            continue
-        item_id = int(row.get("item") or row.get("item_id") or 0)
-        if item_id <= 0:
-            continue
-        book.by_id[item_id] = ItemStats(
-            item_id=item_id,
-            name=str(row.get("name") or ""),
-            ac=int(row.get("ac") or 0),
-            damage=int(row.get("damage") or 0),
-            delay=int(row.get("delay") or 0),
-            astr=int(row.get("astr") or 0),
-            asta=int(row.get("asta") or 0),
-            aagi=int(row.get("aagi") or 0),
-            adex=int(row.get("adex") or 0),
-            awis=int(row.get("awis") or 0),
-            aint=int(row.get("aint") or 0),
-            acha=int(row.get("acha") or 0),
-            hp=int(row.get("hp") or 0),
-            mana=int(row.get("mana") or 0),
-            reqlevel=int(row.get("reqlevel") or 0),
-            slots=int(row.get("slots") or 0),
-            classes=int(row.get("classes") or 0),
-            races=int(row.get("races") or 0),
-            bagslots=int(row.get("bagslots") or 0),
-            itemtype=int(row.get("itemtype") or 0),
-            size=int(row.get("size") or 0),
-            nodrop=int(row["nodrop"]) if "nodrop" in row and row["nodrop"] is not None else 255,
-        )
+    with file.open(encoding="utf-8") as handle:
+        for line in handle:
+            if not line.strip():
+                continue
+            item = Item(**json.loads(line))
+            book.by_id[item.item_id] = item
     return book
 
 
@@ -275,13 +180,15 @@ def ensure_items(
     peq: str | Path | None = None,
     rebuild: bool = False,
 ) -> ItemBook:
-    """Load items.jsonl, or build once from the peq dump."""
+    """Load items.jsonl, or build once from the PEQ dump."""
     path = path or os.environ.get("EQEMU_ITEMS", DEFAULT_ITEMS)
-    file = Path(path)
-    if file.is_file() and not rebuild:
+    if Path(path).is_file() and not rebuild:
         return read_items(path)
+
     dump = peq_path(peq)
-    book = build_items(dump) if dump.is_file() else ItemBook()
-    if book.by_id:
-        write_items(book, path)
+    if not dump.is_file():
+        raise FileNotFoundError(f"PEQ dump file not found: {dump}")
+
+    book = build_items(dump)
+    write_items(book, path)
     return book

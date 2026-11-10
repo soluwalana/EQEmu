@@ -32,7 +32,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
         - NPC emote: looks at you and sighs. 'The lands are changing. Beasts, large and small, have turned upon those who watched over them. Druids and rangers, worshippers of both Karana and Tunare, have reported a feeling of hatred throughout their once peaceful lands.'
         - Condition: `(fac < 4)`
         - Condition: `(e.message:findi("suspect"))`
-      - Player: "Innoruuk" (link: conversation sequence)
+      - Player: "Innoruuk"
         - NPC emote: raises his eyebrow slightly and a subtle look of surprise creeps across his face. 'Innoruuk? Perhaps. Aye. It must be. Perhaps I knew and didn't want to consider the possibility. It must be this though, and some action will have to be taken.'
         - Condition: `(fac < 4)`
         - Condition: `(e.message:findi("innoruuk"))`
@@ -59,7 +59,10 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
       - Player: "Hail"
         - NPC say: Hi, hi. I've got a lot to do, many mouths to feed, some filthy goblins to smack. If you don't need me for something, please let me go back to my work. Karana watch over you.
         - Condition: `($text=~/hail/i)`
-      - Player: "Two Tasks" (link: conversation sequence)
+      - Player: "Two Tasks" (link: external event mention)
+        - Prompted by `event_item`:
+          - NPC say: Hmmm. I've been waiting for someone to bring me this. I'm sorry such a young one as you has taken up this task. Maybe the sky god blesses ya though. Aye, ya have that look in your eye. Our task is to focus the blessings of the gods and cleanse the filth from the land. I have two tasks for ya.
+          - Event guard: `(plugin::check_handin(\%itemcount, 18959 => 1))`
         - NPC say: Well, ya ask before ya act. That's a good sign. What I need isn't easy to find. First, I need a mixture. Plain sounding enough but it's a special one. Cleanses the mind and focuses the earth's energies into a forest walker's mind. I don't know how to make it. I don't even know what it's called. I merely know it exists and we'll be needing it for our task. When ya do find how to make it ya can mix it in that bowl. Keep it when you're done, it's a good bowl.
         - Condition: `(($text=~/two tasks/i) && (defined $qglobals{shiny_tin_bowl}))`
         - Gives Shiny Tin Bowl (17860).
@@ -79,7 +82,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
         - NPC say: Ah. Hello there, adventurer. Come to search for ancient artifacts with Fizzlebik and myself?
         - Condition: `($faction < 5)`
         - Condition: `($text=~/hail/i)`
-      - Player: "Ancient Artifact" (link: conversation sequence)
+      - Player: "Ancient Artifact" (link: explicit mention)
         - NPC say: Oh. All types of things. This area is great. So many artifacts and remains of things all over. It's starting to fall into the pattern of things.
         - Condition: `($faction < 5)`
         - Condition: `($text=~/ancient artifact/i)`
@@ -102,7 +105,11 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 28. Alternative: Loot "Jade Reaver" (5664) from "A Black Reaver" (NPC 90192) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
 29. kaladimb/"Kinlo Strongarm", hand "Jade Reaver" (5664). Gives "Enchanted Clay" (20455).
     - Dialogue with kaladimb/"Kinlo Strongarm":
-      - Player: "Mud"
+      - Player: "Mud" (link: external event mention)
+        - Prompted by `event_item`:
+          - NPC say: Arrrrr. Ooooo. Arrrrrr... Yah, now that's what I be callin' a good lookin' axe. I be crackin' a few skulls with this one. Oh, here's yer block o' mud. Our priests o' Brell use the mud pit fer relievin' themselves after really hard ale blessin' ceremonies, so ya ain't got ta be enchantin' it in holy water or anythin' cause they already have. Har har!
+          - Event guard: `($faction <= 5)`
+          - Event guard: `(plugin::check_handin(\%itemcount, 5664 => 1))`
         - NPC say: Eh? Oh, the clay. Arrr. Lots o' that mud round 'ere. Mostly, a good dwarf not be needin' somethin' so soft 'n squishy but the womenfolk, you know, the elves come lookin' fer it. If ye be one o' those pansy elves wantin' some mud fer workin' into fairy statues, flashy trinkets, 'n pig sticker arrers then I can get it for ye. Course I'd be lowerin' meself, a good dwarf, ta be diggin' that kinda mush outta the ground, but I can do it fer ya.
         - Condition: `($faction <= 5)`
         - Condition: `($text=~/mud/i)`
@@ -134,7 +141,11 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
         - NPC say: Aye, good stuff ta be workin' with.
         - Condition: `($faction <= 5)`
         - Condition: `(($text=~/rock/i) || ($text=~/gem/i) || ($text=~/metal/i))`
-      - Player: "Metal" (link: conversation sequence)
+      - Player: "Metal" (link: external event mention)
+        - Prompted by `event_item`:
+          - NPC say: looks at the hammer and nods once before slamming the head against his anvil, and shattering the head. In a cloud of dust, another dwarf appears from the cloud and tosses you a hunk of metal. Kinlo stares in awe.
+          - Event guard: `($faction <= 5)`
+          - Event guard: `(plugin::check_handin(\%itemcount, 20485 => 1))`
         - NPC say: Aye, good stuff ta be workin' with.
         - Condition: `($faction <= 5)`
         - Condition: `(($text=~/rock/i) || ($text=~/gem/i) || ($text=~/metal/i))`
@@ -166,7 +177,10 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
       - Player: "Speckled Flecked Dust" (link: conversation sequence)
         - NPC say: I've had this little bit of dust, all I have of my mother, for many years now. It's the only reminder I have of her. She said it was special, magical, a warmth to help me through the nights. Even if my life were in the balance, I would have a hard time giving it up.
         - Condition: `(e.message:findi("speckled flecked dust"))`
-      - Player: "Idea" (link: conversation sequence)
+      - Player: "Idea" (link: external event mention)
+        - Prompted by `event_trade`:
+          - NPC say: You say that this Bouncer told you that he'd thrown someone in the river with grass in his pants? How very strange. You should search the river, see if you can find anything, though I don't know how you could expect to find anything in that mess. Hmm... these scales give me an [idea].
+          - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 62814}))`
         - NPC say: Well, you could enlist the aid of the animals. Unfortunately, you can't get a lot of useful information out of a fish or a bird in normal circumstances. There might be a way, however, to get some very specific information. There is lore that suggests that a simple charm can be made that will allow you to know the thoughts of a befriended animal, but only about a particular subject. You need four things, magical clay, a body part from the animal you wish to befriend, something on the subject that you wish to know about and some water. You also need to use a kiln, so I hope you are a talented potter. Now, this only works on the animal from which the body part is taken or one of its direct descendents. You may have to try a lot of animals to find the right one.
         - NPC say: You already have a body part from an alligator in Feerrott. There is magical clay to be found in Taelosia, from what I hear. All you need then is something to focus the animal's mind on. Food is probably the best thing. Gators eat just about anything, so there's a chance you can find one that knows where that intruder with the grass ended up if you can get an alligator to tell you where it's eaten. I'd suggest a good slab of the best piranha meat you can find. It's worth a try. At this point any help would be good. I've been looking at this disease and it is nasty in a subtle way. It barely infects the plants, causes them little harm, but it spreads quickly. So quickly, in fact, that it must be magical. We need more information to stop it.
         - Condition: `(e.message:findi("idea") and e.other:HasItem(62817))`
@@ -248,7 +262,10 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 9. northkarana/"Xanuusus", hand "Stone of Winde" (62604). Sets `ranger_epic15_pre` to `9`.
 10. steamfont/"Godbin Strumharp", hand platinum:30. Requires `ranger_epic15_pre` ==9. Gives "Sound Capture Jar" (62637).
     - Dialogue with steamfont/"Godbin Strumharp":
-      - Player: "Mera"
+      - Player: "Mera" (link: external event mention)
+        - Prompted by `event_trade`:
+          - NPC say: Here ya go. Good luck finding Mera.
+          - Event guard: `( qglobals["ranger_epic15_pre"] == "9" and item_lib.check_turn_in(e.trade, {platinum = 30}))`
         - NPC say: Mera? Sure, I know her. Bright girl. She left here a while ago with one of my new [sound capture jars]. She helped me design them. Bright girl. She ran off saying that she was going to find a great sound to capture in the jar. She was very excited. I hope she's safe. She said something about howling or something like that. I just didn't hear her properly. She's a very bright girl.
         - Condition: `(e.other:Class() == "Ranger")`
         - Condition: `( qglobals["ranger_epic15_pre"] == "9" )`
@@ -291,7 +308,8 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
       - Player: "Tunare" (link: explicit mention)
         - NPC say: Tunare is the Mother of All. It is though Her will that we protect this land and its many creatures.
         - Condition: `(e.message:findi("tunare"))`
-      - Player: "Destroy" (link: conversation sequence)
+      - Player: "Destroy" (link: explicit mention)
+        - Prompted by player input: "Hail"
         - NPC say: Poachers in seach of bear skins and [gnolls] who attack us unprovoked. We are doing all we can to stop them. May [Tunare] give me the strength needed to smite them dead with my [crook].
         - Condition: `(e.message:findi("destroy"))`
       - Player: "Crook" (link: explicit mention)
@@ -303,7 +321,8 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
       - Player: "Reward" (link: explicit mention)
         - NPC say: Yes. We are offering a small reward for slaying the skulking gnoll in the bear caves. Bring me his paw to claim your bounty. The Jaggedpine Treefolk remember well those who aid their cause.
         - Condition: `(e.message:findi("reward"))`
-      - Player: "Sabertooths" (link: conversation sequence)
+      - Player: "Sabertooths" (link: explicit mention)
+        - Prompted by player input: "Crook"
         - NPC say: The gnolls of Blackburrow are called Sabertooths. They have been seen in force on a regular basis. They are surely up to something.
         - Condition: `(e.message:findi("sabertooths"))`
 7. Combine in "Planar Fletching Kit" (17762): "Wind-blessed Heartwood" (62626), "Block of Purest Silver" (62625). Produces "Heartwood Blade" (62627). Requires Fletching. The combine does not fail.
@@ -350,19 +369,30 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 38. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
     - Dialogue with erudnext/"Lumi Stergnon":
       - Player: "Hail"
+        - NPC say: Peace and tranquility be with you. . Are you a [new acolyte of peace] or are you [here to pay homage] to the child of tranquility?
         - Condition: `(e.message:findi("hail"))`
-      - Player: "New Acolyte Of Peace" (link: conversation sequence)
+      - Player: "New Acolyte Of Peace" (link: explicit mention)
+        - NPC say: Then you shall learn the ways of Quellious and learn to do as you are told by higher ranking members. It is time for you to do the lesser duties of a young priest. Which will it be? [Retrieve the Peacekeeper staffs] or [battle the undead]?
         - Condition: `(e.message:findi("new acolyte of peace"))`
-      - Player: "retrieve the Peacekeeper staffs" (link: conversation sequence)
+      - Player: "retrieve the Peacekeeper staffs" (link: explicit mention)
+        - NPC say: Then take this note to the woodworker in Toxxulia Forest. His name is Emil Parsini. He shall have the staff to be returned to the temple.
         - Condition: `(e.message:findi("retrieve the Peacekeeper staffs"))`
         - Gives Sealed Letter (18833).
-      - Player: "Battle The Undead" (link: conversation sequence)
+      - Player: "Battle The Undead" (link: explicit mention)
+        - Prompted by player input: "New Acolyte Of Peace"
+        - NPC say: Then you shall venture to Toxxulia Forest. There has been an increase in skeleton sightings lately. I do not know their origin, but I believe that your efforts will reduce their numbers! Take this box. Return it to me when you have filled it with the bones of these undead creatures and combined it. May Quellious' light guide you.
         - Condition: `(e.message:findi("battle the undead"))`
         - Gives Box For Bones (17941).
-      - Player: "Important Missions" (link: conversation sequence)
+      - Player: "Important Missions" (link: external event mention)
+        - Prompted by `event_trade`:
+          - NPC say: You have done well, neophyte.Let me add the touch of harmony to finish the job.. Here, then. Take these supplies. I am sure you'll need them. Soon you may be able to assist us in [important missions].
+          - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 13816}))`
+        - NPC say: We have need of skilled priests. We have learned that a High Guard battle staff has been stolen. We require a priest to [track down the staff].
         - Condition: `(fac <= 4)`
         - Condition: `(e.message:findi("important missions"))`
-      - Player: "Here To Pay Homage" (link: conversation sequence)
+      - Player: "Here To Pay Homage" (link: explicit mention)
+        - Prompted by player input: "Hail"
+        - NPC say: Then respect our temple and keep your prayers silent.
         - Condition: `(fac <= 4)`
         - Condition: `(e.message:findi("here to pay homage"))`
 39. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
@@ -382,11 +412,13 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
         - NPC say: Those who passed generations ago have had their bones exhumed and enchanted. Some evil force plagues this land with these evil skeletons. You will fight for us and crush the skeletons. Take this box and fill it with the bones of those creatures. We will not allow them to rise again and you shall earn our respect. Go forth and fight for Karana!
         - Condition: `(e.message:findi("crush the undead"))`
         - Gives Box For Bones (17941).
-      - Player: "Dangerous Mission" (link: conversation sequence)
+      - Player: "Dangerous Mission" (link: explicit mention)
+        - Prompted by player input: "Join The Cause"
         - NPC say: You must go into the catacombs and find a man named Drosco Finlayer. Pass him this note. He has been deep undercover in the Shrine of Bertoxxulous and will have directions to that vile place. To do this will surely show your allegiance to this temple.
         - Condition: `(e.message:findi("dangerous mission"))`
         - Gives Tattered Note (18804).
-      - Player: "Rat King" (link: conversation sequence)
+      - Player: "Rat King" (link: explicit mention)
+        - Prompted by player input: "Join The Cause"
         - NPC say: You may try, but no one has truly seen him. I would look in the sewers.
         - Condition: `(e.message:findi("rat king"))`
 45. Buy "Small Brick of Steel" (66168) from "Qaelin Hailstorm" (NPC 3042) in `qrg`. Base price: 5,890 copper.
@@ -511,7 +543,8 @@ Values written: 1, 2, 3, 5, 6, 7.
       - Player: "Your Eyes" (link: conversation sequence)
         - NPC say: Yes. I cannot see any longer, my sight long since lost in the march of years. By the blessings of Tunare and Karana, though, I still make myself useful.
         - Condition: `($text=~/your eyes/i)`
-      - Player: "Out Of Balance" (link: conversation sequence)
+      - Player: "Out Of Balance" (link: explicit mention)
+        - Prompted by player input: "Hail"
         - NPC say: I don't know for certain what is wrong. It feels like the start of a cold, a sort of tickling at the back of Norrath's throat, if I may make such a poor metaphor. In much the same way that I can sense that you have wielded the power of nature, probably in the form of the weapons known as Swiftwind and Earthcaller, I can sense a power of illness creeping upon the land. Please, if you come across anything suspicious bring it to me. I am worried, this does not feel like a natural sickness to me. Go with the blessing of the Mother and the speed of the Storm, my child.
           - Reply guard: `($class eq "Ranger" && $client->GetGlobal("ranger_epic") ==1)`
         - NPC say: I am certain that you would sense it too, had you been so blessed as to be without sight. My sense of the life of Norrath is greatly heightened without the hindrance of vision. As I can sense that you have at your call the power of the lands, perhaps in the form of the Nature Walkers Scimitar. I can feel an unnatural illness creeping about the edges of Norrath. Please, if you come across anything suspicious bring it to me. I am worried about this cold sickness that I can almost taste. Go with the blessing of the Mother and the speed of the Storm, my child.
@@ -535,13 +568,15 @@ Values written: 1, 2, 3, 5, 6, 7.
       - Player: "Enchanter" (link: explicit mention)
         - NPC say: Wonderful! Let me be the first to tell you that your training here will be top notch and you will learn all that is to be known about being an enchanter should you put forth the willingness to learn. I will walk you through your early training and assist you in your hunting and gathering skills. I have created a [special sewing kit] that I present to all of the new initiates.
         - Condition: `(e.message:findi("magician") or e.message:findi("enchanter") or e.message:findi("wizard"))`
-      - Player: "Wizard" (link: conversation sequence)
+      - Player: "Wizard" (link: explicit mention)
+        - Prompted by player input: "Hail"
         - NPC say: Wonderful! Let me be the first to tell you that your training here will be top notch and you will learn all that is to be known about being an enchanter should you put forth the willingness to learn. I will walk you through your early training and assist you in your hunting and gathering skills. I have created a [special sewing kit] that I present to all of the new initiates.
         - Condition: `(e.message:findi("magician") or e.message:findi("enchanter") or e.message:findi("wizard"))`
       - Player: "Diseases Of The Mind" (link: conversation sequence)
         - NPC say: I study the mind. My most recent research deals with, well, I'd rather not discuss that. Unless you need something specific, I don't really have time for long random conversations right now.
         - Condition: `(e.message:findi("diseases of the mind"))`
-      - Player: "Special Sewing Kit" (link: conversation sequence)
+      - Player: "Special Sewing Kit" (link: explicit mention)
+        - Prompted by player input: "Magician"
         - NPC say: This kit that I speak of is one that is able to magically infuse different components into materials used for creating Arcane Scientists Armor. The components that you use will be collected from numerous different areas and shops in Freeport. You will use these materials along with patterns that I will present you with to create your armor. Once you are [ready to begin] I will present you with your Enchanted Sewing Kit.
         - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
         - Condition: `(e.message:findi("special sewing kit"))`
@@ -550,37 +585,43 @@ Values written: 1, 2, 3, 5, 6, 7.
         - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
         - Condition: `(e.message:findi("ready to begin"))`
         - Gives Enchanted Sewing Kit (17260).
-      - Player: "Sleeve" (link: conversation sequence)
+      - Player: "Sleeve" (link: explicit mention)
         - NPC say: Sleeves will be a great and necessary addition to your armor. To create your sleeve material you will need to combine 2 Woven Spider Silks, 2 Bone Chips, 1 Spider Legs and Cloth Sleeves in your assembly kit. Once you have created the proper material take it to a loom along with this mold to fashion your very own Arcane Scientists Sleeves.
         - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
         - Condition: `(e.message:findi("sleeve"))`
         - Gives Enchanted Sleeves Pattern (22586).
-      - Player: "Bracer" (link: conversation sequence)
+      - Player: "Bracer" (link: explicit mention)
+        - Prompted by player input: "Ready To Begin"
         - NPC say: A wise choice indeed, having the correct wrist protection is very important in spell channeling. To create your bracer material you will need to combine 1 Woven Spider Silk, 1 Desert Tarantula Chitin, 1 Armadillo Tooth and a Cloth wristband in your assembly kit. Once you have created the proper material take it to a loom along with this mold to fashion your very own Arcane Scientists Bracer.
         - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
         - Condition: `(e.message:findi("bracer"))`
         - Gives Enchanted Bracer Pattern (22584).
-      - Player: "Cap" (link: conversation sequence)
+      - Player: "Cap" (link: explicit mention)
+        - Prompted by player input: "Ready To Begin"
         - NPC say: A cap will keep you safe from any attackers as well as the elements. To create your cap material you will need to combine 2 Woven Spider Silks, 1 Snake Fang, 1 Chunk of Meat and a Cloth Cap in your assembly kit. Once you have created the proper material take it to a loom along with this mold to fashion your very own Arcane Scientists Cap.
         - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
         - Condition: `(e.message:findi("cap"))`
         - Gives Enchanted Cap Pattern (22583).
-      - Player: "Glove" (link: conversation sequence)
+      - Player: "Glove" (link: explicit mention)
+        - Prompted by player input: "Ready To Begin"
         - NPC say: Gloves are very important for your early training especially Isola. While you are learning your first set of incantations you should not have to worry about any injuries to your hands. To create your glove material you will need to combine 3 Woven Spider Silks, 1 Giant Scarab Brain, 1 High Quality Cat Pelt 1 Zombie Skin and 1 Large Leaf Scarab Leg in your assembly kit. Once you have created the proper material take it to a loom along with this mold to fashion your very own Arcane Scientists Gloves.
         - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
         - Condition: `(e.message:findi("glove"))`
         - Gives Enchanted Gloves Pattern (22588).
-      - Player: "Sandal" (link: conversation sequence)
+      - Player: "Sandal" (link: explicit mention)
+        - Prompted by player input: "Ready To Begin"
         - NPC say: Sandals will keep you save from any harmful things you may walk in, it is a good idea to have them. To create your sandal material you will need to combine 3 Woven Spider Silks, 1 Coyote Pelt, 2 Black Bear Paws, 1 Urticating Hairs and Cloth Sandals in your assembly kit. Once you have created the proper material take it to a loom along with this mold to fashion your very own Arcane Scientists Sandals.
         - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
         - Condition: `(e.message:findi("sandal"))`
         - Gives Enchanted Sandals Pattern (22585).
-      - Player: "Trouser" (link: conversation sequence)
+      - Player: "Trouser" (link: explicit mention)
+        - Prompted by player input: "Ready To Begin"
         - NPC say: I would always recommend pants to all my new students since they are a very important part of your armor set. To create your trouser material you will need to combine 4 Woven Spider Silks, 1 Embalming Dust, 1 Rotting Zombie Skull and 1 Armadillo Tail in your assembly kit. Once you have created the proper material take it to a loom along with this mold to fashion your very own Arcane Scientists Trousers.
         - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
         - Condition: `(e.message:findi("trouser"))`
         - Gives Enchanted Trousers Pattern (22587).
-      - Player: "Robe" (link: conversation sequence)
+      - Player: "Robe" (link: explicit mention)
+        - Prompted by player input: "Ready To Begin"
         - NPC say: I am very pleased to see that you have progressed through your armor pieces so quickly. I am also proud to see that you are ready to attempt your robe! To create your robe material you will need to combine 5 Woven Spider Silks, 1 Snake Bile, 1 Cutthroat Golden Tooth, 1 Shadow Wolf Tibia, 1 Orc Prayer Beads and 1 Cloth Shirt in your assembly kit. Once you have created the proper material take it to a loom along with this mold to fashion your very own Arcane Scientists Robe. Be sure to come back to see me for a [final assignment] after you have completed your robe.
         - Condition: `(e.other:Class() == "Enchanter" or e.other:Class() == "Magician" or e.other:Class() == "Wizard")`
         - Condition: `(e.message:findi("robe"))`
@@ -815,7 +856,10 @@ Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11.
         - Condition: ``
         - Condition: `( qglobals["ranger_epic15_pre"] == "2" and e.message:findi('odus') )`
         - Sets `ranger_epic15_pre` to `3`.
-      - Player: "Impurities" (link: conversation sequence)
+      - Player: "Impurities" (link: external event mention)
+        - Prompted by `event_trade`:
+          - NPC say: Well, the stone is indeed native to the Plane of Discord. It just has many properties in common with the stone native to Norrath. I have never seen something like this before. My best guess is that it is some sort of stone amalgamation. I believe that matter is pulled into Discord when gates open. From what I have been told a gate was opened to Norrath in the past. Perhaps matter from Norrath and matter from Discord were merged when the gate was opened. That would make sense if there was a powerful magical disruption or explosion. I understand that Taelosians had powerful geomantic magic. If this stone came from Taelosia many years ago during the height of their power, it might be very special. It's too bad there isn't any way to remove the [impurities] from it.
+          - Event guard: `( qglobals["ranger_epic15_pre"] == "4" and item_lib.check_turn_in(e.trade, {item1 = 62641}))`
         - NPC say: A large portion of this stone is infused with material native to this place. I call those impurities because to me the real stone here is the stuff that seems to be from ancient Taelosia. I hope you can find someone with enough earth magic to purify it for you.
         - Condition: ``
         - Condition: `( qglobals["ranger_epic15_pre"] == "5" and e.message:findi('impurities') )`
@@ -862,7 +906,7 @@ Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11.
           - Reply guard: ``
         - Condition: `(e.message:findi("hail"))`
         - Gives Polished Blasted Stone (62603).
-      - Player: "Help" (link: conversation sequence)
+      - Player: "Help"
         - NPC say: Well, I suppose I can help you a little, small one. There are three principles expressed in my lovely poem.
         - NPC say: First one must defeat a worthy enemy of the Storm Lord, as you obviously understood from the second stanza. Seek a weapon born by one that would shackle the world if he could. He takes his name from his home, as if to claim it as his own.
         - NPC say: Secondly one must aid a friend of the Storm Lord. There is one that considers himself small and worthless. Heal his heart so that his bare feet may roam again.

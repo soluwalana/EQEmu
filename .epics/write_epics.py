@@ -162,7 +162,6 @@ def fallback_drop(items, item_id: int) -> str | None:
     )
 
 
-
 def fallback_merchant(items, item_id: int) -> str | None:
     """Buy an otherwise unresolved item from a spawned NPC vendor."""
     found = MERCHANT_BOOK.best(int(item_id))
@@ -525,7 +524,19 @@ def prefers(by_from, by_group, edge: dict, flags: set[str]) -> bool:
 
 
 def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
-    items, says, by_from, by_group, sets_of, gives, loots, grounds, produces, recipe, dialogues = ctx
+    (
+        items,
+        says,
+        by_from,
+        by_group,
+        sets_of,
+        gives,
+        loots,
+        grounds,
+        produces,
+        recipe,
+        dialogues,
+    ) = ctx
     flags = class_flags(sets_of, mains, prefixes)
     # A shared player event can contain branches for several classes.  Its
     # graph source (e.g. veksar/player#enter) is not branch-specific; exclude
@@ -536,8 +547,7 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
         for owned_flag in class_flags(sets_of, class_mains, class_prefixes):
             owners[owned_flag].add(slug)
     foreign_flags = {
-        flag for flag, slugs in owners.items()
-        if name not in slugs and len(slugs) == 1
+        flag for flag, slugs in owners.items() if name not in slugs and len(slugs) == 1
     }
 
     def foreign_only_source(edge: dict) -> bool:
@@ -547,9 +557,13 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
         under one source.  Preserve those shared events when this class also
         has a predicate on that source.
         """
-        needed = [row.get("flag") for row in bundle(
-            by_from, by_group, edge.get("from", ""), edge.get("group", "")
-        ) if row.get("rel") == "needs" and row.get("flag")]
+        needed = [
+            row.get("flag")
+            for row in bundle(
+                by_from, by_group, edge.get("from", ""), edge.get("group", "")
+            )
+            if row.get("rel") == "needs" and row.get("flag")
+        ]
         return any(flag in foreign_flags for flag in needed) and not any(
             flag in flags for flag in needed
         )
@@ -570,35 +584,99 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
         shown_dialogues.add(key)
         output = [f"{pad}- Dialogue with {quoted_who(key)}:"]
         for chain in records:
-            transitions = {(t.get('from'), t.get('to')): t for t in chain.get('transitions', ())}
+            # Prefer an earlier SAY prompt over item/trade speech. External
+            # events can mention the same word in entirely different quest
+            # states; they are evidence only when no earlier SAY prompt exists.
+            transitions_by_target: dict[str, list[dict]] = defaultdict(list)
+            for transition in chain.get("transitions", ()):
+                target = transition.get("_to", "")
+                transitions_by_target[str(target).casefold()].append(transition)
+            
             previous = None
-            for turn in chain.get('turns', ()):
-                utterance = str(turn.get('input') or '')
+            earlier_inputs: set[str] = set()
+            for turn in chain.get("turns", ()):
+                utterance = str(turn.get("input") or "")
+                candidates = transitions_by_target.get(utterance.casefold(), ())
+                # Only a SAY response already encountered in this displayed
+                # chain can introduce the next utterance. Prefer the immediately
+                # preceding response, then any older response. The source can
+                # still be an EVENT_ITEM when no earlier SAY speech prompts it.
+                grounded_say = [
+                    t for t in candidates
+                    if t.get("basis") not in {"conversation_sequence", "external_event_mention"}
+                    and str(t.get("_from") or "").casefold()
+                    in earlier_inputs
+                ]
+                transition = next(
+                    (t for t in grounded_say
+                     if str(t.get("_from") or "").casefold()
+                     == str(previous or "").casefold()),
+                    grounded_say[0] if grounded_say else None,
+                )
+                if transition is None:
+                    external = [
+                        t for t in candidates
+                        if t.get("basis") == "external_event_mention"
+                    ]
+                    # Multiple unrelated hand-ins mentioning a keyword do not
+                    # establish which event prompted the player. Do not pick
+                    # one arbitrarily and present it as the quest path.
+                    if len(external) == 1:
+                        transition = external[0]
+                if transition is None and previous is not None:
+                    transition = next(
+                        (t for t in candidates
+                         if t.get("basis") == "conversation_sequence"
+                         and t.get("_from") == previous),
+                        None,
+                    )
                 entry = f"{pad}  - Player: {quoted(utterance)}"
-                if previous is not None:
-                    transition = transitions.get((previous, utterance), {})
-                    basis = transition.get('basis')
+                
+                if transition:
+                    basis = str(transition.get("basis") or "")
                     if basis:
                         entry += f" (link: {basis.replace('_', ' ')})"
+                
                 output.append(entry)
-                for reply in turn.get('reply') or ():
-                    channel = reply.get('channel', 'say')
-                    speech = ' '.join(str(reply.get('text') or '').split())
+                if transition and transition.get("basis") == "external_event_mention":
+                    event = str(transition.get("event") or "event_item")
+                    output.append(f"{pad}    - Prompted by `{event}`:")
+                    evidence = " ".join(str(transition.get("evidence") or "").split())
+                    if evidence:
+                        output.append(f"{pad}      - NPC say: {evidence}")
+                    for guard in transition.get("guards") or ():
+                        output.append(f"{pad}      - Event guard: `{guard}`")
+                
+                elif transition and transition.get("basis") != "conversation_sequence":
+                    origin = transition.get("_from")
+                    if origin and origin != previous:
+                        output.append(f"{pad}    - Prompted by player input: {quoted(origin)}")
+                
+                for reply in turn.get("reply") or ():
+                    channel = reply.get("channel", "say")
+                    speech = " ".join(str(reply.get("text") or "").split())
                     if speech:
                         output.append(f"{pad}    - NPC {channel}: {speech}")
-                    for guard in reply.get('guards') or ():
+                    for guard in reply.get("guards") or ():
                         output.append(f"{pad}      - Reply guard: `{guard}`")
-                for guard in turn.get('guards') or ():
+                
+                for guard in turn.get("guards") or ():
                     output.append(f"{pad}    - Condition: `{guard}`")
-                for effect in turn.get('effects') or ():
-                    rel = effect.get('rel')
-                    if rel == 'gives':
-                        output.append(f"{pad}    - Gives {item_name(items, effect['item'])}.")
-                    elif rel == 'sets':
-                        output.append(f"{pad}    - Sets `{effect['flag']}` to `{effect.get('value')}`.")
-                    elif rel == 'spawns':
+                
+                for effect in turn.get("effects") or ():
+                    rel = effect.get("rel")
+                    if rel == "gives":
+                        output.append(
+                            f"{pad}    - Gives {item_name(items, effect['item'])}."
+                        )
+                    elif rel == "sets":
+                        output.append(
+                            f"{pad}    - Sets `{effect['flag']}` to `{effect.get('value')}`."
+                        )
+                    elif rel == "spawns":
                         output.append(f"{pad}    - Spawns NPC {effect['npc']}.")
                 previous = utterance
+                earlier_inputs.add(utterance.casefold())
         return output
 
     seen_flags: set[str] = set()
@@ -669,7 +747,9 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
         gated = [edge for edge in givers if prefers(by_from, by_group, edge, flags)]
         candidates = gated or givers
 
-        def necessarily_requires(needed: int, target: int, visiting: frozenset[int] = frozenset()) -> bool:
+        def necessarily_requires(
+            needed: int, target: int, visiting: frozenset[int] = frozenset()
+        ) -> bool:
             """True only if every known way to acquire `needed` depends on `target`.
 
             A returned quest container must not be selected as its own initial
@@ -692,14 +772,16 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
                 if needed not in recipe_inputs(rid)
             )
             return bool(paths) and all(
-                any(necessarily_requires(component, target, active) for component in path)
+                any(
+                    necessarily_requires(component, target, active)
+                    for component in path
+                )
                 for path in paths
             )
 
         def cyclic_source(edge: dict) -> bool:
             return any(
-                necessarily_requires(component, item_id)
-                for component in handed(edge)
+                necessarily_requires(component, item_id) for component in handed(edge)
             )
 
         # A reward that returns inputs from a later combine is not the initial
@@ -877,8 +959,9 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
         ]
         # One loot path is sufficient to acquire an item. The old code emitted
         # up to four routes consecutively, falsely implying four required kills.
-        possible_loot = [edge for edge in (gated_loot or loot_rows)
-                         if not foreign_only_source(edge)]
+        possible_loot = [
+            edge for edge in (gated_loot or loot_rows) if not foreign_only_source(edge)
+        ]
         unique_loot = list(
             dict.fromkeys(
                 (str(edge.get("from") or ""), str(edge.get("npc") or ""))
@@ -987,22 +1070,31 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
         # Only the selected source expands prerequisites; alternatives are choices,
         # not additional mandatory encounters.
         selected_key = (
-            str(chosen_loot.get("from") or ""), str(chosen_loot.get("npc") or "")
-        ) if chosen_loot else None
+            (str(chosen_loot.get("from") or ""), str(chosen_loot.get("npc") or ""))
+            if chosen_loot
+            else None
+        )
         for source, npc in unique_loot:
             if (source, npc) == selected_key:
                 continue
             alternate = next(
-                edge for edge in possible_loot
+                edge
+                for edge in possible_loot
                 if str(edge.get("from") or "") == source
                 and str(edge.get("npc") or "") == npc
             )
             who, action, zone = parse_who(source)
             name = str(alternate.get("name") or "")
-            corpse = quoted(name) if name else (f"NPC {npc}" if npc else quoted_who(who))
+            corpse = (
+                quoted(name) if name else (f"NPC {npc}" if npc else quoted_who(who))
+            )
             ident = f" (NPC {npc})" if npc and name else ""
             where = f" in `{zone}`" if zone else ""
-            trigger = f"; trigger: {quoted_who(who)}, {quoted_action(items, action)}" if action else ""
+            trigger = (
+                f"; trigger: {quoted_who(who)}, {quoted_action(items, action)}"
+                if action
+                else ""
+            )
             bits.append(
                 f"Alternative: Loot {quoted_item(items, item_id)} "
                 f"from {corpse}{ident}{where}{trigger}."
@@ -1186,8 +1278,7 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
                     edge.get("from", ""),
                     edge.get("group", ""),
                 )
-                if row.get("rel") == "needs"
-                and row.get("flag") not in foreign_flags
+                if row.get("rel") == "needs" and row.get("flag") not in foreign_flags
             ]
             precise = {
                 str(row["flag"])
@@ -1494,6 +1585,7 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
             "Shared acquisition steps appear in the first prerequisite chain that needs them. Later sections reference that chain rather than repeating it.",
             "",
         ]
+
         # Probe each chain WITHOUT the shared ledger.  The old ordering was the
         # order render_flag happened to request its inputs, not the order in
         # which a player begins the quest.  Prefer chains whose initial leaf
@@ -1505,7 +1597,9 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
             first_seen_item.clear()
             preview: list[str] = []
             forward(item_id, set(), preview, set(), item_id)
-            first = next((line for line in preview if not line.startswith("Acquisition of ")), "")
+            first = next(
+                (line for line in preview if not line.startswith("Acquisition of ")), ""
+            )
             # A dialogue usually introduces an epic, whereas forage, loot, and
             # crafting are subquests discovered after that introduction.
             opening = bool(re.search(r'\b(?:say|hand)\s+"?[^.]+', first, re.I))
@@ -1536,10 +1630,14 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
                 # Conversation sources in the acquisition path are part of the
                 # journey too, not just the NPCs that write epic flags.
                 if verbose:
-                    match = re.match(r'([^\s/]+)/(?:"([^"]+)"|([^,]+)),\s*(?:say|hand)\b', text)
+                    match = re.match(
+                        r'([^\s/]+)/(?:"([^"]+)"|([^,]+)),\s*(?:say|hand)\b', text
+                    )
                     if match:
                         zone, quoted_npc, plain_npc = match.groups()
-                        npc = (quoted_npc or plain_npc).strip().lower().replace(' ', '_')
+                        npc = (
+                            (quoted_npc or plain_npc).strip().lower().replace(" ", "_")
+                        )
                         # The graph uses normalized NPC names, not the display names.
                         key = f"{zone}/{npc.replace('_', ' ')}"
                         block.extend(dialogue_lines(key, "    "))
@@ -1736,7 +1834,9 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
         rows = bundle(by_from, by_group, source, edge.get("group", ""))
         value = edge.get("value")
         action_text = quoted_action(items, action) if action else "interact"
-        lines.append(f"{value}. {quoted_who(who)}, {action_text}. Sets `{flag}` to `{value}`.")
+        lines.append(
+            f"{value}. {quoted_who(who)}, {action_text}. Sets `{flag}` to `{value}`."
+        )
         needs = []
         or_needs = []
         for row in rows:
@@ -1752,7 +1852,9 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
         for dep in dict.fromkeys(needs):
             lines.append(f"    - Requires {dep}.")
         if or_needs:
-            lines.append("    - Requires one of: " + "; ".join(dict.fromkeys(or_needs)) + ".")
+            lines.append(
+                "    - Requires one of: " + "; ".join(dict.fromkeys(or_needs)) + "."
+            )
         needed_items: list[int] = []
         for row in rows:
             rel = row.get("rel")
@@ -1762,7 +1864,9 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
             if rel == "receives" and to.startswith("item:"):
                 item_id = int(to.split(":", 1)[1])
                 needed_items.append(item_id)
-                lines.append(f"    - Hand in x{row.get('count') or 1}: {quoted_item(items, item_id)}.")
+                lines.append(
+                    f"    - Hand in x{row.get('count') or 1}: {quoted_item(items, item_id)}."
+                )
             elif rel == "receives" and to.startswith("coin:"):
                 lines.append(f"    - Hand in {row.get('count')} {to.split(':', 1)[1]}.")
         for item_id in dict.fromkeys(needed_items):
@@ -1775,22 +1879,32 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
             spawned = []
             loots_by_npc = defaultdict(list)
             for row in rows:
-                if row.get('rel') == 'loots' and row.get('npc') and str(row.get('to') or '').startswith('item:'):
-                    loots_by_npc[int(row['npc'])].append(int(str(row['to']).split(':', 1)[1]))
+                if (
+                    row.get("rel") == "loots"
+                    and row.get("npc")
+                    and str(row.get("to") or "").startswith("item:")
+                ):
+                    loots_by_npc[int(row["npc"])].append(
+                        int(str(row["to"]).split(":", 1)[1])
+                    )
             for row in rows:
-                if row.get('rel') == 'spawns':
-                    spawned.append({**row, 'loots': loots_by_npc.get(int(row.get('npc') or 0), [])})
+                if row.get("rel") == "spawns":
+                    spawned.append(
+                        {**row, "loots": loots_by_npc.get(int(row.get("npc") or 0), [])}
+                    )
             info = recipe.get(recipe_id) or {}
-            spawn_result = not (info.get('products') or info.get('produces'))
-            for line in render_recipe(recipe_id, 0, set(), spawned if spawn_result else None):
+            spawn_result = not (info.get("products") or info.get("produces"))
+            for line in render_recipe(
+                recipe_id, 0, set(), spawned if spawn_result else None
+            ):
                 lines.append("    " + line)
         else:
-            ordered = sorted(rows, key=lambda r: int(r.get('order') or 0))
+            ordered = sorted(rows, key=lambda r: int(r.get("order") or 0))
             seen_effects = set()
             for row in ordered:
                 rel = row.get("rel")
                 to = str(row.get("to") or "")
-                ident = (rel, to, row.get('value'), row.get('npc'))
+                ident = (rel, to, row.get("value"), row.get("npc"))
                 if ident in seen_effects:
                     continue
                 seen_effects.add(ident)
@@ -1799,16 +1913,23 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
                     if not _recipe_refund(recipe, row, item_id):
                         lines.append(f"    - Gives {quoted_item(items, item_id)}.")
                 elif rel == "spawns":
-                    lines.append(f"    - Spawns {row.get('name') or to} ({row.get('npc')}).")
+                    lines.append(
+                        f"    - Spawns {row.get('name') or to} ({row.get('npc')})."
+                    )
                 elif rel == "grounds" and to.startswith("item:"):
-                    lines.append(f"    - Ground spawn {quoted_item(items, int(to.split(':', 1)[1]))}.")
+                    lines.append(
+                        f"    - Ground spawn {quoted_item(items, int(to.split(':', 1)[1]))}."
+                    )
                 elif rel == "sets" and row.get("flag") != flag:
                     lines.append(f"    - Sets `{row['flag']}` to `{row.get('value')}`.")
         if verbose:
             lines.extend(dialogue_lines(who, "    "))
         lines.append("")
-        for sub in dict.fromkeys(row.get('flag') for row in rows if row.get('rel') == 'needs'
-                                 and row.get('flag') and row.get('flag') != flag):
+        for sub in dict.fromkeys(
+            row.get("flag")
+            for row in rows
+            if row.get("rel") == "needs" and row.get("flag") and row.get("flag") != flag
+        ):
             if sub in seen_flags:
                 lines.append(f"    - Subquest `{sub}` documented earlier.")
             else:
@@ -1938,17 +2059,32 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Generate epic quest walkthroughs")
-    parser.add_argument("-c", "--class", dest="class_name", metavar="CLASS",
-                        help="Generate only the named class (e.g. ranger)")
-    parser.add_argument("-v", "--verbose", action="store_true",
-                        help="Inline full NPC dialogue chains and guards")
+    parser.add_argument(
+        "-c",
+        "--class",
+        dest="class_name",
+        metavar="CLASS",
+        help="Generate only the named class (e.g. ranger)",
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Inline full NPC dialogue chains and guards",
+    )
     args = parser.parse_args(argv)
-    choices = [row for row in CLASSES if not args.class_name
-               or row[0].casefold() == args.class_name.casefold()
-               or row[1].casefold() == args.class_name.casefold()]
+    choices = [
+        row
+        for row in CLASSES
+        if not args.class_name
+        or row[0].casefold() == args.class_name.casefold()
+        or row[1].casefold() == args.class_name.casefold()
+    ]
     if not choices:
-        parser.error(f"Unknown class {args.class_name!r}; choose from: " +
-                     ", ".join(row[0] for row in CLASSES))
+        parser.error(
+            f"Unknown class {args.class_name!r}; choose from: "
+            + ", ".join(row[0] for row in CLASSES)
+        )
     items, edges, says, world, dialogues = load()
     by_from, by_group, sets_of, gives, loots, grounds, produces, recipe = indexes(
         edges, world
@@ -1973,7 +2109,9 @@ def main(argv=None):
     )
     OUT.mkdir(parents=True, exist_ok=True)
     for slug, title, mains, prefixes in choices:
-        path, count = write_class(slug, title, mains, prefixes, ctx, verbose=args.verbose)
+        path, count = write_class(
+            slug, title, mains, prefixes, ctx, verbose=args.verbose
+        )
         print(f"{path.name} {count} lines")
 
 

@@ -2,7 +2,6 @@
 
 from eqclient4.handler import Handler
 from eqclient4.log import log
-from eqclient4.net import transfer_zone
 
 # from eqclient4.actions.bots.form import queue_form
 # from eqclient4.actions.level_up import queue_level_gear
@@ -10,6 +9,7 @@ from eqclient4.net import transfer_zone
 from eqclient4.structs import (
     EQStruct,
     OP_ClientReady,
+    OP_NewSpawn,
     OP_NewZone,
     OP_ReliableHole,
     OP_RequestClientZoneChange,
@@ -23,19 +23,21 @@ DONE = 2
 
 
 class ZoningHandler(Handler):
+
     opcodes = (
         "OP_NewZone",
         "OP_ClientReady",
         "OP_ZoneChange",
         "OP_RequestClientZoneChange",
         "OP_ReliableHole",
+        "OP_NewSpawn",
     )
 
     def on(self, opcode: str, payload: EQStruct) -> None:
         match payload:
             case OP_ReliableHole():
                 # A reliable-stream hole rezones on the copied session and does not append Zone.
-                transfer_zone(self.loop.client)
+                self.loop._transfer_once()
                 return
 
             case OP_NewZone():
@@ -55,24 +57,22 @@ class ZoningHandler(Handler):
 
     def new_zone(self, row: OP_NewZone) -> None:
         short, x, y, z = row.short_name, row.x, row.y, row.z
-        world = self.world
-        previous = str(world.zone or "")
-        previous_id = int(world.zone_id or 0)
+        previous = str(self.world.zone or "")
+        previous_id = int(self.world.zone_id or 0)
 
         zone_id = row.zone_id
-        world.zone = short
-        world.zone_id = zone_id
+        self.world.zone = short
+        self.world.zone_id = zone_id
 
-        world.safe = (x, y, z)
-        world.ground.clear()
-        self.drop_npc_corpses()
+        self.world.safe = (x, y, z)
+
+        # self.drop_npc_corpses()  # move to loop.clear_volatile()
 
         moved = (short.lower() != previous.lower()) or (zone_id != previous_id)
-
         if not moved:
             return
 
-        world.zone_formed = short
+        self.world.zone_formed = short
 
         if short.lower() == TUTORIAL:
             if self.loop.journal.get_flag("tutorial_state") in (STARTED, DONE):
@@ -93,7 +93,8 @@ class ZoningHandler(Handler):
 
     def drop_npc_corpses(self) -> None:
         """A zone change drops a dead NPC. A body with a Reclaim on the queue stays."""
-        own = {action.corpse_id for action in self.loop.queue if type(action).__name__ == "Reclaim"}
+        # own = {action.corpse_id for action in self.loop.queue if type(action).__name__ == "Reclaim"}
+        own = set()
         own.add(self.world.self_id)
         for spawn_id, mob in list(self.world.mobs.items()):
             if mob.dead and spawn_id not in own:
@@ -108,12 +109,12 @@ class ZoningHandler(Handler):
         """
         zone_id, success = payload.zone_id, payload.success
         if not self.loop.session_open():
-            transfer_zone(self.loop.client)
+            self.loop._transfer_once()
             return
 
         if success == 1 and zone_id and zone_id != self.world.zone_id:
             self.world.zone_id = zone_id
-            transfer_zone(self.loop.client)
+            self.loop._transfer_once()
             return
 
         payload_point = (payload.x, payload.y, payload.z)
@@ -137,7 +138,7 @@ class ZoningHandler(Handler):
             return
 
         if not self.loop.session_open():
-            transfer_zone(self.loop.client)
+            self.loop._transfer_once()
             return
 
         self.loop.send(

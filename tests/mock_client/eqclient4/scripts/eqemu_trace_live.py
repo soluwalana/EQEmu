@@ -24,8 +24,8 @@ from pathlib import Path
 from queue import Empty, Full, Queue
 from typing import BinaryIO, Iterator, NamedTuple
 
-from eqclient4.inventory import CharacterInventory
 from eqclient4.character import Character
+from eqclient4.inventory import CharacterInventory
 from eqclient4.scripts.eq_packet_viewer import (
     hexdump,
     split_patterns,

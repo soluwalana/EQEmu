@@ -5,6 +5,7 @@ CharacterInventory. Only apply authoritative server packets; do not infer
 merchant payments from client requests or turn AA rank definitions into owned AAs.
 """
 
+import json
 import pickle
 from copy import deepcopy
 from dataclasses import dataclass
@@ -13,6 +14,9 @@ from typing import Self
 from eqclient4.log import log
 from eqclient4.structs import (
     BuffIconEntry,
+    EQStruct,
+    InventorySlot,
+    Item,
     OP_AAExpUpdate,
     OP_Buff,
     OP_BuffCreate,
@@ -34,9 +38,7 @@ from eqclient4.structs import (
     ProfileBind,
     SpellBuff,
 )
-
 from eqclient4.structs.constants import AASkill, CombatSkill, Skill
-from eqclient4.structs.wire import EQStruct
 
 
 @dataclass(frozen=True)
@@ -602,72 +604,3 @@ class Character:
             raise ValueError("Invalid character state")
         result.__dict__.update(data)
         return result
-
-    def render_json(self) -> str:
-        """LLM-friendly JSON inventory with nested bags and augments."""
-        import json
-
-        def encode(address: InventorySlot, item: Item) -> dict:
-            result = {
-                "slot": _slot_id(address),
-                "name": item.name,
-                "item_id": item.item_id,
-                "quantity": item.stack,
-            }
-
-            if item.bag_slots > 0:
-                result["capacity"] = item.bag_slots
-                contents = []
-                for index in range(item.bag_slots):
-                    child_address = self.cell(address, index)
-                    child = self.get(child_address)
-                    if child is not None:
-                        contents.append(encode(child_address, child))
-                if contents:
-                    result["contents"] = contents
-
-            augments = []
-            for child_address, child in self.items():
-                if (
-                    child_address.type == address.type
-                    and child_address.main_slot == address.main_slot
-                    and child_address.sub_index == address.sub_index
-                    and child_address.aug_index >= 0
-                ):
-                    augments.append(encode(child_address, child))
-
-            if augments:
-                result["augments"] = augments
-
-            return result
-
-        result = {
-            "worn": {},
-            "general": {},
-            "bank": {},
-            "shared_bank": {},
-        }
-
-        for address, item in self.items():
-            if address.sub_index >= 0 or address.aug_index >= 0:
-                continue
-
-            if address.type == POSSESSIONS_ADDRESS:
-                if address.main_slot < len(_WORN):
-                    section = "worn"
-                else:
-                    section = "general"
-            elif address.type == BANK_ADDRESS:
-                section = "bank"
-            elif address.type == SHARED_BANK_ADDRESS:
-                section = "shared_bank"
-            else:
-                continue
-
-            result[section][_format_address(address)] = encode(address, item)
-
-        return json.dumps(
-            {key: value for key, value in result.items() if value},
-            ensure_ascii=False,
-            separators=(",", ":"),
-        )
