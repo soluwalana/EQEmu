@@ -1280,6 +1280,22 @@ def dialogue_chains(text: str, filename: str, zone: str) -> list[DialogueChain]:
                 "context_speech": context_speech,
             }
         )
+    # EVENT_ITEM / EVENT_TRADE handlers may have no EVENT_SAY at all.
+    # Previously their speech was extracted above but silently discarded
+    # because context_speech was serialized only inside SAY chains.
+    if context_speech and not chains:
+        chains.append(
+            {
+                "kind": "dialogue",
+                "zone": home,
+                "npc": npc,
+                "source": source,
+                "handler": "event_trade",
+                "turns": [],
+                "transitions": [],
+                "context_speech": context_speech,
+            }
+        )
     return chains
 
 

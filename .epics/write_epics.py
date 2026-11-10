@@ -623,7 +623,7 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
             for transition in chain.get("transitions", ()):
                 target = transition.get("_to", "")
                 transitions_by_target[str(target).casefold()].append(transition)
-            
+
             previous = None
             earlier_inputs: set[str] = set()
             for turn in chain.get("turns", ()):
@@ -634,20 +634,25 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
                 # preceding response, then any older response. The source can
                 # still be an EVENT_ITEM when no earlier SAY speech prompts it.
                 grounded_say = [
-                    t for t in candidates
-                    if t.get("basis") not in {"conversation_sequence", "external_event_mention"}
-                    and str(t.get("_from") or "").casefold()
-                    in earlier_inputs
+                    t
+                    for t in candidates
+                    if t.get("basis")
+                    not in {"conversation_sequence", "external_event_mention"}
+                    and str(t.get("_from") or "").casefold() in earlier_inputs
                 ]
                 transition = next(
-                    (t for t in grounded_say
-                     if str(t.get("_from") or "").casefold()
-                     == str(previous or "").casefold()),
+                    (
+                        t
+                        for t in grounded_say
+                        if str(t.get("_from") or "").casefold()
+                        == str(previous or "").casefold()
+                    ),
                     grounded_say[0] if grounded_say else None,
                 )
                 if transition is None:
                     external = [
-                        t for t in candidates
+                        t
+                        for t in candidates
                         if t.get("basis") == "external_event_mention"
                     ]
                     # Multiple unrelated hand-ins mentioning a keyword do not
@@ -657,18 +662,21 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
                         transition = external[0]
                 if transition is None and previous is not None:
                     transition = next(
-                        (t for t in candidates
-                         if t.get("basis") == "conversation_sequence"
-                         and t.get("_from") == previous),
+                        (
+                            t
+                            for t in candidates
+                            if t.get("basis") == "conversation_sequence"
+                            and t.get("_from") == previous
+                        ),
                         None,
                     )
                 entry = f"{pad}  - Player: {quoted(utterance)}"
-                
+
                 if transition:
                     basis = str(transition.get("basis") or "")
                     if basis:
                         entry += f" (link: {basis.replace('_', ' ')})"
-                
+
                 output.append(entry)
                 if transition and transition.get("basis") == "external_event_mention":
                     event = str(transition.get("event") or "event_item")
@@ -678,12 +686,14 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
                         output.append(f"{pad}      - NPC say: {evidence}")
                     for guard in transition.get("guards") or ():
                         output.append(f"{pad}      - Event guard: `{guard}`")
-                
+
                 elif transition and transition.get("basis") != "conversation_sequence":
                     origin = transition.get("_from")
                     if origin and origin != previous:
-                        output.append(f"{pad}    - Prompted by player input: {quoted(origin)}")
-                
+                        output.append(
+                            f"{pad}    - Prompted by player input: {quoted(origin)}"
+                        )
+
                 for reply in turn.get("reply") or ():
                     channel = reply.get("channel", "say")
                     speech = " ".join(str(reply.get("text") or "").split())
@@ -691,10 +701,10 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
                         output.append(f"{pad}    - NPC {channel}: {speech}")
                     for guard in reply.get("guards") or ():
                         output.append(f"{pad}      - Reply guard: `{guard}`")
-                
+
                 for guard in turn.get("guards") or ():
                     output.append(f"{pad}    - Condition: `{guard}`")
-                
+
                 for effect in turn.get("effects") or ():
                     rel = effect.get("rel")
                     if rel == "gives":
@@ -953,7 +963,10 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
         )[0]
         parent = str(edge["from"])
         active = visiting | {source}
-        if any(mark in parent for mark in ("#signal:", "#timer:", "#event:", "#event_", "#kill:")):
+        if any(
+            mark in parent
+            for mark in ("#signal:", "#timer:", "#event:", "#event_", "#kill:")
+        ):
             steps = event_chain(parent, expand_item, active)
             if "#kill:" in source:
                 who, _action, _zone = parse_who(source)
@@ -1013,7 +1026,8 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
             # explicit encounter, before resorting to an orphan timer.
             chosen_loot = next(
                 (
-                    edge for edge in possible_loot
+                    edge
+                    for edge in possible_loot
                     if "#timer:" in str(edge.get("from") or "")
                     and str(edge.get("from")) in triggered
                 ),
@@ -1021,9 +1035,12 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
             )
         if chosen_loot is None:
             chosen_loot = next(
-                (edge for edge in possible_loot
-                 if "#" in str(edge.get("from") or "")
-                 and "#timer:" not in str(edge.get("from") or "")),
+                (
+                    edge
+                    for edge in possible_loot
+                    if "#" in str(edge.get("from") or "")
+                    and "#timer:" not in str(edge.get("from") or "")
+                ),
                 None,
             )
         if chosen_loot is None:
@@ -2062,6 +2079,7 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
         "**Broken** indicates missing graph provenance."
     )
     lines.append("")
+
     def introductory_hail(steps: list[str]) -> str | None:
         """Find the starter's hail, not one from a later quest NPC."""
         # If the acquisition begins with productive dialogue (Telin's
@@ -2076,7 +2094,9 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
                 return step
             # Event-chain hand-ins are written as: zone/"NPC", hand "Item" (id).
             match = re.search(
-                r'([a-z0-9_]+)/"([^"]+)", hand "([^"]+)" \(\d+\)', step, re.I,
+                r'([a-z0-9_]+)/"([^"]+)", hand "([^"]+)" \(\d+\)',
+                step,
+                re.I,
             )
             if not match:
                 continue
@@ -2084,15 +2104,19 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
             key = f"{zone}/{npc.lower()}#hail"
             speech = " ".join(
                 str(row.get("text") or "")
-                for row in by_from.get(key, ()) if row.get("rel") == "speaks"
+                for row in by_from.get(key, ())
+                if row.get("rel") == "speaks"
             )
             if not speech:
                 continue
             # Both item and introductory dialogue must refer to a specific
             # object or quest actor. Generic terms (e.g. 'water') are weak.
             ignored = {"lord", "the", "from", "with", "great", "water", "item"}
-            words = {word for word in re.findall(r"[a-z]{5,}", item.lower())
-                     if word not in ignored}
+            words = {
+                word
+                for word in re.findall(r"[a-z]{5,}", item.lower())
+                if word not in ignored
+            }
             if not words.intersection(re.findall(r"[a-z]{5,}", speech.lower())):
                 continue
             return f'{zone}/{quoted(npc)}, say "Hail". {speech}'
@@ -2114,7 +2138,10 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
             if hail:
                 steps = [hail] + [step for step in steps if step != hail]
             else:
-                steps.insert(0, "**Unresolved introduction:** no connected introductory hail in the graph.")
+                steps.insert(
+                    0,
+                    "**Unresolved introduction:** no connected introductory hail in the graph.",
+                )
             if not (gives.get(item_id) or loots.get(item_id) or produces.get(item_id)):
                 lines.append(
                     f"**Broken:** no quest hand-in, encounter or recipe produces "
@@ -2135,7 +2162,9 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
                     )
                     if match:
                         zone, quoted_npc, plain_npc = match.groups()
-                        npc = (quoted_npc or plain_npc).strip().lower().replace(" ", "_")
+                        npc = (
+                            (quoted_npc or plain_npc).strip().lower().replace(" ", "_")
+                        )
                         lines.extend(dialogue_lines(f"{zone}/{npc}", "    "))
             lines.append("")
 

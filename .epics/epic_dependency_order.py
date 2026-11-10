@@ -6,6 +6,7 @@ then uses visited-node reachability rather than recursively enumerating every
 quest path.  It is intentionally conservative: cycles and ambiguous ordering
 fall back to the input order.
 """
+
 from __future__ import annotations
 
 from collections import defaultdict, deque
@@ -39,7 +40,9 @@ class ItemPrecedence:
                     item = _item(row.get("to"))
                     if item is not None:
                         gives[source].add(item)
-                        producers[item].append((source, str(row.get("from") or "").split("#", 1)[0]))
+                        producers[item].append(
+                            (source, str(row.get("from") or "").split("#", 1)[0])
+                        )
                 elif rel == "triggers":
                     target = str(row.get("to") or "")
                     if target.endswith("#event_spawn"):
@@ -62,7 +65,9 @@ class ItemPrecedence:
             self.dependencies[item].discard(item)
         self._cache: dict[tuple[int, int], int | None] = {}
 
-    def distance(self, item: int, prerequisite: int, *, limit: int = 4096) -> int | None:
+    def distance(
+        self, item: int, prerequisite: int, *, limit: int = 4096
+    ) -> int | None:
         if item == prerequisite:
             return None
         key = (item, prerequisite)
@@ -96,7 +101,7 @@ class ItemPrecedence:
         # the original order unchanged.
         edges: dict[int, set[int]] = {item: set() for item in remaining}
         for i, a in enumerate(remaining):
-            for b in remaining[i + 1:]:
+            for b in remaining[i + 1 :]:
                 a_to_b = self.distance(a, b)
                 b_to_a = self.distance(b, a)
                 if a_to_b is not None and (b_to_a is None or a_to_b < b_to_a):
@@ -105,7 +110,9 @@ class ItemPrecedence:
                     edges[b].add(a)
         result: list[int] = []
         while remaining:
-            ready = next((v for v in remaining if not edges[v].intersection(remaining)), None)
+            ready = next(
+                (v for v in remaining if not edges[v].intersection(remaining)), None
+            )
             if ready is None:
                 result.extend(remaining)
                 break
@@ -132,7 +139,8 @@ def opening_dialogue_actor(
             break
         match = re.search(
             r'([a-z0-9_]+)/"([^"]+)", say "(?!Hail")[^"]+".*\bGives\b',
-            step, re.I,
+            step,
+            re.I,
         )
         if not match:
             continue
