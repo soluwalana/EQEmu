@@ -2518,8 +2518,22 @@ def _other_summons(edges: list[dict], text: str, npc_id: str) -> None:
                 if other != span and span[2] <= other[0] and other[3] <= span[3]
             ]
             spans.append((span[2], span[3], holes))
-        group = f"{npc_id}#{name}"
         for lo, hi, holes in spans:
+            # EVENT_SIGNAL branches are distinct causal states.  Grouping all
+            # of them under #event_signal makes a spawn/loot from signal 1
+            # appear available from any signal (or from no signal at all).
+            group = f"{npc_id}#{name}"
+            if name == "event_signal":
+                owners = [
+                    branch for branch in inside
+                    if branch[2] <= lo and hi <= branch[3]
+                    and _SIGNAL_CONDITION.search(text[branch[0]:branch[1]])
+                ]
+                if owners:
+                    owner = min(owners, key=lambda branch: branch[3] - branch[0])
+                    values = _SIGNAL_CONDITION.findall(text[owner[0]:owner[1]])
+                    if len(values) == 1:
+                        group = f"{npc_id}#signal:{values[0]}"
             snippet = _without(text, lo, hi, holes)
             for item_id in _reward_ids(snippet):
                 edges.append(
@@ -2850,6 +2864,8 @@ _NPC_FOOTER = re.compile(
     r"(?im)^\s*(?:#\s*EOF\s+zone:|--\s*(?:END\s+of\s+FILE|EOF)\s+Zone:)" r"[^\n]*?\bID:\s*(\d+)"
 )
 _SIGNAL_WITH = re.compile(r"(?:quest::signalwith|eq\.signal)\s*\(\s*(\d+)\s*,\s*(\d+)", re.I)
+# Perl quest::signal(npc_id) sends signal zero. It is distinct from signalwith.
+_SIGNAL_SIMPLE = re.compile(r"quest::signal\s*\(\s*(\d+)\s*\)", re.I)
 _SIGNAL_NPC = re.compile(r"\$(\w+)\s*->\s*SignalNPC\s*\(\s*(\d+)\s*\)", re.I)
 _MOB_LOOKUP = re.compile(r"\$(\w+)\s*=\s*\$entity_list->GetMobByNpcTypeID\s*\(\s*(\d+)\s*\)", re.I)
 _CAST_NPC = re.compile(r"\$(\w+)\s*=\s*\$(\w+)\s*->CastToNPC\s*\(\s*\)", re.I)
@@ -2879,6 +2895,14 @@ def _signal_origin(text: str, offset: int, npc_id: str) -> str:
             ids = sorted({int(item) for item, _n in _HANDIN.findall(text[branch[0] : branch[1]])})
             if ids:
                 return f"{npc_id}#hand:{'+'.join(map(str, ids))}"
+    if func == "event_signal":
+        for branch in sorted(
+            (b for b in _branch_index(text) if lo <= b[0] and b[2] <= offset < b[3]),
+            key=lambda b: b[3] - b[2],
+        ):
+            signals = _SIGNAL_CONDITION.findall(text[branch[0]:branch[1]])
+            if len(signals) == 1:
+                return f"{npc_id}#signal:{signals[0]}"
     return f"{npc_id}#{func}"
 
 
@@ -2889,6 +2913,8 @@ def _outgoing_signals(text: str, npc_id: str) -> list[tuple[str, int, int]]:
         found.append(
             (_signal_origin(text, match.start(), npc_id), int(match.group(1)), int(match.group(2)))
         )
+    for match in _SIGNAL_SIMPLE.finditer(text):
+        found.append((_signal_origin(text, match.start(), npc_id), int(match.group(1)), 0))
     # Resolve $a = GetMobByNpcTypeID(id); $b = $a->CastToNPC(); $b->SignalNPC(n).
     for match in _SIGNAL_NPC.finditer(text):
         func = next(
@@ -3184,6 +3210,39 @@ def _link_event_causality(graph: QuestGraph, scripts: list[tuple[str, str, str]]
         (zone, re.sub(r"[_\s]+", " ", npc_id.split("/", 1)[-1]).strip().lower()): (npc_id, body)
         for zone, npc_id, body in scripts
     }
+    # Spawned NPCs run EVENT_SPAWN. If their death handler is scripted,
+    # reaching its effects requires killing that NPC first. Previously these
+    # callbacks were isolated roots, so backward loot traversal stopped there.
+    lifecycle_links: set[tuple[str, str]] = set()
+    for edge in tuple(graph.edges):
+        if edge.get("rel") != "spawns" or not edge.get("npc"):
+            continue
+        origin = str(edge["from"])
+        zone = origin.split("/", 1)[0]
+        npc_type = int(edge["npc"])
+        receiver = receivers.get((zone, npc_type))
+        if receiver is None:
+            name = re.sub(r"\s*\(\d+\).*", "", str(edge.get("name") or ""))
+            name = re.sub(r"[_\s]+", " ", name).strip().lower()
+            receiver = named_receivers.get((zone, name))
+        if receiver is None:
+            continue
+        target_npc, body = receiver
+        for callback in ("event_spawn", "event_death_complete"):
+            if _event_functions(body, callback) is None:
+                continue
+            target = f"{target_npc}#{callback}"
+            path = [(origin, target)]
+            if callback == "event_death_complete":
+                killed = f"{target_npc}#kill:{npc_type}"
+                path = [(origin, killed), (killed, target)]
+            for source, destination in path:
+                if source != destination and (source, destination) not in lifecycle_links:
+                    lifecycle_links.add((source, destination))
+                    graph.edges.append({
+                        "kind": "edge", "rel": "triggers", "from": source,
+                        "to": destination, "npc": npc_type,
+                    })
     sent = set()
     for zone, origin_npc, text in scripts:
         for source, target, signal in _outgoing_signals(text, origin_npc):

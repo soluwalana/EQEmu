@@ -932,6 +932,8 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
                 npc = source.rsplit(":", 1)[-1]
                 who, _, zone = parse_who(source)
                 return [f"Encounter starts when NPC {npc} spawns in `{zone}`."]
+            if "#signal:" in source or "#event_signal" in source:
+                return [f"**Broken:** no event trigger found for `{source}`."]
             if "#event:" in source:
                 who, action, _zone = parse_who(source)
                 return [f"{quoted_who(who)}, {action}."]
@@ -947,7 +949,7 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
         )[0]
         parent = str(edge["from"])
         active = visiting | {source}
-        if any(mark in parent for mark in ("#signal:", "#timer:", "#event:", "#kill:")):
+        if any(mark in parent for mark in ("#signal:", "#timer:", "#event:", "#event_", "#kill:")):
             steps = event_chain(parent, expand_item, active)
             if "#kill:" in source:
                 steps.append(f"Kill NPC {source.rsplit(':', 1)[-1]}.")
@@ -1051,6 +1053,11 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
             if "#timer:" in source:
                 bits.extend(event_chain(source, expand_item))
                 bits.append(f"Spawns {corpse} ({npc_id}) after `{source}`.")
+                bits.append(f"Loot {quoted_item(items, item_id)} from {corpse}.")
+            elif ("#signal:" in source or "#event_signal" in source) and corpse:
+                # Signals are not free spawns. Walk their incoming causal chain,
+                # including earlier hand-ins, NPC spawns and required kills.
+                bits.extend(event_chain(source, expand_item))
                 bits.append(f"Loot {quoted_item(items, item_id)} from {corpse}.")
             elif action.startswith("hand ") and corpse:
                 for bit in action[5:].split("+"):
