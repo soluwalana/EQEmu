@@ -6,6 +6,8 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 ### "Claw of the Savage Spirit" (8495)
 
+<a id="epic-item-8495"></a>
+
 1. feerrott/"Scout Ahlikal", say "Hail".
     - Player: "hail"
       - NPC say: It is a pleasure to meet you, but I do not have time to speak. I am waiting on official word from Shar Vahl. If you have been sent to assist me, please show me the Official Seal of the Khati Sha at this time. If you are not such a person, please carry on with your business and leave me to tend to mine.
@@ -108,15 +110,15 @@ Scout Vyrak says 'Destroy the spirit's current form and you will be able to retr
 42. Kill "a boulder fiend" (NPC 171063) in `thegrey` and loot "Perfect Acrylia Ore" (9052).
 43. Loot "Chunk of Dense Fungal Padding" (9054) from "a deepspore mushroom" (NPC 164041) in `thedeep`. Drop cache: 15.9687% chance per kill.
 44. Combine in "Rahoul's Collection Box" (17363): "Gem of the Void" (9053), "Perfect Acrylia Ore" (9052), "Chunk of Dense Fungal Padding" (9054). Produces "Sealed Collection Box" (9051). Requires Remove Traps.
-45. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9055).
+45. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056).
     - event_item NPC say: These claws should work well for you. The design was research by Historian Qua. They should work to neutralize the magical field that protects the dark animist and allow you to tear his scaly flesh from his frame. Remember that all of this is theoretical. Those claws are an original creation. You will be the first to prove their effectiveness in combat.
       - Event guard: `(plugin::check_handin(\%itemcount, 9051 => 1))`
     - event_item NPC say: Take the claws back to Animist Dumul and show him their design. Use them well, $name. May the spirits guide you in your attack.
-46. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Acrylia Gilded Box" (17362).
+46. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Acrylia Gilded Box" (17362) + "Khati Sha Seal of War" (9057).
     - event_item NPC say: These claws are exquisite. I can see that a great deal of thought went into their design. Now it is your turn to demonstrate your proficiency in your chosen role. You have a great challenge ahead of you, for we have determined that only these claws will work to harm this dark animist, this corrupter of spirits. You will need the support of your people; but in the end, only the strength of your will can save us.
       - Event guard: `(plugin::check_handin(\%itemcount, 9055 =>1, 9056 =>1 ))`
     - event_item NPC say: Our scouts have tracked Draz Nurakk to an abandoned village in the Fungus Grove. We learned of his intent to track you down. I take it that he did not appreciate your willingness to assist us. He knows who you are, so it will be best for us to get him before he can conjure up any more surprises. Find Scout Halmia in the Grove and give her this seal. Then bring the evidence of his destruction to me when you are done. Place his head, the seal, and those claws in this box and return it to me.
-47. fungusgrove/"Scout Halmia", hand "Khati Sha Seal of War" (9057).
+47. fungusgrove/"Scout Halmia", hand "Khati Sha Seal of War" (9057). Gives "Khati Sha Seal of War" (9062).
     - event_item NPC say: I thank the spirits that you have arrived. I would not have been able to stop the dark animist if he were to attempt to leave. He has made camp in an empty set of huts. He has moved from hut to hut, but made no attempt to leave the area. I would be wary of traps if I were you. I must admit that I was afraid. That is why I moved to this location. He should still be there though.
       - Event guard: `(plugin::check_handin(\%itemcount, 9057 =>1 ))`
 48. Spawns "Draz Nurakk" (npc:157116) after the hand-in.
@@ -131,66 +133,57 @@ Scout Vyrak says 'Destroy the spirit's current form and you will be able to retr
 
 ### "Savage Lord's Totem" (52911)
 
+<a id="epic-item-52911"></a>
+
 1. jaggedpine/"Rashara Wrualla", say "Hail".
     - Player: "hail"
       - NPC say: Aye, I do remember that face, Beastlord. I am still recovering from my short trip to Kuua that suffers from the touch of the Realm of Discord. What a dark and foul place it is. Some of the creatures have hearts so dark it is nearly inconceivable. One of those creatures has robbed me of what I hold [most dear].
       - Condition: `($client->GetGlobal("beast_epic") ==15)`
       - Condition: `($text=~/hail/i)`
-2. Spawns "needs heading validation" (npc:50326) via `rathemtn/zazamoukh#happening`.
-3. Kill "needs heading validation" (NPC 50326) in `rathemtn` and loot "Tarnished Ankh Piece" (52902).
-4. rathemtn/"Zazamoukh", hand "Tarnished Ankh Piece" (52902). Gives "Sparkling Silk Scarf" (52904).
-    - event_item NPC say: Thank you. Your actions have earned my trust and gratefulness. The ankh you have returned, that extends the life of my companion, is tainted. Ankhefenmut carries the other piece of the ankh and may need help. You must return to Ankhefenmut as the dark magic grows with each moment. Take this magic silk scarf to Ankhefenmut so that the ankh can be shielded.
-      - Event guard: `($client->GetGlobal("beast_epic") ==12)`
-      - Event guard: `(plugin::check_handin(\%itemcount, 52902 =>1 ))`
-5. rathemtn/"Ankhefenmut", hand "Sparkling Silk Scarf" (52904).
-    - event_item NPC say: What is this? Too . . . late . . . I do not understand. I am fading!
-      - Event guard: `($client->GetGlobal("beast_epic") ==13)`
-      - Event guard: `(plugin::check_handin(\%itemcount, 52904 =>1 ))`
-6. Spawns "needs heading validation" (npc:50327) after the hand-in.
-7. Kill "needs heading validation" (NPC 50327) in `rathemtn` and loot "Sullied Ankh Piece" (52903).
-8. rathemtn/"Ankhefenmut", hand "Sullied Ankh Piece" (52903). Gives "Gift of the Sphinx" (52905).
+2. Loot "Sullied Ankh Piece" (52903) from "Raving Sphinx Spiritservant".
+3. rathemtn/"Ankhefenmut", hand "Sullied Ankh Piece" (52903). Gives "Gift of the Sphinx" (52905).
     - event_item NPC say: Beastlord, I am indeed impressed. We did not know that there was a dark magic on the ankh pieces. It seems the life that flows from the ankh will need to be restored, but I think we are safe now. Take this gift to return to the beastlord elders who aided us.
       - Event guard: `($client->GetGlobal("beast_epic") ==13)`
       - Event guard: `(plugin::check_handin(\%itemcount, 52903 =>1 ))`
-9. sharvahl/"Elder Animist Muada", hand "Gift of the Sphinx" (52905).
+4. sharvahl/"Elder Animist Muada", hand "Gift of the Sphinx" (52905).
     - event_item NPC say: Gracious, that is indeed a precious gift. I will present it to the elders when we next gather as a council. They will be overjoyed at the rescue. You may keep that Feral Lord's Brooch to yourself as a reminder of what you learned. All [does not end] here though.
       - Event guard: `($client->GetGlobal("beast_epic") ==14)`
       - Event guard: `(plugin::check_handin(\%itemcount, 52905 =>1 ))`
-10. jaggedpine/"Rashara Wrualla", say "Not Possible". Gives "Request of the Elders" (52906).
+5. jaggedpine/"Rashara Wrualla", say "Not Possible". Gives "Request of the Elders" (52906).
     - Player: "not possible"
       - NPC say: It would mean a great deal to me and the elders if you could seek out this girplan in that eerie scarred land and, perhaps, discover what it did to my warder. I am unable to go myself as I could never dream of traveling without my warder. You will find a beastlord in Discord who also seeks the same creature. Give him this note.
       - Condition: `($client->GetGlobal("beast_epic") ==15)`
       - Condition: `($text=~/not possible/i)`
       - Linked from "luck" (explicit prompt).
-11. draniksscar/"Yerika Sisslak", hand "Request of the Elders" (52906).
+6. draniksscar/"Yerika Sisslak", hand "Request of the Elders" (52906).
     - event_item NPC say: I have seen the creature nearby, but I have not been able to defeat it.  I am not strong enough.  Perhaps you may have better luck.  You must hurry.  It has used the warder spirit to create twisted and dark companions of its own. If you should overcome this creature, return to me.
       - Event guard: `(plugin::check_handin(\%itemcount, 52906 =>1 ))`
-12. Spawns "Girplan Spiritleech" (npc:302085) after the hand-in.
-13. Kill "Girplan Spiritleech" (NPC 302085) in `draniksscar` and loot "Rashara's Warder's Essence" (52907).
-14. draniksscar/"Yerika Sisslak", hand "Rashara's Warder's Essence" (52907). Gives "Sealed Response to the Elders" (52908).
+7. Spawns "Girplan Spiritleech" (npc:302085) after the hand-in.
+8. Kill "Girplan Spiritleech" (NPC 302085) in `draniksscar` and loot "Rashara's Warder's Essence" (52907).
+9. draniksscar/"Yerika Sisslak", hand "Rashara's Warder's Essence" (52907). Gives "Sealed Response to the Elders" (52908).
     - event_item NPC say: You have certainly accomplished what I was not able to. I must go now, but be sure to take this letter and the essence back to Rashara.
       - Event guard: `(plugin::check_handin(\%itemcount, 52907 =>1 ))`
-15. jaggedpine/"Rashara Wrualla", hand "Rashara's Warder's Essence" (52907) + "Sealed Response to the Elders" (52908).
+10. jaggedpine/"Rashara Wrualla", hand "Rashara's Warder's Essence" (52907) + "Sealed Response to the Elders" (52908).
     - event_item NPC say: I am speechless. You have done what I thought was impossible. You've restored my place as a beastlord and an elder. I am forever in your debt. Return to Muada and tell him I sent you so you may hear the most-troubling news . . . it seems we know more about a true enemy of beastlords in Discord. I can say no more.
       - Event guard: `($client->GetGlobal("beast_epic") ==15)`
       - Event guard: `(plugin::check_handin(\%itemcount, 52907 =>1, 52908 =>1 ))`
-16. sharvahl/"Elder Animist Muada", say "Stopped". Gives "Elder Cloak of Resilience" (52909).
+11. sharvahl/"Elder Animist Muada", say "Stopped". Gives "Elder Cloak of Resilience" (52909).
     - Player: "stopped"
       - NPC say: Go speak to Erana Farrel. She is in the city of the dragorn and will most likely be in hiding while she investigates. She was the first to discover this evil plot and has the most information to help you. Give her this cloak. She had asked for some protection while she was out in that volatile realm.
       - Condition: `($client->GetGlobal("beast_epic") ==16)`
       - Condition: `($text=~/stopped/i)`
       - Linked from "beast" (explicit prompt).
       - Linked from "trapped spirits" (explicit prompt).
-17. dranik/"Erana Farrel", hand "Elder Cloak of Resilience" (52909).
+12. dranik/"Erana Farrel", hand "Elder Cloak of Resilience" (52909).
     - event_item NPC say: Egads, me friend. It has been summoned from the ground. Take as many friends as ye can muster. Ye are going to need them. This creature will be surrounded by summoned spirits of our very own warders. Ye must release as many of those abused spirits as ye can and dispatch the animist. That beast must have something he uses to control the warders. Return it to me!
       - Event guard: `(plugin::check_handin(\%itemcount, 52909 =>1 ))`
-18. Spawns "Discordling Dark Animist" (npc:336126) after the hand-in.
-19. Kill "Discordling Dark Animist" (NPC 336126) in `dranik` and loot "Discordant Totem of the Feral" (52910).
-20. dranik/"Erana Farrel", hand "Discordant Totem of the Feral" (52910). Gives "Wrapped Discordant Totem of the Feral" (52914).
+13. Spawns "Discordling Dark Animist" (npc:336126) after the hand-in.
+14. Kill "Discordling Dark Animist" (NPC 336126) in `dranik` and loot "Discordant Totem of the Feral" (52910).
+15. dranik/"Erana Farrel", hand "Discordant Totem of the Feral" (52910). Gives "Wrapped Discordant Totem of the Feral" (52914).
     - event_item NPC say: You are owed a great debt from beastlords everywhere. You have restored the revered spirits of the wild and they have returned to Norrath. And, what's this? Interesting. I would not have expected you to find this totem. Its markings are unfamiliar. I have wrapped it for you. You must go to see Muada at once and show him this.
       - Event guard: `($client->GetGlobal("beast_epic") ==16)`
       - Event guard: `(plugin::check_handin(\%itemcount, 52910 =>1 ))`
-21. sharvahl/"Elder Animist Muada", hand "Wrapped Discordant Totem of the Feral" (52914). Gives "Savage Lord's Totem" (52911).
+16. sharvahl/"Elder Animist Muada", hand "Wrapped Discordant Totem of the Feral" (52914). Gives "Savage Lord's Totem" (52911).
     - event_item NPC say: I am honored to have had the opportunity to observe you -- a feral champion for the ills that have befallen our kind. You have certainly made your name known among us. While the spirit world is not freed from danger, it is much more promising with all that you've done. Take this token of our appreciation. It may not appear to be too much right now, but it will be very important should you [wish to continue to walk among the elders] of the lords of beasts.
       - Event guard: `($client->GetGlobal("beast_epic") ==16)`
       - Event guard: `(plugin::check_handin(\%itemcount, 52914 =>1 ))`
@@ -200,77 +193,18 @@ Scout Vyrak says 'Destroy the spirit's current form and you will be able to retr
 
 ### "Spiritcaller Totem of the Feral" (57054)
 
-1. jaggedpine/"Rashara Wrualla", say "Hail".
-    - Player: "hail"
-      - NPC say: Aye, I do remember that face, Beastlord. I am still recovering from my short trip to Kuua that suffers from the touch of the Realm of Discord. What a dark and foul place it is. Some of the creatures have hearts so dark it is nearly inconceivable. One of those creatures has robbed me of what I hold [most dear].
-      - Condition: `($client->GetGlobal("beast_epic") ==15)`
-      - Condition: `($text=~/hail/i)`
-2. Spawns "needs heading validation" (npc:50326) via `rathemtn/zazamoukh#happening`.
-3. Kill "needs heading validation" (NPC 50326) in `rathemtn` and loot "Tarnished Ankh Piece" (52902).
-4. rathemtn/"Zazamoukh", hand "Tarnished Ankh Piece" (52902). Gives "Sparkling Silk Scarf" (52904).
-    - event_item NPC say: Thank you. Your actions have earned my trust and gratefulness. The ankh you have returned, that extends the life of my companion, is tainted. Ankhefenmut carries the other piece of the ankh and may need help. You must return to Ankhefenmut as the dark magic grows with each moment. Take this magic silk scarf to Ankhefenmut so that the ankh can be shielded.
-      - Event guard: `($client->GetGlobal("beast_epic") ==12)`
-      - Event guard: `(plugin::check_handin(\%itemcount, 52902 =>1 ))`
-5. rathemtn/"Ankhefenmut", hand "Sparkling Silk Scarf" (52904).
-    - event_item NPC say: What is this? Too . . . late . . . I do not understand. I am fading!
-      - Event guard: `($client->GetGlobal("beast_epic") ==13)`
-      - Event guard: `(plugin::check_handin(\%itemcount, 52904 =>1 ))`
-6. Spawns "needs heading validation" (npc:50327) after the hand-in.
-7. Kill "needs heading validation" (NPC 50327) in `rathemtn` and loot "Sullied Ankh Piece" (52903).
-8. rathemtn/"Ankhefenmut", hand "Sullied Ankh Piece" (52903). Gives "Gift of the Sphinx" (52905).
-    - event_item NPC say: Beastlord, I am indeed impressed. We did not know that there was a dark magic on the ankh pieces. It seems the life that flows from the ankh will need to be restored, but I think we are safe now. Take this gift to return to the beastlord elders who aided us.
-      - Event guard: `($client->GetGlobal("beast_epic") ==13)`
-      - Event guard: `(plugin::check_handin(\%itemcount, 52903 =>1 ))`
-9. sharvahl/"Elder Animist Muada", hand "Gift of the Sphinx" (52905).
-    - event_item NPC say: Gracious, that is indeed a precious gift. I will present it to the elders when we next gather as a council. They will be overjoyed at the rescue. You may keep that Feral Lord's Brooch to yourself as a reminder of what you learned. All [does not end] here though.
-      - Event guard: `($client->GetGlobal("beast_epic") ==14)`
-      - Event guard: `(plugin::check_handin(\%itemcount, 52905 =>1 ))`
-10. jaggedpine/"Rashara Wrualla", say "Not Possible". Gives "Request of the Elders" (52906).
-    - Player: "not possible"
-      - NPC say: It would mean a great deal to me and the elders if you could seek out this girplan in that eerie scarred land and, perhaps, discover what it did to my warder. I am unable to go myself as I could never dream of traveling without my warder. You will find a beastlord in Discord who also seeks the same creature. Give him this note.
-      - Condition: `($client->GetGlobal("beast_epic") ==15)`
-      - Condition: `($text=~/not possible/i)`
-      - Linked from "luck" (explicit prompt).
-11. draniksscar/"Yerika Sisslak", hand "Request of the Elders" (52906).
-    - event_item NPC say: I have seen the creature nearby, but I have not been able to defeat it.  I am not strong enough.  Perhaps you may have better luck.  You must hurry.  It has used the warder spirit to create twisted and dark companions of its own. If you should overcome this creature, return to me.
-      - Event guard: `(plugin::check_handin(\%itemcount, 52906 =>1 ))`
-12. Spawns "Girplan Spiritleech" (npc:302085) after the hand-in.
-13. Kill "Girplan Spiritleech" (NPC 302085) in `draniksscar` and loot "Rashara's Warder's Essence" (52907).
-14. draniksscar/"Yerika Sisslak", hand "Rashara's Warder's Essence" (52907). Gives "Sealed Response to the Elders" (52908).
-    - event_item NPC say: You have certainly accomplished what I was not able to. I must go now, but be sure to take this letter and the essence back to Rashara.
-      - Event guard: `(plugin::check_handin(\%itemcount, 52907 =>1 ))`
-15. jaggedpine/"Rashara Wrualla", hand "Rashara's Warder's Essence" (52907) + "Sealed Response to the Elders" (52908).
-    - event_item NPC say: I am speechless. You have done what I thought was impossible. You've restored my place as a beastlord and an elder. I am forever in your debt. Return to Muada and tell him I sent you so you may hear the most-troubling news . . . it seems we know more about a true enemy of beastlords in Discord. I can say no more.
-      - Event guard: `($client->GetGlobal("beast_epic") ==15)`
-      - Event guard: `(plugin::check_handin(\%itemcount, 52907 =>1, 52908 =>1 ))`
-16. sharvahl/"Elder Animist Muada", say "Stopped". Gives "Elder Cloak of Resilience" (52909).
-    - Player: "stopped"
-      - NPC say: Go speak to Erana Farrel. She is in the city of the dragorn and will most likely be in hiding while she investigates. She was the first to discover this evil plot and has the most information to help you. Give her this cloak. She had asked for some protection while she was out in that volatile realm.
-      - Condition: `($client->GetGlobal("beast_epic") ==16)`
-      - Condition: `($text=~/stopped/i)`
-      - Linked from "beast" (explicit prompt).
-      - Linked from "trapped spirits" (explicit prompt).
-17. dranik/"Erana Farrel", hand "Elder Cloak of Resilience" (52909).
-    - event_item NPC say: Egads, me friend. It has been summoned from the ground. Take as many friends as ye can muster. Ye are going to need them. This creature will be surrounded by summoned spirits of our very own warders. Ye must release as many of those abused spirits as ye can and dispatch the animist. That beast must have something he uses to control the warders. Return it to me!
-      - Event guard: `(plugin::check_handin(\%itemcount, 52909 =>1 ))`
-18. Spawns "Discordling Dark Animist" (npc:336126) after the hand-in.
-19. Kill "Discordling Dark Animist" (NPC 336126) in `dranik` and loot "Discordant Totem of the Feral" (52910).
-20. dranik/"Erana Farrel", hand "Discordant Totem of the Feral" (52910). Gives "Wrapped Discordant Totem of the Feral" (52914).
-    - event_item NPC say: You are owed a great debt from beastlords everywhere. You have restored the revered spirits of the wild and they have returned to Norrath. And, what's this? Interesting. I would not have expected you to find this totem. Its markings are unfamiliar. I have wrapped it for you. You must go to see Muada at once and show him this.
-      - Event guard: `($client->GetGlobal("beast_epic") ==16)`
-      - Event guard: `(plugin::check_handin(\%itemcount, 52910 =>1 ))`
-21. sharvahl/"Elder Animist Muada", hand "Wrapped Discordant Totem of the Feral" (52914). Gives "Savage Lord's Totem" (52911).
-    - event_item NPC say: I am honored to have had the opportunity to observe you -- a feral champion for the ills that have befallen our kind. You have certainly made your name known among us. While the spirit world is not freed from danger, it is much more promising with all that you've done. Take this token of our appreciation. It may not appear to be too much right now, but it will be very important should you [wish to continue to walk among the elders] of the lords of beasts.
-      - Event guard: `($client->GetGlobal("beast_epic") ==16)`
-      - Event guard: `(plugin::check_handin(\%itemcount, 52914 =>1 ))`
-    - event_item NPC message: You have gained 5 ability points!
-22. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
-23. Spawns "Grimling Colonel" (npc:167426) via `grimling/scout husman#end the threat in the grimling forest`.
-24. Kill "Grimling Colonel" (NPC 167426) in `grimling` and loot "Eerie Medallion" (57025).
-25. Spawns "Dismal Darkpaw Mystic" (npc:181225) via `jaggedpine/rashara wrualla#hail`.
-26. Kill "Dismal Darkpaw Mystic" (NPC 181225) in `jaggedpine` and loot "Scalding Blood" (57058).
-27. Loot "Fierce Spirit Clay" (57020) from "Spiritfrenzied Phoenix" (NPC 215062) in `poair`. Drop cache: 100% chance per kill.
-28. sharvahl/"Elder Animist Muada", say "Make The Totem". Gives "Elders' Totem Mold" (52930).
+<a id="epic-item-57054"></a>
+
+**Earlier reward routes required by this graph path:** ["Savage Lord's Totem" (52911)](#epic-item-52911).
+Revisit those instructions if another copy of a consumed item is needed.
+
+1. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
+2. Spawns "Grimling Colonel" (npc:167426) via `grimling/scout husman#end the threat in the grimling forest`.
+3. Kill "Grimling Colonel" (NPC 167426) in `grimling` and loot "Eerie Medallion" (57025).
+4. Spawns "Dismal Darkpaw Mystic" (npc:181225) via `jaggedpine/rashara wrualla#hail`.
+5. Kill "Dismal Darkpaw Mystic" (NPC 181225) in `jaggedpine` and loot "Scalding Blood" (57058).
+6. Loot "Fierce Spirit Clay" (57020) from "Spiritfrenzied Phoenix" (NPC 215062) in `poair`. Drop cache: 100% chance per kill.
+7. sharvahl/"Elder Animist Muada", say "Make The Totem". Gives "Elders' Totem Mold" (52930).
     - Player: "make the totem"
       - NPC say: Very well. You must now fashion the shape of the totem and imbue it with what you have collected, but not without this bit of beastlord magic. The elders fashion this essence rarely, so treat it with care. You must find a way to blend the magic items taken from the earth and blood together to make the magical base for this totem. Then, use the result to surround a solid frame you find and bathe it with our essence with heat to form the magical basis for this treasured item. Then, you must use fires to mold it. I trush your knowledge and willingness to learn will guid you through this phase of your trials as a beastlord. Return to me and tell me that you are finished with this important duty. Be careful.
         - Reply guard: `(plugin::check_hasitem($client, 57025) && plugin::check_hasitem($client, 57058) && plugin::check_hasitem($client, 57020))`
@@ -281,7 +215,7 @@ Scout Vyrak says 'Destroy the spirit's current form and you will be able to retr
       - Linked from "prepared" (explicit prompt).
       - Linked from "there is more" (explicit prompt).
       - Linked from "problem" (explicit prompt).
-29. sharvahl/"Elder Animist Muada", say "Task". Gives "Peculiar Unshapen Piece of Wood" (57011).
+8. sharvahl/"Elder Animist Muada", say "Task". Gives "Peculiar Unshapen Piece of Wood" (57011).
     - Player: "task"
       - NPC say: You must create a totem that is bound to the wild spirits as well as your own. At one time in their lives, each elder has had one. We used it to focus the power of our warders to make them stronger and to bond them to our own spirits. It is time for you to take on this labor of life, now that you are well on the path to becoming one with the elders. Are you [prepared] to do this?
       - Condition: `($client->GetGlobal("beast_epic") ==17)`
@@ -292,16 +226,16 @@ Scout Vyrak says 'Destroy the spirit's current form and you will be able to retr
       - Linked from "requirements" (explicit prompt).
       - Linked from "learning" (explicit prompt).
       - Linked from "agree to take on this charge" (explicit prompt).
-30. Combine in appropriate tradeskill container: "Fierce Spirit Clay" (57020), "Eerie Medallion" (57025), "Scalding Blood" (57058). Produces "Gilded Resonating Clay" (57029). Requires Pottery.
-31. Combine in appropriate tradeskill container: "Peculiar Unshapen Piece of Wood" (57011), "Gilded Resonating Clay" (57029), "Combined Essence" (52913). Produces "Malleable Glowing Totem" (57050). Requires Baking.
-32. Combine in appropriate tradeskill container: "Elders' Totem Mold" (52930), "Malleable Glowing Totem" (57050). Produces "Spiritbound Totem" (57027). Requires Blacksmithing.
-33. sharvahl/"Elder Animist Muada", hand "Globe of Discordant Energy" (47100) + "Spiritbound Totem" (57027). Gives "Sealed Letter from Muada" (57053).
+9. Combine in appropriate tradeskill container: "Fierce Spirit Clay" (57020), "Eerie Medallion" (57025), "Scalding Blood" (57058). Produces "Gilded Resonating Clay" (57029). Requires Pottery.
+10. Combine in appropriate tradeskill container: "Peculiar Unshapen Piece of Wood" (57011), "Gilded Resonating Clay" (57029), "Combined Essence" (52913). Produces "Malleable Glowing Totem" (57050). Requires Baking.
+11. Combine in appropriate tradeskill container: "Elders' Totem Mold" (52930), "Malleable Glowing Totem" (57050). Produces "Spiritbound Totem" (57027). Requires Blacksmithing.
+12. sharvahl/"Elder Animist Muada", hand "Globe of Discordant Energy" (47100) + "Spiritbound Totem" (57027). Gives "Sealed Letter from Muada" (57053).
     - event_item NPC emote: appears overwhelmed. 'There is no limit to your greatness, is there? You have done more than any other to save us -- the masters of the wild. Your time has come, savage lord. You are about to meet one of the very first beastlords of Luclin. Her name is Alladnu Eshiara. She is often found in the wild, studying nature and the ways of feral creatures. Find her, give her this letter and your Savage Lord Totem and she will complete your journey. I will be there in spirit friend.
       - Event guard: `($client->GetGlobal("beast_epic") ==21 && plugin::check_handin(\%itemcount, 47100 =>1, 57027 =>1 ))`
-34. hollowshade/"Alladnu Araihse", hand "Savage Lord's Totem" (52911) + "Sealed Letter from Muada" (57053).
+13. hollowshade/"Alladnu Araihse", hand "Savage Lord's Totem" (52911) + "Sealed Letter from Muada" (57053).
     - event_trade NPC say: Follow me, . We will embark upon the final steps of your journey.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 52911,item2 = 57053}))`
-35. hollowshade/"Alladnu Araihse", say "Ready". Gives "Spiritcaller Totem of the Feral" (57054).
+14. hollowshade/"Alladnu Araihse", say "Ready". Gives "Spiritcaller Totem of the Feral" (57054).
     - Player: "ready"
       - NPC say: Then you have finished your journey. Here ends my service and those of the spirits. You are one with the spirits now. Travel your life's journey with pride.
       - NPC message: You have gained 10 ability points!

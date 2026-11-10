@@ -6,6 +6,8 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 ### "Staff of the Four" (14341)
 
+<a id="epic-item-14341"></a>
+
 1. halas/"Arantir Karondor", say "Hail".
     - Player: "hail"
       - NPC say: Ah yes, you again. Do you have the items? Give me the three you possess and I'll combine them with my own.
@@ -50,112 +52,81 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 ### "Staff of Prismatic Power" (12665)
 
-1. bazaar/"Caerlyna", say "Hail".
+<a id="epic-item-12665"></a>
+
+1. erudnext/"Lumi Stergnon", say "Hail".
     - Player: "hail"
-      - NPC say: Greetings $name! Nice to meet you. I've started up a complimentary bag check service. Feel free to give me your weight reducing bag, and I'll give you a token in return. When you would like to get your bag back, simply return to me with your token.
-      - Condition: `($text=~/hail/i)`
-2. **Unresolved acquisition:** "Collapsible Sewing Kit" (17165) has no graph or catalog producer.
+      - NPC say: Peace and tranquility be with you. .  Are you a [new acolyte of peace] or are you [here to pay homage] to the child of tranquility?
+      - Condition: `(e.message:findi("hail"))`
+2. Summon "Collapsible Sewing Kit" (17165) by casting "Unfold Sewing Kit".
 3. Buy "Backpack Pattern" (12089) from "Iala Lenard" (NPC 1141) in `qeynos`. Base price: 500 copper.
-4. bazaar/"Caerlyna", hand "Vale Sewing Kit" (92882). Gives "Vale Sewing Kit Token" (56884).
-    - event_item NPC say: Here you go. Bring this token back to me when you would like your bag back.
-      - Event guard: `(plugin::check_handin(\%itemcount, 92882 => 1))`
-5. bazaar/"Caerlyna", hand "Vale Sewing Kit Token" (56884). Gives "Vale Sewing Kit" (92882).
-    - event_item NPC say: Here you go. Here is your bag back.
-      - Event guard: `(plugin::check_handin(\%itemcount, 56884 => 1))`
-6. Loot "Spiderling Silk" (13099) from "a recluse spinner" (NPC 404041) in `vergalid`. Drop cache: 86.695% chance per kill.
-7. Combine in "Vale Sewing Kit" (92882): "Spiderling Silk" (13099). Produces "Silk Thread" (16486). Requires Tailoring.
-8. Combine in "Vale Sewing Kit" (92882): "Silk Thread" (16486). Produces "Silk Cord" (16489). Requires Tailoring.
-9. potranquility/"Kalym Rasalan", say "Hail". Gives "Silken Tapestry" (12593).
+4. Buy "Needle Mold" (12019) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
+5. Buy "Thimble Mold" (12057) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
+6. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+    - Player: "battle the undead"
+      - NPC say: Then you shall venture to Toxxulia Forest. There has been an increase in skeleton sightings lately. I do not know their origin, but I believe that your efforts will reduce their numbers! Take this box. Return it to me when you have filled it with the bones of these undead creatures and combined it. May Quellious' light guide you.
+      - Condition: `(e.message:findi("battle the undead"))`
+      - Linked from "new acolyte of peace" (explicit prompt).
+7. Loot "Useless Cloth Cap" (13894) from "a kobold scout" (NPC 38035) in `tox`. Drop cache: 20% chance per kill.
+8. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+9. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). Requires Remove Traps.
+10. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+    - event_trade NPC say: You have done well. Let it be known to all that you fight for the Rainkeeper. Go and continue the battle.
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 13882}))`
+11. Loot "Fine Steel Wakizashi" (6932) from "a corrupted gnome explorer" (NPC 66111) in `gukbottom`. Drop cache: 100% chance per kill.
+12. Combine in appropriate tradeskill container: "Fine Steel Wakizashi" (6932), "Water Flask" (13006). Produces "Small Piece of High Quality Ore" (22229). Requires Blacksmithing.
+13. Combine in appropriate tradeskill container: "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing.
+14. Combine in appropriate tradeskill container: "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing.
+15. Forage "Spiderling Silk" (13099) in `mistmoore` or `mmca` or `mmcb` or `mmcc` or `mmcd` or `mmce` or `mmcf` or `mmcg` or `mmch` or `mmci` or `mmcj`.
+16. Combine in "Vale Sewing Kit" (92882): "Spiderling Silk" (13099). Produces "Silk Thread" (16486). Requires Tailoring.
+17. Combine in "Vale Sewing Kit" (92882): "Silk Thread" (16486). Produces "Silk Cord" (16489). Requires Tailoring.
+18. potranquility/"Kalym Rasalan", say "Hail". Gives "Silken Tapestry" (12593).
     - Player: "hail"
       - NPC say: Hello , Talwyn told me of the coming of new recruits. I suppose he told you that you would need to use the magic in our woven tapestries to create a satchel to hold something very delicate? Well, you are lucky enough that I have this finished swatch of tapestry here that you can use. I am busy and can't tailor it for you though. You will need to tailor it yourself. If you take the tapestry, a backpack pattern, and a silk cord you should be able to tailor it with moderate effort.
       - Condition: `(e.message:findi("hail") and (qglobals.wiz_epic_wisp == "1") and (qglobals.wiz_epic_shard == "1"))`
-10. Combine in "Collapsible Sewing Kit" (17165): "Backpack Pattern" (12089), "Silk Cord" (16489), "Silken Tapestry" (12593). Produces "Silken Tapestry Satchel" (12596). Requires Tailoring.
-11. **Unresolved acquisition:** "Prismatic Crystal" (12599) has no graph or catalog producer.
-12. **Unresolved acquisition:** "Prismatic Crystal" (12625) has no graph or catalog producer.
-13. **Unresolved acquisition:** "Prismatic Crystal" (12628) has no graph or catalog producer.
-14. Loot "Prismatic Crystal" (12662) from "Treasure Sorter Neiben" (NPC 225031) in `dulak`. Drop cache: 100% chance per kill.
-15. Loot "Cohesion Gem" (67022) from "a metallic slime" (NPC 206031) in `poinnovation`. Drop cache: 34.241% chance per kill.
-16. Spawns "Mistress of the Darkwater Quest-only" (npc:125075) via `sirens/player#enter`.
-17. Kill "Mistress of the Darkwater Quest-only" (NPC 125075) in `sirens` and loot "Shard of Pure Ice" (11599).
-18. Spawns "Spawn Wiz 1.5; Pure Flame Elemental" (npc:278108) via `soldungc/ #event_signal`.
-19. Kill "Spawn Wiz 1.5; Pure Flame Elemental" (NPC 278108) in `soldungc` and loot "Wisp of Pure Flame" (11619).
-20. Loot "Fluxing Staff" (11445) from "Girplan Guardian" (NPC 300037) in `wallofslaughter`. Drop cache: 100% chance per kill.
-21. Spawns "Elite Sun Revenant" (npc:175306) via `scarlet/the gem guardian#event_proximity_say`.
-22. Kill "Elite Sun Revenant" (NPC 175306) in `scarlet` and loot "Fluxing Gem" (11448).
-23. Loot "Fluxing Rune" (11474) from "Hobgoblin Horrorfiend" (NPC 204053) in `ponightmare`. Drop cache: 100% chance per kill.
-24. **Unresolved acquisition:** "Fluxing Chunk of Ore" (11576) has no graph or catalog producer.
-25. lavastorm/"Talwyn Flamecaller", hand "Fluxing Staff" (11445) + "Fluxing Gem" (11448) + "Fluxing Rune" (11474) + "Fluxing Chunk of Ore" (11576). Gives "Staff of Fluxing Power" (11596).
+19. Combine in "Collapsible Sewing Kit" (17165): "Backpack Pattern" (12089), "Silk Cord" (16489), "Silken Tapestry" (12593). Produces "Silken Tapestry Satchel" (12596). Requires Tailoring.
+20. Collect ground spawn "Prismatic Crystal" (12599) in `veksar`.
+21. Collect ground spawn "Prismatic Crystal" (12625) in `timorous`.
+22. Collect ground spawn "Prismatic Crystal" (12628) in `twilight`.
+23. Loot "Prismatic Crystal" (12662) from "Treasure Sorter Neiben" (NPC 225031) in `dulak`. Drop cache: 100% chance per kill.
+24. Loot "Cohesion Gem" (67022) from "a metallic slime" (NPC 206031) in `poinnovation`. Drop cache: 34.241% chance per kill.
+25. Spawns "Mistress of the Darkwater Quest-only" (npc:125075) via `sirens/player#enter`.
+26. Kill "Mistress of the Darkwater Quest-only" (NPC 125075) in `sirens` and loot "Shard of Pure Ice" (11599).
+27. Spawns "Spawn Wiz 1.5; Pure Flame Elemental" (npc:278108) via `soldungc/ #event_signal`.
+28. Kill "Spawn Wiz 1.5; Pure Flame Elemental" (NPC 278108) in `soldungc` and loot "Wisp of Pure Flame" (11619).
+29. Loot "Fluxing Staff" (11445) from "Girplan Guardian" (NPC 300037) in `wallofslaughter`. Drop cache: 100% chance per kill.
+30. Spawns "Elite Sun Revenant" (npc:175306) via `scarlet/the gem guardian#event_proximity_say`.
+31. Kill "Elite Sun Revenant" (NPC 175306) in `scarlet` and loot "Fluxing Gem" (11448).
+32. Loot "Fluxing Rune" (11474) from "Hobgoblin Horrorfiend" (NPC 204053) in `ponightmare`. Drop cache: 100% chance per kill.
+33. Collect ground spawn "Fluxing Chunk of Ore" (11576) in `dranik`.
+34. lavastorm/"Talwyn Flamecaller", hand "Fluxing Staff" (11445) + "Fluxing Gem" (11448) + "Fluxing Rune" (11474) + "Fluxing Chunk of Ore" (11576). Gives "Staff of Fluxing Power" (11596).
     - event_trade NPC say: You are indeed ready to join the ranks as a soldier of Solusek Ro. Every soldier in Solusek's league must wield a staff of power, which will focus your abilities in a way that you have never felt before! Fear will consume you as you feel your essence being ripped from your body. Do not give up, use the staff with faith and hope that you will be rewarded with the most [powerful item] you could ever imagine.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 11445, item2 = 11448, item3 = 11474, item4 = 11576}))`
-26. Combine in "Silken Tapestry Satchel" (12596): "Prismatic Crystal" (12599), "Prismatic Crystal" (12625), "Prismatic Crystal" (12628), "Prismatic Crystal" (12662), "Cohesion Gem" (67022), "Shard of Pure Ice" (11599), "Wisp of Pure Flame" (11619), "Staff of Fluxing Power" (11596). Produces "Full Tapestry Satchel" (16753). Requires Remove Traps.
-27. lavastorm/"Talwyn Flamecaller", hand "Full Tapestry Satchel" (16753). Gives "Staff of Prismatic Power" (12665).
+35. Combine in "Silken Tapestry Satchel" (12596): "Prismatic Crystal" (12599), "Prismatic Crystal" (12625), "Prismatic Crystal" (12628), "Prismatic Crystal" (12662), "Cohesion Gem" (67022), "Shard of Pure Ice" (11599), "Wisp of Pure Flame" (11619), "Staff of Fluxing Power" (11596). Produces "Full Tapestry Satchel" (16753). Requires Remove Traps.
+36. lavastorm/"Talwyn Flamecaller", hand "Full Tapestry Satchel" (16753). Gives "Staff of Prismatic Power" (12665).
     - event_trade NPC emote: removes the components from the tapestry satchel they begin to vibrate with power. They pulse quickly as they move towards each other, static flies in each direction as the pieces fuse into each other. In a final burst of magic the staff is complete. Talwyn looks it over with wise eyes before giving it to you.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 16753}))`
     - event_trade NPC say: The staff of power is yours to wield. If you are up to the task I can set you on the final portions of what is needed to become a true avatar of Solusek.
     - event_trade NPC message: You have gained 5 ability points!
-
-**Unresolved graph dependencies:**
-- Cycle while acquiring "Vale Sewing Kit" (92882)
 
 ## Epic 2.0
 
 ### "Staff of Phenomenal Power" (16576)
 
-1. bazaar/"Caerlyna", say "Hail".
-    - Player: "hail"
-      - NPC say: Greetings $name! Nice to meet you. I've started up a complimentary bag check service. Feel free to give me your weight reducing bag, and I'll give you a token in return. When you would like to get your bag back, simply return to me with your token.
-      - Condition: `($text=~/hail/i)`
-2. **Unresolved acquisition:** "Spacial Distortion" (16695) has no graph or catalog producer.
-3. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
-4. lavastorm/"Talwyn Flamecaller", hand "Globe of Discordant Energy" (47100). Gives "Broken Orb of Discordant Energy" (16147).
+<a id="epic-item-16576"></a>
+
+**Earlier reward routes required by this graph path:** ["Staff of Prismatic Power" (12665)](#epic-item-12665).
+Revisit those instructions if another copy of a consumed item is needed.
+
+1. **Unresolved acquisition:** "Spacial Distortion" (16695) has no graph or catalog producer.
+2. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
+3. lavastorm/"Talwyn Flamecaller", hand "Globe of Discordant Energy" (47100). Gives "Broken Orb of Discordant Energy" (16147) + "Broken Orb of Discordant Energy" (15836).
     - event_trade NPC say: To obtain this globe was no trivial task, yet you have prevailed! Your staff is nearly complete now, you have only two final tasks remaining.', he says as he begins to murmur a brief incantation. Without warning, the orb splits into two equal halves and are then given to you. They will infuse your staff with one of the most useful powers of a wizard; teleportation.'
       - Event guard: `(qglobals["wiz_epic20"] ~= nil and qglobals["wiz_epic20"] >= "3" and item_lib.check_turn_in(e.trade, {item1 = 47100}))`
-5. Combine in "Spacial Distortion" (16695): "Broken Orb of Discordant Energy" (16147). Produces "Infused Orb of Discordant Energy" (16451). Requires Remove Traps.
-6. **Unresolved acquisition:** "Spacial Distortion" (16765) has no graph or catalog producer.
-7. Combine in "Spacial Distortion" (16765): "Broken Orb of Discordant Energy" (15836). Produces "Infused Orb of Discordant Energy" (16334). Requires Remove Traps.
-8. **Unresolved acquisition:** "Collapsible Sewing Kit" (17165) has no graph or catalog producer.
-9. Buy "Backpack Pattern" (12089) from "Iala Lenard" (NPC 1141) in `qeynos`. Base price: 500 copper.
-10. bazaar/"Caerlyna", hand "Vale Sewing Kit" (92882). Gives "Vale Sewing Kit Token" (56884).
-    - event_item NPC say: Here you go. Bring this token back to me when you would like your bag back.
-      - Event guard: `(plugin::check_handin(\%itemcount, 92882 => 1))`
-11. bazaar/"Caerlyna", hand "Vale Sewing Kit Token" (56884). Gives "Vale Sewing Kit" (92882).
-    - event_item NPC say: Here you go. Here is your bag back.
-      - Event guard: `(plugin::check_handin(\%itemcount, 56884 => 1))`
-12. Loot "Spiderling Silk" (13099) from "a recluse spinner" (NPC 404041) in `vergalid`. Drop cache: 86.695% chance per kill.
-13. Combine in "Vale Sewing Kit" (92882): "Spiderling Silk" (13099). Produces "Silk Thread" (16486). Requires Tailoring.
-14. Combine in "Vale Sewing Kit" (92882): "Silk Thread" (16486). Produces "Silk Cord" (16489). Requires Tailoring.
-15. potranquility/"Kalym Rasalan", say "Hail". Gives "Silken Tapestry" (12593).
-    - Player: "hail"
-      - NPC say: Hello , Talwyn told me of the coming of new recruits. I suppose he told you that you would need to use the magic in our woven tapestries to create a satchel to hold something very delicate? Well, you are lucky enough that I have this finished swatch of tapestry here that you can use. I am busy and can't tailor it for you though. You will need to tailor it yourself. If you take the tapestry, a backpack pattern, and a silk cord you should be able to tailor it with moderate effort.
-      - Condition: `(e.message:findi("hail") and (qglobals.wiz_epic_wisp == "1") and (qglobals.wiz_epic_shard == "1"))`
-16. Combine in "Collapsible Sewing Kit" (17165): "Backpack Pattern" (12089), "Silk Cord" (16489), "Silken Tapestry" (12593). Produces "Silken Tapestry Satchel" (12596). Requires Tailoring.
-17. **Unresolved acquisition:** "Prismatic Crystal" (12599) has no graph or catalog producer.
-18. **Unresolved acquisition:** "Prismatic Crystal" (12625) has no graph or catalog producer.
-19. **Unresolved acquisition:** "Prismatic Crystal" (12628) has no graph or catalog producer.
-20. Loot "Prismatic Crystal" (12662) from "Treasure Sorter Neiben" (NPC 225031) in `dulak`. Drop cache: 100% chance per kill.
-21. Loot "Cohesion Gem" (67022) from "a metallic slime" (NPC 206031) in `poinnovation`. Drop cache: 34.241% chance per kill.
-22. Spawns "Mistress of the Darkwater Quest-only" (npc:125075) via `sirens/player#enter`.
-23. Kill "Mistress of the Darkwater Quest-only" (NPC 125075) in `sirens` and loot "Shard of Pure Ice" (11599).
-24. Spawns "Spawn Wiz 1.5; Pure Flame Elemental" (npc:278108) via `soldungc/ #event_signal`.
-25. Kill "Spawn Wiz 1.5; Pure Flame Elemental" (NPC 278108) in `soldungc` and loot "Wisp of Pure Flame" (11619).
-26. Loot "Fluxing Staff" (11445) from "Girplan Guardian" (NPC 300037) in `wallofslaughter`. Drop cache: 100% chance per kill.
-27. Spawns "Elite Sun Revenant" (npc:175306) via `scarlet/the gem guardian#event_proximity_say`.
-28. Kill "Elite Sun Revenant" (NPC 175306) in `scarlet` and loot "Fluxing Gem" (11448).
-29. Loot "Fluxing Rune" (11474) from "Hobgoblin Horrorfiend" (NPC 204053) in `ponightmare`. Drop cache: 100% chance per kill.
-30. **Unresolved acquisition:** "Fluxing Chunk of Ore" (11576) has no graph or catalog producer.
-31. lavastorm/"Talwyn Flamecaller", hand "Fluxing Staff" (11445) + "Fluxing Gem" (11448) + "Fluxing Rune" (11474) + "Fluxing Chunk of Ore" (11576). Gives "Staff of Fluxing Power" (11596).
-    - event_trade NPC say: You are indeed ready to join the ranks as a soldier of Solusek Ro. Every soldier in Solusek's league must wield a staff of power, which will focus your abilities in a way that you have never felt before! Fear will consume you as you feel your essence being ripped from your body. Do not give up, use the staff with faith and hope that you will be rewarded with the most [powerful item] you could ever imagine.
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 11445, item2 = 11448, item3 = 11474, item4 = 11576}))`
-32. Combine in "Silken Tapestry Satchel" (12596): "Prismatic Crystal" (12599), "Prismatic Crystal" (12625), "Prismatic Crystal" (12628), "Prismatic Crystal" (12662), "Cohesion Gem" (67022), "Shard of Pure Ice" (11599), "Wisp of Pure Flame" (11619), "Staff of Fluxing Power" (11596). Produces "Full Tapestry Satchel" (16753). Requires Remove Traps.
-33. lavastorm/"Talwyn Flamecaller", hand "Full Tapestry Satchel" (16753). Gives "Staff of Prismatic Power" (12665).
-    - event_trade NPC emote: removes the components from the tapestry satchel they begin to vibrate with power. They pulse quickly as they move towards each other, static flies in each direction as the pieces fuse into each other. In a final burst of magic the staff is complete. Talwyn looks it over with wise eyes before giving it to you.
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 16753}))`
-    - event_trade NPC say: The staff of power is yours to wield. If you are up to the task I can set you on the final portions of what is needed to become a true avatar of Solusek.
-    - event_trade NPC message: You have gained 5 ability points!
-34. lavastorm/"Talwyn Flamecaller", hand "Infused Orb of Discordant Energy" (16451) + "Infused Orb of Discordant Energy" (16334) + "Staff of Prismatic Power" (12665). Gives "Staff of Phenomenal Power" (16576).
+4. Combine in "Spacial Distortion" (16695): "Broken Orb of Discordant Energy" (16147). Produces "Infused Orb of Discordant Energy" (16451). Requires Remove Traps.
+5. **Unresolved acquisition:** "Spacial Distortion" (16765) has no graph or catalog producer.
+6. Combine in "Spacial Distortion" (16765): "Broken Orb of Discordant Energy" (15836). Produces "Infused Orb of Discordant Energy" (16334). Requires Remove Traps.
+7. lavastorm/"Talwyn Flamecaller", hand "Infused Orb of Discordant Energy" (16451) + "Infused Orb of Discordant Energy" (16334) + "Staff of Prismatic Power" (12665). Gives "Staff of Phenomenal Power" (16576).
     - event_trade NPC say: With these Infused Orbs, your path to becoming a soldier of Solusek's legions has been completed. You have surpassed even my expectations!' he says. You hear Talwyn chant in low, almost inaudible tones. His hands glow bright with power as he assembles a weapon worthy of Solusek himself. 'Take this staff as a symbol of your loyalty to Solusek and wield it proudly, wizard!
       - Event guard: `(qglobals["wiz_epic20"] == "4" and item_lib.check_turn_in(e.trade, {item1 = 16451, item2 = 16334, item3 = 12665}))`
     - event_trade NPC message: You have gained 10 ability points!
-
-**Unresolved graph dependencies:**
-- Cycle while acquiring "Vale Sewing Kit" (92882)

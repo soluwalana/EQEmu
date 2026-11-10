@@ -6,6 +6,8 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 ### "Singing Short Sword" (20542)
 
+<a id="epic-item-20542"></a>
+
 1. qey2hh1/"Konia Swiftfoot", say "Hail".
     - Player: "hail"
       - NPC say: Hello there, .  I am hosting a relay running contest.  Would you like to participate?
@@ -122,7 +124,9 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 ### "Prismatic Dragon Blade" (77631)
 
-1. **Unresolved acquisition:** "Note from Metala" (77627) has no graph or catalog producer.
+<a id="epic-item-77631"></a>
+
+1. Loot "Note from Metala" (77627) from "a shadow thief".
 2. southkarana/"Vhalen Nostrolo", hand "Note from Metala" (77627). Gives "Vhalen's Necklace" (77629).
     - event_trade NPC say: No this can't be true! Metala must have been kidnapped and forced to sign this letter!  You must find her and save her, ! Please!  Take this necklace; it was a gift she gave me on our anniversary long ago.  Surely it will help her remember her true self and make her come to her senses.
       - Event guard: `(qglobals["bard15"] == "5" and item_lib.check_turn_in(e.trade, {item1= 77627}))`
@@ -131,34 +135,34 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
       - Event guard: `qglobals["bard15"] == "5" and item_lib.check_turn_in(e.trade, {item1 = 77629})`
 4. Spawns "Metala Von Korach" (npc:207084) after the hand-in.
 5. Kill "Metala Von Korach" (NPC 207084) in `potorment` and loot "Rusted Bile Etched Blade" (77630).
-6. **Unresolved acquisition:** "Crest of Rizlona" (77626) has no graph or catalog producer.
+6. Loot "Crest of Rizlona" (77626) from "a shadow thief".
 7. Loot "Dragorn Blood" (77639) from "a dragorn serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.5158% chance per kill.
-8. **Unresolved acquisition:** "Enchanted Velium Bar" (22099) has no graph or catalog producer.
-9. **Unresolved acquisition:** "Cloudy Diamond of Air" (29989) has no graph or catalog producer.
-10. **Unresolved acquisition:** "Wind Dragon Crystal" (12783) has no graph or catalog producer.
+8. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium" or "Greater Mass Enchant Velium" or "Mass Enchant Velium".
+9. Summon "Cloudy Diamond of Air" (29989) by casting "Imbue Air".
+10. Forage "Wind Dragon Crystal" (12783) in `skyfire`.
 11. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Cloudy Diamond of Air" (29989), "Wind Dragon Crystal" (12783). Produces "Wind Dragon Prism" (77618). Requires Jewelry Making.
-12. **Unresolved acquisition:** "Red Diamond of Fire" (29986) has no graph or catalog producer.
-13. **Unresolved acquisition:** "Fire Dragon Crystal" (12487) has no graph or catalog producer.
+12. Summon "Red Diamond of Fire" (29986) by casting "Imbue Fire".
+13. Forage "Fire Dragon Crystal" (12487) in `skyfire`.
 14. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Red Diamond of Fire" (29986), "Fire Dragon Crystal" (12487). Produces "Fire Dragon Prism" (77619). Requires Jewelry Making.
-15. **Unresolved acquisition:** "Aqua Diamond of Water" (29987) has no graph or catalog producer.
-16. **Unresolved acquisition:** "Ice Dragon Crystal" (12781) has no graph or catalog producer.
+15. Summon "Aqua Diamond of Water" (29987) by casting "Imbue Water".
+16. Forage "Ice Dragon Crystal" (12781) in `skyfire`.
 17. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Aqua Diamond of Water" (29987), "Ice Dragon Crystal" (12781). Produces "Water Dragon Prism" (77620). Requires Jewelry Making.
-18. **Unresolved acquisition:** "Brown Diamond of Earth" (29988) has no graph or catalog producer.
-19. **Unresolved acquisition:** "Earth Dragon Crystal" (12782) has no graph or catalog producer.
+18. Summon "Brown Diamond of Earth" (29988) by casting "Imbue Earth".
+19. Forage "Earth Dragon Crystal" (12782) in `skyfire`.
 20. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Brown Diamond of Earth" (29988), "Earth Dragon Crystal" (12782). Produces "Earth Dragon Prism" (77621). Requires Jewelry Making.
-21. **Unresolved acquisition:** "Green Diamond of Disease" (30118) has no graph or catalog producer.
+21. Summon "Green Diamond of Disease" (30118) by casting "Imbue Disease".
 22. Spawns "a swamp dragon" (npc:83249) via `swampofnohope/a dire leech#event_hp`.
 23. Kill "a swamp dragon" (NPC 83249) in `swampofnohope` and loot "Swamp Dragon Crystal" (77614).
 24. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Green Diamond of Disease" (30118), "Swamp Dragon Crystal" (77614). Produces "Swamp Dragon Prism" (77622). Requires Jewelry Making.
-25. **Unresolved acquisition:** "Gray Diamond of Storms" (29991) has no graph or catalog producer.
+25. Summon "Gray Diamond of Storms" (29991) by casting "Imbue Storm".
 26. Spawns "a plains dragon" (npc:13130) via `northkarana/a dire griffon#event_hp`.
 27. Kill "a plains dragon" (NPC 13130) in `northkarana` and loot "Plains Dragon Crystal" (77615).
 28. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Gray Diamond of Storms" (29991), "Plains Dragon Crystal" (77615). Produces "Plains Dragon Prism" (77623). Requires Jewelry Making.
-29. **Unresolved acquisition:** "Yellow Diamond of Valor" (30489) has no graph or catalog producer.
+29. Summon "Yellow Diamond of Valor" (30489) by casting "Imbue Valor".
 30. Spawns "a forest dragon" (npc:181224) via `jaggedpine/a dire kodiak#event_hp`.
 31. Kill "a forest dragon" (NPC 181224) in `jaggedpine` and loot "Forest Dragon Crystal" (77616).
 32. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Yellow Diamond of Valor" (30489), "Forest Dragon Crystal" (77616). Produces "Forest Dragon Prism" (77624). Requires Jewelry Making.
-33. **Unresolved acquisition:** "White Diamond of Justice" (29494) has no graph or catalog producer.
+33. Summon "White Diamond of Justice" (29494) by casting "Imbue Justice".
 34. Spawns "a mountain dragon" (npc:100227) via `stonebrunt/a dire panda#event_hp`.
 35. Kill "a mountain dragon" (NPC 100227) in `stonebrunt` and loot "Mountain Dragon Crystal" (77617).
 36. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "White Diamond of Justice" (29494), "Mountain Dragon Crystal" (77617). Produces "Mountain Dragon Prism" (77625). Requires Jewelry Making.
@@ -168,6 +172,11 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 ## Epic 2.0
 
 ### "Blade of Vesagran" (77640)
+
+<a id="epic-item-77640"></a>
+
+**Earlier reward routes required by this graph path:** ["Prismatic Dragon Blade" (77631)](#epic-item-77631).
+Revisit those instructions if another copy of a consumed item is needed.
 
 1. Loot "Black Chaos Gauntlets" (77641) from "Stone Thrower" (NPC 303087) in `causeway`. Drop cache: 2.0088% chance per kill.
 2. Loot "Black Chaos Boots" (77642) from "a dragorn darkwarrior" (NPC 300010) in `wallofslaughter`. Drop cache: 1.626% chance per kill.
@@ -180,56 +189,9 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
     - event_trade NPC message: The blade in your hand begins to glow as the dark orb begins to burn your flesh.  You struggle to keep the orb from flying away.
 6. Spawns "Oshiruk" (npc:303125) after the hand-in.
 7. Kill "Oshiruk" (NPC 303125) in `causeway` and loot "Dragorn Essence" (77644).
-8. wakening/"Lantaric-Dar", hand "Dark Orb" (77613). Gives "Dark Orb" (77613).
-    - event_trade NPC say: It must be an object of considerable power to be able to imbue a mere mortal such as Vesthon with the power to control a dragon kin spirit.  This orb must be destroyed, but I know not how that might be done.  For now I entrust the orb to your care, and charge you with finding a way to destroy it.  You must not fail .  An artifact of that much evil potential must not be allowed to exist.
-      - Event guard: `qglobals["bard15"] == "3" and item_lib.check_turn_in(e.trade, {item1 = 77613})`
-9. **Unresolved acquisition:** "Note from Metala" (77627) has no graph or catalog producer.
-10. southkarana/"Vhalen Nostrolo", hand "Note from Metala" (77627). Gives "Vhalen's Necklace" (77629).
-    - event_trade NPC say: No this can't be true! Metala must have been kidnapped and forced to sign this letter!  You must find her and save her, ! Please!  Take this necklace; it was a gift she gave me on our anniversary long ago.  Surely it will help her remember her true self and make her come to her senses.
-      - Event guard: `(qglobals["bard15"] == "5" and item_lib.check_turn_in(e.trade, {item1= 77627}))`
-11. potorment/"A Bruised Woman", hand "Vhalen's Necklace" (77629).
-    - event_trade NPC emote: 's eyebrows shift into the shadow of a quizzical expression as you show her the necklace.  A flash of recognition crosses her face and she jerks back across the floor in horror.  A screeching wail tears through your mind 'You are a fool Vahlen!  You send these peasants to do your dirty work, you never were much for getting your hands dirty!  The path of pain is the only way to true power.  I will never turn from it!
-      - Event guard: `qglobals["bard15"] == "5" and item_lib.check_turn_in(e.trade, {item1 = 77629})`
-12. Spawns "Metala Von Korach" (npc:207084) after the hand-in.
-13. Kill "Metala Von Korach" (NPC 207084) in `potorment` and loot "Rusted Bile Etched Blade" (77630).
-14. **Unresolved acquisition:** "Crest of Rizlona" (77626) has no graph or catalog producer.
-15. Loot "Dragorn Blood" (77639) from "a dragorn serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.5158% chance per kill.
-16. **Unresolved acquisition:** "Enchanted Velium Bar" (22099) has no graph or catalog producer.
-17. **Unresolved acquisition:** "Cloudy Diamond of Air" (29989) has no graph or catalog producer.
-18. **Unresolved acquisition:** "Wind Dragon Crystal" (12783) has no graph or catalog producer.
-19. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Cloudy Diamond of Air" (29989), "Wind Dragon Crystal" (12783). Produces "Wind Dragon Prism" (77618). Requires Jewelry Making.
-20. **Unresolved acquisition:** "Red Diamond of Fire" (29986) has no graph or catalog producer.
-21. **Unresolved acquisition:** "Fire Dragon Crystal" (12487) has no graph or catalog producer.
-22. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Red Diamond of Fire" (29986), "Fire Dragon Crystal" (12487). Produces "Fire Dragon Prism" (77619). Requires Jewelry Making.
-23. **Unresolved acquisition:** "Aqua Diamond of Water" (29987) has no graph or catalog producer.
-24. **Unresolved acquisition:** "Ice Dragon Crystal" (12781) has no graph or catalog producer.
-25. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Aqua Diamond of Water" (29987), "Ice Dragon Crystal" (12781). Produces "Water Dragon Prism" (77620). Requires Jewelry Making.
-26. **Unresolved acquisition:** "Brown Diamond of Earth" (29988) has no graph or catalog producer.
-27. **Unresolved acquisition:** "Earth Dragon Crystal" (12782) has no graph or catalog producer.
-28. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Brown Diamond of Earth" (29988), "Earth Dragon Crystal" (12782). Produces "Earth Dragon Prism" (77621). Requires Jewelry Making.
-29. **Unresolved acquisition:** "Green Diamond of Disease" (30118) has no graph or catalog producer.
-30. Spawns "a swamp dragon" (npc:83249) via `swampofnohope/a dire leech#event_hp`.
-31. Kill "a swamp dragon" (NPC 83249) in `swampofnohope` and loot "Swamp Dragon Crystal" (77614).
-32. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Green Diamond of Disease" (30118), "Swamp Dragon Crystal" (77614). Produces "Swamp Dragon Prism" (77622). Requires Jewelry Making.
-33. **Unresolved acquisition:** "Gray Diamond of Storms" (29991) has no graph or catalog producer.
-34. Spawns "a plains dragon" (npc:13130) via `northkarana/a dire griffon#event_hp`.
-35. Kill "a plains dragon" (NPC 13130) in `northkarana` and loot "Plains Dragon Crystal" (77615).
-36. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Gray Diamond of Storms" (29991), "Plains Dragon Crystal" (77615). Produces "Plains Dragon Prism" (77623). Requires Jewelry Making.
-37. **Unresolved acquisition:** "Yellow Diamond of Valor" (30489) has no graph or catalog producer.
-38. Spawns "a forest dragon" (npc:181224) via `jaggedpine/a dire kodiak#event_hp`.
-39. Kill "a forest dragon" (NPC 181224) in `jaggedpine` and loot "Forest Dragon Crystal" (77616).
-40. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Yellow Diamond of Valor" (30489), "Forest Dragon Crystal" (77616). Produces "Forest Dragon Prism" (77624). Requires Jewelry Making.
-41. **Unresolved acquisition:** "White Diamond of Justice" (29494) has no graph or catalog producer.
-42. Spawns "a mountain dragon" (npc:100227) via `stonebrunt/a dire panda#event_hp`.
-43. Kill "a mountain dragon" (NPC 100227) in `stonebrunt` and loot "Mountain Dragon Crystal" (77617).
-44. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "White Diamond of Justice" (29494), "Mountain Dragon Crystal" (77617). Produces "Mountain Dragon Prism" (77625). Requires Jewelry Making.
-45. Combine in "Crest of Rizlona" (77626): "Wind Dragon Prism" (77618), "Fire Dragon Prism" (77619), "Water Dragon Prism" (77620), "Earth Dragon Prism" (77621), "Swamp Dragon Prism" (77622), "Plains Dragon Prism" (77623), "Forest Dragon Prism" (77624), "Mountain Dragon Prism" (77625). Produces "Draconic Prism" (77628). Requires Remove Traps.
-46. Combine in "Rusted Bile Etched Blade" (77630): "Draconic Prism" (77628). Produces "Prismatic Dragon Blade" (77631). Requires Remove Traps.
-47. causeway/"Alkron Wyrmsong", hand "Dragorn Essence" (77644) + "Dark Orb" (77613) + "Prismatic Dragon Blade" (77631). Gives "Blade of Vesagran" (77640).
+8. Loot "Dark Orb" (77613) from "The Dracoliche of Hsagra".
+9. causeway/"Alkron Wyrmsong", hand "Dragorn Essence" (77644) + "Dark Orb" (77613) + "Prismatic Dragon Blade" (77631). Gives "Blade of Vesagran" (77640).
     - event_trade NPC message: You have gained 10 ability point(s)!
       - Event guard: `qglobals["bard20"] == "1"`
       - Event guard: `item_lib.check_turn_in(e.trade, {item1 = 77644, item2 = 77613, item3 = 77631})`
     - event_trade NPC emote:  takes the blade and the two orbs from you.  He thrusts the sword into the ground at his feet and takes an orb in either hand.  He begins to recite an ancient dragorn rite as the air fills with magic around you.  Energy begins to surge between the two orbs and eventually begin to strike the blade as well.  The roar of energy rises and culminates in a flash of light.  The two orbs disappear into thin air as your sword takes on a new glow of power.
-
-**Unresolved graph dependencies:**
-- Cycle while acquiring "Dark Orb" (77613)

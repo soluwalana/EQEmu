@@ -6,6 +6,8 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 ### "Staff of the Serpent" (10650)
 
+<a id="epic-item-10650"></a>
+
 1. qcat/"Reania Jukle", say "Hail".
     - Player: "hail"
       - NPC say: Greetings, $name. What can I help you with?
@@ -66,7 +68,7 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 31. felwitheb/"Joren Nobleheart", hand "Head of a Prince" (10627). Gives "Chalice of Kings" (10608).
     - event_trade NPC say: Vengeance has been fufilled! However, the King still has a heavy heart. Not until Firiona has been returned can this sadness be lifted. But in appreciation of your efforts, I am honored to present to you the King's Chalice.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 10627}))`
-32. **Unresolved acquisition:** "Large Muddy Sandals" (10628) has no graph or catalog producer.
+32. Collect ground spawn "Large Muddy Sandals" (10628) in `oggok`.
 33. oggok/"Bozlum Blossom", hand "Large Muddy Sandals" (10628). Gives "Scribbled Parchment" (10629).
     - event_item NPC emote: writes something down on a piece of parchment.
       - Event guard: `(plugin::check_handin(\%itemcount, 10628 => 1))`
@@ -82,9 +84,9 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
     - event_item NPC say: Excellent, you have done well. Here is the first piece of the staff. Now you must go seek out the second master; he will clear the path for you.
       - Event guard: `(plugin::check_handin(\%itemcount, 10635 => 1))`
 38. Loot "Spoon" (10614) from "Cazel" (NPC 393012) in `southro`. Drop cache: 81.25% chance per kill.
-39. **Unresolved acquisition:** "The One Key" (10615) has no graph or catalog producer.
-40. **Unresolved acquisition:** "Lost Scroll" (10616) has no graph or catalog producer.
-41. **Unresolved acquisition:** "Charm and Sacrifice" (10617) has no graph or catalog producer.
+39. Collect ground spawn "The One Key" (10615) in `overthere`.
+40. Collect ground spawn "Lost Scroll" (10616) in `dalnir`.
+41. Collect ground spawn "Charm and Sacrifice" (10617) in `airplane`.
 42. Combine in "Enchanters Sack" (17861): "Spoon" (10614), "The One Key" (10615), "Lost Scroll" (10616), "Charm and Sacrifice" (10617). Produces "Sack For Mizzle" (10636). Requires Remove Traps.
 43. akanon/"Clockwork Viix", hand "Sack For Mizzle" (10636). Gives "2nd Piece of Staff" (10611).
     - event_trade NPC say: Oh excellent, you have done what is required. Here take this part, and seek the third master, you are well on your way.
@@ -144,6 +146,8 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 ### "Oculus of Persuasion" (52952)
 
+<a id="epic-item-52952"></a>
+
 1. akanon/"Rilgor Plegnog", say "Hail".
     - Player: "hail"
       - NPC say: Oh, what is it now. Can't you see that I am a very busy gnome?
@@ -170,16 +174,16 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 13. burningwood/"A Sarnak Imitator", hand "Illegible Tome" (52947) + "Gnomish Translating Device" (52945). Gives "Tattered Illegible Tome" (57918).
     - event_trade NPC say: How very interesting. This could prove to be invaluable to my work. I have long been researching a new and most powerful tool to help our kind. It is necessary in these most dangerous of times. Unfortunately, it appears as though time has taken its toll on this tome. It is incomplete. Seek the missing pages so that I may study it in depth. There should be ten, unless they have been destroyed by time and decay.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 52947, item2 = 52945}))`
-14. **Unresolved acquisition:** "Cryptic Page" (52933) has no graph or catalog producer.
-15. **Unresolved acquisition:** "Cryptic Page" (52934) has no graph or catalog producer.
-16. **Unresolved acquisition:** "Cryptic Page" (52935) has no graph or catalog producer.
-17. **Unresolved acquisition:** "Cryptic Page" (52936) has no graph or catalog producer.
-18. **Unresolved acquisition:** "Cryptic Page" (52937) has no graph or catalog producer.
-19. **Unresolved acquisition:** "Cryptic Page" (52938) has no graph or catalog producer.
-20. **Unresolved acquisition:** "Cryptic Page" (52939) has no graph or catalog producer.
-21. **Unresolved acquisition:** "Cryptic Page" (54308) has no graph or catalog producer.
-22. **Unresolved acquisition:** "Cryptic Page" (57916) has no graph or catalog producer.
-23. **Unresolved acquisition:** "Cryptic Page" (57923) has no graph or catalog producer.
+14. Collect ground spawn "Cryptic Page" (52933) in `charasis`.
+15. Collect ground spawn "Cryptic Page" (52934) in `sebilis`.
+16. Collect ground spawn "Cryptic Page" (52935) in `cazicthule`.
+17. Collect ground spawn "Cryptic Page" (52936) in `crystal`.
+18. Collect ground spawn "Cryptic Page" (52937) in `skyshrine`.
+19. Collect ground spawn "Cryptic Page" (52938) in `velketor`.
+20. Collect ground spawn "Cryptic Page" (52939) in `nadox`.
+21. Collect ground spawn "Cryptic Page" (54308) in `najena`.
+22. Collect ground spawn "Cryptic Page" (57916) in `fungusgrove`.
+23. Collect ground spawn "Cryptic Page" (57923) in `oot`.
 24. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). Requires Remove Traps.
 25. burningwood/"A Sarnak Imitator", hand "Complete Illegible Tome" (54267).
     - event_trade NPC say: As I suspected, this is something extraordinary. You must go speak to Maelin at once. It has been many moons since I have entered the Plane of Knowledge. He may well have some new information for me. Go at once and tell him I sent you.
@@ -198,7 +202,7 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 29. burningwood/"A Sarnak Imitator", say "Chest". Gives "Ornate Staff Chest" (52960).
     - Player: "chest"
       - Condition: `(e.message:findi("chest") and qglobals["ench_epic"] ~= nil and qglobals["ench_epic"] >= "3")`
-30. **Unresolved acquisition:** "Taste of Enticement" (52964) has no graph or catalog producer.
+30. Collect ground spawn "Taste of Enticement" (52964) in `mistmoore`.
 31. frozenshadow/"Advisor Svartmane", hand "Taste of Enticement" (52964). Gives "1st Piece of the Staff" (54289).
     - event_trade NPC say: I can't . . I . . .of course, I do not think that Tserrina has any need for this. I can't imagine that she would miss it at all. Please, take it.
       - Event guard: `(qglobals["ench_epic"] ~= nil and qglobals["ench_epic"] >= "2" and e.other:GetFaction(e.self) < 5)`
@@ -235,206 +239,61 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 43. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
     - event_trade NPC say: You have done well. Let it be known to all that you fight for the Rainkeeper. Go and continue the battle.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 13882}))`
-44. **Unresolved acquisition:** "Dragon Egg" (19139) has no graph or catalog producer.
+44. Forage "Dragon Egg" (19139) in `templeveeshan` or `westwastes`.
 45. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Dragon Egg" (19139). Produces "Dragon Egg Oil" (9664). Requires Brewing.
 46. Loot "Glimmering Oil" (52942) from "a greasy clockwork" (NPC 206048) in `poinnovation`. Drop cache: 100% chance per kill.
-47. bazaar/"Caerlyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
-    - event_item NPC say: Here you go. Bring this token back to me when you would like your bag back.
-      - Event guard: `(plugin::check_handin(\%itemcount, 93492 => 1))`
-48. bazaar/"Caerlyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
-    - event_item NPC say: Here you go. Here is your bag back.
-      - Event guard: `(plugin::check_handin(\%itemcount, 93667 => 1))`
-49. Buy "Firing Sheet" (16906) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 10 copper.
-50. Combine in appropriate tradeskill container: "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900). Requires Pottery.
-51. Combine in appropriate tradeskill container: "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery.
-52. Combine in appropriate tradeskill container: "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery.
-53. Buy "Large Bowl Sketch" (16963) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 760 copper.
-54. Combine in appropriate tradeskill container: "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery.
-55. Combine in appropriate tradeskill container: "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery.
-56. Buy "Concentrated Celestial Solvent" (96952) from "Gilliad Coldheart" (NPC 121050) in `crystal`. Base price: 372 copper.
-57. Kill citymist/"A Black Reaver".
-58. Spawns "a wraith" (npc:90064) via `citymist/a black reaver#event_death_complete`.
-59. Kill "a wraith" (NPC 90064) in `citymist` and loot "The Scent of Marr" (11802).
-60. Combine in "Mixing Bowl" (17906): "Concentrated Celestial Solvent" (96952), "The Scent of Marr" (11802). Produces "Celestial Essence" (9650). Requires Baking.
-61. Loot "Coalesced Mana" (97042) from "Assistant Gareth" (NPC 371049) in `skylance`. Drop cache: 66.667% chance per kill.
-62. Loot "White Wolf Skin" (13768) from "a snow wolf" (NPC 30014) in `everfrost`. Drop cache: 23.7188% chance per kill.
-63. Buy "Vial Sketch" (16968) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 300 copper.
-64. Combine in appropriate tradeskill container: "Water Flask" (13006), "White Wolf Skin" (13768), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery.
-65. Buy "High Quality Firing Sheet" (16908) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 40 copper.
-66. Combine in appropriate tradeskill container: "Unfired Poison Vial" (16885), "High Quality Firing Sheet" (16908). Produces "Poison Vial" (16965). Requires Pottery.
-67. Spawns "The Broodqueen" (npc:337254) via `broodlands/brood drone#event_death_complete`.
-68. Kill "The Broodqueen" (NPC 337254) in `broodlands` and loot "Ruby" (10035).
-69. Combine in "Spell Research Kit" (93492): "Celestial Essence" (9650), "Coalesced Mana" (97042), "Poison Vial" (16965), "Ruby" (10035). Produces "Vial of Purified Mana" (10254). Requires Research.
-70. **Unresolved acquisition:** "Glow Lichen" (14925) has no graph or catalog producer.
-71. Loot "Essence of Sunlight" (22527) from "a faerie dragon" (NPC 119073) in `wakening`. Drop cache: 55% chance per kill.
-72. **Unresolved acquisition:** "Abysmal Moonwater" (54298) has no graph or catalog producer.
-73. Combine in appropriate tradeskill container: "Vial of Purified Mana" (10254), "Glow Lichen" (14925), "Essence of Sunlight" (22527), "Abysmal Moonwater" (54298). Produces "Glowing Concoction" (52943). Requires Brewing.
-74. Buy "Medicine Bag" (17901) from "Rendallen Ironforge" (NPC 2071) in `qeynos2`. Base price: 1,000 copper.
-75. Buy "Glaze Lacquer" (29355) from "Elisha Dirtyshoes" (NPC 202134) in `poknowledge`. Base price: 8,000 copper.
-76. Buy "Prism Shard" (65469) from "Elisha Dirtyshoes" (NPC 202134) in `poknowledge`. Base price: 5,000 copper.
-77. Combine in "Medicine Bag" (17901): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Alchemy.
-78. Combine in appropriate tradeskill container: "Dragon Egg Oil" (9664), "Glimmering Oil" (52942), "Glowing Concoction" (52943), "Prismatic Dye" (65472). Produces "Incandescent Oil" (57924). Requires Brewing.
-79. Loot "Sullied Gold Filigree" (52963) from "an enticing potameid" (NPC 280070) in `natimbi`. Drop cache: 85.106% chance per kill.
-80. hohonora/"Anthone Chapin", hand "Sullied Gold Filigree" (52963). Gives "Purified Gold Filigree" (52953).
-81. Combine in "Ornate Staff Chest" (52960): "1st Piece of the Staff" (54289), "2nd Piece of the Staff" (54310), "3rd Piece of the Staff" (54299), "4th Piece of the Staff" (54284), "Ornate Staff Topper" (52961), "All-Seeing Eye" (54293), "Incandescent Oil" (57924), "Purified Gold Filigree" (52953). Produces "Latched Ornate Chest" (52966). Requires Remove Traps.
-82. burningwood/"A Sarnak Imitator", hand "Latched Ornate Chest" (52966). Gives "Oculus of Persuasion" (52952).
+47. Buy "Spell Research Kit" (93492) from "Eric Rasumus" (NPC 202375) in `poknowledge`. Base price: 10,000 copper.
+48. Buy "Firing Sheet" (16906) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 10 copper.
+49. Loot "Small Block of Clay" (16900) from "a muddite recordkeeper" (NPC 16003) in `beholder`. Drop cache: 5.2127% chance per kill.
+50. Combine in appropriate tradeskill container: "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery.
+51. Combine in appropriate tradeskill container: "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery.
+52. Buy "Large Bowl Sketch" (16963) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 760 copper.
+53. Combine in appropriate tradeskill container: "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery.
+54. Combine in appropriate tradeskill container: "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery.
+55. Buy "Concentrated Celestial Solvent" (96952) from "Gilliad Coldheart" (NPC 121050) in `crystal`. Base price: 372 copper.
+56. Kill citymist/"A Black Reaver".
+57. Spawns "a wraith" (npc:90064) via `citymist/a black reaver#event_death_complete`.
+58. Kill "a wraith" (NPC 90064) in `citymist` and loot "The Scent of Marr" (11802).
+59. Combine in "Mixing Bowl" (17906): "Concentrated Celestial Solvent" (96952), "The Scent of Marr" (11802). Produces "Celestial Essence" (9650). Requires Baking.
+60. Loot "Coalesced Mana" (97042) from "Assistant Gareth" (NPC 371049) in `skylance`. Drop cache: 66.667% chance per kill.
+61. Loot "White Wolf Skin" (13768) from "a snow wolf" (NPC 30014) in `everfrost`. Drop cache: 23.7188% chance per kill.
+62. Buy "Vial Sketch" (16968) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 300 copper.
+63. Combine in appropriate tradeskill container: "Water Flask" (13006), "White Wolf Skin" (13768), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery.
+64. Buy "High Quality Firing Sheet" (16908) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 40 copper.
+65. Combine in appropriate tradeskill container: "Unfired Poison Vial" (16885), "High Quality Firing Sheet" (16908). Produces "Poison Vial" (16965). Requires Pottery.
+66. Spawns "The Broodqueen" (npc:337254) via `broodlands/brood drone#event_death_complete`.
+67. Kill "The Broodqueen" (NPC 337254) in `broodlands` and loot "Ruby" (10035).
+68. Combine in "Spell Research Kit" (93492): "Celestial Essence" (9650), "Coalesced Mana" (97042), "Poison Vial" (16965), "Ruby" (10035). Produces "Vial of Purified Mana" (10254). Requires Research.
+69. Forage "Glow Lichen" (14925) in `nektulos`.
+70. Loot "Essence of Sunlight" (22527) from "a faerie dragon" (NPC 119073) in `wakening`. Drop cache: 55% chance per kill.
+71. Collect ground spawn "Abysmal Moonwater" (54298) in `abysmal`.
+72. Combine in appropriate tradeskill container: "Vial of Purified Mana" (10254), "Glow Lichen" (14925), "Essence of Sunlight" (22527), "Abysmal Moonwater" (54298). Produces "Glowing Concoction" (52943). Requires Brewing.
+73. Buy "Medicine Bag" (17901) from "Rendallen Ironforge" (NPC 2071) in `qeynos2`. Base price: 1,000 copper.
+74. Buy "Glaze Lacquer" (29355) from "Elisha Dirtyshoes" (NPC 202134) in `poknowledge`. Base price: 8,000 copper.
+75. Buy "Prism Shard" (65469) from "Elisha Dirtyshoes" (NPC 202134) in `poknowledge`. Base price: 5,000 copper.
+76. Combine in "Medicine Bag" (17901): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Alchemy.
+77. Combine in appropriate tradeskill container: "Dragon Egg Oil" (9664), "Glimmering Oil" (52942), "Glowing Concoction" (52943), "Prismatic Dye" (65472). Produces "Incandescent Oil" (57924). Requires Brewing.
+78. Loot "Sullied Gold Filigree" (52963) from "an enticing potameid" (NPC 280070) in `natimbi`. Drop cache: 85.106% chance per kill.
+79. hohonora/"Anthone Chapin", hand "Sullied Gold Filigree" (52963). Gives "Purified Gold Filigree" (52953).
+80. Combine in "Ornate Staff Chest" (52960): "1st Piece of the Staff" (54289), "2nd Piece of the Staff" (54310), "3rd Piece of the Staff" (54299), "4th Piece of the Staff" (54284), "Ornate Staff Topper" (52961), "All-Seeing Eye" (54293), "Incandescent Oil" (57924), "Purified Gold Filigree" (52953). Produces "Latched Ornate Chest" (52966). Requires Remove Traps.
+81. burningwood/"A Sarnak Imitator", hand "Latched Ornate Chest" (52966). Gives "Oculus of Persuasion" (52952).
     - event_trade NPC say: You have done well, my student. The staff is now complete. In order to stand up to the true fury of discord, it will need purifying, but even in this state it shall protect you well.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 52966}))`
     - event_trade NPC message: You have gained 5 ability points!
-
-**Unresolved graph dependencies:**
-- Cycle while acquiring "Spell Research Kit" (93492)
-- Cycle while acquiring "Block of Clay" (16901)
 
 ## Epic 2.0
 
 ### "Staff of Eternal Eloquence" (52962)
 
-1. akanon/"Rilgor Plegnog", say "Hail".
-    - Player: "hail"
-      - NPC say: Oh, what is it now. Can't you see that I am a very busy gnome?
-      - Condition: `(e.message:findi("hail"))`
-2. Loot "Tattered Incantation" (57919) from "Cipheron" (NPC 300031) in `wallofslaughter`. Drop cache: 100% chance per kill.
-3. Loot "Noxious Secretion" (52951) from "Withering Murkglider" (NPC 303078) in `causeway`. Drop cache: 100% chance per kill.
-4. nedaria/"Priestess Rakhu", hand "Tattered Incantation" (57919) + "Noxious Secretion" (52951). Gives "Channeling Crystal" (57920).
+<a id="epic-item-52962"></a>
+
+**Earlier reward routes required by this graph path:** ["Oculus of Persuasion" (52952)](#epic-item-52952).
+Revisit those instructions if another copy of a consumed item is needed.
+
+1. Loot "Tattered Incantation" (57919) from "Cipheron" (NPC 300031) in `wallofslaughter`. Drop cache: 100% chance per kill.
+2. Loot "Noxious Secretion" (52951) from "Withering Murkglider" (NPC 303078) in `causeway`. Drop cache: 100% chance per kill.
+3. nedaria/"Priestess Rakhu", hand "Tattered Incantation" (57919) + "Noxious Secretion" (52951). Gives "Channeling Crystal" (57920).
     - event_trade NPC emote: murmurs in a strange tongue as she scans the incantation. She draws an intricate design along different portions of the staff, using the strange secretion, from which rises a pale green smoke. At last she stops and opens her eyes. 'Perfect. This tool has been consecrated and protected in the best way I know. There is but one thing left to do, for the staff is ready but not yet tested. Take this channeling crystal and venture into the land riddled with discord. When you encounter great evil there, you will recognize the energy of discord. Channel this energy into your staff, and it will become something more powerful than this world has seen. I wish you luck.
       - Event guard: `(qglobals["ench_epic"] == "9" and item_lib.check_turn_in(e.trade, {item1 = 57919,item2 = 52951}))`
-5. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
-6. Loot "Crumbling Tome" (54313) from "A Shissar Lorekeeper" (NPC 162184) in `ssratemple`. Drop cache: 100% chance per kill.
-7. ssratemple/"A Soriz Imitator", hand "Crumbling Tome" (54313). Gives "Illegible Tome" (52947).
-    - event_trade NPC say:  'It is remarkable that you have found it! Unfortunately, it appears to be written in some language so archaic I cannot even begin to decipher it. Please, you must see Rilgor about a translating device. I will stay here and see if I can find anything further that would be of use.' 
-      - Event guard: `(qglobals["EnchPre"] == "1" and item_lib.check_turn_in(e.trade, {item1 = 54313}))`
-8. akanon/"Rilgor Plegnog", say "Insidious". Gives "Compacting Satchel" (54303).
-    - Player: "insidious"
-      - NPC say: 'Yes indeed, it is lovely. Fetch me a set and I just might consider undertaking that translating device of yours. Take this sack. I am quite interested in the halo, sleeves, manacle, gloves, pantaloons, and slippers. As I said, my robe is still serving me quite nicely, so no need to worry about that.' 
-      - Condition: `(e.message:findi("insidious") and e.other:HasItem(52947))`
-      - Linked from "compensation" (explicit prompt).
-9. Loot "Fine Insidious Halo" (54384) from "a forsaken revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2% chance per kill.
-10. Loot "Fine Insidious Sleeves" (54385) from "a forsaken revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.08% chance per kill.
-11. Loot "Fine Insidious Manacle" (54386) from "a forsaken revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.0914% chance per kill.
-12. Loot "Fine Insidious Gloves" (54387) from "a forsaken revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.2398% chance per kill.
-13. Loot "Fine Insidious Pantaloons" (54388) from "a forsaken revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.2284% chance per kill.
-14. Loot "Fine Insidious Slippers" (54389) from "a forsaken revenant" (NPC 186146) in `hateplaneb`. Drop cache: 2.0685% chance per kill.
-15. Combine in "Compacting Satchel" (54303): "Fine Insidious Halo" (54384), "Fine Insidious Sleeves" (54385), "Fine Insidious Manacle" (54386), "Fine Insidious Gloves" (54387), "Fine Insidious Pantaloons" (54388), "Fine Insidious Slippers" (54389). Produces "Insidious Bundle" (54317). Requires Remove Traps.
-16. akanon/"Rilgor Plegnog", hand "Insidious Bundle" (54317). Gives "Gnomish Translating Device" (52945).
-    - event_trade NPC say: 'Very fine it is. So kind of you to fulfill a dream of mine. I believe this device should be able to handle just about anything you'd need. In fact, if I were you I would take it along to your master right away.' 
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 54317}))`
-17. burningwood/"A Sarnak Imitator", hand "Illegible Tome" (52947) + "Gnomish Translating Device" (52945). Gives "Tattered Illegible Tome" (57918).
-    - event_trade NPC say: How very interesting. This could prove to be invaluable to my work. I have long been researching a new and most powerful tool to help our kind. It is necessary in these most dangerous of times. Unfortunately, it appears as though time has taken its toll on this tome. It is incomplete. Seek the missing pages so that I may study it in depth. There should be ten, unless they have been destroyed by time and decay.
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 52947, item2 = 52945}))`
-18. **Unresolved acquisition:** "Cryptic Page" (52933) has no graph or catalog producer.
-19. **Unresolved acquisition:** "Cryptic Page" (52934) has no graph or catalog producer.
-20. **Unresolved acquisition:** "Cryptic Page" (52935) has no graph or catalog producer.
-21. **Unresolved acquisition:** "Cryptic Page" (52936) has no graph or catalog producer.
-22. **Unresolved acquisition:** "Cryptic Page" (52937) has no graph or catalog producer.
-23. **Unresolved acquisition:** "Cryptic Page" (52938) has no graph or catalog producer.
-24. **Unresolved acquisition:** "Cryptic Page" (52939) has no graph or catalog producer.
-25. **Unresolved acquisition:** "Cryptic Page" (54308) has no graph or catalog producer.
-26. **Unresolved acquisition:** "Cryptic Page" (57916) has no graph or catalog producer.
-27. **Unresolved acquisition:** "Cryptic Page" (57923) has no graph or catalog producer.
-28. Combine in "Tattered Illegible Tome" (57918): "Cryptic Page" (52933), "Cryptic Page" (52934), "Cryptic Page" (52935), "Cryptic Page" (52936), "Cryptic Page" (52937), "Cryptic Page" (52938), "Cryptic Page" (52939), "Cryptic Page" (54308), "Cryptic Page" (57916), "Cryptic Page" (57923). Produces "Complete Illegible Tome" (54267). Requires Remove Traps.
-29. burningwood/"A Sarnak Imitator", hand "Complete Illegible Tome" (54267).
-    - event_trade NPC say: As I suspected, this is something extraordinary. You must go speak to Maelin at once. It has been many moons since I have entered the Plane of Knowledge. He may well have some new information for me. Go at once and tell him I sent you.
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 54267}))`
-30. poknowledge/"Grand Librarian Maelin", say "Jeb Lumsed Sent Me". Gives "Note to Lobaen" (52950).
-    - Player: "jeb lumsed sent me"
-      - NPC say: This is from Jeb, you say? I will set my best researchers on it at once. We have recently made some discoveries that he should be aware of. Here, take this note down to Lobaen, she will retrieve them for you.
-      - Condition: `(qglobals["ench_epic"] == "2" and e.message:findi("Jeb Lumsed sent me"))`
-      - Linked from "find an egg" (sequence only; unverified).
-31. poknowledge/"Illusionist Lobaen", hand "Note to Lobaen" (52950). Gives "Sealed Documents" (52959).
-    - event_trade NPC say: It is not often that I receive a request from Maelin himself. Please, take these and be most careful.
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 52950}))`
-32. burningwood/"A Sarnak Imitator", hand "Sealed Documents" (52959).
-    - event_trade NPC say: Interesting indeed. I see that I was not wrong in my instinct to begin this as quickly as possible. I have created a list of the items that you will need to begin the construction of this tool. Mind you, it will not be a simple thing. When you have gathered them all return to me. Would you like a [chest] to carry them in?
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 52959}))`
-33. burningwood/"A Sarnak Imitator", say "Chest". Gives "Ornate Staff Chest" (52960).
-    - Player: "chest"
-      - Condition: `(e.message:findi("chest") and qglobals["ench_epic"] ~= nil and qglobals["ench_epic"] >= "3")`
-34. **Unresolved acquisition:** "Taste of Enticement" (52964) has no graph or catalog producer.
-35. frozenshadow/"Advisor Svartmane", hand "Taste of Enticement" (52964). Gives "1st Piece of the Staff" (54289).
-    - event_trade NPC say: I can't . . I . . .of course, I do not think that Tserrina has any need for this. I can't imagine that she would miss it at all. Please, take it.
-      - Event guard: `(qglobals["ench_epic"] ~= nil and qglobals["ench_epic"] >= "2" and e.other:GetFaction(e.self) < 5)`
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 52964}))`
-36. Loot "2nd Piece of the Staff" (54310) from "the yrendan scarab" (NPC 201422) in `pojustice`. Drop cache: 100% chance per kill.
-37. Loot "3rd Piece of the Staff" (54299) from "Chavoor the Trickster" (NPC 290057) in `vxed`. Drop cache: 100% chance per kill.
-38. Loot "4th Piece of the Staff" (54284) from "War Caller Kaavi" (NPC 301042) in `bloodfields`. Drop cache: 100% chance per kill.
-39. Loot "Ornate Staff Topper" (52961) from "Faleniel of Darkwater" (NPC 125070) in `sirens`. Drop cache: 100% chance per kill.
-40. Loot "All-Seeing Eye" (54293) from "All-Seeing Eye" (NPC 126374) in `mischiefplane`. Drop cache: 100% chance per kill.
-41. potranquility/"Elder Fuirstel", say "Hail". Sets `pop_cod_final` to `1`.
-    - Player: "hail"
-      - NPC message: Elder Fuirstel slowly turns towards you. You can feel the heat radiating from his face. The warding that envelopes your body reaches out and begins to surround him. You immediately see improvement in his condition. The pus filled sores covering his face and his burning fever start to vanish.
-      - NPC say: Thank you friend. I no longer feel the touch of death on my soul. However I do feel the grasp on Bertoxxulous, his plague is still upon me but not spreading throughout my body. I fear the only way to remove this pox would be to weaken Bertoxxulous enough that his curse would be lifted. I now renounce my faith in Bertoxxulous, please fell this god so that I may continue and learn from my mistakes.
-      - NPC message: You receive a character flag!
-      - Condition: `($text=~/hail/i && $pop_pod_alder_fuirstel == 1 && $pop_pod_grimmus_planar_projection == 1 && $pop_pod_elder_fuirstel == undef)`
-42. poknowledge/"Aid Grimel", say "Skill In Brewing". Gives "Portable Drink Barrel" (17179).
-    - Player: "skill in brewing"
-      - NPC say: I bet you could make a wicked brew! However I am forced to drink a refreshing drink while out adventuring. I do have this powder that will give the best drinks quite a bite though. Mix the powder in with two Kaladim Constitutionals and a flask of pure water. If you need more dust just ask for it! Put three twice brewed constitutionals and the signet in this drink barrel. As hard as drink barrels are to get these days, you need to return it to me along with the drink you create with it.
-        - Reply guard: `($client->GetRawSkill(65) >= 220)`
-      - NPC say: You do not seem to be skilled enough.
-        - Reply guard: ``
-      - Condition: ``
-      - Condition: `(defined($qglobals{pop_cod_final}) && ($qglobals{pop_cod_final} == 1))`
-      - Condition: `(($text=~/skill in brewing/i) && plugin::check_hasitem($client, 16249))`
-      - Linked from "versed in the art of smithing" (sequence only; unverified).
-43. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
-    - Player: "battle the undead"
-      - NPC say: Then you shall venture to Toxxulia Forest. There has been an increase in skeleton sightings lately. I do not know their origin, but I believe that your efforts will reduce their numbers! Take this box. Return it to me when you have filled it with the bones of these undead creatures and combined it. May Quellious' light guide you.
-      - Condition: `(e.message:findi("battle the undead"))`
-      - Linked from "new acolyte of peace" (explicit prompt).
-44. Loot "Useless Cloth Cap" (13894) from "a kobold scout" (NPC 38035) in `tox`. Drop cache: 20% chance per kill.
-45. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-46. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). Requires Remove Traps.
-47. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
-    - event_trade NPC say: You have done well. Let it be known to all that you fight for the Rainkeeper. Go and continue the battle.
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 13882}))`
-48. **Unresolved acquisition:** "Dragon Egg" (19139) has no graph or catalog producer.
-49. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Dragon Egg" (19139). Produces "Dragon Egg Oil" (9664). Requires Brewing.
-50. Loot "Glimmering Oil" (52942) from "a greasy clockwork" (NPC 206048) in `poinnovation`. Drop cache: 100% chance per kill.
-51. bazaar/"Caerlyna", hand "Spell Research Kit" (93492). Gives "Spell Research Kit Token" (93667).
-    - event_item NPC say: Here you go. Bring this token back to me when you would like your bag back.
-      - Event guard: `(plugin::check_handin(\%itemcount, 93492 => 1))`
-52. bazaar/"Caerlyna", hand "Spell Research Kit Token" (93667). Gives "Spell Research Kit" (93492).
-    - event_item NPC say: Here you go. Here is your bag back.
-      - Event guard: `(plugin::check_handin(\%itemcount, 93667 => 1))`
-53. Buy "Firing Sheet" (16906) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 10 copper.
-54. Combine in appropriate tradeskill container: "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900). Requires Pottery.
-55. Combine in appropriate tradeskill container: "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery.
-56. Combine in appropriate tradeskill container: "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery.
-57. Buy "Large Bowl Sketch" (16963) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 760 copper.
-58. Combine in appropriate tradeskill container: "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery.
-59. Combine in appropriate tradeskill container: "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery.
-60. Buy "Concentrated Celestial Solvent" (96952) from "Gilliad Coldheart" (NPC 121050) in `crystal`. Base price: 372 copper.
-61. Kill citymist/"A Black Reaver".
-62. Spawns "a wraith" (npc:90064) via `citymist/a black reaver#event_death_complete`.
-63. Kill "a wraith" (NPC 90064) in `citymist` and loot "The Scent of Marr" (11802).
-64. Combine in "Mixing Bowl" (17906): "Concentrated Celestial Solvent" (96952), "The Scent of Marr" (11802). Produces "Celestial Essence" (9650). Requires Baking.
-65. Loot "Coalesced Mana" (97042) from "Assistant Gareth" (NPC 371049) in `skylance`. Drop cache: 66.667% chance per kill.
-66. Loot "White Wolf Skin" (13768) from "a snow wolf" (NPC 30014) in `everfrost`. Drop cache: 23.7188% chance per kill.
-67. Buy "Vial Sketch" (16968) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 300 copper.
-68. Combine in appropriate tradeskill container: "Water Flask" (13006), "White Wolf Skin" (13768), "Small Block of Clay" (16900), "Vial Sketch" (16968). Produces "Unfired Poison Vial" (16885). Requires Pottery.
-69. Buy "High Quality Firing Sheet" (16908) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 40 copper.
-70. Combine in appropriate tradeskill container: "Unfired Poison Vial" (16885), "High Quality Firing Sheet" (16908). Produces "Poison Vial" (16965). Requires Pottery.
-71. Spawns "The Broodqueen" (npc:337254) via `broodlands/brood drone#event_death_complete`.
-72. Kill "The Broodqueen" (NPC 337254) in `broodlands` and loot "Ruby" (10035).
-73. Combine in "Spell Research Kit" (93492): "Celestial Essence" (9650), "Coalesced Mana" (97042), "Poison Vial" (16965), "Ruby" (10035). Produces "Vial of Purified Mana" (10254). Requires Research.
-74. **Unresolved acquisition:** "Glow Lichen" (14925) has no graph or catalog producer.
-75. Loot "Essence of Sunlight" (22527) from "a faerie dragon" (NPC 119073) in `wakening`. Drop cache: 55% chance per kill.
-76. **Unresolved acquisition:** "Abysmal Moonwater" (54298) has no graph or catalog producer.
-77. Combine in appropriate tradeskill container: "Vial of Purified Mana" (10254), "Glow Lichen" (14925), "Essence of Sunlight" (22527), "Abysmal Moonwater" (54298). Produces "Glowing Concoction" (52943). Requires Brewing.
-78. Buy "Medicine Bag" (17901) from "Rendallen Ironforge" (NPC 2071) in `qeynos2`. Base price: 1,000 copper.
-79. Buy "Glaze Lacquer" (29355) from "Elisha Dirtyshoes" (NPC 202134) in `poknowledge`. Base price: 8,000 copper.
-80. Buy "Prism Shard" (65469) from "Elisha Dirtyshoes" (NPC 202134) in `poknowledge`. Base price: 5,000 copper.
-81. Combine in "Medicine Bag" (17901): "Glaze Lacquer" (29355), "Prism Shard" (65469). Produces "Prismatic Dye" (65472). Requires Alchemy.
-82. Combine in appropriate tradeskill container: "Dragon Egg Oil" (9664), "Glimmering Oil" (52942), "Glowing Concoction" (52943), "Prismatic Dye" (65472). Produces "Incandescent Oil" (57924). Requires Brewing.
-83. Loot "Sullied Gold Filigree" (52963) from "an enticing potameid" (NPC 280070) in `natimbi`. Drop cache: 85.106% chance per kill.
-84. hohonora/"Anthone Chapin", hand "Sullied Gold Filigree" (52963). Gives "Purified Gold Filigree" (52953).
-85. Combine in "Ornate Staff Chest" (52960): "1st Piece of the Staff" (54289), "2nd Piece of the Staff" (54310), "3rd Piece of the Staff" (54299), "4th Piece of the Staff" (54284), "Ornate Staff Topper" (52961), "All-Seeing Eye" (54293), "Incandescent Oil" (57924), "Purified Gold Filigree" (52953). Produces "Latched Ornate Chest" (52966). Requires Remove Traps.
-86. burningwood/"A Sarnak Imitator", hand "Latched Ornate Chest" (52966). Gives "Oculus of Persuasion" (52952).
-    - event_trade NPC say: You have done well, my student. The staff is now complete. In order to stand up to the true fury of discord, it will need purifying, but even in this state it shall protect you well.
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 52966}))`
-    - event_trade NPC message: You have gained 5 ability points!
-87. Combine in "Channeling Crystal" (57920): "Globe of Discordant Energy" (47100), "Oculus of Persuasion" (52952). Produces "Staff of Eternal Eloquence" (52962). Requires Remove Traps.
-
-**Unresolved graph dependencies:**
-- Cycle while acquiring "Spell Research Kit" (93492)
-- Cycle while acquiring "Block of Clay" (16901)
+4. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
+5. Combine in "Channeling Crystal" (57920): "Globe of Discordant Energy" (47100), "Oculus of Persuasion" (52952). Produces "Staff of Eternal Eloquence" (52962). Requires Remove Traps.

@@ -428,8 +428,10 @@ def _float(raw: str) -> float:
 
 def _pairs(raw: Iterable[object] | None) -> list[tuple[int, float]]:
     found: list[tuple[int, float]] = []
-    for entry in raw or ():
-        if isinstance(entry, (list, tuple)) and entry and isinstance(entry[0], int):
+    if not raw:
+        return found
+    for entry in raw:
+        if entry and isinstance(entry, (list, tuple)) and len(entry) > 0 and isinstance(entry[0], int):
             second = entry[1] if len(entry) > 1 else 100.0
             pct = float(second) if isinstance(second, (int, float)) else 100.0
             found.append((entry[0], pct))
@@ -457,7 +459,9 @@ def write_drops(book: DropBook, path: str) -> None:
                     "name": row.get("name") or "",
                     "level": int(row.get("level") or 0),
                     "items": [
-                        [int(item_id), float(pct)] for item_id, pct in _pairs(row.get("items"))
+                        [int(item_id), float(pct)] for item_id, pct in _pairs(
+                            row.get("items"),
+                        )
                     ],
                 },
                 ensure_ascii=True,

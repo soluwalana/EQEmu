@@ -6,6 +6,8 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 ### "Scythe of the Shadowed Soul" (20544)
 
+<a id="epic-item-20544"></a>
+
 1. Loot "Silver Disc" (20938) from "an azarack" (NPC 71031) in `airplane`. Drop cache: 14.2857% chance per kill.
 2. Loot "Spiroc Feathers" (20782) from "an avenging gazer" (NPC 71027) in `airplane`. Drop cache: 10.626% chance per kill.
 3. Kill airplane/"A Soul Carrier".
@@ -39,6 +41,8 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 ### "Soulwhisper" (62581)
 
+<a id="epic-item-62581"></a>
+
 1. Spawns "Tarlang (Active)" (npc:303083) via `causeway/tarlang#hail`.
 2. Kill "Tarlang (Active)" (NPC 303083) in `causeway` and loot "Tarlang's Head" (55855).
 3. natimbi/"Whiahdi", hand "Tarlang's Head" (55855). Gives "Soulwhisper" (62581).
@@ -50,17 +54,16 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 ### "Deathwhisper" (64067)
 
+<a id="epic-item-64067"></a>
+
+**Earlier reward routes required by this graph path:** ["Soulwhisper" (62581)](#epic-item-62581).
+Revisit those instructions if another copy of a consumed item is needed.
+
 1. Spawns "arl" (npc:336242) via `dranik/discord fluctuation#event_proximity_say`.
 2. Kill "arl" (NPC 336242) in `dranik` and loot "Staff Piece Number Two" (55940).
 3. Kill "gor" (NPC 336243) in `dranik` and loot "Staff Piece Number Three" (55932).
 4. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
-5. Spawns "Tarlang (Active)" (npc:303083) via `causeway/tarlang#hail`.
-6. Kill "Tarlang (Active)" (NPC 303083) in `causeway` and loot "Tarlang's Head" (55855).
-7. natimbi/"Whiahdi", hand "Tarlang's Head" (55855). Gives "Soulwhisper" (62581).
-    - event_item NPC say: Take this weapon for helping me. I regret giving away a weapon of such power, but having it near me was most unsettling. Do not ask how I obtained it.
-      - Event guard: `((defined($qglobals{Soulwhisper}) && ($qglobals{Soulwhisper} == 3)) && plugin::check_handin(\%itemcount, 55855 => 1))`
-    - event_item NPC message: You have gained 5 ability points!
-8. natimbi/"Whiahdi", hand "Staff Piece Number Two" (55940) + "Staff Piece Number Three" (55932) + "Globe of Discordant Energy" (47100) + "Soulwhisper" (62581). Gives "Deathwhisper" (64067).
+5. natimbi/"Whiahdi", hand "Staff Piece Number Two" (55940) + "Staff Piece Number Three" (55932) + "Globe of Discordant Energy" (47100) + "Soulwhisper" (62581). Gives "Deathwhisper" (64067).
     - event_item NPC say: It is against my better judgment to rebuild this staff, but I agreed to help you, if you helped me.
       - Event guard: `(plugin::check_handin(\%itemcount, 55940 => 1, 55932 => 1, 47100 => 1, 62581 => 1))`
     - event_item NPC emote: takes the staff pieces from you and sets them down on the ground. She waves her ghostly hands over the pieces and they begin to glow. A bright, orange flame engulfs the pieces as they begin to join, forming the staff. A bone-chilling shriek fills your ears. You look down to see the staff fully formed. 'Take the staff and leave. I have done something that I should not have done this day.'

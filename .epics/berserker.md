@@ -6,6 +6,8 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 ### "Kerasian Axe of Ire" (68299)
 
+<a id="epic-item-68299"></a>
+
 1. fieldofbone/"Berserker-S Image", say "Hail".
     - Player: "hail"
       - NPC say: . . . [return]
@@ -87,57 +89,42 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 ### "Raging Taelosian Alloy Axe" (18398)
 
+<a id="epic-item-18398"></a>
+
+**Earlier reward routes required by this graph path:** ["Kerasian Axe of Ire" (68299)](#epic-item-68299).
+Revisit those instructions if another copy of a consumed item is needed.
+
 1. sebilis/"Berserkerepic 1 5", say "Protector_Timer". Gives "Taelosian Alloy Blood Axe" (18976).
-2. abysmal/"Teekan Opousbabolaoi", hand "Taelosian Alloy Blood Axe" (18976) + "Raging Soul Shard" (11999).
-    - event_trade NPC emote: takes the axe and the Soul Gem and begins the chant in low, near inaudible tones. Smoke begins to swirl around the axe as the orb twists and writhes like a serpent around the haft of the axe, melding itself to the dark wooden handle. When the smoke clears, she hands the axe back to you and says, 'This should be what you're looking for! Be sure to show this to Keras and give him my regards. Tell him he should stop by and visit sometime!
-      - Event guard: `qglobals["berserk_epic"] == "5" and item_lib.check_turn_in(e.trade, {item1 = 18976, item2 = 11999})`
-    - event_trade NPC message: You have gained 5 ability points!
-3. halas/"Shanis Macdarren", say "Hail". Gives "Raging Soul Shard" (11999).
+2. halas/"Shanis Macdarren", say "Hail". Gives "Raging Soul Shard" (11999).
     - Player: "hail"
       - NPC emote: looks around briefly, 'It's a great day out here today, it almost makes me want to be out on the tundra enjoying it!' She continues to admire the day for a moment more. 'What can I help you with today? What's that? Something about your soul gem? Hmm . . . Let's see what we can do here. Here you go, but please take care of this one, they are not easy to create. You may wish to seek out Keras. He will be interested in one so young as you who has begun the process of learning to control and focus their rage.'
         - Reply guard: `(defined $qglobals{berserk_epic} && $qglobals{berserk_epic} >= 1)`
       - NPC say: Why, as I live and breathe this frigid air, have ye come to join our fine guild of berserkers?  The Bloodrage Brawlers are a fearsome collection of berserkers, indeed, me friend.  If ye be interested in joinin' up with us, read the note in yer inventory and then hand it to me!  Oh, and don't ye be forgetin' to ask me about that [tome] in yer inventory if ye want ta learn to use it!
         - Reply guard: `($qglobals{berserk_epic} == undef)`
       - Condition: `($text =~ /hail/i)`
-
-**Unresolved graph dependencies:**
-- Cycle while acquiring "Raging Soul Shard" (11999)
-**Unverified final reward:** "Raging Taelosian Alloy Axe" (18398)
+3. abysmal/"Teekan Opousbabolaoi", hand "Taelosian Alloy Blood Axe" (18976) + "Raging Soul Shard" (11999). Gives "Raging Taelosian Alloy Axe" (18398).
+    - event_trade NPC emote: takes the axe and the Soul Gem and begins the chant in low, near inaudible tones. Smoke begins to swirl around the axe as the orb twists and writhes like a serpent around the haft of the axe, melding itself to the dark wooden handle. When the smoke clears, she hands the axe back to you and says, 'This should be what you're looking for! Be sure to show this to Keras and give him my regards. Tell him he should stop by and visit sometime!
+      - Event guard: `qglobals["berserk_epic"] == "5" and item_lib.check_turn_in(e.trade, {item1 = 18976, item2 = 11999})`
+    - event_trade NPC message: You have gained 5 ability points!
 
 ## Epic 2.0
 
 ### "Vengeful Taelosian Blood Axe" (18609)
 
-1. dranik/"Grithyank Avlonnon", say "Hail".
-    - Player: "hail"
-      - NPC say: Yes outlander? What would you have of me now?' You notice his eyes widen further upon glancing over your improved axe. 'So you managed to successfully lace the Shadowed Bronze into the haft as I spoke of. Very good. I also notice this extra moonstone that wasn't here before. As to its purpose I can not speak of.' Running his sinewy finger carefully across the edge he says, 'But the edge here could still use some sharpening. Blades such as this though can not be sharpened by a normal means. No, a blade this strong will require naught but a portion of Discordant matter itself. It has been said that this matter can sometimes be found captured within the tears of those that have been tortured. Return to me only when you have succeeded in finding one. Then we will see how else I can aid thee.
-        - Reply guard: `(e.other:HasItem(20072))`
-      - Condition: `(qglobals["berserk_epic"] == "9")`
-      - Condition: `(e.message:findi("hail"))`
-2. Loot "Lightning Core" (72029) from "a lightning warrior stormer" (NPC 317083) in `anguish`. Drop cache: 0.4998% chance per kill.
-3. sebilis/"Berserkerepic 1 5", say "Protector_Timer". Gives "Taelosian Alloy Blood Axe" (18976).
-4. abysmal/"Teekan Opousbabolaoi", hand "Taelosian Alloy Blood Axe" (18976) + "Raging Soul Shard" (11999).
-    - event_trade NPC emote: takes the axe and the Soul Gem and begins the chant in low, near inaudible tones. Smoke begins to swirl around the axe as the orb twists and writhes like a serpent around the haft of the axe, melding itself to the dark wooden handle. When the smoke clears, she hands the axe back to you and says, 'This should be what you're looking for! Be sure to show this to Keras and give him my regards. Tell him he should stop by and visit sometime!
-      - Event guard: `qglobals["berserk_epic"] == "5" and item_lib.check_turn_in(e.trade, {item1 = 18976, item2 = 11999})`
-    - event_trade NPC message: You have gained 5 ability points!
-5. halas/"Shanis Macdarren", say "Hail". Gives "Raging Soul Shard" (11999).
-    - Player: "hail"
-      - NPC emote: looks around briefly, 'It's a great day out here today, it almost makes me want to be out on the tundra enjoying it!' She continues to admire the day for a moment more. 'What can I help you with today? What's that? Something about your soul gem? Hmm . . . Let's see what we can do here. Here you go, but please take care of this one, they are not easy to create. You may wish to seek out Keras. He will be interested in one so young as you who has begun the process of learning to control and focus their rage.'
-        - Reply guard: `(defined $qglobals{berserk_epic} && $qglobals{berserk_epic} >= 1)`
-      - NPC say: Why, as I live and breathe this frigid air, have ye come to join our fine guild of berserkers?  The Bloodrage Brawlers are a fearsome collection of berserkers, indeed, me friend.  If ye be interested in joinin' up with us, read the note in yer inventory and then hand it to me!  Oh, and don't ye be forgetin' to ask me about that [tome] in yer inventory if ye want ta learn to use it!
-        - Reply guard: `($qglobals{berserk_epic} == undef)`
-      - Condition: `($text =~ /hail/i)`
-6. Spawns "Bazu Smasher" (npc:303081) via `causeway/bazu smasher#timer:wipecheck`.
-7. Kill "Bazu Smasher" (NPC 303081) in `causeway` and loot "Faceted Moonstone" (17349).
-8. Loot "Shadowed Bronze Lump" (17137) from "an ancient necromantic shade" (NPC 163052) in `griegsend`. Drop cache: 100% chance per kill.
-9. lakeofillomen/"Keras Mcarik", hand "Lightning Core" (72029) + "Raging Taelosian Alloy Axe" (18398) + "Faceted Moonstone" (17349) + "Shadowed Bronze Lump" (17137). Gives "Unhoned Vengeful Taelosian Blood Axe" (20072).
+<a id="epic-item-18609"></a>
+
+**Earlier reward routes required by this graph path:** ["Raging Taelosian Alloy Axe" (18398)](#epic-item-18398).
+Revisit those instructions if another copy of a consumed item is needed.
+
+1. Loot "Lightning Core" (72029) from "a lightning warrior stormer" (NPC 317083) in `anguish`. Drop cache: 0.4998% chance per kill.
+2. Spawns "Bazu Smasher" (npc:303081) via `causeway/bazu smasher#timer:wipecheck`.
+3. Kill "Bazu Smasher" (NPC 303081) in `causeway` and loot "Faceted Moonstone" (17349).
+4. Loot "Shadowed Bronze Lump" (17137) from "an ancient necromantic shade" (NPC 163052) in `griegsend`. Drop cache: 100% chance per kill.
+5. lakeofillomen/"Keras Mcarik", hand "Lightning Core" (72029) + "Raging Taelosian Alloy Axe" (18398) + "Faceted Moonstone" (17349) + "Shadowed Bronze Lump" (17137). Gives "Unhoned Vengeful Taelosian Blood Axe" (20072).
     - event_item NPC say: Ah ye've returned with the necessary components, me friend? Give me but a moment to look over what you've managed to get yer hands on. Yes, these should do the job quite nicely. We'll see just what potential can be unleashed in this axe of yours! So the Dragorn smith said to reinforce the haft with this ore, eh? I can accomplish that surely. Work with the Moonstone should be easy enough tew as it don't seem to require much enchantment from me. The Lightning Core will require a bit o' work though as I'm not very experienced with it. Still though, I can surely do something with it. I would na ever thought of using one of these on an axe though! Crafty Gnomes indeed.' After some time and a bit of effort, Keras hands you back your axe. 'Here ya go, lad. I tried honing the edge further but I dinnah have a whetstone strong enough. Maybe that smith o' yours can help ye futher?
       - Event guard: `(plugin::check_handin(\%itemcount, 72029 => 1, 18398 => 1, 17349 => 1, 17137 => 1))`
-10. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
-11. dranik/"Grithyank Avlonnon", hand "Unhoned Vengeful Taelosian Blood Axe" (20072) + "Globe of Discordant Energy" (47100). Gives "Vengeful Taelosian Blood Axe" (18609).
+6. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
+7. dranik/"Grithyank Avlonnon", hand "Unhoned Vengeful Taelosian Blood Axe" (20072) + "Globe of Discordant Energy" (47100). Gives "Vengeful Taelosian Blood Axe" (18609).
     - event_trade NPC say: Ah, very good outlander, you managed to find some Discordant Matter. Very well, I will see what I can accomplish. Though the ore in this axe is originally from my world, the smithing technique and some of the magic are from yours. Therefore I can make no promises.' After some time and much effort the Dragorn hands the axe back. You immediately notice that edge has a brilliance to it that is nearly blinding. There outlander. I think you will be pleased with the results. The smithing technique used to forge that axe is quite unique. . .I doubt another of its kind exists. Be wary though for as I was applying the Discordant matter to the edge, I felt a disturbing presence emanating from the axe. There is someone or something that endures within it. . .something that seeks to control those who wield it. You must be ever cautious lest the axe is able to compel its influence onto you. I fear that though the axe will bring you many victories, those victories may come at a cost. Travel safe and fair, my friend!
       - Event guard: `(qglobals["berserk_epic"] == "9" and item_lib.check_turn_in(e.trade, {item1 = 20072, item2 = 47100}))`
     - event_trade NPC message: You have gained 10 ability points!
-
-**Unresolved graph dependencies:**
-- Cycle while acquiring "Raging Soul Shard" (11999)

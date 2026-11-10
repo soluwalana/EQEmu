@@ -6,6 +6,8 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 ### "Ragebringer" (11057)
 
+<a id="epic-item-11057"></a>
+
 1. qrg/"Gerael Woodone", say "Hail".
     - Player: "hail"
       - NPC say: It is good to meet you, . You, my friend, are an adventurer. The rugged look of you testifies to that. Let me know if you plan to adventure in the Plains of Karana. I have need of a person such as yourself to [deliver a flask].
@@ -58,7 +60,9 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 ### "Fatestealer" (52347)
 
-1. **Unresolved acquisition:** "Soulstone of Lanys" (52337) has no graph or catalog producer.
+<a id="epic-item-52347"></a>
+
+1. Loot "Soulstone of Lanys" (52337) from "a Teir`Dal guardian".
 2. nedaria/"Lirprin, Head Of Affairs", hand "Soulstone of Lanys" (52337). Gives "Fatestealer" (52347).
     - event_trade NPC emote: discusses the process with his assistant. She listens, nodding, then begins work immediately. She takes measurements of your hands and fashions the grip so that it's a perfect fit, then turns to the hot coals of the forge. She selects a brick of fine metal. Her back to you, Dandi hammers away at the metal, sparks flying in all directions. When the job is completed she hands you the blade, still warm. 'Best work I've ever done. I hope it serves you well. Unfortunately the metal I have to work with isn't the recommended 'Velixite'. Based on the description I used the closest thing we have. Also, without an example to work from I had to improvise on a few details that weren't fully described in your documentation.
       - Event guard: `( qglobals["Fatestealer_bard"] == "1" and qglobals["Fatestealer_page"] == "1" and qglobals["Fatestealer_forge"] == "1" and item_lib.check_turn_in(e.trade, {item1 = 52337}) )`
@@ -67,6 +71,11 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 ## Epic 2.0
 
 ### "Nightshade, Blade of Entropy" (52348)
+
+<a id="epic-item-52348"></a>
+
+**Earlier reward routes required by this graph path:** ["Fatestealer" (52347)](#epic-item-52347).
+Revisit those instructions if another copy of a consumed item is needed.
 
 1. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
 2. nedaria/"Lirprin, Head Of Affairs", say "Hail". Sets `Fatestealer` to `3`.
@@ -90,11 +99,6 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
     - event_trade NPC message: You have confirmed Larithim's innocence.
 8. Spawns "Wren Simsy" (npc:336253) via `dranik/daignal the revered#kill`.
 9. Kill "Wren Simsy" (NPC 336253) in `dranik` and loot "Wren's Fatestealer" (21346).
-10. **Unresolved acquisition:** "Soulstone of Lanys" (52337) has no graph or catalog producer.
-11. nedaria/"Lirprin, Head Of Affairs", hand "Soulstone of Lanys" (52337). Gives "Fatestealer" (52347).
-    - event_trade NPC emote: discusses the process with his assistant. She listens, nodding, then begins work immediately. She takes measurements of your hands and fashions the grip so that it's a perfect fit, then turns to the hot coals of the forge. She selects a brick of fine metal. Her back to you, Dandi hammers away at the metal, sparks flying in all directions. When the job is completed she hands you the blade, still warm. 'Best work I've ever done. I hope it serves you well. Unfortunately the metal I have to work with isn't the recommended 'Velixite'. Based on the description I used the closest thing we have. Also, without an example to work from I had to improvise on a few details that weren't fully described in your documentation.
-      - Event guard: `( qglobals["Fatestealer_bard"] == "1" and qglobals["Fatestealer_page"] == "1" and qglobals["Fatestealer_forge"] == "1" and item_lib.check_turn_in(e.trade, {item1 = 52337}) )`
-    - event_trade NPC message: You have gained 5 ability points!
-12. nedaria/"Lirprin, Head Of Affairs", hand "Globe of Discordant Energy" (47100) + "Strongbox Half Full of Velixite" (52342) + "Wren's Fatestealer" (21346) + "Fatestealer" (52347). Gives "Nightshade, Blade of Entropy" (52348).
+10. nedaria/"Lirprin, Head Of Affairs", hand "Globe of Discordant Energy" (47100) + "Strongbox Half Full of Velixite" (52342) + "Wren's Fatestealer" (21346) + "Fatestealer" (52347). Gives "Nightshade, Blade of Entropy" (52348).
     - event_trade NPC message: You have gained 10 ability points!
       - Event guard: `( qglobals["Fatestealer"] == "3" and item_lib.check_turn_in(e.trade, {item1 = 47100,item2 = 52342,item3 = 21346,item4 = 52347}) )`

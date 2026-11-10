@@ -6,6 +6,8 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 ### "Innoruuk's Curse" (14383)
 
+<a id="epic-item-14383"></a>
+
 1. neriakc/"Selzar L-Crit", say "Hail".
     - Player: "hail"
       - NPC say: What have we here? Another hopeful member of the House of the Ebon Mask? You've got much to learn before you will be of much use to our House or the secret operations that support both the thrones of our King and Queen. First you need to outfit yourself in a suit of [armor], $name.
@@ -54,7 +56,7 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 16. Kill "an essence carrier" (NPC 71070) in `airplane` and loot "Blade of Abrogation" (5430).
 17. Loot "Drake Spine" (14372) from "Rharzar" (NPC 50324) in `rathemtn`. Drop cache: 100% chance per kill.
 18. Loot "Decrepit Hide" (14371) from "an ashenbone drake" (NPC 186049) in `hateplaneb`. Drop cache: 11.2025% chance per kill.
-19. **Unresolved acquisition:** "Enchanted Platinum Bar" (16507) has no graph or catalog producer.
+19. Summon "Enchanted Platinum Bar" (16507) by casting "Enchant Platinum" or "Greater Mass Enchant Platinum" or "Mass Enchant Platinum".
 20. qcat/"Teydar", hand "Drake Spine" (14372) + "Decrepit Hide" (14371) + "Enchanted Platinum Bar" (16507). Gives "Decrepit Sheath" (14366).
     - event_item NPC say: I did it! The pieces you got me were perfect! It took a huge effort on my part to craft this, of course. It saddens me that I'm unable to keep one of my best works, but a deal is a deal. There is honor among shadowknights.
       - Event guard: `($faction >= 28 && plugin::check_handin(\%itemcount, 14372 => 1, 14371 => 1, 16507 => 1))`
@@ -99,6 +101,8 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 ### "Innoruuk's Voice" (50003)
 
+<a id="epic-item-50003"></a>
+
 1. Loot "Sir Elmonious's Holy Symbol" (55901) from "Sir Elmonious Falmont" (NPC 120133) in `westwastes`. Drop cache: 100% chance per kill.
 2. poknowledge/"Gilina Yilzior", hand "Sir Elmonious's Holy Symbol" (55901). Gives "Innoruuk's Voice" (50003).
     - event_trade NPC say: You have performed well. The blade is yours to wield now, champion. You may be on your way, or stay to hear about a [vision] I recently had.
@@ -109,15 +113,15 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 ### "Innoruuk's Dark Blessing" (48136)
 
+<a id="epic-item-48136"></a>
+
+**Earlier reward routes required by this graph path:** ["Innoruuk's Voice" (50003)](#epic-item-50003).
+Revisit those instructions if another copy of a consumed item is needed.
+
 1. Kill dranik/"A Minion Of Lhranc".
 2. Spawns "Lhranc" (npc:336250) via `dranik/filligno the slayer#signal:1`.
 3. Kill "Lhranc" (NPC 336250) in `dranik` and loot "Essence of the Shadowknight" (55903).
-4. Loot "Sir Elmonious's Holy Symbol" (55901) from "Sir Elmonious Falmont" (NPC 120133) in `westwastes`. Drop cache: 100% chance per kill.
-5. poknowledge/"Gilina Yilzior", hand "Sir Elmonious's Holy Symbol" (55901). Gives "Innoruuk's Voice" (50003).
-    - event_trade NPC say: You have performed well. The blade is yours to wield now, champion. You may be on your way, or stay to hear about a [vision] I recently had.
-      - Event guard: `(qglobals["shadowknight_epic"] == "8" and item_lib.check_turn_in(e.trade, {item1 = 55901}))`
-    - event_trade NPC message: You have gained 5 ability points!
-6. dranik/"Filligno The Slayer", hand "Essence of the Shadowknight" (55903) + "Innoruuk's Voice" (50003). Gives "Innoruuk's Dark Blessing" (48136).
+4. dranik/"Filligno The Slayer", hand "Essence of the Shadowknight" (55903) + "Innoruuk's Voice" (50003). Gives "Innoruuk's Dark Blessing" (48136).
     - event_trade NPC emote: takes the essence and begins to study it most carefully. After what seems like an eternity, Filligno throws the globe onto the floor. It cracks open, letting loose a stream of ghastly spirits. Filligno dives for cover. As the cackling spirits dissipate, a powerful looking sword floats in mid-air before you.
       - Event guard: `(qglobals["shadowknight_epic"] == "11" and item_lib.check_turn_in(e.trade, {item1 = 55903, item2 = 50003}))`
     - event_trade NPC say: Take it! The blade is yours! A gift from Innoruuk, for the most powerful of shadowknights!
