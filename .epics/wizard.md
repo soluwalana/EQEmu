@@ -1,8 +1,194 @@
 # Wizard
 
-Steps taken from the quest graph only. **Broken** means the graph has no edge for that value or that item.
+Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags are dependencies, not the definition of an epic. **Broken** indicates missing graph provenance.
 
-Flags with writes: `wiz_epic_pre`, `wiz_epic`, `wizepic`, `wizepicA`, `wizepicB`, `wizepicK`, `wiz_epic20`.
+## Epic 1.0
+
+### "Staff of the Four" (14341)
+
+1. Loot "Blue Crystal Staff" (14337) from "Phinigel Autropos" in `kedge`.
+2. Loot "Gnarled Staff" (14338) from "Venril Sathir" in `karnor`.
+3. Loot "Mistletoe Powder" (14333) from "Tolapumj" in `sebilis`.
+4. Loot "Cazic's Skin" (14332) from "Cazic Thule" in `fearplane`.
+5. butcher/"Kandin Firepot", hand "Cazic's Skin" (14332) + "Mistletoe Powder" (14333). Gives "Staff of Gabstik" (14339).
+6. halas/"Arantir Karondor", hand "Blue Crystal Staff" (14337) + "Gnarled Staff" (14338) + "Staff of Gabstik" (14339). Gives "Magically Sealed Bag" (14340).
+7. soltemple/"Solomen", hand "Magically Sealed Bag" (14340). Gives "Staff of the Four" (14341).
+    - Dialogue with soltemple/"Solomen":
+      - Player: "Hail"
+        - NPC say: Ah, I see you have found my study. This is where I study and scribe the history of magic in Norrath.
+        - Condition: `($text=~/hail/i)`
+      - Player: "History" (link: explicit mention)
+        - NPC say: I have worked to chronicle everything from the beginnings of magic to what we consider the modern day of magic. Solusek Ro has been very generous to those who wield magic in Norrath. But throughout history there is one thing I have noticed - too much power corrupts the soul. I have seen and documented that the strongest wizards and those closest to Solusek Ro become corrupted by their power.
+        - Condition: `($text=~/history/i)`
+      - Player: "Wizards" (link: explicit mention)
+        - NPC say: Unfortunately, I don't have time to speak of such things right now. But I could use your help since you are here. I have here an envelope that I need delivered to one Camin. You can find him near the wizard tower in the city of Erudin. He is a sage like myself whose knowledge rivals my own. Do you [agree] to undertake my task?
+        - Condition: `($text=~/wizards/i)`
+      - Player: "Agree" (link: explicit mention)
+        - NPC say: Here you are, then. Good luck on your journey.
+        - Condition: `($text=~/agree/i)`
+        - Gives Note to Camin (18088).
+
+## Epic 1.5
+
+### "Staff of Prismatic Power" (12665)
+
+1. Summon "Collapsible Sewing Kit" (17165) by casting "Unfold Sewing Kit".
+2. Buy "Backpack Pattern" (12089) from "Iala Lenard" (NPC 1141) in `qeynos`. Base price: 500 copper.
+3. Buy "Needle Mold" (12019) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
+4. Buy "Thimble Mold" (12057) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
+5. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+6. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+7. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+8. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+9. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+10. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+11. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+12. **Broken:** nothing in the graph gives, loots, spawns, or combines Notice to Cease and Desist (9590).
+13. Hand "Notice to Cease and Desist" (9590) to freeporteast/"Lythe Songbird". Spawns "a Freeport guard" (382255). Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard".
+14. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+15. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freportw`; trigger: freportw/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+16. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freportw`; trigger: freportw/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+17. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a minion of Meldrath" (NPC 56173) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "We Shall Never Surrender".
+18. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "Meldrath's melded minions" (NPC 56174) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "Your Forces Are Deafeated".
+19. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "Arnold the Gnomeinator" (NPC 56175) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "You Shall Not Break Our Defense".
+20. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", on timer guard.
+21. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", on timer guard.
+22. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freportw`; trigger: freportw/"Lythe Songbird", on timer guard.
+23. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freportw`; trigger: freportw/"Lythe Songbird", on timer guard.
+24. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
+25. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
+26. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
+27. **Broken:** no event trigger found for `misty/misty#timer:Spawn`.
+28. Starts timer `Hatch`.
+29. Spawns "A Vicious Spider" (33167) after `misty/misty#timer:Hatch`.
+30. Loot "Spiderling Silk" (13099) from "A Vicious Spider".
+31. Forage "Spiderling Silk" (13099) in `mistmoore`.
+32. Forage "Spiderling Silk" (13099) in `mmca`.
+33. Forage "Spiderling Silk" (13099) in `mmcb`.
+34. Forage "Spiderling Silk" (13099) in `mmcc`.
+35. Forage "Spiderling Silk" (13099) in `mmcd`.
+36. Forage "Spiderling Silk" (13099) in `mmce`.
+37. Forage "Spiderling Silk" (13099) in `mmcf`.
+38. Forage "Spiderling Silk" (13099) in `mmcg`.
+39. Forage "Spiderling Silk" (13099) in `mmch`.
+40. Forage "Spiderling Silk" (13099) in `mmci`.
+41. Forage "Spiderling Silk" (13099) in `mmcj`.
+42. Combine in "Vale Sewing Kit" (92882): "Spiderling Silk" (13099). Produces "Silk Thread" (16486). Requires Tailoring, trivial 15. The combine does not fail.
+43. Combine in "Vale Sewing Kit" (92882): "Silk Thread" (16486). Produces "Silk Cord" (16489). Requires Tailoring, trivial 26.
+44. potranquility/"Kalym Rasalan", say "Hail". Gives "Silken Tapestry" (12593).
+45. Combine in "Collapsible Sewing Kit" (17165): "Backpack Pattern" (12089), "Silk Cord" (16489), "Silken Tapestry" (12593). Produces "Silken Tapestry Satchel" (12596). Requires Tailoring 128. The combine does not fail.
+46. Ground spawn of "Prismatic Crystal" (12599) in `veksar`.
+47. Ground spawn of "Prismatic Crystal" (12625) in `timorous`.
+48. Ground spawn of "Prismatic Crystal" (12628) in `twilight`.
+49. Loot "Prismatic Crystal" (12662) from "Treasure Sorter Neiben" in `dulak`.
+50. Loot "Cohesion Gem" (67022) from "A Metallic Slime" (NPC 206031) in `poinnovation`. Drop cache: 34.24% chance per kill.
+51. Spawns "Spawn Wiz 1.5; Pure Flame Elemental" (278108) in `soldungc` on event_signal.
+52. Loot "Wisp of Pure Flame" (11619) from "Spawn Wiz 1.5; Pure Flame Elemental".
+53. lavastorm/"Talwyn Flamecaller", hand "Wisp of Pure Flame" (11619). Sets `wiz_epic_wisp` to `1`.
+54. Spawns "Mistress of the Darkwater Quest-only" (125075) in `sirens` on enter.
+55. Loot "Shard of Pure Ice" (11599) from "Mistress of the Darkwater Quest-only".
+56. Loot "Fluxing Staff" (11445) from "Girplan Guardian" in `wallofslaughter`.
+57. lavastorm/"Talwyn Flamecaller", say "Hail". Sets `wiz_epic` to `1`.
+58. Say "Gem" to scarlet/"The Gem Guardian".
+59. Spawns "Elite Sun Revenant" (175306).
+60. Loot "Fluxing Gem" (11448) from "Elite Sun Revenant".
+61. Loot "Fluxing Rune" (11474) from "Hobgoblin Horrorfiend" in `ponightmare`.
+62. Ground spawn of "Fluxing Chunk of Ore" (11576) in `dranik`.
+63. lavastorm/"Talwyn Flamecaller", hand "Fluxing Staff" (11445) + "Fluxing Gem" (11448) + "Fluxing Rune" (11474) + "Fluxing Chunk of Ore" (11576). Gives "Staff of Fluxing Power" (11596).
+64. Combine in "Silken Tapestry Satchel" (12596): "Prismatic Crystal" (12599), "Prismatic Crystal" (12625), "Prismatic Crystal" (12628), "Prismatic Crystal" (12662), "Cohesion Gem" (67022), "Shard of Pure Ice" (11599), "Wisp of Pure Flame" (11619), "Staff of Fluxing Power" (11596). Produces "Full Tapestry Satchel" (16753). The combine does not fail.
+65. lavastorm/"Talwyn Flamecaller", hand "Full Tapestry Satchel" (16753). Gives "Staff of Prismatic Power" (12665).
+
+## Epic 2.0
+
+### "Staff of Phenomenal Power" (16576)
+
+1. lavastorm/"Talwyn Flamecaller", say "Hail". Sets `wiz_epic20` to `1`.
+2. Unresolved cyclic prerequisite: `wiz_epic20` >=1.
+3. draniksscar/"Grathnok Gilforgan", say "Intricate Horn Of Galien". Sets `wiz_epic20` to `2`.
+4. Loot "Intricate Horn of Galien" (15825) from "Lightningcaller Vhalek" in `provinggrounds`.
+5. draniksscar/"Grathnok Gilforgan", hand "Intricate Horn of Galien" (15825). Sets `wiz_epic20` to `3`.
+6. Say "Check Lorb" to anguish/"Zone Status".
+7. Spawns "Orb of Discordant Energy" (317087).
+8. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+9. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+10. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+11. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+12. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+13. lavastorm/"Talwyn Flamecaller", hand "Globe of Discordant Energy" (47100). Sets `wiz_epic20` to `4`.
+14. **Broken:** nothing in the graph gives, loots, spawns, or combines Spacial Distortion (16695).
+15. lavastorm/"Talwyn Flamecaller", hand "Globe of Discordant Energy" (47100). Requires `wiz_epic20` set. Requires `wiz_epic20` >=3. Gives "Broken Orb of Discordant Energy" (16147).
+16. Combine in "Spacial Distortion" (16695): "Broken Orb of Discordant Energy" (16147). Produces "Infused Orb of Discordant Energy" (16451). The combine does not fail.
+17. **Broken:** nothing in the graph gives, loots, spawns, or combines Spacial Distortion (16765).
+18. lavastorm/"Talwyn Flamecaller", hand "Globe of Discordant Energy" (47100). Requires `wiz_epic20` set. Requires `wiz_epic20` >=3. Gives "Broken Orb of Discordant Energy" (15836).
+19. Combine in "Spacial Distortion" (16765): "Broken Orb of Discordant Energy" (15836). Produces "Infused Orb of Discordant Energy" (16334). The combine does not fail.
+20. Summon "Collapsible Sewing Kit" (17165) by casting "Unfold Sewing Kit".
+21. Buy "Backpack Pattern" (12089) from "Iala Lenard" (NPC 1141) in `qeynos`. Base price: 500 copper.
+22. Buy "Needle Mold" (12019) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
+23. Buy "Thimble Mold" (12057) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
+24. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+25. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+26. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+27. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+28. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+29. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+30. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+31. **Broken:** nothing in the graph gives, loots, spawns, or combines Notice to Cease and Desist (9590).
+32. Hand "Notice to Cease and Desist" (9590) to freeporteast/"Lythe Songbird". Spawns "a Freeport guard" (382255). Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard".
+33. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+34. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freportw`; trigger: freportw/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+35. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freportw`; trigger: freportw/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+36. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a minion of Meldrath" (NPC 56173) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "We Shall Never Surrender".
+37. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "Meldrath's melded minions" (NPC 56174) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "Your Forces Are Deafeated".
+38. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "Arnold the Gnomeinator" (NPC 56175) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "You Shall Not Break Our Defense".
+39. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", on timer guard.
+40. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", on timer guard.
+41. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freportw`; trigger: freportw/"Lythe Songbird", on timer guard.
+42. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freportw`; trigger: freportw/"Lythe Songbird", on timer guard.
+43. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
+44. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
+45. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
+46. **Broken:** no event trigger found for `misty/misty#timer:Spawn`.
+47. Starts timer `Hatch`.
+48. Spawns "A Vicious Spider" (33167) after `misty/misty#timer:Hatch`.
+49. Loot "Spiderling Silk" (13099) from "A Vicious Spider".
+50. Forage "Spiderling Silk" (13099) in `mistmoore`.
+51. Forage "Spiderling Silk" (13099) in `mmca`.
+52. Forage "Spiderling Silk" (13099) in `mmcb`.
+53. Forage "Spiderling Silk" (13099) in `mmcc`.
+54. Forage "Spiderling Silk" (13099) in `mmcd`.
+55. Forage "Spiderling Silk" (13099) in `mmce`.
+56. Forage "Spiderling Silk" (13099) in `mmcf`.
+57. Forage "Spiderling Silk" (13099) in `mmcg`.
+58. Forage "Spiderling Silk" (13099) in `mmch`.
+59. Forage "Spiderling Silk" (13099) in `mmci`.
+60. Forage "Spiderling Silk" (13099) in `mmcj`.
+61. Combine in "Vale Sewing Kit" (92882): "Spiderling Silk" (13099). Produces "Silk Thread" (16486). Requires Tailoring, trivial 15. The combine does not fail.
+62. Combine in "Vale Sewing Kit" (92882): "Silk Thread" (16486). Produces "Silk Cord" (16489). Requires Tailoring, trivial 26.
+63. potranquility/"Kalym Rasalan", say "Hail". Gives "Silken Tapestry" (12593).
+64. Combine in "Collapsible Sewing Kit" (17165): "Backpack Pattern" (12089), "Silk Cord" (16489), "Silken Tapestry" (12593). Produces "Silken Tapestry Satchel" (12596). Requires Tailoring 128. The combine does not fail.
+65. Ground spawn of "Prismatic Crystal" (12599) in `veksar`.
+66. Ground spawn of "Prismatic Crystal" (12625) in `timorous`.
+67. Ground spawn of "Prismatic Crystal" (12628) in `twilight`.
+68. Loot "Prismatic Crystal" (12662) from "Treasure Sorter Neiben" in `dulak`.
+69. Loot "Cohesion Gem" (67022) from "A Metallic Slime" (NPC 206031) in `poinnovation`. Drop cache: 34.24% chance per kill.
+70. Spawns "Spawn Wiz 1.5; Pure Flame Elemental" (278108) in `soldungc` on event_signal.
+71. Loot "Wisp of Pure Flame" (11619) from "Spawn Wiz 1.5; Pure Flame Elemental".
+72. lavastorm/"Talwyn Flamecaller", hand "Wisp of Pure Flame" (11619). Sets `wiz_epic_wisp` to `1`.
+73. Spawns "Mistress of the Darkwater Quest-only" (125075) in `sirens` on enter.
+74. Loot "Shard of Pure Ice" (11599) from "Mistress of the Darkwater Quest-only".
+75. Loot "Fluxing Staff" (11445) from "Girplan Guardian" in `wallofslaughter`.
+76. lavastorm/"Talwyn Flamecaller", say "Hail". Sets `wiz_epic` to `1`.
+77. Say "Gem" to scarlet/"The Gem Guardian".
+78. Spawns "Elite Sun Revenant" (175306).
+79. Loot "Fluxing Gem" (11448) from "Elite Sun Revenant".
+80. Loot "Fluxing Rune" (11474) from "Hobgoblin Horrorfiend" in `ponightmare`.
+81. Ground spawn of "Fluxing Chunk of Ore" (11576) in `dranik`.
+82. lavastorm/"Talwyn Flamecaller", hand "Fluxing Staff" (11445) + "Fluxing Gem" (11448) + "Fluxing Rune" (11474) + "Fluxing Chunk of Ore" (11576). Gives "Staff of Fluxing Power" (11596).
+83. Combine in "Silken Tapestry Satchel" (12596): "Prismatic Crystal" (12599), "Prismatic Crystal" (12625), "Prismatic Crystal" (12628), "Prismatic Crystal" (12662), "Cohesion Gem" (67022), "Shard of Pure Ice" (11599), "Wisp of Pure Flame" (11619), "Staff of Fluxing Power" (11596). Produces "Full Tapestry Satchel" (16753). The combine does not fail.
+84. lavastorm/"Talwyn Flamecaller", hand "Full Tapestry Satchel" (16753). Gives "Staff of Prismatic Power" (12665).
+85. lavastorm/"Talwyn Flamecaller", hand "Staff of Prismatic Power" (12665) + "Infused Orb of Discordant Energy" (16334) + "Infused Orb of Discordant Energy" (16451). Requires `wiz_epic20` ==4. Gives "Staff of Phenomenal Power" (16576).
+
+## Quest-state progression
 
 ## 0. Prerequisites
 
@@ -447,113 +633,114 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 98. Say "Spawnwave" to cazicthule/"Avatar Of Fear".
 99. Spawns "a Tentacle Terror" (48252).
 100. Loot "Rune of Coruscation" (16631) from "a Tentacle Terror".
-101. **Broken:** no event trigger found for `qinimi/execution#timer:startevent`.
-102. Spawns "A Kyv Bloodhunter" (281139) after `qinimi/execution#timer:startevent`.
-103. Loot "Rune of Flash" (65279) from "A Kyv Bloodhunter".
-104. Alternative: Loot "Rune of Flash" (65279) from "An Erratic Arachnid" (NPC 215460) in `poair`; trigger: poair/"Dust Trigger", on event_signal.
-105. Alternative: Loot "Rune of Flash" (65279) from "An Erratic Arachnid" (NPC 215460) in `poair`; trigger: poair/"An Erratic Arachnid", on event_death_complete.
-106. Alternative: Loot "Rune of Flash" (65279) from "A Noc Havocblade" (NPC 281130) in `qinimi`; trigger: qinimi/"Trigger Qinimi 2", on event_signal.
-107. Alternative: Loot "Rune of Flash" (65279) from "A Ra'Tuk Skullstriker" (NPC 281131) in `qinimi`; trigger: qinimi/"Trigger Qinimi 2", on event_signal.
-108. Alternative: Loot "Rune of Flash" (65279) from "A Kyv Bloodhunter" (NPC 281139) in `qinimi`; trigger: qinimi/"Execution", say "I Wish To Enter".
-109. Alternative: Loot "Rune of Flash" (65279) from "A Kyv Bloodhunter" (NPC 281140) in `qinimi`; trigger: qinimi/"Execution", say "I Wish To Enter".
-110. Alternative: Loot "Rune of Flash" (65279) from "A Kyv Bloodhunter" (NPC 281141) in `qinimi`; trigger: qinimi/"Execution", say "I Wish To Enter".
-111. Alternative: Loot "Rune of Flash" (65279) from "A Crystal Shard" (NPC 112046) in `velketor`; trigger: velketor/"A Chill", on event_combat.
-112. Alternative: Loot "Rune of Flash" (65279) from "A Crystal Shard" (NPC 112046) in `velketor`; trigger: velketor/"A Stalagtite", on event_combat.
-113. Alternative: Loot "Rune of Flash" (65279) from "A Crystal Shard" (NPC 112046) in `velketor`; trigger: velketor/"A Tentacle", on event_combat.
-114. Alternative: Loot "Rune of Flash" (65279) from "A Crystal Shard" (NPC 112046) in `velketor`; trigger: velketor/"From No Where", on event_combat.
-115. Alternative: Loot "Rune of Flash" (65279) from "A Crystal Shard" (NPC 112046) in `velketor`; trigger: velketor/"Ice", on event_combat.
-116. Alternative: Loot "Rune of Flash" (65279) from "A Crystal Shard" (NPC 112046) in `velketor`; trigger: velketor/"Something Seems", on event_combat.
-117. Alternative: Loot "Rune of Flash" (65279) from "A Crystal Shard" (NPC 112046) in `velketor`; trigger: velketor/"The Hair", on event_combat.
-118. Alternative: Loot "Rune of Flash" (65279) from "A Crystal Shard" (NPC 112046) in `velketor`; trigger: velketor/"The Walls", on event_combat.
-119. Alternative: Loot "Rune of Flash" (65279) from "A Crystal Shard" (NPC 112046) in `velketor`; trigger: velketor/"You Are", on event_combat.
-120. Alternative: Loot "Rune of Flash" (65279) from "A Kyv Bloodhunter" (NPC 281140) in `qinimi`; trigger: qinimi/"Execution", on timer startevent.
-121. Alternative: Loot "Rune of Flash" (65279) from "A Kyv Bloodhunter" (NPC 281141) in `qinimi`; trigger: qinimi/"Execution", on timer startevent.
-122. Alternative: Loot "Rune of Flash" (65279) from "A Newly Created Sentry" (NPC 128014) in `sleeper`; trigger: sleeper/"Master Of The Guard", on timer spawn.
-123. lavastorm/"Talwyn Flamecaller", say "Hail". Sets `wiz_epic_pre` to `1`.
-124. lavastorm/"Talwyn Flamecaller", say "Test Of Intelligence". Sets `wiz_test_intel` to `1`.
-125. Ground spawn of "Empty Jug" (11425) in `katta`.
-126. lavastorm/"Talwyn Flamecaller", hand "Empty Jug" (11425). Sets `wiz_test_intel` to `2`.
-127. Ground spawn of "Emerald-Tipped Staff" (11419) in `beholder`.
-128. lavastorm/"Talwyn Flamecaller", hand "Emerald-Tipped Staff" (11419). Sets `wiz_test_intel` to `3`.
-129. Ground spawn of "Meditation Basket" (11282) in `warslikswood`.
-130. lavastorm/"Talwyn Flamecaller", hand "Meditation Basket" (11282). Sets `wiz_test_intel` to `4`.
-131. Ground spawn of "Platinum Token" (11433) in `pojustice`.
-132. lavastorm/"Talwyn Flamecaller", hand "Platinum Token" (11433). Sets `wiz_test_intel` to `5`.
-133. Ground spawn of "White Sash" (11413) in `letalis`.
-134. lavastorm/"Talwyn Flamecaller", hand "White Sash" (11413). Sets `wiz_test_intel` to `6`.
-135. Ground spawn of "Golden Dagger" (11424) in `skyfire`.
-136. lavastorm/"Talwyn Flamecaller", hand "Golden Dagger" (11424). Sets `wiz_test_intel` to `7`.
-137. Ground spawn of "Ivory Bone" (11436) in `gunthak`.
-138. lavastorm/"Talwyn Flamecaller", hand "Ivory Bone" (11436). Sets `wiz_test_intel` to `8`.
-139. Ground spawn of "Red Cloth" (11418) in `maiden`.
-140. lavastorm/"Talwyn Flamecaller", hand "Red Cloth" (11418). Sets `wiz_test_intel` to `9`.
-141. Fish "Worn Turban" (11299) in `potranquility`.
-142. lavastorm/"Talwyn Flamecaller", hand "Worn Turban" (11299). Sets `wiz_test_intel` to `10`.
-143. Ground spawn of "Old Pipe" (11412) in `cauldron`.
-144. lavastorm/"Talwyn Flamecaller", hand "Old Pipe" (11412). Requires `wiz_test_intel` ==10. Gives "Rune of Greater Desiccation" (11439).
-145. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
-146. Loot "Rune of Glint" (65281) from "A Black Reaver".
-147. Alternative: Loot "Rune of Glint" (65281) from "A Black Reaver" (NPC 90005) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
-148. Alternative: Loot "Rune of Glint" (65281) from "A Black Reaver" (NPC 90192) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
-149. Alternative: Loot "Rune of Glint" (65281) from "A Shadowy Figure" (NPC 163190) in `griegsend`; trigger: griegsend/"Trapman Two", on event_combat.
-150. Alternative: Loot "Rune of Glint" (65281) from "An Ancient Thought Horror" (NPC 164122) in `thedeep`; trigger: thedeep/"Ancient Thought Horror Trap", on enter.
-151. Alternative: Loot "Rune of Glint" (65281) from "A Ra'Tuk Decimator" (NPC 289004) in `tipt`; trigger: tipt/"Zone Status", say "Spawn Keyroom".
-152. Ground spawn of "Icon of the High Scale" (1671) in `citymist`.
-153. Hand "Icon of the High Scale" (1671) to hole/"High Scale Kirn". Spawns "High Scale Kirn" (39083). Loot "Engraved Ring" (1681) from "High Scale Kirn".
-154. Hand "Engraved Ring" (1681) to citymist/"Neh-Ashiir". Spawns "Neh'Ashir" (90181). Loot "Rune of Impulse" (65282) from "Neh'Ashir".
-155. Alternative: Loot "Rune of Impulse" (65282) from "a Tae Ew disciple" (NPC 48026) in `cazicthule`; trigger: cazicthule/"Trap Disc", on event_combat.
-156. Alternative: Loot "Rune of Impulse" (65282) from "Lhranc" (NPC 90187) in `citymist`; trigger: citymist/"Lhranc", hand "Corrupted Ghoulbane" (14367) + "Heart of the Innocent" (14368) + "Head of the Valiant" (14369) + "Will of Innoruuk" (14370).
-157. Alternative: Loot "Rune of Impulse" (65282) from "Neh'Ashir" (NPC 90184) in `citymist`; trigger: citymist/"90000", on event_death_complete.
-158. Alternative: Loot "Rune of Impulse" (65282) from "Neh'Ashiir" (NPC 90184) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
-159. Alternative: Loot "Rune of Impulse" (65282) from "Pxet Elite Blademaster" (NPC 284039) in `ferubi`; trigger: ferubi/"Event Spawner", on event_signal.
-160. Alternative: Loot "Rune of Impulse" (65282) from "Pxet Elite Spearmaster" (NPC 284091) in `ferubi`; trigger: ferubi/"Event Spawner", on event_signal.
-161. Alternative: Loot "Rune of Impulse" (65282) from "A Soldier Of Madness" (NPC 163185) in `griegsend`; trigger: griegsend/"Trapman", on event_combat.
-162. Alternative: Loot "Rune of Impulse" (65282) from "A Devastating Pooka" (NPC 289037) in `tipt`; trigger: tipt/"Rikabi The Riddler", say "Spawn Devastating Pookas".
-163. Alternative: Loot "Rune of Impulse" (65282) from "A Ra'Tuk Decimator" (NPC 289004) in `tipt`; trigger: tipt/"Zone Status", say "Spawn Keyroom".
-164. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 1", on enter.
-165. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 1", on enter.
-166. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 2", on enter.
-167. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 2", on enter.
-168. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 3", on enter.
-169. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 3", on enter.
-170. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 4", on enter.
-171. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 4", on enter.
-172. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 5", on enter.
-173. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 5", on enter.
-174. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 6", on enter.
-175. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 6", on enter.
-176. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 7", on enter.
-177. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 7", on enter.
-178. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 8", on enter.
-179. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 8", on enter.
-180. Alternative: Loot "Rune of Impulse" (65282) from "Pixtt Votal" (NPC 284079) in `ferubi`; trigger: ferubi/"Zun-Muram Votal", on timer popadds.
-181. Alternative: Loot "Rune of Impulse" (65282) from "Pixtt Votal" (NPC 284103) in `ferubi`; trigger: ferubi/"Zun-Muram Votal", on timer popadds.
-182. Alternative: Loot "Rune of Impulse" (65282) from "Tiv Prayer Chanter" (NPC 297066) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297199.
-183. Alternative: Loot "Rune of Impulse" (65282) from "Tiv Prayer Chanter" (NPC 297062) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297061.
-184. Alternative: Loot "Rune of Impulse" (65282) from "Tiv Prayer Chanter" (NPC 297063) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297197.
-185. Alternative: Loot "Rune of Impulse" (65282) from "Tiv Prayer Chanter" (NPC 297064) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297059.
-186. Alternative: Loot "Rune of Impulse" (65282) from "Tiv Prayer Chanter" (NPC 297065) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297057.
-187. Say "Spawn Devastating Pookas" to tipt/"Rikabi The Riddler".
-188. Spawns "A Devastating Pooka" (289037).
-189. Loot "Rune of Synergy" (65289) from "A Devastating Pooka".
-190. Alternative: Loot "Rune of Synergy" (65289) from "A Cragbeast Hatchling" (NPC 289034) in `tipt`; trigger: tipt/"Cragbeasts", say "Spawn Hatchlings".
-191. Spawns "a Tae Ew Justicar" (48029) in `cazicthule` on event_spawn.
-192. Loot "Rune of Tempest" (65291) from "a Tae Ew Justicar".
-193. Alternative: Loot "Rune of Tempest" (65291) from "A Swirling Ooze" (NPC 48001) in `cazicthule`; trigger: cazicthule/"An Acidic Mass", on event_hp.
-194. Alternative: Loot "Rune of Tempest" (65291) from "a Tae Ew disciple" (NPC 48026) in `cazicthule`; trigger: cazicthule/"Trap Disc", on event_combat.
-195. Alternative: Loot "Rune of Tempest" (65291) from "a Tae Ew proselyte" (NPC 48007) in `cazicthule`; trigger: cazicthule/"Trap Pros", on event_combat.
-196. Alternative: Loot "Rune of Tempest" (65291) from "a Tae Ew warrior" (NPC 48076) in `cazicthule`; trigger: cazicthule/"Trap War", on event_combat.
-197. Alternative: Loot "Rune of Tempest" (65291) from "A Revived Sarnak" (NPC 277008) in `chardokb`; trigger: chardokb/, on event_combat.
-198. Alternative: Loot "Rune of Tempest" (65291) from "An Iksar Skeleton" (NPC 277032) in `chardokb`; trigger: chardokb/, on event_combat.
-199. Alternative: Loot "Rune of Tempest" (65291) from "Servant Of The Magistrate" (NPC 163189) in `griegsend`; trigger: griegsend/"Trapman Two", on event_combat.
-200. Alternative: Loot "Rune of Tempest" (65291) from "A Devastating Pooka" (NPC 289037) in `tipt`; trigger: tipt/"Rikabi The Riddler", say "Spawn Devastating Pookas".
-201. Alternative: Loot "Rune of Tempest" (65291) from "A Ra'Tuk Decimator" (NPC 289004) in `tipt`; trigger: tipt/"Zone Status", say "Spawn Keyroom".
-202. Spawns "An Ooze" (48004) in `cazicthule` on event_hp.
-203. Loot "Rune of Vortex" (65293) from "An Ooze".
-204. Alternative: Loot "Rune of Vortex" (65293) from "A Shadowy Figure" (NPC 163190) in `griegsend`; trigger: griegsend/"Trapman Two", on event_combat.
-205. Alternative: Loot "Rune of Vortex" (65293) from "A Ra'Tuk Decimator" (NPC 289004) in `tipt`; trigger: tipt/"Zone Status", say "Spawn Keyroom".
-206. Loot "Rune of Greater Conflagration" (11442) from "Shar Vinitras" in `akheva`.
-207. Combine in "Spell Research Kit" (93492): "Rune of Cascade" (65270), "Rune of Coruscation" (16631), "Rune of Flash" (65279), "Rune of Greater Desiccation" (11439), "Rune of Glint" (65281), "Rune of Impulse" (65282), "Rune of Synergy" (65289), "Rune of Tempest" (65291), "Rune of Vortex" (65293), "Rune of Greater Conflagration" (11442). Produces "Spell: Electrical Charge" (16623). Requires Research, trivial 190. The combine does not fail.
+101. sleeper/"Master Of The Guard", on event combat.
+102. Starts timer `spawn`.
+103. Spawns "A Newly Created Sentry" (128014) after `sleeper/master of the guard#timer:spawn`.
+104. Loot "Rune of Flash" (65279) from "A Newly Created Sentry".
+105. Alternative: Loot "Rune of Flash" (65279) from "An Erratic Arachnid" (NPC 215460) in `poair`; trigger: poair/"Dust Trigger", on event_signal.
+106. Alternative: Loot "Rune of Flash" (65279) from "An Erratic Arachnid" (NPC 215460) in `poair`; trigger: poair/"An Erratic Arachnid", on event_death_complete.
+107. Alternative: Loot "Rune of Flash" (65279) from "A Noc Havocblade" (NPC 281130) in `qinimi`; trigger: qinimi/"Trigger Qinimi 2", on event_signal.
+108. Alternative: Loot "Rune of Flash" (65279) from "A Ra'Tuk Skullstriker" (NPC 281131) in `qinimi`; trigger: qinimi/"Trigger Qinimi 2", on event_signal.
+109. Alternative: Loot "Rune of Flash" (65279) from "A Kyv Bloodhunter" (NPC 281139) in `qinimi`; trigger: qinimi/"Execution", say "I Wish To Enter".
+110. Alternative: Loot "Rune of Flash" (65279) from "A Kyv Bloodhunter" (NPC 281140) in `qinimi`; trigger: qinimi/"Execution", say "I Wish To Enter".
+111. Alternative: Loot "Rune of Flash" (65279) from "A Kyv Bloodhunter" (NPC 281141) in `qinimi`; trigger: qinimi/"Execution", say "I Wish To Enter".
+112. Alternative: Loot "Rune of Flash" (65279) from "A Crystal Shard" (NPC 112046) in `velketor`; trigger: velketor/"A Chill", on event_combat.
+113. Alternative: Loot "Rune of Flash" (65279) from "A Crystal Shard" (NPC 112046) in `velketor`; trigger: velketor/"A Stalagtite", on event_combat.
+114. Alternative: Loot "Rune of Flash" (65279) from "A Crystal Shard" (NPC 112046) in `velketor`; trigger: velketor/"A Tentacle", on event_combat.
+115. Alternative: Loot "Rune of Flash" (65279) from "A Crystal Shard" (NPC 112046) in `velketor`; trigger: velketor/"From No Where", on event_combat.
+116. Alternative: Loot "Rune of Flash" (65279) from "A Crystal Shard" (NPC 112046) in `velketor`; trigger: velketor/"Ice", on event_combat.
+117. Alternative: Loot "Rune of Flash" (65279) from "A Crystal Shard" (NPC 112046) in `velketor`; trigger: velketor/"Something Seems", on event_combat.
+118. Alternative: Loot "Rune of Flash" (65279) from "A Crystal Shard" (NPC 112046) in `velketor`; trigger: velketor/"The Hair", on event_combat.
+119. Alternative: Loot "Rune of Flash" (65279) from "A Crystal Shard" (NPC 112046) in `velketor`; trigger: velketor/"The Walls", on event_combat.
+120. Alternative: Loot "Rune of Flash" (65279) from "A Crystal Shard" (NPC 112046) in `velketor`; trigger: velketor/"You Are", on event_combat.
+121. Alternative: Loot "Rune of Flash" (65279) from "A Kyv Bloodhunter" (NPC 281139) in `qinimi`; trigger: qinimi/"Execution", on timer startevent.
+122. Alternative: Loot "Rune of Flash" (65279) from "A Kyv Bloodhunter" (NPC 281140) in `qinimi`; trigger: qinimi/"Execution", on timer startevent.
+123. Alternative: Loot "Rune of Flash" (65279) from "A Kyv Bloodhunter" (NPC 281141) in `qinimi`; trigger: qinimi/"Execution", on timer startevent.
+124. lavastorm/"Talwyn Flamecaller", say "Hail". Sets `wiz_epic_pre` to `1`.
+125. lavastorm/"Talwyn Flamecaller", say "Test Of Intelligence". Sets `wiz_test_intel` to `1`.
+126. Ground spawn of "Empty Jug" (11425) in `katta`.
+127. lavastorm/"Talwyn Flamecaller", hand "Empty Jug" (11425). Sets `wiz_test_intel` to `2`.
+128. Ground spawn of "Emerald-Tipped Staff" (11419) in `beholder`.
+129. lavastorm/"Talwyn Flamecaller", hand "Emerald-Tipped Staff" (11419). Sets `wiz_test_intel` to `3`.
+130. Ground spawn of "Meditation Basket" (11282) in `warslikswood`.
+131. lavastorm/"Talwyn Flamecaller", hand "Meditation Basket" (11282). Sets `wiz_test_intel` to `4`.
+132. Ground spawn of "Platinum Token" (11433) in `pojustice`.
+133. lavastorm/"Talwyn Flamecaller", hand "Platinum Token" (11433). Sets `wiz_test_intel` to `5`.
+134. Ground spawn of "White Sash" (11413) in `letalis`.
+135. lavastorm/"Talwyn Flamecaller", hand "White Sash" (11413). Sets `wiz_test_intel` to `6`.
+136. Ground spawn of "Golden Dagger" (11424) in `skyfire`.
+137. lavastorm/"Talwyn Flamecaller", hand "Golden Dagger" (11424). Sets `wiz_test_intel` to `7`.
+138. Ground spawn of "Ivory Bone" (11436) in `gunthak`.
+139. lavastorm/"Talwyn Flamecaller", hand "Ivory Bone" (11436). Sets `wiz_test_intel` to `8`.
+140. Ground spawn of "Red Cloth" (11418) in `maiden`.
+141. lavastorm/"Talwyn Flamecaller", hand "Red Cloth" (11418). Sets `wiz_test_intel` to `9`.
+142. Fish "Worn Turban" (11299) in `potranquility`.
+143. lavastorm/"Talwyn Flamecaller", hand "Worn Turban" (11299). Sets `wiz_test_intel` to `10`.
+144. Ground spawn of "Old Pipe" (11412) in `cauldron`.
+145. lavastorm/"Talwyn Flamecaller", hand "Old Pipe" (11412). Requires `wiz_test_intel` ==10. Gives "Rune of Greater Desiccation" (11439).
+146. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
+147. Loot "Rune of Glint" (65281) from "A Black Reaver".
+148. Alternative: Loot "Rune of Glint" (65281) from "A Black Reaver" (NPC 90005) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
+149. Alternative: Loot "Rune of Glint" (65281) from "A Black Reaver" (NPC 90192) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
+150. Alternative: Loot "Rune of Glint" (65281) from "A Shadowy Figure" (NPC 163190) in `griegsend`; trigger: griegsend/"Trapman Two", on event_combat.
+151. Alternative: Loot "Rune of Glint" (65281) from "An Ancient Thought Horror" (NPC 164122) in `thedeep`; trigger: thedeep/"Ancient Thought Horror Trap", on enter.
+152. Alternative: Loot "Rune of Glint" (65281) from "A Ra'Tuk Decimator" (NPC 289004) in `tipt`; trigger: tipt/"Zone Status", say "Spawn Keyroom".
+153. Ground spawn of "Icon of the High Scale" (1671) in `citymist`.
+154. Hand "Icon of the High Scale" (1671) to hole/"High Scale Kirn". Spawns "High Scale Kirn" (39083). Loot "Engraved Ring" (1681) from "High Scale Kirn".
+155. Hand "Engraved Ring" (1681) to citymist/"Neh-Ashiir". Spawns "Neh'Ashir" (90181). Loot "Rune of Impulse" (65282) from "Neh'Ashir".
+156. Alternative: Loot "Rune of Impulse" (65282) from "a Tae Ew disciple" (NPC 48026) in `cazicthule`; trigger: cazicthule/"Trap Disc", on event_combat.
+157. Alternative: Loot "Rune of Impulse" (65282) from "Lhranc" (NPC 90187) in `citymist`; trigger: citymist/"Lhranc", hand "Corrupted Ghoulbane" (14367) + "Heart of the Innocent" (14368) + "Head of the Valiant" (14369) + "Will of Innoruuk" (14370).
+158. Alternative: Loot "Rune of Impulse" (65282) from "Neh'Ashir" (NPC 90184) in `citymist`; trigger: citymist/"90000", on event_death_complete.
+159. Alternative: Loot "Rune of Impulse" (65282) from "Neh'Ashiir" (NPC 90184) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
+160. Alternative: Loot "Rune of Impulse" (65282) from "Pxet Elite Blademaster" (NPC 284039) in `ferubi`; trigger: ferubi/"Event Spawner", on event_signal.
+161. Alternative: Loot "Rune of Impulse" (65282) from "Pxet Elite Spearmaster" (NPC 284091) in `ferubi`; trigger: ferubi/"Event Spawner", on event_signal.
+162. Alternative: Loot "Rune of Impulse" (65282) from "A Soldier Of Madness" (NPC 163185) in `griegsend`; trigger: griegsend/"Trapman", on event_combat.
+163. Alternative: Loot "Rune of Impulse" (65282) from "A Devastating Pooka" (NPC 289037) in `tipt`; trigger: tipt/"Rikabi The Riddler", say "Spawn Devastating Pookas".
+164. Alternative: Loot "Rune of Impulse" (65282) from "A Ra'Tuk Decimator" (NPC 289004) in `tipt`; trigger: tipt/"Zone Status", say "Spawn Keyroom".
+165. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 1", on enter.
+166. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 1", on enter.
+167. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 2", on enter.
+168. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 2", on enter.
+169. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 3", on enter.
+170. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 3", on enter.
+171. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 4", on enter.
+172. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 4", on enter.
+173. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 5", on enter.
+174. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 5", on enter.
+175. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 6", on enter.
+176. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 6", on enter.
+177. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 7", on enter.
+178. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 7", on enter.
+179. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Anchorite" (NPC 292029) in `uqua`; trigger: uqua/"Trap Uqua 8", on enter.
+180. Alternative: Loot "Rune of Impulse" (65282) from "A Trusik Summoner" (NPC 292002) in `uqua`; trigger: uqua/"Trap Uqua 8", on enter.
+181. Alternative: Loot "Rune of Impulse" (65282) from "Pixtt Votal" (NPC 284079) in `ferubi`; trigger: ferubi/"Zun-Muram Votal", on timer popadds.
+182. Alternative: Loot "Rune of Impulse" (65282) from "Pixtt Votal" (NPC 284103) in `ferubi`; trigger: ferubi/"Zun-Muram Votal", on timer popadds.
+183. Alternative: Loot "Rune of Impulse" (65282) from "Tiv Prayer Chanter" (NPC 297066) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297199.
+184. Alternative: Loot "Rune of Impulse" (65282) from "Tiv Prayer Chanter" (NPC 297062) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297061.
+185. Alternative: Loot "Rune of Impulse" (65282) from "Tiv Prayer Chanter" (NPC 297063) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297197.
+186. Alternative: Loot "Rune of Impulse" (65282) from "Tiv Prayer Chanter" (NPC 297064) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297059.
+187. Alternative: Loot "Rune of Impulse" (65282) from "Tiv Prayer Chanter" (NPC 297065) in `txevu`; trigger: txevu/"Highpriest", on event spawn:297057.
+188. Say "Spawn Devastating Pookas" to tipt/"Rikabi The Riddler".
+189. Spawns "A Devastating Pooka" (289037).
+190. Loot "Rune of Synergy" (65289) from "A Devastating Pooka".
+191. Alternative: Loot "Rune of Synergy" (65289) from "A Cragbeast Hatchling" (NPC 289034) in `tipt`; trigger: tipt/"Cragbeasts", say "Spawn Hatchlings".
+192. Spawns "a Tae Ew Justicar" (48029) in `cazicthule` on event_spawn.
+193. Loot "Rune of Tempest" (65291) from "a Tae Ew Justicar".
+194. Alternative: Loot "Rune of Tempest" (65291) from "A Swirling Ooze" (NPC 48001) in `cazicthule`; trigger: cazicthule/"An Acidic Mass", on event_hp.
+195. Alternative: Loot "Rune of Tempest" (65291) from "a Tae Ew disciple" (NPC 48026) in `cazicthule`; trigger: cazicthule/"Trap Disc", on event_combat.
+196. Alternative: Loot "Rune of Tempest" (65291) from "a Tae Ew proselyte" (NPC 48007) in `cazicthule`; trigger: cazicthule/"Trap Pros", on event_combat.
+197. Alternative: Loot "Rune of Tempest" (65291) from "a Tae Ew warrior" (NPC 48076) in `cazicthule`; trigger: cazicthule/"Trap War", on event_combat.
+198. Alternative: Loot "Rune of Tempest" (65291) from "A Revived Sarnak" (NPC 277008) in `chardokb`; trigger: chardokb/, on event_combat.
+199. Alternative: Loot "Rune of Tempest" (65291) from "An Iksar Skeleton" (NPC 277032) in `chardokb`; trigger: chardokb/, on event_combat.
+200. Alternative: Loot "Rune of Tempest" (65291) from "Servant Of The Magistrate" (NPC 163189) in `griegsend`; trigger: griegsend/"Trapman Two", on event_combat.
+201. Alternative: Loot "Rune of Tempest" (65291) from "A Devastating Pooka" (NPC 289037) in `tipt`; trigger: tipt/"Rikabi The Riddler", say "Spawn Devastating Pookas".
+202. Alternative: Loot "Rune of Tempest" (65291) from "A Ra'Tuk Decimator" (NPC 289004) in `tipt`; trigger: tipt/"Zone Status", say "Spawn Keyroom".
+203. Spawns "An Ooze" (48004) in `cazicthule` on event_hp.
+204. Loot "Rune of Vortex" (65293) from "An Ooze".
+205. Alternative: Loot "Rune of Vortex" (65293) from "A Shadowy Figure" (NPC 163190) in `griegsend`; trigger: griegsend/"Trapman Two", on event_combat.
+206. Alternative: Loot "Rune of Vortex" (65293) from "A Ra'Tuk Decimator" (NPC 289004) in `tipt`; trigger: tipt/"Zone Status", say "Spawn Keyroom".
+207. Loot "Rune of Greater Conflagration" (11442) from "Shar Vinitras" in `akheva`.
+208. Combine in "Spell Research Kit" (93492): "Rune of Cascade" (65270), "Rune of Coruscation" (16631), "Rune of Flash" (65279), "Rune of Greater Desiccation" (11439), "Rune of Glint" (65281), "Rune of Impulse" (65282), "Rune of Synergy" (65289), "Rune of Tempest" (65291), "Rune of Vortex" (65293), "Rune of Greater Conflagration" (11442). Produces "Spell: Electrical Charge" (16623). Requires Research, trivial 190. The combine does not fail.
 
 ### "Note to Arantir" (18168)
 
@@ -620,7 +807,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 19. lavastorm/"Talwyn Flamecaller", hand "Fluxing Staff" (11445) + "Fluxing Gem" (11448) + "Fluxing Rune" (11474) + "Fluxing Chunk of Ore" (11576). Gives "Staff of Fluxing Power" (11596).
 20. Combine in "Silken Tapestry Satchel" (12596): "Prismatic Crystal" (12599), "Prismatic Crystal" (12625), "Prismatic Crystal" (12628), "Prismatic Crystal" (12662), "Cohesion Gem" (67022), "Shard of Pure Ice" (11599), "Wisp of Pure Flame" (11619), "Staff of Fluxing Power" (11596). Produces "Full Tapestry Satchel" (16753). The combine does not fail.
 
-## `wiz_epic_pre`
+### `wiz_epic_pre`
 
 Values written: 1, 2, 3, 4.
 
@@ -768,7 +955,7 @@ Alternative or repeat transition to `wiz_epic` = `1` (not an additional required
     - Prerequisite: "Full Tapestry Satchel" (16753). See section 0.
     - Gives "Staff of Prismatic Power" (12665).
 
-##### Steps on `wiz_epic` that do not change it
+###### Steps on `wiz_epic` that do not change it
 
 - `lavastorm` talwyn flamecaller, say hail needs `wiz_epic` unset.
   - Sets `wiz_epic_pre` to `1`.
@@ -874,7 +1061,7 @@ Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10.
     - Fish "Worn Turban" (11299) in `potranquility`.
     - Gives "Old Parchment" (11102).
 
-##### Steps on `wiz_test_intel` that do not change it
+###### Steps on `wiz_test_intel` that do not change it
 
 - `lavastorm` talwyn flamecaller, hand 11412 needs `wiz_test_intel` ==10.
   - Sets `wiz_epic_pre` to `2`.
@@ -895,7 +1082,7 @@ Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10.
     - Prerequisite: "Spell: Electrical Charge" (16623). See section 0.
     - Gives "Spell: Electrical Charge" (16623).
 
-### Steps on `wiz_epic_pre` that do not change it
+#### Steps on `wiz_epic_pre` that do not change it
 
 - `lavastorm` talwyn flamecaller, say hail needs `wiz_epic_pre` ==5.
   - Sets `wiz_epic` to `1`.
@@ -903,11 +1090,11 @@ Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10.
   - Sets `wiz_test_intel` to `1`.
   - Gives Old Parchment (11197).
 
-## `wiz_epic`
+### `wiz_epic`
 
 See `wiz_epic` earlier in this file.
 
-## `wizepic`
+### `wizepic`
 
 Values written: 1.
 
@@ -921,13 +1108,13 @@ Values written: 1.
         - NPC say: Ah! A smart one, I see! If you really wish to know about such a thing, you will have to help me finance my studies. The knowledge I have acquired and researched did not come cheaply.
         - Condition: `(e.message:findi("What are you searching for"))`
 
-### Steps on `wizepic` that do not change it
+#### Steps on `wizepic` that do not change it
 
 - `erudnext` camin, hand 14330 needs `wizepic` ==1.
   - Turn in Ro's Breath (14330).
   - Gives Ro's Breath (14331).
 
-## `wizepicA`
+### `wizepicA`
 
 Values written: 1.
 
@@ -971,7 +1158,7 @@ Alternative or repeat transition to `wizepicA` = `1` (not an additional required
         - NPC say: Hello there, . Can I interest you in any components to help you in your research?
         - Condition: `(e.message:findi("Hail"))`
 
-## `wizepicB`
+### `wizepicB`
 
 Values written: 1.
 
@@ -986,7 +1173,7 @@ Alternative or repeat transition to `wizepicB` = `1` (not an additional required
     - Prerequisite: "Note to Arantir" (18168). See section 0.
     - Spawns Arantir Karondor (29089).
 
-## `wizepicK`
+### `wizepicK`
 
 Values written: 1.
 
@@ -1003,12 +1190,12 @@ Values written: 1.
         - Condition: `e.message:findi("what oil")`
         - Gives Golem Sprocket (14319).
 
-### Steps on `wizepicK` that do not change it
+#### Steps on `wizepicK` that do not change it
 
 - `butcher` kandin firepot, say what oil needs `wizepicK` set.
   - Gives Golem Sprocket (14319).
 
-## `wiz_epic20`
+### `wiz_epic20`
 
 Values written: 1, 2, 3, 4.
 
@@ -1053,7 +1240,7 @@ Values written: 1, 2, 3, 4.
     - Gives "Broken Orb of Discordant Energy" (15836).
     - Gives "Broken Orb of Discordant Energy" (16147).
 
-### Steps on `wiz_epic20` that do not change it
+#### Steps on `wiz_epic20` that do not change it
 
 - `lavastorm` talwyn flamecaller, hand 12665+16334+16451 needs `wiz_epic20` ==4.
   - Turn in Infused Orb of Discordant Energy (16451).
@@ -1064,7 +1251,7 @@ Values written: 1, 2, 3, 4.
   - Sets `wiz20_mpg_chest` to `1`.
   - Spawns a chest (epic 2.0) (893).
 
-## Other flags touched along the way
+### Other flags touched along the way
 
 - `wiz20_mpg_chest` set to 1 at provinggrounds/player.
 - `wiz_epic_satchel` set to 1 at lavastorm/talwyn flamecaller.

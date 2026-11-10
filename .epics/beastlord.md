@@ -1,8 +1,190 @@
 # Beastlord
 
-Steps taken from the quest graph only. **Broken** means the graph has no edge for that value or that item.
+Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags are dependencies, not the definition of an epic. **Broken** indicates missing graph provenance.
 
-Flags with writes: `beast_epic`, `bstepic`.
+## Epic 1.0
+
+### "Claw of the Savage Spirit" (8495)
+
+1. Spawns "Arcanist Ukigit" (167661) in `grimling` on event_signal.
+2. Loot "Copper Medal of War" (4393) from "Arcanist Ukigit".
+3. sharvahl/"Elder Animist Dumul", hand "Copper Medal of War" (4393). Gives "Carved Wooden Chest" (17361).
+4. Hand "Official Seal of the Khati Sha" (9031) to emeraldjungle/"Scout Vyrak". Spawns "The Spirit of Rage" (94126). Loot "Totem of the Gorilla" (9038) from "The Spirit of Rage".
+5. emeraldjungle/"Scout Vyrak", hand "Totem of the Gorilla" (9038). Gives "Official Seal of the Khati Sha" (9031).
+6. Hand "Official Seal of the Khati Sha" (9031) to feerrott/"Scout Ahlikal". Spawns "The Spirit of Decay" (47205). Loot "Totem of the Spider" (9032) from "The Spirit of Decay".
+7. feerrott/"Scout Ahlikal", hand "Totem of the Spider" (9032). Gives "Wrapped Spider Totem" (9033).
+8. Hand "Official Seal of the Khati Sha" (9031) to lfaydark/"Scout Rahjiq". Spawns "The Spirit of Malevolence" (57119). Loot "Totem of the Wolf" (9034) from "The Spirit of Malevolence".
+9. lfaydark/"Scout Rahjiq", hand "Totem of the Wolf" (9034). Gives "Wrapped Wolf Totem" (9035).
+10. Hand "Official Seal of the Khati Sha" (9031) to permafrost/"Scout Janomin". Spawns "The Icebound Spirit" (73107). Loot "Totem of the Ice Bear" (9036) from "The Icebound Spirit".
+11. permafrost/"Scout Janomin", hand "Totem of the Ice Bear" (9036). Gives "Wrapped Ice Bear Totem" (9037).
+12. emeraldjungle/"Scout Vyrak", hand "Totem of the Gorilla" (9038). Gives "Wrapped Gorilla Totem" (9039).
+13. Hand "Official Seal of the Khati Sha" (9031) to stonebrunt/"Scout Malom". Spawns "The Spirit of Torment" (100220). Loot "Totem of the Watcher" (9040) from "The Spirit of Torment".
+14. stonebrunt/"Scout Malom", hand "Totem of the Watcher" (9040). Gives "Wrapped Watcher Totem" (9041).
+15. Hand "Official Seal of the Khati Sha" (9031) to swampofnohope/"Scout Eyru". Spawns "The Spirit of Sorrow" (83244). Loot "Totem of the Alligator" (9042) from "The Spirit of Sorrow".
+16. swampofnohope/"Scout Eyru", hand "Totem of the Alligator" (9042). Gives "Wrapped Alligator Totem" (9043).
+17. Combine in "Carved Wooden Chest" (17361): "Wrapped Spider Totem" (9033), "Wrapped Wolf Totem" (9035), "Wrapped Ice Bear Totem" (9037), "Wrapped Gorilla Totem" (9039), "Wrapped Watcher Totem" (9041), "Wrapped Alligator Totem" (9043). Produces "Sealed Box of Totems" (9044). The combine does not fail.
+18. sharvahl/"Elder Animist Dumul", hand "Sealed Box of Totems" (9044). Gives "Seal of Elder Dumul" (9045).
+19. timorous/"Scout Sihmoj", hand "Seal of Elder Dumul" (9045). Gives "Black Silk Sack" (17360).
+20. Kill timorous/"Draz Nurakk". Spawns "Draz Nurakks Image" (96322).
+21. Loot "Shards of Broken Glass" (9046) from "Draz Nurakks Image".
+22. Combine in "Black Silk Sack" (17360): "Shards of Broken Glass" (9046). Produces "Sack of Broken Glass" (9047). The combine does not fail.
+23. timorous/"Scout Sihmoj", hand "Sack of Broken Glass" (9047). Gives "Sack of Broken Glass" (9048).
+24. sharvahl/"Elder Animist Dumul", hand "Sack of Broken Glass" (9048). Gives "Note for Historian Qua" (9049).
+25. sharvahl/"Arms Historian Qua", hand "Note for Historian Qua" (9049). Gives "Qua's Receipt" (9050).
+26. sharvahl/"Weapons Master Rahoul", hand "Qua's Receipt" (9050). Gives "Rahoul's Collection Box" (17363).
+27. Loot "Gem of the Void" (9053) from "Xi Xaui" (NPC 173047) in `maiden`. Drop cache: 6.52% chance per kill.
+28. Spawns "A Boulder Fiend" (171063) in `thegrey` on enter.
+29. Loot "Perfect Acrylia Ore" (9052) from "A Boulder Fiend".
+30. Alternative: Loot "Perfect Acrylia Ore" (9052) from "A Stone Beast" (NPC 171051) in `thegrey`; trigger: thegrey/"A Creature", on enter.
+31. Alternative: Loot "Perfect Acrylia Ore" (9052) from "Stonehand" (NPC 171064) in `thegrey`; trigger: thegrey/"A Creature", on enter.
+32. Alternative: Loot "Perfect Acrylia Ore" (9052) from "Boulder" (NPC 171069) in `thegrey`; trigger: thegrey/"A Creature", on enter.
+33. Loot "Chunk of Dense Fungal Padding" (9054) from "A Deepspore Mushroom" (NPC 164041) in `thedeep`. Drop cache: 15.97% chance per kill.
+34. Combine in "Rahoul's Collection Box" (17363): "Gem of the Void" (9053), "Perfect Acrylia Ore" (9052), "Chunk of Dense Fungal Padding" (9054). Produces "Sealed Collection Box" (9051). The combine does not fail.
+35. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9055).
+36. sharvahl/"Weapons Master Rahoul", hand "Sealed Collection Box" (9051). Gives "Jagged Claw of Rending" (9056).
+37. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Acrylia Gilded Box" (17362).
+38. sharvahl/"Elder Animist Dumul", hand "Jagged Claw of Rending" (9055) + "Jagged Claw of Rending" (9056). Gives "Khati Sha Seal of War" (9057).
+39. Hand "Khati Sha Seal of War" (9057) to fungusgrove/"Scout Halmia". Spawns "Draz Nurakk" (157116). Loot "Draz Nurakk's Head" (9059) from "Draz Nurakk".
+40. fungusgrove/"Scout Halmia", hand "Khati Sha Seal of War" (9057). Gives "Khati Sha Seal of War" (9062).
+41. Combine in "Acrylia Gilded Box" (17362): "Jagged Claw of Rending" (9055), "Jagged Claw of Rending" (9056), "Draz Nurakk's Head" (9059), "Khati Sha Seal of War" (9062). Produces "Sealed Gilded Wooden Chest" (9060). The combine does not fail.
+42. sharvahl/"Elder Animist Dumul", hand "Sealed Gilded Wooden Chest" (9060). Gives "Claw of the Savage Spirit" (8495).
+
+## Epic 1.5
+
+### "Savage Lord's Totem" (52911)
+
+1. Say "Happening" to rathemtn/"Zazamoukh".
+2. Spawns "Needs Heading Validation" (50326).
+3. Loot "Tarnished Ankh Piece" (52902) from "Needs Heading Validation".
+4. rathemtn/"Zazamoukh", hand "Tarnished Ankh Piece" (52902). Gives "Sparkling Silk Scarf" (52904).
+    - Dialogue with rathemtn/"Zazamoukh":
+      - Player: "Hail"
+        - NPC say: You must give me the remains of that creature.
+          - Reply guard: `(plugin::check_hasitem($client, 52902))`
+        - NPC say: My mind . . . something is [happening].
+          - Reply guard: ``
+        - Condition: `($client->GetGlobal("beast_epic") ==12)`
+        - Condition: `($text=~/hail/i)`
+      - Player: "Happening" (link: explicit mention)
+        - NPC say: Something . . . is wrong. My companion . . . it weakens me . . .
+        - Condition: `($client->GetGlobal("beast_epic") ==12)`
+        - Condition: `($text=~/happening/i)`
+        - Spawns NPC 50326.
+5. Hand "Sparkling Silk Scarf" (52904) to rathemtn/"Ankhefenmut". Spawns "Needs Heading Validation" (50327). Loot "Sullied Ankh Piece" (52903) from "Needs Heading Validation".
+6. rathemtn/"Ankhefenmut", hand "Sullied Ankh Piece" (52903). Gives "Gift of the Sphinx" (52905).
+    - Dialogue with rathemtn/"Ankhefenmut":
+      - Player: "Hail"
+        - NPC emote: eye's you curiously.
+        - Condition: `($client->GetGlobal("beast_epic") ==11)`
+        - Condition: `($text=~/hail/i)`
+      - Player: "Willing To Help" (link: conversation sequence)
+        - NPC say: Uyo rea het tebardsrol?
+        - Condition: `($client->GetGlobal("beast_epic") ==11)`
+        - Condition: `($text=~/willing to help/i)`
+      - Player: "I am the beastlord" (link: conversation sequence)
+        - NPC say: Ah, a quick study. Interesting. We did indeed seek some help, but you must [prove] your wits. That is our way.
+        - Condition: `($client->GetGlobal("beast_epic") ==11)`
+        - Condition: `($text=~/I am the beastlord/i)`
+      - Player: "Prove" (link: explicit mention)
+        - NPC say: You must answer three [riddles]. Because I only request your help, I will not put you through a great challenge, but you must know and understand the world around you if you expect to pass this test of good faith.
+        - Condition: `($client->GetGlobal("beast_epic") ==11)`
+        - Condition: `($text=~/prove/i)`
+      - Player: "Riddles" (link: explicit mention)
+        - NPC say: The first riddle is thus -- There are two revolving in two ways.
+        - Condition: `($client->GetGlobal("beast_epic") ==11)`
+        - Condition: `($text=~/riddles/i)`
+      - Player: "Moons" (link: conversation sequence)
+        - NPC say: Very well. I see that wasn't too great of a challenge. The second riddle you must answer is -- Set upon the world in defiance, the cauldron still swims with its ire alone.
+        - Condition: `($client->GetGlobal("beast_epic") ==11)`
+        - Condition: `($text=~/moons/i)`
+      - Player: "Kedge Keep" (link: conversation sequence)
+        - NPC say: I had not thought you'd get this far. Most of Norrath's history is forgotten, but this is encouraging indeed. The final riddle you must answer for me, is this -- They were one that splintered in to three.
+        - Condition: `($client->GetGlobal("beast_epic") ==11)`
+        - Condition: `($text=~/kedge keep/i)`
+      - Player: "Elddar Elves" (link: conversation sequence)
+        - NPC say: You have indeed studied the world and know the simplest of references. I am grateful you would even attempt to aid us, two of the few remaining sphinxes. Most would rather take our secrets from us or see us dead! And I do believe we have once again come upon an [enemy].
+        - Condition: `($client->GetGlobal("beast_epic") ==11)`
+        - Condition: `($text=~/elddar elves/i)`
+      - Player: "Enemy" (link: explicit mention)
+        - NPC say: Yes, and do perk your ears. I do not want to have to say this too loudly. There is darkness around our minds and it is clouding our visions and magic. It is a cold, [chaotic feeling] and it does not feel natural. I might have dismissed it as my path to aging, but it is not, for my counterpart, Zazamoukh, feels it too.
+        - Condition: `($client->GetGlobal("beast_epic") ==11)`
+        - Condition: `($text=~/enemy/i)`
+      - Player: "Chaotic Feeling" (link: explicit mention)
+        - NPC say: Not since we allied with the ogre magi long ago, have I felt foreboding in my heart. But I feel it tenfold now. Something or someone is attempting to envelop our minds and use them against us somehow, but we are not sure how. I fear that even as I speak to you, I am [endangered] further, and so are you.
+        - Condition: `($client->GetGlobal("beast_epic") ==11)`
+        - Condition: `($text=~/chaotic feeling/i)`
+      - Player: "Endangered" (link: explicit mention)
+        - NPC say: Zazamoukh calls to me. You must go see the sphinx quickly.
+        - Condition: `($client->GetGlobal("beast_epic") ==11)`
+        - Condition: `($text=~/endangered/i)`
+        - Sets `beast_epic` to `12`.
+7. sharvahl/"Elder Animist Muada", hand "Gift of the Sphinx" (52905). Sets `beast_epic` to `15`.
+8. jaggedpine/"Rashara Wrualla", say "Not Possible". Requires `beast_epic` ==15. Gives "Request of the Elders" (52906).
+9. Hand "Request of the Elders" (52906) to draniksscar/"Yerika Sisslak". Spawns "Girplan Spiritleech" (302085). Loot "Rashara's Warder's Essence" (52907) from "Girplan Spiritleech".
+10. draniksscar/"Yerika Sisslak", hand "Rashara's Warder's Essence" (52907). Gives "Sealed Response to the Elders" (52908).
+11. jaggedpine/"Rashara Wrualla", hand "Rashara's Warder's Essence" (52907) + "Sealed Response to the Elders" (52908). Sets `beast_epic` to `16`.
+12. sharvahl/"Elder Animist Muada", say "Stopped". Requires `beast_epic` ==16. Gives "Elder Cloak of Resilience" (52909).
+13. Hand "Elder Cloak of Resilience" (52909) to dranik/"Erana Farrel". Spawns "Discordling Dark Animist" (336126). Loot "Discordant Totem of the Feral" (52910) from "Discordling Dark Animist".
+14. dranik/"Erana Farrel", hand "Discordant Totem of the Feral" (52910). Gives "Wrapped Discordant Totem of the Feral" (52914).
+15. sharvahl/"Elder Animist Muada", hand "Wrapped Discordant Totem of the Feral" (52914). Gives "Savage Lord's Totem" (52911).
+
+## Epic 2.0
+
+### "Spiritcaller Totem of the Feral" (57054)
+
+1. Say "Happening" to rathemtn/"Zazamoukh".
+2. Spawns "Needs Heading Validation" (50326).
+3. Loot "Tarnished Ankh Piece" (52902) from "Needs Heading Validation".
+4. rathemtn/"Zazamoukh", hand "Tarnished Ankh Piece" (52902). Gives "Sparkling Silk Scarf" (52904).
+5. Hand "Sparkling Silk Scarf" (52904) to rathemtn/"Ankhefenmut". Spawns "Needs Heading Validation" (50327). Loot "Sullied Ankh Piece" (52903) from "Needs Heading Validation".
+6. rathemtn/"Ankhefenmut", hand "Sullied Ankh Piece" (52903). Gives "Gift of the Sphinx" (52905).
+7. sharvahl/"Elder Animist Muada", hand "Gift of the Sphinx" (52905). Sets `beast_epic` to `15`.
+8. jaggedpine/"Rashara Wrualla", say "Not Possible". Requires `beast_epic` ==15. Gives "Request of the Elders" (52906).
+9. Hand "Request of the Elders" (52906) to draniksscar/"Yerika Sisslak". Spawns "Girplan Spiritleech" (302085). Loot "Rashara's Warder's Essence" (52907) from "Girplan Spiritleech".
+10. draniksscar/"Yerika Sisslak", hand "Rashara's Warder's Essence" (52907). Gives "Sealed Response to the Elders" (52908).
+11. jaggedpine/"Rashara Wrualla", hand "Rashara's Warder's Essence" (52907) + "Sealed Response to the Elders" (52908). Sets `beast_epic` to `16`.
+12. sharvahl/"Elder Animist Muada", say "Stopped". Requires `beast_epic` ==16. Gives "Elder Cloak of Resilience" (52909).
+13. Hand "Elder Cloak of Resilience" (52909) to dranik/"Erana Farrel". Spawns "Discordling Dark Animist" (336126). Loot "Discordant Totem of the Feral" (52910) from "Discordling Dark Animist".
+14. dranik/"Erana Farrel", hand "Discordant Totem of the Feral" (52910). Gives "Wrapped Discordant Totem of the Feral" (52914).
+15. sharvahl/"Elder Animist Muada", hand "Wrapped Discordant Totem of the Feral" (52914). Gives "Savage Lord's Totem" (52911).
+16. sharvahl/"Elder Animist Muada", hand "Wrapped Discordant Totem of the Feral" (52914). Sets `beast_epic` to `17`.
+17. Say "End The Threat In The Grimling Forest" to grimling/"Scout Husman".
+18. Spawns "Grimling Colonel" (167426).
+19. Loot "Eerie Medallion" (57025) from "Grimling Colonel".
+20. Alternative: Loot "Eerie Medallion" (57025) from "Grimling General" (NPC 167726) in `grimling`; trigger: grimling/"Scout Husman", say "End The Threat In The Grimling Forest".
+21. Say "Hail" to jaggedpine/"Rashara Wrualla".
+22. Spawns "Dismal Darkpaw Mystic" (181225).
+23. Loot "Scalding Blood" (57058) from "Dismal Darkpaw Mystic".
+24. Loot "Fierce Spirit Clay" (57020) from "Spiritfrenzied Phoenix" in `poair`.
+25. sharvahl/"Elder Animist Muada", say "Make The Totem". Requires `beast_epic` ==17. Gives "Elders' Totem Mold" (52930).
+26. sharvahl/"Elder Animist Muada", say "Task". Requires `beast_epic` ==17. Gives "Peculiar Unshapen Piece of Wood" (57011).
+27. Combine in Kiln (22): "Fierce Spirit Clay" (57020), "Eerie Medallion" (57025), "Scalding Blood" (57058). Produces "Gilded Resonating Clay" (57029). Requires Pottery 100. The combine does not fail.
+28. sharvahl/"Elder Animist Muada", say "Make The Totem". Requires `beast_epic` ==17. Gives "Combined Essence" (52913).
+29. Combine in Oven (15): "Peculiar Unshapen Piece of Wood" (57011), "Gilded Resonating Clay" (57029), "Combined Essence" (52913). Produces "Malleable Glowing Totem" (57050). Requires Baking 100. The combine does not fail.
+30. Combine in Forge (17): "Elders' Totem Mold" (52930), "Malleable Glowing Totem" (57050). Produces "Spiritbound Totem" (57027). Requires Blacksmithing 100. The combine does not fail.
+31. sharvahl/"Elder Animist Muada", say "Trapped Spirits". Sets `beast_epic` to `18`.
+32. Kill causeway/"Bazu Terror". Spawns "Discordling Dark Animist" (303094).
+33. Loot "Dark Animist Wand" (57012) from "Discordling Dark Animist".
+34. causeway/"Jillaa Oogblat", hand "Dark Animist Wand" (57012). Sets `beast_epic` to `19`.
+35. sharvahl/"Elder Animist Muada", say "Agree To Take On This Charge". Requires `beast_epic` ==19. Gives "Blended Elixir of Fortitude" (57051).
+36. causeway/"Jillaa Oogblat", hand "Blended Elixir of Fortitude" (57051). Sets `beast_epic` to `20`.
+37. Say "Strong" to bloodfields/"Tormented Scout".
+38. Spawns "DDA" (301069).
+39. Loot "Gemmed Dark Animist Wand" (57014) from "DDA".
+40. bloodfields/"Tormented Scout", hand "Gemmed Dark Animist Wand" (57014). Gives "Wrapped Gemmed Wand" (57052).
+41. sharvahl/"Elder Animist Muada", hand "Wrapped Gemmed Wand" (57052). Sets `beast_epic` to `21`.
+42. Say "Check Lorb" to anguish/"Zone Status".
+43. Spawns "Orb of Discordant Energy" (317087).
+44. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+45. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+46. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+47. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+48. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+49. sharvahl/"Elder Animist Muada", hand "Globe of Discordant Energy" (47100) + "Spiritbound Totem" (57027). Requires `beast_epic` ==21. Gives "Sealed Letter from Muada" (57053).
+50. hollowshade/"Alladnu Araihse", hand "Savage Lord's Totem" (52911) + "Sealed Letter from Muada" (57053). Sets `beast_epic` to `22`.
+51. hollowshade/"Alladnu Araihse", say "Ready". Requires `beast_epic` ==22. Gives "Spiritcaller Totem of the Feral" (57054).
+
+## Quest-state progression
 
 ## 0. Prerequisites
 
@@ -333,7 +515,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 1. Loot "Swirling Feral Essence" (57010) from "Delirious Drogmor" in `gunthak`.
 2. overthere/"Irionu Bastun", hand "Swirling Feral Essence" (57010). Gives "Sealed Note for Muada" (52900).
 
-## `beast_epic`
+### `beast_epic`
 
 Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23.
 
@@ -675,52 +857,6 @@ Alternative or repeat transition to `beast_epic` = `1` (not an additional requir
 
 12. rathemtn/"Ankhefenmut", say "Endangered". Sets `beast_epic` to `12`.
     - Requires `beast_epic` ==11.
-    - Dialogue with rathemtn/"Ankhefenmut":
-      - Player: "Hail"
-        - NPC emote: eye's you curiously.
-        - Condition: `($client->GetGlobal("beast_epic") ==11)`
-        - Condition: `($text=~/hail/i)`
-      - Player: "Willing To Help" (link: conversation sequence)
-        - NPC say: Uyo rea het tebardsrol?
-        - Condition: `($client->GetGlobal("beast_epic") ==11)`
-        - Condition: `($text=~/willing to help/i)`
-      - Player: "I am the beastlord" (link: conversation sequence)
-        - NPC say: Ah, a quick study. Interesting. We did indeed seek some help, but you must [prove] your wits. That is our way.
-        - Condition: `($client->GetGlobal("beast_epic") ==11)`
-        - Condition: `($text=~/I am the beastlord/i)`
-      - Player: "Prove" (link: explicit mention)
-        - NPC say: You must answer three [riddles]. Because I only request your help, I will not put you through a great challenge, but you must know and understand the world around you if you expect to pass this test of good faith.
-        - Condition: `($client->GetGlobal("beast_epic") ==11)`
-        - Condition: `($text=~/prove/i)`
-      - Player: "Riddles" (link: explicit mention)
-        - NPC say: The first riddle is thus -- There are two revolving in two ways.
-        - Condition: `($client->GetGlobal("beast_epic") ==11)`
-        - Condition: `($text=~/riddles/i)`
-      - Player: "Moons" (link: conversation sequence)
-        - NPC say: Very well. I see that wasn't too great of a challenge. The second riddle you must answer is -- Set upon the world in defiance, the cauldron still swims with its ire alone.
-        - Condition: `($client->GetGlobal("beast_epic") ==11)`
-        - Condition: `($text=~/moons/i)`
-      - Player: "Kedge Keep" (link: conversation sequence)
-        - NPC say: I had not thought you'd get this far. Most of Norrath's history is forgotten, but this is encouraging indeed. The final riddle you must answer for me, is this -- They were one that splintered in to three.
-        - Condition: `($client->GetGlobal("beast_epic") ==11)`
-        - Condition: `($text=~/kedge keep/i)`
-      - Player: "Elddar Elves" (link: conversation sequence)
-        - NPC say: You have indeed studied the world and know the simplest of references. I am grateful you would even attempt to aid us, two of the few remaining sphinxes. Most would rather take our secrets from us or see us dead! And I do believe we have once again come upon an [enemy].
-        - Condition: `($client->GetGlobal("beast_epic") ==11)`
-        - Condition: `($text=~/elddar elves/i)`
-      - Player: "Enemy" (link: explicit mention)
-        - NPC say: Yes, and do perk your ears. I do not want to have to say this too loudly. There is darkness around our minds and it is clouding our visions and magic. It is a cold, [chaotic feeling] and it does not feel natural. I might have dismissed it as my path to aging, but it is not, for my counterpart, Zazamoukh, feels it too.
-        - Condition: `($client->GetGlobal("beast_epic") ==11)`
-        - Condition: `($text=~/enemy/i)`
-      - Player: "Chaotic Feeling" (link: explicit mention)
-        - NPC say: Not since we allied with the ogre magi long ago, have I felt foreboding in my heart. But I feel it tenfold now. Something or someone is attempting to envelop our minds and use them against us somehow, but we are not sure how. I fear that even as I speak to you, I am [endangered] further, and so are you.
-        - Condition: `($client->GetGlobal("beast_epic") ==11)`
-        - Condition: `($text=~/chaotic feeling/i)`
-      - Player: "Endangered" (link: explicit mention)
-        - NPC say: Zazamoukh calls to me. You must go see the sphinx quickly.
-        - Condition: `($client->GetGlobal("beast_epic") ==11)`
-        - Condition: `($text=~/endangered/i)`
-        - Sets `beast_epic` to `12`.
 
 13. rathemtn/"Zazamoukh", hand "Tarnished Ankh Piece" (52902). Sets `beast_epic` to `13`.
     - Hand in x1: "Tarnished Ankh Piece" (52902).
@@ -728,19 +864,6 @@ Alternative or repeat transition to `beast_epic` = `1` (not an additional requir
     - Spawns "Needs Heading Validation" (50326).
     - Loot "Tarnished Ankh Piece" (52902) from "Needs Heading Validation".
     - Gives "Sparkling Silk Scarf" (52904).
-    - Dialogue with rathemtn/"Zazamoukh":
-      - Player: "Hail"
-        - NPC say: You must give me the remains of that creature.
-          - Reply guard: `(plugin::check_hasitem($client, 52902))`
-        - NPC say: My mind . . . something is [happening].
-          - Reply guard: ``
-        - Condition: `($client->GetGlobal("beast_epic") ==12)`
-        - Condition: `($text=~/hail/i)`
-      - Player: "Happening" (link: explicit mention)
-        - NPC say: Something . . . is wrong. My companion . . . it weakens me . . .
-        - Condition: `($client->GetGlobal("beast_epic") ==12)`
-        - Condition: `($text=~/happening/i)`
-        - Spawns NPC 50326.
 
 14. rathemtn/"Ankhefenmut", hand "Sullied Ankh Piece" (52903). Sets `beast_epic` to `14`.
     - Hand in x1: "Sullied Ankh Piece" (52903).
@@ -816,7 +939,7 @@ Alternative or repeat transition to `beast_epic` = `1` (not an additional requir
     - Requires `beast_epic` ==22.
     - Gives "Spiritcaller Totem of the Feral" (57054).
 
-### Steps on `beast_epic` that do not change it
+#### Steps on `beast_epic` that do not change it
 
 - `bloodfields` player, on loot needs `beast_epic` ==20.
   - Sets `bst_chest_causeway` to `1`.
@@ -938,7 +1061,7 @@ Alternative or repeat transition to `beast_epic` = `1` (not an additional requir
 - `westwastes` diddugu, say mastodon needs `beast_epic` ==6.
   - Gives Letter from Muada (57008).
 
-## `bstepic`
+### `bstepic`
 
 Values written: 1.
 
@@ -972,7 +1095,7 @@ Values written: 1.
         - Condition: `($text=~/lost the seal/i && $bstepic >=1)`
         - Gives Official Seal of the Khati Sha (9031).
 
-## Other flags touched along the way
+### Other flags touched along the way
 
 - `beast_epic_dran` set to 1 at dranik/player.
 - `beast_epic_ds` set to 1 at draniksscar/player.

@@ -17,7 +17,7 @@ MERCHANT_BOOK = ensure_merchants()
 RECIPE_BOOK = ensure_recipes()
 
 GRAPH = Path.home() / ".eqclient" / "quest_graph.jsonl"
-OUT = Path("/Users/samo/work/EQEmu/.epics")
+OUT = Path(__file__).resolve().parent
 
 # Main flags in the order a character meets them. A 2.0 flag is the one the
 # graph actually names with 20. Where 1.5 and 2.0 share one flag, the values
@@ -102,6 +102,28 @@ CLASSES = [
     ("beastlord", "Beastlord", ["bstepic", "beast_epic"], ("beast_epic_", "bst_")),
     ("berserker", "Berserker", ["berserk_epic"], ("ber_epic_", "berserk_epic_")),
 ]
+
+# Final rewards are traversal roots. Quest globals are prerequisites discovered
+# while walking backwards from a reward, not a proxy for the reward itself.
+# Keep both Ranger 1.0 swords: they are separate, independently earned epics.
+EPIC_ITEMS: dict[str, dict[str, tuple[int, ...]]] = {
+    "warrior": {"1.0": (10908,), "1.5": (60321,), "2.0": (60332,)},
+    "cleric": {"1.0": (5532,), "1.5": (9955,), "2.0": (20076,)},
+    "paladin": {"1.0": (10099,), "1.5": (64031,), "2.0": (48147,)},
+    "ranger": {"1.0": (20487, 20488), "1.5": (62627,), "2.0": (62649,)},
+    "shadowknight": {"1.0": (14383,), "1.5": (50003,), "2.0": (48136,)},
+    "druid": {"1.0": (20490,), "1.5": (62863,), "2.0": (62880,)},
+    "monk": {"1.0": (10652,), "1.5": (61025,), "2.0": (67742,)},
+    "bard": {"1.0": (20542,), "1.5": (77631,), "2.0": (77640,)},
+    "rogue": {"1.0": (11057,), "1.5": (52347,), "2.0": (52348,)},
+    "shaman": {"1.0": (10651,), "1.5": (57400,), "2.0": (57405,)},
+    "necromancer": {"1.0": (20544,), "1.5": (62581,), "2.0": (64067,)},
+    "wizard": {"1.0": (14341,), "1.5": (12665,), "2.0": (16576,)},
+    "magician": {"1.0": (28034,), "1.5": (19092,), "2.0": (19839,)},
+    "enchanter": {"1.0": (10650,), "1.5": (52952,), "2.0": (52962,)},
+    "beastlord": {"1.0": (8495,), "1.5": (52911,), "2.0": (57054,)},
+    "berserker": {"1.0": (68299,), "1.5": (18398,), "2.0": (18609,)},
+}
 
 
 def load():
@@ -538,6 +560,12 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
         dialogues,
     ) = ctx
     flags = class_flags(sets_of, mains, prefixes)
+    triggered = {
+        str(row.get("to"))
+        for rows in by_from.values()
+        for row in rows
+        if row.get("rel") == "triggers"
+    }
     # A shared player event can contain branches for several classes.  Its
     # graph source (e.g. veksar/player#enter) is not branch-specific; exclude
     # predicates owned exclusively by another class rather than turning the
@@ -973,12 +1001,22 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
             None,
         )
         if chosen_loot is None:
+            # A timer without a causal `triggers` edge is NOT an executable
+            # acquisition path. Prefer a reachable timer, then any other
+            # explicit encounter, before resorting to an orphan timer.
             chosen_loot = next(
                 (
-                    edge
-                    for edge in possible_loot
+                    edge for edge in possible_loot
                     if "#timer:" in str(edge.get("from") or "")
+                    and str(edge.get("from")) in triggered
                 ),
+                None,
+            )
+        if chosen_loot is None:
+            chosen_loot = next(
+                (edge for edge in possible_loot
+                 if "#" in str(edge.get("from") or "")
+                 and "#timer:" not in str(edge.get("from") or "")),
                 None,
             )
         if chosen_loot is None:
@@ -2004,44 +2042,70 @@ def write_class(name, title, mains, prefixes, ctx, *, verbose=False):
         for edge in edges_needing[flag]:
             yield edge
 
-    mains = sorted(mains, key=_era_rank)
     lines.append(f"# {title}")
     lines.append("")
     lines.append(
-        "Steps taken from the quest graph only. **Broken** means the graph has no edge for that value or that item."
+        "Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. "
+        "Flags are dependencies, not the definition of an epic. "
+        "**Broken** indicates missing graph provenance."
     )
     lines.append("")
-    main_flags = [_section(entry)[0] for entry in mains]
-    present = []
-    for flag in main_flags:
-        if sets_of.get(flag) and flag not in present:
-            present.append(flag)
-    missing = [flag for flag in main_flags if not sets_of.get(flag)]
-    lines.append(
-        "Flags with writes: "
-        + (", ".join(f"`{flag}`" for flag in present) if present else "none")
-        + "."
-    )
-    if missing:
+    roots = EPIC_ITEMS[name]
+    for era in ("1.0", "1.5", "2.0"):
+        lines.append(f"## Epic {era}")
         lines.append("")
-        lines.append(
-            "**Broken:** these flags were expected for this class and nothing sets them: "
-            + ", ".join(f"`{flag}`" for flag in missing)
-            + "."
-        )
+        for item_id in roots[era]:
+            lines.append(f"### {quoted_item(items, item_id)}")
+            lines.append("")
+            # Each reward is independently obtainable; a shared item used in
+            # two chains must not be suppressed by the first walkthrough.
+            first_seen_item.clear()
+            steps: list[str] = []
+            forward(item_id, set(), steps, set(), item_id)
+            if not (gives.get(item_id) or loots.get(item_id) or produces.get(item_id)):
+                lines.append(
+                    f"**Broken:** no quest hand-in, encounter or recipe produces "
+                    f"{quoted_item(items, item_id)} in the graph. "
+                    "Catalog drops/spells below are not proof of the epic quest."
+                )
+                lines.append("")
+            if not steps:
+                lines.append(f"**Broken:** no acquisition path for item {item_id}.")
+            for number, step in enumerate(steps, 1):
+                lines.append(f"{number}. {step}")
+                if verbose:
+                    # Preserve the dialogue detail previously shown for
+                    # flag-rooted steps without making flags the entrypoints.
+                    match = re.match(
+                        r'([^\s/]+)/(?:(?:"([^"]+)")|([^,]+)),\s*(?:say|hand)\b',
+                        step,
+                    )
+                    if match:
+                        zone, quoted_npc, plain_npc = match.groups()
+                        npc = (quoted_npc or plain_npc).strip().lower().replace(" ", "_")
+                        lines.extend(dialogue_lines(f"{zone}/{npc}", "    "))
+            lines.append("")
+
+    # Retain the full state-machine walkthrough as supporting evidence. Some
+    # older scripts gate encounters through globals without a causal edge
+    # from the resulting loot back to that global. Removing this view would
+    # regress the complete Ranger 1.5/2.0 progression while those edges are
+    # still absent from the graph.
+    lines.append("## Quest-state progression")
     lines.append("")
-    body_at = len(lines)
+    mains = sorted(mains, key=_era_rank)
+    state_at = len(lines)
     for entry in mains:
         flag, lo, hi, era = _section(entry)
-        render_flag(flag, 2, lo, hi, era)
+        render_flag(flag, 3, lo, hi, era)
     if prereq_ids:
-        lines[body_at:body_at] = render_prereqs()
+        lines[state_at:state_at] = render_prereqs()
     side_flags = {_section(entry)[0] for entry in mains}
     sides = sorted(
         flag for flag in flags if flag not in side_flags and flag not in seen_flags
     )
     if sides:
-        lines.append("## Other flags touched along the way")
+        lines.append("### Other flags touched along the way")
         lines.append("")
         for flag in sides:
             brief = sorted({str(edge.get("value")) for edge in sets_of.get(flag, ())})
@@ -2072,7 +2136,12 @@ def main(argv=None):
         action="store_true",
         help="Inline full NPC dialogue chains and guards",
     )
+    parser.add_argument("--graph", type=Path, default=None)
+    parser.add_argument("--out", type=Path, default=None)
     args = parser.parse_args(argv)
+    global GRAPH, OUT
+    GRAPH = args.graph or GRAPH
+    OUT = args.out or OUT
     choices = [
         row
         for row in CLASSES

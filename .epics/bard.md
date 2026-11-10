@@ -1,8 +1,302 @@
 # Bard
 
-Steps taken from the quest graph only. **Broken** means the graph has no edge for that value or that item.
+Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags are dependencies, not the definition of an epic. **Broken** indicates missing graph provenance.
 
-Flags with writes: `bardPQ`, `Fatestealer_bard`, `bard15`, `bard20`.
+## Epic 1.0
+
+### "Singing Short Sword" (20542)
+
+1. qey2hh1/"Konia Swiftfoot", say "Ready". Gives "Torch of Misty" (20532).
+2. misty/"Fajio Knejo", hand "Torch of Misty" (20532). Gives "Torch of Ro" (20533).
+3. southro/"Andad Filla", hand "Torch of Ro" (20533). Gives "Torch of Rathe" (20534).
+4. lakerathe/"Misty Tekcihta", hand "Torch of Rathe" (20534). Gives "Proof of Speed" (20379).
+5. qey2hh1/"Konia Swiftfoot", hand "Proof of Speed" (20379). Gives "Maestro's Symphony Page 24 Top" (20376).
+6. southkarana/"Baenar Swiftsong", say "Doll". Gives "Solusek Mining Company Invoice" (20372).
+7. soldunga/"Marfen Binkdirple", hand "Solusek Mining Company Invoice" (20372). Gives "Mechanical Doll" (20370).
+8. unrest/"Serra", hand "Mechanical Doll" (20370). Gives "Note for Baenar" (20371).
+    - Dialogue with unrest/"Serra":
+      - Player: "Hail"
+        - NPC say: H..h..hello? Can you help me? I lost [something] and I need it so I can go back home.
+        - Condition: `(e.message:findi("hail"))`
+      - Player: "Something" (link: explicit mention)
+        - NPC say: I never got my doll for my birthday. Before he could bring it to me I was h..hurt by the bad man. I cannot leave without my doll. Will you please help me?
+        - Condition: `(e.message:findi("something"))`
+      - Player: "Doll" (link: explicit mention)
+        - NPC emote: claps her hands. 'Oh goody! But... I cannot seem to remember his name. He gave me this note before I...
+        - Condition: `(e.message:findi("doll"))`
+      - Player: "Note" (link: explicit mention)
+        - NPC say: I hope it will help you out. Please find him so I can leave this place?
+        - Condition: `(e.message:findi("note"))`
+        - Gives Ripped Qeynos Bards Guild Flyer (20374).
+9. southkarana/"Baenar Swiftsong", hand "Note for Baenar" (20371). Gives "Note to Maligar" (20368).
+10. Hand "Note to Maligar" (20368) to qey2hh1/"Maligar". Spawns "Maligars Enraged Doppleganger" (12173). Loot "Maligar's Head" (20367) from "Maligars Enraged Doppleganger".
+11. southkarana/"Baenar Swiftsong", hand "Maligar's Head" (20367). Gives "Mahlin's Mystical Bongos" (20366).
+12. qey2hh1/"Konia Swiftfoot", hand "Mahlin's Mystical Bongos" (20366). Gives "Maestro's Symphony Page 24 Bottom" (20383).
+13. Loot "Chromodrac Gut" (20527) from "Eldrig the Old" in `skyfire`.
+14. Loot "Red Wurm Gut" (20528) from "Nezekezena" in `burningwood`.
+15. Loot "Onyx Drake Gut" (20529) from "Blackwing".
+16. Loot "Onyx Drake Gut" (20529) from "Blackwing" in `rathemtn`.
+17. southkarana/"Kelkim Menkia", hand "Chromodrac Gut" (20527) + "Red Wurm Gut" (20528) + "Onyx Drake Gut" (20529). Gives "Maestro's Symphony Page 25" (20377).
+18. Loot "Alluring Horn" (20530) from "Quag Maelstrom" in `oceanoftears`.
+19. Loot "Alluring Horn" (20530) from "Quag Maelstrom" in `oot`.
+20. butcher/"Vedico Windwisper", hand "Alluring Horn" (20530). Gives "Note to Forpar Fizfla" (20378).
+21. steamfont/"Forpar Fizfla", hand "Note to Forpar Fizfla" (20378). Gives "Forpar's Note to Himself" (20380).
+22. Loot "Kedge Backbone" (20524) from "Phinigel Autropos" in `kedge`.
+23. Loot "Petrified Werewolf Skull" (20525) from "The Fabled Drolvarg Warlord".
+24. Loot "Petrified Werewolf Skull" (20525) from "a Drolvarg warlord" in `karnor`.
+25. Loot "Amygdalan Tendril" (5520) from "Amygdalan warrior" (NPC 72015) in `fearplane`. Drop cache: 8.14% chance per kill.
+26. steamfont/"Forpar Fizfla", hand "Amygdalan Tendril" (5520) + "Forpar's Note to Himself" (20380) + "Kedge Backbone" (20524) + "Petrified Werewolf Skull" (20525). Gives "Mystical Lute Head" (20535).
+27. Loot "White Dragon Scales" (11602) from "Gorenaire" in `dreadlands`.
+28. Loot "White Dragon Scales" (11602) from "Lady Vox" in `permafrost`.
+29. Loot "White Dragon Scales" (11602) from "The Fabled Gorenaire".
+30. Loot "Red Dragon Scales" (11622) from "Echo of Nortlav" in `hole`.
+31. Loot "Red Dragon Scales" (11622) from "Lord Nagafen" in `soldungb`.
+32. Loot "Red Dragon Scales" (11622) from "Melalafen" in `westwastes`.
+33. Loot "Red Dragon Scales" (11622) from "Talendor" in `skyfire`.
+34. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
+    - Dialogue with kaladimb/"Jeet":
+      - Player: "Hail"
+        - NPC say: What business do you have here?!! This here is the mine and that means if you ain't a [member of Miner's Guild 628], you'd best be moving on!!
+          - Reply guard: `($faction <= 7)`
+        - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
+          - Reply guard: ``
+        - Condition: `($text=~/hail/i)`
+      - Player: "Member Of Miner'S Guild 628" (link: explicit mention)
+        - NPC say: Well, then, get off yer rump and give us a hand! If you don't have a mining pick, then get down there and use your fingernails!! If you're new and you want to earn a pick, you can [volunteer to exterminate the rats] that have been infesting the mines!!
+          - Reply guard: `($faction <= 4)`
+        - NPC say: Don't take this personally, but I can't quite trust you with such matters. Maybe a few less Butcherblock bandits would prove your worth.
+          - Reply guard: `($faction <= 5)`
+        - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
+          - Reply guard: ``
+        - Condition: `(($text=~/member of miner's guild 628/i))`
+      - Player: "Volunteer To Exterminate The Rats" (link: explicit mention)
+        - NPC say: Well, someone has to do the dirty work around here. Let it be you new miners. Go patrol the mines and if you see any rats, bash them good!! Return to me with four rat pelts and I will give you some armor as payment. If you want a 628 mining cap, yer gonna have to smash that infernal [cleaner]!!
+          - Reply guard: `($faction <= 4)`
+        - NPC say: Don't take this personally, but I can't quite trust you with such matters. Maybe a few less Butcherblock bandits would prove your worth.
+          - Reply guard: `($faction <= 5)`
+        - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
+          - Reply guard: ``
+        - Condition: `(($text=~/volunteer to exterminate the rats/i))`
+      - Player: "Run To The Gnome City" (link: external event mention)
+        - Prompted by `event_item`:
+          - NPC say: It's about time you managed to smash these four!! Here. You do good work. We could use someone like you to [run to the gnome city].
+          - Event guard: `(plugin::check_handin(\%itemcount, 13054 => 4))`
+        - NPC say: Well, as you most likely know, we are a non-profit organization, at least here in Kaladim. We need to make our profit elsewhere and that means a little bit of thieving. Presently we need loyal members to [collect the gnome profit].
+          - Reply guard: `($faction <= 4)`
+        - NPC say: Don't take this personally, but I can't quite trust you with such matters. Maybe a few less Butcherblock bandits would prove your worth.
+          - Reply guard: `($faction <= 5)`
+        - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
+          - Reply guard: ``
+        - Condition: `(($text=~/run to the gnome city/i))`
+      - Player: "Collect The Gnome Profit" (link: explicit mention)
+        - NPC say: Take this key. Don't lose it!! You will need to use it on a metal rat called a scrubber. They are all over Ak'Anon. You must find the one that responds to the number, '628'. If it responds, use the key on it. It will hand over a bag with the 'gnome take'. Return it to me. Get moving!!
+          - Reply guard: `($faction <= 4)`
+        - NPC say: Don't take this personally, but I can't quite trust you with such matters. Maybe a few less Butcherblock bandits would prove your worth.
+          - Reply guard: `($faction <= 5)`
+        - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
+          - Reply guard: ``
+        - Condition: `(($text=~/collect the gnome profit/i))`
+        - Gives Scrubber Key (12164).
+      - Player: "Cleaner" (link: explicit mention)
+        - Prompted by player input: "Volunteer To Exterminate The Rats"
+        - NPC say: Darn that blasted clockwork cleaner!! No one in Kaladim even knows what it is! They all think it's some kinda rat in armor!! Rat paladins?!! The name fits. We miners have seen many like it in the gnome city during heists, err.. visits. We have to get rid of this one in Kaladim!! If you smash it and get its scrap metal, I am authorized to give you a mining cap, if you are a member of Miner's Guild 628.
+          - Reply guard: `($faction <= 4)`
+        - NPC say: Don't take this personally, but I can't quite trust you with such matters. Maybe a few less Butcherblock bandits would prove your worth.
+          - Reply guard: `($faction <= 5)`
+        - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
+          - Reply guard: ``
+        - Condition: `(($text=~/cleaner/i))`
+35. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
+36. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
+37. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+38. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+39. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+40. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+41. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+42. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+43. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+44. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
+45. steamfont/"Forpar Fizfla", hand "White Dragon Scales" (11602) + "Red Dragon Scales" (11622) + "Metal Bits" (16905). Gives "Mystical Lute Body" (20536).
+46. Kill sebilis/"An Undead Bard". Spawns "Trakanon" (89181).
+47. Loot "Undead Dragongut Strings" (20526) from "Trakanon".
+48. steamfont/"Forpar Fizfla", hand "Undead Dragongut Strings" (20526) + "Mystical Lute Head" (20535) + "Mystical Lute Body" (20536). Gives "Mystical Lute" (20538).
+49. dreadlands/"Baldric Slezaf", hand "Maestro's Symphony Page 24 Top" (20376) + "Maestro's Symphony Page 25" (20377) + "Maestro's Symphony Page 24 Bottom" (20383) + "Mystical Lute" (20538). Gives "Singing Short Sword" (20542).
+
+## Epic 1.5
+
+### "Prismatic Dragon Blade" (77631)
+
+1. wakening/"Lantaric-Dar", say "Baldric Slezaf". Sets `bard15` to `1`.
+    - Dialogue with wakening/"Lantaric-Dar":
+      - Player: "Hail"
+        - NPC say: Journey to the necropolis and stop the mercenaries . May Veeshan protect you.
+          - Reply guard: `qglobals["bard15"] == "1"`
+        - NPC say: Journey to the necropolis and lay Hsagra's spirit to rest! You must hurry!
+          - Reply guard: `qglobals["bard15"] == "2"`
+        - NPC say: Return to the necropolis and stop Vesthon before it is too late !
+          - Reply guard: `qglobals["bard15"] == "3"`
+        - NPC say: The kin thank you for your efforts in saving the spirit of Hsagra. May Veeshan guide your path in the destruction of the orb.
+          - Reply guard: `qglobals["bard15"] ~= nil and qglobals["bard15"] >= "4"`
+        - NPC emote: seems surprised as you approach him. He peers down at you with an inquisitive glint in his eyes. 'I sense a familiar aura around you One I have not felt in a long time. Tell me , do you have news of a man named Baldric?
+          - Reply guard: `e.other:HasItem(20542)`
+        - NPC emote: glances down at you with an almost palatable indifference. Small wonder, considering his significant stature. 'I have better things to do then deal with you mortal. The [children of Zek] hunt this land, and they hunt for me and my kin. I advise you to stay away from both them, and their quarry.'
+          - Reply guard: ``
+        - Condition: `e.other:Class() == "Bard"`
+        - Condition: `e.message:findi("hail")`
+      - Player: "Baldric Slezaf" (link: conversation sequence)
+        - NPC emote: 's eyes glitter with energy as you mention Baldric's Name. 'So I was not mistaken, you do know Baldric. He was a friend, and as a great a mortal as I have ever known. You must be an exceptional mortal yourself if Baldric saw fit to bequeath the blade to you. Yes I know of it. I could feel it's energy around your body. Perhaps fate has brought you to me this day. I am in great need of help .
+          - Reply guard: `e.other:HasItem(20542)`
+        - NPC say: One of our scouts recently came upon a band of mercenaries in possession of a letter from King Tormax. The letter described a mission to recover relics from the necropolis. This cannot be allowed to happen. The holy resting place of my kin shall not be defiled! Journey to the necropolis and stop the mercenaries. Bring me anything you might find that would provide a clue as to what Tormax has planned.
+          - Reply guard: `e.other:HasItem(20542)`
+        - Condition: `e.other:Class() == "Bard"`
+        - Condition: `e.message:findi("Baldric Slezaf")`
+        - Sets `bard15` to `1`.
+      - Player: "children of Zek" (link: explicit mention)
+        - Prompted by player input: "Hail"
+        - NPC emote: lets out a deep growl. You can tell that your question has angered him. 'I find it impossible to believe you have come to this land know nothing of the children of Zek. Do not toy with me, I can see deep into your very soul if I so choose. Perhaps you are a [spy] sent by Tormax to find a weakness in the kin. If you are then both he and you are fools. No mortal will ever expose any weakness in the ranks of the claws.
+        - Condition: `e.other:Class() == "Bard"`
+        - Condition: `e.message:findi("children of Zek")`
+      - Player: "Spy" (link: explicit mention)
+        - NPC emote: lowers his massive head slightly and peers down at you. You notice a small spark of light emanating from his eyes and you find yourself completely unable to look away. You feel a benign presence gliding through your thoughts.
+        - NPC say: Perhaps you speak the truth mortal. But the trust of the kin is not given lightly. You will have to provide some [proof] for yourself if you wish to gain my trust.
+        - Condition: `e.other:Class() == "Bard"`
+        - Condition: `e.message:findi("spy")`
+      - Player: "Proof" (link: explicit mention)
+        - NPC message: The smallest flicker of a grin crosses over Lantaric`Dar's draconic features. 'I was hoping you'd say that. There are three giants that act as heralds for Tormax in this region. Find them, kill them, and bring me their heads to prove your loyalty.'
+        - Condition: `e.other:Class() == "Bard"`
+        - Condition: `e.message:findi("proof")`
+      - Player: "Continue To Aid" (link: external event mention)
+        - Prompted by `event_trade`:
+          - NPC say: raises his claw to your forehead. The sweat dripping into your eyes does not blur your vision enough to sedate the terror of having a dragon claw mere inches from your face. Lantaric`Dar makes a series of quick, precise motions and then lowers his claw. You feel a mystical energy shiver over your body. 'You have been blessed with my mark. If you [continue to aid] me I may see fit to further increase its power.
+          - Event guard: `item_lib.check_turn_in(e.trade, {item1 = 77600,item2 =77600, item3 = 77600})`
+        - NPC say: Excellent . I have a matter that I believe you would be suited for. The children of Zek have been strangely silent over the last few days. While your attacks on the couriers certainly slowed them down, I suspect there is something else going on. If you can uncover what they're up to, I will be most pleased. The area around Kael Drakkel is most likely to yield information.
+        - Condition: `e.other:Class() == "Bard"`
+        - Condition: `e.message:findi("continue to aid")  and qglobals["bardPQ"] == "1"`
+2. Kill necropolis/"Excavator Quellin". Spawns "Tarn Macklin" (123164).
+3. Loot "Cracked Dragon Bone" (77608) from "Tarn Macklin".
+4. wakening/"Lantaric-Dar", hand "Cracked Dragon Bone" (77608). Sets `bard15` to `2`.
+5. Spawns "Vesthon's Draconic Abomination" (123171) in `necropolis` on event_hp.
+6. Loot "Blackened Dragon Bone" (77612) from "Vesthon's Draconic Abomination".
+7. wakening/"Lantaric-Dar", hand "Blackened Dragon Bone" (77612). Sets `bard15` to `3`.
+8. Spawns "Needs Heading Validation" (123189) in `necropolis` on event death_complete:123173.
+9. Loot "Dark Orb" (77613) from "Needs Heading Validation".
+10. wakening/"Lantaric-Dar", hand "Dark Orb" (77613). Sets `bard15` to `4`.
+11. soltemple/"Walthin Fireweaver", say "Hail". Sets `bard15` to `5`.
+12. Spawns "A Shadow Thief" (20292) in `kithicor` on event death_complete:20291.
+13. Loot "Note from Metala" (77627) from "A Shadow Thief".
+14. southkarana/"Vhalen Nostrolo", hand "Note from Metala" (77627). Requires `bard15` ==5. Gives "Vhalen's Necklace" (77629).
+15. Hand "Vhalen's Necklace" (77629) to potorment/"A Bruised Woman". Spawns "Metala Von Korach" (207084). Loot "Rusted Bile Etched Blade" (77630) from "Metala Von Korach".
+16. Spawns "A Shadow Thief" (20292) in `kithicor` on event death_complete:20291.
+17. Loot "Crest of Rizlona" (77626) from "A Shadow Thief".
+18. Loot "Dragorn Blood" (77639) from "A Dragorn Serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.52% chance per kill.
+19. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
+20. Summon "Cloudy Diamond of Air" (29989) by casting "Imbue Air".
+21. Forage "Wind Dragon Crystal" (12783) in `skyfire`.
+22. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Cloudy Diamond of Air" (29989), "Wind Dragon Crystal" (12783). Produces "Wind Dragon Prism" (77618). Requires Jewelry Making. The combine does not fail.
+23. Summon "Red Diamond of Fire" (29986) by casting "Imbue Fire".
+24. Forage "Fire Dragon Crystal" (12487) in `skyfire`.
+25. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Red Diamond of Fire" (29986), "Fire Dragon Crystal" (12487). Produces "Fire Dragon Prism" (77619). Requires Jewelry Making. The combine does not fail.
+26. Summon "Aqua Diamond of Water" (29987) by casting "Imbue Water".
+27. Forage "Ice Dragon Crystal" (12781) in `skyfire`.
+28. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Aqua Diamond of Water" (29987), "Ice Dragon Crystal" (12781). Produces "Water Dragon Prism" (77620). Requires Jewelry Making. The combine does not fail.
+29. Summon "Brown Diamond of Earth" (29988) by casting "Imbue Earth".
+30. Forage "Earth Dragon Crystal" (12782) in `skyfire`.
+31. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Brown Diamond of Earth" (29988), "Earth Dragon Crystal" (12782). Produces "Earth Dragon Prism" (77621). Requires Jewelry Making. The combine does not fail.
+32. Summon "Green Diamond of Disease" (30118) by casting "Imbue Disease".
+33. Spawns "A Swamp Dragon" (83249) in `swampofnohope` on event_hp.
+34. Loot "Swamp Dragon Crystal" (77614) from "A Swamp Dragon".
+35. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Green Diamond of Disease" (30118), "Swamp Dragon Crystal" (77614). Produces "Swamp Dragon Prism" (77622). Requires Jewelry Making. The combine does not fail.
+36. Summon "Gray Diamond of Storms" (29991) by casting "Imbue Storm".
+37. Spawns "A Plains Dragon" (13130) in `northkarana` on event_hp.
+38. Loot "Plains Dragon Crystal" (77615) from "A Plains Dragon".
+39. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Gray Diamond of Storms" (29991), "Plains Dragon Crystal" (77615). Produces "Plains Dragon Prism" (77623). Requires Jewelry Making. The combine does not fail.
+40. Summon "Yellow Diamond of Valor" (30489) by casting "Imbue Valor".
+41. Spawns "A Forest Dragon" (181224) in `jaggedpine` on event_hp.
+42. Loot "Forest Dragon Crystal" (77616) from "A Forest Dragon".
+43. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Yellow Diamond of Valor" (30489), "Forest Dragon Crystal" (77616). Produces "Forest Dragon Prism" (77624). Requires Jewelry Making. The combine does not fail.
+44. Summon "White Diamond of Justice" (29494) by casting "Imbue Justice".
+45. Spawns "A Mountain Dragon" (100227) in `stonebrunt` on event_hp.
+46. Loot "Mountain Dragon Crystal" (77617) from "A Mountain Dragon".
+47. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "White Diamond of Justice" (29494), "Mountain Dragon Crystal" (77617). Produces "Mountain Dragon Prism" (77625). Requires Jewelry Making. The combine does not fail.
+48. Combine in "Crest of Rizlona" (77626): "Wind Dragon Prism" (77618), "Fire Dragon Prism" (77619), "Water Dragon Prism" (77620), "Earth Dragon Prism" (77621), "Swamp Dragon Prism" (77622), "Plains Dragon Prism" (77623), "Forest Dragon Prism" (77624), "Mountain Dragon Prism" (77625). Produces "Draconic Prism" (77628). The combine does not fail.
+49. Combine in "Rusted Bile Etched Blade" (77630): "Draconic Prism" (77628). Produces "Prismatic Dragon Blade" (77631). The combine does not fail.
+
+## Epic 2.0
+
+### "Blade of Vesagran" (77640)
+
+1. Loot "Black Chaos Gauntlets" (77641) from "Stone Thrower" in `causeway`.
+2. Loot "Black Chaos Gauntlets" (77641) from "A Battle-Scarred Bazu" in `causeway`.
+3. Loot "Black Chaos Gauntlets" (77641) from "A Mountain Bazu" in `causeway`.
+4. Loot "Black Chaos Gauntlets" (77641) from "A Murkglider Stalker" in `causeway`.
+5. Loot "Black Chaos Boots" (77642) from "A Discordling Enchainer" in `wallofslaughter`.
+6. Loot "Black Chaos Boots" (77642) from "A Discordling Taskfiend" in `wallofslaughter`.
+7. Loot "Black Chaos Boots" (77642) from "A Dragorn Darkwarrior" in `wallofslaughter`.
+8. Loot "Black Chaos Boots" (77642) from "A Dragorn Ireknight" in `wallofslaughter`.
+9. Loot "Black Chaos Breastplate" (77643) from "A Gelidran Flamefreeze" (NPC 334016) in `riftseekers`. Drop cache: 4.49% chance per kill.
+10. Say "Check Lorb" to anguish/"Zone Status".
+11. Spawns "Orb of Discordant Energy" (317087).
+12. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+13. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+14. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+15. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+16. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+17. causeway/"Alkron Wyrmsong", hand "Globe of Discordant Energy" (47100) + "Black Chaos Gauntlets" (77641) + "Black Chaos Boots" (77642) + "Black Chaos Breastplate" (77643). Sets `bard20` to `1`.
+18. Say "Summon" to causeway/"Alkron Wyrmsong".
+19. Spawns "Oshiruk" (303125).
+20. Loot "Dragorn Essence" (77644) from "Oshiruk".
+21. Spawns "Needs Heading Validation" (123189) in `necropolis` on event death_complete:123173.
+22. Loot "Dark Orb" (77613) from "Needs Heading Validation".
+23. wakening/"Lantaric-Dar", say "Baldric Slezaf". Sets `bard15` to `1`.
+24. Kill necropolis/"Excavator Quellin". Spawns "Tarn Macklin" (123164).
+25. Loot "Cracked Dragon Bone" (77608) from "Tarn Macklin".
+26. wakening/"Lantaric-Dar", hand "Cracked Dragon Bone" (77608). Sets `bard15` to `2`.
+27. Spawns "Vesthon's Draconic Abomination" (123171) in `necropolis` on event_hp.
+28. Loot "Blackened Dragon Bone" (77612) from "Vesthon's Draconic Abomination".
+29. wakening/"Lantaric-Dar", hand "Blackened Dragon Bone" (77612). Sets `bard15` to `3`.
+30. wakening/"Lantaric-Dar", hand "Dark Orb" (77613). Sets `bard15` to `4`.
+31. soltemple/"Walthin Fireweaver", say "Hail". Sets `bard15` to `5`.
+32. Spawns "A Shadow Thief" (20292) in `kithicor` on event death_complete:20291.
+33. Loot "Note from Metala" (77627) from "A Shadow Thief".
+34. southkarana/"Vhalen Nostrolo", hand "Note from Metala" (77627). Requires `bard15` ==5. Gives "Vhalen's Necklace" (77629).
+35. Hand "Vhalen's Necklace" (77629) to potorment/"A Bruised Woman". Spawns "Metala Von Korach" (207084). Loot "Rusted Bile Etched Blade" (77630) from "Metala Von Korach".
+36. Spawns "A Shadow Thief" (20292) in `kithicor` on event death_complete:20291.
+37. Loot "Crest of Rizlona" (77626) from "A Shadow Thief".
+38. Loot "Dragorn Blood" (77639) from "A Dragorn Serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.52% chance per kill.
+39. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium", "Mass Enchant Velium", "Greater Mass Enchant Velium".
+40. Summon "Cloudy Diamond of Air" (29989) by casting "Imbue Air".
+41. Forage "Wind Dragon Crystal" (12783) in `skyfire`.
+42. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Cloudy Diamond of Air" (29989), "Wind Dragon Crystal" (12783). Produces "Wind Dragon Prism" (77618). Requires Jewelry Making. The combine does not fail.
+43. Summon "Red Diamond of Fire" (29986) by casting "Imbue Fire".
+44. Forage "Fire Dragon Crystal" (12487) in `skyfire`.
+45. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Red Diamond of Fire" (29986), "Fire Dragon Crystal" (12487). Produces "Fire Dragon Prism" (77619). Requires Jewelry Making. The combine does not fail.
+46. Summon "Aqua Diamond of Water" (29987) by casting "Imbue Water".
+47. Forage "Ice Dragon Crystal" (12781) in `skyfire`.
+48. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Aqua Diamond of Water" (29987), "Ice Dragon Crystal" (12781). Produces "Water Dragon Prism" (77620). Requires Jewelry Making. The combine does not fail.
+49. Summon "Brown Diamond of Earth" (29988) by casting "Imbue Earth".
+50. Forage "Earth Dragon Crystal" (12782) in `skyfire`.
+51. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Brown Diamond of Earth" (29988), "Earth Dragon Crystal" (12782). Produces "Earth Dragon Prism" (77621). Requires Jewelry Making. The combine does not fail.
+52. Summon "Green Diamond of Disease" (30118) by casting "Imbue Disease".
+53. Spawns "A Swamp Dragon" (83249) in `swampofnohope` on event_hp.
+54. Loot "Swamp Dragon Crystal" (77614) from "A Swamp Dragon".
+55. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Green Diamond of Disease" (30118), "Swamp Dragon Crystal" (77614). Produces "Swamp Dragon Prism" (77622). Requires Jewelry Making. The combine does not fail.
+56. Summon "Gray Diamond of Storms" (29991) by casting "Imbue Storm".
+57. Spawns "A Plains Dragon" (13130) in `northkarana` on event_hp.
+58. Loot "Plains Dragon Crystal" (77615) from "A Plains Dragon".
+59. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Gray Diamond of Storms" (29991), "Plains Dragon Crystal" (77615). Produces "Plains Dragon Prism" (77623). Requires Jewelry Making. The combine does not fail.
+60. Summon "Yellow Diamond of Valor" (30489) by casting "Imbue Valor".
+61. Spawns "A Forest Dragon" (181224) in `jaggedpine` on event_hp.
+62. Loot "Forest Dragon Crystal" (77616) from "A Forest Dragon".
+63. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Yellow Diamond of Valor" (30489), "Forest Dragon Crystal" (77616). Produces "Forest Dragon Prism" (77624). Requires Jewelry Making. The combine does not fail.
+64. Summon "White Diamond of Justice" (29494) by casting "Imbue Justice".
+65. Spawns "A Mountain Dragon" (100227) in `stonebrunt` on event_hp.
+66. Loot "Mountain Dragon Crystal" (77617) from "A Mountain Dragon".
+67. Combine in Jeweler's Kit (20): "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "White Diamond of Justice" (29494), "Mountain Dragon Crystal" (77617). Produces "Mountain Dragon Prism" (77625). Requires Jewelry Making. The combine does not fail.
+68. Combine in "Crest of Rizlona" (77626): "Wind Dragon Prism" (77618), "Fire Dragon Prism" (77619), "Water Dragon Prism" (77620), "Earth Dragon Prism" (77621), "Swamp Dragon Prism" (77622), "Plains Dragon Prism" (77623), "Forest Dragon Prism" (77624), "Mountain Dragon Prism" (77625). Produces "Draconic Prism" (77628). The combine does not fail.
+69. Combine in "Rusted Bile Etched Blade" (77630): "Draconic Prism" (77628). Produces "Prismatic Dragon Blade" (77631). The combine does not fail.
+70. causeway/"Alkron Wyrmsong", hand "Dark Orb" (77613) + "Prismatic Dragon Blade" (77631) + "Dragorn Essence" (77644). Gives "Blade of Vesagran" (77640).
+
+## Quest-state progression
 
 ## 0. Prerequisites
 
@@ -205,58 +499,13 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 38. Alternative: Loot "Soulstone of Lanys" (52337) from "a Teir'Dal guardian" (NPC 186190) in `hateplaneb`; trigger: hateplaneb/"Rogue 1 5", on event death_complete:186115.
 39. nedaria/"Lirprin, Head Of Affairs", hand "Soulstone of Lanys" (52337). Requires `Fatestealer_bard` ==1. Requires `Fatestealer_page` ==1. Requires `Fatestealer_forge` ==1. Gives "Fatestealer" (52347).
 
-## `bardPQ`
+### `bardPQ`
 
 Values written: 1, 2, 3, 4.
 
 1. wakening/"Lantaric-Dar", hand "Storm Giant Herald Head" (77600) + "Storm Giant Herald Head" (77600) + "Storm Giant Herald Head" (77600). Sets `bardPQ` to `1`.
     - Hand in x1: "Storm Giant Herald Head" (77600).
     - Loot "Storm Giant Herald Head" (77600) from "A Giant Herald" in `wakening`.
-    - Dialogue with wakening/"Lantaric-Dar":
-      - Player: "Hail"
-        - NPC say: Journey to the necropolis and stop the mercenaries . May Veeshan protect you.
-          - Reply guard: `qglobals["bard15"] == "1"`
-        - NPC say: Journey to the necropolis and lay Hsagra's spirit to rest! You must hurry!
-          - Reply guard: `qglobals["bard15"] == "2"`
-        - NPC say: Return to the necropolis and stop Vesthon before it is too late !
-          - Reply guard: `qglobals["bard15"] == "3"`
-        - NPC say: The kin thank you for your efforts in saving the spirit of Hsagra. May Veeshan guide your path in the destruction of the orb.
-          - Reply guard: `qglobals["bard15"] ~= nil and qglobals["bard15"] >= "4"`
-        - NPC emote: seems surprised as you approach him. He peers down at you with an inquisitive glint in his eyes. 'I sense a familiar aura around you One I have not felt in a long time. Tell me , do you have news of a man named Baldric?
-          - Reply guard: `e.other:HasItem(20542)`
-        - NPC emote: glances down at you with an almost palatable indifference. Small wonder, considering his significant stature. 'I have better things to do then deal with you mortal. The [children of Zek] hunt this land, and they hunt for me and my kin. I advise you to stay away from both them, and their quarry.'
-          - Reply guard: ``
-        - Condition: `e.other:Class() == "Bard"`
-        - Condition: `e.message:findi("hail")`
-      - Player: "Baldric Slezaf" (link: conversation sequence)
-        - NPC emote: 's eyes glitter with energy as you mention Baldric's Name. 'So I was not mistaken, you do know Baldric. He was a friend, and as a great a mortal as I have ever known. You must be an exceptional mortal yourself if Baldric saw fit to bequeath the blade to you. Yes I know of it. I could feel it's energy around your body. Perhaps fate has brought you to me this day. I am in great need of help .
-          - Reply guard: `e.other:HasItem(20542)`
-        - NPC say: One of our scouts recently came upon a band of mercenaries in possession of a letter from King Tormax. The letter described a mission to recover relics from the necropolis. This cannot be allowed to happen. The holy resting place of my kin shall not be defiled! Journey to the necropolis and stop the mercenaries. Bring me anything you might find that would provide a clue as to what Tormax has planned.
-          - Reply guard: `e.other:HasItem(20542)`
-        - Condition: `e.other:Class() == "Bard"`
-        - Condition: `e.message:findi("Baldric Slezaf")`
-        - Sets `bard15` to `1`.
-      - Player: "children of Zek" (link: explicit mention)
-        - Prompted by player input: "Hail"
-        - NPC emote: lets out a deep growl. You can tell that your question has angered him. 'I find it impossible to believe you have come to this land know nothing of the children of Zek. Do not toy with me, I can see deep into your very soul if I so choose. Perhaps you are a [spy] sent by Tormax to find a weakness in the kin. If you are then both he and you are fools. No mortal will ever expose any weakness in the ranks of the claws.
-        - Condition: `e.other:Class() == "Bard"`
-        - Condition: `e.message:findi("children of Zek")`
-      - Player: "Spy" (link: explicit mention)
-        - NPC emote: lowers his massive head slightly and peers down at you. You notice a small spark of light emanating from his eyes and you find yourself completely unable to look away. You feel a benign presence gliding through your thoughts.
-        - NPC say: Perhaps you speak the truth mortal. But the trust of the kin is not given lightly. You will have to provide some [proof] for yourself if you wish to gain my trust.
-        - Condition: `e.other:Class() == "Bard"`
-        - Condition: `e.message:findi("spy")`
-      - Player: "Proof" (link: explicit mention)
-        - NPC message: The smallest flicker of a grin crosses over Lantaric`Dar's draconic features. 'I was hoping you'd say that. There are three giants that act as heralds for Tormax in this region. Find them, kill them, and bring me their heads to prove your loyalty.'
-        - Condition: `e.other:Class() == "Bard"`
-        - Condition: `e.message:findi("proof")`
-      - Player: "Continue To Aid" (link: external event mention)
-        - Prompted by `event_trade`:
-          - NPC say: raises his claw to your forehead. The sweat dripping into your eyes does not blur your vision enough to sedate the terror of having a dragon claw mere inches from your face. Lantaric`Dar makes a series of quick, precise motions and then lowers his claw. You feel a mystical energy shiver over your body. 'You have been blessed with my mark. If you [continue to aid] me I may see fit to further increase its power.
-          - Event guard: `item_lib.check_turn_in(e.trade, {item1 = 77600,item2 =77600, item3 = 77600})`
-        - NPC say: Excellent . I have a matter that I believe you would be suited for. The children of Zek have been strangely silent over the last few days. While your attacks on the couriers certainly slowed them down, I suspect there is something else going on. If you can uncover what they're up to, I will be most pleased. The area around Kael Drakkel is most likely to yield information.
-        - Condition: `e.other:Class() == "Bard"`
-        - Condition: `e.message:findi("continue to aid")  and qglobals["bardPQ"] == "1"`
 
 2. wakening/"Lantaric-Dar", hand "Kromzek Supply Orders" (77601). Sets `bardPQ` to `2`.
     - Requires `bardPQ` ==1.
@@ -297,7 +546,7 @@ Values written: 1, 2, 3, 4.
         - Spawns NPC 110129.
         - Spawns NPC 110130.
 
-### Steps on `bardPQ` that do not change it
+#### Steps on `bardPQ` that do not change it
 
 - `iceclad` vas thorel, say lantaric needs `bardPQ` ==3.
   - Spawns Noble Oldencamp (110123).
@@ -319,7 +568,7 @@ Values written: 1, 2, 3, 4.
   - Turn in Puella's Head (77606).
   - Turn in Locis' Head (77607).
 
-## `Fatestealer_bard`
+### `Fatestealer_bard`
 
 Values written: 1.
 
@@ -645,7 +894,7 @@ Values written: 1.
     - Prerequisite: "Fatestealer" (52347). See section 0.
     - Gives "Nightshade, Blade of Entropy" (52348).
 
-##### Steps on `Fatestealer` that do not change it
+###### Steps on `Fatestealer` that do not change it
 
 - `bloodfields` caller donivin, hand 52349+52350+52351+52352 needs `Fatestealer` ==3.
   - Sets `rog_bf_trigger` to `1`.
@@ -948,7 +1197,7 @@ Values written: 1.
   - Gives Notice to Cease and Desist (9590).
 
     - Subquest `Fatestealer_lyt` documented earlier.
-##### Steps on `Fatestealer_gal` that do not change it
+###### Steps on `Fatestealer_gal` that do not change it
 
 - `overthere` inem r`ker, hand 10239+52416 needs `Fatestealer_gal` ==1.
   - Sets `Fatestealer_mar` to `1`.
@@ -997,7 +1246,7 @@ Alternative or repeat transition to `Fatestealer_bard` = `1` (not an additional 
     - Subquest `Fatestealer_gal` documented earlier.
     - Subquest `Fatestealer_mar` documented earlier.
     - Subquest `Fatestealer_lyt` documented earlier.
-### Steps on `Fatestealer_bard` that do not change it
+#### Steps on `Fatestealer_bard` that do not change it
 
 - `nedaria` lirprin, head of affairs, hand 52337 needs `Fatestealer_bard` ==1.
   - Sets `Fatestealer` to `2`.
@@ -1009,7 +1258,7 @@ Alternative or repeat transition to `Fatestealer_bard` = `1` (not an additional 
   - Sets `Fatestealer_forge` to `1`.
   - Turn in Smoldering Embers of Solusek (52346).
 
-## `bard15`
+### `bard15`
 
 Values written: 1, 2, 3, 4, 5, 6.
 
@@ -1106,7 +1355,7 @@ Alternative or repeat transition to `bard15` = `1` (not an additional required s
       - Produces Prismatic Dragon Blade (77631).
       - The combine does not fail.
 
-### Steps on `bard15` that do not change it
+#### Steps on `bard15` that do not change it
 
 - `kithicor` player, on enter needs `bard15` ==5.
   - Spawns a cloaked figure (20290).
@@ -1143,7 +1392,7 @@ Alternative or repeat transition to `bard15` = `1` (not an additional required s
   - Turn in Note from Metala (77627).
   - Gives Vhalen's Necklace (77629).
 
-## `bard20`
+### `bard20`
 
 Values written: 1.
 
@@ -1206,7 +1455,7 @@ Values written: 1.
         - Condition: `e.message:findi("summon") and qglobals["bard20"] == "1"`
         - Spawns NPC 303125.
 
-### Steps on `bard20` that do not change it
+#### Steps on `bard20` that do not change it
 
 - `causeway` alkron wyrmsong, say summon needs `bard20` ==1.
   - Spawns Oshiruk (303125).
@@ -1263,7 +1512,7 @@ Values written: 1.
   - Loots Polished Earring of Animosity (71119).
   - Loots Ring of Black Flame (71120).
 
-## Other flags touched along the way
+### Other flags touched along the way
 
 - `bard15_dracchest` set to 1 at necropolis/player.
 - `bard15_metalachest` set to 1 at potorment/player.

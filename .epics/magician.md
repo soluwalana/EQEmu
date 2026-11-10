@@ -1,8 +1,132 @@
 # Magician
 
-Steps taken from the quest graph only. **Broken** means the graph has no edge for that value or that item.
+Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags are dependencies, not the definition of an epic. **Broken** indicates missing graph provenance.
 
-Flags with writes: `mage_epic`.
+## Epic 1.0
+
+### "Orb of Mastery" (28034)
+
+**Broken:** no quest hand-in, encounter or recipe produces "Orb of Mastery" (28034) in the graph. Catalog drops/spells below are not proof of the epic quest.
+
+1. Summon "Orb of Mastery" (28034) by casting "Summon Orb".
+2. Loot "Orb of Mastery" (28034) from "Carreenu Opulaae" in `chambersf`.
+3. Loot "Orb of Mastery" (28034) from "Gaelin" in `chambersf`.
+4. Loot "Orb of Mastery" (28034) from "Ipputs Dagglebrap" in `chambersf`.
+5. Loot "Orb of Mastery" (28034) from "Melodite Arinal" in `chambersf`.
+6. Loot "Orb of Mastery" (28034) from "Nakert Grimmagus" in `chambersf`.
+
+## Epic 1.5
+
+### "Staff of Elemental Essence" (19092)
+
+1. Loot "Journal of Magus Tvish" (15639) from "Danvi's Corpse" (NPC 179132) in `akheva`. Drop cache: 100% chance per kill.
+2. poknowledge/"Bantil Io'Tuv", hand "Journal of Magus Tvish" (15639). Sets `mage_epic` to `2`.
+3. westwastes/"A Lost Tomekeeper", say "Violet Roses". Requires `mage_epic` ==2. Gives "Tome of Primal Fires" (15769).
+4. poknowledge/"Bantil Io'Tuv", hand "Tome of Primal Fires" (15769). Sets `mage_epic` to `3`.
+5. Ground spawn of "Book of Bindings and Incantations" (15772) in `charasis`.
+6. poknowledge/"Bantil Io'Tuv", hand "Book of Bindings and Incantations" (15772). Sets `mage_epic` to `4`.
+7. Loot "Codex of Ice and Ether" (15775) from "Grigor Rojha" in `thedeep`.
+8. poknowledge/"Bantil Io'Tuv", hand "Codex of Ice and Ether" (15775). Sets `mage_epic` to `5`.
+9. najena/"Akksstaff'S Minion", on event_death_complete. Sets `ask_minion_dead` to `1`.
+10. najena/"Akksstaff", say "Demise". Requires `ask_minion_dead` set. Gives "Sentience of Elements" (15778).
+    - Dialogue with najena/"Akksstaff":
+      - Player: "Hail"
+        - NPC say: How is this possible? I cannot be defeated. Spare my life and I will tell you the truth of Magi'kot's [demise].
+        - Condition: `(qglobals["ask_minion_dead"] ~= nil and e.message:findi("hail"))`
+      - Player: "Demise" (link: explicit mention)
+        - NPC say: I am the last Council Member of the Order of the Elemental Shadows. For Centuries, we protected the true secrets behind elemental mastery, but our sect dies here with me. I chose to sit at Magi'kot's side and watch his progress, he showed more promise than anyone since Tvish. When I learned he was to receive the Orb of Mastery, I sabotaged his spell. The flaw was not his, but now people have succeeded where he failed. It doesn't matter, even with the power of the Orb and the knowledge in these tomes, Bantil will never unlock the full power of elemental mastery. You are only helping him to meet the same fate as Magi'Kot.' He then hands you the book and fades into the shadows.
+        - Condition: `(qglobals["ask_minion_dead"] ~= nil and e.message:findi("demise"))`
+        - Gives Sentience of Elements (15778).
+      - Player: "Hail" (link: conversation sequence)
+        - NPC say: What do you want?! Foolish , I am in no mood to treat with beggars. I have half a mind to turn my pet here loose on you! Well, don't keep me waiting, state your business or be off with you!
+        - Condition: `(e.message:findi("hail"))`
+      - Player: "Wish To Hear More" (link: conversation sequence)
+        - NPC say: Then bring me the torn pages of Mastery, there are four pages that can be found upon the women In this keep, though have a care, Najena's followers guard her treasures carefully, and delight in punishing trespassers.
+        - Condition: `(e.message:findi("wish to hear more"))`
+      - Player: "Bantil Sent Me" (link: conversation sequence)
+        - NPC say: My, you are persistent aren't you? Well you have found more trouble than you expected, now haven't you? Prepare to witness the true power of a master of the elements!
+        - Condition: `(e.message:findi("bantil sent me") and qglobals["mage_epic"] ~= nil and qglobals["mage_epic"] >= "5")`
+        - Spawns NPC 44108.
+11. poknowledge/"Bantil Io'Tuv", hand "Sentience of Elements" (15778). Sets `mage_epic` to `6`.
+12. potranquility/"Jurmak The Undertow", say "Elemental Essences". Sets `mage_epic_water1` to `1`.
+13. Loot "Ice Burrower Meat" (19022) from "An Ice Burrower" in `westwastes`.
+14. Hand "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) to cobaltscar/"High Priest Margle". Spawns "Tiknonmanin" (117094). Loot "Elemental Essence of Water" (19086) from "Tiknonmanin".
+15. Spawns "Elemental Essence of Fire" (214127) in `potactics` on event_waypoint_arrive.
+16. Loot "Elemental Essence of Fire" (16807) from "Elemental Essence of Fire".
+17. potranquility/"Sarhya The Dawnbreeze", say "Elemental Essences". Sets `mage_epic_air1` to `1`.
+18. Spawns "Elemental Essence of Air" (303100) in `causeway` on enter.
+19. Loot "Elemental Essence of Air" (16773) from "Elemental Essence of Air".
+20. potranquility/"Taq'Aal Emeraldshard", say "Elemental Essences". Sets `mage_epic_earth1` to `1`.
+21. Spawns "Elemental Essence of Earth" (169127) in `letalis` on enter.
+22. Loot "Elemental Essence of Earth" (19087) from "Elemental Essence of Earth".
+23. poknowledge/"Bantil Io'Tuv", hand "Elemental Essence of Air" (16773) + "Elemental Essence of Fire" (16807) + "Elemental Essence of Water" (19086) + "Elemental Essence of Earth" (19087). Requires `mage_epic` ==6. Gives "Staff of Elemental Essence" (19092).
+
+## Epic 2.0
+
+### "Focus of Primal Elements" (19839)
+
+1. Unresolved cyclic prerequisite: `mage_epic` >=9.
+2. draniksscar/"Iilivina", say "Primals". Sets `mage_epic` to `10`.
+    - Dialogue with draniksscar/"Iilivina":
+      - Player: "Hail"
+        - NPC say: Hello again. So, you are looking for the Primal Elemental essences? That has a nice ring to it Transon has always had a penchant for the dramatic. I do not believe that you will find these beings in Discord however, if they exist at all. I do believe that your staff will resonate when you approach the creatures, so travel the world you know. Elementals tend to gravitate to areas that reflect their element best, I don't see why the [Primals] would behave any differently.
+          - Reply guard: `(qglobals["mage_epic"] ~=nil and tonumber(qglobals["mage_epic"]) >= 9)`
+        - NPC say: The magic here is quite unique. I am thrilled I've had the opportunity to study it.
+          - Reply guard: ``
+        - Condition: `(e.message:findi("hail"))`
+      - Player: "Bantil"
+        - NPC say: Yes, Bantil told me you would be coming. Perhaps we can help each other. There are two tribes of elemental beings here. They have an unprecedented ability to channel elemental energy. I have yet to see one with my own eyes, but they may just contain [power] that will help you unleash the staff's true power.
+        - Condition: `(qglobals["mage_epic"] >= "8" and e.message:findi("bantil"))`
+      - Player: "Power" (link: explicit mention)
+        - NPC say: They use the elements in a way we have yet to understand. I suspect something in their essence that allows them to tap into the elements in a different manner than we understand. If my suspicions are true, these creatures should leave behind a small portion of their essence, when their spirits leave their bodies. If you find anything like that, bring it to me. They may be rather small, so bring me two from each type for good measure.
+        - Condition: `(qglobals["mage_epic"] >= "8" and e.message:findi("power"))`
+      - Player: "Primals" (link: explicit mention)
+        - Prompted by player input: "Hail"
+        - NPC say: Were I to venture a guess, I'd say look for Chaos near the ruins of a fallen empire, as order would tend to oppose chaos, I would look for the Order elemental near the ranks of a well regimented army, probably an ancient army, it is a creature of prestige. The Spirit elemental would find someplace where death and decay have a strong foothold. The Body Elemental may be the most elusive, as there is life everywhere. I would assume that its strong ties with this realm would pull it to a place where there are Muramites. When you find them, bring their remains to me and I'll see what else needs to be done.
+        - Condition: `(qglobals["mage_epic"] >= "9" and e.message:findi("Primals"))`
+        - Sets `mage_epic` to `10`.
+3. Spawns "Order Elemental" (211057) in `hohonora` on enter.
+4. Loot "Element of Order" (19547) from "Order Elemental".
+5. Spawns "Body Elemental" (284105) in `ferubi` on enter.
+6. Loot "Element of Body" (19447) from "Body Elemental".
+7. Spawns "Chaos Elemental" (86174) in `dreadlands` on enter.
+8. Loot "Element of Chaos" (19444) from "Chaos Elemental".
+9. Spawns "Spirit Elemental" (200060) in `codecay` on enter.
+10. Loot "Element of Spirit" (19544) from "Spirit Elemental".
+11. draniksscar/"Iilivina", hand "Element of Chaos" (19444) + "Element of Body" (19447) + "Element of Spirit" (19544) + "Element of Order" (19547). Sets `mage_epic` to `11`.
+12. Say "Check Lorb" to anguish/"Zone Status".
+13. Spawns "Orb of Discordant Energy" (317087).
+14. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+15. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+16. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+17. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+18. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+19. Loot "Journal of Magus Tvish" (15639) from "Danvi's Corpse" (NPC 179132) in `akheva`. Drop cache: 100% chance per kill.
+20. poknowledge/"Bantil Io'Tuv", hand "Journal of Magus Tvish" (15639). Sets `mage_epic` to `2`.
+21. westwastes/"A Lost Tomekeeper", say "Violet Roses". Requires `mage_epic` ==2. Gives "Tome of Primal Fires" (15769).
+22. poknowledge/"Bantil Io'Tuv", hand "Tome of Primal Fires" (15769). Sets `mage_epic` to `3`.
+23. Ground spawn of "Book of Bindings and Incantations" (15772) in `charasis`.
+24. poknowledge/"Bantil Io'Tuv", hand "Book of Bindings and Incantations" (15772). Sets `mage_epic` to `4`.
+25. Loot "Codex of Ice and Ether" (15775) from "Grigor Rojha" in `thedeep`.
+26. poknowledge/"Bantil Io'Tuv", hand "Codex of Ice and Ether" (15775). Sets `mage_epic` to `5`.
+27. najena/"Akksstaff'S Minion", on event_death_complete. Sets `ask_minion_dead` to `1`.
+28. najena/"Akksstaff", say "Demise". Requires `ask_minion_dead` set. Gives "Sentience of Elements" (15778).
+29. poknowledge/"Bantil Io'Tuv", hand "Sentience of Elements" (15778). Sets `mage_epic` to `6`.
+30. potranquility/"Jurmak The Undertow", say "Elemental Essences". Sets `mage_epic_water1` to `1`.
+31. Loot "Ice Burrower Meat" (19022) from "An Ice Burrower" in `westwastes`.
+32. Hand "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) + "Ice Burrower Meat" (19022) to cobaltscar/"High Priest Margle". Spawns "Tiknonmanin" (117094). Loot "Elemental Essence of Water" (19086) from "Tiknonmanin".
+33. Spawns "Elemental Essence of Fire" (214127) in `potactics` on event_waypoint_arrive.
+34. Loot "Elemental Essence of Fire" (16807) from "Elemental Essence of Fire".
+35. potranquility/"Sarhya The Dawnbreeze", say "Elemental Essences". Sets `mage_epic_air1` to `1`.
+36. Spawns "Elemental Essence of Air" (303100) in `causeway` on enter.
+37. Loot "Elemental Essence of Air" (16773) from "Elemental Essence of Air".
+38. potranquility/"Taq'Aal Emeraldshard", say "Elemental Essences". Sets `mage_epic_earth1` to `1`.
+39. Spawns "Elemental Essence of Earth" (169127) in `letalis` on enter.
+40. Loot "Elemental Essence of Earth" (19087) from "Elemental Essence of Earth".
+41. poknowledge/"Bantil Io'Tuv", hand "Elemental Essence of Air" (16773) + "Elemental Essence of Fire" (16807) + "Elemental Essence of Water" (19086) + "Elemental Essence of Earth" (19087). Requires `mage_epic` ==6. Gives "Staff of Elemental Essence" (19092).
+42. poknowledge/"Bantil Io'Tuv", hand "Staff of Elemental Essence" (19092) + "Globe of Discordant Energy" (47100). Requires `mage_epic` ==11. Gives "Focus of Primal Elements" (19839).
+
+## Quest-state progression
 
 ## 0. Prerequisites
 
@@ -47,24 +171,6 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 6. poknowledge/"Bantil Io'Tuv", hand "Codex of Ice and Ether" (15775). Sets `mage_epic` to `5`.
 7. najena/"Akksstaff'S Minion", on event_death_complete. Sets `ask_minion_dead` to `1`.
 8. najena/"Akksstaff", say "Demise". Requires `ask_minion_dead` set. Gives "Sentience of Elements" (15778).
-    - Dialogue with najena/"Akksstaff":
-      - Player: "Hail"
-        - NPC say: How is this possible? I cannot be defeated. Spare my life and I will tell you the truth of Magi'kot's [demise].
-        - Condition: `(qglobals["ask_minion_dead"] ~= nil and e.message:findi("hail"))`
-      - Player: "Demise" (link: explicit mention)
-        - NPC say: I am the last Council Member of the Order of the Elemental Shadows. For Centuries, we protected the true secrets behind elemental mastery, but our sect dies here with me. I chose to sit at Magi'kot's side and watch his progress, he showed more promise than anyone since Tvish. When I learned he was to receive the Orb of Mastery, I sabotaged his spell. The flaw was not his, but now people have succeeded where he failed. It doesn't matter, even with the power of the Orb and the knowledge in these tomes, Bantil will never unlock the full power of elemental mastery. You are only helping him to meet the same fate as Magi'Kot.' He then hands you the book and fades into the shadows.
-        - Condition: `(qglobals["ask_minion_dead"] ~= nil and e.message:findi("demise"))`
-        - Gives Sentience of Elements (15778).
-      - Player: "Hail" (link: conversation sequence)
-        - NPC say: What do you want?! Foolish , I am in no mood to treat with beggars. I have half a mind to turn my pet here loose on you! Well, don't keep me waiting, state your business or be off with you!
-        - Condition: `(e.message:findi("hail"))`
-      - Player: "Wish To Hear More" (link: conversation sequence)
-        - NPC say: Then bring me the torn pages of Mastery, there are four pages that can be found upon the women In this keep, though have a care, Najena's followers guard her treasures carefully, and delight in punishing trespassers.
-        - Condition: `(e.message:findi("wish to hear more"))`
-      - Player: "Bantil Sent Me" (link: conversation sequence)
-        - NPC say: My, you are persistent aren't you? Well you have found more trouble than you expected, now haven't you? Prepare to witness the true power of a master of the elements!
-        - Condition: `(e.message:findi("bantil sent me") and qglobals["mage_epic"] ~= nil and qglobals["mage_epic"] >= "5")`
-        - Spawns NPC 44108.
 9. poknowledge/"Bantil Io'Tuv", hand "Sentience of Elements" (15778). Sets `mage_epic` to `6`.
 10. potranquility/"Jurmak The Undertow", say "Elemental Essences". Sets `mage_epic_water1` to `1`.
     - Dialogue with potranquility/"Jurmak The Undertow":
@@ -113,7 +219,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 
 1. Acquisition of "Sentience of Elements" (15778) is documented under "Staff of Elemental Essence" (19092); obtain another copy if needed.
 
-## `mage_epic` 1.5
+### `mage_epic` 1.5
 
 Values written: 1, 2, 3, 4, 5, 6, 7.
 
@@ -170,7 +276,7 @@ Alternative or repeat transition to `mage_epic` = `1` (not an additional require
     - Loot "Elemental Essence of Earth" (19087) from "Elemental Essence of Earth".
     - Gives "Staff of Elemental Essence" (19092).
 
-### Steps on `mage_epic` that do not change it
+#### Steps on `mage_epic` that do not change it
 
 - `draniksscar` iilivina, hand 19092 needs `mage_epic` ==7.
   - Turn in Staff of Elemental Essence (19092).
@@ -292,7 +398,7 @@ Alternative or repeat transition to `mage_epic` = `1` (not an additional require
 - `westwastes` a lost tomekeeper, say violet roses needs `mage_epic` ==2.
   - Gives Tome of Primal Fires (15769).
 
-## `mage_epic` 2.0
+### `mage_epic` 2.0
 
 Values written: 8, 9, 10, 11.
 
@@ -301,24 +407,6 @@ Values written: 8, 9, 10, 11.
     - Hand in x1: "Staff of Elemental Essence" (19092).
     - Prerequisite: "Staff of Elemental Essence" (19092). See section 0.
     - Gives "Staff of Elemental Essence" (19092).
-    - Dialogue with draniksscar/"Iilivina":
-      - Player: "Hail"
-        - NPC say: Hello again. So, you are looking for the Primal Elemental essences? That has a nice ring to it Transon has always had a penchant for the dramatic. I do not believe that you will find these beings in Discord however, if they exist at all. I do believe that your staff will resonate when you approach the creatures, so travel the world you know. Elementals tend to gravitate to areas that reflect their element best, I don't see why the [Primals] would behave any differently.
-          - Reply guard: `(qglobals["mage_epic"] ~=nil and tonumber(qglobals["mage_epic"]) >= 9)`
-        - NPC say: The magic here is quite unique. I am thrilled I've had the opportunity to study it.
-          - Reply guard: ``
-        - Condition: `(e.message:findi("hail"))`
-      - Player: "Bantil"
-        - NPC say: Yes, Bantil told me you would be coming. Perhaps we can help each other. There are two tribes of elemental beings here. They have an unprecedented ability to channel elemental energy. I have yet to see one with my own eyes, but they may just contain [power] that will help you unleash the staff's true power.
-        - Condition: `(qglobals["mage_epic"] >= "8" and e.message:findi("bantil"))`
-      - Player: "Power" (link: explicit mention)
-        - NPC say: They use the elements in a way we have yet to understand. I suspect something in their essence that allows them to tap into the elements in a different manner than we understand. If my suspicions are true, these creatures should leave behind a small portion of their essence, when their spirits leave their bodies. If you find anything like that, bring it to me. They may be rather small, so bring me two from each type for good measure.
-        - Condition: `(qglobals["mage_epic"] >= "8" and e.message:findi("power"))`
-      - Player: "Primals" (link: explicit mention)
-        - Prompted by player input: "Hail"
-        - NPC say: Were I to venture a guess, I'd say look for Chaos near the ruins of a fallen empire, as order would tend to oppose chaos, I would look for the Order elemental near the ranks of a well regimented army, probably an ancient army, it is a creature of prestige. The Spirit elemental would find someplace where death and decay have a strong foothold. The Body Elemental may be the most elusive, as there is life everywhere. I would assume that its strong ties with this realm would pull it to a place where there are Muramites. When you find them, bring their remains to me and I'll see what else needs to be done.
-        - Condition: `(qglobals["mage_epic"] >= "9" and e.message:findi("Primals"))`
-        - Sets `mage_epic` to `10`.
 
 9. poknowledge/"Bantil Io'Tuv", hand "Pouch of Powdered Riftseeker Essence" (19149) + "Note from Iilivina" (19438). Sets `mage_epic` to `9`.
     - Hand in x1: "Note from Iilivina" (19438).
@@ -378,7 +466,7 @@ Alternative or repeat transition to `mage_epic` = `9` (not an additional require
     - Spawns "Spirit Elemental" (200060) in `codecay` on enter.
     - Loot "Element of Spirit" (19544) from "Spirit Elemental".
 
-### Steps on `mage_epic` that do not change it
+#### Steps on `mage_epic` that do not change it
 
 - `codecay` mage trap, on enter needs `mage_epic` ==10.
   - Sets `mage_epic_cod` to `1`.
@@ -504,7 +592,7 @@ Alternative or repeat transition to `mage_epic` = `9` (not an additional require
   - Turn in Staff of Elemental Essence (19092).
   - Gives Focus of Primal Elements (19839).
 
-## Other flags touched along the way
+### Other flags touched along the way
 
 - `mage_epic_air1` set to 1 at potranquility/sarhya the dawnbreeze.
 - `mage_epic_causeway` set to 1 at causeway/player.

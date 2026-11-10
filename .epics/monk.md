@@ -1,8 +1,494 @@
 # Monk
 
-Steps taken from the quest graph only. **Broken** means the graph has no edge for that value or that item.
+Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags are dependencies, not the definition of an epic. **Broken** indicates missing graph provenance.
 
-Flags with writes: `MnkPre`, `monk_epic`, `mnk_epic20`.
+## Epic 1.0
+
+### "Celestial Fists" (10652)
+
+1. Kill lakeofillomen/"Vorash". Spawns "Xenevorash" (85208).
+2. Loot "Demon Fangs" (1688) from "Xenevorash".
+3. Loot "Metal Pipe" (12979) from "A Drolvarg Pawbuster" in `karnor`.
+4. Loot "Metal Pipe" (12980) from "An Iksar Betrayer" in `chardok`.
+5. Buy "King's Court Token" (66616) from "Keiya Oakwood" (NPC 150311) in `shadowhaven`. Base price: 95,239 copper.
+6. shadowhaven/"Gralin Silvertooth", hand "King's Court Token" (66616). Gives "Deluxe Sewing Kit" (17966).
+7. Loot "Code of Zan Fi" (12316) from "Targin the Rock" in `soldungb`.
+8. Loot "Blackburrow Gnoll Pelt" (13027) from "Refugee Splitpaw" (NPC 17023) in `blackburrow`. Drop cache: 55% chance per kill.
+9. Loot "Blackburrow Gnoll Skin" (13028) from "The Gnoll High Shaman" (NPC 17042) in `blackburrow`. Drop cache: 55% chance per kill.
+10. Loot "Putrid Rib Bone" (13722) from "A Putrid Skeleton" in `qeytoqrg`.
+11. Loot "Gnoll Pup Scalp" (13789) from "A Gnoll Pup" in `blackburrow`.
+12. Loot "Gnoll Pup Scalp" (13789) from "A Gnoll Pup" in `everfrost`.
+13. Loot "Gnoll Pup Scalp" (13789) from "A Gnoll Pup" in `qeynos2`.
+14. Loot "Gnoll Pup Scalp" (13789) from "A Gnoll Pup" in `qeytoqrg`.
+15. qeynos2/"Phin Esrinap", hand "Gnoll Pup Scalp" (13789) + "Gnoll Pup Scalp" (13789) + "Gnoll Pup Scalp" (13789) + "Gnoll Pup Scalp" (13789). Gives "White Headband" (10110).
+16. qeynos2/"Phin Esrinap", hand "White Headband" (10110) + "Putrid Rib Bone" (13722) + "Putrid Rib Bone" (13722) + "Putrid Rib Bone" (13722). Gives "Yellow Headband" (10111).
+17. qeynos2/"Phin Esrinap", hand "Yellow Headband" (10111) + "Blackburrow Gnoll Pelt" (13027) + "Blackburrow Gnoll Pelt" (13027) + "Blackburrow Gnoll Skin" (13028). Gives "Orange Headband" (10112).
+18. Loot "Head of Ghanex Drah" (13165) from "Ghanex Drah" in `southkarana`.
+19. Loot "Dareb's Skull" (13166) from "High Shaman Phido" in `southkarana`.
+20. Loot "Dareb's Skull" (13166) from "An Undead Cyclops" in `southkarana`.
+21. Loot "Head of Shen" (13167) from "High Shaman Grisok" in `southkarana`.
+22. qeynos2/"Togahn Sorast", hand "Orange Headband" (10112) + "Head of Ghanex Drah" (13165) + "Dareb's Skull" (13166) + "Head of Shen" (13167). Gives "Red Headband" (10113).
+23. Loot "Skull of Jhen'Tra" (13168) from "A Gnoll Embalmer" in `lakerathe`.
+24. Loot "Dagger of Marnek" (13169) from "The Fabled Thaumaturgist".
+25. Loot "Dagger of Marnek" (13169) from "The Thaumaturgist" in `befallen`.
+26. Loot "Zaharn's Coronet" (3000) from "High Priest Zaharn" in `permafrost`.
+27. qeynos2/"Togahn Sorast", hand "Zaharn's Coronet" (3000) + "Red Headband" (10113) + "Skull of Jhen'Tra" (13168) + "Dagger of Marnek" (13169). Gives "Purple Headband" (10114).
+28. southkarana/"Brother Qwinn", hand "Purple Headband" (10114) + "Code of Zan Fi" (12316). Gives "Needle of the Void" (12314).
+29. Loot "The Idol" (12317) from "Raster of Guk" in `gukbottom`.
+30. Loot "Blackened Wand" (13237) from "Priest Amiaz" in `befallen`.
+31. Loot "Blackened Sapphire" (13238) from "Ekeros" in `najena`.
+32. Buy "Greater Lightstone" (10400) from "Gliblixl Rocktok" (NPC 151204) in `bazaar`. Base price: 4,500 copper.
+33. Loot "Cutthroat Insignia Ring" (1903) from "a Dervish Cutthroat" (NPC 457074) in `oldcommons`. Drop cache: 55.56% chance per kill.
+34. Loot "Legionnaire's Bracer" (2299) from "Orc Legionnaire" (NPC 21119) in `commons`. Drop cache: 84% chance per kill.
+35. Loot "Deathfist Pawn Scalp" (13794) from "Orc Pawn" (NPC 415088) in `mistythicket`. Drop cache: 50% chance per kill.
+36. Loot "Snake Fang" (13067) from "A Giant Briar Snake" (NPC 414061) in `toxxulia`. Drop cache: 58.21% chance per kill.
+37. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+38. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+39. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+40. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+41. freeportwest/"Velan Torresk", hand "Snake Fang" (13067) + "Bone Chips" (13073) + "Deathfist Pawn Scalp" (13794) + "Deathfist Pawn Scalp" (13794). Gives "White Training Sash" (10130).
+42. Loot "Giant Snake Rattle" (13058) from "A Darkweed Snake" (NPC 457018) in `oldcommons`. Drop cache: 43.94% chance per kill.
+43. misty/"Misty", on event signal:33161.
+44. Starts timer `Adds`.
+45. Spawns "A Scarecrow" (33168) after `misty/misty#timer:Adds`.
+46. Loot "Deathfist Slashed Belt" (13916) from "A Scarecrow".
+47. Loot "Desert Tarantula Chitin" (20901) from "A Dune Tarantula" (NPC 392086) in `northro`. Drop cache: 45.56% chance per kill.
+48. freeportwest/"Velan Torresk", hand "White Training Sash" (10130) + "Giant Snake Rattle" (13058) + "Deathfist Slashed Belt" (13916) + "Desert Tarantula Chitin" (20901). Gives "Yellow Sash of Order" (10131).
+49. freeportwest/"Reyia Beslin", hand "Cutthroat Insignia Ring" (1903) + "Legionnaire's Bracer" (2299) + "Yellow Sash of Order" (10131) + "Greater Lightstone" (10400). Gives "Orange Sash of Order" (10132).
+50. freeportwest/"Reyia Beslin", hand "Orange Sash of Order" (10132) + "Blackened Wand" (13237) + "Blackened Sapphire" (13238). Gives "Red Sash of Order" (10133).
+51. rathemtn/"Brother Zephyl", hand "Red Sash of Order" (10133) + "The Idol" (12317). Gives "Rare Robe Pattern" (12315).
+52. Buy "Song: Jonthan's Whistling Warsong" (15734) from "Lysric Loresinger" (NPC 1035) in `qeynos`. Base price: 43 copper.
+53. Buy "Needle Mold" (12019) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
+54. Buy "Thimble Mold" (12057) from "Dyona Rossook" (NPC 5065) in `highpass`. Base price: 180 copper.
+55. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+56. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+57. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+58. **Broken:** nothing in the graph gives, loots, spawns, or combines Notice to Cease and Desist (9590).
+59. Hand "Notice to Cease and Desist" (9590) to freeporteast/"Lythe Songbird". Spawns "a Freeport guard" (382255). Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard".
+60. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+61. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freportw`; trigger: freportw/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+62. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freportw`; trigger: freportw/"Lythe Songbird", hand "Notice to Cease and Desist" (9590).
+63. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a minion of Meldrath" (NPC 56173) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "We Shall Never Surrender".
+64. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "Meldrath's melded minions" (NPC 56174) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "Your Forces Are Deafeated".
+65. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "Arnold the Gnomeinator" (NPC 56175) in `steamfont`; trigger: steamfont/"Meldraths Paige", say "You Shall Not Break Our Defense".
+66. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", on timer guard.
+67. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freeporteast`; trigger: freeporteast/"Lythe Songbird", on timer guard.
+68. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a Freeport guard" (NPC 382255) in `freportw`; trigger: freportw/"Lythe Songbird", on timer guard.
+69. Alternative: Loot "Fine Steel Two Handed Sword" (5351) from "a seasoned Freeport guard" (NPC 382256) in `freportw`; trigger: freportw/"Lythe Songbird", on timer guard.
+70. Combine in Forge (17): "Fine Steel Two Handed Sword" (5351), "Water Flask" (13006). Produces "Small Brick of High Quality Ore" (10468) x2, "Small Piece of High Quality Ore" (22229). Requires Blacksmithing, trivial 21.
+71. Combine in Royal Qeynos Forge (40): "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing, trivial 20.
+72. Combine in Vale Forge (49): "Needle Mold" (12019), "Thimble Mold" (12057), "Water Flask" (13006), "High Quality Metal Bits" (22230). Produces "Vale Sewing Kit" (92882). Requires Blacksmithing, trivial 162.
+73. Loot "Shadow Wolf Pelt" (13779) from "A Shadow Wolf" (NPC 408093) in `commonlands`. Drop cache: 7.64% chance per kill.
+74. Buy "Spell: Gather Shadows" (15522) from "Tagus Wunne" (NPC 10030) in `freporte`. Base price: 43 copper.
+75. Forage "Spider Silk" (13041) in `mistmoore`.
+76. Forage "Spider Silk" (13041) in `mmca`.
+77. Forage "Spider Silk" (13041) in `mmcb`.
+78. Forage "Spider Silk" (13041) in `mmcc`.
+79. Forage "Spider Silk" (13041) in `mmcd`.
+80. Forage "Spider Silk" (13041) in `mmce`.
+81. Forage "Spider Silk" (13041) in `mmcf`.
+82. Forage "Spider Silk" (13041) in `mmcg`.
+83. Forage "Spider Silk" (13041) in `mmch`.
+84. Forage "Spider Silk" (13041) in `mmci`.
+85. Forage "Spider Silk" (13041) in `mmcj`.
+86. Combine in "Vale Sewing Kit" (92882): "Spider Silk" (13041). Produces "Silk Swatch" (16482). Requires Tailoring, trivial 15. The combine does not fail.
+87. Combine in "Vale Sewing Kit" (92882): "Shadow Wolf Pelt" (13779), "Spell: Gather Shadows" (15522), "Silk Swatch" (16482). Produces "Shadow Silk" (16483). Requires Tailoring, trivial 36.
+88. Combine in "Deluxe Sewing Kit" (17966): "Needle of the Void" (12314), "Rare Robe Pattern" (12315), "Song: Jonthan's Whistling Warsong" (15734), "Shadow Silk" (16483). Produces "Robe of the Lost Circle" (12256). Requires Tailoring. The combine does not fail.
+89. dreadlands/"Brother Balatin", hand "Robe of the Lost Circle" (12256) + "Metal Pipe" (12979) + "Metal Pipe" (12980). Gives "Robe of the Whistling Fists" (12970).
+90. Loot "Immortals" (18195) from "Faerie of Dismay" (NPC 91012) in `skyfire`. Drop cache: 35% chance per kill.
+91. erudnext/"Tomekeeper Danl", hand "Immortals" (18195). Gives "Danl's Reference" (1682).
+92. timorous/"Lheao", hand "Danl's Reference" (1682) + "Robe of the Whistling Fists" (12970). Gives "Celestial Fists" (1683).
+    - Dialogue with timorous/"Lheao":
+      - Player: "Hail"
+        - NPC emote: jumps at your voice and begins laughing at his skittishness.
+        - NPC say: Ahh, hello there. Not many people know of this place, so visitors are quite rare. Hehehe. Its a very beautiful place indeed, so.. ummm, dont go telling everyone you know about it. Heheh. Thanks, Friend.
+        - Condition: `($text=~/hail/i)`
+      - Player: "I Have Found The Book Of Immortals" (link: conversation sequence)
+        - NPC emote: looks up at you, eyes wide in astonishment.
+        - NPC say: My god, you found Immortals?! Where did you find it? Nevermind, that is unimportant. I have in my possession a book that explains more of these individuals. Its value is unimaginable as well as the impact it is capable of. As you can see, I grow old. I need an individual to watch over this book and make sure it is protected. Would you be willing to take this [responsibility]?
+        - Condition: `($text=~/i have found the book of immortals/i)`
+      - Player: "Responsibility" (link: explicit mention)
+        - NPC say: Im sorry, $name, but I could only give this book to a true master, such as a member of the Whistling Fists Order. And unless you can give me proof that you are one, in addition to Danls reference, which is very unlikely, there is no way I'll let you take charge of the [Celestial Fists].
+        - Condition: `($text=~/responsibility/i)`
+      - Player: "Celestial Fists" (link: explicit mention)
+        - NPC say: The Celestial Fists is the title of a book written by an unknown author. His writing is sub par but the legend is interesting from a biographical standpoint alone. Its rarity commands top dollar in the scholarly community but the secrets revealed in the book are what truely makes it dangerous. I hope Im able to find someone to watch over it soon.
+        - Condition: `($text=~/celestial fists/i)`
+93. trakanon/"Kaiaren", hand "Celestial Fists" (1683). Gives "Book of Celestial Fists" (1689).
+    - Dialogue with trakanon/"Kaiaren":
+      - Player: "Lheao"
+        - NPC say: Hmmm, never heard of him. Well, it doesn't matter, the book is here now. Curse that idiot for writing it in the first place. Not even sure why I let him stick around. If you ever see that clown monk Aradiel kick him in the shins for me! At any rate, I suppose you'd like to find the Fists and [have a nice chat with them], eh? Their master owes me much. I would reward you well if you were to bring me proof of the master's defeat.
+        - Condition: `(plugin::check_hasitem($client, 1689))`
+        - Condition: `($text=~/lheao/i)`
+      - Player: "Have A Nice Chat With Them" (link: explicit mention)
+        - NPC say: Yes, I suppose you would. All you children looking for fame and glory will eventually learn the poison of ambition. But how will you find them? They are able to meld with their elements seamlessly and they certainly have no interest in fooling with the likes of you. No, you will need to get their attention. Fortunately, I know [how you can do this].
+        - Condition: `(plugin::check_hasitem($client, 1689))`
+        - Condition: `($text=~/have a nice chat with them/i)`
+      - Player: "How Can I Do This" (link: conversation sequence)
+        - NPC say: My guess is that the weakest of the Fists will be the easiest to draw out. He is egotistical and arrogant. How he came to master the Discipline of Fire, I do not know. He will most likely be in another form, one of his element. When you find the one you believe to be the Fist, you must challenge him. If you use his true name, Eejag, in your formal challenge, he will respond. A flame can burn intensely but it cannot last for long. Know this when you battle him.
+        - Condition: `(plugin::check_hasitem($client, 1689))`
+        - Condition: `($text=~/how can i do this/i)`
+      - Player: "Hail"
+        - NPC say: AHHH get it away from me go away .. leave me alone
+        - Condition: `($text=~/hail/i)`
+      - Player: "Celestial Fists" (link: conversation sequence)
+        - NPC say: Eh? What's that? Bah! That was destroyed long ago. Don't waste my time with fairy taAAAAAGGHHH GET IT AWAY!!!! HELP!!! They're all over MEHEHEHEHEEEEEEee!!
+        - Condition: `($text=~/celestial fists/i)`
+94. trakanon/"Kaiaren", hand "Demon Fangs" (1688) + "Book of Celestial Fists" (1689). Gives "Celestial Fists" (10652).
+
+## Epic 1.5
+
+### "Fistwraps of Celestial Discipline" (61025)
+
+1. bazaar/"Eryke Stremstin", hand "Letter to Stremstin" (48128). Sets `monk_epic` to `6`.
+2. Loot "Sunless Nectar" (48117) from "An Ancient Shrieker" (NPC 164049) in `thedeep`. Drop cache: 11.17% chance per kill.
+3. Buy "Spices" (13425) from "Pincia Brownloe" (NPC 9088) in `freportw`. Base price: 7 copper.
+4. Buy "High Quality Firing Sheet" (16908) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 40 copper.
+5. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+6. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+7. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+8. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+9. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+10. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+11. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+12. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
+13. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
+14. Buy "Pie Tin Sketch" (16958) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 490 copper.
+15. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006), "Pie Tin Sketch" (16958). Produces "Unfired Pie Tin" (16926). Requires Pottery, trivial 115.
+16. Combine in Kiln (22): "High Quality Firing Sheet" (16908), "Unfired Pie Tin" (16926). Produces "Pie Tin" (13438). Requires Pottery, trivial 15.
+17. Combine in Oven (15): "Sunless Nectar" (48117), "Spices" (13425), "Pie Tin" (13438). Produces "Sugar and Spice Nectar Pie" (48119). Requires Baking, trivial 176.
+18. Buy "Spit" (17947) from "Frannie" (NPC 3020) in `qrg`. Base price: 200 copper.
+19. Buy "Firing Sheet" (16906) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 10 copper.
+20. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
+21. Buy "Large Bowl Sketch" (16963) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 760 copper.
+22. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
+23. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+24. Spawns "Disciple Okarote" (100133) in `stonebrunt` on event_waypoint_arrive.
+25. Loot "Bottle of Milk" (13087) from "Disciple Okarote".
+26. Loot "Snake Egg" (13088) from "A Female Razorback" (NPC 403032) in `sunderock`. Drop cache: 75.06% chance per kill.
+27. Buy "Cup of Flour" (13193) from "Karn Tassen" (NPC 1110) in `qeynos`. Base price: 1 copper.
+28. Combine in "Mixing Bowl" (17906): "Bottle of Milk" (13087), "Snake Egg" (13088), "Cup of Flour" (13193). Produces "Clump of Dough" (13090). Requires Baking, trivial 17.
+29. Buy "Bread Tin Mold" (12025) from "Frannie" (NPC 3020) in `qrg`. Base price: 400 copper.
+30. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
+    - Dialogue with kaladimb/"Jeet":
+      - Player: "Hail"
+        - NPC say: What business do you have here?!! This here is the mine and that means if you ain't a [member of Miner's Guild 628], you'd best be moving on!!
+          - Reply guard: `($faction <= 7)`
+        - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
+          - Reply guard: ``
+        - Condition: `($text=~/hail/i)`
+      - Player: "Member Of Miner'S Guild 628" (link: explicit mention)
+        - NPC say: Well, then, get off yer rump and give us a hand! If you don't have a mining pick, then get down there and use your fingernails!! If you're new and you want to earn a pick, you can [volunteer to exterminate the rats] that have been infesting the mines!!
+          - Reply guard: `($faction <= 4)`
+        - NPC say: Don't take this personally, but I can't quite trust you with such matters. Maybe a few less Butcherblock bandits would prove your worth.
+          - Reply guard: `($faction <= 5)`
+        - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
+          - Reply guard: ``
+        - Condition: `(($text=~/member of miner's guild 628/i))`
+      - Player: "Volunteer To Exterminate The Rats" (link: explicit mention)
+        - NPC say: Well, someone has to do the dirty work around here. Let it be you new miners. Go patrol the mines and if you see any rats, bash them good!! Return to me with four rat pelts and I will give you some armor as payment. If you want a 628 mining cap, yer gonna have to smash that infernal [cleaner]!!
+          - Reply guard: `($faction <= 4)`
+        - NPC say: Don't take this personally, but I can't quite trust you with such matters. Maybe a few less Butcherblock bandits would prove your worth.
+          - Reply guard: `($faction <= 5)`
+        - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
+          - Reply guard: ``
+        - Condition: `(($text=~/volunteer to exterminate the rats/i))`
+      - Player: "Run To The Gnome City" (link: external event mention)
+        - Prompted by `event_item`:
+          - NPC say: It's about time you managed to smash these four!! Here. You do good work. We could use someone like you to [run to the gnome city].
+          - Event guard: `(plugin::check_handin(\%itemcount, 13054 => 4))`
+        - NPC say: Well, as you most likely know, we are a non-profit organization, at least here in Kaladim. We need to make our profit elsewhere and that means a little bit of thieving. Presently we need loyal members to [collect the gnome profit].
+          - Reply guard: `($faction <= 4)`
+        - NPC say: Don't take this personally, but I can't quite trust you with such matters. Maybe a few less Butcherblock bandits would prove your worth.
+          - Reply guard: `($faction <= 5)`
+        - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
+          - Reply guard: ``
+        - Condition: `(($text=~/run to the gnome city/i))`
+      - Player: "Collect The Gnome Profit" (link: explicit mention)
+        - NPC say: Take this key. Don't lose it!! You will need to use it on a metal rat called a scrubber. They are all over Ak'Anon. You must find the one that responds to the number, '628'. If it responds, use the key on it. It will hand over a bag with the 'gnome take'. Return it to me. Get moving!!
+          - Reply guard: `($faction <= 4)`
+        - NPC say: Don't take this personally, but I can't quite trust you with such matters. Maybe a few less Butcherblock bandits would prove your worth.
+          - Reply guard: `($faction <= 5)`
+        - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
+          - Reply guard: ``
+        - Condition: `(($text=~/collect the gnome profit/i))`
+        - Gives Scrubber Key (12164).
+      - Player: "Cleaner" (link: explicit mention)
+        - Prompted by player input: "Volunteer To Exterminate The Rats"
+        - NPC say: Darn that blasted clockwork cleaner!! No one in Kaladim even knows what it is! They all think it's some kinda rat in armor!! Rat paladins?!! The name fits. We miners have seen many like it in the gnome city during heists, err.. visits. We have to get rid of this one in Kaladim!! If you smash it and get its scrap metal, I am authorized to give you a mining cap, if you are a member of Miner's Guild 628.
+          - Reply guard: `($faction <= 4)`
+        - NPC say: Don't take this personally, but I can't quite trust you with such matters. Maybe a few less Butcherblock bandits would prove your worth.
+          - Reply guard: `($faction <= 5)`
+        - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
+          - Reply guard: ``
+        - Condition: `(($text=~/cleaner/i))`
+31. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
+32. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
+33. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
+34. Buy "Quality Firing Sheet" (16907) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 20 copper.
+35. Buy "Ceramic Lining Sketch" (16964) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 25 copper.
+36. Combine in Pottery Wheel (21): "Water Flask" (13006), "Small Block of Clay" (16900), "Ceramic Lining Sketch" (16964). Produces "Unfired Ceramic Lining" (16946). Requires Pottery, trivial 36.
+37. Combine in Kiln (22): "Quality Firing Sheet" (16907), "Unfired Ceramic Lining" (16946). Produces "Ceramic Lining" (16947). Requires Pottery, trivial 17.
+38. Combine in Forge (17): "Bread Tin Mold" (12025), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Bread Tin" (13440). Requires Blacksmithing, trivial 38.
+39. Combine in "Spit" (17947): "Clump of Dough" (13090), "Bread Tin" (13440). Hands back "Bread Tin" (13440). Produces "Loaf of Bread" (13015). Requires Baking, trivial 115.
+40. Buy "Cheese" (8160) from "A Goblin Bartender" (NPC 11071) in `runnyeye`. Base price: 15 copper.
+41. potranquility/"Elder Fuirstel", say "Hail". Sets `pop_cod_final` to `1`.
+42. poknowledge/"Aid Grimel", say "Skill In Brewing". Requires `pop_cod_final` ==1. Requires `pop_cod_final` set. Gives "Portable Drink Barrel" (17179).
+43. Buy "Lettuce" (13976) from "Cleet Miller Jr" (NPC 12029) in `qey2hh1`. Base price: 25 copper.
+44. rivervale/"Ilscent Tagglefoot", say "Jumjum Juice". Gives "Case of Jumjum Juice" (13411).
+45. northkarana/"Xanuusus", hand "Case of Jumjum Juice" (13411). Gives "Carrot" (13977).
+    - Dialogue with northkarana/"Xanuusus":
+      - Player: "Hail"
+        - NPC say: I see you have purified that stone. Can I look at it?
+          - Reply guard: `( e.other:HasItem(62604) )`
+        - NPC say: You make my limbs ache. There is something unnatural about you. What is it?
+          - Reply guard: `( qglobals["ranger_epic15_pre"] == "6" )`
+        - NPC say: Greetings, small one! I am Xanuusus of the Stormreapers. You are welcome to rest beneath my mighty branches.
+          - Reply guard: ``
+        - Condition: `(e.message:findi("hail"))`
+        - Gives Polished Blasted Stone (62603).
+      - Player: "Help"
+        - NPC say: Well, I suppose I can help you a little, small one. There are three principles expressed in my lovely poem.
+        - NPC say: First one must defeat a worthy enemy of the Storm Lord, as you obviously understood from the second stanza. Seek a weapon born by one that would shackle the world if he could. He takes his name from his home, as if to claim it as his own.
+        - NPC say: Secondly one must aid a friend of the Storm Lord. There is one that considers himself small and worthless. Heal his heart so that his bare feet may roam again.
+        - NPC say: Finally one must perform and act of faith in the Storm Lord. When you have accomplished the other tasks, return to me and we shall again speak of this act of faith.
+        - Condition: `( qglobals["ranger_epic15_pre"] == "7" and e.message:findi("help") )`
+      - Player: "Ready" (link: conversation sequence)
+        - NPC say: Stay close or this won't work. It is better that you do this, for trees are not very well structured to withstand lightning.
+          - Reply guard: `( e.other:HasItem(62631) and e.other:HasItem(62633) and e.other:HasItem(62603) )`
+          - Reply guard: `( client:GetItemIDAt(Slot.Face) == 62603 and client:GetItemIDAt(Slot.Primary) == 62633 and client:GetItemIDAt(Slot.Secondary) == 62631 )`
+        - NPC emote: The treant releases a sound from his hollows that sounds much like thunder.
+          - Reply guard: `( e.other:HasItem(62631) and e.other:HasItem(62633) and e.other:HasItem(62603) )`
+          - Reply guard: `( client:GetItemIDAt(Slot.Face) == 62603 and client:GetItemIDAt(Slot.Primary) == 62633 and client:GetItemIDAt(Slot.Secondary) == 62631 )`
+        - Condition: `( qglobals["ranger_epic15_pre"] == "8" and e.message:findi("ready") )`
+46. Buy "Turnip" (13979) from "Cleet Miller Jr" (NPC 12029) in `qey2hh1`. Base price: 25 copper.
+47. Combine in "Mixing Bowl" (17906): "Lettuce" (13976), "Carrot" (13977), "Turnip" (13979). Produces "Vegetables" (13419). Requires Baking, trivial 15. The combine does not fail.
+48. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Vegetables" (13419). Produces "Vegetable Oil" (20386). Requires Brewing, trivial 102.
+49. Buy "Garlic" (58280) from "Culkin Ironstove" (NPC 202092) in `poknowledge`. Base price: 10 copper.
+50. Combine in Brew Barrel (19): "Vegetable Oil" (20386), "Garlic" (58280). Produces "Grilling Sauce" (58265). Requires Brewing, trivial 54.
+51. Loot "Aged Piece of Meat" (48118) from "Ancient Nobleman" in `veksar`.
+52. Combine in Oven (15): "Loaf of Bread" (13015), "Cheese" (8160), "Grilling Sauce" (58265), "Aged Piece of Meat" (48118). Produces "Aged Meat and Cheese Sandwich" (48120). Requires Baking, trivial 176.
+53. oceanoftears/"Kaiaren", hand "Sugar and Spice Nectar Pie" (48119) + "Aged Meat and Cheese Sandwich" (48120). Sets `mnk_epic20` to `2`.
+    - Dialogue with oceanoftears/"Kaiaren":
+      - Player: "Hail"
+        - NPC say: Hello, , I have been [expecting] you.
+        - Condition: `(qglobals["monk_epic"] == "9")`
+        - Condition: `(e.message:findi("hail"))`
+      - Player: "Expecting" (link: explicit mention)
+        - NPC say: There is still much that needs to be done and I lack the strength still to continue it myself. If you choose to you can first begin by completing a [simple task] for me.
+        - Condition: `(qglobals["monk_epic"] == "9")`
+        - Condition: `(e.message:findi("expecting"))`
+      - Player: "Simple Task" (link: explicit mention)
+        - NPC say: I need you to gather some rare [I need you to gather some rare [delicacies] and bring them back to me. This meal has been passed down the Order for ages. This meal is said to grant strength back to the feeble. It is the only way possible for us to combat this [menace].
+        - Condition: `(qglobals["monk_epic"] == "9")`
+        - Condition: `(e.message:findi("simple task"))`
+      - Player: "Delicacies" (link: explicit mention)
+        - NPC say: I will need to you to gather some [sunless nectar] and some meat from and some meat from an [ancient creature].
+        - Condition: `(qglobals["monk_epic"] == "9")`
+        - Condition: `(e.message:findi("delicacies"))`
+      - Player: "Menace" (link: explicit mention)
+        - Prompted by player input: "Simple Task"
+        - NPC say: What menace? For sure Vortix has mentioned to you his dreams? His dreams provide a rare gift of forsight into what lies ahead. There is a dark threat that looms over the Order's head like a vice. It wants nothing more than to destroy all that know of it's existence.
+        - Condition: `(qglobals["monk_epic"] == "9")`
+        - Condition: `(e.message:findi("menace"))`
+        - Sets `mnk_epic20` to `1`.
+      - Player: "Sunless Nectar" (link: explicit mention)
+        - Prompted by player input: "Delicacies"
+        - NPC say: The sunless nectar comes from the darkest parts of Norrath. Once you find it you must combine it with some spices and a pie tin to make a Sugar and Spice Nectar Pie. Please return soon after you have both items.
+        - Condition: `(qglobals["monk_epic"] == "9")`
+        - Condition: `(e.message:findi("sunless nectar"))`
+      - Player: "Ancient Creature" (link: explicit mention)
+        - Prompted by player input: "Delicacies"
+        - NPC say: The creature you seek has been living for as long as any can remember. It can be found surrounded by water. You will need to take it's meat and combine it with grilling sauce, a loaf of bread, and some cheese to make a Grilled Aged Meat and Cheese Sandwich. Please return soon after you have both items.
+        - Condition: `(qglobals["monk_epic"] == "9")`
+        - Condition: `(e.message:findi("ancient creature"))`
+      - Player: "Choose To Continue" (link: external event mention)
+        - Prompted by `event_trade`:
+          - NPC say: Ah, thank you. These will help me greatly but I am afraid I will still lack the strength needed to combat this evil. You will have to go in my place until at least I have had a little longer to rest and train. If you [choose to continue], there are two more Disciples that you must face in order to reach the point of transcendence.
+          - Event guard: `(qglobals["mnk_epic20"] ~= nil and qglobals["mnk_epic20"] >= "1")`
+          - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 48119, item2 = 48120}))`
+        - NPC say: As I thought you would; you will find them as you did the others, in their natural essence. You will find the Disciple of Focus in the hills and mountains training diligently. The Disciple of Tranquility you shall find in a clearing where many do not travel without knowing valor and courage. It is there that you will be able to find your calmness. Please return to me when you have gained their respect as well as their symbols. I will also require your sash.
+        - Condition: `(qglobals["monk_epic"] == "9")`
+        - Condition: `(qglobals["mnk_epic20"] ~= nil)`
+        - Condition: `(e.message:findi("choose to continue") and qglobals["mnk_epic20"] >= "2")`
+        - Gives Initiate's Sash of the Celestial Order (48127).
+        - Sets `mnk_epic20` to `3`.
+      - Player: "Final Task" (link: external event mention)
+        - Prompted by `event_trade`:
+          - NPC say: I see you are ready to assume the [final task] before facing the Dark Foe that will forever change our way of life here.
+          - Event guard: `(qglobals["mnk_epic20"] ~= nil and qglobals["mnk_epic20"] >= "1")`
+          - Event guard: `(qglobals["mnk_epic20"] >= "3" and item_lib.check_turn_in(e.trade, {item1 = 48129, item2 = 48130, item3 = 48127}))`
+        - NPC say: Yes, you must combat an enlightened one. It is our way that balance must be kept. Without good, evil cannot exist. We are but a small part in the cycle of true immortality. If you are [ready to begin] I will battle you. Please do not worry, if you defeat me, my being will continue to exist within you as that is the way of our Order. If you fall however, it was meant to be.
+        - Condition: `(qglobals["monk_epic"] == "9")`
+        - Condition: `(qglobals["mnk_epic20"] ~= nil)`
+        - Condition: `(e.message:findi("final task") and qglobals["mnk_epic20"] >= "4")`
+      - Player: "Ready To Begin" (link: explicit mention)
+        - NPC say: Stand fast and ready to prove your worth now !
+        - Condition: `(qglobals["monk_epic"] == "9")`
+        - Condition: `(qglobals["mnk_epic20"] ~= nil)`
+        - Condition: `(e.message:findi("ready to begin") and qglobals["mnk_epic20"] >= "4")`
+54. potranquility/"Vortix", hand "Initiate's Sash of the Celestial Order" (48127). Sets `monk_epic` to `7`.
+    - Dialogue with potranquility/"Vortix":
+      - Player: "Hail"
+        - NPC say: Ah, I see you have seen a Disciple. The tokens you now possess are used to represent status among the Order. There used to be a tradesman that would fashion them into sashes for us but I'm afraid he has since passed on. I believe there may be another that has learned his trade. His name is Eryke Stremstin, and you should be able to find him peddling his wares across the land. Take this and give it to him. He should be able to tell you of what you will need to fashion your new sash. Once you have fashioned it please bring it to me.
+          - Reply guard: `($client->GetGlobal("monk_epic") >=5 && (plugin::check_hasitem($client, 48111) || plugin::check_hasitem($client, 48112) || plugin::check_hasitem($client, 48113)
+	 || plugin::check_hasitem($client, 48124) || plugin::check_hasitem($client, 48125) || plugin::check_hasitem($client, 48126)))`
+        - NPC say: It is good to see you $name, but I have no new information to share with you. If you have anything to show me, please do.
+          - Reply guard: ``
+        - Condition: `($text=~/hail/i)`
+        - Gives Letter to Stremstin (48128).
+      - Player: "Searching" (link: external event mention)
+        - Prompted by `event_item`:
+          - NPC say: You have found it. Let me look at it for a minute. Ah yes, it has been a while but it is all coming back to me. Whats this though? It seems like what I was [searching] for is located elsewhere.
+          - Event guard: `($client->GetGlobal("monk_epic") ==4 && plugin::check_handin(\%itemcount, 48109 => 1, 48110 => 1))`
+        - NPC say: Long ago, Kaiaren wrote down all of his teachings in this book. It was in case anything ever happened to him the teachings would not be lost forever. These are those teachings. There are several [techniques] missing though that I had hoped to find in this book. Kaiaren had once told me that there was a way to retrieve someones memories using a similar technique that originally caused his memory loss.
+        - Condition: `($client->GetGlobal("monk_epic") ==5 && $text=~/searching/i)`
+      - Player: "Techniques" (link: explicit mention)
+        - NPC say: The only other place the techniques that we seek could be retained would be within the Celestial Order itself. Yes... the [Celestial Guardians] should be safekeeping the sacred techniques.
+        - Condition: `($client->GetGlobal("monk_epic") ==5 && $text=~/techniques/i)`
+      - Player: "Celestial Guardians" (link: explicit mention)
+        - NPC say: They are the keepers of the disciplines. They are the ones that guard all that is right and balanced in this world. They are the enlightened and their faith is unwavering. Do you wish to [find] them?
+        - Condition: `($client->GetGlobal("monk_epic") ==5 && $text=~/celestial guardians/i)`
+      - Player: "Find" (link: explicit mention)
+        - NPC say: You can find them within their essences. The names you will most likely find them by are the Disciples of [Sun], [Moon], and [Order]. Hopefully you will be able to locate them and help retrieve the techniques we need.
+        - Condition: `($client->GetGlobal("monk_epic") ==5 && $text=~/find/i)`
+      - Player: "Sun" (link: explicit mention)
+        - NPC say: The Disciple of Sun represents all that is pure. There is nothing stronger than the leadership of the sun. The energy that we draw from it powers everything in this world. The plants we use as herbs draw strength for it. The animals we eat grow by it and we use it to guide us. You will find him where his reign is the most apparent. He is strong and proud, so you may need to use ingenuity to draw him out.
+        - Condition: `($client->GetGlobal("monk_epic") ==5 && $text=~/sun/i)`
+      - Player: "Moon" (link: explicit mention)
+        - Prompted by player input: "Find"
+        - NPC say: The Disciple of Moon represents all that is pure. How can two disciples represent the same essence? It is simple. How can you have day without night? You cannot understand right without knowing wrong as well. How can you say you understand true happiness without ever feeling the depths of despair? You can find this Disciple where the soul is the closest to the elements.
+        - Condition: `($client->GetGlobal("monk_epic") ==5 && $text=~/moon/i)`
+      - Player: "Order" (link: explicit mention)
+        - Prompted by player input: "Hail"
+        - NPC say: The Disciple of Order represents what we all try to follow as close as possible as children of the Celestial Order. Order is what we live by. It helps to keep our senses pure and strong. It makes us understand what steps we must take to become enlightened. This Disciple will be found where Order is upheld at all times. Be careful however, if you hesitate in any way you will be found flawed in his eyes. You should prepare to be tested to the limits of your capabilities. This disciple resides upon the highest of councils. He is the only member that resides upon another plane and does the bidding of a group that is the Tribunal.
+        - Condition: `($client->GetGlobal("monk_epic") ==5 && $text=~/order/i)`
+      - Player: "Journey" (link: external event mention)
+        - Prompted by `event_item`:
+          - NPC say: I see you have gained great strength during your journey as you now wear the Sash of the Celestial Order. I am glad you have made it this far. You will need that for the next steps of your [journey].
+          - Event guard: `($client->GetGlobal("monk_epic") ==6 && plugin::check_handin(\%itemcount, 48127 => 1))`
+        - NPC say: The steps that you have taken thus far have been to prepare you for the next step. I must apologize for not telling you sooner but I had to make sure I knew you were worthy. Kaiarens diary did contain the way to unlock his mind again. To do so, you must travel back to the land that you brought the sand from. There you will have to battle the two halves of Kaiarens [being]; his mind and body.
+        - Condition: `($client->GetGlobal("monk_epic") ==7 && $text=~/journey/i)`
+      - Player: "Being" (link: explicit mention)
+        - NPC say: He has entered a [place] where chaos rules and his mind has separated from his body. His consciousness has taken the form of beings of another plane. Only after you have retrieved both essences of his mind and body, will we be able to free him again.
+        - Condition: `($text=~/being/i)`
+      - Player: "Place" (link: explicit mention)
+        - NPC say: This place is not something I know much about. It seems as though discord runs free there. you must be careful while you are there. There are many things we still do not yet fully understand unfolding before our eyes.
+        - Condition: `($text=~/place/i)`
+55. Loot "Kaiaren's Mind" (48137) from "Kragsmash" in `bloodfields`.
+56. Loot "Kaiaren's Body" (48138) from "Windrush" in `harbingers`.
+57. potranquility/"Vortix", hand "Kaiaren's Mind" (48137) + "Kaiaren's Body" (48138). Sets `monk_epic` to `8`.
+58. Loot "Scribed Note" (20435) from "The Keeper" in `bloodfields`.
+59. potranquility/"Vortix", hand "Scribed Note" (20435). Sets `monk_epic` to `9`.
+60. Unresolved cyclic prerequisite: `mnk_epic20` >=5.
+61. oceanoftears/"Kaiaren", on event_death_complete. Sets `mnk_epic20` to `5`.
+62. Say "Check Lorb" to anguish/"Zone Status".
+63. Spawns "Orb of Discordant Energy" (317087).
+64. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+65. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+66. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+67. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+68. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+69. potranquility/"Vortix", hand "Globe of Discordant Energy" (47100). Sets `mnk_epic20` to `6`.
+70. oceanoftears/"Kaiaren", say "Choose To Continue". Requires `mnk_epic20` ==2. Requires `mnk_epic20` set. Requires `monk_epic` ==9. Requires `mnk_epic20` >=2. Gives "Initiate's Sash of the Celestial Order" (48127).
+71. lakerathe/"Vortix", say "Diary". Sets `monk_epic` to `4`.
+    - Dialogue with lakerathe/"Vortix":
+      - Player: "Diary"
+        - NPC say: Kaiaren's Diary? I haven't seen it in some time now. If I were not such a coward, I would have kept it. I have heard rumors of it being torn in half. Some students that wanted to learn the ways of the Celestial Fists were looking for it a while back. One was a pirate that wanted to only learn the Path of the Silent to gain more treasures than he had. The other, wanted to become the most powerful fighter alive. You may want to seek them out and see if they have located pieces of it. I am sorry I could not be of more help. If you do happen to locate the two pieces, bring them back to me and maybe I will be able to aid you further. Now that you know my secret, there is no reason to remain hidden from the world. You will be able to find me resting in the Plane of Tranquility. Be safe, $name .
+        - Condition: `($text=~/diary/i)`
+        - Sets `monk_epic` to `4`.
+72. Loot "1/2 of Kaiaren's Diary" (48109) from "Wygrish" in `sirens`.
+73. Loot "1/2 of Kaiaren's Diary" (48110) from "Quigli" in `dulak`.
+74. potranquility/"Vortix", hand "1/2 of Kaiaren's Diary" (48109) + "1/2 of Kaiaren's Diary" (48110). Sets `monk_epic` to `5`.
+75. Spawns "Disciple of Moon" (120138) in `westwastes` on enter.
+76. Loot "Symbol of Moon" (48111) from "Disciple of Moon".
+77. potranquility/"Vortix", say "Hail". Requires `monk_epic` >=5. Gives "Letter to Stremstin" (48128).
+78. potranquility/"Vortix", hand "Scribed Note" (20435). Requires `monk_epic` ==8. Gives "Fistwraps of Celestial Discipline" (61025).
+
+## Epic 2.0
+
+### "Transcended Fistwraps of Immortality" (67742)
+
+1. Unresolved cyclic prerequisite: `mnk_epic20` >=5.
+2. oceanoftears/"Kaiaren", on event_death_complete. Sets `mnk_epic20` to `5`.
+3. Say "Check Lorb" to anguish/"Zone Status".
+4. Spawns "Orb of Discordant Energy" (317087).
+5. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+6. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+7. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+8. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+9. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+10. potranquility/"Vortix", hand "Globe of Discordant Energy" (47100). Sets `mnk_epic20` to `6`.
+11. bazaar/"Eryke Stremstin", hand "Letter to Stremstin" (48128). Sets `monk_epic` to `6`.
+12. Loot "Sunless Nectar" (48117) from "An Ancient Shrieker" (NPC 164049) in `thedeep`. Drop cache: 11.17% chance per kill.
+13. Buy "Spices" (13425) from "Pincia Brownloe" (NPC 9088) in `freportw`. Base price: 7 copper.
+14. Buy "High Quality Firing Sheet" (16908) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 40 copper.
+15. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+16. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+17. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+18. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+19. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+20. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+21. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+22. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
+23. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
+24. Buy "Pie Tin Sketch" (16958) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 490 copper.
+25. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006), "Pie Tin Sketch" (16958). Produces "Unfired Pie Tin" (16926). Requires Pottery, trivial 115.
+26. Combine in Kiln (22): "High Quality Firing Sheet" (16908), "Unfired Pie Tin" (16926). Produces "Pie Tin" (13438). Requires Pottery, trivial 15.
+27. Combine in Oven (15): "Sunless Nectar" (48117), "Spices" (13425), "Pie Tin" (13438). Produces "Sugar and Spice Nectar Pie" (48119). Requires Baking, trivial 176.
+28. Buy "Spit" (17947) from "Frannie" (NPC 3020) in `qrg`. Base price: 200 copper.
+29. Buy "Firing Sheet" (16906) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 10 copper.
+30. Combine in Pottery Wheel (21): "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery, trivial 21.
+31. Buy "Large Bowl Sketch" (16963) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 760 copper.
+32. Combine in Pottery Wheel (21): "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery, trivial 128.
+33. Combine in Kiln (22): "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery, trivial 15.
+34. Spawns "Disciple Okarote" (100133) in `stonebrunt` on event_waypoint_arrive.
+35. Loot "Bottle of Milk" (13087) from "Disciple Okarote".
+36. Loot "Snake Egg" (13088) from "A Female Razorback" (NPC 403032) in `sunderock`. Drop cache: 75.06% chance per kill.
+37. Buy "Cup of Flour" (13193) from "Karn Tassen" (NPC 1110) in `qeynos`. Base price: 1 copper.
+38. Combine in "Mixing Bowl" (17906): "Bottle of Milk" (13087), "Snake Egg" (13088), "Cup of Flour" (13193). Produces "Clump of Dough" (13090). Requires Baking, trivial 17.
+39. Buy "Bread Tin Mold" (12025) from "Frannie" (NPC 3020) in `qrg`. Base price: 400 copper.
+40. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
+41. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
+42. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
+43. Combine in Forge (17): "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905) x2. Requires Blacksmithing, trivial 18.
+44. Buy "Quality Firing Sheet" (16907) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 20 copper.
+45. Buy "Ceramic Lining Sketch" (16964) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 25 copper.
+46. Combine in Pottery Wheel (21): "Water Flask" (13006), "Small Block of Clay" (16900), "Ceramic Lining Sketch" (16964). Produces "Unfired Ceramic Lining" (16946). Requires Pottery, trivial 36.
+47. Combine in Kiln (22): "Quality Firing Sheet" (16907), "Unfired Ceramic Lining" (16946). Produces "Ceramic Lining" (16947). Requires Pottery, trivial 17.
+48. Combine in Forge (17): "Bread Tin Mold" (12025), "Water Flask" (13006), "Metal Bits" (16905), "Ceramic Lining" (16947). Produces "Bread Tin" (13440). Requires Blacksmithing, trivial 38.
+49. Combine in "Spit" (17947): "Clump of Dough" (13090), "Bread Tin" (13440). Hands back "Bread Tin" (13440). Produces "Loaf of Bread" (13015). Requires Baking, trivial 115.
+50. Buy "Cheese" (8160) from "A Goblin Bartender" (NPC 11071) in `runnyeye`. Base price: 15 copper.
+51. potranquility/"Elder Fuirstel", say "Hail". Sets `pop_cod_final` to `1`.
+52. poknowledge/"Aid Grimel", say "Skill In Brewing". Requires `pop_cod_final` ==1. Requires `pop_cod_final` set. Gives "Portable Drink Barrel" (17179).
+53. Buy "Lettuce" (13976) from "Cleet Miller Jr" (NPC 12029) in `qey2hh1`. Base price: 25 copper.
+54. rivervale/"Ilscent Tagglefoot", say "Jumjum Juice". Gives "Case of Jumjum Juice" (13411).
+55. northkarana/"Xanuusus", hand "Case of Jumjum Juice" (13411). Gives "Carrot" (13977).
+56. Buy "Turnip" (13979) from "Cleet Miller Jr" (NPC 12029) in `qey2hh1`. Base price: 25 copper.
+57. Combine in "Mixing Bowl" (17906): "Lettuce" (13976), "Carrot" (13977), "Turnip" (13979). Produces "Vegetables" (13419). Requires Baking, trivial 15. The combine does not fail.
+58. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Vegetables" (13419). Produces "Vegetable Oil" (20386). Requires Brewing, trivial 102.
+59. Buy "Garlic" (58280) from "Culkin Ironstove" (NPC 202092) in `poknowledge`. Base price: 10 copper.
+60. Combine in Brew Barrel (19): "Vegetable Oil" (20386), "Garlic" (58280). Produces "Grilling Sauce" (58265). Requires Brewing, trivial 54.
+61. Loot "Aged Piece of Meat" (48118) from "Ancient Nobleman" in `veksar`.
+62. Combine in Oven (15): "Loaf of Bread" (13015), "Cheese" (8160), "Grilling Sauce" (58265), "Aged Piece of Meat" (48118). Produces "Aged Meat and Cheese Sandwich" (48120). Requires Baking, trivial 176.
+63. oceanoftears/"Kaiaren", hand "Sugar and Spice Nectar Pie" (48119) + "Aged Meat and Cheese Sandwich" (48120). Sets `mnk_epic20` to `2`.
+64. potranquility/"Vortix", hand "Initiate's Sash of the Celestial Order" (48127). Sets `monk_epic` to `7`.
+65. Loot "Kaiaren's Mind" (48137) from "Kragsmash" in `bloodfields`.
+66. Loot "Kaiaren's Body" (48138) from "Windrush" in `harbingers`.
+67. potranquility/"Vortix", hand "Kaiaren's Mind" (48137) + "Kaiaren's Body" (48138). Sets `monk_epic` to `8`.
+68. Loot "Scribed Note" (20435) from "The Keeper" in `bloodfields`.
+69. potranquility/"Vortix", hand "Scribed Note" (20435). Sets `monk_epic` to `9`.
+70. oceanoftears/"Kaiaren", say "Choose To Continue". Requires `mnk_epic20` ==2. Requires `mnk_epic20` set. Requires `monk_epic` ==9. Requires `mnk_epic20` >=2. Gives "Initiate's Sash of the Celestial Order" (48127).
+71. lakerathe/"Vortix", say "Diary". Sets `monk_epic` to `4`.
+72. Loot "1/2 of Kaiaren's Diary" (48109) from "Wygrish" in `sirens`.
+73. Loot "1/2 of Kaiaren's Diary" (48110) from "Quigli" in `dulak`.
+74. potranquility/"Vortix", hand "1/2 of Kaiaren's Diary" (48109) + "1/2 of Kaiaren's Diary" (48110). Sets `monk_epic` to `5`.
+75. Spawns "Disciple of Moon" (120138) in `westwastes` on enter.
+76. Loot "Symbol of Moon" (48111) from "Disciple of Moon".
+77. potranquility/"Vortix", say "Hail". Requires `monk_epic` >=5. Gives "Letter to Stremstin" (48128).
+78. potranquility/"Vortix", hand "Scribed Note" (20435). Requires `monk_epic` ==8. Gives "Fistwraps of Celestial Discipline" (61025).
+79. poknowledge/"Sebast Muckle", hand "Globe of Discordant Energy" (47100) + "Fistwraps of Celestial Discipline" (61025). Requires `mnk_epic20` ==6. Gives "Transcended Fistwraps of Immortality" (67742).
+
+## Quest-state progression
 
 ## 0. Prerequisites
 
@@ -88,58 +574,6 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 28. Combine in "Mixing Bowl" (17906): "Bottle of Milk" (13087), "Snake Egg" (13088), "Cup of Flour" (13193). Produces "Clump of Dough" (13090). Requires Baking, trivial 17.
 29. Buy "Bread Tin Mold" (12025) from "Frannie" (NPC 3020) in `qrg`. Base price: 400 copper.
 30. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
-    - Dialogue with kaladimb/"Jeet":
-      - Player: "Hail"
-        - NPC say: What business do you have here?!! This here is the mine and that means if you ain't a [member of Miner's Guild 628], you'd best be moving on!!
-          - Reply guard: `($faction <= 7)`
-        - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
-          - Reply guard: ``
-        - Condition: `($text=~/hail/i)`
-      - Player: "Member Of Miner'S Guild 628" (link: explicit mention)
-        - NPC say: Well, then, get off yer rump and give us a hand! If you don't have a mining pick, then get down there and use your fingernails!! If you're new and you want to earn a pick, you can [volunteer to exterminate the rats] that have been infesting the mines!!
-          - Reply guard: `($faction <= 4)`
-        - NPC say: Don't take this personally, but I can't quite trust you with such matters. Maybe a few less Butcherblock bandits would prove your worth.
-          - Reply guard: `($faction <= 5)`
-        - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
-          - Reply guard: ``
-        - Condition: `(($text=~/member of miner's guild 628/i))`
-      - Player: "Volunteer To Exterminate The Rats" (link: explicit mention)
-        - NPC say: Well, someone has to do the dirty work around here. Let it be you new miners. Go patrol the mines and if you see any rats, bash them good!! Return to me with four rat pelts and I will give you some armor as payment. If you want a 628 mining cap, yer gonna have to smash that infernal [cleaner]!!
-          - Reply guard: `($faction <= 4)`
-        - NPC say: Don't take this personally, but I can't quite trust you with such matters. Maybe a few less Butcherblock bandits would prove your worth.
-          - Reply guard: `($faction <= 5)`
-        - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
-          - Reply guard: ``
-        - Condition: `(($text=~/volunteer to exterminate the rats/i))`
-      - Player: "Run To The Gnome City" (link: external event mention)
-        - Prompted by `event_item`:
-          - NPC say: It's about time you managed to smash these four!! Here. You do good work. We could use someone like you to [run to the gnome city].
-          - Event guard: `(plugin::check_handin(\%itemcount, 13054 => 4))`
-        - NPC say: Well, as you most likely know, we are a non-profit organization, at least here in Kaladim. We need to make our profit elsewhere and that means a little bit of thieving. Presently we need loyal members to [collect the gnome profit].
-          - Reply guard: `($faction <= 4)`
-        - NPC say: Don't take this personally, but I can't quite trust you with such matters. Maybe a few less Butcherblock bandits would prove your worth.
-          - Reply guard: `($faction <= 5)`
-        - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
-          - Reply guard: ``
-        - Condition: `(($text=~/run to the gnome city/i))`
-      - Player: "Collect The Gnome Profit" (link: explicit mention)
-        - NPC say: Take this key. Don't lose it!! You will need to use it on a metal rat called a scrubber. They are all over Ak'Anon. You must find the one that responds to the number, '628'. If it responds, use the key on it. It will hand over a bag with the 'gnome take'. Return it to me. Get moving!!
-          - Reply guard: `($faction <= 4)`
-        - NPC say: Don't take this personally, but I can't quite trust you with such matters. Maybe a few less Butcherblock bandits would prove your worth.
-          - Reply guard: `($faction <= 5)`
-        - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
-          - Reply guard: ``
-        - Condition: `(($text=~/collect the gnome profit/i))`
-        - Gives Scrubber Key (12164).
-      - Player: "Cleaner" (link: explicit mention)
-        - Prompted by player input: "Volunteer To Exterminate The Rats"
-        - NPC say: Darn that blasted clockwork cleaner!! No one in Kaladim even knows what it is! They all think it's some kinda rat in armor!! Rat paladins?!! The name fits. We miners have seen many like it in the gnome city during heists, err.. visits. We have to get rid of this one in Kaladim!! If you smash it and get its scrap metal, I am authorized to give you a mining cap, if you are a member of Miner's Guild 628.
-          - Reply guard: `($faction <= 4)`
-        - NPC say: Don't take this personally, but I can't quite trust you with such matters. Maybe a few less Butcherblock bandits would prove your worth.
-          - Reply guard: `($faction <= 5)`
-        - NPC say: The word around the mines is that you are not to be trusted. You'd best leave before my dagger finds a new home in your back.
-          - Reply guard: ``
-        - Condition: `(($text=~/cleaner/i))`
 31. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
     - Dialogue with akanon/"Clockwork Scrubber":
       - Player: "628" (link: external event mention)
@@ -270,30 +704,6 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
         - Condition: `(e.message:findi("jumjum juice"))`
         - Gives Case of Jumjum Juice (13411).
 45. northkarana/"Xanuusus", hand "Case of Jumjum Juice" (13411). Gives "Carrot" (13977).
-    - Dialogue with northkarana/"Xanuusus":
-      - Player: "Hail"
-        - NPC say: I see you have purified that stone. Can I look at it?
-          - Reply guard: `( e.other:HasItem(62604) )`
-        - NPC say: You make my limbs ache. There is something unnatural about you. What is it?
-          - Reply guard: `( qglobals["ranger_epic15_pre"] == "6" )`
-        - NPC say: Greetings, small one! I am Xanuusus of the Stormreapers. You are welcome to rest beneath my mighty branches.
-          - Reply guard: ``
-        - Condition: `(e.message:findi("hail"))`
-        - Gives Polished Blasted Stone (62603).
-      - Player: "Help"
-        - NPC say: Well, I suppose I can help you a little, small one. There are three principles expressed in my lovely poem.
-        - NPC say: First one must defeat a worthy enemy of the Storm Lord, as you obviously understood from the second stanza. Seek a weapon born by one that would shackle the world if he could. He takes his name from his home, as if to claim it as his own.
-        - NPC say: Secondly one must aid a friend of the Storm Lord. There is one that considers himself small and worthless. Heal his heart so that his bare feet may roam again.
-        - NPC say: Finally one must perform and act of faith in the Storm Lord. When you have accomplished the other tasks, return to me and we shall again speak of this act of faith.
-        - Condition: `( qglobals["ranger_epic15_pre"] == "7" and e.message:findi("help") )`
-      - Player: "Ready" (link: conversation sequence)
-        - NPC say: Stay close or this won't work. It is better that you do this, for trees are not very well structured to withstand lightning.
-          - Reply guard: `( e.other:HasItem(62631) and e.other:HasItem(62633) and e.other:HasItem(62603) )`
-          - Reply guard: `( client:GetItemIDAt(Slot.Face) == 62603 and client:GetItemIDAt(Slot.Primary) == 62633 and client:GetItemIDAt(Slot.Secondary) == 62631 )`
-        - NPC emote: The treant releases a sound from his hollows that sounds much like thunder.
-          - Reply guard: `( e.other:HasItem(62631) and e.other:HasItem(62633) and e.other:HasItem(62603) )`
-          - Reply guard: `( client:GetItemIDAt(Slot.Face) == 62603 and client:GetItemIDAt(Slot.Primary) == 62633 and client:GetItemIDAt(Slot.Secondary) == 62631 )`
-        - Condition: `( qglobals["ranger_epic15_pre"] == "8" and e.message:findi("ready") )`
 46. Buy "Turnip" (13979) from "Cleet Miller Jr" (NPC 12029) in `qey2hh1`. Base price: 25 copper.
 47. Combine in "Mixing Bowl" (17906): "Lettuce" (13976), "Carrot" (13977), "Turnip" (13979). Produces "Vegetables" (13419). Requires Baking, trivial 15. The combine does not fail.
 48. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Vegetables" (13419). Produces "Vegetable Oil" (20386). Requires Brewing, trivial 102.
@@ -695,41 +1105,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 85. Loot "Immortals" (18195) from "Faerie of Dismay" (NPC 91012) in `skyfire`. Drop cache: 35% chance per kill.
 86. erudnext/"Tomekeeper Danl", hand "Immortals" (18195). Gives "Danl's Reference" (1682).
 87. timorous/"Lheao", hand "Danl's Reference" (1682) + "Robe of the Whistling Fists" (12970). Gives "Celestial Fists" (1683).
-    - Dialogue with timorous/"Lheao":
-      - Player: "Hail"
-        - NPC emote: jumps at your voice and begins laughing at his skittishness.
-        - NPC say: Ahh, hello there. Not many people know of this place, so visitors are quite rare. Hehehe. Its a very beautiful place indeed, so.. ummm, dont go telling everyone you know about it. Heheh. Thanks, Friend.
-        - Condition: `($text=~/hail/i)`
-      - Player: "I Have Found The Book Of Immortals" (link: conversation sequence)
-        - NPC emote: looks up at you, eyes wide in astonishment.
-        - NPC say: My god, you found Immortals?! Where did you find it? Nevermind, that is unimportant. I have in my possession a book that explains more of these individuals. Its value is unimaginable as well as the impact it is capable of. As you can see, I grow old. I need an individual to watch over this book and make sure it is protected. Would you be willing to take this [responsibility]?
-        - Condition: `($text=~/i have found the book of immortals/i)`
-      - Player: "Responsibility" (link: explicit mention)
-        - NPC say: Im sorry, $name, but I could only give this book to a true master, such as a member of the Whistling Fists Order. And unless you can give me proof that you are one, in addition to Danls reference, which is very unlikely, there is no way I'll let you take charge of the [Celestial Fists].
-        - Condition: `($text=~/responsibility/i)`
-      - Player: "Celestial Fists" (link: explicit mention)
-        - NPC say: The Celestial Fists is the title of a book written by an unknown author. His writing is sub par but the legend is interesting from a biographical standpoint alone. Its rarity commands top dollar in the scholarly community but the secrets revealed in the book are what truely makes it dangerous. I hope Im able to find someone to watch over it soon.
-        - Condition: `($text=~/celestial fists/i)`
 88. trakanon/"Kaiaren", hand "Celestial Fists" (1683). Gives "Book of Celestial Fists" (1689).
-    - Dialogue with trakanon/"Kaiaren":
-      - Player: "Lheao"
-        - NPC say: Hmmm, never heard of him. Well, it doesn't matter, the book is here now. Curse that idiot for writing it in the first place. Not even sure why I let him stick around. If you ever see that clown monk Aradiel kick him in the shins for me! At any rate, I suppose you'd like to find the Fists and [have a nice chat with them], eh? Their master owes me much. I would reward you well if you were to bring me proof of the master's defeat.
-        - Condition: `(plugin::check_hasitem($client, 1689))`
-        - Condition: `($text=~/lheao/i)`
-      - Player: "Have A Nice Chat With Them" (link: explicit mention)
-        - NPC say: Yes, I suppose you would. All you children looking for fame and glory will eventually learn the poison of ambition. But how will you find them? They are able to meld with their elements seamlessly and they certainly have no interest in fooling with the likes of you. No, you will need to get their attention. Fortunately, I know [how you can do this].
-        - Condition: `(plugin::check_hasitem($client, 1689))`
-        - Condition: `($text=~/have a nice chat with them/i)`
-      - Player: "How Can I Do This" (link: conversation sequence)
-        - NPC say: My guess is that the weakest of the Fists will be the easiest to draw out. He is egotistical and arrogant. How he came to master the Discipline of Fire, I do not know. He will most likely be in another form, one of his element. When you find the one you believe to be the Fist, you must challenge him. If you use his true name, Eejag, in your formal challenge, he will respond. A flame can burn intensely but it cannot last for long. Know this when you battle him.
-        - Condition: `(plugin::check_hasitem($client, 1689))`
-        - Condition: `($text=~/how can i do this/i)`
-      - Player: "Hail"
-        - NPC say: AHHH get it away from me go away .. leave me alone
-        - Condition: `($text=~/hail/i)`
-      - Player: "Celestial Fists" (link: conversation sequence)
-        - NPC say: Eh? What's that? Bah! That was destroyed long ago. Don't waste my time with fairy taAAAAAGGHHH GET IT AWAY!!!! HELP!!! They're all over MEHEHEHEHEEEEEEee!!
-        - Condition: `($text=~/celestial fists/i)`
 89. trakanon/"Kaiaren", hand "Demon Fangs" (1688) + "Book of Celestial Fists" (1689). Gives "Celestial Fists" (10652).
 
 ### "Sugar and Spice Nectar Pie" (48119)
@@ -740,7 +1116,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 
 1. Acquisition of "Initiate's Sash of the Celestial Order" (48127) is documented under "Letter to Stremstin" (48128); obtain another copy if needed.
 
-## `MnkPre`
+### `MnkPre`
 
 Values written: 1, 2, 3.
 
@@ -846,11 +1222,6 @@ Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9.
         - Condition: `(e.message:findi("hail"))`
 
 4. lakerathe/"Vortix", say "Diary". Sets `monk_epic` to `4`.
-    - Dialogue with lakerathe/"Vortix":
-      - Player: "Diary"
-        - NPC say: Kaiaren's Diary? I haven't seen it in some time now. If I were not such a coward, I would have kept it. I have heard rumors of it being torn in half. Some students that wanted to learn the ways of the Celestial Fists were looking for it a while back. One was a pirate that wanted to only learn the Path of the Silent to gain more treasures than he had. The other, wanted to become the most powerful fighter alive. You may want to seek them out and see if they have located pieces of it. I am sorry I could not be of more help. If you do happen to locate the two pieces, bring them back to me and maybe I will be able to aid you further. Now that you know my secret, there is no reason to remain hidden from the world. You will be able to find me resting in the Plane of Tranquility. Be safe, $name .
-        - Condition: `($text=~/diary/i)`
-        - Sets `monk_epic` to `4`.
 
 5. potranquility/"Vortix", hand "1/2 of Kaiaren's Diary" (48109) + "1/2 of Kaiaren's Diary" (48110). Sets `monk_epic` to `5`.
     - Requires `monk_epic` ==4.
@@ -858,53 +1229,6 @@ Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9.
     - Hand in x1: "1/2 of Kaiaren's Diary" (48110).
     - Loot "1/2 of Kaiaren's Diary" (48109) from "Wygrish" in `sirens`.
     - Loot "1/2 of Kaiaren's Diary" (48110) from "Quigli" in `dulak`.
-    - Dialogue with potranquility/"Vortix":
-      - Player: "Hail"
-        - NPC say: Ah, I see you have seen a Disciple. The tokens you now possess are used to represent status among the Order. There used to be a tradesman that would fashion them into sashes for us but I'm afraid he has since passed on. I believe there may be another that has learned his trade. His name is Eryke Stremstin, and you should be able to find him peddling his wares across the land. Take this and give it to him. He should be able to tell you of what you will need to fashion your new sash. Once you have fashioned it please bring it to me.
-          - Reply guard: `($client->GetGlobal("monk_epic") >=5 && (plugin::check_hasitem($client, 48111) || plugin::check_hasitem($client, 48112) || plugin::check_hasitem($client, 48113)
-	 || plugin::check_hasitem($client, 48124) || plugin::check_hasitem($client, 48125) || plugin::check_hasitem($client, 48126)))`
-        - NPC say: It is good to see you $name, but I have no new information to share with you. If you have anything to show me, please do.
-          - Reply guard: ``
-        - Condition: `($text=~/hail/i)`
-        - Gives Letter to Stremstin (48128).
-      - Player: "Searching" (link: external event mention)
-        - Prompted by `event_item`:
-          - NPC say: You have found it. Let me look at it for a minute. Ah yes, it has been a while but it is all coming back to me. Whats this though? It seems like what I was [searching] for is located elsewhere.
-          - Event guard: `($client->GetGlobal("monk_epic") ==4 && plugin::check_handin(\%itemcount, 48109 => 1, 48110 => 1))`
-        - NPC say: Long ago, Kaiaren wrote down all of his teachings in this book. It was in case anything ever happened to him the teachings would not be lost forever. These are those teachings. There are several [techniques] missing though that I had hoped to find in this book. Kaiaren had once told me that there was a way to retrieve someones memories using a similar technique that originally caused his memory loss.
-        - Condition: `($client->GetGlobal("monk_epic") ==5 && $text=~/searching/i)`
-      - Player: "Techniques" (link: explicit mention)
-        - NPC say: The only other place the techniques that we seek could be retained would be within the Celestial Order itself. Yes... the [Celestial Guardians] should be safekeeping the sacred techniques.
-        - Condition: `($client->GetGlobal("monk_epic") ==5 && $text=~/techniques/i)`
-      - Player: "Celestial Guardians" (link: explicit mention)
-        - NPC say: They are the keepers of the disciplines. They are the ones that guard all that is right and balanced in this world. They are the enlightened and their faith is unwavering. Do you wish to [find] them?
-        - Condition: `($client->GetGlobal("monk_epic") ==5 && $text=~/celestial guardians/i)`
-      - Player: "Find" (link: explicit mention)
-        - NPC say: You can find them within their essences. The names you will most likely find them by are the Disciples of [Sun], [Moon], and [Order]. Hopefully you will be able to locate them and help retrieve the techniques we need.
-        - Condition: `($client->GetGlobal("monk_epic") ==5 && $text=~/find/i)`
-      - Player: "Sun" (link: explicit mention)
-        - NPC say: The Disciple of Sun represents all that is pure. There is nothing stronger than the leadership of the sun. The energy that we draw from it powers everything in this world. The plants we use as herbs draw strength for it. The animals we eat grow by it and we use it to guide us. You will find him where his reign is the most apparent. He is strong and proud, so you may need to use ingenuity to draw him out.
-        - Condition: `($client->GetGlobal("monk_epic") ==5 && $text=~/sun/i)`
-      - Player: "Moon" (link: explicit mention)
-        - Prompted by player input: "Find"
-        - NPC say: The Disciple of Moon represents all that is pure. How can two disciples represent the same essence? It is simple. How can you have day without night? You cannot understand right without knowing wrong as well. How can you say you understand true happiness without ever feeling the depths of despair? You can find this Disciple where the soul is the closest to the elements.
-        - Condition: `($client->GetGlobal("monk_epic") ==5 && $text=~/moon/i)`
-      - Player: "Order" (link: explicit mention)
-        - Prompted by player input: "Hail"
-        - NPC say: The Disciple of Order represents what we all try to follow as close as possible as children of the Celestial Order. Order is what we live by. It helps to keep our senses pure and strong. It makes us understand what steps we must take to become enlightened. This Disciple will be found where Order is upheld at all times. Be careful however, if you hesitate in any way you will be found flawed in his eyes. You should prepare to be tested to the limits of your capabilities. This disciple resides upon the highest of councils. He is the only member that resides upon another plane and does the bidding of a group that is the Tribunal.
-        - Condition: `($client->GetGlobal("monk_epic") ==5 && $text=~/order/i)`
-      - Player: "Journey" (link: external event mention)
-        - Prompted by `event_item`:
-          - NPC say: I see you have gained great strength during your journey as you now wear the Sash of the Celestial Order. I am glad you have made it this far. You will need that for the next steps of your [journey].
-          - Event guard: `($client->GetGlobal("monk_epic") ==6 && plugin::check_handin(\%itemcount, 48127 => 1))`
-        - NPC say: The steps that you have taken thus far have been to prepare you for the next step. I must apologize for not telling you sooner but I had to make sure I knew you were worthy. Kaiarens diary did contain the way to unlock his mind again. To do so, you must travel back to the land that you brought the sand from. There you will have to battle the two halves of Kaiarens [being]; his mind and body.
-        - Condition: `($client->GetGlobal("monk_epic") ==7 && $text=~/journey/i)`
-      - Player: "Being" (link: explicit mention)
-        - NPC say: He has entered a [place] where chaos rules and his mind has separated from his body. His consciousness has taken the form of beings of another plane. Only after you have retrieved both essences of his mind and body, will we be able to free him again.
-        - Condition: `($text=~/being/i)`
-      - Player: "Place" (link: explicit mention)
-        - NPC say: This place is not something I know much about. It seems as though discord runs free there. you must be careful while you are there. There are many things we still do not yet fully understand unfolding before our eyes.
-        - Condition: `($text=~/place/i)`
 
 6. bazaar/"Eryke Stremstin", hand "Letter to Stremstin" (48128). Sets `monk_epic` to `6`.
     - Hand in x1: "Letter to Stremstin" (48128).
@@ -945,7 +1269,7 @@ Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9.
     - Loot "Scribed Note" (20435) from "The Keeper" in `bloodfields`.
     - Gives "Fistwraps of Celestial Discipline" (61025).
 
-##### Steps on `monk_epic` that do not change it
+###### Steps on `monk_epic` that do not change it
 
 - `bazaar` eryke stremstin, hand platinum:1000 needs `monk_epic` set.
   - Gives Celestial Thread (48123).
@@ -1014,80 +1338,22 @@ Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9.
     - Loot "Medal of Identity" (48102) from "Mirror Reflection".
     - Alternative: Loot "Medal of Identity" (48102) from "Mirror Reflection" (NPC 111190) in `frozenshadow`; trigger: frozenshadow/"You", on event_proximity_say.
 
-### Steps on `MnkPre` that do not change it
+#### Steps on `MnkPre` that do not change it
 
 - `lakerathe` a fallen student, say hail needs `MnkPre` ==3.
   - Sets `monk_epic` to `1`.
 
-## `monk_epic`
+### `monk_epic`
 
 See `monk_epic` earlier in this file.
 
-## `mnk_epic20`
+### `mnk_epic20`
 
 Values written: 1, 2, 3, 4, 5, 6.
 
 1. oceanoftears/"Kaiaren", say "Menace". Sets `mnk_epic20` to `1`.
     - Requires `mnk_epic20` unset.
     - Requires `monk_epic` ==9.
-    - Dialogue with oceanoftears/"Kaiaren":
-      - Player: "Hail"
-        - NPC say: Hello, , I have been [expecting] you.
-        - Condition: `(qglobals["monk_epic"] == "9")`
-        - Condition: `(e.message:findi("hail"))`
-      - Player: "Expecting" (link: explicit mention)
-        - NPC say: There is still much that needs to be done and I lack the strength still to continue it myself. If you choose to you can first begin by completing a [simple task] for me.
-        - Condition: `(qglobals["monk_epic"] == "9")`
-        - Condition: `(e.message:findi("expecting"))`
-      - Player: "Simple Task" (link: explicit mention)
-        - NPC say: I need you to gather some rare [I need you to gather some rare [delicacies] and bring them back to me. This meal has been passed down the Order for ages. This meal is said to grant strength back to the feeble. It is the only way possible for us to combat this [menace].
-        - Condition: `(qglobals["monk_epic"] == "9")`
-        - Condition: `(e.message:findi("simple task"))`
-      - Player: "Delicacies" (link: explicit mention)
-        - NPC say: I will need to you to gather some [sunless nectar] and some meat from and some meat from an [ancient creature].
-        - Condition: `(qglobals["monk_epic"] == "9")`
-        - Condition: `(e.message:findi("delicacies"))`
-      - Player: "Menace" (link: explicit mention)
-        - Prompted by player input: "Simple Task"
-        - NPC say: What menace? For sure Vortix has mentioned to you his dreams? His dreams provide a rare gift of forsight into what lies ahead. There is a dark threat that looms over the Order's head like a vice. It wants nothing more than to destroy all that know of it's existence.
-        - Condition: `(qglobals["monk_epic"] == "9")`
-        - Condition: `(e.message:findi("menace"))`
-        - Sets `mnk_epic20` to `1`.
-      - Player: "Sunless Nectar" (link: explicit mention)
-        - Prompted by player input: "Delicacies"
-        - NPC say: The sunless nectar comes from the darkest parts of Norrath. Once you find it you must combine it with some spices and a pie tin to make a Sugar and Spice Nectar Pie. Please return soon after you have both items.
-        - Condition: `(qglobals["monk_epic"] == "9")`
-        - Condition: `(e.message:findi("sunless nectar"))`
-      - Player: "Ancient Creature" (link: explicit mention)
-        - Prompted by player input: "Delicacies"
-        - NPC say: The creature you seek has been living for as long as any can remember. It can be found surrounded by water. You will need to take it's meat and combine it with grilling sauce, a loaf of bread, and some cheese to make a Grilled Aged Meat and Cheese Sandwich. Please return soon after you have both items.
-        - Condition: `(qglobals["monk_epic"] == "9")`
-        - Condition: `(e.message:findi("ancient creature"))`
-      - Player: "Choose To Continue" (link: external event mention)
-        - Prompted by `event_trade`:
-          - NPC say: Ah, thank you. These will help me greatly but I am afraid I will still lack the strength needed to combat this evil. You will have to go in my place until at least I have had a little longer to rest and train. If you [choose to continue], there are two more Disciples that you must face in order to reach the point of transcendence.
-          - Event guard: `(qglobals["mnk_epic20"] ~= nil and qglobals["mnk_epic20"] >= "1")`
-          - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 48119, item2 = 48120}))`
-        - NPC say: As I thought you would; you will find them as you did the others, in their natural essence. You will find the Disciple of Focus in the hills and mountains training diligently. The Disciple of Tranquility you shall find in a clearing where many do not travel without knowing valor and courage. It is there that you will be able to find your calmness. Please return to me when you have gained their respect as well as their symbols. I will also require your sash.
-        - Condition: `(qglobals["monk_epic"] == "9")`
-        - Condition: `(qglobals["mnk_epic20"] ~= nil)`
-        - Condition: `(e.message:findi("choose to continue") and qglobals["mnk_epic20"] >= "2")`
-        - Gives Initiate's Sash of the Celestial Order (48127).
-        - Sets `mnk_epic20` to `3`.
-      - Player: "Final Task" (link: external event mention)
-        - Prompted by `event_trade`:
-          - NPC say: I see you are ready to assume the [final task] before facing the Dark Foe that will forever change our way of life here.
-          - Event guard: `(qglobals["mnk_epic20"] ~= nil and qglobals["mnk_epic20"] >= "1")`
-          - Event guard: `(qglobals["mnk_epic20"] >= "3" and item_lib.check_turn_in(e.trade, {item1 = 48129, item2 = 48130, item3 = 48127}))`
-        - NPC say: Yes, you must combat an enlightened one. It is our way that balance must be kept. Without good, evil cannot exist. We are but a small part in the cycle of true immortality. If you are [ready to begin] I will battle you. Please do not worry, if you defeat me, my being will continue to exist within you as that is the way of our Order. If you fall however, it was meant to be.
-        - Condition: `(qglobals["monk_epic"] == "9")`
-        - Condition: `(qglobals["mnk_epic20"] ~= nil)`
-        - Condition: `(e.message:findi("final task") and qglobals["mnk_epic20"] >= "4")`
-      - Player: "Ready To Begin" (link: explicit mention)
-        - NPC say: Stand fast and ready to prove your worth now !
-        - Condition: `(qglobals["monk_epic"] == "9")`
-        - Condition: `(qglobals["mnk_epic20"] ~= nil)`
-        - Condition: `(e.message:findi("ready to begin") and qglobals["mnk_epic20"] >= "4")`
 
     - Subquest `monk_epic` documented earlier.
 2. oceanoftears/"Kaiaren", hand "Sugar and Spice Nectar Pie" (48119) + "Aged Meat and Cheese Sandwich" (48120). Sets `mnk_epic20` to `2`.
@@ -1194,7 +1460,7 @@ Alternative or repeat transition to `mnk_epic20` = `3` (not an additional requir
     - Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
     - Gives "Globe of Discordant Energy" (47100).
 
-### Steps on `mnk_epic20` that do not change it
+#### Steps on `mnk_epic20` that do not change it
 
 - `oceanoftears` kaiaren, say choose to continue needs `mnk_epic20` ==2.
   - Gives Initiate's Sash of the Celestial Order (48127).
@@ -1205,7 +1471,7 @@ Alternative or repeat transition to `mnk_epic20` = `3` (not an additional requir
   - Turn in Fistwraps of Celestial Discipline (61025).
   - Gives Transcended Fistwraps of Immortality (67742).
 
-## Other flags touched along the way
+### Other flags touched along the way
 
 - `monk_epic_bloodfield` set to 1 at bloodfields/player.
 - `monk_epic_harbinger` set to 1 at harbingers/player.

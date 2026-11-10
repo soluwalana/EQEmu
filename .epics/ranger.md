@@ -1,8 +1,242 @@
 # Ranger
 
-Steps taken from the quest graph only. **Broken** means the graph has no edge for that value or that item.
+Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags are dependencies, not the definition of an epic. **Broken** indicates missing graph provenance.
 
-Flags with writes: `ranger_epic`, `ranger_epic15_pre`.
+## Epic 1.0
+
+### "Swiftwind" (20487)
+
+1. burningwood/"Telin Darkforest", say "Action". Gives "Worn Note" (20472).
+2. gfaydark/"Faelin Bloodbriar", hand "Worn Note" (20472). Gives "Faelin's Ring" (20446).
+3. kithicor/"Giz X-Tin", hand "Faelin's Ring" (20446). Gives "Dark Metal Coin" (20447).
+4. burningwood/"Telin Darkforest", hand "Dark Metal Coin" (20447). Gives "Worn Dark Metal Coin" (20448).
+5. eastkarana/"Althele", hand "Worn Dark Metal Coin" (20448). Gives "Braided Grass Amulet" (20450).
+    - Dialogue with eastkarana/"Althele":
+      - Player: "Hail"
+        - NPC say: Hello, friend. Beautiful is what I would call such a day normally, but lately? I sense that something is [out of balance].
+          - Reply guard: `($class eq "Ranger" && (plugin::check_hasitem($client, 20488) || plugin::check_hasitem($client, 62600)))`
+        - Condition: `($text=~/hail/i)`
+        - Sets `ranger_epic` to `1`.
+      - Player: "Your Eyes" (link: conversation sequence)
+        - NPC say: Yes. I cannot see any longer, my sight long since lost in the march of years. By the blessings of Tunare and Karana, though, I still make myself useful.
+        - Condition: `($text=~/your eyes/i)`
+      - Player: "Out Of Balance" (link: explicit mention)
+        - Prompted by player input: "Hail"
+        - NPC say: I don't know for certain what is wrong. It feels like the start of a cold, a sort of tickling at the back of Norrath's throat, if I may make such a poor metaphor. In much the same way that I can sense that you have wielded the power of nature, probably in the form of the weapons known as Swiftwind and Earthcaller, I can sense a power of illness creeping upon the land. Please, if you come across anything suspicious bring it to me. I am worried, this does not feel like a natural sickness to me. Go with the blessing of the Mother and the speed of the Storm, my child.
+          - Reply guard: `($class eq "Ranger" && $client->GetGlobal("ranger_epic") ==1)`
+        - NPC say: I am certain that you would sense it too, had you been so blessed as to be without sight. My sense of the life of Norrath is greatly heightened without the hindrance of vision. As I can sense that you have at your call the power of the lands, perhaps in the form of the Nature Walkers Scimitar. I can feel an unnatural illness creeping about the edges of Norrath. Please, if you come across anything suspicious bring it to me. I am worried about this cold sickness that I can almost taste. Go with the blessing of the Mother and the speed of the Storm, my child.
+          - Reply guard: `($class eq "Druid" && plugin::check_hasitem($client, 20490) or plugin::check_hasitem($client, 62809))`
+        - NPC say: I sense something foreboding, young one, but you should think nothing of it. The sons and daughters of nature will be able to deal with this problem.
+          - Reply guard: ``
+        - Condition: `($text=~/out of balance/i)`
+        - Sets `druid_epic` to `1`.
+6. eastkarana/"Sionae", hand "Braided Grass Amulet" (20450). Gives "Frayed Braided Grass Amulet" (20451).
+7. eastkarana/"Teloa", hand "Frayed Braided Grass Amulet" (20451). Triggers `eastkarana/althele#signal:1`.
+8. Starts timer `attack`.
+9. Spawns "Corruptor" (15153) after `eastkarana/althele#timer:attack`.
+10. Loot "Fleshbound Tome" (20452) from "Corruptor".
+11. eastkarana/"Althele", hand "Fleshbound Tome" (20452). Gives "Earth Stained Note" (18959).
+12. misty/"Ella Foodcrafter", hand "Earth Stained Note" (18959). Sets `shiny_tin_bowl` to `1`.
+13. misty/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
+14. Forage "Ripened Heartfruit" (20464) in `gfaydark`.
+15. Forage "Sweetened Mudroot" (20465) in `misty`.
+16. Forage "Sweetened Mudroot" (20465) in `mistythicket`.
+17. Forage "Speckled Molded Mushroom" (20466) in `innothule`.
+18. Forage "Chilled Tundra Root" (20467) in `everfrost`.
+19. Combine in "Shiny Tin Bowl" (17860): "Ripened Heartfruit" (20464), "Sweetened Mudroot" (20465), "Speckled Molded Mushroom" (20466), "Chilled Tundra Root" (20467). Produces "Hardened Mixture" (20473). Requires Pottery. The combine does not fail.
+20. timorous/"Alrik Farsight", say "Take The Artifact". Gives "Crushed Pot" (20457).
+21. felwitheb/"Farios Elianos", hand "Crushed Pot" (20457). Gives "Grocery List" (20458).
+22. felwithea/"Merchant Nora", hand "Grocery List" (20458). Gives "Bag of Provisions" (20459).
+23. felwitheb/"Farios Elianos", hand "Bag of Provisions" (20459). Gives "Receipt" (20474).
+24. timorous/"Alrik Farsight", hand "Receipt" (20474). Gives "Ancient Pattern" (18960).
+25. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
+26. Loot "Jade Reaver" (5664) from "A Black Reaver".
+27. Alternative: Loot "Jade Reaver" (5664) from "A Black Reaver" (NPC 90005) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
+28. Alternative: Loot "Jade Reaver" (5664) from "A Black Reaver" (NPC 90192) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
+29. kaladimb/"Kinlo Strongarm", hand "Jade Reaver" (5664). Gives "Enchanted Clay" (20455).
+30. Forage "Rose of Firiona" (12774) in `firiona`.
+31. qrg/"Merdan Fleetfoot", hand "Rose of Firiona" (12774). Gives "Wood Painting" (20475).
+32. frontiermtns/"A Human Skeleton", hand "Wood Painting" (20475). Gives "Silver Chained Locket" (20476).
+33. qrg/"Niera Farbreeze", hand "Silver Chained Locket" (20476). Gives "Platinum Speckled Powder" (20456).
+34. Combine in Pottery Wheel (21): "Ancient Pattern" (18960), "Enchanted Clay" (20455), "Platinum Speckled Powder" (20456). Produces "Runecrested Bowl" (20460). Requires Pottery. The combine does not fail.
+35. misty/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
+36. Buy "Spell: Resurrection" (15392) from "Henlom Visrek" (NPC 2054) in `qeynos2`. Base price: 18,936 copper.
+37. Hand "Spell: Resurrection" (15392) to karnor/"Spirit Of Venril Sathir". Spawns "Venril Sathir" (102126). Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
+38. firiona/"Foloal Stormforest", hand "Pulsing Green Stone" (20461) + "Softly Glowing Stone" (20462). Gives "Warmly Glowing Stone" (20468).
+39. burningwood/"Telin Darkforest", hand "Warmly Glowing Stone" (20468). Gives "Ancient Longsword" (20477).
+40. kaladimb/"Usbak The Old", hand "Ancient Longsword" (20477). Gives "Refined Ancient Sword" (20481).
+41. burningwood/"Faelin Bloodbriar", hand "Refined Ancient Sword" (20481). Gives "Swiftwind" (20487).
+
+### "Earthcaller" (20488)
+
+1. burningwood/"Telin Darkforest", say "Action". Gives "Worn Note" (20472).
+2. gfaydark/"Faelin Bloodbriar", hand "Worn Note" (20472). Gives "Faelin's Ring" (20446).
+3. kithicor/"Giz X-Tin", hand "Faelin's Ring" (20446). Gives "Dark Metal Coin" (20447).
+4. burningwood/"Telin Darkforest", hand "Dark Metal Coin" (20447). Gives "Worn Dark Metal Coin" (20448).
+5. eastkarana/"Althele", hand "Worn Dark Metal Coin" (20448). Gives "Braided Grass Amulet" (20450).
+6. eastkarana/"Sionae", hand "Braided Grass Amulet" (20450). Gives "Frayed Braided Grass Amulet" (20451).
+7. eastkarana/"Teloa", hand "Frayed Braided Grass Amulet" (20451). Triggers `eastkarana/althele#signal:1`.
+8. Starts timer `attack`.
+9. Spawns "Corruptor" (15153) after `eastkarana/althele#timer:attack`.
+10. Loot "Fleshbound Tome" (20452) from "Corruptor".
+11. eastkarana/"Althele", hand "Fleshbound Tome" (20452). Gives "Earth Stained Note" (18959).
+12. misty/"Ella Foodcrafter", hand "Earth Stained Note" (18959). Sets `shiny_tin_bowl` to `1`.
+13. misty/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
+14. Hand "Shiny Tin Bowl" (17860) to hole/"Jaeil The Wretched". Spawns "Jaeil the Insane" (39154). Loot "Soulbound Hammer" (20478) from "Jaeil the Insane".
+15. erudnint/"Mairee Silentone", hand "Soulbound Hammer" (20478). Gives "Dwarven Smiths Hammer" (20479).
+16. Kill airplane/"An Essence Carrier". Spawns "An Essence Tamer" (71071).
+17. Loot "Swirling Sphere of Color" (20494) from "An Essence Tamer".
+18. erudnint/"Mairee Silentone", hand "Dwarven Smiths Hammer" (20479) + "Swirling Sphere of Color" (20494). Gives "Hammer of the Ancients" (20485).
+19. kaladimb/"Kinlo Strongarm", hand "Hammer of the Ancients" (20485). Gives "Small bit of Mithril Ore" (20482).
+20. kaladimb/"Kinlo Strongarm", hand "Small bit of Mithril Ore" (20482). Gives "Refined Mithril Blade" (20483).
+21. Encounter starts when NPC 186201 spawns in `hateplaneb`.
+22. Starts timer `popinny`.
+23. Kill NPC 186158.
+24. Starts timer `text`.
+25. Starts timer `text2`.
+26. Starts timer `spawninny`.
+27. Spawns "Innoruuk" (186107) after `hateplaneb/inny#timer:spawninny`.
+28. Loot "Shattered Emerald of Corruption" (20484) from "Innoruuk".
+29. Alternative: Loot "Shattered Emerald of Corruption" (20484) from "Maestro of Rancor" (NPC 186111) in `hateplaneb`; trigger: hateplaneb/"Maestro", on timer popmaestro.
+30. northkarana/"Xanuusus", hand "Refined Mithril Blade" (20483) + "Shattered Emerald of Corruption" (20484). Gives "Earthcaller" (20488).
+    - Dialogue with northkarana/"Xanuusus":
+      - Player: "Hail"
+        - NPC say: I see you have purified that stone. Can I look at it?
+          - Reply guard: `( e.other:HasItem(62604) )`
+        - NPC say: You make my limbs ache. There is something unnatural about you. What is it?
+          - Reply guard: `( qglobals["ranger_epic15_pre"] == "6" )`
+        - NPC say: Greetings, small one! I am Xanuusus of the Stormreapers. You are welcome to rest beneath my mighty branches.
+          - Reply guard: ``
+        - Condition: `(e.message:findi("hail"))`
+        - Gives Polished Blasted Stone (62603).
+      - Player: "Help"
+        - NPC say: Well, I suppose I can help you a little, small one. There are three principles expressed in my lovely poem.
+        - NPC say: First one must defeat a worthy enemy of the Storm Lord, as you obviously understood from the second stanza. Seek a weapon born by one that would shackle the world if he could. He takes his name from his home, as if to claim it as his own.
+        - NPC say: Secondly one must aid a friend of the Storm Lord. There is one that considers himself small and worthless. Heal his heart so that his bare feet may roam again.
+        - NPC say: Finally one must perform and act of faith in the Storm Lord. When you have accomplished the other tasks, return to me and we shall again speak of this act of faith.
+        - Condition: `( qglobals["ranger_epic15_pre"] == "7" and e.message:findi("help") )`
+      - Player: "Ready" (link: conversation sequence)
+        - NPC say: Stay close or this won't work. It is better that you do this, for trees are not very well structured to withstand lightning.
+          - Reply guard: `( e.other:HasItem(62631) and e.other:HasItem(62633) and e.other:HasItem(62603) )`
+          - Reply guard: `( client:GetItemIDAt(Slot.Face) == 62603 and client:GetItemIDAt(Slot.Primary) == 62633 and client:GetItemIDAt(Slot.Secondary) == 62631 )`
+        - NPC emote: The treant releases a sound from his hollows that sounds much like thunder.
+          - Reply guard: `( e.other:HasItem(62631) and e.other:HasItem(62633) and e.other:HasItem(62603) )`
+          - Reply guard: `( client:GetItemIDAt(Slot.Face) == 62603 and client:GetItemIDAt(Slot.Primary) == 62633 and client:GetItemIDAt(Slot.Secondary) == 62631 )`
+        - Condition: `( qglobals["ranger_epic15_pre"] == "8" and e.message:findi("ready") )`
+
+## Epic 1.5
+
+### "Heartwood Blade" (62627)
+
+1. Buy "Planar Fletching Kit" (17762) from "Ellis Cloudchaser" (NPC 202076) in `poknowledge`. Base price: 1,000 copper.
+2. global/"Global Player", combine recipe 13412. Sets `ranger_epic` to `3`.
+3. jaggedpine/"Red Dogwood Treant", say "Hail". Requires `ranger_epic` ==3. Gives "Red Dogwood Heartwood" (62623).
+4. dranik/"Ranger 1 5", hand "Red Dogwood Heartwood" (62623). Requires `ranger_dranik_chest` unset. Gives "Wind-blessed Heartwood" (62626).
+5. jaggedpine/"Red Dogwood Treant", say "Hail". Requires `ranger_epic` ==3. Gives "Spring Dogwood Seed" (62624).
+6. qrg/"Corun Finisc", hand "Spring Dogwood Seed" (62624). Gives "Block of Purest Silver" (62625).
+7. Combine in "Planar Fletching Kit" (17762): "Wind-blessed Heartwood" (62626), "Block of Purest Silver" (62625). Produces "Heartwood Blade" (62627). Requires Fletching. The combine does not fail.
+
+## Epic 2.0
+
+### "Aurora, the Heartwood Blade" (62649)
+
+1. global/"Global Player", combine recipe 19914. Sets `ranger_epic` to `8`.
+2. Loot "Crooked Cage" (32042) from "a Broken Skull bruiser" in `torgiran`.
+3. burningwood/"Telin Darkforest", say "Action". Gives "Worn Note" (20472).
+4. gfaydark/"Faelin Bloodbriar", hand "Worn Note" (20472). Gives "Faelin's Ring" (20446).
+5. kithicor/"Giz X-Tin", hand "Faelin's Ring" (20446). Gives "Dark Metal Coin" (20447).
+6. burningwood/"Telin Darkforest", hand "Dark Metal Coin" (20447). Gives "Worn Dark Metal Coin" (20448).
+7. eastkarana/"Althele", hand "Worn Dark Metal Coin" (20448). Gives "Braided Grass Amulet" (20450).
+8. eastkarana/"Sionae", hand "Braided Grass Amulet" (20450). Gives "Frayed Braided Grass Amulet" (20451).
+9. eastkarana/"Teloa", hand "Frayed Braided Grass Amulet" (20451). Triggers `eastkarana/althele#signal:1`.
+10. Starts timer `attack`.
+11. Spawns "Corruptor" (15153) after `eastkarana/althele#timer:attack`.
+12. Loot "Fleshbound Tome" (20452) from "Corruptor".
+13. eastkarana/"Althele", hand "Fleshbound Tome" (20452). Gives "Earth Stained Note" (18959).
+14. misty/"Ella Foodcrafter", hand "Earth Stained Note" (18959). Sets `shiny_tin_bowl` to `1`.
+15. misty/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
+16. Hand "Shiny Tin Bowl" (17860) to hole/"Jaeil The Wretched". Spawns "Jaeil the Insane" (39154). Loot "Soulbound Hammer" (20478) from "Jaeil the Insane".
+17. erudnint/"Mairee Silentone", hand "Soulbound Hammer" (20478). Gives "Dwarven Smiths Hammer" (20479).
+18. Kill airplane/"An Essence Carrier". Spawns "An Essence Tamer" (71071).
+19. Loot "Swirling Sphere of Color" (20494) from "An Essence Tamer".
+20. erudnint/"Mairee Silentone", hand "Dwarven Smiths Hammer" (20479) + "Swirling Sphere of Color" (20494). Gives "Hammer of the Ancients" (20485).
+21. kaladimb/"Kinlo Strongarm", hand "Hammer of the Ancients" (20485). Gives "Small bit of Mithril Ore" (20482).
+22. kaladimb/"Kinlo Strongarm", hand "Small bit of Mithril Ore" (20482). Gives "Refined Mithril Blade" (20483).
+23. Encounter starts when NPC 186201 spawns in `hateplaneb`.
+24. Starts timer `popinny`.
+25. Kill NPC 186158.
+26. Starts timer `text`.
+27. Starts timer `text2`.
+28. Starts timer `spawninny`.
+29. Spawns "Innoruuk" (186107) after `hateplaneb/inny#timer:spawninny`.
+30. Loot "Shattered Emerald of Corruption" (20484) from "Innoruuk".
+31. Alternative: Loot "Shattered Emerald of Corruption" (20484) from "Maestro of Rancor" (NPC 186111) in `hateplaneb`; trigger: hateplaneb/"Maestro", on timer popmaestro.
+32. northkarana/"Xanuusus", hand "Refined Mithril Blade" (20483) + "Shattered Emerald of Corruption" (20484). Gives "Earthcaller" (20488).
+33. Forage "Ripened Heartfruit" (20464) in `gfaydark`.
+34. Forage "Sweetened Mudroot" (20465) in `misty`.
+35. Forage "Sweetened Mudroot" (20465) in `mistythicket`.
+36. Forage "Speckled Molded Mushroom" (20466) in `innothule`.
+37. Forage "Chilled Tundra Root" (20467) in `everfrost`.
+38. Combine in "Shiny Tin Bowl" (17860): "Ripened Heartfruit" (20464), "Sweetened Mudroot" (20465), "Speckled Molded Mushroom" (20466), "Chilled Tundra Root" (20467). Produces "Hardened Mixture" (20473). Requires Pottery. The combine does not fail.
+39. timorous/"Alrik Farsight", say "Take The Artifact". Gives "Crushed Pot" (20457).
+40. felwitheb/"Farios Elianos", hand "Crushed Pot" (20457). Gives "Grocery List" (20458).
+41. felwithea/"Merchant Nora", hand "Grocery List" (20458). Gives "Bag of Provisions" (20459).
+42. felwitheb/"Farios Elianos", hand "Bag of Provisions" (20459). Gives "Receipt" (20474).
+43. timorous/"Alrik Farsight", hand "Receipt" (20474). Gives "Ancient Pattern" (18960).
+44. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
+45. Loot "Jade Reaver" (5664) from "A Black Reaver".
+46. Alternative: Loot "Jade Reaver" (5664) from "A Black Reaver" (NPC 90005) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
+47. Alternative: Loot "Jade Reaver" (5664) from "A Black Reaver" (NPC 90192) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
+48. kaladimb/"Kinlo Strongarm", hand "Jade Reaver" (5664). Gives "Enchanted Clay" (20455).
+49. Forage "Rose of Firiona" (12774) in `firiona`.
+50. qrg/"Merdan Fleetfoot", hand "Rose of Firiona" (12774). Gives "Wood Painting" (20475).
+51. frontiermtns/"A Human Skeleton", hand "Wood Painting" (20475). Gives "Silver Chained Locket" (20476).
+52. qrg/"Niera Farbreeze", hand "Silver Chained Locket" (20476). Gives "Platinum Speckled Powder" (20456).
+53. Combine in Pottery Wheel (21): "Ancient Pattern" (18960), "Enchanted Clay" (20455), "Platinum Speckled Powder" (20456). Produces "Runecrested Bowl" (20460). Requires Pottery. The combine does not fail.
+54. misty/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
+55. Buy "Spell: Resurrection" (15392) from "Henlom Visrek" (NPC 2054) in `qeynos2`. Base price: 18,936 copper.
+56. Hand "Spell: Resurrection" (15392) to karnor/"Spirit Of Venril Sathir". Spawns "Venril Sathir" (102126). Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
+57. firiona/"Foloal Stormforest", hand "Pulsing Green Stone" (20461) + "Softly Glowing Stone" (20462). Gives "Warmly Glowing Stone" (20468).
+58. burningwood/"Telin Darkforest", hand "Warmly Glowing Stone" (20468). Gives "Ancient Longsword" (20477).
+59. kaladimb/"Usbak The Old", hand "Ancient Longsword" (20477). Gives "Refined Ancient Sword" (20481).
+60. burningwood/"Faelin Bloodbriar", hand "Refined Ancient Sword" (20481). Gives "Swiftwind" (20487).
+61. Loot "Living Fragment of Fire" (28294) from "A Jopal Mystic" (NPC 217026) in `pofire`. Drop cache: 5.04% chance per kill.
+62. Loot "Living Fragment of Water" (28293) from "A Triloun Diviner" in `powater`.
+63. Loot "Living Fragment of Water" (28293) from "A Triloun Keeper" in `powater`.
+64. Loot "Living Fragment of Water" (28293) from "A Triloun Water Guardian" in `powater`.
+65. global/"Global Player", combine recipe 13413. Sets `ranger_epic` to `5`.
+66. nedaria/"A Wayfarers Brotherhood Officer", say "Hail". Sets `ranger_epic` to `6`.
+67. causeway/"Siflu", say "Adventurers". Requires `ranger_epic` ==6. Gives "Heated Loadstone" (62628).
+    - Dialogue with causeway/"Siflu":
+      - Player: "Adventurers"
+        - NPC say: There have been plenty of those, that's for sure. If you mean recently, then, I suppose I know the group you're talking about. They were hunting us, just as I suspect you are. I was sent to kill anyone that might be on our trail. They gave me a loadstone that I could use to find them again. Here, you take it; I'm getting out of here while I still can.
+        - Condition: `(e.message:findi("adventurers") and qglobals["ranger_epic"] == "6")`
+        - Gives Heated Loadstone (62628).
+68. Spawns "A Mangled Muramite Captain" (300069) in `wallofslaughter` on enter.
+69. Loot "Spirit Manacles" (72340) from "A Mangled Muramite Captain".
+70. Combine in "Crooked Cage" (32042): "Earthcaller" (20488), "Swiftwind" (20487), "Living Fragment of Fire" (28294), "Living Fragment of Water" (28293), "Heated Loadstone" (62628), "Spirit Manacles" (72340). Hands back "Earthcaller" (20488), "Swiftwind" (20487). Produces "Spirit Cage" (62656). The combine does not fail.
+71. Spawns "Craftmaster Tieranu" (334087) in `riftseekers` on enter.
+72. Loot "Ring of Warmth" (11427) from "Craftmaster Tieranu".
+73. Spawns "Herrian Warfrost" (300057) in `wallofslaughter` on enter.
+74. Loot "Hoarfrost Wand" (76999) from "Herrian Warfrost".
+75. Combine in "Spirit Cage" (62656): "Ring of Warmth" (11427), "Hoarfrost Wand" (76999). Produces "Elemental Ice Spirit Cage" (62647). The combine does not fail.
+76. Say "Check Lorb" to anguish/"Zone Status".
+77. Spawns "Orb of Discordant Energy" (317087).
+78. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+79. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+80. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+81. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+82. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+83. Buy "Planar Fletching Kit" (17762) from "Ellis Cloudchaser" (NPC 202076) in `poknowledge`. Base price: 1,000 copper.
+84. global/"Global Player", combine recipe 13412. Sets `ranger_epic` to `3`.
+85. jaggedpine/"Red Dogwood Treant", say "Hail". Requires `ranger_epic` ==3. Gives "Red Dogwood Heartwood" (62623).
+86. dranik/"Ranger 1 5", hand "Red Dogwood Heartwood" (62623). Requires `ranger_dranik_chest` unset. Gives "Wind-blessed Heartwood" (62626).
+87. jaggedpine/"Red Dogwood Treant", say "Hail". Requires `ranger_epic` ==3. Gives "Spring Dogwood Seed" (62624).
+88. qrg/"Corun Finisc", hand "Spring Dogwood Seed" (62624). Gives "Block of Purest Silver" (62625).
+89. Combine in "Planar Fletching Kit" (17762): "Wind-blessed Heartwood" (62626), "Block of Purest Silver" (62625). Produces "Heartwood Blade" (62627). Requires Fletching. The combine does not fail.
+90. anguish/"Oshimai Spirit Of The High Air", hand "Globe of Discordant Energy" (47100) + "Heartwood Blade" (62627) + "Elemental Ice Spirit Cage" (62647). Requires `ranger_epic` ==8. Gives "Aurora, the Heartwood Blade" (62649).
+
+## Quest-state progression
 
 ## 0. Prerequisites
 
@@ -468,11 +702,6 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 1. global/"Global Player", combine recipe 13413. Sets `ranger_epic` to `5`.
 2. nedaria/"A Wayfarers Brotherhood Officer", say "Hail". Sets `ranger_epic` to `6`.
 3. causeway/"Siflu", say "Adventurers". Requires `ranger_epic` ==6. Gives "Heated Loadstone" (62628).
-    - Dialogue with causeway/"Siflu":
-      - Player: "Adventurers"
-        - NPC say: There have been plenty of those, that's for sure. If you mean recently, then, I suppose I know the group you're talking about. They were hunting us, just as I suspect you are. I was sent to kill anyone that might be on our trail. They gave me a loadstone that I could use to find them again. Here, you take it; I'm getting out of here while I still can.
-        - Condition: `(e.message:findi("adventurers") and qglobals["ranger_epic"] == "6")`
-        - Gives Heated Loadstone (62628).
 
 ### "Elemental Ice Spirit Cage" (62647)
 
@@ -528,31 +757,12 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 
 1. Acquisition of "Red Dogwood Seed" (62844) is documented under "Senvial's Blessing" (62621); obtain another copy if needed.
 
-## `ranger_epic`
+### `ranger_epic`
 
 Values written: 1, 2, 3, 5, 6, 7.
 
 1. eastkarana/"Althele", say "Hail". Sets `ranger_epic` to `1`.
     - Requires `ranger_epic` unset.
-    - Dialogue with eastkarana/"Althele":
-      - Player: "Hail"
-        - NPC say: Hello, friend. Beautiful is what I would call such a day normally, but lately? I sense that something is [out of balance].
-          - Reply guard: `($class eq "Ranger" && (plugin::check_hasitem($client, 20488) || plugin::check_hasitem($client, 62600)))`
-        - Condition: `($text=~/hail/i)`
-        - Sets `ranger_epic` to `1`.
-      - Player: "Your Eyes" (link: conversation sequence)
-        - NPC say: Yes. I cannot see any longer, my sight long since lost in the march of years. By the blessings of Tunare and Karana, though, I still make myself useful.
-        - Condition: `($text=~/your eyes/i)`
-      - Player: "Out Of Balance" (link: explicit mention)
-        - Prompted by player input: "Hail"
-        - NPC say: I don't know for certain what is wrong. It feels like the start of a cold, a sort of tickling at the back of Norrath's throat, if I may make such a poor metaphor. In much the same way that I can sense that you have wielded the power of nature, probably in the form of the weapons known as Swiftwind and Earthcaller, I can sense a power of illness creeping upon the land. Please, if you come across anything suspicious bring it to me. I am worried, this does not feel like a natural sickness to me. Go with the blessing of the Mother and the speed of the Storm, my child.
-          - Reply guard: `($class eq "Ranger" && $client->GetGlobal("ranger_epic") ==1)`
-        - NPC say: I am certain that you would sense it too, had you been so blessed as to be without sight. My sense of the life of Norrath is greatly heightened without the hindrance of vision. As I can sense that you have at your call the power of the lands, perhaps in the form of the Nature Walkers Scimitar. I can feel an unnatural illness creeping about the edges of Norrath. Please, if you come across anything suspicious bring it to me. I am worried about this cold sickness that I can almost taste. Go with the blessing of the Mother and the speed of the Storm, my child.
-          - Reply guard: `($class eq "Druid" && plugin::check_hasitem($client, 20490) or plugin::check_hasitem($client, 62809))`
-        - NPC say: I sense something foreboding, young one, but you should think nothing of it. The sons and daughters of nature will be able to deal with this problem.
-          - Reply guard: ``
-        - Condition: `($text=~/out of balance/i)`
-        - Sets `druid_epic` to `1`.
 
 2. freeportwest/"Shana Liskia", hand "Corun's Notes" (62617). Sets `ranger_epic` to `2`.
     - Hand in x1: "Corun's Notes" (62617).
@@ -669,7 +879,7 @@ Values written: 1, 2, 3, 5, 6, 7.
     - Spawns "A Mangled Muramite Captain" (300069) in `wallofslaughter` on enter.
     - Loot "Traveler's Journal" (62629) from "A Mangled Muramite Captain".
 
-### Steps on `ranger_epic` that do not change it
+#### Steps on `ranger_epic` that do not change it
 
 - `bloodfields` marshall trap, on enter needs `ranger_epic` ==2.
   - Sets `ranger_epic_bloodfield` to `1`.
@@ -822,7 +1032,7 @@ Values written: 1, 2, 3, 5, 6, 7.
   - Loots Part of Toharon's Memoir Pg. 15 (65377).
   - Loots Neuralgic Wyvern Blood (72605).
 
-## `ranger_epic15_pre`
+### `ranger_epic15_pre`
 
 Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11.
 
@@ -896,30 +1106,6 @@ Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11.
     - Prerequisite: "Polished Blasted Stone" (62603). See section 0.
     - Gives "Polished Blasted Stone" (62603).
     - Gives "Poem of the Storms" (62632).
-    - Dialogue with northkarana/"Xanuusus":
-      - Player: "Hail"
-        - NPC say: I see you have purified that stone. Can I look at it?
-          - Reply guard: `( e.other:HasItem(62604) )`
-        - NPC say: You make my limbs ache. There is something unnatural about you. What is it?
-          - Reply guard: `( qglobals["ranger_epic15_pre"] == "6" )`
-        - NPC say: Greetings, small one! I am Xanuusus of the Stormreapers. You are welcome to rest beneath my mighty branches.
-          - Reply guard: ``
-        - Condition: `(e.message:findi("hail"))`
-        - Gives Polished Blasted Stone (62603).
-      - Player: "Help"
-        - NPC say: Well, I suppose I can help you a little, small one. There are three principles expressed in my lovely poem.
-        - NPC say: First one must defeat a worthy enemy of the Storm Lord, as you obviously understood from the second stanza. Seek a weapon born by one that would shackle the world if he could. He takes his name from his home, as if to claim it as his own.
-        - NPC say: Secondly one must aid a friend of the Storm Lord. There is one that considers himself small and worthless. Heal his heart so that his bare feet may roam again.
-        - NPC say: Finally one must perform and act of faith in the Storm Lord. When you have accomplished the other tasks, return to me and we shall again speak of this act of faith.
-        - Condition: `( qglobals["ranger_epic15_pre"] == "7" and e.message:findi("help") )`
-      - Player: "Ready" (link: conversation sequence)
-        - NPC say: Stay close or this won't work. It is better that you do this, for trees are not very well structured to withstand lightning.
-          - Reply guard: `( e.other:HasItem(62631) and e.other:HasItem(62633) and e.other:HasItem(62603) )`
-          - Reply guard: `( client:GetItemIDAt(Slot.Face) == 62603 and client:GetItemIDAt(Slot.Primary) == 62633 and client:GetItemIDAt(Slot.Secondary) == 62631 )`
-        - NPC emote: The treant releases a sound from his hollows that sounds much like thunder.
-          - Reply guard: `( e.other:HasItem(62631) and e.other:HasItem(62633) and e.other:HasItem(62603) )`
-          - Reply guard: `( client:GetItemIDAt(Slot.Face) == 62603 and client:GetItemIDAt(Slot.Primary) == 62633 and client:GetItemIDAt(Slot.Secondary) == 62631 )`
-        - Condition: `( qglobals["ranger_epic15_pre"] == "8" and e.message:findi("ready") )`
 
 8. torgiran/"Player", on loot. Sets `ranger_epic15_pre` to `8`.
     - Requires `ranger_epic15_pre` ==7.
@@ -963,7 +1149,7 @@ Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11.
         - NPC say: Yes, the ancient hammer. I heard something about that. Do you mind if I take a look at it?
         - Condition: `(e.message:findi("ancient hammer"))`
 
-### Steps on `ranger_epic15_pre` that do not change it
+#### Steps on `ranger_epic15_pre` that do not change it
 
 - `hole` player, on enter needs `ranger_epic15_pre` ==3.
   - Spawns Stone Collector (39168).
@@ -978,7 +1164,7 @@ Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11.
 - `steamfontmts` godbin strumharp, hand platinum:30 needs `ranger_epic15_pre` ==9.
   - Gives Sound Capture Jar (62637).
 
-## `ranger_epic` 2.0
+### `ranger_epic` 2.0
 
 Values written: 8, 9.
 
@@ -1046,7 +1232,7 @@ Alternative or repeat transition to `ranger_epic` = `8` (not an additional requi
     - Prerequisite: "Heartwood Blade" (62627). See section 0.
     - Gives "Aurora, the Heartwood Blade" (62649).
 
-### Steps on `ranger_epic` that do not change it
+#### Steps on `ranger_epic` that do not change it
 
 - `riftseekers` player, on enter needs `ranger_epic` ==8.
   - Sets `rng_spawn_rss` to `1`.
@@ -1117,7 +1303,7 @@ Alternative or repeat transition to `ranger_epic` = `8` (not an additional requi
   - Sets `rng_wos_chest` to `1`.
   - Spawns a chest (Epic 1.5) (893).
 
-## Other flags touched along the way
+### Other flags touched along the way
 
 - `ranger_epic_bloodfield` set to 1 at bloodfields/marshall trap.
 - `ranger_epic_deep` set to 1 at thedeep/player.

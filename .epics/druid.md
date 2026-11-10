@@ -1,8 +1,331 @@
 # Druid
 
-Steps taken from the quest graph only. **Broken** means the graph has no edge for that value or that item.
+Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags are dependencies, not the definition of an epic. **Broken** indicates missing graph provenance.
 
-Flags with writes: `druid_epic`.
+## Epic 1.0
+
+### "Nature Walkers Scimitar" (20490)
+
+1. Loot "Froglok Essence" (20696) from "Ulump Pujluk" in `swampofnohope`.
+2. Kill emeraldjungle/"Tainted Gorilla". Spawns "Corrupted Gorilla" (94140).
+3. Loot "Green Tree Bark" (20686) from "Corrupted Gorilla".
+4. Kill lakeofillomen/"Tainted Barracuda". Spawns "Corrupted Barracuda" (85224).
+5. Loot "Pure Lakewater" (20685) from "Corrupted Barracuda".
+6. Hand "Froglok Essence" (20696) to timorous/"Dolgin Codslayer". Spawns "Faydedar" (96073). Loot "Pod of Seawater" (20687) from "Faydedar".
+7. overthere/"Nekexin Virulence", hand "Pure Lakewater" (20685) + "Green Tree Bark" (20686) + "Pod of Seawater" (20687) + "Froglok Essence" (20696). Gives "Cleansed Spirit of Kunark" (20699).
+8. Kill kedge/"Tainted Seahorse". Spawns "Corrupted Seahorse" (64050).
+9. Loot "Kedge Cave Crystals" (20691) from "Corrupted Seahorse".
+10. Kill oceanoftears/"Tainted Seafury Cyclops". Spawns "Corrupted Seafury Cyclops" (69142).
+11. Loot "Ocean of Tears Seavines" (20692) from "Corrupted Seafury Cyclops".
+12. Alternative: Loot "Ocean of Tears Seavines" (20692) from "Corrupted Seafury Cyclops" (NPC 69142) in `oot`; trigger: oot/"Tainted Seafury Cyclops", on event_death_complete.
+13. Kill lfaydark/"Tainted Brownie". Spawns "Corrupted Brownie" (57117).
+14. Loot "Green Heartwood Branch" (20693) from "Corrupted Brownie".
+15. lfaydark/"Pained Unicorn", hand "Kedge Cave Crystals" (20691) + "Ocean of Tears Seavines" (20692) + "Green Heartwood Branch" (20693). Gives "Gleaming Unicorn Horn" (20694).
+16. akanon/"Silox Azrix", hand "Gleaming Unicorn Horn" (20694). Gives "Cleansed Spirit of Faydwer" (20697).
+17. Loot "Ring of the Ancients" (12268) from "The Fabled Ancient Cyclops" in `sro`.
+18. Loot "Ring of the Ancients" (12268) from "An Ancient Cyclops".
+19. Loot "Ring of the Ancients" (12268) from "An Ancient Cyclops" in `oot`.
+20. Loot "Ring of the Ancients" (12268) from "An Ancient Cyclops" in `sro`.
+21. Kill rathemtn/"Ytyrs The Reborn". Spawns "Ytyrs Reborn" (50346).
+22. Loot "Shadowed Rapier" (7100) from "Ytyrs Reborn".
+23. rathemtn/"Hasten Bootstrutter", hand "Shadowed Rapier" (7100) + "Ring of the Ancients" (12268). Gives "Journeyman's Boots" (2300).
+24. northkarana/"Triathalon Token", hand "Journeyman's Boots" (2300). Gives "Warm Pulsing Treant Heart" (20695).
+25. southkarana/"Yeka Ias", hand "Warm Pulsing Treant Heart" (20695). Gives "Cleansed Spirit of Antonica" (20698).
+26. burningwood/"Telin Darkforest", say "Action". Gives "Worn Note" (20472).
+27. gfaydark/"Faelin Bloodbriar", hand "Worn Note" (20472). Gives "Faelin's Ring" (20446).
+28. kithicor/"Giz X-Tin", hand "Faelin's Ring" (20446). Gives "Dark Metal Coin" (20447).
+29. burningwood/"Telin Darkforest", hand "Dark Metal Coin" (20447). Gives "Worn Dark Metal Coin" (20448).
+30. eastkarana/"Althele", hand "Worn Dark Metal Coin" (20448). Gives "Braided Grass Amulet" (20450).
+    - Dialogue with eastkarana/"Althele":
+      - Player: "Hail"
+        - NPC say: Hello, friend. Beautiful is what I would call such a day normally, but lately? I sense that something is [out of balance].
+          - Reply guard: `($class eq "Ranger" && (plugin::check_hasitem($client, 20488) || plugin::check_hasitem($client, 62600)))`
+        - Condition: `($text=~/hail/i)`
+        - Sets `ranger_epic` to `1`.
+      - Player: "Your Eyes" (link: conversation sequence)
+        - NPC say: Yes. I cannot see any longer, my sight long since lost in the march of years. By the blessings of Tunare and Karana, though, I still make myself useful.
+        - Condition: `($text=~/your eyes/i)`
+      - Player: "Out Of Balance" (link: explicit mention)
+        - Prompted by player input: "Hail"
+        - NPC say: I don't know for certain what is wrong. It feels like the start of a cold, a sort of tickling at the back of Norrath's throat, if I may make such a poor metaphor. In much the same way that I can sense that you have wielded the power of nature, probably in the form of the weapons known as Swiftwind and Earthcaller, I can sense a power of illness creeping upon the land. Please, if you come across anything suspicious bring it to me. I am worried, this does not feel like a natural sickness to me. Go with the blessing of the Mother and the speed of the Storm, my child.
+          - Reply guard: `($class eq "Ranger" && $client->GetGlobal("ranger_epic") ==1)`
+        - NPC say: I am certain that you would sense it too, had you been so blessed as to be without sight. My sense of the life of Norrath is greatly heightened without the hindrance of vision. As I can sense that you have at your call the power of the lands, perhaps in the form of the Nature Walkers Scimitar. I can feel an unnatural illness creeping about the edges of Norrath. Please, if you come across anything suspicious bring it to me. I am worried about this cold sickness that I can almost taste. Go with the blessing of the Mother and the speed of the Storm, my child.
+          - Reply guard: `($class eq "Druid" && plugin::check_hasitem($client, 20490) or plugin::check_hasitem($client, 62809))`
+        - NPC say: I sense something foreboding, young one, but you should think nothing of it. The sons and daughters of nature will be able to deal with this problem.
+          - Reply guard: ``
+        - Condition: `($text=~/out of balance/i)`
+        - Sets `druid_epic` to `1`.
+31. eastkarana/"Sionae", hand "Braided Grass Amulet" (20450). Gives "Frayed Braided Grass Amulet" (20451).
+32. eastkarana/"Teloa", hand "Frayed Braided Grass Amulet" (20451). Triggers `eastkarana/althele#signal:1`.
+33. Starts timer `attack`.
+34. Spawns "Corruptor" (15153) after `eastkarana/althele#timer:attack`.
+35. Loot "Fleshbound Tome" (20452) from "Corruptor".
+36. eastkarana/"Althele", hand "Fleshbound Tome" (20452). Gives "Earth Stained Note" (18959).
+37. misty/"Ella Foodcrafter", hand "Earth Stained Note" (18959). Sets `shiny_tin_bowl` to `1`.
+38. misty/"Ella Foodcrafter", say "Two Tasks". Requires `shiny_tin_bowl` set. Gives "Shiny Tin Bowl" (17860).
+39. Forage "Ripened Heartfruit" (20464) in `gfaydark`.
+40. Forage "Sweetened Mudroot" (20465) in `misty`.
+41. Forage "Sweetened Mudroot" (20465) in `mistythicket`.
+42. Forage "Speckled Molded Mushroom" (20466) in `innothule`.
+43. Forage "Chilled Tundra Root" (20467) in `everfrost`.
+44. Combine in "Shiny Tin Bowl" (17860): "Ripened Heartfruit" (20464), "Sweetened Mudroot" (20465), "Speckled Molded Mushroom" (20466), "Chilled Tundra Root" (20467). Produces "Hardened Mixture" (20473). Requires Pottery. The combine does not fail.
+45. timorous/"Alrik Farsight", say "Take The Artifact". Gives "Crushed Pot" (20457).
+46. felwitheb/"Farios Elianos", hand "Crushed Pot" (20457). Gives "Grocery List" (20458).
+47. felwithea/"Merchant Nora", hand "Grocery List" (20458). Gives "Bag of Provisions" (20459).
+48. felwitheb/"Farios Elianos", hand "Bag of Provisions" (20459). Gives "Receipt" (20474).
+49. timorous/"Alrik Farsight", hand "Receipt" (20474). Gives "Ancient Pattern" (18960).
+50. Kill citymist/"A Black Reaver". Spawns "A Black Reaver" (90004).
+51. Loot "Jade Reaver" (5664) from "A Black Reaver".
+52. Alternative: Loot "Jade Reaver" (5664) from "A Black Reaver" (NPC 90005) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
+53. Alternative: Loot "Jade Reaver" (5664) from "A Black Reaver" (NPC 90192) in `citymist`; trigger: citymist/"A Black Reaver", on event_death_complete.
+54. kaladimb/"Kinlo Strongarm", hand "Jade Reaver" (5664). Gives "Enchanted Clay" (20455).
+55. Forage "Rose of Firiona" (12774) in `firiona`.
+56. qrg/"Merdan Fleetfoot", hand "Rose of Firiona" (12774). Gives "Wood Painting" (20475).
+57. frontiermtns/"A Human Skeleton", hand "Wood Painting" (20475). Gives "Silver Chained Locket" (20476).
+58. qrg/"Niera Farbreeze", hand "Silver Chained Locket" (20476). Gives "Platinum Speckled Powder" (20456).
+59. Combine in Pottery Wheel (21): "Ancient Pattern" (18960), "Enchanted Clay" (20455), "Platinum Speckled Powder" (20456). Produces "Runecrested Bowl" (20460). Requires Pottery. The combine does not fail.
+60. misty/"Ella Foodcrafter", hand "Runecrested Bowl" (20460) + "Hardened Mixture" (20473). Gives "Softly Glowing Stone" (20462).
+61. Buy "Spell: Resurrection" (15392) from "Henlom Visrek" (NPC 2054) in `qeynos2`. Base price: 18,936 copper.
+62. Hand "Spell: Resurrection" (15392) to karnor/"Spirit Of Venril Sathir". Spawns "Venril Sathir" (102126). Loot "Pulsing Green Stone" (20461) from "Venril Sathir".
+63. firiona/"Foloal Stormforest", hand "Pulsing Green Stone" (20461) + "Softly Glowing Stone" (20462). Gives "Warmly Glowing Stone" (20468).
+64. misty/"Ella Foodcrafter", hand "Warmly Glowing Stone" (20468). Gives "Elaborate Scimitar" (20440).
+65. northkarana/"Xanuusus", hand "Elaborate Scimitar" (20440) + "Cleansed Spirit of Faydwer" (20697) + "Cleansed Spirit of Antonica" (20698) + "Cleansed Spirit of Kunark" (20699). Gives "Nature Walkers Scimitar" (20490).
+    - Dialogue with northkarana/"Xanuusus":
+      - Player: "Hail"
+        - NPC say: I see you have purified that stone. Can I look at it?
+          - Reply guard: `( e.other:HasItem(62604) )`
+        - NPC say: You make my limbs ache. There is something unnatural about you. What is it?
+          - Reply guard: `( qglobals["ranger_epic15_pre"] == "6" )`
+        - NPC say: Greetings, small one! I am Xanuusus of the Stormreapers. You are welcome to rest beneath my mighty branches.
+          - Reply guard: ``
+        - Condition: `(e.message:findi("hail"))`
+        - Gives Polished Blasted Stone (62603).
+      - Player: "Help"
+        - NPC say: Well, I suppose I can help you a little, small one. There are three principles expressed in my lovely poem.
+        - NPC say: First one must defeat a worthy enemy of the Storm Lord, as you obviously understood from the second stanza. Seek a weapon born by one that would shackle the world if he could. He takes his name from his home, as if to claim it as his own.
+        - NPC say: Secondly one must aid a friend of the Storm Lord. There is one that considers himself small and worthless. Heal his heart so that his bare feet may roam again.
+        - NPC say: Finally one must perform and act of faith in the Storm Lord. When you have accomplished the other tasks, return to me and we shall again speak of this act of faith.
+        - Condition: `( qglobals["ranger_epic15_pre"] == "7" and e.message:findi("help") )`
+      - Player: "Ready" (link: conversation sequence)
+        - NPC say: Stay close or this won't work. It is better that you do this, for trees are not very well structured to withstand lightning.
+          - Reply guard: `( e.other:HasItem(62631) and e.other:HasItem(62633) and e.other:HasItem(62603) )`
+          - Reply guard: `( client:GetItemIDAt(Slot.Face) == 62603 and client:GetItemIDAt(Slot.Primary) == 62633 and client:GetItemIDAt(Slot.Secondary) == 62631 )`
+        - NPC emote: The treant releases a sound from his hollows that sounds much like thunder.
+          - Reply guard: `( e.other:HasItem(62631) and e.other:HasItem(62633) and e.other:HasItem(62603) )`
+          - Reply guard: `( client:GetItemIDAt(Slot.Face) == 62603 and client:GetItemIDAt(Slot.Primary) == 62633 and client:GetItemIDAt(Slot.Secondary) == 62631 )`
+        - Condition: `( qglobals["ranger_epic15_pre"] == "8" and e.message:findi("ready") )`
+
+## Epic 1.5
+
+### "Staff of Living Brambles" (62863)
+
+1. Loot "Crystal Fragment" (62852) from "Finnelzi Springworthy" in `southkarana`.
+2. Loot "Crystal Fragment" (62852) from "Rendolf Deathbringer" in `southkarana`.
+3. Loot "Crystal Fragment" (62852) from "Tehana Elsent" in `southkarana`.
+4. freportw/"Shana Liskia", hand "Crystal Fragment" (62852) + "Crystal Fragment" (62852) + "Crystal Fragment" (62852). Gives "Small Padded Bag" (62853).
+5. freportw/"Shana Liskia", hand "Crystal Fragment" (62852) + "Crystal Fragment" (62852) + "Crystal Fragment" (62852). Sets `druid_epic` to `5`.
+6. Spawns "Azibelle Spavin" (335064) in `harbingers` on enter.
+7. Loot "Bohab's Crystal Fragment" (62886) from "Azibelle Spavin".
+8. Spawns "Azibelle Spavin" (335064) in `harbingers` on enter.
+9. Loot "Azibelle's Crystal Fragment" (62887) from "Azibelle Spavin".
+10. Spawns "Glenfire Telzir" (335065) in `harbingers` on enter.
+11. Loot "Glenfire's Crystal Fragment" (62888) from "Glenfire Telzir".
+12. Combine in "Small Padded Bag" (62853): "Bohab's Crystal Fragment" (62886), "Azibelle's Crystal Fragment" (62887), "Glenfire's Crystal Fragment" (62888), "Crystal Fragment" (62852). Produces "Full Padded Bag" (62854). The combine does not fail.
+13. freportw/"Shana Liskia", hand "Full Padded Bag" (62854). Gives "Bowl of Foul-smelling Liquid" (62855).
+14. Spawns "Noc Juggernaut" (280091) in `natimbi` on event spawn:280090.
+15. Loot "Energized Noc Blood" (62889) from "Noc Juggernaut".
+16. Alternative: Loot "Energized Noc Blood" (62889) from "Noc Juggernaut" (NPC 280091) in `natimbi`; trigger: natimbi/"Druid 1 5", on event death_complete:280069.
+17. Forage "Emerald Moss" (62856) in `emeraldjungle`.
+18. Forage "Sickly Maiden's Hair" (62810) in `rathemtn`.
+19. eastkarana/"Althele", hand "Sickly Maiden's Hair" (62810). Gives "Tuft of Sickly Maiden's Hair" (62811).
+20. qrg/"Niera Farbreeze", hand "Tuft of Sickly Maiden's Hair" (62811). Gives "Waterproof Collection Bag" (62812).
+21. Say "King Timer" to frontiermtns/"Druid 1 5".
+22. Spawns npc 92202 (92202).
+23. Loot "Bag of Diseased Maiden's Hair" (62826) from npc 92202.
+24. eastkarana/"Althele", say "Out Of Balance". Sets `druid_epic` to `1`.
+25. Spawns "A Bloodgill Forager" (85234) in `lakeofillomen` on enter.
+26. Loot "Handful of Diseased Maiden's Hair" (62825) from "A Bloodgill Forager".
+27. Buy "Tackle Box" (17048) from "Misla McMannus" (NPC 12094) in `qey2hh1`. Base price: 1,000 copper.
+28. Spawns "Ulthork Raider" (116608) in `eastwastes` on enter.
+29. Loot "Carved Prexus Totem" (62821) from "Ulthork Raider".
+30. cobaltscar/"Blumblum Swigwater", hand "Carved Prexus Totem" (62821). Gives "Small Trigger Fish" (62820).
+31. Buy "Gutting Knife" (62823) from "Tasec Dreeng" (NPC 279113) in `abysmal`. Base price: 40 copper.
+32. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Hands back "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing, trivial 20. The combine does not fail.
+33. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+34. Loot "Partially Digested Maiden's Hair" (62819) from "spawn #Swamp Terror".
+35. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
+36. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
+37. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+38. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
+39. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
+40. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
+41. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
+42. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
+43. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
+44. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
+45. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
+46. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
+47. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
+48. tox/"A Skeleton", say "I Will Do It". Triggers `tox/a skeleton#timer:pathback`.
+49. Starts timer `pathbacktwo`.
+50. Starts timer `pathbackthree`.
+51. Starts timer `giveitem`.
+52. tox/"A Skeleton", on timer giveitem. Gives "Animating Heads" (62828).
+53. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
+54. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
+55. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
+56. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
+57. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
+58. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
+59. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Mind Crystal" (62846).
+60. Combine in "Bowl of Foul-smelling Liquid" (62855): "Energized Noc Blood" (62889), "Emerald Moss" (62856), "Mind Crystal" (62846). Produces "Clear Mind Crystal" (62857). The combine does not fail.
+61. abysmal/"Silanda Leafdew", hand "Clear Mind Crystal" (62857). Sets `druid_epic` to `7`.
+62. Spawns "A Cracked Earthshaker" (336214) in `dranik` on enter.
+63. Loot "Chunk of Energized Clay" (62859) from "A Cracked Earthshaker".
+64. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+65. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+66. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+67. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+68. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+69. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+70. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+71. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
+72. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
+73. Buy "Aerated Pot Sketch" (62858) from "Elisha Dirtyshoes" (NPC 202134) in `poknowledge`. Base price: 300 copper.
+74. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901), "Aerated Pot Sketch" (62858). Produces "Aerated Pot Shell" (62860). Requires Pottery, trivial 68.
+75. Combine in Kiln (22): "Chunk of Energized Clay" (62859), "Aerated Pot Shell" (62860). Produces "Reinforced Aerated Pot" (62861). Requires Pottery, trivial 100. The combine does not fail.
+76. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62850).
+77. Kill kithicor/"Blackened Tree Limb". Spawns "Blackened Dryad" (20301).
+78. Loot "Blackened Earth" (62862) from "Blackened Dryad".
+79. Combine in "Reinforced Aerated Pot" (62861): "Living Brambles Seed" (62850), "Clear Mind Crystal" (62857), "Blackened Earth" (62862). Produces "Staff of Living Brambles" (62863). The combine does not fail.
+
+## Epic 2.0
+
+### "Staff of Everliving Brambles" (62880)
+
+1. Loot "Crystal Fragment" (62852) from "Finnelzi Springworthy" in `southkarana`.
+2. Loot "Crystal Fragment" (62852) from "Rendolf Deathbringer" in `southkarana`.
+3. Loot "Crystal Fragment" (62852) from "Tehana Elsent" in `southkarana`.
+4. freportw/"Shana Liskia", hand "Crystal Fragment" (62852) + "Crystal Fragment" (62852) + "Crystal Fragment" (62852). Gives "Small Padded Bag" (62853).
+5. freportw/"Shana Liskia", hand "Crystal Fragment" (62852) + "Crystal Fragment" (62852) + "Crystal Fragment" (62852). Sets `druid_epic` to `5`.
+6. Spawns "Azibelle Spavin" (335064) in `harbingers` on enter.
+7. Loot "Bohab's Crystal Fragment" (62886) from "Azibelle Spavin".
+8. Spawns "Azibelle Spavin" (335064) in `harbingers` on enter.
+9. Loot "Azibelle's Crystal Fragment" (62887) from "Azibelle Spavin".
+10. Spawns "Glenfire Telzir" (335065) in `harbingers` on enter.
+11. Loot "Glenfire's Crystal Fragment" (62888) from "Glenfire Telzir".
+12. Combine in "Small Padded Bag" (62853): "Bohab's Crystal Fragment" (62886), "Azibelle's Crystal Fragment" (62887), "Glenfire's Crystal Fragment" (62888), "Crystal Fragment" (62852). Produces "Full Padded Bag" (62854). The combine does not fail.
+13. freportw/"Shana Liskia", hand "Full Padded Bag" (62854). Gives "Bowl of Foul-smelling Liquid" (62855).
+14. Spawns "Noc Juggernaut" (280091) in `natimbi` on event spawn:280090.
+15. Loot "Energized Noc Blood" (62889) from "Noc Juggernaut".
+16. Alternative: Loot "Energized Noc Blood" (62889) from "Noc Juggernaut" (NPC 280091) in `natimbi`; trigger: natimbi/"Druid 1 5", on event death_complete:280069.
+17. Forage "Emerald Moss" (62856) in `emeraldjungle`.
+18. Forage "Sickly Maiden's Hair" (62810) in `rathemtn`.
+19. eastkarana/"Althele", hand "Sickly Maiden's Hair" (62810). Gives "Tuft of Sickly Maiden's Hair" (62811).
+20. qrg/"Niera Farbreeze", hand "Tuft of Sickly Maiden's Hair" (62811). Gives "Waterproof Collection Bag" (62812).
+21. Say "King Timer" to frontiermtns/"Druid 1 5".
+22. Spawns npc 92202 (92202).
+23. Loot "Bag of Diseased Maiden's Hair" (62826) from npc 92202.
+24. eastkarana/"Althele", say "Out Of Balance". Sets `druid_epic` to `1`.
+25. Spawns "A Bloodgill Forager" (85234) in `lakeofillomen` on enter.
+26. Loot "Handful of Diseased Maiden's Hair" (62825) from "A Bloodgill Forager".
+27. Buy "Tackle Box" (17048) from "Misla McMannus" (NPC 12094) in `qey2hh1`. Base price: 1,000 copper.
+28. Spawns "Ulthork Raider" (116608) in `eastwastes` on enter.
+29. Loot "Carved Prexus Totem" (62821) from "Ulthork Raider".
+30. cobaltscar/"Blumblum Swigwater", hand "Carved Prexus Totem" (62821). Gives "Small Trigger Fish" (62820).
+31. Buy "Gutting Knife" (62823) from "Tasec Dreeng" (NPC 279113) in `abysmal`. Base price: 40 copper.
+32. Combine in "Tackle Box" (17048): "Small Trigger Fish" (62820), "Gutting Knife" (62823). Hands back "Gutting Knife" (62823). Produces "Soggy Maiden's Hair" (62824). Requires Fishing, trivial 20. The combine does not fail.
+33. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+34. Loot "Partially Digested Maiden's Hair" (62819) from "spawn #Swamp Terror".
+35. Combine in "Waterproof Collection Bag" (62812): "Bag of Diseased Maiden's Hair" (62826), "Handful of Diseased Maiden's Hair" (62825), "Soggy Maiden's Hair" (62824), "Partially Digested Maiden's Hair" (62819). Produces "Sealed Collection Bag" (62813). The combine does not fail.
+36. qrg/"Niera Farbreeze", hand "Sealed Collection Bag" (62813). Gives "Wash Cloth" (62847).
+37. Spawns "spawn #Swamp Terror" (47208) in `feerrott` on enter.
+38. Loot "Mangled Head" (62818) from "spawn #Swamp Terror".
+39. Combine in "Wash Cloth" (62847): "Mangled Head" (62818). Produces "Wrapped Mangled Head" (62848). The combine does not fail.
+40. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Gives "Mangled Head" (62827).
+41. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
+42. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 1" (62839).
+43. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 2" (62840).
+44. poknowledge/"Pathfinder Arelat", say "Worth It". Requires `druid_epic` ==2. Gives "Fresh Awakenings vol. 3" (62841).
+45. poknowledge/"Gravelady Beddia", hand "Fresh Awakenings vol. 1" (62839) + "Fresh Awakenings vol. 2" (62840) + "Fresh Awakenings vol. 3" (62841). Gives "Healing Plants" (62842).
+46. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Sets `druid_epic` to `3`.
+47. feerrott/"Corrupted Spirit", say "Show It". Requires `druid_epic` ==3. Gives "Disease Rune" (62837).
+48. tox/"A Skeleton", say "I Will Do It". Triggers `tox/a skeleton#timer:pathback`.
+49. Starts timer `pathbacktwo`.
+50. Starts timer `pathbackthree`.
+51. Starts timer `giveitem`.
+52. tox/"A Skeleton", on timer giveitem. Gives "Animating Heads" (62828).
+53. Combine in "Mangled Head" (62827): "Disease Rune" (62837), "Animating Heads" (62828). Produces "Runed Skull" (62838). The combine does not fail.
+54. qrg/"Niera Farbreeze", hand "Healing Plants" (62842). Gives "Niera's Healing Notes" (62849).
+55. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Sets `druid_epic` to `4`.
+56. qrg/"Niera Farbreeze", hand "Runed Skull" (62838) + "Niera's Healing Notes" (62849). Gives "Niera's Research Notes" (62843).
+57. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Red Dogwood Seed" (62844).
+58. pojustice/"Great Bear", hand "Niera's Research Notes" (62843). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62845).
+59. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Mind Crystal" (62846).
+60. Combine in "Bowl of Foul-smelling Liquid" (62855): "Energized Noc Blood" (62889), "Emerald Moss" (62856), "Mind Crystal" (62846). Produces "Clear Mind Crystal" (62857). The combine does not fail.
+61. abysmal/"Silanda Leafdew", hand "Clear Mind Crystal" (62857). Sets `druid_epic` to `7`.
+62. Spawns "A Cracked Earthshaker" (336214) in `dranik` on enter.
+63. Loot "Chunk of Energized Clay" (62859) from "A Cracked Earthshaker".
+64. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+65. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+66. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+67. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+68. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+69. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+70. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+71. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901). Produces "Small Block of Clay" (16900) x3. Requires Pottery, trivial 21.
+72. Combine in Pottery Wheel (21): "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery, trivial 21.
+73. Buy "Aerated Pot Sketch" (62858) from "Elisha Dirtyshoes" (NPC 202134) in `poknowledge`. Base price: 300 copper.
+74. Combine in Pottery Wheel (21): "Water Flask" (13006), "Block of Clay" (16901), "Aerated Pot Sketch" (62858). Produces "Aerated Pot Shell" (62860). Requires Pottery, trivial 68.
+75. Combine in Kiln (22): "Chunk of Energized Clay" (62859), "Aerated Pot Shell" (62860). Produces "Reinforced Aerated Pot" (62861). Requires Pottery, trivial 100. The combine does not fail.
+76. qrg/"Niera Farbreeze", hand "Red Dogwood Seed" (62844) + "Living Brambles Seed" (62845). Requires `druid_epic` ==4. Gives "Living Brambles Seed" (62850).
+77. Kill kithicor/"Blackened Tree Limb". Spawns "Blackened Dryad" (20301).
+78. Loot "Blackened Earth" (62862) from "Blackened Dryad".
+79. Combine in "Reinforced Aerated Pot" (62861): "Living Brambles Seed" (62850), "Clear Mind Crystal" (62857), "Blackened Earth" (62862). Produces "Staff of Living Brambles" (62863). The combine does not fail.
+80. abysmal/"Reyfin Malakwa", say "Hail". Gives "Ragged Cloth Bag" (62881).
+81. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Threadbare Cloth Bag" (62890).
+82. qinimi/"A Broken Ritesdancer", say "What About The Rune Fragments?". Gives "Undamaged Noc Fang" (62864).
+83. Combine in "Threadbare Cloth Bag" (62890): "Undamaged Noc Fang" (62864). Produces "Closed Cloth Bag" (62891). The combine does not fail.
+84. qinimi/"A Broken Ritesdancer", hand "Closed Cloth Bag" (62891). Gives "Rune Fragment" (62867).
+85. Forage "Rune Fragment" (62866) in `barindu`.
+86. Forage "Rune Fragment" (62866) in `ferubi`.
+87. Forage "Rune Fragment" (62866) in `riwwi`.
+88. Forage "Rune Fragment" (62865) in `barindu`.
+89. Forage "Rune Fragment" (62865) in `ferubi`.
+90. Forage "Rune Fragment" (62865) in `riwwi`.
+91. Combine in "Ragged Cloth Bag" (62881): "Rune Fragment" (62867), "Rune Fragment" (62866), "Rune Fragment" (62865). Produces "Wrapped Cloth Bag" (62882). The combine does not fail.
+92. abysmal/"Reyfin Malakwa", hand "Wrapped Cloth Bag" (62882). Sets `druid_epic` to `10`.
+93. nedaria/"Historian Finrazel", say "Plan To Find". Requires `druid_epic` ==10. Gives "Thick Leather Bag" (62884).
+94. Kill wallofslaughter/"A Nervous Guardian". Spawns "Lightning Lord" (300098).
+95. Loot "Rain Shard" (62872) from "Lightning Lord".
+96. Loot "Frost Shard" (62871) from "Bazu Scavenger" in `causeway`.
+97. Spawns "Mastruq Commander Gorlakt" (281089) in `qinimi` on enter.
+98. Loot "Spirit Shard" (62870) from "Mastruq Commander Gorlakt".
+99. Spawns "Tranlinor the Maimed" (302086) in `draniksscar` on enter.
+100. Loot "Wind Shard" (62873) from "Tranlinor the Maimed".
+101. Combine in "Thick Leather Bag" (62884): "Rain Shard" (62872), "Frost Shard" (62871), "Spirit Shard" (62870), "Wind Shard" (62873). Produces "Synched Leather Bag" (62885). The combine does not fail.
+102. abysmal/"Reyfin Malakwa", hand "Synched Leather Bag" (62885). Sets `druid_epic` to `12`.
+103. abysmal/"Silanda Leafdew", hand "Synched Leather Bag" (62885). Requires `druid_epic` set. Requires `druid_epic` ==12. Gives "Insulated Container Sketch" (62875).
+104. Loot "Faded-Glyph Tablet" (60224) from "Pixtt Condemner" in `ikkinz`.
+105. Loot "Runed Glyph: Aktek" (60221) from "Visionary of Glory" in `ikkinz`.
+106. Loot "Runed Glyph: Fexika" (60222) from "Visionary of Glory" in `ikkinz`.
+107. Loot "Runed Glyph: Niliktek" (60223) from "Visionary of Glory" in `ikkinz`.
+108. Combine in "Faded-Glyph Tablet" (60224): "Runed Glyph: Aktek" (60221), "Runed Glyph: Fexika" (60222), "Runed Glyph: Niliktek" (60223). Produces "Axtekilitek" (60225). Requires Research, trivial 100. The combine does not fail.
+109. Loot "Runed Glyph: Kruxek" (60226) from "Sentinel of Glorification" in `ikkinz`.
+110. Combine in "Faded-Glyph Tablet" (60224): "Axtekilitek" (60225), "Runed Glyph: Kruxek" (60226). Produces "Kruxilitek" (60227). Requires Research, trivial 100. The combine does not fail.
+111. Hand "Kruxilitek" (60227) to ikkinz/"Guardian Of Glorification". Spawns "Guardian of Glorification" (294582). Loot "Chunk of Broken Ancient Stone Worker" (58026) from "Guardian of Glorification".
+112. Alternative: Loot "Chunk of Broken Ancient Stone Worker" (58026) from "Guardian of Glorification" (NPC 294583) in `ikkinz`; trigger: ikkinz/"Guardian Of Glorification", on event_hp.
+113. Alternative: Loot "Chunk of Broken Ancient Stone Worker" (58026) from "A Clay Monolith" (NPC 296002) in `inktuta`; trigger: inktuta/"Zone Status", say "Spawn Golems".
+114. Alternative: Loot "Chunk of Broken Ancient Stone Worker" (58026) from "A Clay Monolith" (NPC 296049) in `inktuta`; trigger: inktuta/"Zone Status", say "Spawn Golems".
+115. Alternative: Loot "Chunk of Broken Ancient Stone Worker" (58026) from "A Clay Monolith" (NPC 296050) in `inktuta`; trigger: inktuta/"Zone Status", say "Spawn Golems".
+116. Alternative: Loot "Chunk of Broken Ancient Stone Worker" (58026) from "A Clay Monolith" (NPC 296051) in `inktuta`; trigger: inktuta/"Zone Status", say "Spawn Golems".
+117. Alternative: Loot "Chunk of Broken Ancient Stone Worker" (58026) from "A Freed Rockbearer" (NPC 291131) in `yxtta`; trigger: yxtta/"Player", say "Stone Attack".
+118. abysmal/"Hiloan O-Yviania", hand "Chunk of Broken Ancient Stone Worker" (58026). Gives "Clump of Refined Ancient Taelosian Clay" (58031).
+119. Combine in Kiln (22): "Insulated Container Sketch" (62875), "Clump of Refined Ancient Taelosian Clay" (58031). Produces "Insulated Container" (62876). Requires Pottery 100. The combine does not fail.
+120. global/"Global Player", combine recipe 19908. Gives "Essence of Rainfall" (62883).
+121. Combine in "Insulated Container" (62876): "Essence of Rainfall" (62883), "Staff of Living Brambles" (62863). Produces "Staff of Everliving Brambles" (62880). The combine does not fail.
+
+## Quest-state progression
 
 ## 0. Prerequisites
 
@@ -337,31 +660,12 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 
 1. Acquisition of "Synched Leather Bag" (62885) is documented under "Insulated Container" (62876); obtain another copy if needed.
 
-## `druid_epic`
+### `druid_epic`
 
 Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13.
 
 1. eastkarana/"Althele", say "Out Of Balance". Sets `druid_epic` to `1`.
     - Requires `druid_epic` unset.
-    - Dialogue with eastkarana/"Althele":
-      - Player: "Hail"
-        - NPC say: Hello, friend. Beautiful is what I would call such a day normally, but lately? I sense that something is [out of balance].
-          - Reply guard: `($class eq "Ranger" && (plugin::check_hasitem($client, 20488) || plugin::check_hasitem($client, 62600)))`
-        - Condition: `($text=~/hail/i)`
-        - Sets `ranger_epic` to `1`.
-      - Player: "Your Eyes" (link: conversation sequence)
-        - NPC say: Yes. I cannot see any longer, my sight long since lost in the march of years. By the blessings of Tunare and Karana, though, I still make myself useful.
-        - Condition: `($text=~/your eyes/i)`
-      - Player: "Out Of Balance" (link: explicit mention)
-        - Prompted by player input: "Hail"
-        - NPC say: I don't know for certain what is wrong. It feels like the start of a cold, a sort of tickling at the back of Norrath's throat, if I may make such a poor metaphor. In much the same way that I can sense that you have wielded the power of nature, probably in the form of the weapons known as Swiftwind and Earthcaller, I can sense a power of illness creeping upon the land. Please, if you come across anything suspicious bring it to me. I am worried, this does not feel like a natural sickness to me. Go with the blessing of the Mother and the speed of the Storm, my child.
-          - Reply guard: `($class eq "Ranger" && $client->GetGlobal("ranger_epic") ==1)`
-        - NPC say: I am certain that you would sense it too, had you been so blessed as to be without sight. My sense of the life of Norrath is greatly heightened without the hindrance of vision. As I can sense that you have at your call the power of the lands, perhaps in the form of the Nature Walkers Scimitar. I can feel an unnatural illness creeping about the edges of Norrath. Please, if you come across anything suspicious bring it to me. I am worried about this cold sickness that I can almost taste. Go with the blessing of the Mother and the speed of the Storm, my child.
-          - Reply guard: `($class eq "Druid" && plugin::check_hasitem($client, 20490) or plugin::check_hasitem($client, 62809))`
-        - NPC say: I sense something foreboding, young one, but you should think nothing of it. The sons and daughters of nature will be able to deal with this problem.
-          - Reply guard: ``
-        - Condition: `($text=~/out of balance/i)`
-        - Sets `druid_epic` to `1`.
 
 2. qrg/"Niera Farbreeze", hand "Wrapped Mangled Head" (62848). Sets `druid_epic` to `2`.
     - Hand in x1: "Wrapped Mangled Head" (62848).
@@ -563,7 +867,7 @@ Alternative or repeat transition to `druid_epic` = `10` (not an additional requi
       - Produces Staff of Everliving Brambles (62880).
       - The combine does not fail.
 
-### Steps on `druid_epic` that do not change it
+#### Steps on `druid_epic` that do not change it
 
 - `abysmal` silanda leafdew, hand 62885 needs `druid_epic` set.
   - Turn in Synched Leather Bag (62885).
@@ -896,7 +1200,7 @@ Alternative or repeat transition to `druid_epic` = `10` (not an additional requi
   - Sets `druid_epic_wos` to `1`.
   - Spawns a chest (Epic 1.5) (893).
 
-## Other flags touched along the way
+### Other flags touched along the way
 
 - `druid_epic_dranik` set to 1 at dranik/earthshaker trap.
 - `druid_epic_ew` set to 1 at eastwastes/player.

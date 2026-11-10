@@ -1,8 +1,129 @@
 # Warrior
 
-Steps taken from the quest graph only. **Broken** means the graph has no edge for that value or that item.
+Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags are dependencies, not the definition of an epic. **Broken** indicates missing graph provenance.
 
-Flags with writes: `warrior_pre`, `warrior_epic`.
+## Epic 1.0
+
+### "Jagged Blade of War" (10908)
+
+1. freeporteast/"Kargek Redblade", say "Favor". Gives "Wax Sealed Note" (20673).
+2. feerrott/"Oknoggin Stonesmacker", hand "Wax Sealed Note" (20673). Gives "Tiny Lute" (20674).
+3. freeporteast/"Kargek Redblade", hand "Tiny Lute" (20674). Gives "Redblade's Legacy" (18083).
+4. eastkarana/"Tenal Redblade", hand "Redblade's Legacy" (18083). Gives "Totem of the Freezing War" (20680).
+5. Loot "Heart of Frost" (10549) from "A Goblin Wizard" in `permafrost`.
+6. eastkarana/"Tenal Redblade", hand "Heart of Frost" (10549) + "Totem of the Freezing War" (20680). Gives "Totem of Fiery War" (20681).
+7. Loot "Red Dragon Scales" (11622) from "Echo of Nortlav" in `hole`.
+8. Loot "Red Dragon Scales" (11622) from "Lord Nagafen" in `soldungb`.
+9. Loot "Red Dragon Scales" (11622) from "Melalafen" in `westwastes`.
+10. Loot "Red Dragon Scales" (11622) from "Talendor" in `skyfire`.
+11. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+12. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+13. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+14. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+15. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+16. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+17. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+18. northro/"Verrell Cogswin", hand "Water Flask" (13006). Sets `Green_Scale_Quest` to `1`.
+19. northro/"Verrell Cogswin", hand "Red Dragon Scales" (11622). Sets `Green_Scale_Quest` to `2`.
+20. northro/"Verrell Cogswin", say "Adhesive". Requires `Green_Scale_Quest` ==2. Requires `Green_Scale_Quest` set. Gives "Verrell's Box of Potions" (67387).
+21. Loot "Fractured Centaur Hoof" (67388) from "Centaur Archer" in `southkarana`.
+22. Loot "Fractured Centaur Hoof" (67388) from "Centaur Charger" in `southkarana`.
+23. Loot "Fractured Centaur Hoof" (67388) from "Centaur Courser" in `southkarana`.
+24. Loot "Fractured Centaur Hoof" (67388) from "Centaur Foal" in `southkarana`.
+25. Loot "Fractured Centaur Hoof" (67388) from "Centaur Sheltie" in `southkarana`.
+26. Loot "Fire Giant Embers" (67389) from "A Fire Giant Warlord" (NPC 278023) in `soldungc`. Drop cache: 28.35% chance per kill.
+27. Loot "Jagged Permafrost Shards" (67390) from "The Chilling Terror" in `permafrost`.
+28. Combine in Oven (15): "Fractured Centaur Hoof" (67388), "Fire Giant Embers" (67389), "Jagged Permafrost Shards" (67390). Produces "Glue Powder" (67391). Requires Baking. The combine does not fail.
+29. Buy "Barley" (16590) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 15 copper.
+30. Buy "Deep Fungus Mold" (67393) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 50,000 copper.
+31. Buy "Distilled Spirits" (67394) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 5,000 copper.
+32. Combine in Brew Barrel (19): "Barley" (16590), "Deep Fungus Mold" (67393), "Distilled Spirits" (67394). Produces "Deep Barley Brew" (67392). Requires Brewing, trivial 110.
+33. northro/"Verrell Cogswin", say "Adhesive". Requires `Green_Scale_Quest` ==2. Requires `Green_Scale_Quest` set. Gives "Potion Vial" (67395).
+34. Combine in "Verrell's Box of Potions" (67387): "Glue Powder" (67391), "Deep Barley Brew" (67392), "Potion Vial" (67395). Produces "Thick Adhesive" (67386). The combine does not fail.
+35. northro/"Verrell Cogswin", hand "Thick Adhesive" (67386). Gives "Grey Scale Pieces" (67385).
+36. northro/"Verrell Cogswin", hand "Thick Adhesive" (67386). Gives "Thick Adhesive" (67396).
+37. Combine in "Verrell's Box of Potions" (67387): "Grey Scale Pieces" (67385), "Thick Adhesive" (67396). Produces "Grey Colored Scales" (67384). The combine does not fail.
+38. northro/"Verrell Cogswin", hand "Grey Colored Scales" (67384). Gives "Green Dragon Scales" (11582).
+39. eastkarana/"Tenal Redblade", hand "Green Dragon Scales" (11582) + "Red Dragon Scales" (11622) + "Totem of Fiery War" (20681). Gives "Mark of the Sword" (20683).
+40. Loot "Hand of the Maestro" (20676) from "Hand of the Maestro" in `hateplane`.
+41. Loot "Hand of the Maestro" (20676) from "Hand of the Maestro" in `hateplaneb`.
+42. eastkarana/"Tenal Redblade", hand "Hand of the Maestro" (20676) + "Mark of the Sword" (20683). Gives "Tenal's note to Kargek" (20684).
+43. Loot "Spiroc Wingblade" (20679) from "The Spiroc Lord" in `airplane`.
+44. freeporteast/"Kargek Redblade", hand "Spiroc Wingblade" (20679) + "Tenal's note to Kargek" (20684). Gives "Red Scabbard" (17859).
+45. Loot "Blade of Tactics" (10909) from "Reattim Heftsteel" (NPC 309005) in `chambersf`. Drop cache: 100% chance per kill.
+46. Loot "Blade of Strategy" (10910) from "Reattim Heftsteel" (NPC 309005) in `chambersf`. Drop cache: 100% chance per kill.
+47. Combine in "Red Scabbard" (17859): "Blade of Tactics" (10909), "Blade of Strategy" (10910). Produces "Jagged Blade of War" (10908). The combine does not fail.
+
+## Epic 1.5
+
+### "Champion's Sword of Eternal Power" (60321)
+
+**Broken:** no quest hand-in, encounter or recipe produces "Champion's Sword of Eternal Power" (60321) in the graph. Catalog drops/spells below are not proof of the epic quest.
+
+1. Loot "Champion's Sword of Eternal Power" (60321) from "Krekk Brimblade" in `dranik`.
+
+## Epic 2.0
+
+### "Kreljnok's Sword of Eternal Power" (60332)
+
+1. Kill causeway/"Korbuk Brimblade". Spawns "Essence of Kreljnok" (303129).
+2. Loot "Brimblade's Scabbard" (60331) from "Essence of Kreljnok".
+3. Kill causeway/"Korbuk Brimblade". Spawns "Essence of Kreljnok" (303129).
+4. Loot "Kreljnok's Essence" (60330) from "Essence of Kreljnok".
+5. global/"Global Player", combine recipe 19902. Sets `warrior_epic` to `21`.
+6. Loot "Champion's Sword of Eternal Power" (60321) from "Krekk Brimblade" in `dranik`.
+7. Unresolved cyclic prerequisite: `warrior_epic` ==15.
+8. draniksscar/"Korbuk Brimblade", say "Hail". Sets `warrior_epic` to `16`.
+9. draniksscar/"Korbuk Brimblade", say "Work". Sets `warrior_pre` to `1`.
+10. Loot "Korbuk's Weapon Plans" (60285) from "The Diaku Overseer" in `potactics`.
+11. draniksscar/"Korbuk Brimblade", hand "Korbuk's Weapon Plans" (60285). Sets `warrior_pre` to `2`.
+12. Loot "Elegant Shank" (60286) from "Shoqui the Forgotten" in `hatesfury`.
+13. draniksscar/"Korbuk Brimblade", hand "Elegant Shank" (60286). Sets `warrior_pre` to `3`.
+14. Loot "Redblade Family Sword" (60287) from "Drevlon Knacknabber" in `eastkarana`.
+15. freeporteast/"Kargek Redblade", hand "Redblade Family Sword" (60287). Requires `warrior_pre` set. Requires `warrior_pre` ==3. Gives "Emblazoned Champion's Hilt" (60288).
+16. draniksscar/"Korbuk Brimblade", hand "Emblazoned Champion's Hilt" (60288). Sets `warrior_pre` to `4`.
+17. thurgadina/"Dardek Bladewright", hand "Korbuk's Weapon Plans" (60285) + "Elegant Shank" (60286) + "Emblazoned Champion's Hilt" (60288). Sets `warrior_pre` to `5`.
+18. thurgadina/"Dardek Bladewright", hand "Korbuk's Weapon Plans" (60285) + "Elegant Shank" (60286) + "Emblazoned Champion's Hilt" (60288). Requires `warrior_pre` ==4. Gives "Dardek's Forged Blade" (60292).
+19. draniksscar/"Korbuk Brimblade", hand "Dardek's Forged Blade" (60292). Sets `warrior_pre` to `6`.
+20. draniksscar/"Korbuk Brimblade", say "Work". Sets `warrior_epic` to `1`.
+21. Kill bloodfields/"Girplan Slasher". Spawns "Girplan Devourer" (301063).
+22. Loot "Decrepit Hilt" (60307) from "Girplan Devourer".
+23. firiona/"Corfia Nultethen", hand "Decrepit Hilt" (60307). Sets `warrior_epic` to `9`.
+24. firiona/"Corfia Nultethen", say "Galuk Drek". Sets `warrior_epic_veksar` to `1`.
+25. Spawns "Decaying Lord Galuk Drek, not be in db yet" (109906) in `veksar` on enter.
+26. Loot "Skeletal Tome of Galuk Drek" (60310) from "Decaying Lord Galuk Drek, not be in db yet".
+27. firiona/"Corfia Nultethen", hand "Skeletal Tome of Galuk Drek" (60310). Requires `warrior_epic` set. Requires `warrior_epic` ==9. Gives "Glistening Hilt" (60311).
+28. butcher/"Gridbar Galund", hand "Glistening Hilt" (60311). Requires `warrior_epic` set. Requires `warrior_epic` >=13. Gives "Carved Keg Stamp" (60318).
+29. shadowhaven/"Koren Galund", hand "Carved Keg Stamp" (60318). Requires `warrior_epic` set. Requires `warrior_epic` >=13. Gives "Tube of Setting Solution" (60319).
+30. butcher/"Gridbar Galund", hand "Tube of Setting Solution" (60319). Requires `warrior_epic` set. Requires `warrior_epic` >=13. Gives "Hilt of Eternal Power" (60320).
+31. draniksscar/"Korbuk Brimblade", hand "Hilt of Eternal Power" (60320). Sets `warrior_epic` to `14`.
+32. everfrost/"Kimber Whitefoot", say "Hail". Requires `warrior_epic` set. Requires `warrior_epic` >=4. Gives "Potion of Blackfall Spirit" (60306).
+33. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+34. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `steamfont`.
+35. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `tox`.
+36. Loot "Useless Cloth Cap" (13894) from "A Kobold Scout" in `toxxulia`.
+37. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+38. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). The combine does not fail.
+39. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+40. nedaria/"Korezna Orecleaver", hand "Water Flask" (13006) + "Water Flask" (13006) + "Water Flask" (13006) + "Water Flask" (13006). Sets `warrior_epic_korezna` to `1`.
+41. nedaria/"Korezna Orecleaver", hand "Water Flask" (13006) + "Water Flask" (13006) + "Water Flask" (13006). Sets `warrior_epic_korezna` to `2`.
+42. **Broken:** nothing in the graph gives, loots, spawns, or combines Blackfall Ore (60301).
+43. draniksscar/"Korbuk Brimblade", hand "Blackfall Ore" (60301). Requires `warrior_epic` >=2. Gives "Smelting Plans" (60302).
+44. nedaria/"Korezna Orecleaver", hand "Blackfall Ore" (60301) + "Smelting Plans" (60302). Requires `warrior_epic_korezna` ==2. Gives "Blackfall Blade" (60303).
+45. dranik/"Krekk Brimblade", hand "Blackfall Blade" (60303) + "Potion of Blackfall Spirit" (60306) + "Hilt of Eternal Power" (60320). Sets `warrior_epic` to `15`.
+46. Loot "Kreljnok's Muddled Rage" (60322) from "Possessed Brute" in `provinggrounds`.
+47. draniksscar/"Korbuk Brimblade", hand "Kreljnok's Muddled Rage" (60322). Sets `warrior_epic` to `17`.
+48. Ground spawn of "Frozen Pestle" (60323) in `iceclad`.
+49. iceclad/"Fazzle Thumpkin", hand "Frozen Pestle" (60323). Sets `warrior_epic` to `18`.
+50. iceclad/"Fazzle Thumpkin", say "Map". Requires `warrior_epic` ==18. Gives "Fazzle's Map of East Wastes" (60324).
+51. Spawns "Larnik the Recluse" (116609) in `eastwastes` on enter.
+52. Loot "Larnik's Locked Purification Kit" (60325) from "Larnik the Recluse".
+53. draniksscar/"Korbuk Brimblade", hand "Larnik's Locked Purification Kit" (60325). Requires `warrior_epic` >=18. Gives "Larnik's Unlocked Purification Kit" (60326).
+54. Combine in "Larnik's Unlocked Purification Kit" (60326): "Kreljnok's Muddled Rage" (60322). Produces "Kreljnok's Focused Rage" (60327). The combine does not fail.
+55. draniksscar/"Korbuk Brimblade", hand "Champion's Sword of Eternal Power" (60321) + "Kreljnok's Focused Rage" (60327). Requires `warrior_epic` >=19. Gives "Raging Sword of Eternal Power" (60329).
+56. Combine in "Brimblade's Scabbard" (60331): "Kreljnok's Essence" (60330), "Raging Sword of Eternal Power" (60329). Produces "Kreljnok's Sword of Eternal Power" (60332). The combine does not fail.
+
+## Quest-state progression
 
 ## 0. Prerequisites
 
@@ -211,7 +332,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 
 1. Acquisition of "Hilt of Eternal Power" (60320) is documented under "Blackfall Blade" (60303); obtain another copy if needed.
 
-## `warrior_pre`
+### `warrior_pre`
 
 Values written: 1, 2, 3, 4, 5, 6.
 
@@ -442,7 +563,7 @@ Values written: 1, 2, 3, 4, 5, 6.
     - Prerequisite: "Dardek's Forged Blade" (60292). See section 0.
     - Gives "Korbuk's Blade of Mastery" (60293).
 
-### Steps on `warrior_pre` that do not change it
+#### Steps on `warrior_pre` that do not change it
 
 - `draniksscar` korbuk brimblade, say work needs `warrior_pre` ==6.
   - Sets `warrior_epic` to `1`.
@@ -455,7 +576,7 @@ Values written: 1, 2, 3, 4, 5, 6.
 - `thurgadina` dardek bladewright, hand 60289 needs `warrior_pre` ==4.
   - Turn in Coldain Coffee Blend (60289).
 
-## `warrior_epic`
+### `warrior_epic`
 
 Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21.
 
@@ -711,7 +832,7 @@ Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 1
       - Produces Kreljnok's Sword of Eternal Power (60332).
       - The combine does not fail.
 
-### Steps on `warrior_epic` that do not change it
+#### Steps on `warrior_epic` that do not change it
 
 - `abysmal` rewina jalmoy, hand 60295+60296+60297+60298 needs `warrior_epic` set.
   - Turn in Decomposing Page I (60295).
@@ -823,7 +944,7 @@ Values written: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 1
   - Loots Muramite Silk Sleeves of Contention (71069).
   - Loots Muramite Silk Gloves of Contention (71070).
 
-## Other flags touched along the way
+### Other flags touched along the way
 
 - `warr_epic_bloodfield` set to 1 at bloodfields/player.
 - `warr_epic_wos` set to 1 at wallofslaughter/player.

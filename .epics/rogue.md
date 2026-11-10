@@ -1,8 +1,77 @@
 # Rogue
 
-Steps taken from the quest graph only. **Broken** means the graph has no edge for that value or that item.
+Acquisition paths traced backwards from the 1.0, 1.5 and 2.0 epic rewards. Flags are dependencies, not the definition of an epic. **Broken** indicates missing graph provenance.
 
-Flags with writes: `roguepre`, `Fatestealer`.
+## Epic 1.0
+
+### "Ragebringer" (11057)
+
+1. Loot "Bayle List I" (18808) from "Mutt Rootlit" in `highpass`.
+2. qrg/"Gerael Woodone", say "Deliver A Flask". Gives "Flask of Nitrates" (13945).
+3. akanon/"Kimble Nogflop", hand "Flask of Nitrates" (13945). Gives "Regurgitonic" (12140).
+4. qrg/"Mammoth", hand "Regurgitonic" (12140). Gives "Bayle List II" (18809).
+5. Loot "Bayle List III" (18810) from "Dyllin Starsine" in `highpass`.
+6. Loot "Bayle List III" (18810) from "Dyllin Starsine" in `highpasshold`.
+7. southro/"Rathmana Allin", hand "Bayle List I" (18808) + "Bayle List II" (18809) + "Bayle List III" (18810). Gives "Translated Parchment" (18961).
+8. highpass/"Stanos Herkanor", hand "Translated Parchment" (18961). Gives "Sealed Box" (28057).
+9. Hand "Sealed Box" (28057) to kithicor/"Adjutant D-Kan". Spawns "General V'ghera" (20205). Loot "General's Pouch" (28013) from "General V'ghera".
+10. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Advisor C-Zatl", hand "Sealed Box" (28057).
+11. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Brigadier G-Tav", hand "Sealed Box" (28057).
+12. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Coercer Q-Ioul", hand "Sealed Box" (28057).
+13. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Ioltos V-Ghera", hand "Sealed Box" (28057).
+14. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"Tasi V-Ghera", hand "Sealed Box" (28057).
+15. Alternative: Loot "General's Pouch" (28013) from "General V'ghera" (NPC 20205) in `kithicor`; trigger: kithicor/"War Priestess T-Zan", hand "Sealed Box" (28057).
+16. Loot "Fleshripper" (5411) from "Solusek kobold king" in `soldungb`.
+17. Loot "Painbringer" (5410) from "Kobold Champion" in `soldungb`.
+18. Loot "Mithril Two-Handed Sword" (5401) from "The Froglok King" in `gukbottom`.
+19. Loot "Gigantic Zweihander" (5308) from "Karg IceBear" in `everfrost`.
+20. qey2hh1/"Vilnius The Small", hand "Gigantic Zweihander" (5308) + "Mithril Two-Handed Sword" (5401) + "Painbringer" (5410) + "Fleshripper" (5411). Gives "Jagged Diamond Dagger" (7506).
+21. Loot "Robe of the Ishva" (1357) from "Coercer Q'ioul" in `kithicor`.
+22. Loot "Robe of the Ishva" (1357) from "Jinalis Andir" in `cauldron`.
+23. Loot "Robe of the Ishva" (1357) from "The Ishva Mal" in `southkarana`.
+24. Loot "Robe of the Kedge" (1253) from "Kubaria" (NPC 309002) in `chambersf`. Drop cache: 100% chance per kill.
+25. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oceanoftears`.
+26. Loot "Robe of the Oracle" (1354) from "Oracle of K'Arnon" in `oot`.
+27. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
+28. qey2hh1/"Vilnius The Small", hand "Robe of the Kedge" (1253) + "Robe of the Oracle" (1354) + "Robe of the Ishva" (1357) + "Shining Metallic Robes" (1360). Gives "Cazic Quill" (7505).
+29. highpass/"Stanos Herkanor", hand "Cazic Quill" (7505) + "Jagged Diamond Dagger" (7506) + "General's Pouch" (28013). Gives "Ragebringer" (11057).
+
+## Epic 1.5
+
+### "Fatestealer" (52347)
+
+1. **Broken:** nothing in the graph gives, loots, spawns, or combines Fatestealer (52347).
+
+## Epic 2.0
+
+### "Nightshade, Blade of Entropy" (52348)
+
+1. **Broken:** nothing in the graph gives, loots, spawns, or combines Fatestealer (52347).
+2. nedaria/"Lirprin, Head Of Affairs", say "Hail". Sets `Fatestealer` to `3`.
+3. Say "Check Lorb" to anguish/"Zone Status".
+4. Spawns "Orb of Discordant Energy" (317087).
+5. Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy".
+6. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", say "Check Uorb".
+7. Alternative: Loot "Globe of Discordant Energy" (47100) from "Ornate Chest" (NPC 317112) in `anguish`; trigger: anguish/"Zone Status", say "Check Amv Chest".
+8. Alternative: Loot "Globe of Discordant Energy" (47100) from "Orb of Discordant Energy" (NPC 317087) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+9. Alternative: Loot "Globe of Discordant Energy" (47100) from "Overlords Chest" (NPC 317124) in `anguish`; trigger: anguish/"Zone Status", on event_signal.
+10. iceclad/"Lookout Larithim", say "What Happened Then". Requires `rogue_epic_iceclad` unset. Requires `Fatestealer` ==3. Gives "Air-Tight Strongbox" (52339).
+11. Say "What Happened Then" to iceclad/"Lookout Larithim".
+12. Spawns "Polar Kraken" (110131).
+13. Loot "Lump of Raw Alloy" (52340) from "Polar Kraken".
+14. Combine in "Air-Tight Strongbox" (52339): "Lump of Raw Alloy" (52340). Produces "Strongbox Full of Alloy" (52341). The combine does not fail.
+15. iceclad/"Lookout Larithim", hand "Strongbox Full of Alloy" (52341). Gives "Strongbox Half Full of Velixite" (52342).
+16. bloodfields/"Keetra The Lost", say "Lirprin Sent Me". Sets `rogue_epic_keetra` to `1`.
+17. Spawns "Krill the Backbleeder" (224436) in `gunthak` on event_signal.
+18. Loot "Krill's Head" (52344) from "Krill the Backbleeder".
+19. gunthak/"Lairyn Debeian", hand "Krill's Head" (52344). Sets `rogue_epic_lairyn` to `1`.
+20. iceclad/"Lookout Larithim", hand "Strongbox Full of Alloy" (52341). Sets `rogue_epic_larithim` to `1`.
+21. mirb/"Durgin Skell", say "Lirprin Sent Me". Sets `rogue_epic_durgin` to `1`.
+22. Spawns "Wren Simsy" (336253) in `dranik` on kill.
+23. Loot "Wren's Fatestealer" (21346) from "Wren Simsy".
+24. nedaria/"Lirprin, Head Of Affairs", hand "Wren's Fatestealer" (21346) + "Globe of Discordant Energy" (47100) + "Strongbox Half Full of Velixite" (52342) + "Fatestealer" (52347). Requires `Fatestealer` ==3. Gives "Nightshade, Blade of Entropy" (52348).
+
+## Quest-state progression
 
 ## 0. Prerequisites
 
@@ -131,7 +200,7 @@ Shared acquisition steps appear in the first prerequisite chain that needs them.
 28. qey2hh1/"Vilnius The Small", hand "Robe of the Kedge" (1253) + "Robe of the Oracle" (1354) + "Robe of the Ishva" (1357) + "Shining Metallic Robes" (1360). Gives "Cazic Quill" (7505).
 29. highpass/"Stanos Herkanor", hand "Cazic Quill" (7505) + "Jagged Diamond Dagger" (7506) + "General's Pouch" (28013). Gives "Ragebringer" (11057).
 
-## `roguepre`
+### `roguepre`
 
 Values written: 1.
 
@@ -176,12 +245,12 @@ Values written: 1.
         - Condition: `(e.other:Class() == "Rogue" or e.other:GetGM())`
         - Condition: `(e.message:findi("cash out") and urn == 0)`
 
-### Steps on `roguepre` that do not change it
+#### Steps on `roguepre` that do not change it
 
 - `highkeep` dealer maeline, hand 9446 needs `roguepre` unset.
   - Turn in Gold-Leafed Urn (9446).
 
-## `Fatestealer` 1.5
+### `Fatestealer` 1.5
 
 Values written: 1, 2, 3, 4.
 
@@ -451,7 +520,7 @@ Alternative or repeat transition to `Fatestealer_bard` = `1` (not an additional 
     - Subquest `Fatestealer_gal` documented earlier.
     - Subquest `Fatestealer_mar` documented earlier.
     - Subquest `Fatestealer_lyt` documented earlier.
-##### Steps on `Fatestealer_bard` that do not change it
+###### Steps on `Fatestealer_bard` that do not change it
 
 - `nedaria` lirprin, head of affairs, hand 52337 needs `Fatestealer_bard` ==1.
   - Sets `Fatestealer` to `2`.
@@ -503,7 +572,7 @@ Values written: 1.
         - NPC say: The Book of Souls chronicles all the lives Innoruuk has tainted over the years. It is in the care of the Maestro of Rancor. I can use this tome as a basis for my translation, if you return it and the note to me. An experienced practitioner in the art of non-detection should be able to snatch it from its resting place, don't you think, $race?'
         - Condition: `($text=~/book of souls/i)`
 
-##### Steps on `Fatestealer_page` that do not change it
+###### Steps on `Fatestealer_page` that do not change it
 
 - `nedaria` lirprin, head of affairs, hand 52337 needs `Fatestealer_page` ==1.
   - Sets `Fatestealer` to `2`.
@@ -577,7 +646,7 @@ Values written: 1.
         - Condition: `( qglobals["Fatestealer"] == "3" and e.message:findi("hail"))`
 
     - Subquest `Fatestealer_bard` documented earlier.
-##### Steps on `Fatestealer_forge` that do not change it
+###### Steps on `Fatestealer_forge` that do not change it
 
 - `nedaria` lirprin, head of affairs, hand 52337 needs `Fatestealer_forge` ==1.
   - Sets `Fatestealer` to `2`.
@@ -651,7 +720,7 @@ Values written: 1.
     - **Broken:** nothing in the graph gives, loots, spawns, or combines Fatestealer (52347).
     - Gives "Nightshade, Blade of Entropy" (52348).
 
-### Steps on `Fatestealer` that do not change it
+#### Steps on `Fatestealer` that do not change it
 
 - `bloodfields` caller donivin, hand 52349+52350+52351+52352 needs `Fatestealer` ==3.
   - Sets `rog_bf_trigger` to `1`.
@@ -872,7 +941,7 @@ Values written: 1.
 - `sharvahl` master taruun rakutah, say small task needs `Fatestealer` ==1.
   - Gives King's Feast Request (52334).
 
-## Other flags touched along the way
+### Other flags touched along the way
 
 - `rogue_chest_ice` set to 1 at iceclad/player.
 - `rogue_chest_mira` set to 1 at mirb/durgin skell.
