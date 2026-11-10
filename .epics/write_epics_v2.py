@@ -11,12 +11,9 @@ The generator deliberately distinguishes graph-proven steps from unresolved
 prerequisites. It does not treat all dialogue at an NPC as a quest route.
 """
 
-from __future__ import annotations
-
 import argparse
 import json
 import re
-import sys
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -176,9 +173,13 @@ class Graph:
 
     def group_rows(self, row: dict) -> list[dict]:
         grp = row.get("group")
-        if grp:
-            return self.by_group.get(str(grp), [])
-        return self.by_from.get(str(row.get("from") or ""), [])
+        if not grp:
+            return self.by_from.get(str(row.get("from") or ""), [])
+        # Branch-specific edges carry `group`; event-level guard edges often
+        # use `from=group` instead. Both belong to this same action.
+        grouped = self.by_group.get(str(grp), ())
+        direct = self.by_from.get(str(grp), ())
+        return list({id(r): r for r in (*grouped, *direct)}.values())
 
     def inputs(self, row: dict) -> list[int]:
         return list(
@@ -318,6 +319,8 @@ class Planner:
         self.used_edges: set[int] = set()
         self.active_flags: set[tuple[str, str]] = set()
         self.done_flags: set[tuple[str, str]] = set()
+        # Track current values: a later event can overwrite an earlier stage.
+        self.flag_values: dict[str, str] = {}
 
     def put(
         self,
@@ -404,7 +407,7 @@ class Planner:
         return next(iter(self.candidates(iid)), None)
 
     def _restore(self, snapshot: tuple) -> None:
-        mark, prior_steps, emitted, done, events, used, flags, errors_len = snapshot
+        mark, prior_steps, emitted, done, events, used, flags, values, errors_len = snapshot
         del self.steps[mark:]
         for step, text, payload, produced in prior_steps:
             step.text, step.payload = text, payload
@@ -414,6 +417,7 @@ class Planner:
         self.active_events = events
         self.used_edges = used
         self.done_flags = flags
+        self.flag_values = values
         del self.errors[errors_len:]
 
     def _snapshot(self) -> tuple:
@@ -426,6 +430,7 @@ class Planner:
             self.active_events.copy(),
             self.used_edges.copy(),
             self.done_flags.copy(),
+            self.flag_values.copy(),
             len(self.errors),
         )
 
@@ -661,6 +666,48 @@ class Planner:
             key = f"faction-need:{faction}:{at}"
             self.put(key, f'**Faction:** `{faction}` `{at}` required. Progress unverified.')
 
+    def _satisfies_flag(self, name: str, at: str) -> bool:
+        value = self.flag_values.get(name)
+        if at == "unset":
+            return value is None
+        if value is None:
+            return False
+        if at == "set":
+            return True
+        match = re.fullmatch(r"(==|>=|>|<=|<)\s*(-?\d+)", at)
+        if match and value.lstrip("-").isdigit():
+            op, target = match[1], int(match[2])
+            actual = int(value)
+            return {"==": actual == target, ">=": actual >= target,
+                    ">": actual > target, "<=": actual <= target,
+                    "<": actual < target}[op]
+        return at.startswith("==") and value == at[2:].strip()
+
+    def action_requirements(self, row: dict) -> None:
+        """Satisfy the requirements on one action, including ungrouped guards."""
+        rows = self.g.group_rows(row)
+        for iid in dict.fromkeys(
+            value for r in rows if r.get("rel") == "needs"
+            if (value := item_id(r.get("to", ""))) is not None
+        ):
+            self.acquire(iid)
+        conditions: dict[str, list[str]] = defaultdict(list)
+        for r in rows:
+            if r.get("rel") == "needs" and r.get("flag"):
+                conditions[str(r["flag"])].append(str(r.get("at") or "set"))
+        for name, guards in conditions.items():
+            for at in dict.fromkeys(g for g in guards if g != "set"):
+                self.flag(name, at)
+            if all(g == "set" for g in guards):
+                self.flag(name, "set")
+        self.faction_requirements(row)
+
+    def action_sets(self, row: dict) -> None:
+        """Apply quest-state mutations only after the action has executed."""
+        for r in self.g.group_rows(row):
+            if r.get("rel") == "sets" and r.get("flag") and r.get("value") is not None:
+                self.flag_values[str(r["flag"])] = str(r["value"])
+
     def giver(self, row: dict, iid: int) -> None:
         src = str(row.get("from") or "")
         group = str(row.get("group") or src)
@@ -670,20 +717,7 @@ class Planner:
             ins.sort(key=lambda x: (not self.has_connected_intro(x), position[x]))
         for required in ins:
             self.acquire(required)
-        needs, flags = self.g.needs(row)
-        for required in needs:
-            self.acquire(required)
-        for flag in flags:
-            conditions = [
-                str(r.get("at") or "set")
-                for r in self.g.group_rows(row)
-                if r.get("rel") == "needs" and r.get("flag") == flag
-            ]
-            at = next(
-                (condition for condition in conditions if condition != "set"), "set"
-            )
-            self.flag(flag, at)
-        self.faction_requirements(row)
+        self.action_requirements(row)
         actor = actor_of(src)
         if ins:
             rendered = " + ".join(self.g.name(x) for x in ins)
@@ -722,63 +756,45 @@ class Planner:
                     group=group,
                     produced_items=(iid,),
                 )
+        self.action_sets(row)
 
     def flag(self, name: str, at: str) -> None:
-        state = (name, at)
-        if state in self.done_flags:
+        if self._satisfies_flag(name, at):
             return
         if at == "unset":
-            return
+            raise AcquisitionCycle(f"quest flag `{name}` must be unset")
+        state = (name, at)
         if state in self.active_flags:
-            # A setter may itself require the flag it purports to establish.
-            # Reject this acquisition route so the caller can try alternatives.
-            raise AcquisitionCycle(f"quest flag `{name}` {at}")
+            raise AcquisitionCycle(f"quest flag `{name}` {at}: recursive setter")
         self.active_flags.add(state)
         try:
             setters = self.g.flag_setters.get(name, [])
-            match = re.fullmatch(r"(==|>=|>|<=|<)\s*(-?\d+)", at)
-            op = None
-            if match:
-                op, target = match.group(1), int(match.group(2))
-                compare = {
-                    "==": lambda v: v == target,
-                    ">=": lambda v: v >= target,
-                    ">": lambda v: v > target,
-                    "<=": lambda v: v <= target,
-                    "<": lambda v: v < target,
-                }[op]
-                setters = [
-                    r
-                    for r in setters
-                    if str(r.get("value", "")).lstrip("-").isdigit()
-                    and compare(int(r["value"]))
-                ]
-            elif at.startswith("=="):
-                setters = [r for r in setters if str(r.get("value")) == at[2:].strip()]
-            if not setters:
-                self.errors.append(f"No graph setter for `{name}` {at}")
-                return
-            # A flag can have several setters. The first one may lead back to
-            # the item we're currently acquiring; try the others before failing.
-            setters = sorted(
-                setters,
-                key=lambda r: (
-                    int(r["value"]) if match and op in (">=", ">") else 0,
-                    (
-                        0
-                        if "#hand:" in str(r.get("from", ""))
-                        else 1 if "#" in str(r.get("from", "")) else 2
-                    ),
-                    str(r.get("from", "")),
-                ),
-            )
+            def valid(row: dict) -> bool:
+                val = str(row.get("value") or "")
+                if at == "set":
+                    return True
+                match = re.fullmatch(r"(==|>=|>|<=|<)\s*(-?\d+)", at)
+                if match and val.lstrip("-").isdigit():
+                    actual, target = int(val), int(match[2])
+                    return {"==": actual == target, ">=": actual >= target,
+                            ">": actual > target, "<=": actual <= target,
+                            "<": actual < target}[match[1]]
+                return at.startswith("==") and val == at[2:].strip()
 
-            for row in setters:
+            setters = sorted((r for r in setters if valid(r)), key=lambda r: (
+                0 if "#hand:" in str(r.get("from") or "") else 1,
+                int(r["value"]) if str(r.get("value") or "").isdigit() else 0,
+                str(r.get("from") or ""),
+            ))
+            for setter in setters:
                 snapshot = self._snapshot()
-                src = str(row.get("from") or "")
+                src = str(setter.get("from") or "")
+                # Guard and setter edges sometimes have no `group` attribute.
+                # Resolve the specific branch that contains this mutation.
                 try:
+                    self.action_requirements(setter)
                     if "#hand:" in src:
-                        self.hand_event(src)
+                        self.hand_event(src, resolve=False)
                     elif "#recipe:" in src:
                         recipe_id = "recipe:" + src.rsplit("#recipe:", 1)[1]
                         for rr in self.g.recipes.get(recipe_id, []):
@@ -786,29 +802,28 @@ class Planner:
                                 iid = item_id(rr.get("to", ""))
                                 if iid is not None:
                                     self.acquire(iid)
-                        self.put(
-                            "flag:" + src,
-                            f'Combine recipe {recipe_id} to set `{name}` to `{row.get("value")}`.',
-                        )
-                    else:
-                        word = src.rsplit("#", 1)[-1]
-                        if word:
-                            self.put(
-                                "flag:" + src,
-                                f'{label(actor_of(src))}, say "{word.title()}". Sets `{name}` to `{row.get("value")}`.',
-                                actor=actor_of(src),
-                                action="say",
-                                utterance=word,
-                            )
+                        self.put("flag:" + src, f'Combine recipe {recipe_id} to set `{name}` to `{setter.get("value")}`.')
+                    elif "#" in src:
+                        word = src.split("#", 1)[1]
+                        if word.startswith("event_"):
+                            self.event(src)
                         else:
-                            self.errors.append(
-                                f"Cannot execute setter for `{name}` at `{src}`"
-                            )
-                    self.done_flags.add(state)
+                            self.put("flag:" + src,
+                                     f'{label(actor_of(src))}, say "{word.title()}". Sets `{name}` to `{setter.get("value")}`.',
+                                     actor=actor_of(src), action="say", utterance=word)
+                    else:
+                        raise AcquisitionCycle(f"cannot execute flag setter `{src}`")
+                    self.action_sets(setter)
+                    if not self._satisfies_flag(name, at):
+                        raise AcquisitionCycle(f"setter `{src}` failed to establish `{name}` {at}")
                     return
                 except AcquisitionCycle:
                     self._restore(snapshot)
-            raise AcquisitionCycle(f"quest flag `{name}` {at}: all setters are cyclic")
+            # Preserve the rest of the route when the graph cannot establish
+            # this prerequisite, but never claim the flag was acquired.
+            self.errors.append(f"Unverified quest flag `{name}` {at}: no acyclic setter")
+            self.put(f"unverified-flag:{name}:{at}",
+                     f"**Unverified quest flag:** `{name}` `{at}` required.")
         finally:
             self.active_flags.remove(state)
 
@@ -846,10 +861,12 @@ class Planner:
         src = str(row.get("from") or "")
         name = str(row.get("name") or "")
         npc = row.get("npc")
+        self.action_requirements(row)
         if "#hand:" in src:
             self.hand_event(src, target_npc=npc)
         elif "#" in src:
             self.event(src, target_npc=npc)
+        self.action_sets(row)
         if row.get("rel") == "grounds":
             self.put(f"ground:{src}:{iid}", f"Collect {self.g.name(iid)} at `{src}`.",
                      produced_items=(iid,))
@@ -896,6 +913,9 @@ class Planner:
             return
         self.active_events.add(node)
         try:
+            if node.endswith("#hail"):
+                self.put(f"hail:{node}", f'{label(actor_of(node))}, say "Hail".',
+                         actor=actor_of(node), action="say", utterance="hail")
             if "#signal:" in node:
                 # An NPC must have been spawned before receiving its signal.
                 self.pre_spawned_actor(actor_of(node))
@@ -958,10 +978,11 @@ class Planner:
         finally:
             self.active_events.remove(node)
 
-    def hand_event(self, group: str, target_npc: int | None = None) -> None:
-        rows = self.g.by_group.get(group, [])
-        if rows:
-            self.faction_requirements(rows[0])
+    def hand_event(self, group: str, target_npc: int | None = None,
+                   *, resolve: bool = True) -> None:
+        rows = self.g.group_rows({"group": group})
+        if rows and resolve:
+            self.action_requirements({"group": group})
         ins = list(
             dict.fromkeys(
                 iid
@@ -983,6 +1004,7 @@ class Planner:
                 payload=tuple(ins),
                 group=group,
             )
+        self.action_sets({"group": group})
         # Spawn edges often have `from=group` but no `group` property.
         # Index both shapes rather than relying on by_group alone.
         for r in self.g.by_from.get(group, []):
