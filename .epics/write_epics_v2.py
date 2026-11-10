@@ -5,7 +5,7 @@ Required inputs: a quest_graph.jsonl and a class name. Uses the EQEmu data
 caches for missing loot, merchants, and tradeskill sources. No prior walkthroughs
 or v1/v2 renderer.
 
-    python write_epics_v3.py --graph quest_graph.jsonl --class cleric --out /tmp/epics
+    python epic_writer_v2.py --graph quest_graph.jsonl --class cleric --out /tmp/epics
 
 The generator deliberately distinguishes graph-proven steps from unresolved
 prerequisites. It does not treat all dialogue at an NPC as a quest route.
@@ -103,6 +103,7 @@ class Graph:
         self.actor_spawns: dict[str, list[dict]] = defaultdict(list)
         self.numeric_dialogues: dict[str, list[dict]] = defaultdict(list)
         self.flag_setters: dict[str, list[dict]] = defaultdict(list)
+        self.faction_gains: dict[str, list[dict]] = defaultdict(list)
         with graph.open(encoding='utf-8') as f:
             for line in f:
                 if not line.strip():
@@ -141,6 +142,8 @@ class Graph:
                         self.recipes[src].append(row)
                     if rel == 'sets' and row.get('flag'):
                         self.flag_setters[str(row['flag'])].append(row)
+                    if rel == 'sets' and row.get('faction') is not None:
+                        self.faction_gains[str(row['faction'])].append(row)
                     if rel == 'spawns' and dst.startswith('npc:'):
                         self.spawns[dst].append(row)
                         self.actor_spawns[actor_key(actor_of(src))].append(row)
@@ -300,6 +303,25 @@ class Planner:
         """First-ranked producer, for inspection; acquisition tries alternatives."""
         return next(iter(self.candidates(iid)), None)
 
+    def summon_from_spell(self, iid: int) -> bool:
+        """Prefer an explicit summon spell's acquisition chain over stray loot.
+
+        For example the Magician epic's Orb of Mastery is summoned by
+        Spell: Summon Orb, rewarded by the Master of Elements hand-in.
+        """
+        spells = [source.partition(':')[2] for source in self.g.item_sources.get(iid, ())
+                  if source.startswith('spell:') and source.partition(':')[2]]
+        for spell in spells:
+            scroll = next((sid for sid, name in self.g.items.items()
+                           if name.casefold() == ('Spell: ' + spell).casefold()), None)
+            if scroll is None or scroll == iid:
+                continue
+            self.acquire(scroll)
+            self.put(f'summon-spell:{iid}:{scroll}',
+                     f'Learn {self.g.name(scroll)} and cast "{spell}" to summon {self.g.name(iid)}.')
+            return True
+        return False
+
     def acquire(self, iid: int) -> None:
         if iid in self.done_items:
             return
@@ -307,6 +329,11 @@ class Planner:
             raise AcquisitionCycle(self.g.name(iid))
         self.active_items.add(iid)
         try:
+            # A named summoning spell is a causally connected acquisition
+            # route; incidental loot-table drops are not the epic quest chain.
+            if self.summon_from_spell(iid):
+                self.done_items.add(iid)
+                return
             options = self.candidates(iid)
             if not options:
                 self.catalog_acquire(iid)
@@ -486,6 +513,37 @@ class Planner:
                                    if (x := item_id(r.get('to', ''))) is not None and x not in seen)
         return False
 
+    def faction_requirements(self, row: dict) -> None:
+        """Explain explicit faction gates without pretending a single gain meets them.
+
+        The graph has threshold checks and individual faction gains, but does
+        not carry the player's current faction or repeat counts. Keep these
+        requirements visible rather than declaring them acquired.
+        """
+        requirements = [(str(r['faction']), str(r.get('at') or 'set'))
+                        for r in self.g.group_rows(row)
+                        if r.get('rel') == 'needs' and r.get('faction') is not None]
+        for faction, at in dict.fromkeys(requirements):
+            key = f'faction-need:{faction}:{at}'
+            sources = self.g.faction_gains.get(faction, ())
+            # Individual quest events grant faction, but neither their total
+            # repetitions nor the starting standing is proven by this graph.
+            actionable = sorted((r for r in sources if '#hand:' in str(r.get('from') or '')),
+                                key=lambda r: str(r.get('from') or ''))
+            examples = []
+            for gain in actionable[:3]:
+                group = str(gain.get('group') or gain.get('from') or '')
+                inputs = self.g.inputs(gain)
+                if inputs:
+                    items = ' + '.join(self.g.name(x) for x in inputs)
+                    examples.append(f'{label(actor_of(group))}: hand {items} (faction delta {gain.get("value", "?")})')
+            details = (' Graph-supported ways to gain this faction include: '
+                       + '; '.join(examples) + '.' if examples else '')
+            self.put(key,
+                     f'**Faction prerequisite:** `{faction}` must satisfy `{at}` '
+                     f'before the following action. Faction progress is not automatically verified.'
+                     + details)
+
     def giver(self, row: dict, iid: int) -> None:
         src = str(row.get('from') or '')
         group = str(row.get('group') or src)
@@ -501,9 +559,9 @@ class Planner:
         for flag in flags:
             conditions = [str(r.get('at') or 'set') for r in self.g.group_rows(row)
                           if r.get('rel') == 'needs' and r.get('flag') == flag]
-            # The graph may record both a precise comparison and a generic "set".
             at = next((condition for condition in conditions if condition != 'set'), 'set')
             self.flag(flag, at)
+        self.faction_requirements(row)
         actor = actor_of(src)
         if ins:
             rendered = ' + '.join(self.g.name(x) for x in ins)
@@ -524,11 +582,12 @@ class Planner:
         state = (name, at)
         if state in self.done_flags:
             return
-        if state in self.active_flags:
-            self.errors.append(f'Quest flag cycle `{name}` {at}')
-            return
         if at == 'unset':
             return
+        if state in self.active_flags:
+            # A setter may itself require the flag it purports to establish.
+            # Reject this acquisition route so the caller can try alternatives.
+            raise AcquisitionCycle(f'quest flag `{name}` {at}')
         self.active_flags.add(state)
         try:
             setters = self.g.flag_setters.get(name, [])
@@ -546,31 +605,56 @@ class Planner:
             if not setters:
                 self.errors.append(f'No graph setter for `{name}` {at}')
                 return
-            # Prefer an actionable hand-in over an unqualified flag mutation.
-            row = min(setters, key=lambda r: (
+            # A flag can have several setters. The first one may lead back to
+            # the item we're currently acquiring; try the others before failing.
+            setters = sorted(setters, key=lambda r: (
                 int(r['value']) if match and op in ('>=', '>') else 0,
                 0 if '#hand:' in str(r.get('from', '')) else
                 1 if '#' in str(r.get('from', '')) else 2,
-                str(r.get('from', ''))))
-            src = str(row.get('from') or '')
-            if '#hand:' in src:
-                self.hand_event(src)
-            elif '#recipe:' in src:
-                recipe_id = 'recipe:' + src.rsplit('#recipe:', 1)[1]
-                for rr in self.g.recipes.get(recipe_id, []):
-                    if rr.get('rel') == 'consumes':
-                        iid = item_id(rr.get('to', ''))
-                        if iid is not None:
-                            self.acquire(iid)
-                self.put('flag:'+src, f'Combine recipe {recipe_id} to set `{name}` to `{row.get("value")}`.')
-            else:
-                word = src.rsplit('#', 1)[-1]
-                if word:
-                    self.put('flag:'+src, f'{label(actor_of(src))}, say "{word.title()}". Sets `{name}` to `{row.get("value")}`.',
-                             actor=actor_of(src), action='say', utterance=word)
-                else:
-                    self.errors.append(f'Cannot execute setter for `{name}` at `{src}`')
-            self.done_flags.add(state)
+                str(r.get('from', ''))
+            ))
+            
+            for row in setters:
+                mark = len(self.steps)
+                original_steps = [(step, step.text, step.payload) for step in self.steps]
+                emitted = self.emitted.copy()
+                done = self.done_items.copy()
+                events = self.active_events.copy()
+                used = self.used_edges.copy()
+                done_flags = self.done_flags.copy()
+                errors_len = len(self.errors)
+                src = str(row.get('from') or '')
+                try:
+                    if '#hand:' in src:
+                        self.hand_event(src)
+                    elif '#recipe:' in src:
+                        recipe_id = 'recipe:' + src.rsplit('#recipe:', 1)[1]
+                        for rr in self.g.recipes.get(recipe_id, []):
+                            if rr.get('rel') == 'consumes':
+                                iid = item_id(rr.get('to', ''))
+                                if iid is not None:
+                                    self.acquire(iid)
+                        self.put('flag:'+src, f'Combine recipe {recipe_id} to set `{name}` to `{row.get("value")}`.')
+                    else:
+                        word = src.rsplit('#', 1)[-1]
+                        if word:
+                            self.put('flag:'+src, f'{label(actor_of(src))}, say "{word.title()}". Sets `{name}` to `{row.get("value")}`.',
+                                     actor=actor_of(src), action='say', utterance=word)
+                        else:
+                            self.errors.append(f'Cannot execute setter for `{name}` at `{src}`')
+                    self.done_flags.add(state)
+                    return
+                except AcquisitionCycle:
+                    del self.steps[mark:]
+                    for step, text, payload in original_steps:
+                        step.text, step.payload = text, payload
+                    self.emitted = emitted
+                    self.done_items = done
+                    self.active_events = events
+                    self.used_edges = used
+                    self.done_flags = done_flags
+                    del self.errors[errors_len:]
+            raise AcquisitionCycle(f'quest flag `{name}` {at}: all setters are cyclic')
         finally:
             self.active_flags.remove(state)
 
@@ -651,6 +735,8 @@ class Planner:
 
     def hand_event(self, group: str, target_npc: int | None = None) -> None:
         rows = self.g.by_group.get(group, [])
+        if rows:
+            self.faction_requirements(rows[0])
         ins = list(dict.fromkeys(iid for r in rows if r.get('rel') == 'receives'
                                  if (iid := item_id(r.get('to', ''))) is not None))
         for x in ins:
@@ -877,8 +963,14 @@ def render(g: Graph, class_name: str, catalog: AcquisitionCatalog) -> str:
             # A loot action with the reward's item ID is equally verified.
             if not any(str(reward) in step.text and (
                 'Gives ' in step.text or 'Produces ' in step.text or
-                step.key.startswith(('kill-loot:', 'catalog-drop:', 'loot:',
-                                     'item-source:loot:', 'item-source:spell:'))
+                step.key.startswith((
+                    'kill-loot:', 
+                    'catalog-drop:', 
+                    'loot:',
+                    'item-source:loot:', 
+                    'item-source:spell:',
+                    'summon-spell:',
+                ))
             ) for step in steps):
                 out.append(f'**Unverified final reward:** {g.name(reward)}')
             out.append('')

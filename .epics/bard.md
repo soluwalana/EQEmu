@@ -78,7 +78,8 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
     - event_item NPC say: Now, do you want to gather the next pieces for me?
 27. Loot "White Dragon Scales" (11602) from "Lady Vox" (NPC 73057) in `permafrost`. Drop cache: 42.8346% chance per kill.
 28. Loot "Red Dragon Scales" (11622) from "Lord Nagafen" (NPC 32040) in `soldungb`. Drop cache: 36.408% chance per kill.
-29. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
+29. **Faction prerequisite:** `primary` must satisfy `<=4` before the following action. Faction progress is not automatically verified.
+30. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
     - Player: "collect the gnome profit"
       - NPC say: Take this key. Don't lose it!! You will need to use it on a metal rat called a scrubber. They are all over Ak'Anon. You must find the one that responds to the number, '628'. If it responds, use the key on it. It will hand over a bag with the 'gnome take'. Return it to me. Get moving!!
         - Reply guard: `($faction <= 4)`
@@ -88,35 +89,35 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
         - Reply guard: ``
       - Condition: `(($text=~/collect the gnome profit/i))`
       - Linked from "run to the gnome city" (explicit prompt).
-30. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
+31. akanon/"Clockwork Scrubber", hand "Scrubber Key" (12164). Gives "Gnome Take" (12167).
     - event_trade NPC emote: .wizz.click.628.
       - Event guard: `(miner628 == 1 and item_lib.check_turn_in(e.trade, {item1 = 12164}))`
-31. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
+32. kaladimb/"Jeet", hand "Gnome Take" (12167). Gives "Small Piece of Ore" (10500).
     - event_item NPC say: What is all this junk!! That blasted tin rat is supposed to be heisting expensive goods from rich gnomes - not all this garbage!! Here. This is your cut of this junk.
       - Event guard: `(($faction <= 4) && (plugin::check_handin(\%itemcount, 12167 => 1)))`
-32. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+33. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
     - Player: "battle the undead"
       - NPC say: Then you shall venture to Toxxulia Forest. There has been an increase in skeleton sightings lately. I do not know their origin, but I believe that your efforts will reduce their numbers! Take this box. Return it to me when you have filled it with the bones of these undead creatures and combined it. May Quellious' light guide you.
       - Condition: `(e.message:findi("battle the undead"))`
       - Linked from "new acolyte of peace" (explicit prompt).
-33. Loot "Useless Cloth Cap" (13894) from "a kobold scout" (NPC 38035) in `tox`. Drop cache: 20% chance per kill.
-34. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-35. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). Requires Remove Traps.
-36. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+34. Loot "Useless Cloth Cap" (13894) from "a kobold scout" (NPC 38035) in `tox`. Drop cache: 20% chance per kill.
+35. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+36. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). Requires Remove Traps.
+37. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
     - event_trade NPC say: You have done well. Let it be known to all that you fight for the Rainkeeper. Go and continue the battle.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 13882}))`
-37. Combine in appropriate tradeskill container: "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905). Requires Blacksmithing.
-38. steamfont/"Forpar Fizfla", hand "White Dragon Scales" (11602) + "Red Dragon Scales" (11622) + "Metal Bits" (16905). Gives "Mystical Lute Body" (20536).
+38. Combine in appropriate tradeskill container: "Small Piece of Ore" (10500), "Water Flask" (13006). Produces "Metal Bits" (16905). Requires Blacksmithing.
+39. steamfont/"Forpar Fizfla", hand "White Dragon Scales" (11602) + "Red Dragon Scales" (11622) + "Metal Bits" (16905). Gives "Mystical Lute Body" (20536).
     - event_item NPC say: Wooooooo! You are doing a wonderful job, $name. I wish I could go out and gather these things myself.' Forpar sits back down at his desk and pulls several very strange looking tools out. Eventually he looks up at you and says, 'The body is done! Only one more piece to go!
       - Event guard: `(plugin::check_handin(\%itemcount, 11602 => 1, 11622 => 1, 16905 => 1))`
-39. Spawns "Trakanon" (npc:89181) via `sebilis/an undead bard#event_death_complete`.
-40. Kill "Trakanon" (NPC 89181) in `sebilis` and loot "Undead Dragongut Strings" (20526).
-41. steamfont/"Forpar Fizfla", hand "Mystical Lute Head" (20535) + "Mystical Lute Body" (20536) + "Undead Dragongut Strings" (20526). Gives "Mystical Lute" (20538).
+40. Spawns "Trakanon" (npc:89181) via `sebilis/an undead bard#event_death_complete`.
+41. Kill "Trakanon" (NPC 89181) in `sebilis` and loot "Undead Dragongut Strings" (20526).
+42. steamfont/"Forpar Fizfla", hand "Mystical Lute Head" (20535) + "Mystical Lute Body" (20536) + "Undead Dragongut Strings" (20526). Gives "Mystical Lute" (20538).
     - event_item NPC say: Goodness! I can hardly contain myself! This will be my greatest creation ever!
       - Event guard: `(plugin::check_handin(\%itemcount, 20535 => 1, 20536 => 1, 20526 => 1))`
     - event_item NPC emote: sits down, slides the lute head into place and screws it together. After a few minutes, he begins to string the lute with the gut strings of the poison dragon. A wonderful sound fills the air as he strums the lute once and hands it to you.
     - event_item NPC say: I hope you find a good use for that! I bet you could play it from the mountaintops and the people below would hear you. Thank you, $name, for making my lifelong dream come true!
-42. dreadlands/"Baldric Slezaf", hand "Maestro's Symphony Page 24 Top" (20376) + "Maestro's Symphony Page 24 Bottom" (20383) + "Maestro's Symphony Page 25" (20377) + "Mystical Lute" (20538). Gives "Singing Short Sword" (20542).
+43. dreadlands/"Baldric Slezaf", hand "Maestro's Symphony Page 24 Top" (20376) + "Maestro's Symphony Page 24 Bottom" (20383) + "Maestro's Symphony Page 25" (20377) + "Mystical Lute" (20538). Gives "Singing Short Sword" (20542).
     - event_item NPC emote: looks shocked as you hand him the pages and the mystical lute. 'I will put on a symphony the likes of which the gods have never seen. Thank you so much, $name. Please take this sword as a token of my gratitude.
       - Event guard: `(plugin::check_handin(\%itemcount, 20376 => 1, 20383 => 1, 20377 => 1, 20538 => 1))`
 
@@ -137,37 +138,38 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 5. Kill "Metala Von Korach" (NPC 207084) in `potorment` and loot "Rusted Bile Etched Blade" (77630).
 6. Loot "Crest of Rizlona" (77626) from "a shadow thief".
 7. Loot "Dragorn Blood" (77639) from "a dragorn serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.5158% chance per kill.
-8. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium" or "Greater Mass Enchant Velium" or "Mass Enchant Velium".
-9. Summon "Cloudy Diamond of Air" (29989) by casting "Imbue Air".
-10. Forage "Wind Dragon Crystal" (12783) in `skyfire`.
-11. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Cloudy Diamond of Air" (29989), "Wind Dragon Crystal" (12783). Produces "Wind Dragon Prism" (77618). Requires Jewelry Making.
-12. Summon "Red Diamond of Fire" (29986) by casting "Imbue Fire".
-13. Forage "Fire Dragon Crystal" (12487) in `skyfire`.
-14. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Red Diamond of Fire" (29986), "Fire Dragon Crystal" (12487). Produces "Fire Dragon Prism" (77619). Requires Jewelry Making.
-15. Summon "Aqua Diamond of Water" (29987) by casting "Imbue Water".
-16. Forage "Ice Dragon Crystal" (12781) in `skyfire`.
-17. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Aqua Diamond of Water" (29987), "Ice Dragon Crystal" (12781). Produces "Water Dragon Prism" (77620). Requires Jewelry Making.
-18. Summon "Brown Diamond of Earth" (29988) by casting "Imbue Earth".
-19. Forage "Earth Dragon Crystal" (12782) in `skyfire`.
-20. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Brown Diamond of Earth" (29988), "Earth Dragon Crystal" (12782). Produces "Earth Dragon Prism" (77621). Requires Jewelry Making.
-21. Summon "Green Diamond of Disease" (30118) by casting "Imbue Disease".
-22. Spawns "a swamp dragon" (npc:83249) via `swampofnohope/a dire leech#event_hp`.
-23. Kill "a swamp dragon" (NPC 83249) in `swampofnohope` and loot "Swamp Dragon Crystal" (77614).
-24. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Green Diamond of Disease" (30118), "Swamp Dragon Crystal" (77614). Produces "Swamp Dragon Prism" (77622). Requires Jewelry Making.
-25. Summon "Gray Diamond of Storms" (29991) by casting "Imbue Storm".
-26. Spawns "a plains dragon" (npc:13130) via `northkarana/a dire griffon#event_hp`.
-27. Kill "a plains dragon" (NPC 13130) in `northkarana` and loot "Plains Dragon Crystal" (77615).
-28. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Gray Diamond of Storms" (29991), "Plains Dragon Crystal" (77615). Produces "Plains Dragon Prism" (77623). Requires Jewelry Making.
-29. Summon "Yellow Diamond of Valor" (30489) by casting "Imbue Valor".
-30. Spawns "a forest dragon" (npc:181224) via `jaggedpine/a dire kodiak#event_hp`.
-31. Kill "a forest dragon" (NPC 181224) in `jaggedpine` and loot "Forest Dragon Crystal" (77616).
-32. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Yellow Diamond of Valor" (30489), "Forest Dragon Crystal" (77616). Produces "Forest Dragon Prism" (77624). Requires Jewelry Making.
-33. Summon "White Diamond of Justice" (29494) by casting "Imbue Justice".
-34. Spawns "a mountain dragon" (npc:100227) via `stonebrunt/a dire panda#event_hp`.
-35. Kill "a mountain dragon" (NPC 100227) in `stonebrunt` and loot "Mountain Dragon Crystal" (77617).
-36. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "White Diamond of Justice" (29494), "Mountain Dragon Crystal" (77617). Produces "Mountain Dragon Prism" (77625). Requires Jewelry Making.
-37. Combine in "Crest of Rizlona" (77626): "Wind Dragon Prism" (77618), "Fire Dragon Prism" (77619), "Water Dragon Prism" (77620), "Earth Dragon Prism" (77621), "Swamp Dragon Prism" (77622), "Plains Dragon Prism" (77623), "Forest Dragon Prism" (77624), "Mountain Dragon Prism" (77625). Produces "Draconic Prism" (77628). Requires Remove Traps.
-38. Combine in "Rusted Bile Etched Blade" (77630): "Draconic Prism" (77628). Produces "Prismatic Dragon Blade" (77631). Requires Remove Traps.
+8. Buy "Spell: Enchant Velium" (15797) from "Nimren Stonecutter" (NPC 115170) in `thurgadina`. Base price: 16,089 copper.
+9. Learn "Spell: Enchant Velium" (15797) and cast "Enchant Velium" to summon "Enchanted Velium Bar" (22099).
+10. Summon "Cloudy Diamond of Air" (29989) by casting "Imbue Air".
+11. Forage "Wind Dragon Crystal" (12783) in `skyfire`.
+12. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Cloudy Diamond of Air" (29989), "Wind Dragon Crystal" (12783). Produces "Wind Dragon Prism" (77618). Requires Jewelry Making.
+13. Summon "Red Diamond of Fire" (29986) by casting "Imbue Fire".
+14. Forage "Fire Dragon Crystal" (12487) in `skyfire`.
+15. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Red Diamond of Fire" (29986), "Fire Dragon Crystal" (12487). Produces "Fire Dragon Prism" (77619). Requires Jewelry Making.
+16. Summon "Aqua Diamond of Water" (29987) by casting "Imbue Water".
+17. Forage "Ice Dragon Crystal" (12781) in `skyfire`.
+18. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Aqua Diamond of Water" (29987), "Ice Dragon Crystal" (12781). Produces "Water Dragon Prism" (77620). Requires Jewelry Making.
+19. Summon "Brown Diamond of Earth" (29988) by casting "Imbue Earth".
+20. Forage "Earth Dragon Crystal" (12782) in `skyfire`.
+21. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Brown Diamond of Earth" (29988), "Earth Dragon Crystal" (12782). Produces "Earth Dragon Prism" (77621). Requires Jewelry Making.
+22. Summon "Green Diamond of Disease" (30118) by casting "Imbue Disease".
+23. Spawns "a swamp dragon" (npc:83249) via `swampofnohope/a dire leech#event_hp`.
+24. Kill "a swamp dragon" (NPC 83249) in `swampofnohope` and loot "Swamp Dragon Crystal" (77614).
+25. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Green Diamond of Disease" (30118), "Swamp Dragon Crystal" (77614). Produces "Swamp Dragon Prism" (77622). Requires Jewelry Making.
+26. Summon "Gray Diamond of Storms" (29991) by casting "Imbue Storm".
+27. Spawns "a plains dragon" (npc:13130) via `northkarana/a dire griffon#event_hp`.
+28. Kill "a plains dragon" (NPC 13130) in `northkarana` and loot "Plains Dragon Crystal" (77615).
+29. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Gray Diamond of Storms" (29991), "Plains Dragon Crystal" (77615). Produces "Plains Dragon Prism" (77623). Requires Jewelry Making.
+30. Summon "Yellow Diamond of Valor" (30489) by casting "Imbue Valor".
+31. Spawns "a forest dragon" (npc:181224) via `jaggedpine/a dire kodiak#event_hp`.
+32. Kill "a forest dragon" (NPC 181224) in `jaggedpine` and loot "Forest Dragon Crystal" (77616).
+33. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Yellow Diamond of Valor" (30489), "Forest Dragon Crystal" (77616). Produces "Forest Dragon Prism" (77624). Requires Jewelry Making.
+34. Summon "White Diamond of Justice" (29494) by casting "Imbue Justice".
+35. Spawns "a mountain dragon" (npc:100227) via `stonebrunt/a dire panda#event_hp`.
+36. Kill "a mountain dragon" (NPC 100227) in `stonebrunt` and loot "Mountain Dragon Crystal" (77617).
+37. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "White Diamond of Justice" (29494), "Mountain Dragon Crystal" (77617). Produces "Mountain Dragon Prism" (77625). Requires Jewelry Making.
+38. Combine in "Crest of Rizlona" (77626): "Wind Dragon Prism" (77618), "Fire Dragon Prism" (77619), "Water Dragon Prism" (77620), "Earth Dragon Prism" (77621), "Swamp Dragon Prism" (77622), "Plains Dragon Prism" (77623), "Forest Dragon Prism" (77624), "Mountain Dragon Prism" (77625). Produces "Draconic Prism" (77628). Requires Remove Traps.
+39. Combine in "Rusted Bile Etched Blade" (77630): "Draconic Prism" (77628). Produces "Prismatic Dragon Blade" (77631). Requires Remove Traps.
 
 ## Epic 2.0
 

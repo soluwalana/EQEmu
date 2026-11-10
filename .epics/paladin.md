@@ -343,41 +343,70 @@ Revisit those instructions if another copy of a consumed item is needed.
 23. erudnext/"Reklon Gnallen", hand "Iron Ration" (13005) + "Mead" (13008). Gives "Erudin Prayer Bead" (69965).
     - event_trade NPC say: That was excellent . Take this gem and bring peace to Kemik. I don't want to hold you up any longer as you have further to travel on your journey. You should head to the city that sits before giant windmills.
       - Event guard: `(qglobals["paladin_epic"] == "9" and item_lib.check_turn_in(e.trade, {item1 = 13005,item2 = 13008}))`
-24. Summon "Quiver of Marr" (17307) by casting "Quiver of Marr".
-25. rathemtn/"Shin Master Grubbus", hand "Quiver of Marr" (17307). Gives "Gukta Prayer Bead" (69964).
+24. gunthak/"Researcher Alvarik", say "Magician". Gives "Arch Magus Grimoire" (17653).
+    - Player: "magician"
+      - NPC say: So you too study summoning! Isn't it the most fascinating of the four realms of magic? Well I won't keep you, here is the Arch Magus Grimoire. Good luck to you in your studies.
+        - Reply guard: `(($class eq "Magician") && ($client->GetSkill(58) > 100))`
+      - Condition: `($text=~/magician/i)`
+      - Linked from "wizard" (sequence only; unverified).
+25. Loot "Greater Lightstone" (10400) from "a windwillow wisp" (NPC 397070) in `mesa`. Drop cache: 32.7976% chance per kill.
+26. northkarana/"Mrysila", hand "Greater Lightstone" (10400). Gives "Concordance of Research" (17504).
+    - event_trade NPC say: A greater lightstone? Thank you very much. Here is a 'Concordance of Research' for you.
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 10400}))`
+27. Kill acrylia/"A Spell Jammer".
+28. Kill acrylia/"Ward Of Death".
+29. Kill acrylia/"Ward Of Life".
+30. Spawns "needs heading validation" (npc:154147) via `acrylia/wdtrpmn#signal:1`.
+31. Spawns "Ward of death" (npc:154155) via `acrylia/wdtrpmn#signal:1`.
+32. Spawns "Ward of Life -- needs heading validation" (npc:154154) via `acrylia/wdtrpmn#signal:1`.
+33. Spawns "EvInvis" (npc:154095) via `acrylia/wdtrpmn#signal:1`.
+34. Spawns "RaidMan" (npc:154122) via `acrylia/wdtrpmn#signal:1`.
+35. Spawns "grimling" (npc:154129) via `acrylia/evinvis#event_spawn`.
+36. Kill "grimling" (NPC 154129) in `acrylia` and loot "Pearl" (10024).
+37. Buy "Piece of Parchment" (13063) from "Hanlore Escaval" (NPC 1052) in `qeynos`. Base price: 100 copper.
+38. Loot "Undead Froglok Tongue" (16532) from "BoneCracker" (NPC 44095) in `najena`. Drop cache: 25% chance per kill.
+39. Loot "Griffon Feathers" (16538) from "Callowwing" (NPC 13115) in `northkarana`. Drop cache: 34% chance per kill.
+40. Combine in "Concordance of Research" (17504): "Pearl" (10024), "Piece of Parchment" (13063), "Undead Froglok Tongue" (16532), "Griffon Feathers" (16538). Produces "Quill" (13051). Requires Research.
+41. Kill citymist/"90000".
+42. Spawns "Neh'Ashir" (npc:90184) via `citymist/90000#event_death_complete`.
+43. Kill "Neh'Ashir" (NPC 90184) in `citymist` and loot "Coin of Xev" (65335).
+44. Kill citymist/"A Black Reaver".
+45. Spawns "a black reaver" (npc:90004) via `citymist/a black reaver#event_death_complete`.
+46. Kill "a black reaver" (NPC 90004) in `citymist` and loot "Words of Domination" (65348).
+47. Combine in "Arch Magus Grimoire" (17653): "Quill" (13051), "Piece of Parchment" (13063), "Coin of Xev" (65335), "Words of Domination" (65348). Produces "Spell: Quiver of Marr" (19354). Requires Research.
+48. Learn "Spell: Quiver of Marr" (19354) and cast "Quiver of Marr" to summon "Quiver of Marr" (17307).
+49. rathemtn/"Shin Master Grubbus", hand "Quiver of Marr" (17307). Gives "Gukta Prayer Bead" (69964).
     - event_item NPC say: You are quite the noble Paladin $name. Take this gem and see if it fits into that set of prayer beads. If my memory is correct I believe you will find a similar gem on Odus. You should head that way to continue your journey. Be well $name.
       - Event guard: `($client->GetGlobal("paladin_epic")==9 && plugin::check_handin(\%itemcount, 17307 => 1))`
-26. Buy "Barley" (16590) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 15 copper.
-27. Shared prerequisite: see ["Fiery Defender" (10099)](#epic-item-10099), step 23. Follow those instructions again if the required item was consumed or another copy is needed.
-28. Shared prerequisite: see ["Fiery Defender" (10099)](#epic-item-10099), step 25. Follow those instructions again if the required item was consumed or another copy is needed.
-29. Buy "Cork" (16851) from "Rylin Coil" (NPC 55027) in `akanon`. Base price: 1 copper.
-30. Shared prerequisite: see ["Fiery Defender" (10099)](#epic-item-10099), steps 17–21. Follow those instructions again if the required item was consumed or another copy is needed.
-31. Buy "Firing Sheet" (16906) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 10 copper.
-32. Loot "Small Block of Clay" (16900) from "a muddite recordkeeper" (NPC 16003) in `beholder`. Drop cache: 5.2127% chance per kill.
-33. Combine in appropriate tradeskill container: "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery.
-34. Combine in appropriate tradeskill container: "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery.
-35. Buy "Large Bowl Sketch" (16963) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 760 copper.
-36. Combine in appropriate tradeskill container: "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery.
-37. Combine in appropriate tradeskill container: "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery.
-38. Buy "Concentrated Celestial Solvent" (96952) from "Gilliad Coldheart" (NPC 121050) in `crystal`. Base price: 372 copper.
-39. Kill citymist/"A Black Reaver".
-40. Spawns "a wraith" (npc:90064) via `citymist/a black reaver#event_death_complete`.
-41. Kill "a wraith" (NPC 90064) in `citymist` and loot "The Scent of Marr" (11802).
-42. Combine in "Mixing Bowl" (17906): "Concentrated Celestial Solvent" (96952), "The Scent of Marr" (11802). Produces "Celestial Essence" (9650). Requires Baking.
-43. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Celestial Essence" (9650). Produces "Purified Water" (12607). Requires Brewing.
-44. Forage "Sand Verbena" (65582) in `taka` or `takb` or `takc` or `takd` or `take` or `takf` or `takg` or `takh` or `taki` or `takj`.
-45. Combine in appropriate tradeskill container: "Barley" (16590), "Bottle" (16598), "Cork" (16851), "Hops" (16591), "Purified Water" (12607), "Sand Verbena" (65582), "Yeast" (16596). Produces "Bottle of Double Brewed Double Dry Stout" (51157). Requires Brewing.
-46. kaladimb/"Datur Nightseer", hand "Bottle of Double Brewed Double Dry Stout" (51157). Gives "Kaladim Prayer Bead" (69963).
+50. Buy "Barley" (16590) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 15 copper.
+51. Shared prerequisite: see ["Fiery Defender" (10099)](#epic-item-10099), step 23. Follow those instructions again if the required item was consumed or another copy is needed.
+52. Shared prerequisite: see ["Fiery Defender" (10099)](#epic-item-10099), step 25. Follow those instructions again if the required item was consumed or another copy is needed.
+53. Buy "Cork" (16851) from "Rylin Coil" (NPC 55027) in `akanon`. Base price: 1 copper.
+54. Shared prerequisite: see ["Fiery Defender" (10099)](#epic-item-10099), steps 17–21. Follow those instructions again if the required item was consumed or another copy is needed.
+55. Buy "Firing Sheet" (16906) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 10 copper.
+56. Loot "Small Block of Clay" (16900) from "a muddite recordkeeper" (NPC 16003) in `beholder`. Drop cache: 5.2127% chance per kill.
+57. Combine in appropriate tradeskill container: "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery.
+58. Combine in appropriate tradeskill container: "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery.
+59. Buy "Large Bowl Sketch" (16963) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 760 copper.
+60. Combine in appropriate tradeskill container: "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery.
+61. Combine in appropriate tradeskill container: "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery.
+62. Buy "Concentrated Celestial Solvent" (96952) from "Gilliad Coldheart" (NPC 121050) in `crystal`. Base price: 372 copper.
+63. Kill "a wraith" (NPC 90064) in `citymist` and loot "The Scent of Marr" (11802).
+64. Combine in "Mixing Bowl" (17906): "Concentrated Celestial Solvent" (96952), "The Scent of Marr" (11802). Produces "Celestial Essence" (9650). Requires Baking.
+65. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Celestial Essence" (9650). Produces "Purified Water" (12607). Requires Brewing.
+66. Forage "Sand Verbena" (65582) in `taka` or `takb` or `takc` or `takd` or `take` or `takf` or `takg` or `takh` or `taki` or `takj`.
+67. Combine in appropriate tradeskill container: "Barley" (16590), "Bottle" (16598), "Cork" (16851), "Hops" (16591), "Purified Water" (12607), "Sand Verbena" (65582), "Yeast" (16596). Produces "Bottle of Double Brewed Double Dry Stout" (51157). Requires Brewing.
+68. kaladimb/"Datur Nightseer", hand "Bottle of Double Brewed Double Dry Stout" (51157). Gives "Kaladim Prayer Bead" (69963).
     - event_item NPC say: Now that is a tasty beverage!! It sure is strong too for this tiny dwarf! I guess I should give you some kind of thanks. Take this jewel that I found and see if it will help your friend Kemik. I wish I had the second jewel that was with it. You will find that one with a young but brave froglok.
       - Event guard: `($client->GetGlobal("paladin_epic")==9 && plugin::check_handin(\%itemcount, 51157 => 1))`
-47. felwithea/"General Jyleel", say "Hand:Platinum:1000". Gives "Felwithe Prayer Bead" (69962).
-48. Collect "Freeport Prayer Bead" (69961) at `freeportwest/arem ulosia#gem`.
-49. qeynos2/"Ziska Ironforge", say "Hand:Platinum:500". Gives "Qeynos Prayer Bead" (69960).
-50. Combine in "Unfilled Set of Prayer Beads" (69968): "Rivervale Prayer Bead" (69967), "Ak`anon Prayer Bead" (69966), "Erudin Prayer Bead" (69965), "Gukta Prayer Bead" (69964), "Kaladim Prayer Bead" (69963), "Felwithe Prayer Bead" (69962), "Freeport Prayer Bead" (69961), "Qeynos Prayer Bead" (69960). Produces "Set of Prayer Beads" (69969). Requires Remove Traps.
-51. dranikhollowsc/"Anetal", hand "Set of Prayer Beads" (69969).
+69. felwithea/"General Jyleel", say "Hand:Platinum:1000". Gives "Felwithe Prayer Bead" (69962).
+70. Collect "Freeport Prayer Bead" (69961) at `freeportwest/arem ulosia#gem`.
+71. qeynos2/"Ziska Ironforge", say "Hand:Platinum:500". Gives "Qeynos Prayer Bead" (69960).
+72. Combine in "Unfilled Set of Prayer Beads" (69968): "Rivervale Prayer Bead" (69967), "Ak`anon Prayer Bead" (69966), "Erudin Prayer Bead" (69965), "Gukta Prayer Bead" (69964), "Kaladim Prayer Bead" (69963), "Felwithe Prayer Bead" (69962), "Freeport Prayer Bead" (69961), "Qeynos Prayer Bead" (69960). Produces "Set of Prayer Beads" (69969). Requires Remove Traps.
+73. dranikhollowsc/"Anetal", hand "Set of Prayer Beads" (69969).
     - event_trade NPC say: Thank you  you are very compassionate. My brother must have sent you! Return to him, and he shall reward you. Goodbye, fair knight.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 69969}))`
-52. natimbi/"Kemik Arulon", say "Hail". Gives "Token of Compassion" (69953).
+74. natimbi/"Kemik Arulon", say "Hail". Gives "Token of Compassion" (69953).
     - Player: "hail"
       - NPC say: ! I hear you have saved my sister Anetal! This is very good news indeed. You are truly a daring and compassionate knight. I do not have much to give you for a reward, but this might be valuable to you in your endeavors. Thank you again , and good luck to you, compassionate knight!
         - Reply guard: `(qglobals["paladin_epic_hollowc"] == "2")`
@@ -387,10 +416,13 @@ Revisit those instructions if another copy of a consumed item is needed.
         - Reply guard: ``
       - Condition: `(qglobals["paladin_epic"] == "9")`
       - Condition: `(e.message:findi("hail"))`
-53. oasis/"Paladin Epic", say "Hail". Gives "Keelee's Brooch" (69982).
+75. oasis/"Paladin Epic", say "Hail". Gives "Keelee's Brooch" (69982).
     - NPC say: ! You are my savior. Thank you very much for saving me. Here is my Brooch, take it as a symbol of friendship from me to you. I need to depart. I still have some collecting to do.
-54. sro/"Instructor Maerceci", hand "Keelee's Brooch" (69982). Gives "Token of Chivalry" (69954).
+76. sro/"Instructor Maerceci", hand "Keelee's Brooch" (69982). Gives "Token of Chivalry" (69954).
     - event_trade NPC say: Oh my, this brooch is from Keelee? You have saved her? That is great news! Thank you so much for your help, chivalrous knight, for without it Keelee would have not been safe. Take this as a token of my appreciation.
       - Event guard: `(e.other:HasItem(69953))`
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 69982}))`
-55. Combine in "Scabbard of the Righteous" (69959): "Token of Loyalty" (69958), "Token of Conviction" (69957), "Token of Cleansing" (69956), "Token of Heroism" (69955), "Token of Chivalry" (69954), "Token of Compassion" (69953), "Redemption" (64031). Produces "Nightbane, Sword of the Valiant" (48147). Requires Remove Traps.
+77. Combine in "Scabbard of the Righteous" (69959): "Token of Loyalty" (69958), "Token of Conviction" (69957), "Token of Cleansing" (69956), "Token of Heroism" (69955), "Token of Chivalry" (69954), "Token of Compassion" (69953), "Redemption" (64031). Produces "Nightbane, Sword of the Valiant" (48147). Requires Remove Traps.
+
+**Unresolved graph dependencies:**
+- Event cycle at `acrylia/wdtrpmn#signal:1`
