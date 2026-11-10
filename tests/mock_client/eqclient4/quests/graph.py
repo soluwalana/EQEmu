@@ -15,6 +15,7 @@ from typing import NotRequired, Sequence, TypedDict
 from eqclient4.data.catalog import Catalog, load_catalog, named_items
 from eqclient4.log import log
 from eqclient4.nav.travel import ensure_zone_graph
+from eqclient4.quests.lua_encounters import analyze_encounters
 from eqclient4.quests.speech_expr import Speech, iter_speech_calls
 
 _SAY = re.compile(
@@ -3401,6 +3402,7 @@ def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
         return graph
     item_ids: set[int] = set()
     scripts: list[tuple[str, str, str]] = []
+    lua_by_zone: dict[str, dict[str, str]] = {}
     for folder in sorted(
         path for path in base.iterdir() if path.is_dir() and path.name not in _SKIP_DIRS
     ):
@@ -3408,7 +3410,9 @@ def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
         for path in _quest_scripts(folder):
             text = path.read_text(encoding="utf-8", errors="replace")
             scripts.append((zone, f"{zone}/{npc_name(path.name, catalog).lower()}", text))
-
+            if path.suffix.lower() == ".lua":
+                lua_by_zone.setdefault(zone, {})[path.relative_to(folder).as_posix()] = text
+            
             graph.dialogues.extend(dialogue_chains(text, path.name, zone))
             nodes = parse_chain(text, path.name, zone)
             if nodes:
@@ -3425,6 +3429,47 @@ def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
                     if zone_id not in known:
                         known.append(zone_id)
     _link_event_causality(graph, scripts, catalog)
+    
+    # Encounter callback effects are not inherently reachable player actions.
+    # Replace speculative loot producers with proven paths through actual SAY,
+    # death, spawn, and loot callbacks. Retain unrelated ordinary graph edges.
+    managed_loot: set[tuple[str, int, int]] = set()
+    managed_origins: set[str] = set()
+    for zone, lua_sources in lua_by_zone.items():
+        analysis = analyze_encounters(zone, lua_sources)
+        if not analysis.owned_files:
+            continue
+        origins = {
+            f"{zone}/{npc_name(Path(filename).name, catalog).lower()}"
+            for filename in analysis.owned_files
+        }
+        managed_origins.update(origins)
+        managed_loot.update(
+            (zone, int(edge["npc"]), int(str(edge["to"]).split(":", 1)[1]))
+            for edge in analysis.edges
+            if edge.get("rel") == "loots" and edge.get("npc")
+        )
+        graph.edges = [
+            edge for edge in graph.edges
+            if not (
+                edge.get("rel") == "loots"
+                and any(
+                    str(edge.get("from", "")).startswith(origin + "#")
+                    or str(edge.get("from", "")) == origin
+                    or str(edge.get("group", "")).startswith(origin + "#")
+                    for origin in origins
+                )
+            )
+        ]
+        for edge in analysis.edges:
+            if edge.get("rel") == "loots" and catalog and edge.get("npc"):
+                name = catalog.npc_names.get(int(edge["npc"]))
+                if name:
+                    edge["name"] = name
+        graph.edges.extend(analysis.edges)
+        for diagnostic in analysis.diagnostics:
+            log.warning("Lua encounter: %s", diagnostic)
+    
     # Event-linked rewards are added after per-file link_script(); include them
     # in the catalog metadata emitted for the graph.
     item_ids.update(
@@ -3433,6 +3478,30 @@ def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
         if str(edge.get("to", "")).startswith("item:")
     )
     _add_spawn_loot(graph, catalog, item_ids)
+    # Catalog loot augmentation runs after encounter analysis and could
+    # reintroduce a phantom drop. Suppress only speculative counterparts.
+    graph.edges = [
+        edge for edge in graph.edges
+        if not (
+            edge.get("rel") == "loots"
+            and not edge.get("reachable")
+            and (
+                any(
+                    str(edge.get("from", "")).startswith(origin + "#")
+                    for origin in managed_origins
+                )
+                or (
+                    edge.get("npc") is not None
+                    and str(edge.get("to", "")).startswith("item:")
+                    and (
+                        str(edge.get("from", "")).split("/", 1)[0],
+                        int(edge["npc"]),
+                        int(str(edge["to"]).split(":", 1)[1]),
+                    ) in managed_loot
+                )
+            )
+        )
+    ]
     _add_recipes(graph, catalog, item_ids)
     ground_zones: dict[int, list[str]] = {}
     spawn_zones: dict[int, list[str]] = {}

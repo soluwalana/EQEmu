@@ -10,8 +10,6 @@ roll: the loot-table probability, then either an independent chance or one
 weighted pick from the list, repeated for the table multiplier.
 """
 
-from __future__ import annotations
-
 import json
 import mmap
 import os
