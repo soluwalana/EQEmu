@@ -78,7 +78,7 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
     - event_item NPC say: Now, do you want to gather the next pieces for me?
 27. Loot "White Dragon Scales" (11602) from "Lady Vox" (NPC 73057) in `permafrost`. Drop cache: 42.8346% chance per kill.
 28. Loot "Red Dragon Scales" (11622) from "Lord Nagafen" (NPC 32040) in `soldungb`. Drop cache: 36.408% chance per kill.
-29. **Faction prerequisite:** `primary` must satisfy `<=4` before the following action. Faction progress is not automatically verified.
+29. **Faction:** `primary` `<=4` required. Progress unverified.
 30. kaladimb/"Jeet", say "Collect The Gnome Profit". Gives "Scrubber Key" (12164).
     - Player: "collect the gnome profit"
       - NPC say: Take this key. Don't lose it!! You will need to use it on a metal rat called a scrubber. They are all over Ak'Anon. You must find the one that responds to the number, '628'. If it responds, use the key on it. It will hand over a bag with the 'gnome take'. Return it to me. Get moving!!

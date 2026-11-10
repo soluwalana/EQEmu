@@ -47,6 +47,7 @@ class EncounterAnalysis:
     diagnostics: list[str] = field(default_factory=list)
     owned_files: set[str] = field(default_factory=set)
     produced_items: set[int] = field(default_factory=set)
+    cleared_npcs: set[int] = field(default_factory=set)
 
 
 # Strip comments without breaking string literals. Keep newlines and positions.
@@ -222,6 +223,29 @@ def _registrations(
                     found.append(Registration(path, event, npc, parts[2], path))
             elif owner_type == 'player' and len(parts) >= 2:
                 found.append(Registration(path, event, None, parts[1], path))
+    # Event registrations frequently appear inside finite pairs()/ipairs()
+    # loops (MPG Corruption registers every class-specific mob this way).
+    # The ordinary expression resolver cannot see the loop's value alias.
+    # Resolve it against the literal collection without executing Lua.
+    clean = _without_comments(code)
+    for loop in re.finditer(
+        r'for\s+\w+\s*,\s*(\w+)\s+in\s+(?:pairs|ipairs)\s*'
+        r'\(\s*(\w+)\s*\)\s+do(.*?)\n\s*end\b', clean, re.S
+    ):
+        var, collection, body = loop.groups()
+        context = dict(scalars)
+        context[var] = f'{collection}[math.random(1,#{collection})]'
+        for call in _calls(body, 'eq.register_npc_event'):
+            parts = _args(call)
+            if parts and parts[0].startswith(('"', "'")):
+                parts = parts[1:]
+            if len(parts) < 3 or not re.fullmatch(r'Event\.\w+', parts[0]):
+                continue
+            for npc in _resolve_ids(parts[1], context, tables):
+                reg = Registration(path, parts[0].split('.', 1)[1].lower(),
+                                   npc, parts[2], path)
+                if reg not in found:
+                    found.append(reg)
     return found
 
 
@@ -627,6 +651,68 @@ def _loot_policies(function: _Function) -> dict[tuple[int, int], tuple[list[str]
     return policies
 
 
+def _wave_protocol(
+    zone: str, path: str, source: str, registrations: list[Registration],
+) -> tuple[int, dict[int, int]] | None:
+    """Detect a counted, signalled wave state machine (not a general Lua evaluator).
+
+    Accept only a single signal receiver, a monotonically incremented kill
+    counter, and literal wave/count comparisons. The thresholds are required
+    for progression; a mere comparison does not make a later wave reachable.
+    """
+    if not re.search(r'\bSpawn_Wave\s*\(\s*this_wave\s*\)', source):
+        return None
+    if not re.search(r'\bthis_wave\s*=\s*this_wave\s*\+\s*1', source):
+        return None
+    if not re.search(r'\bmobs_slain\s*=\s*mobs_slain\s*\+\s*1', source):
+        return None
+    thresholds = {
+        int(wave): int(kills) for wave, kills in re.findall(
+            r'\bthis_wave\s*==\s*(\d+)\s+and\s+mobs_slain\s*==\s*(\d+)',
+            source,
+        )
+    }
+    if not thresholds or sorted(thresholds) != list(range(1, max(thresholds) + 1)):
+        return None
+    # Only the registered SIGNAL owner can advance these counters.
+    definitions = _functions(source)
+    signals = {r.npc for r in registrations if r.event == 'signal'
+               and r.npc is not None and r.callback in definitions
+               and any('mobs_slain' in line for _, line, _ in
+                       definitions[r.callback].statements)}
+    if len(signals) != 1:
+        return None
+    controller = next(iter(signals))
+    # A counter is an encounter death count only when registered mob-death
+    # callbacks actually signal this controller. Otherwise its advancement is
+    # unknown and the wave path must not be presented as established.
+    witnessed = any(
+        r.event == 'death_complete' and r.callback in definitions and
+        any(re.search(r'eq\.signal\s*\(\s*' + str(controller) + r'\s*,', line)
+            for _, line, _ in definitions[r.callback].statements)
+        for r in registrations
+    )
+    if not witnessed:
+        return None
+    return controller, thresholds
+
+
+def _cleared_mobs(source: str, registrations: list[Registration]) -> set[int]:
+    """NPC item lists explicitly wiped on spawn/death invalidate static loot.
+
+    Do not treat ClearItemList on an unrelated player or controller as a
+    reason to suppress other NPC loot tables.
+    """
+    functions = _functions(source)
+    return {
+        int(r.npc) for r in registrations
+        if r.npc is not None and r.event in {'spawn', 'death', 'death_complete'}
+        and r.callback in functions
+        and any(not guards and re.search(r'\be\.self:ClearItemList\s*\(', line)
+                for _number, line, guards in functions[r.callback].statements)
+    }
+
+
 def analyze_encounters(zone: str, scripts: dict[str, str]) -> EncounterAnalysis:
     """Connect registered callbacks only through actionable, demonstrated paths.
 
@@ -644,6 +730,7 @@ def analyze_encounters(zone: str, scripts: dict[str, str]) -> EncounterAnalysis:
             loaded.update(re.findall(r'eq\.load_encounter\s*\(\s*["\']([^"\']+)',
                                      _without_comments(text).lower()))
     callbacks: list[Callback] = []
+    wave_protocols: dict[str, tuple[int, dict[int, int]]] = {}
     for path, content in scripts.items():
         if not path.startswith('encounters/'):
             continue
@@ -653,7 +740,12 @@ def analyze_encounters(zone: str, scripts: dict[str, str]) -> EncounterAnalysis:
         result.owned_files.add(path)
         definitions = _functions(content)
         symbols = _symbols(content)
-        for reg in _registrations(path, content, symbols):
+        registrations = _registrations(path, content, symbols)
+        result.cleared_npcs.update(_cleared_mobs(content, registrations))
+        protocol = _wave_protocol(zone, path, content, registrations)
+        if protocol:
+            wave_protocols[path] = protocol
+        for reg in registrations:
             fn = definitions.get(reg.callback)
             if fn is None:
                 variants = [name for name in definitions if name.lower() == reg.callback.lower()]
@@ -713,6 +805,31 @@ def analyze_encounters(zone: str, scripts: dict[str, str]) -> EncounterAnalysis:
             connect(source, node, npc=npc, action='say', keyword=keyword)
             roots.add(source)
 
+    # A counted wave is a sequence of *gated* stages, not a union of all
+    # Spawn_Wave() expansions from the SAY callback. The kill counts refer to
+    # qualifying EVENT_DEATH_COMPLETE signals, not arbitrary player kills.
+    for path, (controller, thresholds) in wave_protocols.items():
+        say_callbacks = [node for node, cb in by_callback.items()
+                         if cb.registration.source == path
+                         and cb.registration.npc == controller
+                         and cb.registration.event.startswith('say:')
+                         and any('Spawn_Wave' in line for _n, line, _g in
+                                 _functions(scripts[path]).get(cb.registration.callback,
+                                 _Function('', ())).statements)]
+        if not say_callbacks:
+            continue
+        for say in say_callbacks:
+            connect(say, f'{zone}/npc:{controller}#event:wave:1',
+                    action='wave_start', wave=1)
+        for wave, count in sorted(thresholds.items()):
+            source = f'{zone}/npc:{controller}#event:wave:{wave}'
+            dest = (f'{zone}/npc:{controller}#event:wave:{wave + 1}'
+                    if wave < max(thresholds) else
+                    f'{zone}/npc:{controller}#event:wave_complete:{wave}')
+            connect(source, dest, action='defeat_wave', wave=wave,
+                    required_kills=count, counter='mobs_slain',
+                    source_script=path)
+
     for node, cb in by_callback.items():
         npc = cb.registration.npc
         event = cb.registration.event
@@ -726,10 +843,40 @@ def analyze_encounters(zone: str, scripts: dict[str, str]) -> EncounterAnalysis:
                 connect(kill, death, npc=npc, combat=True)
         for eff in cb.effects:
             if eff.kind == 'spawn':
+                # Interprocedural expansion retains the callee's wave_number
+                # guard. Reparent each spawn to its actual counted wave.
+                effect_owner = node
+                protocol = wave_protocols.get(cb.registration.source)
+                if protocol and cb.registration.npc == protocol[0]:
+                    wave_matches = [int(m.group(1)) for guard in eff.guards
+                                    for m in re.finditer(r'\bwave_number\s*==\s*(\d+)', guard)]
+                    if wave_matches:
+                        # Root SAY starts wave 1. A qualifying signal advances
+                        # this_wave first and then calls Spawn_Wave(this_wave),
+                        # so guard `this_wave == N` can only produce wave N+1.
+                        if cb.registration.event.startswith('say:'):
+                            expected_wave = 1
+                        elif cb.registration.event.startswith('signal'):
+                            current = [int(m.group(1)) for guard in eff.guards
+                                       for m in re.finditer(r'\bthis_wave\s*==\s*(\d+)', guard)]
+                            expected_wave = current[-1] + 1 if current else None
+                        else:
+                            expected_wave = None
+                        if expected_wave is None or wave_matches[-1] != expected_wave:
+                            continue
+                        effect_owner = f'{zone}/npc:{protocol[0]}#event:wave:{expected_wave}'
+                    elif cb.registration.event.startswith('signal'):
+                        completed = [int(m.group(1)) for guard in eff.guards
+                                     for m in re.finditer(r'\bthis_wave\s*==\s*(\d+)', guard)]
+                        if completed and completed[-1] == max(protocol[1]):
+                            effect_owner = f'{zone}/npc:{protocol[0]}#event:wave_complete:{completed[-1]}'
                 spawned = int(eff.value)
                 spawned_node = f'{zone}/npc:{spawned}#event:spawned:{spawned}'
-                connect(node, spawned_node, 'spawns', npc=spawned, group=node,
-                        guards=list(eff.guards), zone=zone,
+                scoped_guards = [g for g in eff.guards
+                                 if not (effect_owner != node and
+                                         re.search(r'e\.message:findi\s*\(', g))]
+                connect(effect_owner, spawned_node, 'spawns', npc=spawned, group=effect_owner,
+                        guards=scoped_guards, zone=zone,
                         alternative=bool(len(eff.alternatives) > 1))
                 for target in by_spawn.get(spawned, ()):
                     connect(spawned_node, target, npc=spawned)

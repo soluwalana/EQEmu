@@ -26,7 +26,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from urllib import request
 
-from eqclient4.quests.graph import dialogue_chains, DialogueChain, DialogueTurn
+from eqclient4.quests.graph import DialogueChain, DialogueTurn, dialogue_chains
 
 WORD = re.compile(r"[a-z][a-z'-]{2,}", re.I)
 COMMON = frozenset("""the and this that with from have your you are was were will would

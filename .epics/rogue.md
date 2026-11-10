@@ -46,9 +46,9 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
     - event_trade NPC say: Very good, though how you managed to lug around all these oversized blades amazes me. I feel we can do business now, and Malka still has not shown up. Take this dagger. I had an old client who didn't, um.. pay.. so this was extracted from him. Right after it was inserted in him. For your next job, I need a collection of robes. The Robe of the Ishva, some Shining Metallic robes, an Oracle robe, and a Robe of the Kedge. I am not even sure where all these come from, but they are on my list here, and Rokyl is one of my best clients, so I figure that is your job.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 5411,item2 = 5410,item3 = 5401,item4 = 5308}))`
 17. Loot "Robe of the Ishva" (1357) from "Coercer Q`ioul" (NPC 20054) in `kithicor`. Drop cache: 100% chance per kill.
-18. Kill "Allaina Deepeyes" (NPC 309037) in `chambersf` and loot "Robe of the Kedge" (1253).
+18. **Unresolved acquisition:** "Robe of the Kedge" (1253) has no graph or catalog producer.
 19. Loot "Robe of the Oracle" (1354) from "Oracle of K`Arnon" (NPC 69044) in `oot`. Drop cache: 100% chance per kill.
-20. Kill "Allionae Ullui" (NPC 309029) in `chambersf` and loot "Shining Metallic Robes" (1360).
+20. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
 21. qey2hh1/"Vilnius The Small", hand "Robe of the Ishva" (1357) + "Robe of the Kedge" (1253) + "Robe of the Oracle" (1354) + "Shining Metallic Robes" (1360). Gives "Cazic Quill" (7505).
     - event_trade NPC say: You do good work, . Here is another trinket for your trouble, you should be able to make use of it. Malka still hasn't made it back yet, and I have one more order to fill, if you're willing. This one should be easy. My sword collector has decided he wants rapiers now, of all things. He has asked for an Eyerazzia, a Martune Rapier, a Burning Rapier, and a well balanced rapier.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 1357,item2 = 1253,item3 = 1354,item4 = 1360}))`

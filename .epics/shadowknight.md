@@ -57,11 +57,11 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 17. Loot "Drake Spine" (14372) from "Rharzar" (NPC 50324) in `rathemtn`. Drop cache: 100% chance per kill.
 18. Loot "Decrepit Hide" (14371) from "an ashenbone drake" (NPC 186049) in `hateplaneb`. Drop cache: 11.2025% chance per kill.
 19. Summon "Enchanted Platinum Bar" (16507) by casting "Enchant Platinum" or "Greater Mass Enchant Platinum" or "Mass Enchant Platinum".
-20. **Faction prerequisite:** `404` must satisfy `>=28` before the following action. Faction progress is not automatically verified. Graph-supported ways to gain this faction include: firiona/"Nadia Starfeast": hand "Sack For Nadia" (10637) (faction delta 30); hole/"Caradon": hand "Cell Key" (14373) (faction delta 7); hole/"Ghost Of Glohnor": hand "Dark Shroud" (14377) (faction delta 7).
+20. **Faction:** `404` `>=28` required. Progress unverified.
 21. qcat/"Teydar", hand "Drake Spine" (14372) + "Decrepit Hide" (14371) + "Enchanted Platinum Bar" (16507). Gives "Decrepit Sheath" (14366).
     - event_item NPC say: I did it! The pieces you got me were perfect! It took a huge effort on my part to craft this, of course. It saddens me that I'm unable to keep one of my best works, but a deal is a deal. There is honor among shadowknights.
       - Event guard: `($faction >= 28 && plugin::check_handin(\%itemcount, 14372 => 1, 14371 => 1, 16507 => 1))`
-22. **Faction prerequisite:** `404` must satisfy `>=35` before the following action. Faction progress is not automatically verified. Graph-supported ways to gain this faction include: firiona/"Nadia Starfeast": hand "Sack For Nadia" (10637) (faction delta 30); hole/"Caradon": hand "Cell Key" (14373) (faction delta 7); hole/"Ghost Of Glohnor": hand "Dark Shroud" (14377) (faction delta 7).
+22. **Faction:** `404` `>=35` required. Progress unverified.
 23. paineel/"Duriek Bloodpool", hand "Ghoulbane" (5403) + "Soul Leech, Dark Sword of Blood" (11609) + "Blade of Abrogation" (5430) + "Decrepit Sheath" (14366). Gives "Corrupted Ghoulbane" (14367).
     - event_item NPC emote: takes the Ghoulbane and places the other swords on either side of it. The sheath begins to gleam so intensely, you can see the bones inside Duriek's hands. After several minutes, there is a final, blinding flash. Duriek collapses to the ground. After a few moments, Duriek motions you closer and whispers, 'You have done well. I wish fate had been kinder to me and allowed me your aid years ago--I might have lived long enough to enjoy the fame of our combined efforts. I studied much of the tome you retrieved and have stumbled upon something that may be the key to unleashing darkness upon the face of Norrath forever. You must seek out a powerful lich by the name of Lhranc. Farewell, $name.' With his last bit of energy, Duriek places the corrupted Ghoulbane in your hands.
       - Event guard: `(($faction >= 35) && plugin::check_handin(\%itemcount, 5403 => 1, 11609 => 1, 5430 => 1, 14366 => 1))`
@@ -70,7 +70,7 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
       - NPC say: What's that? Heart of the Innocent, you say?! Ages, it has been, since I was last asked that. The Heart of the Innocent is an item of great power. Few are they who have ever commanded the dark magic of such an object. It is the bound soul of a pure mortal, rare indeed. Take this hollow gem, and combine with it the heart of one who is pure. If your hand is steady and your mind is clear, you shall have what you seek.
       - Condition: `($text=~/heart of an innocent/i)`
       - Linked from "Hail" (explicit prompt).
-25. **Faction prerequisite:** `404` must satisfy `>=44` before the following action. Faction progress is not automatically verified. Graph-supported ways to gain this faction include: firiona/"Nadia Starfeast": hand "Sack For Nadia" (10637) (faction delta 30); hole/"Caradon": hand "Cell Key" (14373) (faction delta 7); hole/"Ghost Of Glohnor": hand "Dark Shroud" (14377) (faction delta 7).
+25. **Faction:** `404` `>=44` required. Progress unverified.
 26. Loot "Cell Key" (14373) from "a chest" (NPC 39056) in `hole`. Drop cache: 25% chance per kill.
 27. hole/"Caradon", hand "Cell Key" (14373).
     - event_item NPC say: Kyrenna! We are free!
@@ -79,14 +79,14 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 29. Kill "Kyrenna" (NPC 39155) in `hole` and loot "Heart of Kyrenna" (14380).
 30. Combine in "Soulcase" (17051): "Heart of Kyrenna" (14380). Produces "Heart of the Innocent" (14368). Requires Remove Traps.
 31. Kill "Kyrenna" (NPC 39155) in `hole` and loot "Blood of Kyrenna" (14381).
-32. **Faction prerequisite:** `404` must satisfy `>=51` before the following action. Faction progress is not automatically verified. Graph-supported ways to gain this faction include: firiona/"Nadia Starfeast": hand "Sack For Nadia" (10637) (faction delta 30); hole/"Caradon": hand "Cell Key" (14373) (faction delta 7); hole/"Ghost Of Glohnor": hand "Dark Shroud" (14377) (faction delta 7).
+32. **Faction:** `404` `>=51` required. Progress unverified.
 33. kerraridge/"Marl Kastane", hand "Blood of Kyrenna" (14381). Gives "Dark Shroud" (14377).
     - event_item NPC say: Here, you take this shroud. You must now find the spirit of glohnor and place this item on him. This should force him back into his mummified body and then you must destroy this newly raised form and return to me its wrappings.
       - Event guard: `(($faction >= 51) && plugin::check_handin(\%itemcount, 14381 => 1))`
 34. hole/"Ghost Of Glohnor", hand "Dark Shroud" (14377).
 35. Spawns "Mummy of Glohnor" (npc:39165) after the hand-in.
 36. Kill "Mummy of Glohnor" (NPC 39165) in `hole` and loot "Head of Glohnor" (14378).
-37. **Faction prerequisite:** `404` must satisfy `>=58` before the following action. Faction progress is not automatically verified. Graph-supported ways to gain this faction include: firiona/"Nadia Starfeast": hand "Sack For Nadia" (10637) (faction delta 30); hole/"Caradon": hand "Cell Key" (14373) (faction delta 7); hole/"Ghost Of Glohnor": hand "Dark Shroud" (14377) (faction delta 7).
+37. **Faction:** `404` `>=58` required. Progress unverified.
 38. paineel/"Gerot Kastane", hand "Head of Glohnor" (14378). Gives "Head of the Valiant" (14369).
     - event_item NPC say: Good travels, dark one! May Innoruuk curse your enemies!
       - Event guard: `(($faction >= 58) && plugin::check_handin(\%itemcount, 14378 => 1))`

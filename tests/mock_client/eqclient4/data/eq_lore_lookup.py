@@ -782,7 +782,6 @@ def main() -> None:
                             categories=args.category,
                             candidate_limit=args.candidate_limit,
                             per_entity=args.per_entity,
-                            rerank=not args.no_rerank,
                         )
                     ),
                     ensure_ascii=False,

@@ -72,9 +72,45 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 27. freeporteast/"Kargek Redblade", hand "Tenal's note to Kargek" (20684) + "Spiroc Wingblade" (20679). Gives "Red Scabbard" (17859).
     - event_trade NPC say: What is this? A note from my brother? Thank you for the gift as well.' Kargek reads the note and hands you the huge sword hilt. Your mind is filled with the sound of battle and a voice. 'Place the ancient sword blade, ancient blade, finely crafted dragon head hilt and the jeweled dragon head hilt into the scabbard to receive your rewards. If you think you are worthy, place your rewards into the scabbard and see what havoc you can unleash on the world. Kargek addresses you as you turn to leave. 'One more thing. Gartrog over there has told me of a great discovery. Seems there are all sorts of stones being found in the recently discovered lost dungeons scattered around Antonica. The Wayfarer's Brotherhood has found a way to make items even more powerful by using the stones with existing items.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 20684, item2 = 20679}))`
-28. Kill "Bavabwa Steeltoe" (NPC 309041) in `chambersf` and loot "Blade of Tactics" (10909).
-29. Kill "Bavabwa Steeltoe" (NPC 309041) in `chambersf` and loot "Blade of Strategy" (10910).
-30. Combine in "Red Scabbard" (17859): "Blade of Tactics" (10909), "Blade of Strategy" (10910). Produces "Jagged Blade of War" (10908). Requires Remove Traps.
+28. lakerathe/"Triathalon Swim Goggles", say "Hail". Gives "Rebreather" (16889).
+    - Player: "hail"
+      - NPC say: Welcome, $name!  Good to see that you came out for the event.  here are some swim goggles to help you cross the lake.  Don't forget to hand these to my friend Bike on the far shore so that you can complete the next leg of the race.
+      - Condition: `($text=~/hail/i)`
+29. Loot "Block of Permafrost" (20665) from "an ice giant" (NPC 73078) in `permafrost`. Drop cache: 35% chance per kill.
+30. Buy "Keg of Vox Tail Ale" (20664) from "Captain Rohand" (NPC 1101) in `qeynos`. Base price: 1 copper.
+31. oceanoftears/"Denken Strongpick", hand "Rebreather" (16889) + "Block of Permafrost" (20665) + "Keg of Vox Tail Ale" (20664). Gives "Ancient Sword Blade" (20667).
+    - event_item NPC say: Excellent! Here is your sword. I feel like I'm at home already!
+      - Event guard: `(plugin::check_handin(\%itemcount,16889=>2,20665=>1,20664=>1))`
+32. Loot "Ancient Blade" (20670) from "Queen Velazul Di`zok" (NPC 103055) in `chardok`. Drop cache: 100% chance per kill.
+33. Collect ground spawn "Unjeweled Dragon Head Hilt" (20668) in `lakerathe`.
+34. potranquility/"Elder Gelok", say "Dorandomgem". Gives "Diamond" (10037).
+35. Spawns "A parasitic murkglider" (npc:303121) via `causeway/withering murkglider#event_hp`.
+36. Kill "A parasitic murkglider" (NPC 303121) in `causeway` and loot "Black Sapphire" (10036).
+37. Loot "Polished Bone Horn" (52349) from "a baleful stoneworker" (NPC 301023) in `bloodfields`. Drop cache: 4% chance per kill.
+38. Loot "Brass Mouthpiece" (52350) from "an ukun fleshhound" (NPC 301009) in `bloodfields`. Drop cache: 3.672% chance per kill.
+39. Loot "Bucket Mute" (52351) from "an ukun fleshhound" (NPC 301009) in `bloodfields`. Drop cache: 3.672% chance per kill.
+40. Loot "Thin Leather Straps" (52352) from "an ukun fleshhound" (NPC 301009) in `bloodfields`. Drop cache: 3.672% chance per kill.
+41. bloodfields/"Caller Donivin", hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352).
+42. Spawns "a reclusive girplan" (npc:301033) after the hand-in.
+43. Kill bloodfields/"A Reclusive Girplan".
+44. Spawns "a reclusive girplan" (npc:301073) via `bloodfields/a reclusive girplan#event_death_complete`.
+45. Kill "a reclusive girplan" (NPC 301073) in `bloodfields` and loot "Jacinth" (10053).
+46. freeporteast/"Wenden Blackhammer", hand "Unjeweled Dragon Head Hilt" (20668) + "Diamond" (10037) + "Black Sapphire" (10036) + "Jacinth" (10053). Gives "Jeweled Dragon Head Hilt" (20671).
+    - event_trade NPC emote: begins to fiddle with the hilt, gently pressing the gems into place. It seems to take forever as you watch in silence. Wenden slowly places the last gem in place and gently bends the settings to hold the gems before he hands it back to you. 'That's a very impressive looking hilt there. The material it is made out of seems strangely familiar,' Wenden says as he turns back to his forge and his other work.
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 20668,item2 = 10037,item3 = 10036,item4 = 10053}))`
+47. Collect ground spawn "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
+48. Loot "Giant Sized Monocle" (20678) from "a mountain giant patriarch" (NPC 86144) in `dreadlands`. Drop cache: 30% chance per kill.
+49. frontiermtns/"Mentrax Mountainbone", hand "Giant Sized Monocle" (20678). Gives "Rejesiam Ore" (20666).
+    - event_item NPC say: Eh, you actually found one! Thank you, $name. Here is a block of ore for you. Just don't let the other giants know.
+      - Event guard: `(plugin::check_handin(\%itemcount, 20678 => 1))`
+50. Loot "Ball of Everliving Golem" (20677) from "Dread" (NPC 72000) in `fearplane`. Drop cache: 10.4954% chance per kill.
+51. freeporteast/"Wenden Blackhammer", hand "Severely Damaged Dragon Head Hilt" (20669) + "Rejesiam Ore" (20666) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
+    - event_trade NPC emote: works his magic with his forge as you have never seen done quite like this. The bending and shaping to repair the hilt is only something a master of his art could even fathom to try. Once the hilt has been cooled in a near by bucket of ice cold water, he checks it for balance and resonance before handing it to you.
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 20669,item2 = 20666,item3 = 20677}))`
+52. Combine in "Red Scabbard" (17859): "Ancient Sword Blade" (20667), "Ancient Blade" (20670), "Jeweled Dragon Head Hilt" (20671), "Finely Crafted Dragon Head Hilt" (20672). Produces "Jagged Blade of War" (10908). Requires Remove Traps.
+
+**Unresolved graph dependencies:**
+- Event cycle at `bloodfields/a reclusive girplan#event_death_complete`
 
 ## Epic 1.5
 

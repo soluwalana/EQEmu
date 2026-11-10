@@ -92,7 +92,7 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 24. Loot "Cohesion Gem" (67022) from "a metallic slime" (NPC 206031) in `poinnovation`. Drop cache: 34.241% chance per kill.
 25. Spawns "Mistress of the Darkwater Quest-only" (npc:125075) via `sirens/player#enter`.
 26. Kill "Mistress of the Darkwater Quest-only" (NPC 125075) in `sirens` and loot "Shard of Pure Ice" (11599).
-27. Spawns "Spawn Wiz 1.5; Pure Flame Elemental" (npc:278108) via `soldungc/ #event_signal`.
+27. Spawns "Spawn Wiz 1.5; Pure Flame Elemental" (npc:278108) via `soldungc/ #signal:100`.
 28. Kill "Spawn Wiz 1.5; Pure Flame Elemental" (NPC 278108) in `soldungc` and loot "Wisp of Pure Flame" (11619).
 29. Loot "Fluxing Staff" (11445) from "Girplan Guardian" (NPC 300037) in `wallofslaughter`. Drop cache: 100% chance per kill.
 30. Spawns "Elite Sun Revenant" (npc:175306) via `scarlet/the gem guardian#event_proximity_say`.

@@ -3438,10 +3438,22 @@ def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
     # death, spawn, and loot callbacks. Retain unrelated ordinary graph edges.
     managed_loot: set[tuple[str, int, int]] = set()
     managed_origins: set[str] = set()
+    cleared_loot: set[tuple[str, int]] = set()
     for zone, lua_sources in lua_by_zone.items():
         analysis = analyze_encounters(zone, lua_sources)
         if not analysis.owned_files:
             continue
+        cleared_loot.update((zone, npc) for npc in analysis.cleared_npcs)
+        # Persist the exclusion in the graph so downstream acquisition catalogs
+        # cannot reintroduce a spawn's explicitly cleared loot table.
+        for npc in sorted(analysis.cleared_npcs):
+            graph.edges.append({
+                "kind": "edge", "rel": "blocks_loot",
+                "from": f"{zone}/npc:{npc}", "to": f"npc:{npc}",
+                "zone": zone, "npc": npc,
+                "name": catalog.npc_names.get(npc, "") if catalog else "",
+                "reason": "scripted ClearItemList",
+            })
         origins = {
             f"{zone}/{npc_name(Path(filename).name, catalog).lower()}"
             for filename in analysis.owned_files
@@ -3455,7 +3467,7 @@ def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
         graph.edges = [
             edge for edge in graph.edges
             if not (
-                edge.get("rel") == "loots"
+                edge.get("rel") in {"loots", "spawns"}
                 and any(
                     str(edge.get("from", "")).startswith(origin + "#")
                     or str(edge.get("from", "")) == origin
@@ -3501,6 +3513,13 @@ def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
                         int(edge["npc"]),
                         int(str(edge["to"]).split(":", 1)[1]),
                     ) in managed_loot
+                )
+                or (
+                    edge.get("npc") is not None
+                    and (
+                        str(edge.get("zone") or str(edge.get("from", "")).split("/", 1)[0]),
+                        int(edge["npc"]),
+                    ) in cleared_loot
                 )
             )
         )

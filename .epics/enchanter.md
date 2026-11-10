@@ -35,7 +35,7 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 13063,item2 = 13051}))`
 19. Spawns "Thrackin Griften" (npc:12172) after the hand-in.
 20. Kill "Thrackin Griften" (NPC 12172) in `qey2hh1` and loot "White Paper" (10602).
-21. Kill "Allionae Ullui" (NPC 309029) in `chambersf` and loot "Shining Metallic Robes" (1360).
+21. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
 22. akanon/"Rilgor Plegnog", hand "Shining Metallic Robes" (1360). Gives "Mechanical Pen" (10600).
     - event_trade NPC say: Very nice!! It is perfect! Here take this pen. Have fun with it.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 1360}))`
