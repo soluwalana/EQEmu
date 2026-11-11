@@ -56,11 +56,60 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 <a id="epic-item-52347"></a>
 
+**Earlier reward routes required by this graph path:** ["Ragebringer" (11057)](#epic-item-11057).
+Revisit those instructions if another copy of a consumed item is needed.
+
 1. Loot "Soulstone of Lanys" (52337) from "a Teir`Dal guardian".
-2. nedaria/"Lirprin, Head Of Affairs", hand "Soulstone of Lanys" (52337). Gives "Fatestealer" (52347).
+2. highpass/"Stanos Herkanor", say "Hail". Sets `Fatestealer` to `1`.
+    - Player: "hail"
+      - NPC say: Ha, the prodigy returns. So good to see you, . I always consider it an honor to have your company, and we have much to talk about!
+        - Reply guard: `e.other:HasItem(11057) and qglobals.Fatestealer == nil`
+      - NPC say: But not here and not now. We are in grave danger, you and I, and should not be seen speaking to one another. Seek out my associates. They will apprise you of what needs to be done. When you have found them... Tell them that the sun is setting on the horizon.' He clasps your palm and gives you a strange handshake, 'Before you go, know that you have proved yourself as one of us, . You are a member of this circle and nothing will ever break that.
+        - Reply guard: `e.other:HasItem(11057) and qglobals.Fatestealer == nil`
+      - NPC say: We are in grave danger, you and I, and should not be seen speaking to one another. Seek out my associates. They will apprise you of what needs to be done. When you have found them... Tell them that the sun is setting on the horizon.' He clasps your palm and gives you a strange handshake, 'Before you go, know that you have proved yourself as one of us, . You are a member of this circle and nothing will ever break that.
+        - Reply guard: `(qglobals.Fatestealer ~= nil)`
+      - NPC say: Ah, the pouch. This is the first step. The Circle has to be upset having this taken right out from under them. That speaks well of the person who did the taking. Hanns must be even more furious now. I think I might be able to trust you. We could make a deal. I have a blade I won't use anymore, and you have those fine looking daggers Vilnius gave you. Of course, you would have to do something for me first. Let me tell you my story, then you decide.
+        - Reply guard: ``
+      - Condition: `(e.message:findi("hail"))`
+3. **Unverified quest flag:** `Fatestealer_gal` `==1` required.
+4. **Unverified quest flag:** `Fatestealer_mar` `==1` required.
+5. **Unverified quest flag:** `Fatestealer_lyt` `==1` required.
+6. Loot "Signed Agreement" (10239) from "Seana Marsinger" (NPC 54102) in `gfaydark`. Drop cache: 100% chance per kill.
+7. Loot "Signed Agreement" (52416) from "Stefan Marsinger" (NPC 54101) in `gfaydark`. Drop cache: 100% chance per kill.
+8. overthere/"Inem R`Ker", hand "Signed Agreement" (10239) + "Signed Agreement" (52416).
+    - event_trade NPC say: Those Marsingers won't be speaking ill about us again anytime soon.
+      - Event guard: `(qglobals["Fatestealer"] == "1" and item_lib.check_turn_in(e.trade, {item1 = 10239,item2 = 52416}))`
+    - event_trade NPC say: That should do the trick. I think our contact will speak with you now. His name is Lirpin, and he is a paladin that works for the Wayfarer's Brotherhood. I hear he led an expedition into Kuua recently, but his current location is anyone's guess. Good Luck.
+      - Event guard: `(qglobals["Fatestealer_gal"] == "1" and qglobals["Fatestealer_mar"] == "1" and qglobals["Fatestealer_lyt"] == "1")`
+9. Loot "Stack of Pages" (52335) from "a Teir`Dal guardian".
+10. steamfont/"Yendar Starpyre", hand "Stack of Pages" (52335).
+    - event_item NPC say: Splendid! The missing pages I had been looking for! Allow me a moment to sift through them.' He scans the texts line by line, flipping quickly from one sheet of parchment to another. Withdrawing a quill he quickly makes notes in the margins, then snatches your journal and copies the notes there. 'Yes, it is exactly as I had predicted. These texts detail the process by which an object can be imbued with a tortured soul. Unfortunately the focus is mostly on weaponry, which doesn't interest me in the slightest. Ah well. Appreciate the effort, $name. Perhaps it will come in handy for you. Farewell and good luck.
+      - Event guard: `(plugin::check_handin(\%itemcount, 52335 => 1))`
+    - event_item NPC message: You have learned how to imbue a blade with dark energy.
+11. Spawns "a furious magma guardian" (npc:278123) via `soldungc/ #signal:100`.
+12. Kill "a furious magma guardian" (NPC 278123) in `soldungc` and loot "Crystallized Shard of Doomfire" (21339).
+13. Loot "Foul Doomfire Brimstone" (21342) from "a pool of living lava" (NPC 278043) in `soldungc`. Drop cache: 15.9687% chance per kill.
+14. Loot "Igneous Rock of Doomfire" (21340) from "Typhoeus" (NPC 278069) in `soldungc`. Drop cache: 35% chance per kill.
+15. Loot "Pile of Doomfire Ash" (21341) from "a Taklasinai marauder" (NPC 278075) in `soldungc`. Drop cache: 35% chance per kill.
+16. soldungc/"The Firewatcher", hand "Crystallized Shard of Doomfire" (21339) + "Foul Doomfire Brimstone" (21342) + "Igneous Rock of Doomfire" (21340) + "Pile of Doomfire Ash" (21341).
+    - event_trade NPC say: This should do the trick, I think! The gate is...Yes it's opening. Ha ha! The Gatekeeper comes!
+      - Event guard: `(qglobals["Fatestealer_culth"] == "1" and not el:IsMobSpawnedByNpcTypeID(278005))`
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 21339,item2=21342,item3=21340,item4=21341}))`
+17. Spawns "Culthor the Gatekeeper" (npc:278005) after the hand-in.
+18. Kill "Culthor the Gatekeeper" (NPC 278005) in `soldungc` and loot "Smoldering Embers of Solusek" (52346).
+19. nedaria/"Smith Dandi", hand "Smoldering Embers of Solusek" (52346).
+    - event_trade NPC emote: gawks in amazement.  By the Gods, where did you come by these embers? These are positively unnatural, and they bare the mark of Solusek himself!' She sprinkles a handful of the smoldering lumps into the forge and -KABOOM- a blast of incredible heat knocks you off your feet. Immediately, the metal of the forge swells and becomes white hot. 'Yep, this will do the trick,' she gloats cheerfully. The blazing heat doesnt seem to bother her.
+      - Event guard: `(qglobals["Fatestealer_bard"] == "1" and item_lib.check_turn_in(e.trade, {item1 = 52346}) )`
+    - event_trade NPC message: You have fueled Smith Dandi's furnace with Solusek's Embers.
+20. nedaria/"Lirprin, Head Of Affairs", hand "Soulstone of Lanys" (52337). Gives "Fatestealer" (52347).
     - event_trade NPC emote: discusses the process with his assistant. She listens, nodding, then begins work immediately. She takes measurements of your hands and fashions the grip so that it's a perfect fit, then turns to the hot coals of the forge. She selects a brick of fine metal. Her back to you, Dandi hammers away at the metal, sparks flying in all directions. When the job is completed she hands you the blade, still warm. 'Best work I've ever done. I hope it serves you well. Unfortunately the metal I have to work with isn't the recommended 'Velixite'. Based on the description I used the closest thing we have. Also, without an example to work from I had to improvise on a few details that weren't fully described in your documentation.
       - Event guard: `( qglobals["Fatestealer_bard"] == "1" and qglobals["Fatestealer_page"] == "1" and qglobals["Fatestealer_forge"] == "1" and item_lib.check_turn_in(e.trade, {item1 = 52337}) )`
     - event_trade NPC message: You have gained 5 ability points!
+
+**Unresolved graph dependencies:**
+- Unverified quest flag `Fatestealer_gal` ==1: no acyclic setter
+- Unverified quest flag `Fatestealer_mar` ==1: no acyclic setter
+- Unverified quest flag `Fatestealer_lyt` ==1: no acyclic setter
 
 ## Epic 2.0
 
@@ -84,15 +133,39 @@ Revisit those instructions if another copy of a consumed item is needed.
         - Reply guard: ``
       - Condition: `(e.message:findi("what happened then") and qglobals["Fatestealer"] == "3")`
       - Linked from "hear the tale" (explicit prompt).
-4. Spawns "Polar Kraken" (npc:110131) via `iceclad/lookout larithim#what happened then`.
-5. Kill "Polar Kraken" (NPC 110131) in `iceclad` and loot "Lump of Raw Alloy" (52340).
-6. Combine in "Air-Tight Strongbox" (52339): "Lump of Raw Alloy" (52340). Produces "Strongbox Full of Alloy" (52341). Requires Remove Traps.
-7. iceclad/"Lookout Larithim", hand "Strongbox Full of Alloy" (52341). Gives "Strongbox Half Full of Velixite" (52342).
+4. Loot "Lump of Raw Alloy" (52340) from "Polar Kraken".
+5. Combine in "Air-Tight Strongbox" (52339): "Lump of Raw Alloy" (52340). Produces "Strongbox Full of Alloy" (52341). Requires Remove Traps.
+6. iceclad/"Lookout Larithim", hand "Strongbox Full of Alloy" (52341). Gives "Strongbox Half Full of Velixite" (52342).
     - event_trade NPC say: Yar! Heres ye half matey
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 52341}) )`
     - event_trade NPC message: You have confirmed Larithim's innocence.
-8. Spawns "Wren Simsy" (npc:336253) via `dranik/daignal the revered#kill`.
-9. Kill "Wren Simsy" (NPC 336253) in `dranik` and loot "Wren's Fatestealer" (21346).
-10. nedaria/"Lirprin, Head Of Affairs", hand "Globe of Discordant Energy" (47100) + "Strongbox Half Full of Velixite" (52342) + "Wren's Fatestealer" (21346) + "Fatestealer" (52347). Gives "Nightshade, Blade of Entropy" (52348).
+7. bloodfields/"Keetra The Lost", say "Lirprin Sent Me". Sets `rogue_epic_keetra` to `1`.
+    - Player: "lirprin sent me"
+      - NPC message: You have confirmed Keetra's innocence.
+      - NPC say: 
+      - Condition: `(e.message:findi("lirprin sent me") and qglobals["Fatestealer"] == "3")`
+8. Kill gunthak/"A Shadowed Assassin".
+9. Spawns "Krill the Backbleeder" (npc:224436) via `gunthak/lairyn debeian#signal:1`.
+10. Kill "Krill the Backbleeder" (NPC 224436) in `gunthak` and loot "Krill's Head" (52344).
+11. gunthak/"Lairyn Debeian", hand "Krill's Head" (52344).
+    - event_trade NPC emote: adjusts his spectacles and peers at the head, 'True enough. This is a Wayfarer . . . Errr, was at one time. I imagine he renounced his membership in the Brotherhood sometime before he took up a career of tormenting a poor scholar. They must have been trying to get to Nedaria by coming after me. I am famliar with Krill and he is a follower, not a leader. Someone else is the mastermind behind this - a person with access to magical disguises to hide their identity. Lirprin must know of this at once, .
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 52344}) )`
+    - event_trade NPC message: You have confirmed Lairyn's innocence.
+12. mirb/"Durgin Skell", say "Lirprin Sent Me". Sets `rogue_epic_durgin` to `1`.
+    - Player: "lirprin sent me"
+      - NPC say: There's no need to mince words %s. I have no quarrel with Lirprin, but unfortunately the reverse is not also true. The man is undoubtedly angry with me. He will never forgive me for courting Sharalla and does not realize that it was her choice. She loved me, and not him. His paranoia and overbearing attitude, and eventually the outright abuse of his leadership position merely pushed her away. Now that she has fallen in the valiant service of the Brotherhood there is no further need for his insecurity.
+        - Reply guard: `qglobals["Fatestealer"] == "3"`
+      - NPC message: You have confirmed Durgin's innocence.
+        - Reply guard: `qglobals["Fatestealer"] == "3"`
+      - Condition: `e.message:findi("lirprin sent me") and laskuth_complete`
+      - Linked from "progress" (sequence only; unverified).
+13. Spawns "Wren Simsy" (npc:336253) via `dranik/daignal the revered#kill`.
+14. Kill "Wren Simsy" (NPC 336253) in `dranik` and loot "Wren's Fatestealer" (21346).
+15. nedaria/"Lirprin, Head Of Affairs", hand "Globe of Discordant Energy" (47100) + "Strongbox Half Full of Velixite" (52342) + "Wren's Fatestealer" (21346) + "Fatestealer" (52347). Gives "Nightshade, Blade of Entropy" (52348).
     - event_trade NPC message: You have gained 10 ability points!
       - Event guard: `( qglobals["Fatestealer"] == "3" and item_lib.check_turn_in(e.trade, {item1 = 47100,item2 = 52342,item3 = 21346,item4 = 52347}) )`
+
+**Unresolved graph dependencies:**
+- Unverified quest flag `Fatestealer_gal` ==1: no acyclic setter
+- Unverified quest flag `Fatestealer_mar` ==1: no acyclic setter
+- Unverified quest flag `Fatestealer_lyt` ==1: no acyclic setter

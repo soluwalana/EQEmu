@@ -87,19 +87,62 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 <a id="epic-item-19092"></a>
 
-1. Loot "Ice Burrower Meat" (19022) from "an ice burrower" (NPC 120010) in `westwastes`. Drop cache: 31.0425% chance per kill.
-2. cobaltscar/"High Priest Margle", hand "Ice Burrower Meat" (19022).
+1. najena/"Akksstaff", say "Hail".
+    - Player: "hail"
+      - NPC say: How is this possible? I cannot be defeated. Spare my life and I will tell you the truth of Magi'kot's [demise].
+      - Condition: `(qglobals["ask_minion_dead"] ~= nil and e.message:findi("hail"))`
+2. Loot "Journal of Magus Tvish" (15639) from "Danvi`s Corpse" (NPC 179132) in `akheva`. Drop cache: 100% chance per kill.
+3. poknowledge/"Bantil Io`Tuv", hand "Journal of Magus Tvish" (15639).
+    - event_trade NPC emote: focuses for a minute, his hands glow with power. He then blows softly and the shadows melt from the Tome. As he opens it a small note falls to the floor. What is this? it appears to be some sort of correspondence. Hmm, interesting, it seems the next tome was given to a gnome, he set sail somewhere, but has not been heard from in quite some time. You will have to find him, he was supposed to wait for [Danvi] so he could take the tome
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 15639}))`
+4. westwastes/"A Lost Tomekeeper", say "Violet Roses". Gives "Tome of Primal Fires" (15769).
+    - Player: "violet roses"
+      - NPC say: Oh? Yes. The tunips blow clockwise, or something or other. Here you go. Stay diligent. The enemy may be anyone.
+      - Condition: `(e.message:findi("Violet Roses") and qglobals["mage_epic"] == "2" )`
+5. poknowledge/"Bantil Io`Tuv", hand "Tome of Primal Fires" (15769).
+    - event_trade NPC emote: quickly thumbs through the book. You can see the excitement growing on his face. 'This is incredible. I can see why Magi'Kot was able to learn so much from these tomes. There are just three more that we need to find, and we will be able to [ascend beyond] Magi'Kot's greatest dreams.
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 15769}))`
+6. Collect ground spawn "Book of Bindings and Incantations" (15772) in `charasis`.
+7. poknowledge/"Bantil Io`Tuv", hand "Book of Bindings and Incantations" (15772).
+    - event_trade NPC say: Ahh great, thank you. There are some interesting notes in these books. I suspect soon we should be able to find who is responsible for the disappearance in the first place.
+      - Event guard: `(qglobals["mage_epic"] == "3" and item_lib.check_turn_in(e.trade, {item1 = 15772}) )`
+8. Loot "Codex of Ice and Ether" (15775) from "Grigor Rojha" (NPC 164121) in `thedeep`. Drop cache: 100% chance per kill.
+9. poknowledge/"Bantil Io`Tuv", hand "Codex of Ice and Ether" (15775).
+    - event_trade NPC say: Oh my. Oh this is most disturbing news. It appears that one of Magi'Kot's apprentices was responsible for the theft of these books. This may not be the end of the story. Magi'Kot had four apprentices. Jahson Aksot, Akksstaff, Walnan and myself. There are notes in some of these letters that no one but one of his apprentices could have known. Speak to the others please, but be discreet, I sense something much larger at work here, return to me with anything you find.
+      - Event guard: `(qglobals["mage_epic"] == "4" and item_lib.check_turn_in(e.trade, {item1 = 15775}) )`
+10. Spawns "Akksstaff`s Minion" (npc:44108) via `najena/akksstaff#bantil sent me`.
+11. najena/"Akksstaff", say "Demise". Gives "Sentience of Elements" (15778).
+    - Player: "demise"
+      - NPC say: I am the last Council Member of the Order of the Elemental Shadows. For Centuries, we protected the true secrets behind elemental mastery, but our sect dies here with me. I chose to sit at Magi'kot's side and watch his progress, he showed more promise than anyone since Tvish. When I learned he was to receive the Orb of Mastery, I sabotaged his spell. The flaw was not his, but now people have succeeded where he failed. It doesn't matter, even with the power of the Orb and the knowledge in these tomes, Bantil will never unlock the full power of elemental mastery. You are only helping him to meet the same fate as Magi'Kot.' He then hands you the book and fades into the shadows.
+      - Condition: `(qglobals["ask_minion_dead"] ~= nil and e.message:findi("demise"))`
+      - Linked from "hail" (explicit prompt).
+12. poknowledge/"Bantil Io`Tuv", hand "Sentience of Elements" (15778).
+    - event_trade NPC say: Akksstaff was responsible for our teacher's death? That is truly sad news. I knew he was devious, but I never suspected this type of betrayal.' Bantil takes a deep breath as he regains his composure, and he starts to browse through the book. 'This is truly amazing. I don't think Magi'Kot ever had access to this... No, of course he didn't. He never would have believed the Orb of Mastery was the pinnacle of [power] if that was the case.
+      - Event guard: `(qglobals["mage_epic"] == "5" and item_lib.check_turn_in(e.trade, {item1 = 15778}) )`
+13. potranquility/"Jurmak The Undertow", say "Elemental Essences". Sets `mage_epic_water1` to `1`.
+    - Player: "elemental essences"
+      - NPC say: Oh? The Elemental Essence of water? That is what you mean, yes? Consider yourself fortunate, I know the location of the Essence. It has spent quite some time living as a minor god to the othmir.
+      - Condition: `(($text=~/elemental essences/i) && defined($qglobals{mage_epic}) && ($qglobals{mage_epic}==6))`
+      - Linked from "hail" (sequence only; unverified).
+14. Loot "Ice Burrower Meat" (19022) from "an ice burrower" (NPC 120010) in `westwastes`. Drop cache: 31.0425% chance per kill.
+15. cobaltscar/"High Priest Margle", hand "Ice Burrower Meat" (19022).
     - event_trade NPC say: Tiknonmanin awaits your challenge.
       - Event guard: `(qglobals["mage_epic_water1"] == "1" and item_lib.check_turn_in(e.trade, {item1 = 19022, item2 = 19022, item3 = 19022, item4 = 19022}))`
-3. Spawns "Tiknonmanin" (npc:117094) after the hand-in.
-4. Kill "Tiknonmanin" (NPC 117094) in `cobaltscar` and loot "Elemental Essence of Water" (19086).
-5. Spawns "Elemental Essence of Fire" (npc:214127) via `potactics/gnaap guinders#event_waypoint_arrive`.
-6. Kill "Elemental Essence of Fire" (NPC 214127) in `potactics` and loot "Elemental Essence of Fire" (16807).
-7. Spawns "Elemental Essence of Air" (npc:303100) via `causeway/player#enter`.
-8. Kill "Elemental Essence of Air" (NPC 303100) in `causeway` and loot "Elemental Essence of Air" (16773).
-9. Spawns "Elemental Essence of Earth" (npc:169127) via `letalis/player#enter`.
-10. Kill "Elemental Essence of Earth" (NPC 169127) in `letalis` and loot "Elemental Essence of Earth" (19087).
-11. poknowledge/"Bantil Io`Tuv", hand "Elemental Essence of Water" (19086) + "Elemental Essence of Fire" (16807) + "Elemental Essence of Air" (16773) + "Elemental Essence of Earth" (19087). Gives "Staff of Elemental Essence" (19092).
+16. Spawns "Tiknonmanin" (npc:117094) after the hand-in.
+17. Kill "Tiknonmanin" (NPC 117094) in `cobaltscar` and loot "Elemental Essence of Water" (19086).
+18. Spawns "Elemental Essence of Fire" (npc:214127) via `potactics/gnaap guinders#event_waypoint_arrive`.
+19. Kill "Elemental Essence of Fire" (NPC 214127) in `potactics` and loot "Elemental Essence of Fire" (16807).
+20. potranquility/"Sarhya The Dawnbreeze", say "Elemental Essences". Sets `mage_epic_air1` to `1`.
+    - Player: "elemental essences"
+      - NPC say: You seek the elemental essences? It has been a very long time since I've heard them spoke of. I am afraid I cannot be of much help, except to tell you it often enjoys to whistle through valleys and canyons. I fear it may not even reside in this realm any longer.
+      - Condition: `(($text=~/elemental essences/i) && defined($qglobals{mage_epic}) && ($qglobals{mage_epic}==6))`
+      - Linked from "plane of air" (sequence only; unverified).
+21. Spawns "Elemental Essence of Air" (npc:303100) via `causeway/player#enter`.
+22. Kill "Elemental Essence of Air" (NPC 303100) in `causeway` and loot "Elemental Essence of Air" (16773).
+23. potranquility/"Taq`Aal Emeraldshard", say "Elemental Essences". Sets `mage_epic_earth1` to `1`.
+24. Spawns "Elemental Essence of Earth" (npc:169127) via `letalis/player#enter`.
+25. Kill "Elemental Essence of Earth" (NPC 169127) in `letalis` and loot "Elemental Essence of Earth" (19087).
+26. poknowledge/"Bantil Io`Tuv", hand "Elemental Essence of Water" (19086) + "Elemental Essence of Fire" (16807) + "Elemental Essence of Air" (16773) + "Elemental Essence of Earth" (19087). Gives "Staff of Elemental Essence" (19092).
     - event_trade NPC say: Very well done! You have accomplished more than Magi'Kot could have ever imagined.' He then reads a passage from one of the books. The elemental essences begin to glow and take shape. You are blinded for a moment with a flash of light, when your eyes clear he presents you with an ornate staff. 'You should be honored. You have done what few have even dreamed of. In creating this staff, it has become apparent to me that there is still [further] to go.
       - Event guard: `(qglobals["mage_epic"] == "6" and item_lib.check_turn_in(e.trade, {item1=19086,item2=16807,item3=16773,item4=19087}) )`
     - event_trade NPC message: You have gained 5 ability points!
@@ -114,7 +157,31 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 Revisit those instructions if another copy of a consumed item is needed.
 
 1. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
-2. poknowledge/"Bantil Io`Tuv", hand "Globe of Discordant Energy" (47100) + "Staff of Elemental Essence" (19092). Gives "Focus of Primal Elements" (19839).
+2. Loot "Gelidran Essence" (19099) from "a gelidran flamefreeze" (NPC 334016) in `riftseekers`. Drop cache: 8.7857% chance per kill.
+3. Loot "Pyrilen Essence" (19093) from "a pyrilen firecharmer" (NPC 334010) in `riftseekers`. Drop cache: 8.7527% chance per kill.
+4. draniksscar/"Iilivina", hand "Gelidran Essence" (19099) + "Pyrilen Essence" (19093). Gives "Note from Iilivina" (19438) + "Pouch of Powdered Riftseeker Essence" (19149).
+    - event_trade NPC emote: grinds the small crystals into a fine powder, 'This is like nothing I have ever seen. It will take some time for me to analyze this, but thank you. I have more here than I will need. Take this pouch to Bantil, along with this note. If he doesn't know how this will help you, he may know someone who does.
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1=19099,item2=19099,item3=19093,item4=19093}))`
+5. poknowledge/"Bantil Io`Tuv", hand "Note from Iilivina" (19438) + "Pouch of Powdered Riftseeker Essence" (19149).
+    - event_trade NPC emote:  unrolls the note and reads it to himself, 'Interesting. Well, I'm not sure I can do anything with this, but if you take this to Transon in Twilight sea, he may be able to understand it a little better.
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 19438,item2=19149}))`
+6. draniksscar/"Iilivina", say "Primals". Sets `mage_epic` to `10`.
+    - Player: "primals"
+      - NPC say: Were I to venture a guess, I'd say look for Chaos near the ruins of a fallen empire, as order would tend to oppose chaos, I would look for the Order elemental near the ranks of a well regimented army, probably an ancient army, it is a creature of prestige. The Spirit elemental would find someplace where death and decay have a strong foothold. The Body Elemental may be the most elusive, as there is life everywhere. I would assume that its strong ties with this realm would pull it to a place where there are Muramites. When you find them, bring their remains to me and I'll see what else needs to be done.
+      - Condition: `(qglobals["mage_epic"] >= "9" and e.message:findi("Primals"))`
+      - Linked from "hail" (explicit prompt).
+7. Spawns "Order Elemental" (npc:211057) via `hohonora/mage trap#enter`.
+8. Kill "Order Elemental" (NPC 211057) in `hohonora` and loot "Element of Order" (19547).
+9. Spawns "Body Elemental" (npc:284105) via `ferubi/mage trap#enter`.
+10. Kill "Body Elemental" (NPC 284105) in `ferubi` and loot "Element of Body" (19447).
+11. Spawns "Chaos Elemental" (npc:86174) via `dreadlands/mage trap#enter`.
+12. Kill "Chaos Elemental" (NPC 86174) in `dreadlands` and loot "Element of Chaos" (19444).
+13. Spawns "Spirit Elemental" (npc:200060) via `codecay/mage trap#enter`.
+14. Kill "Spirit Elemental" (NPC 200060) in `codecay` and loot "Element of Spirit" (19544).
+15. draniksscar/"Iilivina", hand "Element of Order" (19547) + "Element of Body" (19447) + "Element of Chaos" (19444) + "Element of Spirit" (19544).
+    - event_trade NPC say: You work so fast! Amazing work you have done.' She looks at the 4 essences for a moment, 'Yes, these can probably be used to bind to your staff, but we'll need some sort of binding. Something that can be used to keep large amounts of energy bound together. I have no idea where you'd find such a thing, but if you do bring it to Bantil with your staff, and he'll be able to finish your journey.
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1=19547,item2=19447,item3=19444,item4=19544}))`
+16. poknowledge/"Bantil Io`Tuv", hand "Globe of Discordant Energy" (47100) + "Staff of Elemental Essence" (19092). Gives "Focus of Primal Elements" (19839).
     - event_trade NPC emote: pulls the four essences from his pocket.  He then wraps them around your staff with the binding.  He opens a book and reads a few words in a language that you do not recognize, the staff then begins to radiate with power.  When he hands it back to you it looks very much the same, but appears to be transformed. 'You have done the impossible, we will both be remembered in the history books.  In fact, I have already started writing of our journey together, and all the assitance that you provided me.  I will make sure you get a copy when I am finished.  That you again friend!'
       - Event guard: `(qglobals["mage_epic"] == "11" and item_lib.check_turn_in(e.trade, {item1=47100,item2=19092}) )`
     - event_trade NPC message: You have gained 10 ability points!

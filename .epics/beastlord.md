@@ -206,10 +206,15 @@ Revisit those instructions if another copy of a consumed item is needed.
 1. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
 2. Spawns "Grimling Colonel" (npc:167426) via `grimling/scout husman#end the threat in the grimling forest`.
 3. Kill "Grimling Colonel" (NPC 167426) in `grimling` and loot "Eerie Medallion" (57025).
-4. Spawns "Dismal Darkpaw Mystic" (npc:181225) via `jaggedpine/rashara wrualla#hail`.
-5. Kill "Dismal Darkpaw Mystic" (NPC 181225) in `jaggedpine` and loot "Scalding Blood" (57058).
-6. Loot "Fierce Spirit Clay" (57020) from "Spiritfrenzied Phoenix" (NPC 215062) in `poair`. Drop cache: 100% chance per kill.
-7. sharvahl/"Elder Animist Muada", say "Make The Totem". Gives "Elders' Totem Mold" (52930).
+4. jaggedpine/"Rashara Wrualla", say "Hail".
+    - Player: "hail"
+      - NPC say: Aye, I do remember that face, Beastlord. I am still recovering from my short trip to Kuua that suffers from the touch of the Realm of Discord. What a dark and foul place it is. Some of the creatures have hearts so dark it is nearly inconceivable. One of those creatures has robbed me of what I hold [most dear].
+      - Condition: `($client->GetGlobal("beast_epic") ==15)`
+      - Condition: `($text=~/hail/i)`
+5. Spawns "Dismal Darkpaw Mystic" (npc:181225) via `jaggedpine/rashara wrualla#hail`.
+6. Kill "Dismal Darkpaw Mystic" (NPC 181225) in `jaggedpine` and loot "Scalding Blood" (57058).
+7. Loot "Fierce Spirit Clay" (57020) from "Spiritfrenzied Phoenix" (NPC 215062) in `poair`. Drop cache: 100% chance per kill.
+8. sharvahl/"Elder Animist Muada", say "Make The Totem". Gives "Elders' Totem Mold" (52930).
     - Player: "make the totem"
       - NPC say: Very well. You must now fashion the shape of the totem and imbue it with what you have collected, but not without this bit of beastlord magic. The elders fashion this essence rarely, so treat it with care. You must find a way to blend the magic items taken from the earth and blood together to make the magical base for this totem. Then, use the result to surround a solid frame you find and bathe it with our essence with heat to form the magical basis for this treasured item. Then, you must use fires to mold it. I trush your knowledge and willingness to learn will guid you through this phase of your trials as a beastlord. Return to me and tell me that you are finished with this important duty. Be careful.
         - Reply guard: `(plugin::check_hasitem($client, 57025) && plugin::check_hasitem($client, 57058) && plugin::check_hasitem($client, 57020))`
@@ -220,7 +225,7 @@ Revisit those instructions if another copy of a consumed item is needed.
       - Linked from "prepared" (explicit prompt).
       - Linked from "there is more" (explicit prompt).
       - Linked from "problem" (explicit prompt).
-8. sharvahl/"Elder Animist Muada", say "Task". Gives "Peculiar Unshapen Piece of Wood" (57011).
+9. sharvahl/"Elder Animist Muada", say "Task". Gives "Peculiar Unshapen Piece of Wood" (57011).
     - Player: "task"
       - NPC say: You must create a totem that is bound to the wild spirits as well as your own. At one time in their lives, each elder has had one. We used it to focus the power of our warders to make them stronger and to bond them to our own spirits. It is time for you to take on this labor of life, now that you are well on the path to becoming one with the elders. Are you [prepared] to do this?
       - Condition: `($client->GetGlobal("beast_epic") ==17)`
@@ -231,16 +236,50 @@ Revisit those instructions if another copy of a consumed item is needed.
       - Linked from "requirements" (explicit prompt).
       - Linked from "learning" (explicit prompt).
       - Linked from "agree to take on this charge" (explicit prompt).
-9. Combine in appropriate tradeskill container: "Fierce Spirit Clay" (57020), "Eerie Medallion" (57025), "Scalding Blood" (57058). Produces "Gilded Resonating Clay" (57029). Requires Pottery.
-10. Combine in appropriate tradeskill container: "Peculiar Unshapen Piece of Wood" (57011), "Gilded Resonating Clay" (57029), "Combined Essence" (52913). Produces "Malleable Glowing Totem" (57050). Requires Baking.
-11. Combine in appropriate tradeskill container: "Elders' Totem Mold" (52930), "Malleable Glowing Totem" (57050). Produces "Spiritbound Totem" (57027). Requires Blacksmithing.
-12. sharvahl/"Elder Animist Muada", hand "Globe of Discordant Energy" (47100) + "Spiritbound Totem" (57027). Gives "Sealed Letter from Muada" (57053).
+10. Combine in appropriate tradeskill container: "Fierce Spirit Clay" (57020), "Eerie Medallion" (57025), "Scalding Blood" (57058). Produces "Gilded Resonating Clay" (57029). Requires Pottery.
+11. Combine in appropriate tradeskill container: "Peculiar Unshapen Piece of Wood" (57011), "Gilded Resonating Clay" (57029), "Combined Essence" (52913). Produces "Malleable Glowing Totem" (57050). Requires Baking.
+12. Combine in appropriate tradeskill container: "Elders' Totem Mold" (52930), "Malleable Glowing Totem" (57050). Produces "Spiritbound Totem" (57027). Requires Blacksmithing.
+13. sharvahl/"Elder Animist Muada", say "Trapped Spirits". Sets `beast_epic` to `18`.
+    - Player: "trapped spirits"
+      - NPC say: There are discordant beasts that have become twisted through no fault of their own. You may think of it as a spiritual plage, which has us mystified, but we need these creatures stopped. As they grow more infected with spirits, their strength is growing out of contol. We need you to go to that realm and find the source of the problem. They are incredibly large beasts, so beware and do not go alone. Go seek the scout.
+      - Condition: `($client->GetGlobal("beast_epic") ==17)`
+      - Condition: `(plugin::check_hasitem($client, 57027))`
+      - Condition: `($text=~/trapped spirits/i)`
+      - Linked from "finished" (explicit prompt).
+14. causeway/"Jillaa Oogblat", say "Hail".
+    - Player: "hail"
+      - NPC say: Ah, you have the totem. Me call you friend. So friend, we gots big trouble here. Dem bazu are out of control. It not as dough dey weren't tough enough already! Dey gots da wrong spirits running in deir bodies. Dere is no way to calm dem eider. So we are going to have to kill them to get da spirits back. You must do dis. I tink dey know I'm here. Dey close by!
+      - Condition: `(e.message:findi("hail") and qglobals["beast_epic"] == "18" and not eq.get_entity_list():IsMobSpawnedByNpcTypeID(303092))`
+15. Spawns "Bazu Terror" (npc:303092) via `causeway/jillaa oogblat#hail`.
+16. Spawns "a bazu crusher" (npc:303093) via `causeway/jillaa oogblat#hail`.
+17. Spawns "Discordling Dark Animist" (npc:303094) via `causeway/bazu terror#event_death_complete`.
+18. Kill "Discordling Dark Animist" (NPC 303094) in `causeway` and loot "Dark Animist Wand" (57012).
+19. causeway/"Jillaa Oogblat", hand "Dark Animist Wand" (57012).
+    - event_trade NPC say: Dat must be it! Da creature had da wand dat infected creatures. It must have tried to make an army. We done solved it! Me will wrap it and [keep] it until me see Muada soon. Me stay a bit to be sure dat dis not happen again.
+      - Event guard: `(qglobals["beast_epic"] == "18" and item_lib.check_turn_in(e.trade, {item1 = 57012}))`
+20. sharvahl/"Elder Animist Muada", say "Agree To Take On This Charge". Gives "Blended Elixir of Fortitude" (57051).
+    - Player: "agree to take on this charge"
+      - NPC say: I had no doubts, $name... Messenger, you may return to our scouts and tell them that our friend here will take on the hunt for the lost scout. Give Jillaa this elixir. I'm sure she is in need of it and it will alert her to your acceptance of the task.
+      - Condition: `($client->GetGlobal("beast_epic") ==19 && $text=~/agree to take on this charge/i)`
+      - Linked from "trapped spirits" (sequence only; unverified).
+21. causeway/"Jillaa Oogblat", hand "Blended Elixir of Fortitude" (57051).
+    - event_trade NPC say: Yes, yes, welcome back. Me so worried. Me gave dat wand to scout, an ogre friend, and now it gone! And so is da scout. Someone told me dey found a tattered tunic dat looked liked da scout may have worn it quite far from here! It covered in strange black hairs and a sharp claw was stuck in it. Me don't want to tink about dat too much. It make me sad. Please go find da scout. And hurry!
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 57051}))`
+22. Spawns "DDA" (npc:301069) via `bloodfields/tormented scout#strong`.
+23. Kill "DDA" (NPC 301069) in `bloodfields` and loot "Gemmed Dark Animist Wand" (57014).
+24. bloodfields/"Tormented Scout", hand "Gemmed Dark Animist Wand" (57014). Gives "Wrapped Gemmed Wand" (57052).
+    - event_trade NPC emote: looks at you with sad eyes. 'Me so sorry, but me could not stop it. Wand is terrible power. Me wrap it again like Jillaa. You take it to Muada, quickly. Me tinks we did it! It has no power without dis wand!
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 57014}))`
+25. sharvahl/"Elder Animist Muada", hand "Wrapped Gemmed Wand" (57052).
+    - event_item NPC say: Well, this indeed explains why we were never rid of the dark animist. I do believe you have overcome that despicable fiend. I feel the wild spirits are safe now. But that doesn't mean we're done with you. What I must ask you will be the most difficult task yet. The dark animist has been using a magical item of great power. It holds within it the very essence of Discord that drives much of the dark animist's energy. You must bring one to me so we may study it and prevent any further abuse of our most beloved creatures. If you complete this task, you must also give me your Spiritbound Totem when you return, for it will indeed be time for you to transcend. If you have [lost] it, please tell. We may be able to help you.
+      - Event guard: `(plugin::check_handin(\%itemcount, 57052 =>1 ))`
+26. sharvahl/"Elder Animist Muada", hand "Globe of Discordant Energy" (47100) + "Spiritbound Totem" (57027). Gives "Sealed Letter from Muada" (57053).
     - event_item NPC emote: appears overwhelmed. 'There is no limit to your greatness, is there? You have done more than any other to save us -- the masters of the wild. Your time has come, savage lord. You are about to meet one of the very first beastlords of Luclin. Her name is Alladnu Eshiara. She is often found in the wild, studying nature and the ways of feral creatures. Find her, give her this letter and your Savage Lord Totem and she will complete your journey. I will be there in spirit friend.
       - Event guard: `($client->GetGlobal("beast_epic") ==21 && plugin::check_handin(\%itemcount, 47100 =>1, 57027 =>1 ))`
-13. hollowshade/"Alladnu Araihse", hand "Savage Lord's Totem" (52911) + "Sealed Letter from Muada" (57053).
+27. hollowshade/"Alladnu Araihse", hand "Savage Lord's Totem" (52911) + "Sealed Letter from Muada" (57053).
     - event_trade NPC say: Follow me, . We will embark upon the final steps of your journey.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 52911,item2 = 57053}))`
-14. hollowshade/"Alladnu Araihse", say "Ready". Gives "Spiritcaller Totem of the Feral" (57054).
+28. hollowshade/"Alladnu Araihse", say "Ready". Gives "Spiritcaller Totem of the Feral" (57054).
     - Player: "ready"
       - NPC say: Then you have finished your journey. Here ends my service and those of the spirits. You are one with the spirits now. Travel your life's journey with pride.
       - NPC message: You have gained 10 ability points!

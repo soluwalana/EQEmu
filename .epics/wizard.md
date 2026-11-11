@@ -90,20 +90,23 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 22. Collect ground spawn "Prismatic Crystal" (12628) in `twilight`.
 23. Loot "Prismatic Crystal" (12662) from "Treasure Sorter Neiben" (NPC 225031) in `dulak`. Drop cache: 100% chance per kill.
 24. Loot "Cohesion Gem" (67022) from "a metallic slime" (NPC 206031) in `poinnovation`. Drop cache: 34.241% chance per kill.
-25. Spawns "Mistress of the Darkwater Quest-only" (npc:125075) via `sirens/player#enter`.
-26. Kill "Mistress of the Darkwater Quest-only" (NPC 125075) in `sirens` and loot "Shard of Pure Ice" (11599).
-27. Spawns "Spawn Wiz 1.5; Pure Flame Elemental" (npc:278108) via `soldungc/ #signal:100`.
-28. Kill "Spawn Wiz 1.5; Pure Flame Elemental" (NPC 278108) in `soldungc` and loot "Wisp of Pure Flame" (11619).
-29. Loot "Fluxing Staff" (11445) from "Girplan Guardian" (NPC 300037) in `wallofslaughter`. Drop cache: 100% chance per kill.
-30. Spawns "Elite Sun Revenant" (npc:175306) via `scarlet/the gem guardian#event_proximity_say`.
-31. Kill "Elite Sun Revenant" (NPC 175306) in `scarlet` and loot "Fluxing Gem" (11448).
-32. Loot "Fluxing Rune" (11474) from "Hobgoblin Horrorfiend" (NPC 204053) in `ponightmare`. Drop cache: 100% chance per kill.
-33. Collect ground spawn "Fluxing Chunk of Ore" (11576) in `dranik`.
-34. lavastorm/"Talwyn Flamecaller", hand "Fluxing Staff" (11445) + "Fluxing Gem" (11448) + "Fluxing Rune" (11474) + "Fluxing Chunk of Ore" (11576). Gives "Staff of Fluxing Power" (11596).
+25. Spawns "Spawn Wiz 1.5; Pure Flame Elemental" (npc:278108) via `soldungc/ #signal:100`.
+26. Kill "Spawn Wiz 1.5; Pure Flame Elemental" (NPC 278108) in `soldungc` and loot "Wisp of Pure Flame" (11619).
+27. lavastorm/"Talwyn Flamecaller", hand "Wisp of Pure Flame" (11619).
+    - event_trade NPC say: You have obtained the pure flame? That was impressive how quickly you did it, the other wizards I am recruiting have not returned yet. Back to the recruitment, you will need pure ice. The ice is coldest in the wastes of Velious. Retrieve this pure ice and bring it back to me.
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 11619}))`
+28. Spawns "Mistress of the Darkwater Quest-only" (npc:125075) via `sirens/player#enter`.
+29. Kill "Mistress of the Darkwater Quest-only" (NPC 125075) in `sirens` and loot "Shard of Pure Ice" (11599).
+30. Loot "Fluxing Staff" (11445) from "Girplan Guardian" (NPC 300037) in `wallofslaughter`. Drop cache: 100% chance per kill.
+31. Spawns "Elite Sun Revenant" (npc:175306) via `scarlet/the gem guardian#event_proximity_say`.
+32. Kill "Elite Sun Revenant" (NPC 175306) in `scarlet` and loot "Fluxing Gem" (11448).
+33. Loot "Fluxing Rune" (11474) from "Hobgoblin Horrorfiend" (NPC 204053) in `ponightmare`. Drop cache: 100% chance per kill.
+34. Collect ground spawn "Fluxing Chunk of Ore" (11576) in `dranik`.
+35. lavastorm/"Talwyn Flamecaller", hand "Fluxing Staff" (11445) + "Fluxing Gem" (11448) + "Fluxing Rune" (11474) + "Fluxing Chunk of Ore" (11576). Gives "Staff of Fluxing Power" (11596).
     - event_trade NPC say: You are indeed ready to join the ranks as a soldier of Solusek Ro. Every soldier in Solusek's league must wield a staff of power, which will focus your abilities in a way that you have never felt before! Fear will consume you as you feel your essence being ripped from your body. Do not give up, use the staff with faith and hope that you will be rewarded with the most [powerful item] you could ever imagine.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 11445, item2 = 11448, item3 = 11474, item4 = 11576}))`
-35. Combine in "Silken Tapestry Satchel" (12596): "Prismatic Crystal" (12599), "Prismatic Crystal" (12625), "Prismatic Crystal" (12628), "Prismatic Crystal" (12662), "Cohesion Gem" (67022), "Shard of Pure Ice" (11599), "Wisp of Pure Flame" (11619), "Staff of Fluxing Power" (11596). Produces "Full Tapestry Satchel" (16753). Requires Remove Traps.
-36. lavastorm/"Talwyn Flamecaller", hand "Full Tapestry Satchel" (16753). Gives "Staff of Prismatic Power" (12665).
+36. Combine in "Silken Tapestry Satchel" (12596): "Prismatic Crystal" (12599), "Prismatic Crystal" (12625), "Prismatic Crystal" (12628), "Prismatic Crystal" (12662), "Cohesion Gem" (67022), "Shard of Pure Ice" (11599), "Wisp of Pure Flame" (11619), "Staff of Fluxing Power" (11596). Produces "Full Tapestry Satchel" (16753). Requires Remove Traps.
+37. lavastorm/"Talwyn Flamecaller", hand "Full Tapestry Satchel" (16753). Gives "Staff of Prismatic Power" (12665).
     - event_trade NPC emote: removes the components from the tapestry satchel they begin to vibrate with power. They pulse quickly as they move towards each other, static flies in each direction as the pieces fuse into each other. In a final burst of magic the staff is complete. Talwyn looks it over with wise eyes before giving it to you.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 16753}))`
     - event_trade NPC say: The staff of power is yours to wield. If you are up to the task I can set you on the final portions of what is needed to become a true avatar of Solusek.
@@ -119,12 +122,27 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 Revisit those instructions if another copy of a consumed item is needed.
 
 1. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
-2. lavastorm/"Talwyn Flamecaller", hand "Globe of Discordant Energy" (47100). Gives "Broken Orb of Discordant Energy" (16147) + "Broken Orb of Discordant Energy" (15836).
+2. lavastorm/"Talwyn Flamecaller", say "Hail". Sets `wiz_epic20` to `1`.
+    - Player: "hail"
+      - NPC say: The power of the wizard courses through your veins thoroughly, ever in search of the opportunity to harness even more power. You have created a staff of immense power, yet even in its glory, is limited. To unleash the full potential of this weapon will be a large undertaking of its own. You must obtain a globe of pure discordant energy and return it to me. Look for assistance from the Plane of Discord from Grathnok Gilforgan. I know not where this being may be, but I do know that once you find him, he will be willing to assist you in finding the globe you seek.
+      - Condition: `(e.message:findi("hail") and e.other:HasItem(12665))`
+3. draniksscar/"Grathnok Gilforgan", say "Intricate Horn Of Galien". Sets `wiz_epic20` to `2`.
+    - Player: "intricate horn of galien"
+      - NPC say: This precious artifact was placed on our largest tower, where its resonating voice stretched across the planes and through the mountains to rally our troops and warn us of an impending attack. The horn has tremendous sentimental value for us, as it belonged to one of the great leaders of our past. It is a horn made of the finest precious metals of our homeland, laden with runes and etchings and filled with gems and precious stones. It is a signification of our strength and perseverance over the ages and without it the morale is very low amongst our soldiers.
+      - Condition: `(qglobals["wiz_epic20"] ~= nil and qglobals["wiz_epic20"] >= "1")`
+      - Condition: `(e.message:findi("Intricate Horn of Galien"))`
+      - Linked from "Lose your hold" (explicit prompt).
+4. Loot "Intricate Horn of Galien" (15825) from "Lightningcaller Vhalek" (NPC 316034) in `provinggrounds`. Drop cache: 100% chance per kill.
+5. draniksscar/"Grathnok Gilforgan", hand "Intricate Horn of Galien" (15825).
+    - event_trade NPC say: Your resolve and strength of will astounds me. You have returned to my people, the most sacred artifact we have on this world, and for that, you have earned my gratitude. As promised, I will give you the information that I have on the discordant globes. These globes can only be collected in one area, where the magic of discord constantly fluxes and an eerie sense of pain and anguish resides. Beware, it is an extremely dangerous area, protected by many of the Muramite Army's best and highest ranking members. Good luck to you, I hope you achieve all that you aspire.
+      - Event guard: `(qglobals["wiz_epic20"] ~= nil and qglobals["wiz_epic20"] >= "2")`
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 15825}))`
+6. lavastorm/"Talwyn Flamecaller", hand "Globe of Discordant Energy" (47100). Gives "Broken Orb of Discordant Energy" (16147) + "Broken Orb of Discordant Energy" (15836).
     - event_trade NPC say: To obtain this globe was no trivial task, yet you have prevailed! Your staff is nearly complete now, you have only two final tasks remaining.', he says as he begins to murmur a brief incantation. Without warning, the orb splits into two equal halves and are then given to you. They will infuse your staff with one of the most useful powers of a wizard; teleportation.'
       - Event guard: `(qglobals["wiz_epic20"] ~= nil and qglobals["wiz_epic20"] >= "3" and item_lib.check_turn_in(e.trade, {item1 = 47100}))`
-3. Combine recipe 19894 (container 16695): "Broken Orb of Discordant Energy" (16147). Produces "Infused Orb of Discordant Energy" (16451). Requires Remove Traps.
-4. Combine recipe 19895 (container 16765): "Broken Orb of Discordant Energy" (15836). Produces "Infused Orb of Discordant Energy" (16334). Requires Remove Traps.
-5. lavastorm/"Talwyn Flamecaller", hand "Infused Orb of Discordant Energy" (16451) + "Infused Orb of Discordant Energy" (16334) + "Staff of Prismatic Power" (12665). Gives "Staff of Phenomenal Power" (16576).
+7. Combine recipe 19894 (container 16695): "Broken Orb of Discordant Energy" (16147). Produces "Infused Orb of Discordant Energy" (16451). Requires Remove Traps.
+8. Combine recipe 19895 (container 16765): "Broken Orb of Discordant Energy" (15836). Produces "Infused Orb of Discordant Energy" (16334). Requires Remove Traps.
+9. lavastorm/"Talwyn Flamecaller", hand "Infused Orb of Discordant Energy" (16451) + "Infused Orb of Discordant Energy" (16334) + "Staff of Prismatic Power" (12665). Gives "Staff of Phenomenal Power" (16576).
     - event_trade NPC say: With these Infused Orbs, your path to becoming a soldier of Solusek's legions has been completed. You have surpassed even my expectations!' he says. You hear Talwyn chant in low, almost inaudible tones. His hands glow bright with power as he assembles a weapon worthy of Solusek himself. 'Take this staff as a symbol of your loyalty to Solusek and wield it proudly, wizard!
       - Event guard: `(qglobals["wiz_epic20"] == "4" and item_lib.check_turn_in(e.trade, {item1 = 16451, item2 = 16334, item3 = 12665}))`
     - event_trade NPC message: You have gained 10 ability points!

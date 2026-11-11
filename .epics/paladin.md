@@ -207,75 +207,105 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
       - NPC say: Hello $name.
         - Reply guard: ``
       - Condition: `($text=~/Hail/i)`
-2. Spawns "Durunal the Cursebearer" (npc:300087) via `wallofslaughter/player#enter`.
-3. Kill "Durunal the Cursebearer" (NPC 300087) in `wallofslaughter` and loot "Dark and Twisted Sword" (69971).
-4. hohonora/"Irak Altil", hand "Dark and Twisted Sword" (69971). Gives "Dark and Twisted Sword" (69972).
-    - event_trade NPC emote: I see you have destroyed the monster responsible for this plot. This sword, this twisted piece of steel and blood that lies in your hands, must be the instrument used by Durunal to twist and corrupt those he tortured. I can feel that this sword has a dark magical power that he used to forcibly and violently siphon the soul of those he tormented. There is only one way to correct Durunal's wrong-doings, as well as lay to rest the souls of those he tortured. You must take the crystals you have gathered and meld them with the sword. . .give those tormented souls a new purpose and a new meaning. After you have joined the souls with this weapon, I will [tell you about my master].
-      - Event guard: `(qglobals["paladin_epic"] == "6" and item_lib.check_turn_in(e.trade, {item1 = 69971}))`
-5. Spawns "Rithnok the Tormented" (npc:91193) via `skyfire/dry sapara#hail`.
-6. Kill "Rithnok the Tormented" (NPC 91193) in `skyfire` and loot "Rithnok's Soulstone" (69935).
-7. skyfire/"Dry Sapara", hand "Rithnok's Soulstone" (69935). Gives "Rithnok's Soulstone" (69936).
-    - event_item NPC say: This appears to be a vessel that housed Rithnok's soul. However, it appears to be missing a few shards. Take this soulstone and piece it back together. I have a feeling once this item becomes whole it will lead you to whoever did this to our poor Rithnok. Thank you for releasing him, $name.
-      - Event guard: `(plugin::check_handin(\%itemcount, 69935 => 1))`
-8. Collect ground spawn "Soulstone Shard" (69937) in `draniksscar`.
-9. Collect ground spawn "Soulstone Shard" (69938) in `bloodfields`.
-10. Collect ground spawn "Soulstone Shard" (69939) in `causeway`.
-11. Collect ground spawn "Soulstone Shard" (69940) in `dranik`.
-12. Combine in "Rithnok's Soulstone" (69936): "Soulstone Shard" (69937), "Soulstone Shard" (69938), "Soulstone Shard" (69939), "Soulstone Shard" (69940). Produces "Rithnok's Soulstone" (69941). Requires Remove Traps.
-13. Spawns "A Corrupted Koalindl" (npc:69141) via `oot/player#event_fish_success`.
-14. Kill "A Corrupted Koalindl" (NPC 69141) in `oot` and loot "Corrupted Koalindl's Heart" (69929).
-15. Spawns "A Corrupted Koalindl" (npc:224432) via `gunthak/player#event_fish_success`.
-16. Kill "A Corrupted Koalindl" (NPC 224432) in `gunthak` and loot "Corrupted Koalindl's Heart" (69930).
-17. Spawns "A Corrupted Koalindl" (npc:93306) via `overthere/player#event_fish_success`.
-18. Kill "A Corrupted Koalindl" (NPC 93306) in `overthere` and loot "Corrupted Koalindl's Heart" (69931).
-19. Spawns "A Corrupted Koalindl" (npc:182150) via `nedaria/player#event_fish_success`.
-20. Kill "A Corrupted Koalindl" (NPC 182150) in `nedaria` and loot "Corrupted Koalindl's Heart" (69932).
-21. qeynos2/"Enic Ruklin", hand "Corrupted Koalindl's Heart" (69929) + "Corrupted Koalindl's Heart" (69930) + "Corrupted Koalindl's Heart" (69931) + "Corrupted Koalindl's Heart" (69932).
+2. Spawns "A Corrupted Koalindl" (npc:69141) via `oot/player#event_fish_success`.
+3. Kill "A Corrupted Koalindl" (NPC 69141) in `oot` and loot "Corrupted Koalindl's Heart" (69929).
+4. Spawns "A Corrupted Koalindl" (npc:224432) via `gunthak/player#event_fish_success`.
+5. Kill "A Corrupted Koalindl" (NPC 224432) in `gunthak` and loot "Corrupted Koalindl's Heart" (69930).
+6. Spawns "A Corrupted Koalindl" (npc:93306) via `overthere/player#event_fish_success`.
+7. Kill "A Corrupted Koalindl" (NPC 93306) in `overthere` and loot "Corrupted Koalindl's Heart" (69931).
+8. Spawns "A Corrupted Koalindl" (npc:182150) via `nedaria/player#event_fish_success`.
+9. Kill "A Corrupted Koalindl" (NPC 182150) in `nedaria` and loot "Corrupted Koalindl's Heart" (69932).
+10. qeynos2/"Enic Ruklin", hand "Corrupted Koalindl's Heart" (69929) + "Corrupted Koalindl's Heart" (69930) + "Corrupted Koalindl's Heart" (69931) + "Corrupted Koalindl's Heart" (69932). Gives "Seal of Enic" (69933).
     - event_trade NPC say: So this is what happened to the Koalindl? This is sad indeed. I have heard that you have stopped a greater tragedy from occuring by treating the pestilence that was being brought to the seas. You have done a very good job, . I present you with a seal of nobility that was given to me long ago. This seal has granted me audiences with many of the different races of Norrath, including the Ring of Scale. Perhaps it will aide you in your journeys. Thank you again, sir.
       - Event guard: `(qglobals["paladin_epic"] >= "3")`
       - Event guard: `item_lib.check_turn_in(e.trade, {item1 = 69929, item2 = 69930, item3 = 69931, item4 = 69932})`
-22. dawnshroud/"Mikhal Young", say "Find Anything". Gives "Drema's Locket" (69945).
+11. skyfire/"Dry Sapara", say "Hail".
+    - Player: "hail"
+      - NPC say: Welcome $name. I see you have the Seal of Enic, I imagine you have done a very good deed for Enic to acquire that. If Enic gave you that, he must trust you. And if he trusts you, then so shall I. I ask a favor of you, paladin. I wish for you to help me with a servant of mine. Rithnok, a very loyal servant of the Peak, disappeared a few days ago. He has returned, but he is not the same. . .he appears beaten and torn. I feel he has been tormented by some unknown being. For what reason? I do not know. However, he must be relieved of his suffering. I ask you to release him from the confines of this world and bring me back anything you find. Go now.
+        - Reply guard: `($client->GetGlobal("paladin_epic") ==4 && plugin::check_hasitem($client, 69933))`
+      - NPC say: What brings you here mortal? I am the new guardian of Veeshan's Peak and I will not allow you to pass. And even if I did, the ward on the door will not allow you to pass. Though, you do seem like the resourceful type and I do have something that I need researched. Would you be [willing to do a task] for me?
+        - Reply guard: ``
+      - Condition: `($text=~/hail/i)`
+12. Spawns "Rithnok the Tormented" (npc:91193) via `skyfire/dry sapara#hail`.
+13. Kill "Rithnok the Tormented" (NPC 91193) in `skyfire` and loot "Rithnok's Soulstone" (69935).
+14. skyfire/"Dry Sapara", hand "Rithnok's Soulstone" (69935). Gives "Rithnok's Soulstone" (69936).
+    - event_item NPC say: This appears to be a vessel that housed Rithnok's soul. However, it appears to be missing a few shards. Take this soulstone and piece it back together. I have a feeling once this item becomes whole it will lead you to whoever did this to our poor Rithnok. Thank you for releasing him, $name.
+      - Event guard: `(plugin::check_handin(\%itemcount, 69935 => 1))`
+15. Collect ground spawn "Soulstone Shard" (69937) in `draniksscar`.
+16. Collect ground spawn "Soulstone Shard" (69938) in `bloodfields`.
+17. Collect ground spawn "Soulstone Shard" (69939) in `causeway`.
+18. Collect ground spawn "Soulstone Shard" (69940) in `dranik`.
+19. Combine in "Rithnok's Soulstone" (69936): "Soulstone Shard" (69937), "Soulstone Shard" (69938), "Soulstone Shard" (69939), "Soulstone Shard" (69940). Produces "Rithnok's Soulstone" (69941). Requires Remove Traps.
+20. dawnshroud/"Mikhal Young", say "Find Anything". Gives "Drema's Locket" (69945).
     - Player: "find anything"
       - NPC say: As we were turning back to Dawnshroud Peaks, my good friend Ryann Desgrey found her locket in the dirt in the Grey. Here, take the locket. Perhaps you will have a better chance of finding her, and perhaps she will come with you once you present her with the locket. Please, let her know that I miss her and that we all want her to come home safely. Go now, noble paladin.
       - Condition: `($client->GetGlobal("paladin_epic") ==4 && $text=~/find anything/i)`
       - Linked from "sister" (explicit prompt).
-23. letalis/"Drema Young", hand "Drema's Locket" (69945). Gives "Drema's Fingerbone" (69946).
+21. letalis/"Drema Young", hand "Drema's Locket" (69945). Gives "Drema's Fingerbone" (69946).
     - event_trade NPC emote: groans, 'Uuuurgh. . . Crystal. . .' As Drema reaches out to receive the locket, her fingerbone breaks off in your hand.
       - Event guard: `(qglobals["paladin_epic"] ~= nil and qglobals["paladin_epic"] >= "4" and item_lib.check_turn_in(e.trade, {item1 = 69945}))`
-24. dawnshroud/"Denns Rootenpaw", hand "Drema's Fingerbone" (69946). Gives "Bone Collector's Bag" (69947).
+22. dawnshroud/"Mikhal Young", hand "Drema's Fingerbone" (69946).
+    - event_item NPC say: You have found her in Mons Letalis? This is her fingerbone, what has happened? She has turned into a skeleton? Oh my, this is grave news indeed. Show this fingerbone to Denns, maybe he can figure out a way to investigate this dire situation.
+      - Event guard: `($client->GetGlobal("paladin_epic") ==4 && plugin::check_handin(\%itemcount, 69946 => 1))`
+23. dawnshroud/"Denns Rootenpaw", hand "Drema's Fingerbone" (69946). Gives "Bone Collector's Bag" (69947).
     - event_item NPC say: What is this? Drema's fingerbone? While I don't usually help paladins, in this situation I will help you and Mikhal investigate this tragedy. Here is what will need to be done: Take this bag and collect three dark skeleton remains, found somewhere here in Luclin. Bring them back to me so that I can cast a dark spell on it. The spell will turn bones into powder, a powder that should revive Drema long enough to have her explain what occurred. Go now and find these bones.
       - Event guard: `($client->GetGlobal("paladin_epic") ==5 && plugin::check_handin(\%itemcount, 69946 => 1))`
-25. Loot "Dark Skeleton Remains" (69927) from "a sun revenant" (NPC 171002) in `thegrey`. Drop cache: 11.0475% chance per kill.
-26. Loot "Dark Skeleton Remains" (69926) from "disturbed elysian remains" (NPC 176016) in `umbral`. Drop cache: 2.582% chance per kill.
-27. Loot "Dark Skeleton Remains" (69925) from "A Soriz Slave" (NPC 162029) in `ssratemple`. Drop cache: 35% chance per kill.
-28. Combine in "Bone Collector's Bag" (69947): "Dark Skeleton Remains" (69927), "Dark Skeleton Remains" (69926), "Dark Skeleton Remains" (69925). Produces "Bone Collector's Bag" (69948). Requires Remove Traps.
-29. dawnshroud/"Denns Rootenpaw", hand "Bone Collector's Bag" (69948). Gives "Enchanted Bone Powder" (69949).
+24. Loot "Dark Skeleton Remains" (69927) from "a sun revenant" (NPC 171002) in `thegrey`. Drop cache: 11.0475% chance per kill.
+25. Loot "Dark Skeleton Remains" (69926) from "disturbed elysian remains" (NPC 176016) in `umbral`. Drop cache: 2.582% chance per kill.
+26. Loot "Dark Skeleton Remains" (69925) from "A Soriz Slave" (NPC 162029) in `ssratemple`. Drop cache: 35% chance per kill.
+27. Combine in "Bone Collector's Bag" (69947): "Dark Skeleton Remains" (69927), "Dark Skeleton Remains" (69926), "Dark Skeleton Remains" (69925). Produces "Bone Collector's Bag" (69948). Requires Remove Traps.
+28. dawnshroud/"Denns Rootenpaw", hand "Bone Collector's Bag" (69948). Gives "Enchanted Bone Powder" (69949).
     - event_item NPC say: Very well, I have turned this collection of bones into powder. Take this powder to Drema and see if it awakens her. Good luck, knight.
       - Event guard: `($client->GetGlobal("paladin_epic") ==5 && plugin::check_handin(\%itemcount, 69948 => 1))`
-30. letalis/"Drema Young", hand "Enchanted Bone Powder" (69949).
+29. letalis/"Drema Young", hand "Enchanted Bone Powder" (69949).
     - event_trade NPC emote: Please end my torment . I beg of you!
       - Event guard: `(qglobals["paladin_epic"] ~= nil and qglobals["paladin_epic"] >= "5" and item_lib.check_turn_in(e.trade, {item1 = 69949}))`
-31. Spawns "Drema Young" (npc:169128) after the hand-in.
-32. Kill "Drema Young" (NPC 169128) in `letalis` and loot "Drema's Soulstone" (69928).
-33. Loot "Soulstone Shard" (69950) from "Coterie Corruptor" (NPC 172188) in `tenebrous`. Drop cache: 100% chance per kill.
-34. Loot "Soulstone Shard" (69951) from "Shade of Mujaki the Devourer".
-35. Combine in "Drema's Soulstone" (69928): "Soulstone Shard" (69950), "Soulstone Shard" (69951). Produces "Drema's Soulstone" (69952). Requires Remove Traps.
-36. Summon "Foldable Medicine Bag" (17770) by casting "Unfold Medicine Bag".
-37. Buy "Fine Potion Vial" (95846) from "Dargon" (NPC 29000) in `halas`. Base price: 1,750 copper.
-38. Loot "Robust Shadow Essence" (96911) from "Qua Senshali Xakra" (NPC 158020) in `vexthal`. Drop cache: 28.7245% chance per kill.
-39. Loot "Sage Leaf" (14215) from "a Di`zok Herbalist" (NPC 103166) in `chardok`. Drop cache: 6.0319% chance per kill.
-40. Loot "Valerian Root" (14230) from "a Sarnak Herb Collector" (NPC 103012) in `chardok`. Drop cache: 3.7457% chance per kill.
-41. Buy "Woundwart" (16526) from "Zok Kuluree" (NPC 50164) in `rathemtn`. Base price: 400 copper.
-42. Combine in "Foldable Medicine Bag" (17770): "Fine Potion Vial" (95846), "Robust Shadow Essence" (96911), "Sage Leaf" (14215), "Valerian Root" (14230), "Woundwart" (16526). Produces "Mist of the Breathless" (96937). Requires Alchemy.
-43. abysmal/"Reiya The Pained", hand "Mist of the Breathless" (96937). Gives "Reiya's Soulstone" (69924).
+30. Spawns "Drema Young" (npc:169128) after the hand-in.
+31. Kill "Drema Young" (NPC 169128) in `letalis` and loot "Drema's Soulstone" (69928).
+32. Loot "Soulstone Shard" (69950) from "Coterie Corruptor" (NPC 172188) in `tenebrous`. Drop cache: 100% chance per kill.
+33. Loot "Soulstone Shard" (69951) from "Shade of Mujaki the Devourer".
+34. Combine in "Drema's Soulstone" (69928): "Soulstone Shard" (69950), "Soulstone Shard" (69951). Produces "Drema's Soulstone" (69952). Requires Remove Traps.
+35. Summon "Foldable Medicine Bag" (17770) by casting "Unfold Medicine Bag".
+36. Buy "Fine Potion Vial" (95846) from "Dargon" (NPC 29000) in `halas`. Base price: 1,750 copper.
+37. Loot "Robust Shadow Essence" (96911) from "Qua Senshali Xakra" (NPC 158020) in `vexthal`. Drop cache: 28.7245% chance per kill.
+38. Loot "Sage Leaf" (14215) from "a Di`zok Herbalist" (NPC 103166) in `chardok`. Drop cache: 6.0319% chance per kill.
+39. Loot "Valerian Root" (14230) from "a Sarnak Herb Collector" (NPC 103012) in `chardok`. Drop cache: 3.7457% chance per kill.
+40. Buy "Woundwart" (16526) from "Zok Kuluree" (NPC 50164) in `rathemtn`. Base price: 400 copper.
+41. Combine in "Foldable Medicine Bag" (17770): "Fine Potion Vial" (95846), "Robust Shadow Essence" (96911), "Sage Leaf" (14215), "Valerian Root" (14230), "Woundwart" (16526). Produces "Mist of the Breathless" (96937). Requires Alchemy.
+42. abysmal/"Lovine Lemise", say "Ingredients". Gives "Lovine's Potion Bag" (69922).
+    - Player: "ingredients"
+      - NPC say: I am looking for the following things: a Potameid seaweed strand, blood from a Mastruq Havocblade, the tail of a Noc Fleshfeaster, and the jawbone of Ra'Tuk Screambringer. Place the items in this enchanted potion bag, and return it to me so that we can attempt to awaken Reiya. Please be dilligent in your search, $name.
+      - Condition: `($client->GetGlobal("paladin_epic") ==5 && $text=~/ingredients/i)`
+      - Linked from "wrong" (explicit prompt).
+43. Loot "Ra`Tuk Screambringer's Jaw" (69921) from "a ra`tuk screambringer" (NPC 283104) in `barindu`. Drop cache: 4.0569% chance per kill.
+44. Loot "Noc Fleshfeasters Tail" (69920) from "a noc fleshfeaster" (NPC 282025) in `riwwi`. Drop cache: 2.4363% chance per kill.
+45. Loot "Mastruq Havocblade Blood" (69919) from "a mastruq havocblade" (NPC 281028) in `qinimi`. Drop cache: 3.005% chance per kill.
+46. Loot "Potameid Seaweed Strands" (69918) from "an entrapped potameid" (NPC 280040) in `natimbi`. Drop cache: 6.4238% chance per kill.
+47. Combine in "Lovine's Potion Bag" (69922): "Ra`Tuk Screambringer's Jaw" (69921), "Noc Fleshfeasters Tail" (69920), "Mastruq Havocblade Blood" (69919), "Potameid Seaweed Strands" (69918). Produces "Lovine's Potion Bag" (69923). Requires Remove Traps.
+48. abysmal/"Lovine Lemise", hand "Lovine's Potion Bag" (69923).
+    - event_item NPC emote: Thank you for gathering these items $name. This potion will help him very much, however, Reiya will need one more potion to help him gain conciousness. I will need you to bring him a potion of Mist of the Breathless. Go now and bring this quickly, friend.
+      - Event guard: `($client->GetGlobal("paladin_epic") ==5 && plugin::check_handin(\%itemcount, 69923 => 1))`
+49. abysmal/"Reiya The Pained", hand "Mist of the Breathless" (96937). Gives "Reiya's Soulstone" (69924).
     - event_item NPC say: Aauuuugh. Ferubi. . .Ferubi is where I was taken. . .' In a bright flash, Reiya has withered away
       - Event guard: `($client->GetGlobal("paladin_epic_reiya") ==1 && plugin::check_handin(\%itemcount, 96937 => 1))`
-44. Spawns "Shade of Reiya the Pained" (npc:284104) via `ferubi/player#enter`.
-45. Kill "Shade of Reiya the Pained" (NPC 284104) in `ferubi` and loot "Soulstone Shard" (69943).
-46. Loot "Soulstone Shard" (69944) from "Vuranish Xxuro" (NPC 290072) in `vxed`. Drop cache: 100% chance per kill.
-47. Combine in "Reiya's Soulstone" (69924): "Soulstone Shard" (69943), "Soulstone Shard" (69944). Produces "Reiya's Soulstone" (69942). Requires Remove Traps.
-48. Loot "Redis' Soulstone" (69983) from "Shade of Redis Linrok" (NPC 328037) in `dranikcatacombsa`. Drop cache: 100% chance per kill.
-49. Combine in "Dark and Twisted Sword" (69972): "Rithnok's Soulstone" (69941), "Drema's Soulstone" (69952), "Reiya's Soulstone" (69942), "Redis' Soulstone" (69983). Produces "Redemption" (64031). Requires Remove Traps.
+50. Spawns "Shade of Reiya the Pained" (npc:284104) via `ferubi/player#enter`.
+51. Kill "Shade of Reiya the Pained" (NPC 284104) in `ferubi` and loot "Soulstone Shard" (69943).
+52. Loot "Soulstone Shard" (69944) from "Vuranish Xxuro" (NPC 290072) in `vxed`. Drop cache: 100% chance per kill.
+53. Combine in "Reiya's Soulstone" (69924): "Soulstone Shard" (69943), "Soulstone Shard" (69944). Produces "Reiya's Soulstone" (69942). Requires Remove Traps.
+54. Loot "Redis' Soulstone" (69983) from "Shade of Redis Linrok" (NPC 328037) in `dranikcatacombsa`. Drop cache: 100% chance per kill.
+55. Spawns "Durunal the Cursebearer" (npc:300087) via `wallofslaughter/player#enter`.
+56. Kill "Durunal the Cursebearer" (NPC 300087) in `wallofslaughter` and loot "Dark and Twisted Sword" (69971).
+57. hohonora/"Irak Altil", say "Hail". Sets `paladin_epic` to `6`.
+    - Player: "hail"
+      - NPC say:  see you have returned with three Soulstones. These crystals are very delicate and hold the souls of those tormented beings. The keepers of these Soulstones were being controlled by some superior being, someone dark and evil in nature. I will need you to find one more Soulstone, so that we can find out who is behind all of this. This final tormented soul I feel is a Erudite...a Wayfarer Erudite, though I cannot discern where this person is. Please hurry and find this tormented being.
+        - Reply guard: `(e.other:HasItem(69941) and e.other:HasItem(69952) and e.other:HasItem(69942))`
+      - NPC say: Ah , it is so good to see you again. I hope my sword has been treating you well. What [brings you here], friend?
+        - Reply guard: `(e.other:HasItem(10099) or e.other:HasItem(69913))`
+      - Condition: `(e.message:findi("hail"))`
+58. hohonora/"Irak Altil", hand "Dark and Twisted Sword" (69971). Gives "Dark and Twisted Sword" (69972).
+    - event_trade NPC emote: I see you have destroyed the monster responsible for this plot. This sword, this twisted piece of steel and blood that lies in your hands, must be the instrument used by Durunal to twist and corrupt those he tortured. I can feel that this sword has a dark magical power that he used to forcibly and violently siphon the soul of those he tormented. There is only one way to correct Durunal's wrong-doings, as well as lay to rest the souls of those he tortured. You must take the crystals you have gathered and meld them with the sword. . .give those tormented souls a new purpose and a new meaning. After you have joined the souls with this weapon, I will [tell you about my master].
+      - Event guard: `(qglobals["paladin_epic"] == "6" and item_lib.check_turn_in(e.trade, {item1 = 69971}))`
+59. Combine in "Dark and Twisted Sword" (69972): "Rithnok's Soulstone" (69941), "Drema's Soulstone" (69952), "Reiya's Soulstone" (69942), "Redis' Soulstone" (69983). Produces "Redemption" (64031). Requires Remove Traps.
 
 ## Epic 2.0
 
@@ -286,136 +316,111 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 **Earlier reward routes required by this graph path:** ["Redemption" (64031)](#epic-item-64031).
 Revisit those instructions if another copy of a consumed item is needed.
 
-1. provinggrounds/"Pashia Clouddancer", say "Hail".
-    - Player: "hail"
-      - NPC say: At last I am free again! Thank you so much for saving me from the horrors of this vile place. You have my gratitude. I can find my way out from here friend. Here take this [note] back to my brother. It should explain what good deed you have done for me today.
-        - Reply guard: `arrived`
-      - NPC say: Uuugh. . .
-        - Reply guard: ``
-      - Condition: `(e.other:HasItem(69956))`
-      - Condition: `(e.message:findi("hail"))`
-2. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
-3. airplane/"Inte Akera", hand "Globe of Discordant Energy" (47100). Gives "Scabbard of the Righteous" (69959) + "Token of Loyalty" (69958) + "Token of Conviction" (69957).
-    - event_trade NPC say: You have defeated the minions of Anguish and have exceeded my expectations, . You have proven yourself to be a powerful paladin and a savior of all of Norrath. These tokens are the embodiment of your virtues, . Take them and this scabbard and create your final sword. Place all of your tokens into this scabbard along with Redemption and forge the sword out of your own virtues. Today is a joyous day among paladins everywhere, for we have a new mentor lord protector among us.
-      - Event guard: `(e.other:HasItem(69953) and e.other:HasItem(69954) and e.other:HasItem(69955) and e.other:HasItem(69956) and item_lib.check_turn_in(e.trade, {item1 = 47100}))`
-4. Loot "Valdoon Kel`Novar's Heart" (69981) from "Valdoon Kel`Novar" (NPC 243672) in `mmcc`. Drop cache: 100% chance per kill.
-5. felwithea/"Galrun Starforge", hand "Valdoon Kel`Novar's Heart" (69981). Gives "Token of Cleansing" (69956).
-    - event_trade NPC say: Amazing, . You have cleansed all of the Mistmoore Catacombs of the impeding Vampire attack, as well as defeated their leader, Valdoon Kel`Novar. I shall take this to Lord Tynkale now and explain everything to him. You have saved us from a potential travesty. Take this, it may aide you in your journeys.
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 69981}))`
-6. provinggrounds/"Pashia Clouddancer", say "Note". Gives "Note from Pashia" (69973).
-    - Player: "note"
-      - NPC say: Ok, here's the note for you. Thank you again!
-      - Condition: `(e.other:HasItem(69956))`
-      - Condition: `(e.message:findi("note") and arrived)`
-      - Linked from "hail" (explicit prompt).
-7. nedaria/"Duram Firechaser", hand "Note from Pashia" (69973). Gives "Token of Heroism" (69955).
-    - event_trade NPC say: Oh my, this brooch is from Keelee? You have saved her? That is great news! Thank you so much for your help, chivalrous knight, for without it Keelee would have not been safe. Take this as a token of my appreciation.
-      - Event guard: `(e.other:HasItem(69956))`
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 69973}))`
-8. hohonora/"Irak Altil", say "Tell Me About Your Master". Sets `paladin_epic` to `9`.
+1. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
+2. hohonora/"Irak Altil", say "Tell Me About Your Master". Sets `paladin_epic` to `9`.
     - Player: "tell me about your master"
       - NPC say: Yes, this was my final master, the one who rarely taught knights. You have proven yourself to be a powerful and honorable paladin, and you have surpassed anything I could teach you. You have already met my master once, a very long time ago. His name is Inte Ikera, the noblest servant of Prexus. Go to him now with Redemption in hand so that you can begin your training. Good bye and good luck, friend.
       - Condition: `(e.other:HasItem(64031) and e.message:findi("tell me about your master"))`
       - Linked from "new master" (explicit prompt).
-9. qeynos2/"Camlend Serbold", say "Gem". Gives "Unfilled Set of Prayer Beads" (69968).
+3. qeynos2/"Camlend Serbold", say "Gem". Gives "Unfilled Set of Prayer Beads" (69968).
     - Player: "gem"
       - NPC say: The gems that will be needed I can't help you with, . Travel to the city of North Freeport and seek out a holy knight like yourself. Hopefully he will be able to help you for Kernik's sake.
       - Condition: `(qglobals["paladin_epic"] == "9")`
       - Condition: `(e.message:findi("gem"))`
       - Linked from "curing" (sequence only; unverified).
-10. rivervale/"Kaya Cloudfoot", say "Different About It". Gives "Note from Kaya" (69970).
+4. rivervale/"Kaya Cloudfoot", say "Different About It". Gives "Note from Kaya" (69970).
     - Player: "different about it"
       - NPC say: I think your eyes should see for themselves. Take this note over to Cheel. He will give you the precious gem of ours. Good luck with your journey .
       - Condition: `(qglobals["paladin_epic"] == "9")`
       - Condition: `(e.message:findi("different about it"))`
       - Linked from "visitor" (explicit prompt).
-11. rivervale/"Deputy Cheel", hand "Note from Kaya" (69970). Gives "Rivervale Prayer Bead" (69967).
+5. rivervale/"Deputy Cheel", hand "Note from Kaya" (69970). Gives "Rivervale Prayer Bead" (69967).
     - event_trade NPC say: The note looks in order. Here you go . I would be careful holding that out in sight around here though. You need to watch your back around the fool's gold.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 69970}))`
-12. akanon/"Lewis Reldnok", say "". Gives "Ak`anon Prayer Bead" (69966).
-13. erudnint/"Josper Kenshed", say "Collect Component". Gives "Empty Bag" (17944).
+6. akanon/"Lewis Reldnok", say "". Gives "Ak`anon Prayer Bead" (69966).
+7. erudnint/"Josper Kenshed", say "Collect Component". Gives "Empty Bag" (17944).
     - Player: "collect component"
       - NPC say: Of course you may assist me!! We have much need of a certain item which can only be found in the frigid peaks of Everfrost. There you shall find creatures called ice goblins. Take this bag and fill it with ice goblin beads and be sure to combine them before you return them. Well, then... Off with you!! And be quick about it and I shall give you a fine wizard's weapon. None of this rust-covered garbage offered by our associates!
       - Condition: `(e.message:findi("collect component"))`
       - Linked from "servant of wizardry" (explicit prompt).
-14. Loot "Goblin Ice Necklace" (13897) from "an ice goblin whelp" (NPC 30003) in `everfrost`. Drop cache: 25% chance per kill.
-15. Combine in "Empty Bag" (17944): "Goblin Ice Necklace" (13897). Produces "Bag of Ice Necklaces" (13898). Requires Remove Traps.
-16. halas/"Lysbith Mcnaff", hand "Bag of Ice Necklaces" (13898). Gives "Iron Ration" (13005).
+8. Loot "Goblin Ice Necklace" (13897) from "an ice goblin whelp" (NPC 30003) in `everfrost`. Drop cache: 25% chance per kill.
+9. Combine in "Empty Bag" (17944): "Goblin Ice Necklace" (13897). Produces "Bag of Ice Necklaces" (13898). Requires Remove Traps.
+10. halas/"Lysbith Mcnaff", hand "Bag of Ice Necklaces" (13898). Gives "Iron Ration" (13005).
     - event_trade NPC say: Ye've done well, me young  .  We've gathered these to add to yer provisions.  While in the Everfrost Peaks, be on the watch fer any gnolls ye may find.  I declare there to be a [gnoll bounty].
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 13898}))`
-17. Shared prerequisite: see ["Fiery Defender" (10099)](#epic-item-10099), steps 15–16. Follow those instructions again if the required item was consumed or another copy is needed.
-18. Shared prerequisite: see ["Fiery Defender" (10099)](#epic-item-10099), step 24. Follow those instructions again if the required item was consumed or another copy is needed.
-19. Buy "Hops" (16591) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 15 copper.
-20. Buy "Malt" (16595) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 15 copper.
-21. Buy "Yeast" (16596) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 15 copper.
-22. Combine in "Portable Drink Barrel" (17179): "Cask" (16580), "Hops" (16591), "Malt" (16595), "Yeast" (16596). Produces "Mead" (13008). Requires Brewing.
-23. erudnext/"Reklon Gnallen", hand "Iron Ration" (13005) + "Mead" (13008). Gives "Erudin Prayer Bead" (69965).
+11. Shared prerequisite: see ["Fiery Defender" (10099)](#epic-item-10099), steps 15–16. Follow those instructions again if the required item was consumed or another copy is needed.
+12. Shared prerequisite: see ["Fiery Defender" (10099)](#epic-item-10099), step 24. Follow those instructions again if the required item was consumed or another copy is needed.
+13. Buy "Hops" (16591) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 15 copper.
+14. Buy "Malt" (16595) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 15 copper.
+15. Buy "Yeast" (16596) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 15 copper.
+16. Combine in "Portable Drink Barrel" (17179): "Cask" (16580), "Hops" (16591), "Malt" (16595), "Yeast" (16596). Produces "Mead" (13008). Requires Brewing.
+17. erudnext/"Reklon Gnallen", hand "Iron Ration" (13005) + "Mead" (13008). Gives "Erudin Prayer Bead" (69965).
     - event_trade NPC say: That was excellent . Take this gem and bring peace to Kemik. I don't want to hold you up any longer as you have further to travel on your journey. You should head to the city that sits before giant windmills.
       - Event guard: `(qglobals["paladin_epic"] == "9" and item_lib.check_turn_in(e.trade, {item1 = 13005,item2 = 13008}))`
-24. gunthak/"Researcher Alvarik", say "Magician". Gives "Arch Magus Grimoire" (17653).
+18. gunthak/"Researcher Alvarik", say "Magician". Gives "Arch Magus Grimoire" (17653).
     - Player: "magician"
       - NPC say: So you too study summoning! Isn't it the most fascinating of the four realms of magic? Well I won't keep you, here is the Arch Magus Grimoire. Good luck to you in your studies.
         - Reply guard: `(($class eq "Magician") && ($client->GetSkill(58) > 100))`
       - Condition: `($text=~/magician/i)`
       - Linked from "wizard" (sequence only; unverified).
-25. Loot "Greater Lightstone" (10400) from "a windwillow wisp" (NPC 397070) in `mesa`. Drop cache: 32.7976% chance per kill.
-26. northkarana/"Mrysila", hand "Greater Lightstone" (10400). Gives "Concordance of Research" (17504).
+19. Loot "Greater Lightstone" (10400) from "a windwillow wisp" (NPC 397070) in `mesa`. Drop cache: 32.7976% chance per kill.
+20. northkarana/"Mrysila", hand "Greater Lightstone" (10400). Gives "Concordance of Research" (17504).
     - event_trade NPC say: A greater lightstone? Thank you very much. Here is a 'Concordance of Research' for you.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 10400}))`
-27. Kill acrylia/"A Spell Jammer".
-28. Kill acrylia/"Ward Of Death".
-29. Kill acrylia/"Ward Of Life".
-30. Spawns "needs heading validation" (npc:154147) via `acrylia/wdtrpmn#signal:1`.
-31. Spawns "Ward of death" (npc:154155) via `acrylia/wdtrpmn#signal:1`.
-32. Spawns "Ward of Life -- needs heading validation" (npc:154154) via `acrylia/wdtrpmn#signal:1`.
-33. Spawns "EvInvis" (npc:154095) via `acrylia/wdtrpmn#signal:1`.
-34. Spawns "RaidMan" (npc:154122) via `acrylia/wdtrpmn#signal:1`.
-35. Spawns "grimling" (npc:154129) via `acrylia/evinvis#event_spawn`.
-36. Kill "grimling" (NPC 154129) in `acrylia` and loot "Pearl" (10024).
-37. Buy "Piece of Parchment" (13063) from "Hanlore Escaval" (NPC 1052) in `qeynos`. Base price: 100 copper.
-38. Loot "Undead Froglok Tongue" (16532) from "BoneCracker" (NPC 44095) in `najena`. Drop cache: 25% chance per kill.
-39. Loot "Griffon Feathers" (16538) from "Callowwing" (NPC 13115) in `northkarana`. Drop cache: 34% chance per kill.
-40. Combine in "Concordance of Research" (17504): "Pearl" (10024), "Piece of Parchment" (13063), "Undead Froglok Tongue" (16532), "Griffon Feathers" (16538). Produces "Quill" (13051). Requires Research.
-41. Kill citymist/"90000".
-42. Spawns "Neh'Ashir" (npc:90184) via `citymist/90000#event_death_complete`.
-43. Kill "Neh'Ashir" (NPC 90184) in `citymist` and loot "Coin of Xev" (65335).
-44. Kill citymist/"A Black Reaver".
-45. Spawns "a black reaver" (npc:90004) via `citymist/a black reaver#event_death_complete`.
-46. Kill "a black reaver" (NPC 90004) in `citymist` and loot "Words of Domination" (65348).
-47. Combine in "Arch Magus Grimoire" (17653): "Quill" (13051), "Piece of Parchment" (13063), "Coin of Xev" (65335), "Words of Domination" (65348). Produces "Spell: Quiver of Marr" (19354). Requires Research.
-48. Learn "Spell: Quiver of Marr" (19354) and cast "Quiver of Marr" to summon "Quiver of Marr" (17307).
-49. rathemtn/"Shin Master Grubbus", hand "Quiver of Marr" (17307). Gives "Gukta Prayer Bead" (69964).
+21. Kill acrylia/"A Spell Jammer".
+22. Kill acrylia/"Ward Of Death".
+23. Kill acrylia/"Ward Of Life".
+24. Spawns "needs heading validation" (npc:154147) via `acrylia/wdtrpmn#signal:1`.
+25. Spawns "Ward of death" (npc:154155) via `acrylia/wdtrpmn#signal:1`.
+26. Spawns "Ward of Life -- needs heading validation" (npc:154154) via `acrylia/wdtrpmn#signal:1`.
+27. Spawns "EvInvis" (npc:154095) via `acrylia/wdtrpmn#signal:1`.
+28. Spawns "RaidMan" (npc:154122) via `acrylia/wdtrpmn#signal:1`.
+29. Spawns "grimling" (npc:154129) via `acrylia/evinvis#event_spawn`.
+30. Kill "grimling" (NPC 154129) in `acrylia` and loot "Pearl" (10024).
+31. Buy "Piece of Parchment" (13063) from "Hanlore Escaval" (NPC 1052) in `qeynos`. Base price: 100 copper.
+32. Loot "Undead Froglok Tongue" (16532) from "BoneCracker" (NPC 44095) in `najena`. Drop cache: 25% chance per kill.
+33. Loot "Griffon Feathers" (16538) from "Callowwing" (NPC 13115) in `northkarana`. Drop cache: 34% chance per kill.
+34. Combine in "Concordance of Research" (17504): "Pearl" (10024), "Piece of Parchment" (13063), "Undead Froglok Tongue" (16532), "Griffon Feathers" (16538). Produces "Quill" (13051). Requires Research.
+35. Kill citymist/"90000".
+36. Spawns "Neh'Ashir" (npc:90184) via `citymist/90000#event_death_complete`.
+37. Kill "Neh'Ashir" (NPC 90184) in `citymist` and loot "Coin of Xev" (65335).
+38. Kill citymist/"A Black Reaver".
+39. Spawns "a black reaver" (npc:90004) via `citymist/a black reaver#event_death_complete`.
+40. Kill "a black reaver" (NPC 90004) in `citymist` and loot "Words of Domination" (65348).
+41. Combine in "Arch Magus Grimoire" (17653): "Quill" (13051), "Piece of Parchment" (13063), "Coin of Xev" (65335), "Words of Domination" (65348). Produces "Spell: Quiver of Marr" (19354). Requires Research.
+42. Learn "Spell: Quiver of Marr" (19354) and cast "Quiver of Marr" to summon "Quiver of Marr" (17307).
+43. rathemtn/"Shin Master Grubbus", hand "Quiver of Marr" (17307). Gives "Gukta Prayer Bead" (69964).
     - event_item NPC say: You are quite the noble Paladin $name. Take this gem and see if it fits into that set of prayer beads. If my memory is correct I believe you will find a similar gem on Odus. You should head that way to continue your journey. Be well $name.
       - Event guard: `($client->GetGlobal("paladin_epic")==9 && plugin::check_handin(\%itemcount, 17307 => 1))`
-50. Buy "Barley" (16590) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 15 copper.
-51. Shared prerequisite: see ["Fiery Defender" (10099)](#epic-item-10099), step 23. Follow those instructions again if the required item was consumed or another copy is needed.
-52. Shared prerequisite: see ["Fiery Defender" (10099)](#epic-item-10099), step 25. Follow those instructions again if the required item was consumed or another copy is needed.
-53. Buy "Cork" (16851) from "Rylin Coil" (NPC 55027) in `akanon`. Base price: 1 copper.
-54. Shared prerequisite: see ["Fiery Defender" (10099)](#epic-item-10099), steps 17–21. Follow those instructions again if the required item was consumed or another copy is needed.
-55. Buy "Firing Sheet" (16906) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 10 copper.
-56. Loot "Small Block of Clay" (16900) from "a muddite recordkeeper" (NPC 16003) in `beholder`. Drop cache: 5.2127% chance per kill.
-57. Combine in appropriate tradeskill container: "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery.
-58. Combine in appropriate tradeskill container: "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery.
-59. Buy "Large Bowl Sketch" (16963) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 760 copper.
-60. Combine in appropriate tradeskill container: "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery.
-61. Combine in appropriate tradeskill container: "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery.
-62. Buy "Concentrated Celestial Solvent" (96952) from "Gilliad Coldheart" (NPC 121050) in `crystal`. Base price: 372 copper.
-63. Kill "a wraith" (NPC 90064) in `citymist` and loot "The Scent of Marr" (11802).
-64. Combine in "Mixing Bowl" (17906): "Concentrated Celestial Solvent" (96952), "The Scent of Marr" (11802). Produces "Celestial Essence" (9650). Requires Baking.
-65. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Celestial Essence" (9650). Produces "Purified Water" (12607). Requires Brewing.
-66. Forage "Sand Verbena" (65582) in `taka` or `takb` or `takc` or `takd` or `take` or `takf` or `takg` or `takh` or `taki` or `takj`.
-67. Combine in appropriate tradeskill container: "Barley" (16590), "Bottle" (16598), "Cork" (16851), "Hops" (16591), "Purified Water" (12607), "Sand Verbena" (65582), "Yeast" (16596). Produces "Bottle of Double Brewed Double Dry Stout" (51157). Requires Brewing.
-68. kaladimb/"Datur Nightseer", hand "Bottle of Double Brewed Double Dry Stout" (51157). Gives "Kaladim Prayer Bead" (69963).
+44. Buy "Barley" (16590) from "Heidi Grainsifter" (NPC 1065) in `qeynos`. Base price: 15 copper.
+45. Shared prerequisite: see ["Fiery Defender" (10099)](#epic-item-10099), step 23. Follow those instructions again if the required item was consumed or another copy is needed.
+46. Shared prerequisite: see ["Fiery Defender" (10099)](#epic-item-10099), step 25. Follow those instructions again if the required item was consumed or another copy is needed.
+47. Buy "Cork" (16851) from "Rylin Coil" (NPC 55027) in `akanon`. Base price: 1 copper.
+48. Shared prerequisite: see ["Fiery Defender" (10099)](#epic-item-10099), steps 17–21. Follow those instructions again if the required item was consumed or another copy is needed.
+49. Buy "Firing Sheet" (16906) from "Winn Greenbane" (NPC 5059) in `highpass`. Base price: 10 copper.
+50. Loot "Small Block of Clay" (16900) from "a muddite recordkeeper" (NPC 16003) in `beholder`. Drop cache: 5.2127% chance per kill.
+51. Combine in appropriate tradeskill container: "Small Block of Clay" (16900), "Water Flask" (13006). Produces "Block of Clay" (16901). Requires Pottery.
+52. Combine in appropriate tradeskill container: "Block of Clay" (16901), "Water Flask" (13006). Produces "Large Block of Clay" (16902). Requires Pottery.
+53. Buy "Large Bowl Sketch" (16963) from "Min Greyeagle" (NPC 5057) in `highpass`. Base price: 760 copper.
+54. Combine in appropriate tradeskill container: "Large Block of Clay" (16902), "Water Flask" (13006), "Large Bowl Sketch" (16963). Produces "Unfired Mixing Bowl" (16930). Requires Pottery.
+55. Combine in appropriate tradeskill container: "Firing Sheet" (16906), "Unfired Mixing Bowl" (16930). Produces "Mixing Bowl" (17906). Requires Pottery.
+56. Buy "Concentrated Celestial Solvent" (96952) from "Gilliad Coldheart" (NPC 121050) in `crystal`. Base price: 372 copper.
+57. Kill "a wraith" (NPC 90064) in `citymist` and loot "The Scent of Marr" (11802).
+58. Combine in "Mixing Bowl" (17906): "Concentrated Celestial Solvent" (96952), "The Scent of Marr" (11802). Produces "Celestial Essence" (9650). Requires Baking.
+59. Combine in "Portable Drink Barrel" (17179): "Water Flask" (13006), "Celestial Essence" (9650). Produces "Purified Water" (12607). Requires Brewing.
+60. Forage "Sand Verbena" (65582) in `taka` or `takb` or `takc` or `takd` or `take` or `takf` or `takg` or `takh` or `taki` or `takj`.
+61. Combine in appropriate tradeskill container: "Barley" (16590), "Bottle" (16598), "Cork" (16851), "Hops" (16591), "Purified Water" (12607), "Sand Verbena" (65582), "Yeast" (16596). Produces "Bottle of Double Brewed Double Dry Stout" (51157). Requires Brewing.
+62. kaladimb/"Datur Nightseer", hand "Bottle of Double Brewed Double Dry Stout" (51157). Gives "Kaladim Prayer Bead" (69963).
     - event_item NPC say: Now that is a tasty beverage!! It sure is strong too for this tiny dwarf! I guess I should give you some kind of thanks. Take this jewel that I found and see if it will help your friend Kemik. I wish I had the second jewel that was with it. You will find that one with a young but brave froglok.
       - Event guard: `($client->GetGlobal("paladin_epic")==9 && plugin::check_handin(\%itemcount, 51157 => 1))`
-69. felwithea/"General Jyleel", say "Hand:Platinum:1000". Gives "Felwithe Prayer Bead" (69962).
-70. Collect "Freeport Prayer Bead" (69961) at `freeportwest/arem ulosia#gem`.
-71. qeynos2/"Ziska Ironforge", say "Hand:Platinum:500". Gives "Qeynos Prayer Bead" (69960).
-72. Combine in "Unfilled Set of Prayer Beads" (69968): "Rivervale Prayer Bead" (69967), "Ak`anon Prayer Bead" (69966), "Erudin Prayer Bead" (69965), "Gukta Prayer Bead" (69964), "Kaladim Prayer Bead" (69963), "Felwithe Prayer Bead" (69962), "Freeport Prayer Bead" (69961), "Qeynos Prayer Bead" (69960). Produces "Set of Prayer Beads" (69969). Requires Remove Traps.
-73. dranikhollowsc/"Anetal", hand "Set of Prayer Beads" (69969).
+63. felwithea/"General Jyleel", say "Hand:Platinum:1000". Gives "Felwithe Prayer Bead" (69962).
+64. qeynos2/"Ziska Ironforge", say "Hand:Platinum:500". Gives "Qeynos Prayer Bead" (69960).
+65. Collect "Freeport Prayer Bead" (69961) at `freeportwest/arem ulosia#gem`.
+66. Combine in "Unfilled Set of Prayer Beads" (69968): "Rivervale Prayer Bead" (69967), "Ak`anon Prayer Bead" (69966), "Erudin Prayer Bead" (69965), "Gukta Prayer Bead" (69964), "Kaladim Prayer Bead" (69963), "Felwithe Prayer Bead" (69962), "Freeport Prayer Bead" (69961), "Qeynos Prayer Bead" (69960). Produces "Set of Prayer Beads" (69969). Requires Remove Traps.
+67. dranikhollowsc/"Anetal", hand "Set of Prayer Beads" (69969).
     - event_trade NPC say: Thank you  you are very compassionate. My brother must have sent you! Return to him, and he shall reward you. Goodbye, fair knight.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 69969}))`
-74. natimbi/"Kemik Arulon", say "Hail". Gives "Token of Compassion" (69953).
+68. natimbi/"Kemik Arulon", say "Hail". Gives "Token of Compassion" (69953).
     - Player: "hail"
       - NPC say: ! I hear you have saved my sister Anetal! This is very good news indeed. You are truly a daring and compassionate knight. I do not have much to give you for a reward, but this might be valuable to you in your endeavors. Thank you again , and good luck to you, compassionate knight!
         - Reply guard: `(qglobals["paladin_epic_hollowc"] == "2")`
@@ -425,13 +430,30 @@ Revisit those instructions if another copy of a consumed item is needed.
         - Reply guard: ``
       - Condition: `(qglobals["paladin_epic"] == "9")`
       - Condition: `(e.message:findi("hail"))`
-75. oasis/"Paladin Epic", say "Hail". Gives "Keelee's Brooch" (69982).
+69. oasis/"Paladin Epic", say "Hail". Gives "Keelee's Brooch" (69982).
     - NPC say: ! You are my savior. Thank you very much for saving me. Here is my Brooch, take it as a symbol of friendship from me to you. I need to depart. I still have some collecting to do.
-76. sro/"Instructor Maerceci", hand "Keelee's Brooch" (69982). Gives "Token of Chivalry" (69954).
+70. sro/"Instructor Maerceci", hand "Keelee's Brooch" (69982). Gives "Token of Chivalry" (69954).
     - event_trade NPC say: Oh my, this brooch is from Keelee? You have saved her? That is great news! Thank you so much for your help, chivalrous knight, for without it Keelee would have not been safe. Take this as a token of my appreciation.
       - Event guard: `(e.other:HasItem(69953))`
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 69982}))`
-77. Combine in "Scabbard of the Righteous" (69959): "Token of Loyalty" (69958), "Token of Conviction" (69957), "Token of Cleansing" (69956), "Token of Heroism" (69955), "Token of Chivalry" (69954), "Token of Compassion" (69953), "Redemption" (64031). Produces "Nightbane, Sword of the Valiant" (48147). Requires Remove Traps.
+71. Loot "Valdoon Kel`Novar's Heart" (69981) from "Valdoon Kel`Novar" (NPC 243672) in `mmcc`. Drop cache: 100% chance per kill.
+72. felwithea/"Galrun Starforge", hand "Valdoon Kel`Novar's Heart" (69981). Gives "Token of Cleansing" (69956).
+    - event_trade NPC say: Amazing, . You have cleansed all of the Mistmoore Catacombs of the impeding Vampire attack, as well as defeated their leader, Valdoon Kel`Novar. I shall take this to Lord Tynkale now and explain everything to him. You have saved us from a potential travesty. Take this, it may aide you in your journeys.
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 69981}))`
+73. provinggrounds/"Pashia Clouddancer", say "Note". Gives "Note from Pashia" (69973).
+    - Player: "note"
+      - NPC say: Ok, here's the note for you. Thank you again!
+      - Condition: `(e.other:HasItem(69956))`
+      - Condition: `(e.message:findi("note") and arrived)`
+      - Linked from "hail" (explicit prompt).
+74. nedaria/"Duram Firechaser", hand "Note from Pashia" (69973). Gives "Token of Heroism" (69955).
+    - event_trade NPC say: Oh my, this brooch is from Keelee? You have saved her? That is great news! Thank you so much for your help, chivalrous knight, for without it Keelee would have not been safe. Take this as a token of my appreciation.
+      - Event guard: `(e.other:HasItem(69956))`
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 69973}))`
+75. airplane/"Inte Akera", hand "Globe of Discordant Energy" (47100). Gives "Scabbard of the Righteous" (69959) + "Token of Loyalty" (69958) + "Token of Conviction" (69957).
+    - event_trade NPC say: You have defeated the minions of Anguish and have exceeded my expectations, . You have proven yourself to be a powerful paladin and a savior of all of Norrath. These tokens are the embodiment of your virtues, . Take them and this scabbard and create your final sword. Place all of your tokens into this scabbard along with Redemption and forge the sword out of your own virtues. Today is a joyous day among paladins everywhere, for we have a new mentor lord protector among us.
+      - Event guard: `(e.other:HasItem(69953) and e.other:HasItem(69954) and e.other:HasItem(69955) and e.other:HasItem(69956) and item_lib.check_turn_in(e.trade, {item1 = 47100}))`
+76. Combine in "Scabbard of the Righteous" (69959): "Token of Loyalty" (69958), "Token of Conviction" (69957), "Token of Cleansing" (69956), "Token of Heroism" (69955), "Token of Chivalry" (69954), "Token of Compassion" (69953), "Redemption" (64031). Produces "Nightbane, Sword of the Valiant" (48147). Requires Remove Traps.
 
 **Unresolved graph dependencies:**
 - Event cycle at `acrylia/wdtrpmn#signal:1`
