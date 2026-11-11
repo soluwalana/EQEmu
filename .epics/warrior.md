@@ -244,38 +244,29 @@ Revisit those instructions if another copy of a consumed item is needed.
 3. Spawns "Essence of Kreljnok" (npc:303129) via `causeway/korbuk brimblade#event_death_complete`.
 4. Kill "Essence of Kreljnok" (NPC 303129) in `causeway` and loot "Brimblade's Scabbard" (60331).
 5. Kill "Essence of Kreljnok" (NPC 303129) in `causeway` and loot "Kreljnok's Essence" (60330).
-6. **Unverified quest flag:** `warrior_epic` `>=18` required.
-7. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
-8. draniksscar/"Korbuk Brimblade", hand "Globe of Discordant Energy" (47100).
-    - event_trade NPC say: Yes, this is precisely what I felt. Its power is indescribable. We're so close now! I can see what's left and it's a glorious end to a glorious journey. There are just two [last items] you need to take care of.
-      - Event guard: `(qglobals["warrior_epic"] ~= nil)`
-      - Event guard: `(qglobals["warrior_epic"] >= "18" and item_lib.check_turn_in(e.trade, {item1 = 47100}))`
-9. Loot "Kreljnok's Muddled Rage" (60322) from "Possessed Brute" (NPC 316057) in `provinggrounds`. Drop cache: 90.083% chance per kill.
-10. draniksscar/"Korbuk Brimblade", hand "Kreljnok's Muddled Rage" (60322).
-    - event_trade NPC say: All too easy. For you, I mean. You did well. I'm... I'm getting unclear visions from this essence. I can't seem to understand what it's trying to tell me. This essence is impure and needs to be purified. I happen to know of a [purification expert] dat can help us clear this mystery up.
-      - Event guard: `(qglobals["warrior_epic"] ~= nil)`
-      - Event guard: `(qglobals["warrior_epic"] >= "16" and item_lib.check_turn_in(e.trade, {item1 = 60322}))`
-11. Collect ground spawn "Frozen Pestle" (60323) in `iceclad`.
-12. iceclad/"Fazzle Thumpkin", hand "Frozen Pestle" (60323).
-    - event_trade NPC say: You... you found it! My pestle! Hooray! I can get back to my work! I'm so grateful for this kind act, I've got to have something in my knapsack that you want! Here, how about some lint... wait, how did that get in there. You don't want lint! Hah! How about some cogs? No, what would you do with cogs? I know... you'll be able to make special use of this [map] I have.
-      - Event guard: `(qglobals["warrior_epic"] == "17" and item_lib.check_turn_in(e.trade, {item1 = 60323}))`
-13. iceclad/"Fazzle Thumpkin", say "Map". Gives "Fazzle's Map of East Wastes" (60324).
+6. **Unverified quest flag:** `warrior_epic` `==18` required.
+7. iceclad/"Fazzle Thumpkin", say "Map". Gives "Fazzle's Map of East Wastes" (60324).
     - Player: "map"
       - NPC say: I've had this map for a long time. I can't seem to remember who gave it to me. I may have even made it myself. I do remember that something special can be found by following where the map leads. It's a magical map and will only show you the way in the dead of night, and only in the eastern wastes of this dreadful ice-covered place. You have to hold onto it tightly for it to work, keep that in mind! Good luck, you may need it!
       - Condition: `(e.other:Class() == "Warrior")`
       - Condition: `(e.message:findi("map") and qglobals["warrior_epic"] == "18")`
-14. Spawns "Larnik the Recluse" (npc:116609) via `eastwastes/warr trap#enter`.
-15. Kill "Larnik the Recluse" (NPC 116609) in `eastwastes` and loot "Larnik's Locked Purification Kit" (60325).
-16. draniksscar/"Korbuk Brimblade", hand "Larnik's Locked Purification Kit" (60325). Gives "Larnik's Unlocked Purification Kit" (60326).
+8. Spawns "Larnik the Recluse" (npc:116609) via `eastwastes/warr trap#enter`.
+9. Kill "Larnik the Recluse" (NPC 116609) in `eastwastes` and loot "Larnik's Locked Purification Kit" (60325).
+10. **Unverified quest flag:** `warrior_epic` `>=18` required.
+11. draniksscar/"Korbuk Brimblade", hand "Larnik's Locked Purification Kit" (60325). Gives "Larnik's Unlocked Purification Kit" (60326).
     - event_trade NPC say: Uh oh. I'm guessing dat he didn't want to part with this peacefully? Well, I can't say I'm sorry. He was a jerk to me da last time we talked. I guess I just figured someone else might be able to persuade him to change his mind. I went ahead and broke open da lock for you. You'll be able to make use of da [kit] now.
       - Event guard: `(qglobals["warrior_epic"] ~= nil)`
       - Event guard: `(qglobals["warrior_epic"] >= "18" and item_lib.check_turn_in(e.trade, {item1 = 60325}))`
-17. Combine in "Larnik's Unlocked Purification Kit" (60326): "Kreljnok's Muddled Rage" (60322). Produces "Kreljnok's Focused Rage" (60327). Requires Remove Traps.
-18. draniksscar/"Korbuk Brimblade", hand "Champion's Sword of Eternal Power" (60321) + "Kreljnok's Focused Rage" (60327). Gives "Raging Sword of Eternal Power" (60329).
+12. Loot "Kreljnok's Muddled Rage" (60322) from "Possessed Brute" (NPC 316057) in `provinggrounds`. Drop cache: 90.083% chance per kill.
+13. Combine in "Larnik's Unlocked Purification Kit" (60326): "Kreljnok's Muddled Rage" (60322). Produces "Kreljnok's Focused Rage" (60327). Requires Remove Traps.
+14. **Unverified quest flag:** `warrior_epic` `>=19` required.
+15. draniksscar/"Korbuk Brimblade", hand "Champion's Sword of Eternal Power" (60321) + "Kreljnok's Focused Rage" (60327). Gives "Raging Sword of Eternal Power" (60329).
     - event_trade NPC say: Well done. Well done, indeed. I knew da moment I saw you dat you were da right person for all of this. Here is da sword, but there's one [last item] dat you need to do.
       - Event guard: `(qglobals["warrior_epic"] ~= nil)`
       - Event guard: `(qglobals["warrior_epic"] >= "19" and item_lib.check_turn_in(e.trade, {item1 = 60321, item2 = 60327}))`
-19. Combine in "Brimblade's Scabbard" (60331): "Kreljnok's Essence" (60330), "Raging Sword of Eternal Power" (60329). Produces "Kreljnok's Sword of Eternal Power" (60332). Requires Remove Traps.
+16. Combine in "Brimblade's Scabbard" (60331): "Kreljnok's Essence" (60330), "Raging Sword of Eternal Power" (60329). Produces "Kreljnok's Sword of Eternal Power" (60332). Requires Remove Traps.
 
 **Unresolved graph dependencies:**
+- Unverified quest flag `warrior_epic` ==18: no acyclic setter
 - Unverified quest flag `warrior_epic` >=18: no acyclic setter
+- Unverified quest flag `warrior_epic` >=19: no acyclic setter

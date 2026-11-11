@@ -113,42 +113,38 @@ Revisit those instructions if another copy of a consumed item is needed.
 14. abysmal/"Shav The Cryptologist", hand "Ripped Quarter of a Map" (9476) + "Shredded Quarter of a Map" (9447) + "Tattered Quarter of a Map" (9477) + "Torn Quarter of a Map" (8778). Gives "Assembled Map" (56015).
     - event_trade NPC say: Ahh yes, this is exactly what we needed.' She scratches a few notes down on a piece of paper. 'Bring this to Tweister in Nedaria's Landing. She will tell you the location of the camp.
       - Event guard: `qglobals["cleric_epic"] ~= nil and qglobals["cleric_epic"] == "2" and item_lib.check_turn_in(e.trade, {item1 = 9476, item2 = 9447, item3 = 9477, item4 = 8778})`
-15. **Unverified quest flag:** `cleric_epic` `==1` required.
-16. nedaria/"Cartographer Tweister", hand "Assembled Map" (56015).
+15. nedaria/"Cartographer Tweister", hand "Assembled Map" (56015).
     - event_trade NPC emote: pulls out a map and a compass and begins triangulating the coordinates, 'This location is in the South Western corner of Lesser Faydark.
       - Event guard: `(qglobals["cleric_epic"] ~= nil and qglobals["cleric_epic"] >= "3" and item_lib.check_turn_in(e.trade, {item1 = 56015}))`
-17. Kill lfaydark/"A Wayfarer".
-18. Spawns "Taskmaster Mirot" (npc:57151) via `lfaydark/taskmaster mirot#signal:1`.
-19. Kill "Taskmaster Mirot" (NPC 57151) in `lfaydark` and loot "Magically Sealed Letter" (9585).
-20. nedaria/"Tavon Vastsea", hand "Magically Sealed Letter" (9585). Gives "Dark Disciples Notice of Service" (9591).
+16. Kill lfaydark/"A Wayfarer".
+17. Spawns "Taskmaster Mirot" (npc:57151) via `lfaydark/taskmaster mirot#signal:1`.
+18. Kill "Taskmaster Mirot" (NPC 57151) in `lfaydark` and loot "Magically Sealed Letter" (9585).
+19. nedaria/"Tavon Vastsea", hand "Magically Sealed Letter" (9585). Gives "Dark Disciples Notice of Service" (9591).
     - event_trade NPC emote: opens the envelope and pulls out a short letter, his brow furrows as his eyes dance across the pages. 'This is truly grim news. Until now I held hopes that the rumors held no truth, but this is irrefutable evidence of their existence. They call themselves the Disciples of Discord. As we speak they are gaining information for the Legion, gathering information about races that would prove to be powerful allies or enemies for the Legion. Bring this note to Plavo, I do not know where he is, but he must be found. His scouts may already have found what they are looking for, so make haste.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 9585}))`
-21. wakening/"Scout Leader Plavo", hand "Dark Disciples Notice of Service" (9591).
+20. wakening/"Scout Leader Plavo", hand "Dark Disciples Notice of Service" (9591).
     - event_trade NPC say: You are from the Faydwer camp are you? I'm not terribly familiar with the faces from there. Anyway, the scouts have been sent out, and are gathering the "parts" that we believe the Legion will need to prepare for the incursion into our realm. If we are to find their good graces, we must prove that we will stop at nothing to [aid] them.
       - Event guard: `qglobals["cleric_epic"] ~= nil and qglobals["cleric_epic"] >= "4" and item_lib.check_turn_in(e.trade, {item1 = 9591})`
-22. Loot "Shissar Cerebral Cortex" (9945) from "an elite temple guard" (NPC 162026) in `ssratemple`. Drop cache: 43% chance per kill.
-23. westwastes/"Scout Pirri", say "Hail".
+21. Loot "Shissar Cerebral Cortex" (9945) from "an elite temple guard" (NPC 162026) in `ssratemple`. Drop cache: 43% chance per kill.
+22. westwastes/"Scout Pirri", say "Hail".
     - Player: "hail"
       - NPC say: You are here to "help"? I think not. I will not share my glory with anyone. The only way you will get this is by prying it from the clasped fingers of my dead hand
       - Condition: `(qglobals["cleric_epic"] ~= nil and qglobals["cleric_epic"] >= "5" and e.message:findi("hail"))`
-24. Spawns "Scout Pirri" (npc:120112) via `westwastes/scout pirri#hail`.
-25. Kill "Scout Pirri" (NPC 120112) in `westwastes` and loot "Dragon Cerebrum" (9948).
-26. Spawns "sheleric vis" (npc:179046) via `akheva/shei vinitras#event_spawn`.
-27. Kill "sheleric vis" (NPC 179046) in `akheva` and loot "Akhevan Brain Stem" (9597).
-28. wakening/"Scout Leader Plavo", hand "Shissar Cerebral Cortex" (9945) + "Dragon Cerebrum" (9948) + "Akhevan Brain Stem" (9597).
+23. Spawns "Scout Pirri" (npc:120112) via `westwastes/scout pirri#hail`.
+24. Kill "Scout Pirri" (NPC 120112) in `westwastes` and loot "Dragon Cerebrum" (9948).
+25. Spawns "sheleric vis" (npc:179046) via `akheva/shei vinitras#event_spawn`.
+26. Kill "sheleric vis" (NPC 179046) in `akheva` and loot "Akhevan Brain Stem" (9597).
+27. wakening/"Scout Leader Plavo", hand "Shissar Cerebral Cortex" (9945) + "Dragon Cerebrum" (9948) + "Akhevan Brain Stem" (9597).
     - event_trade NPC say: Excellent work! The leader will be pleased. He should be here any moment to collect them.
       - Event guard: `qglobals["cleric_epic"] ~= nil and qglobals["cleric_epic"] >= "5" and item_lib.check_turn_in(e.trade, {item1 = 9945, item2 = 9948, item3 = 9597})`
-29. Spawns "a gilded chest" (npc:119179) via `wakening/dark disciple master#event_death_complete`.
-30. Open "a gilded chest" (NPC 119179) in `wakening` and loot "Aegis of Chaotic Worship" (9954).
-31. Spawns "a murk hatchling" (npc:300084) via `wallofslaughter/a quivering egg#timer:hatch`.
-32. Kill "a murk hatchling" (NPC 300084) in `wallofslaughter` and loot "Murkglider Plasma" (13639).
-33. Loot "Bazu Plasma" (13658) from "Bazu Bonesmasher" (NPC 300000) in `wallofslaughter`. Drop cache: 43.0881% chance per kill.
-34. Loot "Pyrilen Plasma" (13667) from "a dragorn assassin" (NPC 300046) in `wallofslaughter`. Drop cache: 91.935% chance per kill.
-35. Combine in appropriate tradeskill container: "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing.
-36. Combine in appropriate tradeskill container: "Water Flask" (13006), "Aegis of Chaotic Worship" (9954), "Soul Temper" (14047). Produces "Harmony of the Soul" (9955). Requires Blacksmithing.
-
-**Unresolved graph dependencies:**
-- Unverified quest flag `cleric_epic` ==1: no acyclic setter
+28. Spawns "a gilded chest" (npc:119179) via `wakening/dark disciple master#event_death_complete`.
+29. Open "a gilded chest" (NPC 119179) in `wakening` and loot "Aegis of Chaotic Worship" (9954).
+30. Spawns "a murk hatchling" (npc:300084) via `wallofslaughter/a quivering egg#timer:hatch`.
+31. Kill "a murk hatchling" (NPC 300084) in `wallofslaughter` and loot "Murkglider Plasma" (13639).
+32. Loot "Bazu Plasma" (13658) from "Bazu Bonesmasher" (NPC 300000) in `wallofslaughter`. Drop cache: 43.0881% chance per kill.
+33. Loot "Pyrilen Plasma" (13667) from "a dragorn assassin" (NPC 300046) in `wallofslaughter`. Drop cache: 91.935% chance per kill.
+34. Combine in appropriate tradeskill container: "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing.
+35. Combine in appropriate tradeskill container: "Water Flask" (13006), "Aegis of Chaotic Worship" (9954), "Soul Temper" (14047). Produces "Harmony of the Soul" (9955). Requires Blacksmithing.
 
 ## Epic 2.0
 
@@ -195,6 +191,3 @@ Revisit those instructions if another copy of a consumed item is needed.
     - event_trade NPC say: Amazing! You have found everything.' He then pulls deftly complete the shield. 'Quickly, take this back. It will bind itself to you. You have done well.
       - Event guard: `item_lib.check_turn_in(e.trade, {item1 = 56014, item2 = 47100, item3 = 9955})`
     - event_trade NPC message: You have gained 10 ability points!
-
-**Unresolved graph dependencies:**
-- Unverified quest flag `cleric_epic` ==1: no acyclic setter

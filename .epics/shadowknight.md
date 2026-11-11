@@ -142,34 +142,30 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
     - event_trade NPC say: The rune has been activated.
     - event_trade NPC emote: holds the rune against the sheath you created earlier. The rune instantaneously melts into the sheath.
     - event_trade NPC say: The sword is safe for now, but I think it should be moved just in case. Do not lose the sheathed sword. If you do lose it somehow, come back to me and tell me you lost it and I will attempt to make you another one. I only have enough left of the items you brought me to make you one more though. Now, take the sword to a servant of mine, named Gilina Yilzior, here in the Plane of Knowledge. She is very knowledgeable and should be able to help you further.
-22. **Unverified quest flag:** `shadowknight_epic` `==1` required.
-23. poknowledge/"Gilina Yilzior", hand "Sheathed Innoruuk's Voice" (11407).
+22. poknowledge/"Gilina Yilzior", hand "Sheathed Innoruuk's Voice" (11407).
     - event_trade NPC emote: looks at you with a cold stare.
       - Event guard: `(qglobals["shadowknight_epic"] == "5" and item_lib.check_turn_in(e.trade, {item1 = 11407}))`
     - event_trade NPC say: The time has come. I have heard the dark blade's whispers. It wants to find a master, but before that can become a reality, a test must be passed. There are four other shadowknights who wish to become the sword's wielder. If you are up for the challenge, then seek out Silithis Sisnta in the Timorous Deep, Gubblegrot Smashfist in the Ocean of Tears, Skurza Slicekutt in the Swamp of No Hope, and Giligatabbus Igglebix in Iceclad Ocean. Return their heads to me and we shall see if the sword is satisfied with your progress.
-24. Loot "Skurza's Head" (20899) from "Skurza Slicekutt" (NPC 83250) in `swampofnohope`. Drop cache: 100% chance per kill.
-25. Loot "Silithis's Head" (16813) from "Silithis Sisnta" (NPC 96362) in `timorous`. Drop cache: 100% chance per kill.
-26. Loot "Gubblegrot's Head" (16793) from "Gubblegrot Smashfist" (NPC 409150) in `oceanoftears`. Drop cache: 100% chance per kill.
-27. Loot "Giligatabbus's Head" (20079) from "Giligatabbus Igglebix" (NPC 110104) in `iceclad`. Drop cache: 100% chance per kill.
-28. poknowledge/"Gilina Yilzior", hand "Skurza's Head" (20899) + "Silithis's Head" (16813) + "Gubblegrot's Head" (16793) + "Giligatabbus's Head" (20079). Gives "Sheathed Innoruuk's Voice" (22199).
+23. Loot "Skurza's Head" (20899) from "Skurza Slicekutt" (NPC 83250) in `swampofnohope`. Drop cache: 100% chance per kill.
+24. Loot "Silithis's Head" (16813) from "Silithis Sisnta" (NPC 96362) in `timorous`. Drop cache: 100% chance per kill.
+25. Loot "Gubblegrot's Head" (16793) from "Gubblegrot Smashfist" (NPC 409150) in `oceanoftears`. Drop cache: 100% chance per kill.
+26. Loot "Giligatabbus's Head" (20079) from "Giligatabbus Igglebix" (NPC 110104) in `iceclad`. Drop cache: 100% chance per kill.
+27. poknowledge/"Gilina Yilzior", hand "Skurza's Head" (20899) + "Silithis's Head" (16813) + "Gubblegrot's Head" (16793) + "Giligatabbus's Head" (20079). Gives "Sheathed Innoruuk's Voice" (22199).
     - event_trade NPC say: I can sense that the sword is pleased with your progress. However there is another task it wishes you to perform. I have learned through a contact of mine, that there is to be a ceremony in Kithicor Woods. Several paladins will be converging there to try to cleanse the undead from the forest, once and for all. The blade thirsts for the blood of these paladins. Before the blade will allow you to become its champion, you must kill as many of these paladins as you can, and bring me three samples of their blood. Take the Sheathed Innoruuk's Voice back and when you have three samples of paladin's blood, hand them to me along with the Sheathed Innoruuk's Voice so that I may perform the ceremony to sate the blade's thirst. Go now and find my contact in Kithicor. His name is Tarnamil. Take the sword back for safe keeping.
       - Event guard: `(qglobals["shadowknight_epic"] == "6" and item_lib.check_turn_in(e.trade, {item1 = 20899, item2 = 16813, item3  = 16793, item4 = 20079}))`
-29. kithicor/"Tarnamil", say "Hail".
+28. kithicor/"Tarnamil", say "Hail".
     - Player: "hail"
       - NPC say: The paladins are coming from the west, my lord. The come to destroy the dead that walk at night. Already, the undead generals plot their demise, but they are powerful. They approach soon. I am getting out of here.
       - Condition: `(e.message:findi("hail") and qglobals["shadowknight_epic"] == "7")`
-30. Spawns "Uglib Gaibido" (npc:20293) via `kithicor/tarnamil#hail`.
-31. Kill "Uglib Gaibido" (NPC 20293) in `kithicor` and loot "Paladin Blood Sample" (20904).
-32. poknowledge/"Gilina Yilzior", hand "Paladin Blood Sample" (20904) + "Sheathed Innoruuk's Voice" (22199).
+29. Spawns "Uglib Gaibido" (npc:20293) via `kithicor/tarnamil#hail`.
+30. Kill "Uglib Gaibido" (NPC 20293) in `kithicor` and loot "Paladin Blood Sample" (20904).
+31. poknowledge/"Gilina Yilzior", hand "Paladin Blood Sample" (20904) + "Sheathed Innoruuk's Voice" (22199).
     - event_trade NPC say: Well done.' Gilina takes the blood samples starts to pour them onto the blade of Innoruuk's Voice. The blade appears to become super-heated as the blood drops trickle down its surface. A thick black smoke begins to waft from the blade. 'The blade is now complete. Before I give the blade to you there is something else you must do. A mighty templar named Sir Elmonious Falmont has heard of your crimes against the paladins and seeks revenge. It is important that we let none get in the way of our goals. As we speak, he is making his way from the Western Wastes in the continent of Velious to kill us. Destroy him and return his holy symbol to me.
       - Event guard: `(qglobals["shadowknight_epic"] == "7" and item_lib.check_turn_in(e.trade, {item1 = 20904, item2 = 20904, item3  = 20904, item4 = 22199}))`
-33. poknowledge/"Gilina Yilzior", hand "Sir Elmonious's Holy Symbol" (55901). Gives "Innoruuk's Voice" (50003).
+32. poknowledge/"Gilina Yilzior", hand "Sir Elmonious's Holy Symbol" (55901). Gives "Innoruuk's Voice" (50003).
     - event_trade NPC say: You have performed well. The blade is yours to wield now, champion. You may be on your way, or stay to hear about a [vision] I recently had.
       - Event guard: `(qglobals["shadowknight_epic"] == "8" and item_lib.check_turn_in(e.trade, {item1 = 55901}))`
     - event_trade NPC message: You have gained 5 ability points!
-
-**Unresolved graph dependencies:**
-- Unverified quest flag `shadowknight_epic` ==1: no acyclic setter
 
 ## Epic 2.0
 
@@ -210,6 +206,3 @@ Revisit those instructions if another copy of a consumed item is needed.
       - Event guard: `(qglobals["shadowknight_epic"] == "11" and item_lib.check_turn_in(e.trade, {item1 = 55903, item2 = 50003}))`
     - event_trade NPC say: Take it! The blade is yours! A gift from Innoruuk, for the most powerful of shadowknights!
     - event_trade NPC message: You have gained 10 ability points!
-
-**Unresolved graph dependencies:**
-- Unverified quest flag `shadowknight_epic` ==1: no acyclic setter

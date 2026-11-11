@@ -321,6 +321,81 @@ class AcquisitionCatalog:
         )
 
 
+_GUARD_TOKEN = re.compile(
+    r'''\s*(?:e\.other:HasItem\(\s*(?P<item>\d+)\s*\)'''
+    r'''|qglobals\[\s*["'](?P<flag>[A-Za-z0-9_]+)["']\s*\]\s*'''
+    r'''(?P<comparison>==|>=|<=|>|<)\s*["']?(?P<value>-?\d+)["']?'''
+    r'''|(?P<operator>\band\b|\bor\b)|(?P<paren>[()]))''',
+    re.I,
+)
+
+
+def _guard_options(guard: str) -> list[list[tuple[str, str, str]]] | None:
+    """DNF of a *fully recognized* Lua HasItem/flag Boolean expression.
+
+    Return None rather than guessing when another predicate or Lua syntax occurs.
+    """
+    tokens: list[object] = []
+    cursor = 0
+    while cursor < len(guard):
+        match = _GUARD_TOKEN.match(guard, cursor)
+        if match is None:
+            if not guard[cursor:].strip():
+                break
+            return None
+        cursor = match.end()
+        if match.group('item'):
+            tokens.append(('item', match.group('item'), ''))
+        elif match.group('flag'):
+            tokens.append(('flag', match.group('flag'), match.group('comparison') + match.group('value')))
+        else:
+            tokens.append((match.group('operator') or match.group('paren')).lower())
+
+    pos = 0
+    def atom() -> list[list[tuple[str, str, str]]]:
+        nonlocal pos
+        if pos >= len(tokens):
+            raise ValueError('incomplete expression')
+        token = tokens[pos]
+        pos += 1
+        if token == '(':
+            result = disjunction()
+            if pos >= len(tokens) or tokens[pos] != ')':
+                raise ValueError('unbalanced parentheses')
+            pos += 1
+            return result
+        if isinstance(token, tuple):
+            return [[token]]
+        raise ValueError('unexpected token')
+
+    def conjunction() -> list[list[tuple[str, str, str]]]:
+        nonlocal pos
+        clauses = atom()
+        while pos < len(tokens) and tokens[pos] == 'and':
+            pos += 1
+            right = atom()
+            clauses = [a + b for a in clauses for b in right]
+            if len(clauses) > 32:
+                raise ValueError('too many alternatives')
+        return clauses
+
+    def disjunction() -> list[list[tuple[str, str, str]]]:
+        nonlocal pos
+        clauses = conjunction()
+        while pos < len(tokens) and tokens[pos] == 'or':
+            pos += 1
+            clauses.extend(conjunction())
+            if len(clauses) > 32:
+                raise ValueError('too many alternatives')
+        return clauses
+
+    try:
+        result = disjunction()
+    except ValueError:
+        return None
+    return result if pos == len(tokens) and len(result) > 1 else None
+
+
 class AcquisitionCycle(Exception):
     """A candidate depends on an item already on the acquisition stack."""
 
@@ -788,6 +863,7 @@ class Planner:
                 ):
                     continue
                 self.flag_values[str(r["flag"])] = str(r["value"])
+                self.done_flags.add((str(r["flag"]), "==" + str(r["value"])))
 
     def giver(self, row: dict, iid: int) -> None:
         src = str(row.get("from") or "")
@@ -839,53 +915,88 @@ class Planner:
                 )
         self.action_sets(row)
 
-    def setter_requirements(self, row: dict) -> None:
-        """Resolve OR guards on flag setters only, without changing item routes.
+    def setter_requirements(self, setter: dict) -> None:
+        """Resolve only a flag setter's alternatives, not arbitrary reward paths.
 
-        Ordinary requirements retain the existing planner behavior. A failed
-        alternative is rolled back before trying the next candidate.
+        This retains the old planner's behavior for ordinary acquisitions.
+        Each failed alternative is rolled back before the next is tried.
         """
-        rows = self.g.group_rows(row)
-        disjunctions: dict[str, list[dict]] = defaultdict(list)
-        for need in rows:
-            if need.get("rel") == "needs" and need.get("op") == "or":
-                key = str(need.get("or_group") or need.get("group") or need.get("from"))
-                disjunctions[key].append(need)
-        if not disjunctions:
-            self.action_requirements(row)
-            return
+        rows = [r for r in self.g.group_rows(setter) if r.get('rel') == 'needs']
+        alternatives: dict[str, list[list[tuple[str, str, str]]]] = {}
+        covered: set[tuple[str, str, str]] = set()
 
-        for need in rows:
-            if need.get("rel") != "needs" or need.get("op") == "or":
-                continue
-            iid = item_id(need.get("to", ""))
+        def requirement(row: dict) -> tuple[str, str, str] | None:
+            iid = item_id(row.get('to', ''))
             if iid is not None:
-                self.acquire(iid)
-            elif need.get("flag"):
-                self.flag(str(need["flag"]), str(need.get("at") or "set"))
-        for choices in disjunctions.values():
-            for need in choices:
+                return ('item', str(iid), '')
+            if row.get('flag'):
+                at = str(row.get('at') or 'set')
+                if re.fullmatch(r'-?\d+', at):
+                    at = '==' + at
+                return ('flag', str(row['flag']), at)
+            return None
+
+        # Explicit OR edges already emitted for simpler Lua comparisons.
+        for row in rows:
+            if row.get('op') != 'or':
+                continue
+            key = str(row.get('or_group') or row.get('group') or row.get('from'))
+            term = requirement(row)
+            if term is not None:
+                alternatives.setdefault(key, []).append([term])
+                covered.add(term)
+
+        # Mixed AND/OR guards require parenthesized alternatives (e.g.
+        # (weapon A and weapon B) or (weapon C and weapon D) or prequest).
+        # The speech guard is source evidence; accept it only if every atom
+        # matches a flattened need on this *specific setter* branch.
+        available = {term for row in rows if (term := requirement(row)) is not None}
+        for speech in self.g.by_from.get(str(setter.get('from') or ''), ()):
+            if speech.get('rel') != 'speaks':
+                continue
+            for guard in speech.get('guards') or ():
+                options = _guard_options(str(guard))
+                if options is None or not any(len(choice) > 1 for choice in options):
+                    continue
+                atoms = {term for choice in options for term in choice}
+                if not atoms.issubset(available) or atoms & covered:
+                    continue
+                key = f"mixed:{setter.get('from')}:{sorted(atoms)}"
+                alternatives[key] = options
+                covered.update(atoms)
+
+        def satisfy(term: tuple[str, str, str]) -> None:
+            kind, name, at = term
+            if kind == 'item':
+                self.acquire(int(name))
+            else:
+                self.flag(name, at)
+                if not (self._satisfies_flag(name, at) or (name, at) in self.done_flags):
+                    raise AcquisitionCycle(f'Unverified alternative `{name}` {at}')
+
+        seen: set[tuple[str, str, str]] = set()
+        for row in rows:
+            term = requirement(row)
+            if term is not None and term not in covered and term not in seen:
+                seen.add(term)
+                satisfy(term)
+
+        for key, choices in alternatives.items():
+            failures = []
+            for choice in choices:
                 snapshot = self._snapshot()
                 try:
-                    iid = item_id(need.get("to", ""))
-                    if iid is not None:
-                        self.acquire(iid)
-                    else:
-                        name = str(need["flag"])
-                        at = str(need.get("at") or "set")
-                        self.flag(name, at)
-                        if not self._satisfies_flag(name, at):
-                            raise AcquisitionCycle(
-                                f"Unverified alternative `{name}` {at}"
-                            )
+                    for term in choice:
+                        satisfy(term)
                     break
-                except AcquisitionCycle:
+                except AcquisitionCycle as error:
                     self._restore(snapshot)
+                    failures.append(str(error))
             else:
                 raise AcquisitionCycle(
-                    "No verified alternative for setter " + str(row.get("from") or "")
+                    f'No proven setter alternative for `{key}`: ' + '; '.join(failures)
                 )
-        self.faction_requirements(row)
+        self.faction_requirements(setter)
 
     def flag(self, name: str, at: str) -> None:
         # Encounter guards may encode a numeric comparison as a bare value.
@@ -893,7 +1004,7 @@ class Planner:
         at = at.strip()
         if re.fullmatch(r"-?\d+", at):
             at = "==" + at
-        if self._satisfies_flag(name, at):
+        if self._satisfies_flag(name, at) or (name, at) in self.done_flags:
             return
         if at == "unset":
             raise AcquisitionCycle(f"quest flag `{name}` must be unset")
