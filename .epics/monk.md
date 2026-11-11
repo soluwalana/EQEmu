@@ -184,8 +184,8 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 25. Buy "Lead Sulphide" (16845) from "Myre" (NPC 67016) in `kaladimb`. Base price: 450 copper.
 26. Combine in "Mixing Bowl" (17906): "Limestone" (16844), "Lead Sulphide" (16845). Produces "White Lead" (16558). Requires Baking.
 27. Collect ground spawn "Permafrost Crystals" (22121) in `permafrost`.
-28. Kill citymist/"A Black Reaver".
-29. Spawns "a black reaver" (npc:90004) via `citymist/a black reaver#event_death_complete`.
+28. Kill citymist/"Npc:90004".
+29. Spawns "a black reaver" (npc:90004) via `citymist/npc:90004#event_death_complete`.
 30. Kill "a black reaver" (NPC 90004) in `citymist` and loot "Iron Oxide" (22124).
 31. Combine in "Glaze Mortar" (17882): "Water Flask" (13006), "White Lead" (16558), "Permafrost Crystals" (22121), "Iron Oxide" (22124). Produces "Divine Crystalline Glaze" (16578). Requires Pottery.
 32. Combine in appropriate tradeskill container: "Divine Crystalline Glaze" (16578), "Symbol of Sun" (48112). Produces "Polished Symbol of Sun" (48124). Requires Pottery.

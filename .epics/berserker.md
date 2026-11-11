@@ -79,7 +79,7 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 27. lakeofillomen/"Keras Mcarik", hand "Bag of Image Essence Dust" (60209) + "Medal of Hunting" (60204). Gives "Medal of Mastery" (60210).
     - event_item NPC say: Wonderful. Ye have earned yer Medal of Mastery, but ye are not done yet. There is one final test ye must complete before I can recognize ye as a true berserker. Ye must prove that in the face of great adversity, ye can keep yer wits about ye. This final test, naturally, is the most difficult, but I would not present this [next challenge] to ye if I thought ye could not finish yer journey.
       - Event guard: `(plugin::check_handin(\%itemcount, 60209 => 1, 60204 => 1))`
-28. Spawns "Raving Goblinmaster - KOS" (npc:79126) via `warslikswood/raving goblinmaster#event_waypoint_arrive`.
+28. Spawns "Raving Goblinmaster - KOS" (npc:79126) via `warslikswood/npc:79127#event_waypoint_arrive`.
 29. Kill "Raving Goblinmaster - KOS" (NPC 79126) in `warslikswood` and loot "Maniac's Garbled Tome" (60211).
 30. lakeofillomen/"Keras Mcarik", hand "Medal of Mastery" (60210) + "Maniac's Garbled Tome" (60211). Gives "Kerasian Axe of Ire" (68299).
     - event_item NPC say: I am so impressed and proud of ye, $name. This had been a long journey, hasn't it? That said, this will be the most important adventure of yer life, for now you are a true berserker and a master of all of yer skills. As I promised, the completion of these trials would not only bring ye the honor of being recognized as a true berserker, but also a weapon only a true berserker can wield -- one that I fashioned myself. Use this weapon in yer travels and may it serve ye well in battle. Be well,$name, the Berserker.

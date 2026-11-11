@@ -120,8 +120,8 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
     - event_item NPC emote: grins happily. 'Excellent! Was he pleased with the artifact? Oh, that's not even worth answering. I'm sure he was. He's always happy with the things I send him. That's why he honored me with this position of esteem, searching for useful and powerful items in this newly discovered land.'
       - Event guard: `($faction < 5)`
       - Event guard: `(plugin::check_handin(\%itemcount, 20474 => 1))`
-46. Kill citymist/"A Black Reaver".
-47. Spawns "a black reaver" (npc:90004) via `citymist/a black reaver#event_death_complete`.
+46. Kill citymist/"Npc:90004".
+47. Spawns "a black reaver" (npc:90004) via `citymist/npc:90004#event_death_complete`.
 48. Kill "a black reaver" (NPC 90004) in `citymist` and loot "Jade Reaver" (5664).
 49. kaladimb/"Kinlo Strongarm", hand "Jade Reaver" (5664). Gives "Enchanted Clay" (20455).
     - event_item NPC say: Arrrrr. Ooooo. Arrrrrr... Yah, now that's what I be callin' a good lookin' axe. I be crackin' a few skulls with this one. Oh, here's yer block o' mud. Our priests o' Brell use the mud pit fer relievin' themselves after really hard ale blessin' ceremonies, so ya ain't got ta be enchantin' it in holy water or anythin' cause they already have. Har har!

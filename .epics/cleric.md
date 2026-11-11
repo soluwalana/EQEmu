@@ -26,7 +26,7 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 9. timorous/"Omat Vastsea", hand "Ornate Sea Shell" (28047). Gives "Coral Statue of Tarew" (28051).
     - event_item NPC say: So, you are a friend of Natasha's? That is good to see. She is a very wise and gifted woman. The Riptide goblins have adopted a new king but are still in a vulnerable state until his subjects accept his rule. The Plasmatic Priesthood is aware of the weakened state of the Riptides and has convinced the Fire Peak goblins to strike against them. Although I do not agree with the mannerisms or actions of any goblin clan, such a war would be detrimental to all who are caught in its path. Lord Gimblox of the Fire Peak clan has been meeting with a member of the Plasmatic Priesthood in the Temple of Solusek Ro. Locate the Plasmatic Priest, hand him this statue to hinder his powers, then eliminate him and bring me his robe.
       - Event guard: `(plugin::check_handin(\%itemcount, 28047 => 1))`
-10. soltemple/"A Seeker", hand "Coral Statue of Tarew" (28051).
+10. soltemple/"Npc:80002", hand "Coral Statue of Tarew" (28051).
 11. Spawns "a plasmatic priest" (npc:80042) after the hand-in.
 12. Kill "a plasmatic priest" (NPC 80042) in `soltemple` and loot "Blood Soaked Plasmatic Priest Robe" (1299).
 13. timorous/"Omat Vastsea", hand "Blood Soaked Plasmatic Priest Robe" (1299). Gives "Orb of Frozen Water" (28049).

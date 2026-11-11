@@ -193,28 +193,25 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 84. Loot "Thin Leather Straps" (52352) from "an ukun fleshhound" (NPC 301009) in `bloodfields`. Drop cache: 3.672% chance per kill.
 85. bloodfields/"Caller Donivin", hand "Polished Bone Horn" (52349) + "Brass Mouthpiece" (52350) + "Bucket Mute" (52351) + "Thin Leather Straps" (52352).
 86. Spawns "a reclusive girplan" (npc:301033) after the hand-in.
-87. Kill bloodfields/"A Reclusive Girplan".
-88. Spawns "a reclusive girplan" (npc:301073) via `bloodfields/a reclusive girplan#event_death_complete`.
-89. Kill "a reclusive girplan" (NPC 301073) in `bloodfields` and loot "Jacinth" (10053).
-90. freeporteast/"Wenden Blackhammer", hand "Unjeweled Dragon Head Hilt" (20668) + "Diamond" (10037) + "Black Sapphire" (10036) + "Jacinth" (10053). Gives "Jeweled Dragon Head Hilt" (20671).
+87. Kill "a reclusive girplan" (NPC 301033) in `bloodfields` and loot "Jacinth" (10053).
+88. freeporteast/"Wenden Blackhammer", hand "Unjeweled Dragon Head Hilt" (20668) + "Diamond" (10037) + "Black Sapphire" (10036) + "Jacinth" (10053). Gives "Jeweled Dragon Head Hilt" (20671).
     - event_trade NPC emote: begins to fiddle with the hilt, gently pressing the gems into place. It seems to take forever as you watch in silence. Wenden slowly places the last gem in place and gently bends the settings to hold the gems before he hands it back to you. 'That's a very impressive looking hilt there. The material it is made out of seems strangely familiar,' Wenden says as he turns back to his forge and his other work.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 20668,item2 = 10037,item3 = 10036,item4 = 10053}))`
-91. Collect ground spawn "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
-92. Loot "Giant Sized Monocle" (20678) from "a mountain giant patriarch" (NPC 86144) in `dreadlands`. Drop cache: 30% chance per kill.
-93. frontiermtns/"Mentrax Mountainbone", hand "Giant Sized Monocle" (20678). Gives "Rejesiam Ore" (20666).
+89. Collect ground spawn "Severely Damaged Dragon Head Hilt" (20669) in `timorous`.
+90. Loot "Giant Sized Monocle" (20678) from "a mountain giant patriarch" (NPC 86144) in `dreadlands`. Drop cache: 30% chance per kill.
+91. frontiermtns/"Mentrax Mountainbone", hand "Giant Sized Monocle" (20678). Gives "Rejesiam Ore" (20666).
     - event_item NPC say: Eh, you actually found one! Thank you, $name. Here is a block of ore for you. Just don't let the other giants know.
       - Event guard: `(plugin::check_handin(\%itemcount, 20678 => 1))`
-94. Loot "Ball of Everliving Golem" (20677) from "Dread" (NPC 72000) in `fearplane`. Drop cache: 10.4954% chance per kill.
-95. freeporteast/"Wenden Blackhammer", hand "Severely Damaged Dragon Head Hilt" (20669) + "Rejesiam Ore" (20666) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
+92. Loot "Ball of Everliving Golem" (20677) from "Dread" (NPC 72000) in `fearplane`. Drop cache: 10.4954% chance per kill.
+93. freeporteast/"Wenden Blackhammer", hand "Severely Damaged Dragon Head Hilt" (20669) + "Rejesiam Ore" (20666) + "Ball of Everliving Golem" (20677). Gives "Finely Crafted Dragon Head Hilt" (20672).
     - event_trade NPC emote: works his magic with his forge as you have never seen done quite like this. The bending and shaping to repair the hilt is only something a master of his art could even fathom to try. Once the hilt has been cooled in a near by bucket of ice cold water, he checks it for balance and resonance before handing it to you.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 20669,item2 = 20666,item3 = 20677}))`
-96. Combine in "Red Scabbard" (17859): "Ancient Sword Blade" (20667), "Ancient Blade" (20670), "Jeweled Dragon Head Hilt" (20671), "Finely Crafted Dragon Head Hilt" (20672). Produces "Jagged Blade of War" (10908). Requires Remove Traps.
+94. Combine in "Red Scabbard" (17859): "Ancient Sword Blade" (20667), "Ancient Blade" (20670), "Jeweled Dragon Head Hilt" (20671), "Finely Crafted Dragon Head Hilt" (20672). Produces "Jagged Blade of War" (10908). Requires Remove Traps.
 
 **Unresolved graph dependencies:**
 - Unverified quest flag `Fatestealer_gal` ==1: no acyclic setter
 - Unverified quest flag `Fatestealer_mar` ==1: no acyclic setter
 - Unverified quest flag `Fatestealer_lyt` ==1: no acyclic setter
-- Event cycle at `bloodfields/a reclusive girplan#event_death_complete`
 
 ## Epic 1.5
 

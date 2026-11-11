@@ -198,8 +198,8 @@ Revisit those instructions if another copy of a consumed item is needed.
     - event_trade NPC emote: takes the head from you and holds it by the hair. Gilina casts a small spell and the head springs to life.  'Talk, Kilidna. What has happened to you?' Kilidna's head begins to sob. 'I am sorry, master. I was corrupted by evil magic! Now look at me! I dare say I will not be able to finish my studies any time soon.' Gilina scowls, 'What did you find out while in the city of mist? Tell me now!' 'Well master, it seems that when Innoruuk's Voice was summoned to this plane, it drew the attention of many [powerful beings].'
       - Event guard: `(qglobals["shadowknight_epic"] == "9" and item_lib.check_turn_in(e.trade, {item1 = 19098}))`
 7. Loot "Lhranc's Corroded Bracer" (24612) from "a mortiferous golem" (NPC 105021) in `charasis`. Drop cache: 1.1599% chance per kill.
-8. Kill citymist/"A Black Reaver".
-9. Spawns "a black reaver" (npc:90004) via `citymist/a black reaver#event_death_complete`.
+8. Kill citymist/"Npc:90004".
+9. Spawns "a black reaver" (npc:90004) via `citymist/npc:90004#event_death_complete`.
 10. Kill "a black reaver" (NPC 90004) in `citymist` and loot "Lhranc's Pendant" (23489).
 11. Loot "Lhranc's Ring" (24632) from "risen corporal" (NPC 20107) in `kithicor`. Drop cache: 19.5635% chance per kill.
 12. poknowledge/"Gilina Yilzior", hand "Lhranc's Corroded Bracer" (24612) + "Lhranc's Pendant" (23489) + "Lhranc's Ring" (24632). Gives "Lhranc's Earthly Anchor" (24584).
