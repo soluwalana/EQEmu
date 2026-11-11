@@ -5,8 +5,8 @@ sit mana, stop-melee, and follow distance are left off when the journal already
 records them. Heal rotation is included only when no rotation is saved. ^taunt
 is never in the list.
 """
+from eqclient4.structs.constants import TANK_CLASSES
 
-TANK_CLASSES = {1, 3, 5}
 AGGRESSIVE = "5"
 
 

@@ -23,7 +23,7 @@ _OFFSETS: dict[str, int] = {
     "name": 2,
     "id_file": 80,
     "slots": 112,
-    "classes": 44,
+    "_classes": 44,
     "races": 102,
     "ac": 4,
     "damage": 51,

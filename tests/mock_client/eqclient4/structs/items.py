@@ -102,7 +102,7 @@ ITEM_FIELD_LAYOUT: dict[str, tuple[str, str, int]] = {
     "mana": ("body", "<i", 48),
     "endurance": ("body", "<I", 52),
     "ac": ("body", "<i", 56),
-    "classes": ("body", "<I", 72),
+    "_classes": ("body", "<I", 72),
     "races": ("body", "<I", 76),
     "deity": ("body", "<I", 80),
     "magic": ("body", "<B", 116),
@@ -148,7 +148,7 @@ class Item(EQStruct):
     item_id: int
     stack: int = 1
     slots: int = 0
-    classes: int = 0
+    _classes: int = 0
     races: int = 0
     ac: int = 0
     damage: int = 0
@@ -234,6 +234,18 @@ class Item(EQStruct):
     @property
     def is_no_drop(self) -> bool:
         return self.no_drop or self.attuned
+
+    @property
+    def classes(self) -> list[int]:
+        return [class_id for class_id in range(1, 17) if self._classes & (1 << (class_id - 1))]
+
+    @classes.setter
+    def classes(self, value: list[int]) -> None:
+        for class_id in range(1, 17):
+            if class_id in value:
+                self._classes |= 1 << (class_id - 1)
+            else:
+                self._classes &= ~(1 << (class_id - 1))
 
     @property
     def augments(self) -> dict[int, Item]:

@@ -4519,6 +4519,10 @@ void Bot::PerformTradeWithClient(int16 begin_slot_id, int16 end_slot_id, Client*
 				continue;
 			}
 			else {
+				client->Message(
+					Chat::Yellow,
+					fmt::format("{} cannot equip {} because it is not equipment.", GetCleanName(), item_link).c_str()
+				);
 				client->ResetTrade();
 				return;
 			}
@@ -4540,6 +4544,30 @@ void Bot::PerformTradeWithClient(int16 begin_slot_id, int16 end_slot_id, Client*
 				continue;
 			}
 			else {
+				if (
+					!trade_instance->IsClassEquipable(GetClass()) &&
+					!RuleB(Bots, AllowBotEquipAnyClassGear)
+				) {
+					client->Message(
+						Chat::Yellow,
+						fmt::format("{} cannot equip {}: class restriction.", GetCleanName(), item_link).c_str()
+					);
+				}
+				else if (GetLevel() < trade_instance->GetItem()->ReqLevel) {
+					client->Message(
+						Chat::Yellow,
+						fmt::format(
+							"{} cannot equip {}: requires level {} (current level {}).",
+							GetCleanName(), item_link, trade_instance->GetItem()->ReqLevel, GetLevel()
+						).c_str()
+					);
+				}
+				else {
+					client->Message(
+						Chat::Yellow,
+						fmt::format("{} cannot equip {}: race restriction.", GetCleanName(), item_link).c_str()
+					);
+				}
 				client->ResetTrade();
 				return;
 			}

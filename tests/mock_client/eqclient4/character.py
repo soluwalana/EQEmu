@@ -15,8 +15,6 @@ from eqclient4.log import log
 from eqclient4.structs import (
     BuffIconEntry,
     EQStruct,
-    InventorySlot,
-    Item,
     OP_AAExpUpdate,
     OP_Buff,
     OP_BuffCreate,

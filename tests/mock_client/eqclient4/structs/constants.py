@@ -30,6 +30,122 @@ DELIVER = 1
 COLLECT = 13
 EXPLORE = 5
 
+CLASS_ID_TO_NAME: dict[int, str] = {
+    1: "Warrior",
+    2: "Cleric",
+    3: "Paladin",
+    4: "Ranger",
+    5: "Shadow Knight",
+    6: "Druid",
+    7: "Monk",
+    8: "Bard",
+    9: "Rogue",
+    10: "Shaman",
+    11: "Necromancer",
+    12: "Wizard",
+    13: "Magician",
+    14: "Enchanter",
+    15: "Beastlord",
+    16: "Berserker",
+}
+
+CLASS_NAME_TO_ID: dict[str, int] = {
+    name: class_id
+    for class_id, name in CLASS_ID_TO_NAME.items()
+}
+
+
+TANK_CLASSES = {CLASS_NAME_TO_ID[name] for name in ("Warrior", "Paladin", "Shadow Knight")}
+
+RACE_ID_TO_NAME: dict[int, str] = {
+    1: "Human",
+    2: "Barbarian",
+    3: "Erudite",
+    4: "Wood Elf",
+    5: "High Elf",
+    6: "Dark Elf",
+    7: "Half Elf",
+    8: "Dwarf",
+    9: "Troll",
+    10: "Ogre",
+    11: "Halfling",
+    12: "Gnome",
+    128: "Iksar",
+    130: "Vah Shir",
+    330: "Froglok",
+    522: "Drakkin",
+}
+
+RACE_ID_TO_BIT = {
+    1: 1 << 0,  # Human
+    2: 1 << 1,  # Barbarian
+    3: 1 << 2,  # Erudite
+    4: 1 << 3,  # Wood Elf
+    5: 1 << 4,  # High Elf
+    6: 1 << 5,  # Dark Elf
+    7: 1 << 6,  # Half Elf
+    8: 1 << 7,  # Dwarf
+    9: 1 << 8,  # Troll
+    10: 1 << 9,  # Ogre
+    11: 1 << 10,  # Halfling
+    12: 1 << 11,  # Gnome
+    128: 1 << 12,  # Iksar
+    130: 1 << 13,  # Vah Shir
+    330: 1 << 14,  # Froglok
+    522: 1 << 15,  # Drakkin
+}
+
+RACE_NAME_TO_ID: dict[str, int] = {
+    name: race_id
+    for race_id, name in RACE_ID_TO_NAME.items()
+}
+
+DEITY_ID_TO_NAME: dict[int, str] = {
+    140: "Agnostic",
+    396: "Agnostic",
+    201: "Bertoxxulous",
+    202: "Brell Serilis",
+    203: "Cazic Thule",
+    204: "Erollisi Marr",
+    205: "Bristlebane",
+    206: "Innoruuk",
+    207: "Karana",
+    208: "Mithaniel Marr",
+    209: "Prexus",
+    210: "Quellious",
+    211: "Rallos Zek",
+    212: "Rodcet Nife",
+    213: "Solusek Ro",
+    214: "The Tribunal",
+    215: "Tunare",
+    216: "Veeshan",
+}
+
+DEITY_ID_TO_BIT = {
+    140: 1 << 0,  # Agnostic
+    396: 1 << 0,  # Agnostic
+    201: 1 << 1,  # Bertoxxulous
+    202: 1 << 2,  # Brell Serilis
+    203: 1 << 3,  # Cazic Thule
+    204: 1 << 4,  # Erollisi Marr
+    205: 1 << 5,  # Bristlebane
+    206: 1 << 6,  # Innoruuk
+    207: 1 << 7,  # Karana
+    208: 1 << 8,  # Mithaniel Marr
+    209: 1 << 9,  # Prexus
+    210: 1 << 10,  # Quellious
+    211: 1 << 11,  # Rallos Zek
+    212: 1 << 12,  # Rodcet Nife
+    213: 1 << 13,  # Solusek Ro
+    214: 1 << 14,  # The Tribunal
+    215: 1 << 15,  # Tunare
+    216: 1 << 16,  # Veeshan
+}
+
+DEITY_NAME_TO_ID: dict[str, int] = {
+    name: deity_id
+    for deity_id, name in DEITY_ID_TO_NAME.items()
+}
 
 _WORN = (
     "Charm",
@@ -56,6 +172,17 @@ _WORN = (
     "Power Source",
     "Ammo",
 )
+
+WORN_SLOTS = {
+    index: name
+    for index, name in enumerate(_WORN)
+}
+
+WORN_SLOTS_BY_NAME = {
+    name: index
+    for index, name in WORN_SLOTS.items()
+}
+
 _BANK_SLOTS = 24
 _SHARED_BANK_SLOTS = 2
 
@@ -65,6 +192,11 @@ SHARED_BANK_ADDRESS = 2
 TRADE_ADDRESS = 3
 WORLD_CONTAINER_ADDRESS = 4
 LIMBO_ADDRESS = 5
+
+CAN_EQUIP = 0
+CANNOT_EQUIP = -1
+CANNOT_EQUIP_LEVEL = -200
+CANNOT_EQUIP_CONFLICT = -409
 
 
 class Skill(IntEnum):
