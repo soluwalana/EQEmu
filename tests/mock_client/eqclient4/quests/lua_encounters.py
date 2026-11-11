@@ -813,6 +813,10 @@ def analyze_encounters(zone: str, scripts: dict[str, str]) -> EncounterAnalysis:
                          if cb.registration.source == path
                          and cb.registration.npc == controller
                          and cb.registration.event.startswith('say:')
+                         # A SAY callback can serve multiple keywords. Only the
+                         # branch that actually expands Spawn_Wave may initiate
+                         # the first wave; a HAIL in the same function cannot.
+                         and any(e.kind == 'spawn' for e in cb.effects)
                          and any('Spawn_Wave' in line for _n, line, _g in
                                  _functions(scripts[path]).get(cb.registration.callback,
                                  _Function('', ())).statements)]

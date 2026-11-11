@@ -921,10 +921,27 @@ class Planner:
                 self.pre_spawned_actor(actor_of(node))
             if "#hand:" in node:
                 self.hand_event(node)
-            # To reach an event, follow incoming trigger edges (preconditions).
+            # Triggers arriving at the same signal number are OR, not AND.
+            # A repeated signal can be sent by its initial player action and
+            # later by the deaths of mobs it spawned. Following every incoming
+            # edge turns this normal event loop into a false dependency cycle.
             incoming = [
                 r for r in self.g.by_to.get(node, []) if r.get("rel") == "triggers"
             ]
+            if "#signal:" in node and incoming:
+                # Favor explicit player-started routes; then other routes that
+                # do not immediately revisit an active event. Do not assert
+                # that *all* signal senders must execute to receive a signal.
+                reachable = [r for r in incoming
+                             if str(r.get("from") or "") not in self.active_events]
+                incoming = sorted(reachable, key=lambda r: (
+                    0 if "#event_say" in str(r.get("from", "")) else
+                    1 if "#hand:" in str(r.get("from", "")) else
+                    2 if "#event_spawn" in str(r.get("from", "")) else 3,
+                    str(r.get("from", "")),
+                ))[:1]
+                if not incoming:
+                    self.errors.append(f"No acyclic signal predecessor for `{node}`")
             for edge in sorted(incoming, key=lambda r: str(r.get("from", ""))):
                 parent = str(edge.get("from") or "")
                 if edge.get("action") == "defeat_wave":
@@ -949,6 +966,11 @@ class Planner:
                         action="say",
                         utterance=str(edge["keyword"]),
                     )
+                elif parent.endswith("#event_say"):
+                    # The source records an event, not necessarily the exact
+                    # player utterance. Do not fabricate a keyword.
+                    self.put(f"talk:{parent}",
+                             f"Talk to {label(actor_of(parent))} to trigger the encounter.")
                 elif "#hand:" in parent:
                     self.hand_event(parent, target_npc=target_npc)
                 elif "#event_death" in parent:

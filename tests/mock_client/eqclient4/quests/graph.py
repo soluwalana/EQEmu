@@ -3238,8 +3238,8 @@ def _link_event_causality(
 
     for zone, npc_id, body in scripts:
         stem = npc_id.rsplit("/", 1)[-1]
-        if stem.isdigit():
-            register(zone, int(stem), (npc_id, body))
+        if stem.isdigit() or (stem.startswith("npc:") and stem[4:].isdigit()):
+            register(zone, int(stem.removeprefix("npc:")), (npc_id, body))
         footer = _NPC_FOOTER.search(body)
         if footer:
             register(zone, int(footer.group(1)), (npc_id, body))
@@ -3410,18 +3410,39 @@ def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
         path for path in base.iterdir() if path.is_dir() and path.name not in _SKIP_DIRS
     ):
         zone = folder.name.lower()
-        for path in _quest_scripts(folder):
+        paths = _quest_scripts(folder)
+        # Several distinct numbered scripts can share a catalog display name.
+        # Name-keyed lifecycle nodes collapse their deaths into a self-cycle.
+        name_counts: dict[str, int] = {}
+        for script in paths:
+            if script.stem.isdigit():
+                name = npc_name(script.name, catalog).lower()
+                name_counts[name] = name_counts.get(name, 0) + 1
+        duplicate_names = {name for name, count in name_counts.items() if count > 1}
+        for path in paths:
             text = path.read_text(encoding="utf-8", errors="replace")
-            scripts.append((zone, f"{zone}/{npc_name(path.name, catalog).lower()}", text))
+            named_actor = f"{zone}/{npc_name(path.name, catalog).lower()}"
+            actor = (f"{zone}/npc:{path.stem}" if path.stem.isdigit()
+                     and npc_name(path.name, catalog).lower() in duplicate_names
+                     else named_actor)
+            scripts.append((zone, actor, text))
             if path.suffix.lower() == ".lua":
                 lua_by_zone.setdefault(zone, {})[path.relative_to(folder).as_posix()] = text
-            
+
             graph.dialogues.extend(dialogue_chains(text, path.name, zone))
             nodes = parse_chain(text, path.name, zone)
             if nodes:
                 graph.nodes[(zone, nodes[0].npc.lower())] = nodes
                 item_ids.update(node.item_id for node in nodes if node.item_id)
             for edge in link_script(text, path.name, zone, catalog):
+                if actor != named_actor:
+                    # Keep the authored event and its hand-in/loot group in
+                    # the same per-NPC namespace. Names remain display-only.
+                    for field in ("from", "to", "group"):
+                        value = edge.get(field)
+                        if isinstance(value, str) and (value == named_actor or
+                                                      value.startswith(named_actor + "#")):
+                            edge[field] = actor + value[len(named_actor):]
                 graph.edges.append(edge)
                 token = edge.get("to", "")
                 if isinstance(token, str) and token.startswith("item:"):
