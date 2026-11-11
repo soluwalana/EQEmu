@@ -231,42 +231,187 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 <a id="epic-item-60332"></a>
 
-**Earlier reward routes required by this graph path:** ["Champion's Sword of Eternal Power" (60321)](#epic-item-60321).
+**Earlier reward routes required by this graph path:** ["Jagged Blade of War" (10908)](#epic-item-10908), ["Champion's Sword of Eternal Power" (60321)](#epic-item-60321).
 Revisit those instructions if another copy of a consumed item is needed.
 
-1. iceclad/"Fazzle Thumpkin", say "Hail".
+1. Spawns "Korbuk" (npc:303128) via `causeway/warr trap#enter`.
+2. Spawns "Essence of Kreljnok" (npc:303129) via `causeway/korbuk brimblade#event_death_complete`.
+3. Kill "Essence of Kreljnok" (NPC 303129) in `causeway` and loot "Brimblade's Scabbard" (60331).
+4. Kill "Essence of Kreljnok" (NPC 303129) in `causeway` and loot "Kreljnok's Essence" (60330).
+5. Combine in "Red Scabbard" (17859): "Jagged Blade of War" (10908). Produces "Blade of Strategy" (10910). Requires Remove Traps.
+6. Combine in "Red Scabbard" (17859): "Jagged Blade of War" (10908). Produces "Blade of Tactics" (10909). Requires Remove Traps.
+7. draniksscar/"Korbuk Brimblade", say "Work". Sets `warrior_epic` to `1`.
+    - Player: "work"
+      - NPC say: Yeah, ok. You look like da respectable type. I wish it was an easy story to tell, but me thinks it's not so easy. I'm uncertain if you know da story of da red scabbard. I was named after my ancestor by da same name. In a great war, Rallos Zek bestowed to my ancestor da fabled red scabbard after Suteng was slain. It had been his charge and dat of my family to hold da scabbard until a [true warrior] would step forward to claim it as theirs once more.
+        - Reply guard: `((e.other:HasItem(10910) and e.other:HasItem(10909)) or (e.other:HasItem(66176) and e.other:HasItem(66177)) or e.other:HasItem(10908) or e.other:HasItem(66175) or qglobals["warrior_pre"] == "6")`
+      - NPC say: Hmm, I'm not sure if I should go into any more detail. After all, we've just met and I don't know how trustworthy you really are. Listen, if you really want to know what work I'm involved with, I'll need you to run a couple [errands] for me first, just so I know you're da real deal.
+        - Reply guard: ``
+        - Reply guard: `(qglobals["warrior_pre"] == nil)`
+      - Condition: `(e.other:Class() == "Warrior")`
+      - Condition: `(e.message:findi("work"))`
+      - Linked from "strange" (explicit prompt).
+      - Linked from "kit" (explicit prompt).
+8. Collect ground spawn "Decomposing Page I" (60295) in `draniksscar`.
+9. Collect ground spawn "Decomposing Page II" (60296) in `draniksscar`.
+10. Collect ground spawn "Decomposing Page III" (60297) in `draniksscar`.
+11. Collect ground spawn "Decomposing Cover" (60298) in `draniksscar`.
+12. draniksscar/"Korbuk Brimblade", hand "Decomposing Page I" (60295) + "Decomposing Page II" (60296) + "Decomposing Page III" (60297) + "Decomposing Cover" (60298).
+    - event_trade NPC say: Those... those are da pages and da cover I saw. You don't suppose dat da two are linked, do you? What if they are, what could dat mean? I don't even know what these say! I think you should take these to a linguist to decipher them. I knew one in da abysmal sea, aboard da hulking boat, but I forget his name. I do recall dat it was a funny name, though.
+      - Event guard: `(qglobals["warrior_epic"] ~= nil)`
+      - Event guard: `(qglobals["warrior_epic"] >= "1" and item_lib.check_turn_in(e.trade, {item1 = 60295, item2 = 60296, item3 = 60297, item4 = 60298}))`
+13. draniksscar/"Korbuk Brimblade", say "Rock". Gives "Energy Receptor" (60300).
+    - Player: "rock"
+      - NPC say: I was holding da rock when I had dat vision. Whatever happened to me was passed into da rock as well and I can sense some power within da rock now. Maybe holding da rock will lead you to da creature or maybe it will lead you to something near da creature, I don't really know. You have to keep a tight grip on it though, else I don't think you'll feel da power drawing you as I did. If you do find da beast, be careful. There's no telling what dangers lay in this place.
+      - Condition: `(e.other:Class() == "Warrior")`
+      - Condition: `(e.message:findi("rock") and qglobals["warrior_epic"] ~= nil and qglobals["warrior_epic"] >= "2")`
+14. Collect "Blackfall Ore" (60301) at `draniksscar/player#timer:borer`.
+15. draniksscar/"Korbuk Brimblade", hand "Blackfall Ore" (60301). Gives "Smelting Plans" (60302).
+    - event_trade NPC say: And you say you found this in a pile dat da creature left behind? I wonder what da story behind dat is... In any case, touching this gave me a brief glimpse of something sharp. It almost seemed like it was a blade. You should probably take this to get it looked at by a skilled [smith].
+      - Event guard: `(qglobals["warrior_epic"] ~= nil)`
+      - Event guard: `(qglobals["warrior_epic"] >= "2" and item_lib.check_turn_in(e.trade, {item1 = 60301}))`
+16. nedaria/"Korezna Orecleaver", hand "Water Flask" (13006).
+    - event_trade NPC say: That helps, but I'm still too hot! More... water... please!
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 13006, item2 = 13006, item3 = 13006, item4 = 13006}) )`
+    - event_trade NPC say: Phew, thanks much for helping me cool down a bit. I guess you never realize how hot it can get working in here all the time. So anyway, what do you need worked on?
+      - Event guard: `(qglobals["warrior_epic_korezna"] == "1" and item_lib.check_turn_in(e.trade, {item1 = 13006, item2 = 13006, item3 = 13006}))`
+17. nedaria/"Korezna Orecleaver", hand "Water Flask" (13006).
+    - event_trade NPC say: That helps, but I'm still too hot! More... water... please!
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 13006, item2 = 13006, item3 = 13006, item4 = 13006}) )`
+    - event_trade NPC say: Phew, thanks much for helping me cool down a bit. I guess you never realize how hot it can get working in here all the time. So anyway, what do you need worked on?
+      - Event guard: `(qglobals["warrior_epic_korezna"] == "1" and item_lib.check_turn_in(e.trade, {item1 = 13006, item2 = 13006, item3 = 13006}))`
+18. nedaria/"Korezna Orecleaver", hand "Blackfall Ore" (60301) + "Smelting Plans" (60302). Gives "Blackfall Blade" (60303).
+    - event_trade NPC say: Ooh, that's an interesting ore. Don't think I've ever seen anything like it before. Seems as though your friend knows all about it already though, huh? Alrighty, let me get down to the forge so I can work on this for you. Give me just a minute.
+      - Event guard: `(qglobals["warrior_epic_korezna"] == "2" and item_lib.check_turn_in(e.trade, {item1 = 60301, item2 = 60302}))`
+    - event_trade NPC say: Nice looking blade, I must say. I'm hope whoever this is for will be happy with the results. I'm gonna get back up to my post now, have a lot of work to get done still. Thanks for stopping by!
+19. draniksscar/"Korbuk Brimblade", hand "Blackfall Blade" (60303).
+    - event_trade NPC say: What a fine looking blade, I must say dat smith did good work in such a short time. Hopefully it wasn't too much touble for you. I... oh my, this can't be good. Da creature... it's [loose]!
+      - Event guard: `(qglobals["warrior_epic"] ~= nil)`
+      - Event guard: `(qglobals["warrior_epic"] >= "2" and item_lib.check_turn_in(e.trade, {item1 = 60303}))`
+20. Spawns "Blackfall Boreling" (npc:290070) via `vxed/player#enter`.
+21. Spawns "Blackfall Borer" (npc:290069) via `vxed/blackfall borerling#event_death_complete`.
+22. Kill "Blackfall Borer" (NPC 290069) in `vxed` and loot "Vial of Blackfall Blood" (60304).
+23. draniksscar/"Korbuk Brimblade", hand "Vial of Blackfall Blood" (60304). Gives "Sealed Vial of Blackfall Blood" (60305).
+    - event_trade NPC say: Dat was too close! You did a good job though and stopped dat beast before it could get too far on Norrath. We don't know what it might have been capable of otherwise. I've sealed da blood of da beast in a vial for you for da [journey]. I also got another [vision] when I took hold of da vial.
+      - Event guard: `(qglobals["warrior_epic"] ~= nil)`
+      - Event guard: `(qglobals["warrior_epic"] >= "3" and item_lib.check_turn_in(e.trade, {item1 = 60304}))`
+24. everfrost/, hand "Sealed Vial of Blackfall Blood" (60305).
+25. everfrost/, say "Kimber Whitefoot". Gives "Potion of Blackfall Spirit" (60306).
+26. draniksscar/"Korbuk Brimblade", hand "Potion of Blackfall Spirit" (60306).
+    - event_trade NPC emote: gags as he takes hold of the potion, then quickly returns it to you.
+      - Event guard: `(qglobals["warrior_epic"] ~= nil)`
+      - Event guard: `(qglobals["warrior_epic"] >= "4" and item_lib.check_turn_in(e.trade, {item1 = 60306}))`
+    - event_trade NPC say: I had no idea such a strong presence would be coming from this after Kimber worked with it. I hope he's ok. Now dat we've taken care of dat, we can focus on the last [vision] I had.
+27. Spawns "Girplan Devourer" (npc:301063) via `bloodfields/girplan slasher#event_death_complete`.
+28. Kill "Girplan Devourer" (NPC 301063) in `bloodfields` and loot "Decrepit Hilt" (60307).
+29. draniksscar/"Korbuk Brimblade", hand "Decrepit Hilt" (60307).
+    - event_trade NPC say: What a worthless specimen this is. I don't understand why my vision would show me dat creature if all it had was this mediocre quality hilt. I also don't understand why there's energy emanating from da hilt when it cannot be used to wield a blade in its current state. I think we're going to have to look into [cleaning up da hilt].
+      - Event guard: `(qglobals["warrior_epic"] ~= nil)`
+      - Event guard: `(qglobals["warrior_epic"] >= "5" and item_lib.check_turn_in(e.trade, {item1 = 60307}))`
+30. Buy "Platinum Bar" (16503) from "Ziska Ironforge" (NPC 2069) in `qeynos2`. Base price: 100,000 copper.
+31. firiona/"Corfia Nultethen", hand "Platinum Bar" (16503).
+    - event_trade NPC say: Aha, something worth my time. But I've changed my mind. I'd prefer if you made me something that really showed me how interested you are in my craft. We jewelers are hard to please, but if you can present me with a [Nocturnal Mask of Acuity], I'd be more than willing to at least speak with you.
+      - Event guard: `qglobals["warrior_epic"] ~= nil and qglobals["warrior_epic"] >= "6" and item_lib.check_turn_in(e.trade, {item1 = 16503})`
+32. Buy "Jeweler's Kit" (17912) from "Svena Ironforge" (NPC 2068) in `qeynos2`. Base price: 1,000 copper.
+33. Buy "Darkened Star Rose Quartz" (60308) from "Pelshia Thuxpire" (NPC 2073) in `qeynos2`. Base price: 3,000 copper.
+34. Summon "Enchanted Electrum Bar" (16505) by casting "Enchant Electrum" or "Greater Mass Enchant Electrum" or "Mass Enchant Electrum".
+35. Combine in "Jeweler's Kit" (17912): "Darkened Star Rose Quartz" (60308), "Enchanted Electrum Bar" (16505). Produces "Nocturnal Mask of Acuity" (60309). Requires Jewelry Making.
+36. firiona/"Corfia Nultethen", hand "Nocturnal Mask of Acuity" (60309).
+    - event_trade NPC say: Well done, but not great. It doesn't have the sight properties I'd hoped for, but it looks nice nonetheless. I half thought you'd shy away from creating such a lustrous piece of jeweled metal. You didn't though, so now you have my attention. What is it that you have for me to look at?
+      - Event guard: `qglobals["warrior_epic"] ~= nil and qglobals["warrior_epic"] >= "7" and item_lib.check_turn_in(e.trade, {item1 = 60309})`
+37. firiona/"Corfia Nultethen", hand "Decrepit Hilt" (60307).
+    - event_trade NPC say: What a filthy piece of rubbish! This will need a good deal of work, I can guarantee you that. I have a small repository of supplies that I only rarely use, and one of the things I have is a cleaning solution. I don't often use it for most mundane things, but I'd be willing to part with some if you're willing to do me a [favor].
+      - Event guard: `qglobals["warrior_epic"] ~= nil and qglobals["warrior_epic"] >= "8" and item_lib.check_turn_in(e.trade, {item1 = 60307})`
+38. firiona/"Corfia Nultethen", say "Galuk Drek". Sets `warrior_epic_veksar` to `1`.
+    - Player: "galuk drek"
+      - NPC say: Oh, he was a beast, to be sure. One of the nastier creatures down there, but also one of the most brilliant, from what I've read. Drek kept the tome full of information on various crafts, and one of them just happens to be jewelcraft. I'd love to set my hands on that tome, and if you can find it, I'd be more than willing to finish up this hilt for you in no time!
+      - Condition: `e.language == 12 and e.other:GetLanguageSkill(12) >= 100`
+      - Condition: `e.message:findi("Galuk Drek") and qglobals["warrior_epic"] ~= nil and qglobals["warrior_epic"] >= "9"`
+      - Linked from "veksar" (explicit prompt).
+39. Spawns "Decaying Lord Galuk Drek, not be in db yet" (npc:109906) via `veksar/player#enter`.
+40. Kill "Decaying Lord Galuk Drek, not be in db yet" (NPC 109906) in `veksar` and loot "Skeletal Tome of Galuk Drek" (60310).
+41. firiona/"Corfia Nultethen", hand "Skeletal Tome of Galuk Drek" (60310). Gives "Glistening Hilt" (60311).
+    - event_trade NPC say: Wow... I hadn't expected you'd be so quick about things. This is the most amazing find ever, you've helped me more then you could ever know! Thanks so much! I made sure to polish that hilt up for you as best as I could, and even added a few touches to it that'll make even stronger that it was before.
+      - Event guard: `qglobals["warrior_epic"] ~= nil and qglobals["warrior_epic"] == "9" and item_lib.check_turn_in(e.trade, {item1 = 60310})`
+42. draniksscar/"Korbuk Brimblade", hand "Glistening Hilt" (60311).
+    - event_trade NPC say: Ah yes, Corfia. I remember her now. She did quite a fine job cleaning up dat hilt, eh? It's more ornate than it looked before. Didn't you say she added a couple additional touches to make it stronger? I wonder if style changes were part of dat... in any case... I... oh boy. I just had another [glimpse] from touching da hilt. Here take it back.
+      - Event guard: `(qglobals["warrior_epic"] ~= nil)`
+      - Event guard: `(qglobals["warrior_epic"] >= "9" and item_lib.check_turn_in(e.trade, {item1 = 60311}))`
+43. Loot "Stone of Eternal Power: Northeast Eye" (60312) from "Dragorn Champion" (NPC 300036) in `wallofslaughter`. Drop cache: 100% chance per kill.
+44. Collect ground spawn "Stone of Eternal Power: Northwest Eye" (60313) in `bloodfields`.
+45. Collect ground spawn "Stone of Eternal Power: Southeast Eye" (60314) in `provinggrounds`.
+46. Collect ground spawn "Stone of Eternal Power: Southwest Eye" (60315) in `causeway`.
+47. draniksscar/"Korbuk Brimblade", hand "Stone of Eternal Power: Northeast Eye" (60312) + "Stone of Eternal Power: Northwest Eye" (60313) + "Stone of Eternal Power: Southeast Eye" (60314) + "Stone of Eternal Power: Southwest Eye" (60315).
+    - event_trade NPC say: Yes, those must be da stones dat fit into those holes! I'm not entirely sure how... wait, I know! We need to have a gem setter put these back in place and I know just da one. His name is Gridbar Galund and he makes his stay out in da towering mountains of Butcherblock. He owes me a favor or two, so I'm sure he'd be more than willing to help you out with this.
+      - Event guard: `(qglobals["warrior_epic"] ~= nil)`
+      - Event guard: `(qglobals["warrior_epic"] == "10" and item_lib.check_turn_in(e.trade, {item1 = 60312, item2 = 60313, item3 = 60314, item4 = 60315}))`
+48. butcher/"Gridbar Galund", hand "Stone of Eternal Power: Northeast Eye" (60312) + "Stone of Eternal Power: Northwest Eye" (60313) + "Stone of Eternal Power: Southeast Eye" (60314) + "Stone of Eternal Power: Southwest Eye" (60315).
+    - event_trade NPC say: Ah... huh? Oh, Gridbar says he needs a [gemming tool]. Who? What do you want? Something about Korbuk? Where's Gridbar? He says you need a [spell called Fire]. Huh? Gridbar who? No cookies for me now, thanks. Huh?
+      - Event guard: `qglobals["warrior_epic"] ~= nil and qglobals["warrior_epic"] >= "11" and item_lib.check_turn_in(e.trade, {item1 = 60312, item2 = 60313, item3 = 60314, item4 = 60315})`
+49. Loot "Fine Steel Wakizashi" (6932) from "a corrupted gnome explorer" (NPC 66111) in `gukbottom`. Drop cache: 100% chance per kill.
+50. Combine in appropriate tradeskill container: "Fine Steel Wakizashi" (6932), "Water Flask" (13006). Produces "Small Piece of High Quality Ore" (22229). Requires Blacksmithing.
+51. Combine in appropriate tradeskill container: "Small Piece of High Quality Ore" (22229), "Water Flask" (13006). Produces "High Quality Metal Bits" (22230). Requires Blacksmithing.
+52. Buy "Gemming Mold" (60317) from "Daria Smith" (NPC 10131) in `freporte`. Base price: 2,700 copper.
+53. Combine in appropriate tradeskill container: "High Quality Metal Bits" (22230), "Water Flask" (13006), "Gemming Mold" (60317). Produces "Gemming Tool" (60316). Requires Blacksmithing.
+54. Buy "Spell: Fire" (15433) from "Tisiana" (NPC 27062) in `lavastorm`. Base price: 20,637 copper.
+55. butcher/"Gridbar Galund", hand "Gemming Tool" (60316) + "Spell: Fire" (15433).
+    - event_trade NPC say: Oh, a hammer! No? Who are you? Where's Gridbar? I need a bottle of milk! No you don't. Gridbar says to eat some bread. Why? Huh? Give Gridbar the receptacle. What? The eye sockets! Give him the socket piece!
+      - Event guard: `qglobals["warrior_epic"] ~= nil and qglobals["warrior_epic"] >= "12" and item_lib.check_turn_in(e.trade, {item1 = 60316, item2 = 15433})`
+56. butcher/"Gridbar Galund", hand "Glistening Hilt" (60311). Gives "Carved Keg Stamp" (60318).
+    - event_trade NPC say: Ooh, pretty. Huh? Gridbar likes it. Not me though, I think it's too bright. Who are you? What? Fine, I need some time with this. Gridbar does, not me. Who? He'll work on it, but I need you to... no wait, Gridbar needs you to do something for him. For me. For who? My sister is in Shadowhaven and needs a keg stamp. Give this to her for her brother. Who? Gridbar. That's me? Why?
+      - Event guard: `qglobals["warrior_epic"] ~= nil and qglobals["warrior_epic"] >= "13" and item_lib.check_turn_in(e.trade, {item1 = 60311})`
+57. shadowhaven/"Koren Galund", hand "Carved Keg Stamp" (60318). Gives "Tube of Setting Solution" (60319).
+    - event_trade NPC say: Excellent, the stamp I've been waiting for! I see you've met my brother. He's nice and a great gemsetter, but not altogether there, if you know what I mean. I really appreciate you doing this for me. Make sure you get this tube back to him. I'm sure he'll need it for whatever job you've got him working on. And be patient with him. He'll get his thoughts out eventually.
+      - Event guard: `(qglobals["warrior_epic"] ~= nil and qglobals["warrior_epic"] >= "13" and item_lib.check_turn_in(e.trade, {item1 = 60318}))`
+58. butcher/"Gridbar Galund", hand "Tube of Setting Solution" (60319). Gives "Hilt of Eternal Power" (60320).
+    - event_trade NPC say: Nice, just what Gridbar needed. I needed. No he didn't. I want a sandwich. Gnome sandwich? Which sandwich is which? Aha! Genius! Who? This helps me finish the gem setting. Good good. Here's your socket piece. Gridbar likes it. Huh?
+      - Event guard: `qglobals["warrior_epic"] ~= nil and qglobals["warrior_epic"] >= "13" and item_lib.check_turn_in(e.trade, {item1 = 60319})`
+59. draniksscar/"Korbuk Brimblade", hand "Hilt of Eternal Power" (60320).
+    - event_trade NPC say: Met up with Gridbar did you? He's an oddball, for certain, but he's da best at what he does. I don't think I've ever seen stones set so finely into anything before, wouldn't you say? Alrighty, I think... wow [another image]...
+      - Event guard: `(qglobals["warrior_epic"] ~= nil)`
+      - Event guard: `(qglobals["warrior_epic"] >= "13" and item_lib.check_turn_in(e.trade, {item1 = 60320}))`
+60. dranik/"Krekk Brimblade", hand "Hilt of Eternal Power" (60320) + "Potion of Blackfall Spirit" (60306) + "Blackfall Blade" (60303).
+    - event_trade NPC say: You've been working very closely with my brother, I see. No doubt he wants my help to finish da sword for you. I'll put da sword together, you can rest assured of that. But I won't be giving it back to you. Oh no, I think I'll keep it for myself. I'll be da one to continue da Brimblade legacy and strike fear into da hearts of men! Not him!
+      - Event guard: `(qglobals["warrior_epic"] == "14" and item_lib.check_turn_in(e.trade, {item1 = 60320, item2 = 60306, item3 = 60303}))`
+61. draniksscar/"Korbuk Brimblade", say "Hail". Sets `warrior_epic` to `16`.
     - Player: "hail"
-      - NPC say: Damnable interruptions! Can't you see I'm looking for my pestle?! I lost that blasted thing months ago and haven't been able to find it! What will I do without my pestle?! My poor, poor pestle. Where have you gone? I thought I'd lost it around here somewhere, but maybe I left it near one of those statues during my surveying of the islands. Drat and double drat! Where did I leave you? Woe...
-        - Reply guard: `(qglobals["warrior_epic"] == "17")`
+      - NPC say: You were able to purify da presence, good. Just as I thought, da essence is pure and unadultered. Things are becoming ever clearer da closer we come to unraveling this mystery. Even without touching da essence, I can see pure rage surrounding a sword. I cannot even begin to express what it looks like. It's a very powerful image, to be sure. We're not quite done yet, however. There's a bit [more] da needs to be done.
+        - Reply guard: `(e.other:HasItem(60327) and qglobals["warrior_epic"] == "18")`
+      - NPC say: Dat sword, there's something wrong with it. Was it my brother? This is terrible news. I had no idea he had been so corrupted by this place. I had no idea he'd turn into a monster and try to steal away dat which we have been charged to protect! Luckily you were able to stop him and recover da sword. You should keep it in your possession. I have a feeling you're da [one] I've been waiting for.
+        - Reply guard: `(e.other:HasItem(60321) and qglobals["warrior_epic"] == "15")`
+      - NPC message: You have gained 5 ability points!
+        - Reply guard: `(e.other:HasItem(60321) and qglobals["warrior_epic"] == "15")`
+      - NPC say: Well now, aren't you a meager one? Da name is Korbuk Brimblade. Have you felt anything strange lately?
+        - Reply guard: ``
       - Condition: `(e.other:Class() == "Warrior")`
       - Condition: `(e.message:findi("hail"))`
-2. Spawns "Korbuk" (npc:303128) via `causeway/warr trap#enter`.
-3. Spawns "Essence of Kreljnok" (npc:303129) via `causeway/korbuk brimblade#event_death_complete`.
-4. Kill "Essence of Kreljnok" (NPC 303129) in `causeway` and loot "Brimblade's Scabbard" (60331).
-5. Kill "Essence of Kreljnok" (NPC 303129) in `causeway` and loot "Kreljnok's Essence" (60330).
-6. **Unverified quest flag:** `warrior_epic` `==18` required.
-7. iceclad/"Fazzle Thumpkin", say "Map". Gives "Fazzle's Map of East Wastes" (60324).
+62. Loot "Kreljnok's Muddled Rage" (60322) from "Possessed Brute" (NPC 316057) in `provinggrounds`. Drop cache: 90.083% chance per kill.
+63. draniksscar/"Korbuk Brimblade", hand "Kreljnok's Muddled Rage" (60322).
+    - event_trade NPC say: All too easy. For you, I mean. You did well. I'm... I'm getting unclear visions from this essence. I can't seem to understand what it's trying to tell me. This essence is impure and needs to be purified. I happen to know of a [purification expert] dat can help us clear this mystery up.
+      - Event guard: `(qglobals["warrior_epic"] ~= nil)`
+      - Event guard: `(qglobals["warrior_epic"] >= "16" and item_lib.check_turn_in(e.trade, {item1 = 60322}))`
+64. Collect ground spawn "Frozen Pestle" (60323) in `iceclad`.
+65. iceclad/"Fazzle Thumpkin", hand "Frozen Pestle" (60323).
+    - event_trade NPC say: You... you found it! My pestle! Hooray! I can get back to my work! I'm so grateful for this kind act, I've got to have something in my knapsack that you want! Here, how about some lint... wait, how did that get in there. You don't want lint! Hah! How about some cogs? No, what would you do with cogs? I know... you'll be able to make special use of this [map] I have.
+      - Event guard: `(qglobals["warrior_epic"] == "17" and item_lib.check_turn_in(e.trade, {item1 = 60323}))`
+66. iceclad/"Fazzle Thumpkin", say "Map". Gives "Fazzle's Map of East Wastes" (60324).
     - Player: "map"
       - NPC say: I've had this map for a long time. I can't seem to remember who gave it to me. I may have even made it myself. I do remember that something special can be found by following where the map leads. It's a magical map and will only show you the way in the dead of night, and only in the eastern wastes of this dreadful ice-covered place. You have to hold onto it tightly for it to work, keep that in mind! Good luck, you may need it!
       - Condition: `(e.other:Class() == "Warrior")`
       - Condition: `(e.message:findi("map") and qglobals["warrior_epic"] == "18")`
-8. Spawns "Larnik the Recluse" (npc:116609) via `eastwastes/warr trap#enter`.
-9. Kill "Larnik the Recluse" (NPC 116609) in `eastwastes` and loot "Larnik's Locked Purification Kit" (60325).
-10. **Unverified quest flag:** `warrior_epic` `>=18` required.
-11. draniksscar/"Korbuk Brimblade", hand "Larnik's Locked Purification Kit" (60325). Gives "Larnik's Unlocked Purification Kit" (60326).
+67. Spawns "Larnik the Recluse" (npc:116609) via `eastwastes/warr trap#enter`.
+68. Kill "Larnik the Recluse" (NPC 116609) in `eastwastes` and loot "Larnik's Locked Purification Kit" (60325).
+69. draniksscar/"Korbuk Brimblade", hand "Larnik's Locked Purification Kit" (60325). Gives "Larnik's Unlocked Purification Kit" (60326).
     - event_trade NPC say: Uh oh. I'm guessing dat he didn't want to part with this peacefully? Well, I can't say I'm sorry. He was a jerk to me da last time we talked. I guess I just figured someone else might be able to persuade him to change his mind. I went ahead and broke open da lock for you. You'll be able to make use of da [kit] now.
       - Event guard: `(qglobals["warrior_epic"] ~= nil)`
       - Event guard: `(qglobals["warrior_epic"] >= "18" and item_lib.check_turn_in(e.trade, {item1 = 60325}))`
-12. Loot "Kreljnok's Muddled Rage" (60322) from "Possessed Brute" (NPC 316057) in `provinggrounds`. Drop cache: 90.083% chance per kill.
-13. Combine in "Larnik's Unlocked Purification Kit" (60326): "Kreljnok's Muddled Rage" (60322). Produces "Kreljnok's Focused Rage" (60327). Requires Remove Traps.
-14. **Unverified quest flag:** `warrior_epic` `>=19` required.
-15. draniksscar/"Korbuk Brimblade", hand "Champion's Sword of Eternal Power" (60321) + "Kreljnok's Focused Rage" (60327). Gives "Raging Sword of Eternal Power" (60329).
+70. Combine in "Larnik's Unlocked Purification Kit" (60326): "Kreljnok's Muddled Rage" (60322). Produces "Kreljnok's Focused Rage" (60327). Requires Remove Traps.
+71. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
+72. draniksscar/"Korbuk Brimblade", hand "Globe of Discordant Energy" (47100).
+    - event_trade NPC say: Yes, this is precisely what I felt. Its power is indescribable. We're so close now! I can see what's left and it's a glorious end to a glorious journey. There are just two [last items] you need to take care of.
+      - Event guard: `(qglobals["warrior_epic"] ~= nil)`
+      - Event guard: `(qglobals["warrior_epic"] >= "18" and item_lib.check_turn_in(e.trade, {item1 = 47100}))`
+73. draniksscar/"Korbuk Brimblade", hand "Champion's Sword of Eternal Power" (60321) + "Kreljnok's Focused Rage" (60327). Gives "Raging Sword of Eternal Power" (60329).
     - event_trade NPC say: Well done. Well done, indeed. I knew da moment I saw you dat you were da right person for all of this. Here is da sword, but there's one [last item] dat you need to do.
       - Event guard: `(qglobals["warrior_epic"] ~= nil)`
       - Event guard: `(qglobals["warrior_epic"] >= "19" and item_lib.check_turn_in(e.trade, {item1 = 60321, item2 = 60327}))`
-16. Combine in "Brimblade's Scabbard" (60331): "Kreljnok's Essence" (60330), "Raging Sword of Eternal Power" (60329). Produces "Kreljnok's Sword of Eternal Power" (60332). Requires Remove Traps.
-
-**Unresolved graph dependencies:**
-- Unverified quest flag `warrior_epic` ==18: no acyclic setter
-- Unverified quest flag `warrior_epic` >=18: no acyclic setter
-- Unverified quest flag `warrior_epic` >=19: no acyclic setter
+74. Combine in "Brimblade's Scabbard" (60331): "Kreljnok's Essence" (60330), "Raging Sword of Eternal Power" (60329). Produces "Kreljnok's Sword of Eternal Power" (60332). Requires Remove Traps.
