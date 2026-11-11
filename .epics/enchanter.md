@@ -18,26 +18,30 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
     - event_trade NPC say: A greater lightstone? Thank you very much. Here is a 'Concordance of Research' for you.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 10400}))`
 5. Talk to acrylia/"Npc:154052" to trigger the encounter.
-6. Spawns "needs heading validation" (npc:154147) via `acrylia/wdtrpmn#signal:1`.
-7. Spawns "Ward of death" (npc:154155) via `acrylia/wdtrpmn#signal:1`.
-8. Spawns "Ward of Life -- needs heading validation" (npc:154154) via `acrylia/wdtrpmn#signal:1`.
-9. Spawns "EvInvis" (npc:154095) via `acrylia/wdtrpmn#signal:1`.
-10. Spawns "RaidMan" (npc:154122) via `acrylia/wdtrpmn#signal:1`.
-11. Spawns "grimling" (npc:154129) via `acrylia/evinvis#event_spawn`.
-12. Kill "grimling" (NPC 154129) in `acrylia` and loot "Pearl" (10024).
-13. Loot "Undead Froglok Tongue" (16532) from "BoneCracker" (NPC 44095) in `najena`. Drop cache: 25% chance per kill.
-14. Loot "Griffon Feathers" (16538) from "Callowwing" (NPC 13115) in `northkarana`. Drop cache: 34% chance per kill.
-15. Combine in "Concordance of Research" (17504): "Pearl" (10024), "Piece of Parchment" (13063), "Undead Froglok Tongue" (16532), "Griffon Feathers" (16538). Produces "Quill" (13051). Requires Research.
-16. qey2hh1/"Chrislin Baker", hand "Piece of Parchment" (13063) + "Quill" (13051).
+6. Advance `event_counter` to 1 by receiving signal 1 1 additional time(s). The triggering action(s) must be verified from the encounter.
+7. Spawns "needs heading validation" (npc:154147) via `acrylia/wdtrpmn#signal:1#count:1`.
+8. Advance `event_counter` to 9 by receiving signal 1 8 additional time(s). The triggering action(s) must be verified from the encounter.
+9. Spawns "Ward of death" (npc:154155) via `acrylia/wdtrpmn#signal:1#count:9`.
+10. Advance `event_counter` to 17 by receiving signal 1 8 additional time(s). The triggering action(s) must be verified from the encounter.
+11. Spawns "Ward of Life -- needs heading validation" (npc:154154) via `acrylia/wdtrpmn#signal:1#count:17`.
+12. Advance `event_counter` to 19 by receiving signal 1 2 additional time(s). The triggering action(s) must be verified from the encounter.
+13. Spawns "EvInvis" (npc:154095) via `acrylia/wdtrpmn#signal:1#count:19`.
+14. Spawns "RaidMan" (npc:154122) via `acrylia/wdtrpmn#signal:1#count:19`.
+15. Spawns "grimling" (npc:154129) via `acrylia/evinvis#event_spawn`.
+16. Kill "grimling" (NPC 154129) in `acrylia` and loot "Pearl" (10024).
+17. Loot "Undead Froglok Tongue" (16532) from "BoneCracker" (NPC 44095) in `najena`. Drop cache: 25% chance per kill.
+18. Loot "Griffon Feathers" (16538) from "Callowwing" (NPC 13115) in `northkarana`. Drop cache: 34% chance per kill.
+19. Combine in "Concordance of Research" (17504): "Pearl" (10024), "Piece of Parchment" (13063), "Undead Froglok Tongue" (16532), "Griffon Feathers" (16538). Produces "Quill" (13051). Requires Research.
+20. qey2hh1/"Chrislin Baker", hand "Piece of Parchment" (13063) + "Quill" (13051).
     - event_trade NPC emote: gives you a hug. 'Thank you so much. I did some cleaning after you left and found this behind a barrel. It may have been left behind by the person who took my materials. You can have it.'
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 13063,item2 = 13051}))`
-17. Spawns "Thrackin Griften" (npc:12172) after the hand-in.
-18. Kill "Thrackin Griften" (NPC 12172) in `qey2hh1` and loot "White Paper" (10602).
-19. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
-20. akanon/"Rilgor Plegnog", hand "Shining Metallic Robes" (1360). Gives "Mechanical Pen" (10600).
+21. Spawns "Thrackin Griften" (npc:12172) after the hand-in.
+22. Kill "Thrackin Griften" (NPC 12172) in `qey2hh1` and loot "White Paper" (10602).
+23. Loot "Shining Metallic Robes" (1360) from "Yendar Starpyre" (NPC 56012) in `steamfont`. Drop cache: 100% chance per kill.
+24. akanon/"Rilgor Plegnog", hand "Shining Metallic Robes" (1360). Gives "Mechanical Pen" (10600).
     - event_trade NPC say: Very nice!! It is perfect! Here take this pen. Have fun with it.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 1360}))`
-21. qcat/"Reania Jukle", say "Supply". Gives "Empty Ink Vial" (10626).
+25. qcat/"Reania Jukle", say "Supply". Gives "Empty Ink Vial" (10626).
     - Player: "supply"
       - NPC say: The ink is the blood of a dark scribe. Tempt him and give him this vial. He should cooperate.
         - Reply guard: `($ulevel >= 50)`
@@ -45,95 +49,95 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
         - Reply guard: ``
       - Condition: `($text=~/supply/i)`
       - Linked from "ink of the dark" (explicit prompt).
-22. gukbottom/"A Ghoul Scribe", hand "Empty Ink Vial" (10626). Gives "Ink of the Dark" (10601).
+26. gukbottom/"A Ghoul Scribe", hand "Empty Ink Vial" (10626). Gives "Ink of the Dark" (10601).
     - event_trade NPC say: Crroooaak! Crrroooooaaakk!
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 10626}))`
-23. erudnext/"Stofo Olan", hand "White Paper" (10602) + "Mechanical Pen" (10600) + "Ink of the Dark" (10601). Gives "Copy of Notes" (10603).
+27. erudnext/"Stofo Olan", hand "White Paper" (10602) + "Mechanical Pen" (10600) + "Ink of the Dark" (10601). Gives "Copy of Notes" (10603).
     - event_trade NPC say: Yes, that is what I wanted. Here, take these notes. My teacher will be very interested if he is shown what I have found.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 10600,item2 = 10601,item3 = 10602}))`
-24. burningwood/"A Sarnak Imitator", hand "Copy of Notes" (10603). Gives "Jeb's Seal" (10604).
+28. burningwood/"A Sarnak Imitator", hand "Copy of Notes" (10603). Gives "Jeb's Seal" (10604).
     - event_trade NPC say: I see that you have what I was waiting for. Stofo does do excellent work. It seems that you are to start on a long journey. Take this seal and it will guide you on your next step. Seek out the masters of enchantment. In time we will craft the Serpent for you. When you have collected the four parts of the staff, you must combine them in a bundle and return them to me.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 10603}))`
     - event_trade NPC say: Take this seal. You will need to show my seal to the other masters so that they may grant you the tools to complete your next tasks. When you have collected the four parts of the staff, you must combine them in a bundle for me. The other masters can provide the means to bundle them. Good luck and safe travels.
-25. firiona/"Nadia Starfeast", say "I Need A Sack". Gives "Enchanters Sack" (17861).
+29. firiona/"Nadia Starfeast", say "I Need A Sack". Gives "Enchanters Sack" (17861).
     - Player: "i need a sack"
       - NPC say: Take this sack and combine the items I requested in it. Then return it to me.
       - Condition: `($text=~/i need a sack/i && plugin::check_hasitem($client,10604))`
       - Linked from "hail" (sequence only; unverified).
-26. Loot "Xolion Rod" (10606) from "Vessel Drozlin" (NPC 106008) in `cabeast`. Drop cache: 100% chance per kill.
-27. Loot "Innoruuk's Word" (10607) from "Verina Tomb" (NPC 42112) in `neriakc`. Drop cache: 100% chance per kill.
-28. Loot "Head of a Prince" (10627) from "Prince Selrach Di`zok" (NPC 103080) in `chardok`. Drop cache: 100% chance per kill.
-29. felwitheb/"Joren Nobleheart", hand "Head of a Prince" (10627). Gives "Chalice of Kings" (10608).
+30. Loot "Xolion Rod" (10606) from "Vessel Drozlin" (NPC 106008) in `cabeast`. Drop cache: 100% chance per kill.
+31. Loot "Innoruuk's Word" (10607) from "Verina Tomb" (NPC 42112) in `neriakc`. Drop cache: 100% chance per kill.
+32. Loot "Head of a Prince" (10627) from "Prince Selrach Di`zok" (NPC 103080) in `chardok`. Drop cache: 100% chance per kill.
+33. felwitheb/"Joren Nobleheart", hand "Head of a Prince" (10627). Gives "Chalice of Kings" (10608).
     - event_trade NPC say: Vengeance has been fufilled! However, the King still has a heavy heart. Not until Firiona has been returned can this sadness be lifted. But in appreciation of your efforts, I am honored to present to you the King's Chalice.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 10627}))`
-30. Collect ground spawn "Large Muddy Sandals" (10628) in `oggok`.
-31. oggok/"Bozlum Blossom", hand "Large Muddy Sandals" (10628). Gives "Scribbled Parchment" (10629).
+34. Collect ground spawn "Large Muddy Sandals" (10628) in `oggok`.
+35. oggok/"Bozlum Blossom", hand "Large Muddy Sandals" (10628). Gives "Scribbled Parchment" (10629).
     - event_item NPC emote: writes something down on a piece of parchment.
       - Event guard: `(plugin::check_handin(\%itemcount, 10628 => 1))`
     - event_item NPC say: You go tell dat Brokk dat he owe me big for smushing garden. Make him read dis.
-32. oggok/"Brokk Boxtripper", hand "Scribbled Parchment" (10629). Gives "Gift to Bozlum" (10630).
+36. oggok/"Brokk Boxtripper", hand "Scribbled Parchment" (10629). Gives "Gift to Bozlum" (10630).
     - event_item NPC say: Brokk sorry, me no smush Bozlum's perty garden on purpose. Me felt bad and me too shy to go tell Boz Brokk sorry. Umm....go give her these perty flowers. Dem smell good and maybe make Bozlum feel better.
       - Event guard: `(plugin::check_handin(\%itemcount, 10629 => 1))`
-33. oggok/"Bozlum Blossom", hand "Gift to Bozlum" (10630). Gives "Snow Blossoms" (10609).
+37. oggok/"Bozlum Blossom", hand "Gift to Bozlum" (10630). Gives "Snow Blossoms" (10609).
     - event_item NPC say: 'Oh, dat silly Brokk. He sent me too many of these perty flowers. Me not know where put them all. Here, you take some cause you help Bozlum. Me like you. Flowers make you smell perty, too.
       - Event guard: `(plugin::check_handin(\%itemcount, 10630 => 1))`
-34. Combine in "Enchanters Sack" (17861): "Xolion Rod" (10606), "Innoruuk's Word" (10607), "Chalice of Kings" (10608), "Snow Blossoms" (10609). Produces "Sack For Modani" (10635). Requires Remove Traps.
-35. overthere/"Modani Qu-Loni", hand "Sack For Modani" (10635). Gives "1st Piece of Staff" (10610).
+38. Combine in "Enchanters Sack" (17861): "Xolion Rod" (10606), "Innoruuk's Word" (10607), "Chalice of Kings" (10608), "Snow Blossoms" (10609). Produces "Sack For Modani" (10635). Requires Remove Traps.
+39. overthere/"Modani Qu-Loni", hand "Sack For Modani" (10635). Gives "1st Piece of Staff" (10610).
     - event_item NPC say: Excellent, you have done well. Here is the first piece of the staff. Now you must go seek out the second master; he will clear the path for you.
       - Event guard: `(plugin::check_handin(\%itemcount, 10635 => 1))`
-36. Loot "Spoon" (10614) from "Cazel" (NPC 393012) in `southro`. Drop cache: 81.25% chance per kill.
-37. Collect ground spawn "The One Key" (10615) in `overthere`.
-38. Collect ground spawn "Lost Scroll" (10616) in `dalnir`.
-39. Collect ground spawn "Charm and Sacrifice" (10617) in `airplane`.
-40. Combine in "Enchanters Sack" (17861): "Spoon" (10614), "The One Key" (10615), "Lost Scroll" (10616), "Charm and Sacrifice" (10617). Produces "Sack For Mizzle" (10636). Requires Remove Traps.
-41. akanon/"Clockwork Viix", hand "Sack For Mizzle" (10636). Gives "2nd Piece of Staff" (10611).
+40. Loot "Spoon" (10614) from "Cazel" (NPC 393012) in `southro`. Drop cache: 81.25% chance per kill.
+41. Collect ground spawn "The One Key" (10615) in `overthere`.
+42. Collect ground spawn "Lost Scroll" (10616) in `dalnir`.
+43. Collect ground spawn "Charm and Sacrifice" (10617) in `airplane`.
+44. Combine in "Enchanters Sack" (17861): "Spoon" (10614), "The One Key" (10615), "Lost Scroll" (10616), "Charm and Sacrifice" (10617). Produces "Sack For Mizzle" (10636). Requires Remove Traps.
+45. akanon/"Clockwork Viix", hand "Sack For Mizzle" (10636). Gives "2nd Piece of Staff" (10611).
     - event_trade NPC say: Oh excellent, you have done what is required. Here take this part, and seek the third master, you are well on your way.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 10636}))`
-42. firiona/"Nadia Starfeast", say "Diamond". Gives "Dull Diamond" (10631).
+46. firiona/"Nadia Starfeast", say "Diamond". Gives "Dull Diamond" (10631).
     - Player: "diamond"
       - NPC say: Here is the diamond that I have prepared for you. Its only purpose is to trap the essence of a particular book worm. If you should fail in your first attempt, do not worry. I will provide you with another.
       - Condition: `($text=~/diamond/i)`
       - Linked from "gems" (explicit prompt).
-43. kaesora/"Spectral Librarian", hand "Dull Diamond" (10631). Gives "Enchanted Diamond" (10618).
+47. kaesora/"Spectral Librarian", hand "Dull Diamond" (10631). Gives "Enchanted Diamond" (10618).
     - event_item NPC say: You have no idea what it is like to be trapped in this place. Take your precious little stone and leave this place.
       - Event guard: `(plugin::check_handin(\%itemcount, 10631 => 1))`
-44. firiona/"Nadia Starfeast", say "Sapphire". Gives "Dull Sapphire" (10632).
+48. firiona/"Nadia Starfeast", say "Sapphire". Gives "Dull Sapphire" (10632).
     - Player: "sapphire"
       - NPC say: Here is the sapphire that I have prepared for you. Take it and give it to the one referred to as the Golden Faerie.
       - Condition: `($text=~/sapphire/i)`
       - Linked from "gems" (explicit prompt).
-45. skyfire/"Felia Goldenwing", hand "Dull Sapphire" (10632). Gives "Enchanted Sapphire" (10619).
-46. firiona/"Nadia Starfeast", say "Ruby". Gives "Dull Ruby" (10633).
+49. skyfire/"Felia Goldenwing", hand "Dull Sapphire" (10632). Gives "Enchanted Sapphire" (10619).
+50. firiona/"Nadia Starfeast", say "Ruby". Gives "Dull Ruby" (10633).
     - Player: "ruby"
       - NPC say: Blood red is the ruby that I have given you. The city that you must travel to has no sun, but still a day and night. And at night, the mist could suffocate one. Tis the fate of poor Jaxion.
       - Condition: `($text=~/ruby/i)`
       - Linked from "gems" (explicit prompt).
-47. citymist/"Wraith Of Jaxion", hand "Dull Ruby" (10633). Gives "Enchanted Ruby" (10620).
+51. citymist/"Wraith Of Jaxion", hand "Dull Ruby" (10633). Gives "Enchanted Ruby" (10620).
     - event_trade NPC say: Hisss...my spirit is forever trapped here. Leave before your fate is as mine.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 10633}))`
-48. firiona/"Nadia Starfeast", say "Emerald". Gives "Dull Emerald" (10634).
+52. firiona/"Nadia Starfeast", say "Emerald". Gives "Dull Emerald" (10634).
     - Player: "emerald"
       - NPC emote: jumps.
       - NPC say: Eeekk... a scorpion. I thought they rid this area of these critters. Those things give me the creepers. Take this emerald and be on your way.
       - Condition: `($text=~/emerald/i)`
       - Linked from "gems" (explicit prompt).
-49. overthere/"Impaler Tzilug", hand "Dull Emerald" (10634). Gives "Enchanted Emerald" (10621).
+53. overthere/"Impaler Tzilug", hand "Dull Emerald" (10634). Gives "Enchanted Emerald" (10621).
     - event_item NPC say: Your bidding has been done, now leave this land and never return.
       - Event guard: `(plugin::check_handin(\%itemcount, 10634 => 1))`
-50. Combine in "Enchanters Sack" (17861): "Enchanted Diamond" (10618), "Enchanted Sapphire" (10619), "Enchanted Ruby" (10620), "Enchanted Emerald" (10621). Produces "Sack For Nadia" (10637). Requires Remove Traps.
-51. firiona/"Nadia Starfeast", hand "Sack For Nadia" (10637). Gives "3rd Piece of Staff" (10612).
+54. Combine in "Enchanters Sack" (17861): "Enchanted Diamond" (10618), "Enchanted Sapphire" (10619), "Enchanted Ruby" (10620), "Enchanted Emerald" (10621). Produces "Sack For Nadia" (10637). Requires Remove Traps.
+55. firiona/"Nadia Starfeast", hand "Sack For Nadia" (10637). Gives "3rd Piece of Staff" (10612).
     - event_item NPC say: Lovely! You are indeed quite the charmer. Here, take the third part, and seek out the last master. The time draws near.
       - Event guard: `(plugin::check_handin(\%itemcount, 10637 => 1))`
-52. Loot "Head of the Serpent" (10622) from "Wraith of a Shissar" (NPC 72001) in `fearplane`. Drop cache: 100% chance per kill.
-53. Loot "Essence of a Ghost" (10623) from "the Ghost of Kindle" (NPC 39080) in `hole`. Drop cache: 100% chance per kill.
-54. Loot "Essence of a Vampire" (10624) from "a forsaken revenant" (NPC 76005) in `hateplane`. Drop cache: 10.5658% chance per kill.
-55. Loot "Sands of the Mystics" (10625) from "The Tangrin" (NPC 78070) in `fieldofbone`. Drop cache: 100% chance per kill.
-56. Combine in "Enchanters Sack" (17861): "Head of the Serpent" (10622), "Essence of a Ghost" (10623), "Essence of a Vampire" (10624), "Sands of the Mystics" (10625). Produces "Sack For Polzin" (10638). Requires Remove Traps.
-57. hole/"Polzin Mrid", hand "Sack For Polzin" (10638). Gives "4th Piece of Staff" (10613).
+56. Loot "Head of the Serpent" (10622) from "Wraith of a Shissar" (NPC 72001) in `fearplane`. Drop cache: 100% chance per kill.
+57. Loot "Essence of a Ghost" (10623) from "the Ghost of Kindle" (NPC 39080) in `hole`. Drop cache: 100% chance per kill.
+58. Loot "Essence of a Vampire" (10624) from "a forsaken revenant" (NPC 76005) in `hateplane`. Drop cache: 10.5658% chance per kill.
+59. Loot "Sands of the Mystics" (10625) from "The Tangrin" (NPC 78070) in `fieldofbone`. Drop cache: 100% chance per kill.
+60. Combine in "Enchanters Sack" (17861): "Head of the Serpent" (10622), "Essence of a Ghost" (10623), "Essence of a Vampire" (10624), "Sands of the Mystics" (10625). Produces "Sack For Polzin" (10638). Requires Remove Traps.
+61. hole/"Polzin Mrid", hand "Sack For Polzin" (10638). Gives "4th Piece of Staff" (10613).
     - event_item NPC say: You have done well, take this last piece and return them to Jeb. He will be able to complete the final crafting.
       - Event guard: `(plugin::check_handin(\%itemcount, 10638 => 1))`
-58. Combine in "Enchanters Sack" (17861): "1st Piece of Staff" (10610), "2nd Piece of Staff" (10611), "3rd Piece of Staff" (10612), "4th Piece of Staff" (10613). Produces "Bundle of Staves" (10639). Requires Remove Traps.
-59. burningwood/"A Sarnak Imitator", hand "Bundle of Staves" (10639). Gives "Staff of the Serpent" (10650).
+62. Combine in "Enchanters Sack" (17861): "1st Piece of Staff" (10610), "2nd Piece of Staff" (10611), "3rd Piece of Staff" (10612), "4th Piece of Staff" (10613). Produces "Bundle of Staves" (10639). Requires Remove Traps.
+63. burningwood/"A Sarnak Imitator", hand "Bundle of Staves" (10639). Gives "Staff of the Serpent" (10650).
     - event_trade NPC say: The path you trod was long and hard. Now you are worthy to bear the Serpent. Use it well.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 10639}))`
 

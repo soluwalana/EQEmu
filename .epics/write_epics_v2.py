@@ -706,6 +706,9 @@ class Planner:
         """Apply quest-state mutations only after the action has executed."""
         for r in self.g.group_rows(row):
             if r.get("rel") == "sets" and r.get("flag") and r.get("value") is not None:
+                if not all(self._satisfies_flag(str(need["flag"]), str(need["at"]))
+                           for need in r.get("post_write_needs", ())):
+                    continue
                 self.flag_values[str(r["flag"])] = str(r["value"])
 
     def giver(self, row: dict, iid: int) -> None:
@@ -759,6 +762,11 @@ class Planner:
         self.action_sets(row)
 
     def flag(self, name: str, at: str) -> None:
+        # Encounter guards may encode a numeric comparison as a bare value.
+        # A requirement at="1" is equality, not an unknown predicate.
+        at = at.strip()
+        if re.fullmatch(r"-?\d+", at):
+            at = "==" + at
         if self._satisfies_flag(name, at):
             return
         if at == "unset":
@@ -792,6 +800,8 @@ class Planner:
                 # Guard and setter edges sometimes have no `group` attribute.
                 # Resolve the specific branch that contains this mutation.
                 try:
+                    for requirement in setter.get("post_write_needs", ()):
+                        self.flag(str(requirement["flag"]), str(requirement["at"]))
                     self.action_requirements(setter)
                     if "#hand:" in src:
                         self.hand_event(src, resolve=False)
@@ -944,7 +954,18 @@ class Planner:
                     self.errors.append(f"No acyclic signal predecessor for `{node}`")
             for edge in sorted(incoming, key=lambda r: str(r.get("from", ""))):
                 parent = str(edge.get("from") or "")
-                if edge.get("action") == "defeat_wave":
+                if edge.get("action") == "signal_count":
+                    self.event(parent)
+                    counter = str(edge["counter"])
+                    count = int(edge["count"])
+                    additional = int(edge["additional_signals"])
+                    self.put(
+                        f"signal-count:{node}",
+                        f"Advance `{counter}` to {count} by receiving signal "
+                        f"{edge['signal']} {additional} additional time(s). "
+                        "The triggering action(s) must be verified from the encounter.",
+                    )
+                elif edge.get("action") == "defeat_wave":
                     self.event(parent)
                     wave = int(edge["wave"])
                     count = int(edge["required_kills"])

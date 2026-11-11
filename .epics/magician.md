@@ -71,7 +71,7 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 11569, item2 = 28040, item3 = 28041}))`
 43. Loot "Crown of Elemental Mastery" (20764) from "a windrider drake" (NPC 71002) in `airplane`. Drop cache: 10.8633% chance per kill.
 44. Loot "Elemental Binder" (28043) from "an elemental monstrosity" (NPC 39004) in `hole`. Drop cache: 4.9583% chance per kill.
-45. Spawns "Quillmane" (npc:14139) via `southkarana/a lioness#event_death_complete`.
+45. Spawns "Quillmane" (npc:14139) via `southkarana/#a lioness#event_death_complete`.
 46. Kill "Quillmane" (NPC 14139) in `southkarana` and loot "Pegasus Feather Cloak" (2463).
 47. airplane/"Kihun Solstin", hand "Crown of Elemental Mastery" (20764) + "Elemental Binder" (28043) + "Pegasus Feather Cloak" (2463). Gives "Element of Wind" (28033).
     - event_trade NPC say: If you have obtained the other, lesser Elements, go speak with The Master of Elements, who is now waiting for you. I wish you luck. If you have not completed all the tasks set for you, let me know, and I shall let you see the Master.

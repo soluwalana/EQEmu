@@ -71,45 +71,49 @@ Revisit those instructions if another copy of a consumed item is needed.
       - NPC say: Ah, the pouch. This is the first step. The Circle has to be upset having this taken right out from under them. That speaks well of the person who did the taking. Hanns must be even more furious now. I think I might be able to trust you. We could make a deal. I have a blade I won't use anymore, and you have those fine looking daggers Vilnius gave you. Of course, you would have to do something for me first. Let me tell you my story, then you decide.
         - Reply guard: ``
       - Condition: `(e.message:findi("hail"))`
-3. **Unverified quest flag:** `Fatestealer_gal` `==1` required.
-4. **Unverified quest flag:** `Fatestealer_mar` `==1` required.
-5. **Unverified quest flag:** `Fatestealer_lyt` `==1` required.
-6. Loot "Signed Agreement" (10239) from "Seana Marsinger" (NPC 54102) in `gfaydark`. Drop cache: 100% chance per kill.
-7. Loot "Signed Agreement" (52416) from "Stefan Marsinger" (NPC 54101) in `gfaydark`. Drop cache: 100% chance per kill.
-8. overthere/"Inem R`Ker", hand "Signed Agreement" (10239) + "Signed Agreement" (52416).
+3. Loot "Signed Agreement" (10243) from "Galdorin Visigothe" (NPC 279002) in `abysmal`. Drop cache: 100% chance per kill.
+4. overthere/"Inem R`Ker", hand "Signed Agreement" (10243).
+    - event_trade NPC say: Well done, . Galdorin had it coming, so don't feel too guilty about your part in this.
+      - Event guard: `(qglobals["Fatestealer"] == "1" and item_lib.check_turn_in(e.trade, {item1 = 10243}))`
+    - event_trade NPC say: That should do the trick. I think our contact will speak with you now. His name is Lirpin, and he is a paladin that works for the Wayfarer's Brotherhood. I hear he led an expedition into Kuua recently, but his current location is anyone's guess. Good Luck.
+      - Event guard: `(qglobals["Fatestealer_gal"] == "1" and qglobals["Fatestealer_mar"] == "1" and qglobals["Fatestealer_lyt"] == "1")`
+5. Loot "Signed Agreement" (10239) from "Seana Marsinger" (NPC 54102) in `gfaydark`. Drop cache: 100% chance per kill.
+6. Loot "Signed Agreement" (52416) from "Stefan Marsinger" (NPC 54101) in `gfaydark`. Drop cache: 100% chance per kill.
+7. overthere/"Inem R`Ker", hand "Signed Agreement" (10239) + "Signed Agreement" (52416).
     - event_trade NPC say: Those Marsingers won't be speaking ill about us again anytime soon.
       - Event guard: `(qglobals["Fatestealer"] == "1" and item_lib.check_turn_in(e.trade, {item1 = 10239,item2 = 52416}))`
     - event_trade NPC say: That should do the trick. I think our contact will speak with you now. His name is Lirpin, and he is a paladin that works for the Wayfarer's Brotherhood. I hear he led an expedition into Kuua recently, but his current location is anyone's guess. Good Luck.
       - Event guard: `(qglobals["Fatestealer_gal"] == "1" and qglobals["Fatestealer_mar"] == "1" and qglobals["Fatestealer_lyt"] == "1")`
-9. Loot "Stack of Pages" (52335) from "a Teir`Dal guardian".
-10. steamfont/"Yendar Starpyre", hand "Stack of Pages" (52335).
+8. Loot "Signed Agreement" (10246) from "Lythe Songbird" (NPC 382253) in `freportw`. Drop cache: 100% chance per kill.
+9. overthere/"Inem R`Ker", hand "Signed Agreement" (10246).
+    - event_trade NPC say: Excellent, Lythe has been silenced.
+      - Event guard: `(qglobals["Fatestealer"] == "1" and item_lib.check_turn_in(e.trade, {item1 = 10246}))`
+    - event_trade NPC say: That should do the trick. I think our contact will speak with you now. His name is Lirpin, and he is a paladin that works for the Wayfarer's Brotherhood. I hear he led an expedition into Kuua recently, but his current location is anyone's guess. Good Luck.
+      - Event guard: `(qglobals["Fatestealer_gal"] == "1" and qglobals["Fatestealer_mar"] == "1" and qglobals["Fatestealer_lyt"] == "1")`
+10. Loot "Stack of Pages" (52335) from "a Teir`Dal guardian".
+11. steamfont/"Yendar Starpyre", hand "Stack of Pages" (52335).
     - event_item NPC say: Splendid! The missing pages I had been looking for! Allow me a moment to sift through them.' He scans the texts line by line, flipping quickly from one sheet of parchment to another. Withdrawing a quill he quickly makes notes in the margins, then snatches your journal and copies the notes there. 'Yes, it is exactly as I had predicted. These texts detail the process by which an object can be imbued with a tortured soul. Unfortunately the focus is mostly on weaponry, which doesn't interest me in the slightest. Ah well. Appreciate the effort, $name. Perhaps it will come in handy for you. Farewell and good luck.
       - Event guard: `(plugin::check_handin(\%itemcount, 52335 => 1))`
     - event_item NPC message: You have learned how to imbue a blade with dark energy.
-11. Spawns "a furious magma guardian" (npc:278123) via `soldungc/ #signal:100`.
-12. Kill "a furious magma guardian" (NPC 278123) in `soldungc` and loot "Crystallized Shard of Doomfire" (21339).
-13. Loot "Foul Doomfire Brimstone" (21342) from "a pool of living lava" (NPC 278043) in `soldungc`. Drop cache: 15.9687% chance per kill.
-14. Loot "Igneous Rock of Doomfire" (21340) from "Typhoeus" (NPC 278069) in `soldungc`. Drop cache: 35% chance per kill.
-15. Loot "Pile of Doomfire Ash" (21341) from "a Taklasinai marauder" (NPC 278075) in `soldungc`. Drop cache: 35% chance per kill.
-16. soldungc/"The Firewatcher", hand "Crystallized Shard of Doomfire" (21339) + "Foul Doomfire Brimstone" (21342) + "Igneous Rock of Doomfire" (21340) + "Pile of Doomfire Ash" (21341).
+12. Spawns "a furious magma guardian" (npc:278123) via `soldungc/ #signal:100`.
+13. Kill "a furious magma guardian" (NPC 278123) in `soldungc` and loot "Crystallized Shard of Doomfire" (21339).
+14. Loot "Foul Doomfire Brimstone" (21342) from "a pool of living lava" (NPC 278043) in `soldungc`. Drop cache: 15.9687% chance per kill.
+15. Loot "Igneous Rock of Doomfire" (21340) from "Typhoeus" (NPC 278069) in `soldungc`. Drop cache: 35% chance per kill.
+16. Loot "Pile of Doomfire Ash" (21341) from "a Taklasinai marauder" (NPC 278075) in `soldungc`. Drop cache: 35% chance per kill.
+17. soldungc/"The Firewatcher", hand "Crystallized Shard of Doomfire" (21339) + "Foul Doomfire Brimstone" (21342) + "Igneous Rock of Doomfire" (21340) + "Pile of Doomfire Ash" (21341).
     - event_trade NPC say: This should do the trick, I think! The gate is...Yes it's opening. Ha ha! The Gatekeeper comes!
       - Event guard: `(qglobals["Fatestealer_culth"] == "1" and not el:IsMobSpawnedByNpcTypeID(278005))`
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 21339,item2=21342,item3=21340,item4=21341}))`
-17. Spawns "Culthor the Gatekeeper" (npc:278005) after the hand-in.
-18. Kill "Culthor the Gatekeeper" (NPC 278005) in `soldungc` and loot "Smoldering Embers of Solusek" (52346).
-19. nedaria/"Smith Dandi", hand "Smoldering Embers of Solusek" (52346).
+18. Spawns "Culthor the Gatekeeper" (npc:278005) after the hand-in.
+19. Kill "Culthor the Gatekeeper" (NPC 278005) in `soldungc` and loot "Smoldering Embers of Solusek" (52346).
+20. nedaria/"Smith Dandi", hand "Smoldering Embers of Solusek" (52346).
     - event_trade NPC emote: gawks in amazement.  By the Gods, where did you come by these embers? These are positively unnatural, and they bare the mark of Solusek himself!' She sprinkles a handful of the smoldering lumps into the forge and -KABOOM- a blast of incredible heat knocks you off your feet. Immediately, the metal of the forge swells and becomes white hot. 'Yep, this will do the trick,' she gloats cheerfully. The blazing heat doesnt seem to bother her.
       - Event guard: `(qglobals["Fatestealer_bard"] == "1" and item_lib.check_turn_in(e.trade, {item1 = 52346}) )`
     - event_trade NPC message: You have fueled Smith Dandi's furnace with Solusek's Embers.
-20. nedaria/"Lirprin, Head Of Affairs", hand "Soulstone of Lanys" (52337). Gives "Fatestealer" (52347).
+21. nedaria/"Lirprin, Head Of Affairs", hand "Soulstone of Lanys" (52337). Gives "Fatestealer" (52347).
     - event_trade NPC emote: discusses the process with his assistant. She listens, nodding, then begins work immediately. She takes measurements of your hands and fashions the grip so that it's a perfect fit, then turns to the hot coals of the forge. She selects a brick of fine metal. Her back to you, Dandi hammers away at the metal, sparks flying in all directions. When the job is completed she hands you the blade, still warm. 'Best work I've ever done. I hope it serves you well. Unfortunately the metal I have to work with isn't the recommended 'Velixite'. Based on the description I used the closest thing we have. Also, without an example to work from I had to improvise on a few details that weren't fully described in your documentation.
       - Event guard: `( qglobals["Fatestealer_bard"] == "1" and qglobals["Fatestealer_page"] == "1" and qglobals["Fatestealer_forge"] == "1" and item_lib.check_turn_in(e.trade, {item1 = 52337}) )`
     - event_trade NPC message: You have gained 5 ability points!
-
-**Unresolved graph dependencies:**
-- Unverified quest flag `Fatestealer_gal` ==1: no acyclic setter
-- Unverified quest flag `Fatestealer_mar` ==1: no acyclic setter
-- Unverified quest flag `Fatestealer_lyt` ==1: no acyclic setter
 
 ## Epic 2.0
 
@@ -164,8 +168,3 @@ Revisit those instructions if another copy of a consumed item is needed.
 15. nedaria/"Lirprin, Head Of Affairs", hand "Globe of Discordant Energy" (47100) + "Strongbox Half Full of Velixite" (52342) + "Wren's Fatestealer" (21346) + "Fatestealer" (52347). Gives "Nightshade, Blade of Entropy" (52348).
     - event_trade NPC message: You have gained 10 ability points!
       - Event guard: `( qglobals["Fatestealer"] == "3" and item_lib.check_turn_in(e.trade, {item1 = 47100,item2 = 52342,item3 = 21346,item4 = 52347}) )`
-
-**Unresolved graph dependencies:**
-- Unverified quest flag `Fatestealer_gal` ==1: no acyclic setter
-- Unverified quest flag `Fatestealer_mar` ==1: no acyclic setter
-- Unverified quest flag `Fatestealer_lyt` ==1: no acyclic setter

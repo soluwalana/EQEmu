@@ -35,13 +35,9 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 2. **Unverified quest flag:** `shaman_epic` `==1` required.
 3. shadeweaver/"Wunshi Kashra", say "Hand:Platinum:1000". Gives "Thatched Medicine Bag" (57704).
 4. Loot "Bleak Fungus" (57620) from "Shuddering Fungus" (NPC 157118) in `fungusgrove`. Drop cache: 71.4286% chance per kill.
-5. Spawns "Ancient Megalodon" (npc:51160) via `lakerathe/kimm mcshannel#up to it`.
+5. Spawns "Ancient Megalodon" (npc:51160) via `lakerathe/#kimm mcshannel#up to it`.
 6. Kill "Ancient Megalodon" (NPC 51160) in `lakerathe` and loot "Lustrous Seaweed" (52926).
-7. lakerathe/"Kimm Mcshannel", hand "Lustrous Seaweed" (52926). Gives "Twine-Wrapped Lustrous Seaweed" (57600).
-    - event_trade NPC say: Well done! And ye got it off that great creature? Aye, it really exists. Guess that mad feller ain't so mad, now, is he? Ha! Well, we have a better chance at saving the spirit. Take this seaweed back. I've wrapped it for you. Now, get moving!
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 52926}))`
-    - event_item NPC say: Well done! And ye got it off that great creature? Aye, it really exists. Guess that mad feller ain't so mad, now, is he? Ha! Well, we have a better chance at saving the spirit. Take this seaweed back. I've wrapped it for you. Now, get moving!
-      - Event guard: `(plugin::check_handin(\%itemcount, 52926 => 1))`
+7. lakerathe/, hand "Lustrous Seaweed" (52926). Gives "Twine-Wrapped Lustrous Seaweed" (57600).
 8. Combine in "Thatched Medicine Bag" (57704): "Bleak Fungus" (57620), "Twine-Wrapped Lustrous Seaweed" (57600). Produces "Shadowed Pulp" (57550). Requires Alchemy.
 9. Collect ground spawn "Twinkling Shrub" (57080) in `twilight`.
 10. twilight/"Tikl Huk", hand "Twinkling Shrub" (57080). Gives "Tied Twinkling Shrubs" (52920).
@@ -88,27 +84,14 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
       - Condition: `(e.other:Class() == "Shaman")`
       - Condition: `(e.message:findi("business with Wunshi is finished") and qglobals["shaman_epic"] == "4")`
       - Linked from "stolen" (explicit prompt).
-26. lakerathe/"Kimm Mcshannel", hand "Gemmed Bangle of Enlightenment" (57088).
-    - event_trade NPC say: Aye, so ye have returned. We have much to do here, me friend. The first thing we must do is [break down] this bangle into its gems and metal. This here bangle was very carefully made. First, the gems were blessed by the spirits, then the metal itself as it was forged. Aye, we need to carefully separate them. The two gems were blessed by the spirits of Wisdom and Patience, and the metal was strengthened by the Spirit of Might. We will use these to call them back to us.
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 57088}))`
-    - event_item NPC say: Aye, so ye have returned. We have much to do here, me friend. The first thing we must do is [break down] this bangle into its gems and metal. This here bangle was very carefully made. First, the gems were blessed by the spirits, then the metal itself as it was forged. Aye, we need to carefully separate them. The two gems were blessed by the spirits of Wisdom and Patience, and the metal was strengthened by the Spirit of Might. We will use these to call them back to us.
-      - Event guard: `(plugin::check_handin(\%itemcount, 57088 => 1))`
-27. lakerathe/"Kimm Mcshannel", say "Break Down". Gives "Heyokah Medicine Bag" (52922).
-    - Player: "break down"
-      - NPC say: As most things, the process is not a simple one and we'll need some ingredients for a special potion. You must retrieve four items, which should not prove difficult for a shaman of your stature. They are very specific and I can tell you more about the [skin], the [powder], the [tooth], and the [goo]. When you have all of these things, use my medicine bag to create this potion and return it to me.
-      - Condition: `(e.message:findi("break down") and qglobals["shaman_epic"] == "5")`
+26. lakerathe/, hand "Gemmed Bangle of Enlightenment" (57088).
+27. lakerathe/, say "Kimm Mcshannel". Gives "Heyokah Medicine Bag" (52922).
 28. Loot "Revenant Tooth" (57500) from "a sun revenant" (NPC 171002) in `thegrey`. Drop cache: 16.7105% chance per kill.
 29. Loot "Perfect Marked Ukun Skin" (57701) from "Fang" (NPC 302063) in `draniksscar`. Drop cache: 100% chance per kill.
 30. Loot "Corrosive Goo" (57100) from "a pulsating bile" (NPC 105113) in `charasis`. Drop cache: 47.0748% chance per kill.
 31. Loot "Corruption Powder" (57520) from "Elite Corrupted Knight" (NPC 200014) in `codecay`. Drop cache: 79.8369% chance per kill.
 32. Combine in "Heyokah Medicine Bag" (52922): "Revenant Tooth" (57500), "Perfect Marked Ukun Skin" (57701), "Corrosive Goo" (57100), "Corruption Powder" (57520). Produces "Shaman's Precious Diffusing Agent" (57560). Requires Alchemy.
-33. lakerathe/"Kimm Mcshannel", hand "Shaman's Precious Diffusing Agent" (57560). Gives "Runed Purse of the McShannels" (57614).
-    - event_trade NPC emote: nods at you and reaches into her pocket and takes out the gemmed bangle and puts it on the ground. She takes the vial and slowly lets a few drops fall on the platinum. It seems to coil and bend and pulls itself into a small globe and the gems lazily fall onto the ground.
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 57560}))`
-    - event_trade NPC say: Perfect! Now, you must return the gems and platinum to the Spirit of Enlightenment. I've put it in a purse to keep them safe. You truly are beginning to surpass all of our expectations, .
-    - event_item NPC emote: nods at you and reaches into her pocket and takes out the gemmed bangle and puts it on the ground. She takes the vial and slowly lets a few drops fall on the platinum. It seems to coil and bend and pulls itself into a small globe and the gems lazily fall onto the ground.
-      - Event guard: `(plugin::check_handin(\%itemcount, 57560 => 1))`
-    - event_item NPC say: Perfect! Now, you must return the gems and platinum to the Spirit of Enlightenment. I've put it in a purse to keep them safe. You truly are beginning to surpass all of our expectations, $name.
+33. lakerathe/, hand "Shaman's Precious Diffusing Agent" (57560). Gives "Runed Purse of the McShannels" (57614).
 34. freeportwest/"Elder Spirit Of Enlightenment", hand "Runed Purse of the McShannels" (57614).
     - event_trade NPC say: I will have to pass these along as soon as my messenger gets here. I'm sure you understand that as each spirit loses strength, each of our abilities to keep a form in this tangible world becomes very difficult. We must find a way to sustain a physical presence here or the Ruchu will be in jeopardy. We will ask you to [take part] in the ceremony where our strength may fail us.
       - Event guard: `(qglobals["shaman_epic"] == "5" and item_lib.check_turn_in(e.trade, {item1 = 57614}))`

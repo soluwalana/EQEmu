@@ -35,17 +35,8 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
       - Condition: `(qglobals["Llara"] ~= nil)`
       - Condition: `(e.message:findi("ruathey"))`
       - Linked from "see" (explicit prompt).
-7. lavastorm/"Ruathey", hand "Note to Ruathey" (2417).
-    - event_trade NPC say: I see that you've spoken to Llara. She too came to me looking for Amstaf. Though she wasn't able to find her friend, she was able to recover his [sword].
-      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 2417}))`
-    - event_item NPC say: I see that you've spoken to Llara. She too came to me looking for Amstaf. Though she wasn't able to find her friend, she was able to recover his [sword].
-      - Event guard: `(plugin::check_handin(\%itemcount, 2417 => 1))`
-8. lavastorm/"Ruathey", say "Bag". Gives "Nobleman's Bag" (17878).
-    - Player: "bag"
-      - NPC say: Take this bag and gather the items I've mentioned. I've been told that the Ghoul's Heart can be found in the estate of the undead, while the scroll can be found in the Keep not far from the Karanas. One of the others are rumored to be found near the dwarven city among the goblins. While the last should be found in the caverns of Najena.
-      - Condition: `(qglobals["Ruathey"] ~= nil)`
-      - Condition: `(e.message:findi("bag"))`
-      - Linked from "sword" (explicit prompt).
+7. lavastorm/, hand "Note to Ruathey" (2417).
+8. lavastorm/, say "Ruathey". Gives "Nobleman's Bag" (17878).
 9. Loot "Ghoul's Heart" (2410) from "a ghoul" (NPC 63011) in `unrest`. Drop cache: 25% chance per kill.
 10. Loot "Amstaf's Scroll" (2411) from "a goblin thief" (NPC 6150) in `highkeep`. Drop cache: 35% chance per kill.
 11. Loot "Blade of Nobility" (2412) from "a crazed goblin" (NPC 68162) in `butcher`. Drop cache: 10.5658% chance per kill.

@@ -3244,6 +3244,30 @@ def _link_event_causality(
         if footer:
             register(zone, int(footer.group(1)), (npc_id, body))
 
+    # Resolve same-named #Boss.lua / Boss.lua scripts by the *exact* NPC tag
+    # in spawn/signal comments. Normalized names alone lose the # distinction
+    # and can dispatch a boss death into its controller's signal callback.
+    def exact_name(name: str) -> str:
+        return re.sub(r"[_\s]+", " ", name).strip().lower()
+
+    counts: dict[tuple[str, str], int] = {}
+    references: dict[tuple[str, str], set[int]] = {}
+    for zone, actor, body in scripts:
+        key = (zone, normalize(actor.rsplit("/", 1)[-1]))
+        counts[key] = counts.get(key, 0) + 1
+        for ref in re.finditer(
+            r"(?:eq\.(?:spawn2|signal)|quest::signalwith)\s*\(\s*(\d+)"
+            r"[^\n]*?(?:--|#)\s*NPC:\s*([^\r\n]+)", body, re.I,
+        ):
+            references.setdefault((zone, exact_name(ref[2])), set()).add(int(ref[1]))
+    for zone, actor, body in scripts:
+        name = actor.rsplit("/", 1)[-1]
+        if counts.get((zone, normalize(name)), 0) <= 1:
+            continue
+        matches = references.get((zone, exact_name(name)), set())
+        if len(matches) == 1:
+            receivers[zone, next(iter(matches))] = (actor, body)
+
     # Signal comments also identify targets, including scripts without a
     # catalog entry. They are hints only; the target must be a real script.
     for zone, _npc_id, body in scripts:
@@ -3396,6 +3420,154 @@ def _link_event_causality(
             )
 
 
+def _fix_post_write_flag_guards(graph: QuestGraph, scripts: list[tuple[str, str, str]]) -> None:
+    """Exclude flag reads occurring after a setter inside the same hand-in.
+
+    A check for all three Fatestealer objectives follows the individual
+    set_global calls. That check gates a *subsequent* reward, not the hand-in
+    which has already set its flag. The coarse quest graph previously assigned
+    those nested checks to the entire parent hand-in, making every setter
+    depend on itself and the other two setters.
+    """
+    post_write: dict[str, set[str]] = {}
+    guarded_setters: dict[str, dict[str, list[dict]]] = {}
+    for _zone, actor, source in scripts:
+        if "check_turn_in" not in source or "set_global" not in source:
+            continue
+        for branch in _branch_index(source):
+            header = source[branch[0]:branch[1]]
+            if "check_turn_in" not in header:
+                continue
+            items = [int(v) for v in _LUA_ITEM.findall(header)]
+            if not items:
+                continue
+            group = f"{actor}#hand:{'+'.join(map(str, sorted(items)))}"
+            body_start, body_end = branch[2], branch[3]
+            for setter in re.finditer(r'eq\.set_global\s*\(\s*["\']([^"\']+)',
+                                      source[body_start:body_end]):
+                offset = body_start + setter.start()
+                before = source[branch[0]:offset]
+                after = source[offset + len(setter.group(0)):body_end]
+                # Only nested if/elseif predicates after the mutation qualify.
+                for later in _branch_index(source):
+                    if not (offset < later[0] < body_end and later[3] <= body_end):
+                        continue
+                    condition = source[later[0]:later[1]]
+                    conditions = re.findall(
+                        r'qglobals\s*\[\s*["\']([^"\']+)["\']\s*\]'
+                        r'\s*==\s*["\']?(\d+)', condition)
+                    for flag, value in conditions:
+                        if not re.search(r'qglobals\s*\[\s*["\']' + re.escape(flag)
+                                         + r'["\']', before):
+                            post_write.setdefault(group, set()).add(flag)
+                    # A later set_global under this condition *does* require
+                    # these flags. Preserve its predicate independently of the
+                    # parent hand-in's earlier, unconditional mutations.
+                    if conditions:
+                        for late_set in re.finditer(
+                                r'eq\.set_global\s*\(\s*["\']([^"\']+)',
+                                source[later[2]:later[3]]):
+                            guarded_setters.setdefault(group, {})[late_set[1]] = [
+                                {"flag": flag, "at": "==" + value}
+                                for flag, value in conditions]
+    if not post_write:
+        return
+    graph.edges = [edge for edge in graph.edges if not (
+        edge.get("rel") == "needs"
+        and str(edge.get("from") or "") in post_write
+        and edge.get("flag") in post_write[str(edge.get("from"))]
+    )]
+    for edge in graph.edges:
+        group = str(edge.get("from") or "")
+        if edge.get("rel") == "sets" and group in guarded_setters:
+            if needs := guarded_setters[group].get(str(edge.get("flag") or "")):
+                edge["post_write_needs"] = needs
+
+
+def _link_signal_counter_phases(graph: QuestGraph, scripts: list[tuple[str, str, str]]) -> None:
+    """Create bounded counter phases for repeated Lua EVENT_SIGNAL callbacks.
+
+    Only match a counter reset to zero, incremented exactly once in its signal
+    callback, with literal equality thresholds. This intentionally does not
+    infer a kill count: other scripts can deliver the same signal.
+    """
+    for zone, actor, source in scripts:
+        if not actor or not source.lower().count("function event_signal"):
+            continue
+        scope = _event_functions(source, "event_signal")
+        if not scope:
+            continue
+        lo, hi = scope
+        signal_body = source[lo:hi]
+        increments = re.findall(r'\b([A-Za-z_]\w*)\s*=\s*\1\s*\+\s*1\b', signal_body)
+        if len(increments) != 1:
+            continue
+        counter = increments[0]
+        if not re.search(r'\b' + re.escape(counter) + r'\s*=\s*0\b', source[:lo]):
+            continue
+        # Count increments only within the enclosing signal-number branch.
+        signal_branches = [b for b in _branch_index(source)
+                           if lo <= b[0] and b[3] <= hi
+                           and _SIGNAL_CONDITION.findall(source[b[0]:b[1]])
+                           and re.search(r'\b' + re.escape(counter)
+                                         + r'\s*=\s*' + re.escape(counter)
+                                         + r'\s*\+\s*1\b', source[b[2]:b[3]])]
+        if len(signal_branches) != 1:
+            continue
+        selected = signal_branches[0]
+        signal_numbers = _SIGNAL_CONDITION.findall(source[selected[0]:selected[1]])
+        if len(signal_numbers) != 1:
+            continue
+        signal = int(signal_numbers[0])
+        signal_body = source[selected[2]:selected[3]]
+        # This recognizes literal comparison blocks without interpreting Lua.
+        pattern = (r'(?m)^\s*(?:if|elseif)\s*\(?\s*' + re.escape(counter)
+                   + r'\s*==\s*(\d+)\s*\)?\s*then\s*$')
+        matches = list(re.finditer(pattern, signal_body))
+        if len(matches) < 2:
+            continue
+        stages: list[tuple[int, list[int]]] = []
+        for i, match in enumerate(matches):
+            limit = matches[i + 1].start() if i + 1 < len(matches) else len(signal_body)
+            # Stop before the signal's own else/end branch if present.
+            fragment = signal_body[match.end():limit]
+            if i == len(matches) - 1:
+                fragment = re.split(r'(?m)^\s*(?:elseif|else|end)\b', fragment, 1)[0]
+            stages.append((int(match[1]), [npc for npc, _ in _spawn_calls(fragment)]))
+        stages.sort(key=lambda row: row[0])
+        if stages[0][0] != 1 or any(b[0] <= a[0] for a, b in zip(stages, stages[1:])):
+            continue
+        signal_node = f"{actor}#signal:{signal}"
+        if not any(e.get("rel") == "triggers" and e.get("to") == signal_node
+                   for e in graph.edges):
+            continue
+        first_stage: dict[int, int] = {}
+        previous = 0
+        for count, mobs in stages:
+            stage = f"{signal_node}#count:{count}"
+            source_node = signal_node if previous == 0 else f"{signal_node}#count:{previous}"
+            graph.edges.append({
+                "kind": "edge", "rel": "triggers", "from": source_node, "to": stage,
+                "action": "signal_count", "signal": signal, "counter": counter,
+                "count": count, "additional_signals": count - previous,
+                "zone": zone,
+            })
+            for npc in mobs:
+                first_stage.setdefault(npc, count)
+            previous = count
+        # Preserve the existing NPC callback chain, but require the earliest
+        # stage that can actually spawn the NPC. Repeated IDs remain possible
+        # in later phases; they are not invented as separate unique actors.
+        for edge in graph.edges:
+            if (edge.get("from") == signal_node
+                and edge.get("rel") in ("spawns", "loots", "triggers")
+                and edge.get("npc") in first_stage):
+                stage = f"{signal_node}#count:{first_stage[int(edge['npc'])]}"
+                edge["from"] = stage
+                if edge.get("group") == signal_node:
+                    edge["group"] = stage
+
+
 def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
     """Walk every zone folder under projecteqquests. Plugins are not zones."""
     graph = QuestGraph()
@@ -3411,20 +3583,23 @@ def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
     ):
         zone = folder.name.lower()
         paths = _quest_scripts(folder)
-        # Several distinct numbered scripts can share a catalog display name.
-        # Name-keyed lifecycle nodes collapse their deaths into a self-cycle.
+        # Both numeric scripts and #Named / Named pairs can share a display
+        # name while representing *different* NPC types and event lifecycles.
         name_counts: dict[str, int] = {}
         for script in paths:
-            if script.stem.isdigit():
-                name = npc_name(script.name, catalog).lower()
-                name_counts[name] = name_counts.get(name, 0) + 1
+            name = npc_name(script.name, catalog).lower()
+            name_counts[name] = name_counts.get(name, 0) + 1
         duplicate_names = {name for name, count in name_counts.items() if count > 1}
         for path in paths:
             text = path.read_text(encoding="utf-8", errors="replace")
             named_actor = f"{zone}/{npc_name(path.name, catalog).lower()}"
-            actor = (f"{zone}/npc:{path.stem}" if path.stem.isdigit()
-                     and npc_name(path.name, catalog).lower() in duplicate_names
-                     else named_actor)
+            name = npc_name(path.name, catalog).lower()
+            if name in duplicate_names and path.stem.isdigit():
+                actor = f"{zone}/npc:{path.stem}"
+            elif name in duplicate_names and path.stem.startswith("#"):
+                actor = f"{zone}/#{name}"
+            else:
+                actor = named_actor
             scripts.append((zone, actor, text))
             if path.suffix.lower() == ".lua":
                 lua_by_zone.setdefault(zone, {})[path.relative_to(folder).as_posix()] = text
@@ -3453,7 +3628,9 @@ def build_graph(root: str, catalog: Catalog | None = None) -> QuestGraph:
                     if zone_id not in known:
                         known.append(zone_id)
     _link_event_causality(graph, scripts, catalog)
-    
+    _fix_post_write_flag_guards(graph, scripts)
+    _link_signal_counter_phases(graph, scripts)
+
     # Encounter callback effects are not inherently reachable player actions.
     # Replace speculative loot producers with proven paths through actual SAY,
     # death, spawn, and loot callbacks. Retain unrelated ordinary graph edges.

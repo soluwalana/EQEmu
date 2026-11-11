@@ -17,7 +17,8 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 3. cauldron/"Treanik Ireblade", hand "Treanik's Tarnished Axe" (60200). Gives "Bone Trinket" (60201).
     - event_trade NPC say: My axe! Me so happy! You are big force to be rekoned with, . Me wasn't sure... but now, look at you, like spiroc fluffing feathers. McArik be so pleased! Take dis amulet me made. I know not much, but me swore to McArik that anyone who passes dis test would get a trinket from me.
       - Event guard: `item_lib.check_turn_in(e.trade, {item1 = 60200})`
-4. fieldofbone/"Mardic Crimsonsteel", say "Hail". Gives "Image Essence" (60196).
+4. fieldofbone/, say "Berserker-S Image#Event_Death_Complete". Sets `bersolo` to `1`.
+5. fieldofbone/"Mardic Crimsonsteel", say "Hail". Gives "Image Essence" (60196).
     - Player: "hail"
       - NPC say: Hail, , Run along and give McArik the items he requested.
         - Reply guard: `(qglobals["bersolo"] == "1" and e.other:GetLevel() >= 45)`
@@ -26,31 +27,31 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
       - NPC say: I wasn't meant for that path. I'm here to guide folk like yourself and help you gain control of the insane beast that lurks inside you. You must be prepared to fight one like yourself. All ye need are your wits, brawn, and skill, nought else. When you are ready give me the note McArik gave you and I'll send you to the training grounds.
         - Reply guard: ``
       - Condition: `(e.message:findi("hail"))`
-5. Spawns "An Impervious Bloodbeast" (npc:85225) via `lakeofillomen/lingering axefall#defeat`.
-6. Kill "An Impervious Bloodbeast" (NPC 85225) in `lakeofillomen` and loot "Bloodbeast Tooth" (60192).
-7. lakeofillomen/"Keras Mcarik", say "Great Stride". Gives "Medal of Blood" (60190).
+6. Spawns "An Impervious Bloodbeast" (npc:85225) via `lakeofillomen/lingering axefall#defeat`.
+7. Kill "An Impervious Bloodbeast" (NPC 85225) in `lakeofillomen` and loot "Bloodbeast Tooth" (60192).
+8. lakeofillomen/"Keras Mcarik", say "Great Stride". Gives "Medal of Blood" (60190).
     - Player: "great stride"
       - NPC say: Ye do understand there is no turning back? I hope so. This is a journey -- and sometimes a long one -- depending on what ye've leared so far. Yer skills and wisdom in battle will be tested. Go talk to an old, fallen friend of mine, Lingering Axefall. We call him that because he reguses to let his spirit rest. He failed his task and remains bound here to lead others into the trial he lost. Be wary, though. He is elusive.
       - NPC say: The foe he stood against and lost to still wishes to extinguish his spirit. Take this axe and give it to him so he will know that ye are ready for the test and that I sent ye. Also, take this medal with you. It will help me keep track of your progress. Best of luck, friend.
       - Condition: ``
       - Condition: `($text=~/great stride/i && $class eq "Berserker" && $ulevel > 45 && $dragon == undef && $imp == undef)`
       - Linked from "master the fires" (explicit prompt).
-8. lakeofillomen/"Keras Mcarik", hand "Bloodbeast Tooth" (60192) + "Medal of Blood" (60190). Gives "Medal of Mirages" (60194).
+9. lakeofillomen/"Keras Mcarik", hand "Bloodbeast Tooth" (60192) + "Medal of Blood" (60190). Gives "Medal of Mirages" (60194).
     - event_item NPC say: Aye, ye have done well, $name. However, that was a simple task and I'm sure ye had much help with it. Now ye must go alone. Ye may want to take some bandages with ye and be sure yer skill with them is top-notch. Ye'll likely need 'em. Here, take some o'mine. Ye may find 'em to be most useful. Do ye believe ye're [ready for this challenge]
       - Event guard: `(plugin::check_handin(\%itemcount, 60192 => 1, 60190 => 1))`
-9. lakeofillomen/"Keras Mcarik", hand "Image Essence" (60196) + "Medal of Mirages" (60194). Gives "Medal of Strategy" (60198).
+10. lakeofillomen/"Keras Mcarik", hand "Image Essence" (60196) + "Medal of Mirages" (60194). Gives "Medal of Strategy" (60198).
     - event_item NPC say: Well, I am indeed hopeful and pleased about yer progress, $name. Ye should be proud that you have now attained the Medal of Strategy. Well done, indeed! It seems that ye can best yer equal now. The next test of yer masters of yer abilities is much more difficult, however, and may require ye to ask yer friends for some 'elp... but it must be the right kind of 'elp. This test will determine how well ye [strategize in battle]. Ye must gather trustworthy friends and they must be willing to work under yer command.
       - Event guard: `(plugin::check_handin(\%itemcount, 60196 => 1, 60194 => 1))`
-10. lakeofillomen/"Keras Mcarik", hand "Bone Trinket" (60201) + "Medal of Strategy" (60198). Gives "Medal of Fervid Rage" (60202).
+11. lakeofillomen/"Keras Mcarik", hand "Bone Trinket" (60201) + "Medal of Strategy" (60198). Gives "Medal of Fervid Rage" (60202).
     - event_item NPC say: Ye are well on the way, me friend. I knew the moment I saw ye that ye were going to get through this. I'm just not convinced that yer as powerful as even ye may think. So, are ye [ready] for the next trial ye must face?
       - Event guard: `(plugin::check_handin(\%itemcount, 60201 => 1, 60198 => 1))`
-11. Kill fearplane/"A Scareling".
-12. Spawns "Ireblind Imp" (npc:72069) via `fearplane/enraged imp#event_death_complete`.
-13. Kill "Ireblind Imp" (NPC 72069) in `fearplane` and loot "Burning Essence of Rage" (60203).
-14. lakeofillomen/"Keras Mcarik", hand "Medal of Fervid Rage" (60202) + "Burning Essence of Rage" (60203). Gives "Medal of Hunting" (60204).
+12. Kill fearplane/"A Scareling".
+13. Spawns "Ireblind Imp" (npc:72069) via `fearplane/enraged imp#event_death_complete`.
+14. Kill "Ireblind Imp" (NPC 72069) in `fearplane` and loot "Burning Essence of Rage" (60203).
+15. lakeofillomen/"Keras Mcarik", hand "Medal of Fervid Rage" (60202) + "Burning Essence of Rage" (60203). Gives "Medal of Hunting" (60204).
     - event_item NPC say: I am indeed impressed by yer control and ability to best such a horrific beast, my friend. Ye are certainly well on yer way to mastering yer rage and taking advantage of the abilities ye were born with. Here is your Medal of Hunting. Ye are nearly there -- nearly complete with yer trials, but there are a few more things ye [must do] for me. 
       - Event guard: `(plugin::check_handin(\%itemcount, 60202 => 1, 60203 => 1))`
-15. lakeofillomen/"Keras Mcarik", say "Do". Gives "McArik Reagent Satchel" (60205).
+16. lakeofillomen/"Keras Mcarik", say "Do". Gives "McArik Reagent Satchel" (60205).
     - Player: "do"
       - NPC say: For my mirage to remain part of my trials, I need some very specific reagents. There is a sickly gorilla that carries a rotting organ which I am in need of. Also, I need a paw of a very special and dangerous kobold. Lastly, bring me the poison sac of a dangerous spider. A potion that allows us to create a gate from one place to another is also required. If ye believe ye can do this for me, tell me so, and I will give ye a bag to hold them in. When ye have all of the ingredients, combine them in the bag I've given ye, and bring it back to me. Good luck in your hunt!
       - Condition: ``
@@ -65,23 +66,23 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
       - Linked from "face one" (explicit prompt).
       - Linked from "next challenge" (explicit prompt).
       - Linked from "next test" (explicit prompt).
-16. Loot "Decaying Liver" (60206) from "Disease-Ridden Gorilla" (NPC 94130) in `emeraldjungle`. Drop cache: 100% chance per kill.
-17. Loot "Gnashing Kobold Paw" (60207) from "Gnashing Kobold" (NPC 100166) in `stonebrunt`. Drop cache: 80% chance per kill.
-18. Loot "Scent Gland" (60208) from "Reeking Skunk" (NPC 38047) in `tox`. Drop cache: 100% chance per kill.
-19. Buy "Medicine Bag" (17901) from "Rendallen Ironforge" (NPC 2071) in `qeynos2`. Base price: 1,000 copper.
-20. Buy "Handful of Prism Grains" (95922) from "Murak" (NPC 49085) in `oggok`. Base price: 800 copper.
-21. Loot "Heliotrope" (14242) from "a Sarnak Herb Collector" (NPC 103012) in `chardok`. Drop cache: 4.3204% chance per kill.
-22. Buy "Yebamante" (16510) from "Guri" (NPC 30098) in `everfrost`. Base price: 25,000 copper.
-23. Buy "Blade Leaf" (22143) from "Guri" (NPC 30098) in `everfrost`. Base price: 2,500 copper.
-24. Buy "Simple Potion Vial" (95843) from "Guri" (NPC 30098) in `everfrost`. Base price: 750 copper.
-25. Combine in "Medicine Bag" (17901): "Handful of Prism Grains" (95922), "Heliotrope" (14242), "Yebamante" (16510), "Blade Leaf" (22143), "Simple Potion Vial" (95843). Produces "Philter of Major Translocation" (96467). Requires Alchemy.
-26. Combine in "McArik Reagent Satchel" (60205): "Decaying Liver" (60206), "Gnashing Kobold Paw" (60207), "Scent Gland" (60208), "Philter of Major Translocation" (96467). Produces "Bag of Image Essence Dust" (60209). Requires Remove Traps.
-27. lakeofillomen/"Keras Mcarik", hand "Bag of Image Essence Dust" (60209) + "Medal of Hunting" (60204). Gives "Medal of Mastery" (60210).
+17. Loot "Decaying Liver" (60206) from "Disease-Ridden Gorilla" (NPC 94130) in `emeraldjungle`. Drop cache: 100% chance per kill.
+18. Loot "Gnashing Kobold Paw" (60207) from "Gnashing Kobold" (NPC 100166) in `stonebrunt`. Drop cache: 80% chance per kill.
+19. Loot "Scent Gland" (60208) from "Reeking Skunk" (NPC 38047) in `tox`. Drop cache: 100% chance per kill.
+20. Buy "Medicine Bag" (17901) from "Rendallen Ironforge" (NPC 2071) in `qeynos2`. Base price: 1,000 copper.
+21. Buy "Handful of Prism Grains" (95922) from "Murak" (NPC 49085) in `oggok`. Base price: 800 copper.
+22. Loot "Heliotrope" (14242) from "a Sarnak Herb Collector" (NPC 103012) in `chardok`. Drop cache: 4.3204% chance per kill.
+23. Buy "Yebamante" (16510) from "Guri" (NPC 30098) in `everfrost`. Base price: 25,000 copper.
+24. Buy "Blade Leaf" (22143) from "Guri" (NPC 30098) in `everfrost`. Base price: 2,500 copper.
+25. Buy "Simple Potion Vial" (95843) from "Guri" (NPC 30098) in `everfrost`. Base price: 750 copper.
+26. Combine in "Medicine Bag" (17901): "Handful of Prism Grains" (95922), "Heliotrope" (14242), "Yebamante" (16510), "Blade Leaf" (22143), "Simple Potion Vial" (95843). Produces "Philter of Major Translocation" (96467). Requires Alchemy.
+27. Combine in "McArik Reagent Satchel" (60205): "Decaying Liver" (60206), "Gnashing Kobold Paw" (60207), "Scent Gland" (60208), "Philter of Major Translocation" (96467). Produces "Bag of Image Essence Dust" (60209). Requires Remove Traps.
+28. lakeofillomen/"Keras Mcarik", hand "Bag of Image Essence Dust" (60209) + "Medal of Hunting" (60204). Gives "Medal of Mastery" (60210).
     - event_item NPC say: Wonderful. Ye have earned yer Medal of Mastery, but ye are not done yet. There is one final test ye must complete before I can recognize ye as a true berserker. Ye must prove that in the face of great adversity, ye can keep yer wits about ye. This final test, naturally, is the most difficult, but I would not present this [next challenge] to ye if I thought ye could not finish yer journey.
       - Event guard: `(plugin::check_handin(\%itemcount, 60209 => 1, 60204 => 1))`
-28. Spawns "Raving Goblinmaster - KOS" (npc:79126) via `warslikswood/npc:79127#event_waypoint_arrive`.
-29. Kill "Raving Goblinmaster - KOS" (NPC 79126) in `warslikswood` and loot "Maniac's Garbled Tome" (60211).
-30. lakeofillomen/"Keras Mcarik", hand "Medal of Mastery" (60210) + "Maniac's Garbled Tome" (60211). Gives "Kerasian Axe of Ire" (68299).
+29. Spawns "Raving Goblinmaster - KOS" (npc:79126) via `warslikswood/npc:79127#event_waypoint_arrive`.
+30. Kill "Raving Goblinmaster - KOS" (NPC 79126) in `warslikswood` and loot "Maniac's Garbled Tome" (60211).
+31. lakeofillomen/"Keras Mcarik", hand "Medal of Mastery" (60210) + "Maniac's Garbled Tome" (60211). Gives "Kerasian Axe of Ire" (68299).
     - event_item NPC say: I am so impressed and proud of ye, $name. This had been a long journey, hasn't it? That said, this will be the most important adventure of yer life, for now you are a true berserker and a master of all of yer skills. As I promised, the completion of these trials would not only bring ye the honor of being recognized as a true berserker, but also a weapon only a true berserker can wield -- one that I fashioned myself. Use this weapon in yer travels and may it serve ye well in battle. Be well,$name, the Berserker.
       - Event guard: `(plugin::check_handin(\%itemcount, 60210 => 1, 60211 => 1))`
 

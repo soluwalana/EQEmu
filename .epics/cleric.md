@@ -163,7 +163,6 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 **Unresolved graph dependencies:**
 - Unverified quest flag `cleric_epic` ==1: no acyclic setter
-- Event cycle at `lfaydark/taskmaster mirot#signal:1`
 
 ## Epic 2.0
 
@@ -188,24 +187,35 @@ Revisit those instructions if another copy of a consumed item is needed.
       - NPC say: Greetings, well met, salutations, and good day! I hear you are trying to change the resonance on a shield from Discord. Well I believe that is something with which I can assist you. You will need to have a temper made from some of the native creatures of Discord, you'll need the plasma from one of the giants of Discord, one of those flying squids, and the plasma from one of those fiery women. Brewing the temper should prove no trouble for you. Once you have the temper combine it with the shield in the forge with a flask of water, and it should become attuned to you. Once you are finished return to me, so I may evaluate your work.
         - Reply guard: ``
       - Condition: `qglobals["cleric_epic"] ~= nil and qglobals["cleric_epic"] >= "5" and e.message:findi("hail")`
-3. **Unverified quest flag:** `cleric20_mpg_drop` `1` required.
-4. Kill "Shell of the Master" (NPC 304013) in `chambersa` and loot "Journal of the Prime Disciple" (56016).
-5. Loot "Torn Journal Page" (56012) from "a lightning warrior staticfist" (NPC 316007) in `provinggrounds`. Drop cache: 5.9853% chance per kill.
-6. Loot "Ripped Journal Page" (56011) from "Girplan Scavenger" (NPC 316031) in `provinggrounds`. Drop cache: 100% chance per kill.
-7. Combine in "Journal of the Prime Disciple" (56016): "Torn Journal Page" (56012), "Ripped Journal Page" (56011). Produces "Ethereal Disciple's Journal" (56013). Requires Remove Traps.
-8. timorous/"Omat Vastsea", hand "Ethereal Disciple's Journal" (56013).
+3. Loot "Top Section of an Engraved Signet" (9956) from "an ikaav miragenist" (NPC 301015) in `bloodfields`. Drop cache: 6.083% chance per kill.
+4. Loot "Bottom Section of an Engraved Signet" (10399) from "an ikaav castigator" (NPC 301003) in `bloodfields`. Drop cache: 4% chance per kill.
+5. Loot "Center Section of an Engraved Signet" (10235) from "an ikaav deathbeckoner" (NPC 301008) in `bloodfields`. Drop cache: 5.126% chance per kill.
+6. bloodfields/"Cryssa", hand "Top Section of an Engraved Signet" (9956) + "Bottom Section of an Engraved Signet" (10399) + "Center Section of an Engraved Signet" (10235).
+    - event_trade NPC say: Interesting, this appears to be a charm of some sort. If I am correct you can use this to not only locate the camp, but to break whatever illusion they are using to hide it.
+      - Event guard: `(qglobals["cleric20"] ~= nil and qglobals["cleric20"] >= "2")`
+      - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 9956, item2 = 10399, item3 = 10235}))`
+7. Loot "Dark Red Robe" (12433) from "default" in `wallofslaughter`.
+8. timorous/"Omat Vastsea", hand "Dark Red Robe" (12433). Gives "Robe of Plasmatic Priesthood" (12509).
+    - event_item NPC say: What? You found this on a Disciple in Discord?  This is a robe of the Plasmatic Priesthood, without question.  Bring this to Cecilia quickly, hopefully she will be able to divine their intentions.
+      - Event guard: `($client->GetGlobal("cleric20") >= 2 && plugin::check_handin(\%itemcount, 12433 => 1))`
+9. skyfire/"Warder Cecilia", hand "Robe of Plasmatic Priesthood" (12509).
+    - event_item NPC say: Yes, Omat told me you were coming.  Let me see what I can divine from the robe.'  She holds the robe to her temple and closes her eyes.  You notice a brief glow from behind her eyelids before her eyes shoot open. 'This is truly terrible news.  The Plasmatic Priests are still fighting for the destruction of Norrath.  Fennin Ro's voice is silent to them now.  The remainder of their power faded with the Pantheon's interest in mortal affairs.  In their mad pursuit of power, they have allied themselves with Mata Muram.  They plan on trading their home-world for the promise of power.  Even now their leader is within the Muramite Trials.  Trying to earn a position of rank within the Legion.  Once he completes the trials we may lose our opportunity.  I am afraid you will have to visit the Labyrinth's trials and stop him before he is able to complete them.  Best of luck to you.'
+      - Event guard: `($client->GetGlobal("cleric20") >= 2 && plugin::check_handin(\%itemcount, 12509 => 1))`
+10. Kill "Shell of the Master" (NPC 304013) in `chambersa` and loot "Journal of the Prime Disciple" (56016).
+11. Loot "Torn Journal Page" (56012) from "a lightning warrior staticfist" (NPC 316007) in `provinggrounds`. Drop cache: 5.9853% chance per kill.
+12. Loot "Ripped Journal Page" (56011) from "Girplan Scavenger" (NPC 316031) in `provinggrounds`. Drop cache: 100% chance per kill.
+13. Combine in "Journal of the Prime Disciple" (56016): "Torn Journal Page" (56012), "Ripped Journal Page" (56011). Produces "Ethereal Disciple's Journal" (56013). Requires Remove Traps.
+14. timorous/"Omat Vastsea", hand "Ethereal Disciple's Journal" (56013).
     - event_item NPC emote: grows pale as he reads the journal, 'It is just as a feared. I can't believe he is on his way here.
       - Event guard: `($client->GetGlobal("cleric20") >= 2 && plugin::check_handin(\%itemcount, 56013 => 1))`
     - event_item NPC message: The walls of the cove tremble as the Prime Disciple appears before Omat. 'Well this is an unexpected surprise, I came looking for Omat, however revenge on you, $name, will be that much sweeter.
-9. Spawns "Gefaari Drokaz" (npc:96368) after the hand-in.
-10. Kill "Gefaari Drokaz" (NPC 96368) in `timorous` and loot "Soulshard of Zordak" (56014).
-11. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
-12. dranik/"Natvil", hand "Soulshard of Zordak" (56014) + "Globe of Discordant Energy" (47100) + "Harmony of the Soul" (9955). Gives "Aegis of Superior Divinity" (20076).
+15. Spawns "Gefaari Drokaz" (npc:96368) after the hand-in.
+16. Kill "Gefaari Drokaz" (NPC 96368) in `timorous` and loot "Soulshard of Zordak" (56014).
+17. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
+18. dranik/"Natvil", hand "Soulshard of Zordak" (56014) + "Globe of Discordant Energy" (47100) + "Harmony of the Soul" (9955). Gives "Aegis of Superior Divinity" (20076).
     - event_trade NPC say: Amazing! You have found everything.' He then pulls deftly complete the shield. 'Quickly, take this back. It will bind itself to you. You have done well.
       - Event guard: `item_lib.check_turn_in(e.trade, {item1 = 56014, item2 = 47100, item3 = 9955})`
     - event_trade NPC message: You have gained 10 ability points!
 
 **Unresolved graph dependencies:**
 - Unverified quest flag `cleric_epic` ==1: no acyclic setter
-- Event cycle at `lfaydark/taskmaster mirot#signal:1`
-- Unverified quest flag `cleric20_mpg_drop` 1: no acyclic setter

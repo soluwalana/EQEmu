@@ -138,13 +138,8 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 73. timorous/"Lheao", hand "Robe of the Whistling Fists" (12970) + "Danl's Reference" (1682). Gives "Celestial Fists" (1683).
     - event_item NPC say: Astonishing! To think that you are a master of an order thought to be lost in our world. Forgive my earlier doubts. I believe you are indeed worthy to be given the responsibility of watching over this book. Take great care that it does not fall into the wrong hands as it would be truly disastrous.
       - Event guard: `(plugin::check_handin(\%itemcount, 12970 => 1, 1682 => 1))`
-74. trakanon/"Kaiaren", hand "Celestial Fists" (1683). Gives "Book of Celestial Fists" (1689).
-    - event_item NPC say: Now, then. Where did you find this, monk? This is not just some light reading to be borrowed from the town library. Who gave this to you?
-      - Event guard: `((plugin::check_handin(\%itemcount, 1683 => 1)) && ($ulevel>=46) && ($class=="Monk"))`
-    - event_item NPC emote: eyes open wide and he attacks you!
-75. trakanon/"Kaiaren", hand "Demon Fangs" (1688) + "Book of Celestial Fists" (1689). Gives "Celestial Fists" (10652).
-    - event_item NPC emote: bows his head and breathes a long sigh as if relived of a great weight. He then looks up at you and says, 'I honestly did not believe you could have defeated Vorash. Even though he sought nothing but war and bloodshed, it is a life nonetheless and we must mourn him. I will sew these fangs into magical fist wraps and they shall be yours. Remember Xenevorash. A purpose can be found for every situation and individual. To achieve perfection is to perceive this truth.'
-      - Event guard: `((plugin::check_handin(\%itemcount, 1688 => 1, 1689 => 1)) && ($ulevel>=46) && ($class=="Monk"))`
+74. trakanon/, hand "Celestial Fists" (1683). Gives "Book of Celestial Fists" (1689).
+75. trakanon/, hand "Demon Fangs" (1688) + "Book of Celestial Fists" (1689). Gives "Celestial Fists" (10652).
 
 ## Epic 1.5
 
