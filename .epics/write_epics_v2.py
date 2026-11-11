@@ -322,10 +322,10 @@ class AcquisitionCatalog:
 
 
 _GUARD_TOKEN = re.compile(
-    r'''\s*(?:e\.other:HasItem\(\s*(?P<item>\d+)\s*\)'''
-    r'''|qglobals\[\s*["'](?P<flag>[A-Za-z0-9_]+)["']\s*\]\s*'''
-    r'''(?P<comparison>==|>=|<=|>|<)\s*["']?(?P<value>-?\d+)["']?'''
-    r'''|(?P<operator>\band\b|\bor\b)|(?P<paren>[()]))''',
+    r"""\s*(?:e\.other:HasItem\(\s*(?P<item>\d+)\s*\)"""
+    r"""|qglobals\[\s*["'](?P<flag>[A-Za-z0-9_]+)["']\s*\]\s*"""
+    r"""(?P<comparison>==|>=|<=|>|<)\s*["']?(?P<value>-?\d+)["']?"""
+    r"""|(?P<operator>\band\b|\bor\b)|(?P<paren>[()]))""",
     re.I,
 )
 
@@ -344,49 +344,56 @@ def _guard_options(guard: str) -> list[list[tuple[str, str, str]]] | None:
                 break
             return None
         cursor = match.end()
-        if match.group('item'):
-            tokens.append(('item', match.group('item'), ''))
-        elif match.group('flag'):
-            tokens.append(('flag', match.group('flag'), match.group('comparison') + match.group('value')))
+        if match.group("item"):
+            tokens.append(("item", match.group("item"), ""))
+        elif match.group("flag"):
+            tokens.append(
+                (
+                    "flag",
+                    match.group("flag"),
+                    match.group("comparison") + match.group("value"),
+                )
+            )
         else:
-            tokens.append((match.group('operator') or match.group('paren')).lower())
+            tokens.append((match.group("operator") or match.group("paren")).lower())
 
     pos = 0
+
     def atom() -> list[list[tuple[str, str, str]]]:
         nonlocal pos
         if pos >= len(tokens):
-            raise ValueError('incomplete expression')
+            raise ValueError("incomplete expression")
         token = tokens[pos]
         pos += 1
-        if token == '(':
+        if token == "(":
             result = disjunction()
-            if pos >= len(tokens) or tokens[pos] != ')':
-                raise ValueError('unbalanced parentheses')
+            if pos >= len(tokens) or tokens[pos] != ")":
+                raise ValueError("unbalanced parentheses")
             pos += 1
             return result
         if isinstance(token, tuple):
             return [[token]]
-        raise ValueError('unexpected token')
+        raise ValueError("unexpected token")
 
     def conjunction() -> list[list[tuple[str, str, str]]]:
         nonlocal pos
         clauses = atom()
-        while pos < len(tokens) and tokens[pos] == 'and':
+        while pos < len(tokens) and tokens[pos] == "and":
             pos += 1
             right = atom()
             clauses = [a + b for a in clauses for b in right]
             if len(clauses) > 32:
-                raise ValueError('too many alternatives')
+                raise ValueError("too many alternatives")
         return clauses
 
     def disjunction() -> list[list[tuple[str, str, str]]]:
         nonlocal pos
         clauses = conjunction()
-        while pos < len(tokens) and tokens[pos] == 'or':
+        while pos < len(tokens) and tokens[pos] == "or":
             pos += 1
             clauses.extend(conjunction())
             if len(clauses) > 32:
-                raise ValueError('too many alternatives')
+                raise ValueError("too many alternatives")
         return clauses
 
     try:
@@ -921,26 +928,26 @@ class Planner:
         This retains the old planner's behavior for ordinary acquisitions.
         Each failed alternative is rolled back before the next is tried.
         """
-        rows = [r for r in self.g.group_rows(setter) if r.get('rel') == 'needs']
+        rows = [r for r in self.g.group_rows(setter) if r.get("rel") == "needs"]
         alternatives: dict[str, list[list[tuple[str, str, str]]]] = {}
         covered: set[tuple[str, str, str]] = set()
 
         def requirement(row: dict) -> tuple[str, str, str] | None:
-            iid = item_id(row.get('to', ''))
+            iid = item_id(row.get("to", ""))
             if iid is not None:
-                return ('item', str(iid), '')
-            if row.get('flag'):
-                at = str(row.get('at') or 'set')
-                if re.fullmatch(r'-?\d+', at):
-                    at = '==' + at
-                return ('flag', str(row['flag']), at)
+                return ("item", str(iid), "")
+            if row.get("flag"):
+                at = str(row.get("at") or "set")
+                if re.fullmatch(r"-?\d+", at):
+                    at = "==" + at
+                return ("flag", str(row["flag"]), at)
             return None
 
         # Explicit OR edges already emitted for simpler Lua comparisons.
         for row in rows:
-            if row.get('op') != 'or':
+            if row.get("op") != "or":
                 continue
-            key = str(row.get('or_group') or row.get('group') or row.get('from'))
+            key = str(row.get("or_group") or row.get("group") or row.get("from"))
             term = requirement(row)
             if term is not None:
                 alternatives.setdefault(key, []).append([term])
@@ -951,10 +958,10 @@ class Planner:
         # The speech guard is source evidence; accept it only if every atom
         # matches a flattened need on this *specific setter* branch.
         available = {term for row in rows if (term := requirement(row)) is not None}
-        for speech in self.g.by_from.get(str(setter.get('from') or ''), ()):
-            if speech.get('rel') != 'speaks':
+        for speech in self.g.by_from.get(str(setter.get("from") or ""), ()):
+            if speech.get("rel") != "speaks":
                 continue
-            for guard in speech.get('guards') or ():
+            for guard in speech.get("guards") or ():
                 options = _guard_options(str(guard))
                 if options is None or not any(len(choice) > 1 for choice in options):
                     continue
@@ -967,12 +974,14 @@ class Planner:
 
         def satisfy(term: tuple[str, str, str]) -> None:
             kind, name, at = term
-            if kind == 'item':
+            if kind == "item":
                 self.acquire(int(name))
             else:
                 self.flag(name, at)
-                if not (self._satisfies_flag(name, at) or (name, at) in self.done_flags):
-                    raise AcquisitionCycle(f'Unverified alternative `{name}` {at}')
+                if not (
+                    self._satisfies_flag(name, at) or (name, at) in self.done_flags
+                ):
+                    raise AcquisitionCycle(f"Unverified alternative `{name}` {at}")
 
         seen: set[tuple[str, str, str]] = set()
         for row in rows:
@@ -994,7 +1003,7 @@ class Planner:
                     failures.append(str(error))
             else:
                 raise AcquisitionCycle(
-                    f'No proven setter alternative for `{key}`: ' + '; '.join(failures)
+                    f"No proven setter alternative for `{key}`: " + "; ".join(failures)
                 )
         self.faction_requirements(setter)
 
@@ -1031,14 +1040,31 @@ class Planner:
                     }[match[1]]
                 return at.startswith("==") and val == at[2:].strip()
 
-            setters = sorted(
-                (r for r in setters if valid(r)),
-                key=lambda r: (
-                    0 if "#hand:" in str(r.get("from") or "") else 1,
-                    int(r["value"]) if str(r.get("value") or "").isdigit() else 0,
-                    str(r.get("from") or ""),
-                ),
-            )
+            comparison = re.fullmatch(r"(==|>=|>|<=|<)\s*(-?\d+)", at)
+
+            def cmp(r: dict) -> tuple[int, int, int, str]:
+                # A >= N prerequisite must establish N before attempting
+                # later stages whose hand-ins may themselves require N.
+                # Ranking hand-ins first previously selected stage 17 for
+                # >=16, recursively depending on the same prerequisite.
+                output = [0, 0, 0, ""]
+
+                value = str(r.get("value") or "")
+
+                if comparison and comparison[1] in (">=", ">"):
+                    output[0] = int(value)
+
+                if "#hand:" not in str(r.get("from") or ""):
+                    output[1] = 1
+
+                if value.isdigit():
+                    output[2] = int(str(r.get("value") or ""))
+
+                output[3] = str(r.get("from") or "")
+
+                return tuple(output)
+
+            setters = sorted((r for r in setters if valid(r)), key=cmp)
             for setter in setters:
                 snapshot = self._snapshot()
                 src = str(setter.get("from") or "")

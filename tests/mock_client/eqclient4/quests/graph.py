@@ -3159,6 +3159,59 @@ def _timer_rewards(graph: QuestGraph, npc_id: str, text: str) -> None:
             )
 
 
+def _timer_grounds(graph: QuestGraph, npc_id: str, text: str) -> None:
+    """Capture ground objects created by a named EVENT_TIMER callback."""
+    scope = _event_functions(text, "event_timer")
+    if scope is None:
+        return
+
+    start, stop = scope
+    branches = _branch_index(text)
+    zone = npc_id.split("/", 1)[0]
+
+    for match in _GROUND.finditer(text, start, stop):
+        parents = [
+            branch
+            for branch in branches
+            if start <= branch[0] and branch[2] <= match.start() < branch[3] <= stop
+        ]
+        timers = [
+            (branch, timer)
+            for branch in parents
+            for timer in _TIMER_IS.findall(text[branch[0] : branch[1]])
+        ]
+        if not timers:
+            continue
+
+        timer = min(timers, key=lambda pair: pair[0][3] - pair[0][0])[1]
+        source = f"{npc_id}#timer:{timer}"
+        graph.edges.append(
+            {
+                "kind": "edge",
+                "rel": "grounds",
+                "from": source,
+                "to": f"item:{int(match.group(1))}",
+                "group": source,
+                "zone": zone,
+            }
+        )
+
+        conditions = "\n".join(text[b[0] : b[1]] for b in parents)
+        for slot, item in dict.fromkeys(_EQUIPPED_ITEM.findall(conditions)):
+            graph.edges.append(
+                {
+                    "kind": "edge",
+                    "rel": "needs",
+                    "from": source,
+                    "to": f"item:{item}",
+                    "item": int(item),
+                    "group": source,
+                    "slot": slot.lower(),
+                    "equipped": True,
+                }
+            )
+
+
 def _timer_starters(graph: QuestGraph, npc_id: str, text: str) -> None:
     """Attribute named set_timer calls to the event or dialogue that starts them."""
     functions = _functions(text)
@@ -3319,6 +3372,7 @@ def _link_event_causality(
             for npc_type, name in spawns:
                 graph.edges.append(_spawn_edge(timer_id, npc_type, name, timer_id))
         _timer_rewards(graph, npc_id, text)
+        _timer_grounds(graph, npc_id, text)
         _timer_starters(graph, npc_id, text)
 
     # A natural-spawn NPC's death is reachable only after its encounter

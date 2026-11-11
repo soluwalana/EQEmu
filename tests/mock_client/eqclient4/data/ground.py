@@ -5,8 +5,8 @@ clicks the live object the server places there.
 """
 
 import json
-from collections.abc import Iterable, Mapping
-from dataclasses import dataclass
+from collections.abc import Iterable
+from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from eqclient4.data.cache_builders.common import lines, peq_path
@@ -65,15 +65,14 @@ class GroundSpawnBook:
         if not Path(DEFAULT_LOCATIONS).is_file():
             self._read_ground(lines(path))
             with open(DEFAULT_LOCATIONS, "w") as f:
-                json.dump(
+                f.write(json.dumps(
                     {
                         "spots": self.spots,
                         "zones": self.zones,
                         "zone_spawns": self.zone_spawns,
-                    },
-                    f,
+                    }
+                ,  default=lambda obj: asdict(obj) if isinstance(obj, GroundSpawn) else obj)
                 )
-                return
 
     def _read_ground(self, rows: Iterable[str]) -> None:
         spots: dict[int, list[GroundSpawn]] = {}
