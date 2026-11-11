@@ -127,98 +127,98 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 <a id="epic-item-77631"></a>
 
-1. Loot "Storm Giant Herald Head" (77600) from "a giant herald" (NPC 119180) in `wakening`. Drop cache: 100% chance per kill.
-2. wakening/"Lantaric-Dar", hand "Storm Giant Herald Head" (77600).
+1. Loot "Dragorn Blood" (77639) from "a dragorn serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.5158% chance per kill.
+2. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium" or "Greater Mass Enchant Velium" or "Mass Enchant Velium".
+3. Summon "Cloudy Diamond of Air" (29989) by casting "Imbue Air".
+4. Forage "Wind Dragon Crystal" (12783) in `skyfire`.
+5. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Cloudy Diamond of Air" (29989), "Wind Dragon Crystal" (12783). Produces "Wind Dragon Prism" (77618). Requires Jewelry Making.
+6. Summon "Red Diamond of Fire" (29986) by casting "Imbue Fire".
+7. Forage "Fire Dragon Crystal" (12487) in `skyfire`.
+8. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Red Diamond of Fire" (29986), "Fire Dragon Crystal" (12487). Produces "Fire Dragon Prism" (77619). Requires Jewelry Making.
+9. Summon "Aqua Diamond of Water" (29987) by casting "Imbue Water".
+10. Forage "Ice Dragon Crystal" (12781) in `skyfire`.
+11. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Aqua Diamond of Water" (29987), "Ice Dragon Crystal" (12781). Produces "Water Dragon Prism" (77620). Requires Jewelry Making.
+12. Summon "Brown Diamond of Earth" (29988) by casting "Imbue Earth".
+13. Forage "Earth Dragon Crystal" (12782) in `skyfire`.
+14. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Brown Diamond of Earth" (29988), "Earth Dragon Crystal" (12782). Produces "Earth Dragon Prism" (77621). Requires Jewelry Making.
+15. Summon "Green Diamond of Disease" (30118) by casting "Imbue Disease".
+16. Spawns "a swamp dragon" (npc:83249) via `swampofnohope/a dire leech#event_hp`.
+17. Kill "a swamp dragon" (NPC 83249) in `swampofnohope` and loot "Swamp Dragon Crystal" (77614).
+18. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Green Diamond of Disease" (30118), "Swamp Dragon Crystal" (77614). Produces "Swamp Dragon Prism" (77622). Requires Jewelry Making.
+19. Summon "Gray Diamond of Storms" (29991) by casting "Imbue Storm".
+20. Spawns "a plains dragon" (npc:13130) via `northkarana/a dire griffon#event_hp`.
+21. Kill "a plains dragon" (NPC 13130) in `northkarana` and loot "Plains Dragon Crystal" (77615).
+22. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Gray Diamond of Storms" (29991), "Plains Dragon Crystal" (77615). Produces "Plains Dragon Prism" (77623). Requires Jewelry Making.
+23. Summon "Yellow Diamond of Valor" (30489) by casting "Imbue Valor".
+24. Spawns "a forest dragon" (npc:181224) via `jaggedpine/a dire kodiak#event_hp`.
+25. Kill "a forest dragon" (NPC 181224) in `jaggedpine` and loot "Forest Dragon Crystal" (77616).
+26. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Yellow Diamond of Valor" (30489), "Forest Dragon Crystal" (77616). Produces "Forest Dragon Prism" (77624). Requires Jewelry Making.
+27. Summon "White Diamond of Justice" (29494) by casting "Imbue Justice".
+28. Spawns "a mountain dragon" (npc:100227) via `stonebrunt/a dire panda#event_hp`.
+29. Kill "a mountain dragon" (NPC 100227) in `stonebrunt` and loot "Mountain Dragon Crystal" (77617).
+30. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "White Diamond of Justice" (29494), "Mountain Dragon Crystal" (77617). Produces "Mountain Dragon Prism" (77625). Requires Jewelry Making.
+31. Loot "Storm Giant Herald Head" (77600) from "a giant herald" (NPC 119180) in `wakening`. Drop cache: 100% chance per kill.
+32. wakening/"Lantaric-Dar", hand "Storm Giant Herald Head" (77600).
     - event_trade NPC emote: peers at the three heads for a moment. You might almost say he looks surprised. 'You have done well . You have gained a portion of my trust today. I hope you continue to impress me.
       - Event guard: `item_lib.check_turn_in(e.trade, {item1 = 77600,item2 =77600, item3 = 77600})`
     - event_trade NPC emote: raises his claw to your forehead. The sweat dripping into your eyes does not blur your vision enough to sedate the terror of having a dragon claw mere inches from your face. Lantaric`Dar makes a series of quick, precise motions and then lowers his claw. You feel a mystical energy shiver over your body. 'You have been blessed with my mark. If you [continue to aid] me I may see fit to further increase its power.
-3. Loot "Kromzek Supply Orders" (77601) from "a giant messenger" (NPC 119181) in `wakening`. Drop cache: 100% chance per kill.
-4. wakening/"Lantaric-Dar", hand "Kromzek Supply Orders" (77601).
+33. Loot "Kromzek Supply Orders" (77601) from "a giant messenger" (NPC 119181) in `wakening`. Drop cache: 100% chance per kill.
+34. wakening/"Lantaric-Dar", hand "Kromzek Supply Orders" (77601).
     - event_trade NPC emote: studies the orders for a few moments. 'Well done . This explains much of the giants' movements of late. This list shows orders for creating equipment for creatures closer to your stature then a giant. The Kromzek must be recruiting more mercenaries. Find the troop this order was meant to supply . There must be a reason for Tormax's new interest in mortal conscripts.
       - Event guard: `qglobals["bardPQ"] == "1" and  item_lib.check_turn_in(e.trade, {item1 = 77601})`
-5. Spawns "Cristoc Bonethug" (npc:119182) after the hand-in.
-6. Kill "Cristoc Bonethug" (NPC 119182) in `wakening` and loot "Sealed Letter" (77602).
-7. wakening/"Lantaric-Dar", hand "Sealed Letter" (77602).
+35. Spawns "Cristoc Bonethug" (npc:119182) after the hand-in.
+36. Kill "Cristoc Bonethug" (NPC 119182) in `wakening` and loot "Sealed Letter" (77602).
+37. wakening/"Lantaric-Dar", hand "Sealed Letter" (77602).
     - event_trade NPC say: Once again you have exceeded my expectations . Rarely have I encountered a mortal with your talents, in fact not since Baldric walked these lands. But I digress, and we have more work to do. For now, take this mark as a symbol of my trust.
       - Event guard: `qglobals["bardPQ"] == "2" and  item_lib.check_turn_in(e.trade, {item1 = 77602})`
     - event_trade NPC emote: raises his claw once again to your forehead. The sweat rolls a little slower this time, as you have grown more comfortable with his massive scaled form. His claws make a quick methodical series of movements across your forehead again. You feel a slightly familiar energy flow through to every part of your body and then subside.
     - event_trade NPC say: Travel boldly . For you move under my protection. Your latest discovery has left me with even more questions to be answered. The letter you brought seems to indicate that the mercenaries were meant for two purposes. I want you to investigate the less puzzling of the two, which was to escort several emissaries from the Iceclad Ocean to Kael Drakkel. The emissaries are due to arrive soon. I have sent one of the kin to the Iceclad Ocean to keep track of their movements. But I suspect he will need you there to help him. Find Vas Thorel in the Iceclad Ocean and do what he asks. We are getting closer to the bottom of this mystery .
-8. Spawns "Noble Oldencamp" (npc:110123) via `iceclad/vas thorel#lantaric`.
-9. Kill "Noble Oldencamp" (NPC 110123) in `iceclad` and loot "Sealed Kromzek Scroll" (77603).
-10. iceclad/"Vas Thorel", hand "Sealed Kromzek Scroll" (77603).
+38. Spawns "Noble Oldencamp" (npc:110123) via `iceclad/vas thorel#lantaric`.
+39. Kill "Noble Oldencamp" (NPC 110123) in `iceclad` and loot "Sealed Kromzek Scroll" (77603).
+40. iceclad/"Vas Thorel", hand "Sealed Kromzek Scroll" (77603).
     - event_trade NPC say: Well done , but I'm afraid this scroll bears ill tidings indeed. Lantaric must be informed with haste. Take the heads of the necromancers and give them to Lantaric. I have a feeling your work is far from done .
       - Event guard: `qglobals["bardPQ"] == "3" and item_lib.check_turn_in(e.trade, {item1 = 77603})`
-11. Kill "Nihilist Xeegarn" (NPC 110127) in `iceclad` and loot "Xeegarn's Head" (77604).
-12. Kill "Amilia Verisue" (NPC 110128) in `iceclad` and loot "Amilia's Head" (77605).
-13. Kill "Puella Opalis" (NPC 110126) in `iceclad` and loot "Puella's Head" (77606).
-14. Kill "Locis V`Sek" (NPC 110125) in `iceclad` and loot "Locis' Head" (77607).
-15. wakening/"Lantaric-Dar", hand "Xeegarn's Head" (77604) + "Amilia's Head" (77605) + "Puella's Head" (77606) + "Locis' Head" (77607).
+41. Kill "Nihilist Xeegarn" (NPC 110127) in `iceclad` and loot "Xeegarn's Head" (77604).
+42. Kill "Amilia Verisue" (NPC 110128) in `iceclad` and loot "Amilia's Head" (77605).
+43. Kill "Puella Opalis" (NPC 110126) in `iceclad` and loot "Puella's Head" (77606).
+44. Kill "Locis V`Sek" (NPC 110125) in `iceclad` and loot "Locis' Head" (77607).
+45. wakening/"Lantaric-Dar", hand "Xeegarn's Head" (77604) + "Amilia's Head" (77605) + "Puella's Head" (77606) + "Locis' Head" (77607).
     - event_trade NPC emote: peers at the heads. 'So the giants have asked for the aid of many of the young races. It is no secret that the giants have had little luck with the dark arts of necromancy. The presence of these necromancers, the sealed note you recovered, and the mercenary orders all point to one place, the Necropolis of my ancestors. I fear they plan to desecrate our sacred burial grounds. This can not be allowed. You must travel to the Necropolis and stop them . But first, accept my gratitude, and a strengthening of enchantment that protects you.
       - Event guard: `qglobals["bardPQ"] == "4" and item_lib.check_turn_in(e.trade, {item1 = 77604,item2 =77605, item3 = 77606, item4 = 77607})`
     - event_trade NPC emote: raises his claw to your brow once more. This time, you stand confident with the razored claws mere inches from your eyes. The familiar motions flash across your eyes again, and a feeling of renewed confidence beats in your chest.
-16. Spawns "Tarn Macklin" (npc:123164) via `necropolis/excavator quellin#event_death_complete`.
-17. Kill "Tarn Macklin" (NPC 123164) in `necropolis` and loot "Cracked Dragon Bone" (77608).
-18. wakening/"Lantaric-Dar", hand "Cracked Dragon Bone" (77608).
+46. Spawns "Tarn Macklin" (npc:123164) via `necropolis/excavator quellin#event_death_complete`.
+47. Kill "Tarn Macklin" (NPC 123164) in `necropolis` and loot "Cracked Dragon Bone" (77608).
+48. wakening/"Lantaric-Dar", hand "Cracked Dragon Bone" (77608).
     - event_trade NPC emote: 's eyes grow wide as he studies the bone fragment.  'My greatest fears have been proven true .  The fragment you recovered from the mercenaries is a piece of the skeleton of Hsagra.  The deceased mate of Yelinak and the only dragon of the first brood who has been put to rest.  They are fools if they think they can animate the corpse of Hsagra.  No mortal can hope to manipulate the power of a fallen child of Veeshan.  Never the less you must protect her relics from the mercenaries. Tormax will most certainly send more.  Return to the Necropolis and locate the relics of Hsagra and put them to final rest in the pool of fire.  Hsagra's skull is still held by Tormax, but if you collect three of her rib bones and the shard you brought me they will suffice for the fires of the necropolis.
       - Event guard: `qglobals["bard15"] == "1" and item_lib.check_turn_in(e.trade, {item1 = 77608})`
     - event_trade NPC say: You must summon the spirit of Hsagra if you hope to put her to final rest.  Go to the fires and call to her spirit and she will surely anwer to one marked with the symbol of the kin.  Give her spirit the relics of her broken body and her final rest will be complete.  Hurry , before the Kromzek Mercenaries find the rest of her relics!
-19. Spawns "Vesthon`s Draconic Abomination" (npc:123171) via `necropolis/vesthon marijakin#event_hp`.
-20. Kill "Vesthon`s Draconic Abomination" (NPC 123171) in `necropolis` and loot "Blackened Dragon Bone" (77612).
-21. wakening/"Lantaric-Dar", hand "Blackened Dragon Bone" (77612).
+49. Spawns "Vesthon`s Draconic Abomination" (npc:123171) via `necropolis/vesthon marijakin#event_hp`.
+50. Kill "Vesthon`s Draconic Abomination" (NPC 123171) in `necropolis` and loot "Blackened Dragon Bone" (77612).
+51. wakening/"Lantaric-Dar", hand "Blackened Dragon Bone" (77612).
     - event_trade NPC say: So we finally uncover the Kromzek's true goals.  They hope to take control of the spirit of Hsagra and animate her corpse into an undead abomination.  I cannot fathom the strength of will needed to control a will as strong as Hsagra.  The necromancer you encountered must have some sort of focus that helps him control her spirit.  The bones that he has stolen aren't enough on their own to summon and control Hsagra's spirit, but Tormax already has her skull as a trophy in his throne room.  Those pieces combined will certainly have a sufficient connection to her spirit to draw it out.
       - Event guard: `qglobals["bard15"] == "2" and item_lib.check_turn_in(e.trade, {item1 = 77612})`
     - event_trade NPC say: Vesthon will certainly return to the Necropolis and try to capture the spirit of Hsagra again.  Once more the kin ask for your assistance .  We haven't time to gather forces from skyshrine, we must go now.  Gather what ever forces you can muster quickly!  Hurry ! The fate of a first brood spirit rests in your hands.
-22. Loot "Dark Orb" (77613) from "The Dracoliche of Hsagra".
-23. wakening/"Lantaric-Dar", hand "Dark Orb" (77613).
+52. Loot "Dark Orb" (77613) from "The Dracoliche of Hsagra".
+53. wakening/"Lantaric-Dar", hand "Dark Orb" (77613).
     - event_trade NPC say: It must be an object of considerable power to be able to imbue a mere mortal such as Vesthon with the power to control a dragon kin spirit.  This orb must be destroyed, but I know not how that might be done.  For now I entrust the orb to your care, and charge you with finding a way to destroy it.  You must not fail .  An artifact of that much evil potential must not be allowed to exist.
       - Event guard: `qglobals["bard15"] == "3" and item_lib.check_turn_in(e.trade, {item1 = 77613})`
-24. soltemple/"Walthin Fireweaver", say "Hail". Sets `bard15` to `5`.
+54. soltemple/"Walthin Fireweaver", say "Hail". Sets `bard15` to `5`.
     - Player: "hail"
       - NPC say: ! Thank Veeshan you're here!  I discovered how to create the draconic prism!  The secret has been here all along.  One of the ancient crests of the temple was the key!  It seems we are not the first bards to undertake the quest for the draconic prism.  I'll explain later, but you must hurry, the crest has been stolen!  Not a day ago it was here, so the thief can't have gotten far.  You must find the thief and recover the crest !
         - Reply guard: `e.other:HasItem(77618) and e.other:HasItem(77619) and e.other:HasItem(77620) and e.other:HasItem(77621) and e.other:HasItem(77622) and e.other:HasItem(77623) and e.other:HasItem(77624) and e.other:HasItem(77625)`
       - NPC say: Good day to you!  I am Walthin Fireweaver of the League of Antonican Bards.  My friend Cryssia and I are here while we deal in [lambent stones] with the followers of Solusek Ro.  If you are interested, Cryssia and I also deal in [lambent armor], the perfect armor for a bard of standing.  I also dabble in some research from time to time.  I'm a bit of a historian.  I study the history of [dragons].
         - Reply guard: ``
       - Condition: `e.message:findi("hail")`
-25. Loot "Note from Metala" (77627) from "a shadow thief".
-26. southkarana/"Vhalen Nostrolo", hand "Note from Metala" (77627). Gives "Vhalen's Necklace" (77629).
+55. Loot "Note from Metala" (77627) from "a shadow thief".
+56. southkarana/"Vhalen Nostrolo", hand "Note from Metala" (77627). Gives "Vhalen's Necklace" (77629).
     - event_trade NPC say: No this can't be true! Metala must have been kidnapped and forced to sign this letter!  You must find her and save her, ! Please!  Take this necklace; it was a gift she gave me on our anniversary long ago.  Surely it will help her remember her true self and make her come to her senses.
       - Event guard: `(qglobals["bard15"] == "5" and item_lib.check_turn_in(e.trade, {item1= 77627}))`
-27. potorment/"A Bruised Woman", hand "Vhalen's Necklace" (77629).
+57. potorment/"A Bruised Woman", hand "Vhalen's Necklace" (77629).
     - event_trade NPC emote: 's eyebrows shift into the shadow of a quizzical expression as you show her the necklace.  A flash of recognition crosses her face and she jerks back across the floor in horror.  A screeching wail tears through your mind 'You are a fool Vahlen!  You send these peasants to do your dirty work, you never were much for getting your hands dirty!  The path of pain is the only way to true power.  I will never turn from it!
       - Event guard: `qglobals["bard15"] == "5" and item_lib.check_turn_in(e.trade, {item1 = 77629})`
-28. Spawns "Metala Von Korach" (npc:207084) after the hand-in.
-29. Kill "Metala Von Korach" (NPC 207084) in `potorment` and loot "Rusted Bile Etched Blade" (77630).
-30. Loot "Crest of Rizlona" (77626) from "a shadow thief".
-31. Loot "Dragorn Blood" (77639) from "a dragorn serf" (NPC 300018) in `wallofslaughter`. Drop cache: 9.5158% chance per kill.
-32. Summon "Enchanted Velium Bar" (22099) by casting "Enchant Velium" or "Greater Mass Enchant Velium" or "Mass Enchant Velium".
-33. Summon "Cloudy Diamond of Air" (29989) by casting "Imbue Air".
-34. Forage "Wind Dragon Crystal" (12783) in `skyfire`.
-35. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Cloudy Diamond of Air" (29989), "Wind Dragon Crystal" (12783). Produces "Wind Dragon Prism" (77618). Requires Jewelry Making.
-36. Summon "Red Diamond of Fire" (29986) by casting "Imbue Fire".
-37. Forage "Fire Dragon Crystal" (12487) in `skyfire`.
-38. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Red Diamond of Fire" (29986), "Fire Dragon Crystal" (12487). Produces "Fire Dragon Prism" (77619). Requires Jewelry Making.
-39. Summon "Aqua Diamond of Water" (29987) by casting "Imbue Water".
-40. Forage "Ice Dragon Crystal" (12781) in `skyfire`.
-41. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Aqua Diamond of Water" (29987), "Ice Dragon Crystal" (12781). Produces "Water Dragon Prism" (77620). Requires Jewelry Making.
-42. Summon "Brown Diamond of Earth" (29988) by casting "Imbue Earth".
-43. Forage "Earth Dragon Crystal" (12782) in `skyfire`.
-44. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Brown Diamond of Earth" (29988), "Earth Dragon Crystal" (12782). Produces "Earth Dragon Prism" (77621). Requires Jewelry Making.
-45. Summon "Green Diamond of Disease" (30118) by casting "Imbue Disease".
-46. Spawns "a swamp dragon" (npc:83249) via `swampofnohope/a dire leech#event_hp`.
-47. Kill "a swamp dragon" (NPC 83249) in `swampofnohope` and loot "Swamp Dragon Crystal" (77614).
-48. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Green Diamond of Disease" (30118), "Swamp Dragon Crystal" (77614). Produces "Swamp Dragon Prism" (77622). Requires Jewelry Making.
-49. Summon "Gray Diamond of Storms" (29991) by casting "Imbue Storm".
-50. Spawns "a plains dragon" (npc:13130) via `northkarana/a dire griffon#event_hp`.
-51. Kill "a plains dragon" (NPC 13130) in `northkarana` and loot "Plains Dragon Crystal" (77615).
-52. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Gray Diamond of Storms" (29991), "Plains Dragon Crystal" (77615). Produces "Plains Dragon Prism" (77623). Requires Jewelry Making.
-53. Summon "Yellow Diamond of Valor" (30489) by casting "Imbue Valor".
-54. Spawns "a forest dragon" (npc:181224) via `jaggedpine/a dire kodiak#event_hp`.
-55. Kill "a forest dragon" (NPC 181224) in `jaggedpine` and loot "Forest Dragon Crystal" (77616).
-56. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "Yellow Diamond of Valor" (30489), "Forest Dragon Crystal" (77616). Produces "Forest Dragon Prism" (77624). Requires Jewelry Making.
-57. Summon "White Diamond of Justice" (29494) by casting "Imbue Justice".
-58. Spawns "a mountain dragon" (npc:100227) via `stonebrunt/a dire panda#event_hp`.
-59. Kill "a mountain dragon" (NPC 100227) in `stonebrunt` and loot "Mountain Dragon Crystal" (77617).
-60. Combine in appropriate tradeskill container: "Dragorn Blood" (77639), "Enchanted Velium Bar" (22099), "White Diamond of Justice" (29494), "Mountain Dragon Crystal" (77617). Produces "Mountain Dragon Prism" (77625). Requires Jewelry Making.
+58. Spawns "Metala Von Korach" (npc:207084) after the hand-in.
+59. Kill "Metala Von Korach" (NPC 207084) in `potorment` and loot "Rusted Bile Etched Blade" (77630).
+60. Loot "Crest of Rizlona" (77626) from "a shadow thief".
 61. Combine in "Crest of Rizlona" (77626): "Wind Dragon Prism" (77618), "Fire Dragon Prism" (77619), "Water Dragon Prism" (77620), "Earth Dragon Prism" (77621), "Swamp Dragon Prism" (77622), "Plains Dragon Prism" (77623), "Forest Dragon Prism" (77624), "Mountain Dragon Prism" (77625). Produces "Draconic Prism" (77628). Requires Remove Traps.
 62. Combine in "Rusted Bile Etched Blade" (77630): "Draconic Prism" (77628). Produces "Prismatic Dragon Blade" (77631). Requires Remove Traps.
 

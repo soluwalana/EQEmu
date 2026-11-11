@@ -158,58 +158,57 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 <a id="epic-item-62627"></a>
 
-1. erudnext/"Lumi Stergnon", say "Hail".
-    - Player: "hail"
-      - NPC say: Peace and tranquility be with you. .  Are you a [new acolyte of peace] or are you [here to pay homage] to the child of tranquility?
-      - Condition: `(e.message:findi("hail"))`
-2. Buy "Planar Fletching Kit" (17762) from "Ellis Cloudchaser" (NPC 202076) in `poknowledge`. Base price: 1,000 copper.
-3. Spawns "an ancient thought horror" (npc:164122) via `thedeep/ancient thought horror trap#enter`.
-4. Kill "an ancient thought horror" (NPC 164122) in `thedeep` and loot "Thick Spinal Fluid" (40420).
-5. Forage "Sickly Maiden's Hair" (62810) in `rathemtn`.
-6. eastkarana/"Althele", hand "Sickly Maiden's Hair" (62810). Gives "Tuft of Sickly Maiden's Hair" (62811).
+**Earlier reward routes required by this graph path:** ["Earthcaller" (20488)](#epic-item-20488).
+Revisit those instructions if another copy of a consumed item is needed.
+
+1. Buy "Planar Fletching Kit" (17762) from "Ellis Cloudchaser" (NPC 202076) in `poknowledge`. Base price: 1,000 copper.
+2. Spawns "an ancient thought horror" (npc:164122) via `thedeep/ancient thought horror trap#enter`.
+3. Kill "an ancient thought horror" (NPC 164122) in `thedeep` and loot "Thick Spinal Fluid" (40420).
+4. Forage "Sickly Maiden's Hair" (62810) in `rathemtn`.
+5. eastkarana/"Althele", hand "Sickly Maiden's Hair" (62810). Gives "Tuft of Sickly Maiden's Hair" (62811).
     - event_item NPC say: This plant has an illness that I have never sensed before.' Althele pauses in thought for a moment. 'You are a hunter, so I shall put your skills to work. First, take this to Corun in Surefall. He is an expert on animal illnesses. Then put your hunting skills to work and see if you can capture any animals that may have eaten this plant. Corun will want to see them to help him discover what the sickness is.
       - Event guard: `(plugin::check_handin(\%itemcount, 62810 => 1))`
-7. qrg/"Corun Finisc", hand "Tuft of Sickly Maiden's Hair" (62811). Gives "Borrowed Medicine Bag" (62605) + "Magical Sample Vial" (62657).
+6. qrg/"Corun Finisc", hand "Tuft of Sickly Maiden's Hair" (62811). Gives "Borrowed Medicine Bag" (62605) + "Magical Sample Vial" (62657).
     - event_trade NPC say: Well, this is certainly an unpleasant sight. If Althele sent you to me it must be because I've had a lot of experience with sick animals. If you can find me some animals that have become ill by eating this plant perhaps I can discover something about this disease. You must not kill these animals. It is never good to harm an animal if you do not need to. It is also important that the animal be alive when you take samples of their blood. If any animals have eaten this plant and become ill, you need to find a way to capture them and use your fletching kit and these vials to gather blood samples. Althele is rarely wrong about what she senses from Antonica. Be careful with that medicine bag, I borrowed it from a friend in Halas a while back. I'll need you to use it to store some samples as you capture the animals. Don't lose it, you don't want Lars angry with you!
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 62811}))`
-8. eastkarana/"Althele", say "Hail". Sets `ranger_epic` to `1`.
+7. eastkarana/"Althele", say "Hail". Sets `ranger_epic` to `1`.
     - Player: "hail"
       - NPC say: Hello, friend. Beautiful is what I would call such a day normally, but lately? I sense that something is [out of balance].
         - Reply guard: `($class eq "Ranger" && (plugin::check_hasitem($client, 20488) || plugin::check_hasitem($client, 62600)))`
       - Condition: `($text=~/hail/i)`
-9. Spawns "an asteatotic highborn" (npc:109907) via `veksar/player#enter`.
-10. Kill "an asteatotic highborn" (NPC 109907) in `veksar` and loot "Asteatotic Veksar Blood" (35100).
-11. Spawns "a neuralgic huntress" (npc:120136) via `westwastes/player#enter`.
-12. Kill "a neuralgic huntress" (NPC 120136) in `westwastes` and loot "Neuralgic Wyvern Blood" (72605).
-13. Summon "Collapsible Fletching Kit" (17189) by casting "Unfold Fletching Kit".
-14. Buy "Whittling Knife" (62608) from "Yoen Ormard" (NPC 279110) in `abysmal`. Base price: 50 copper.
-15. Forage "Fallen Tree Branch" (62652) in `dranik` or `draniksscar`.
-16. Combine in "Planar Fletching Kit" (17762): "Whittling Knife" (62608), "Fallen Tree Branch" (62652). Produces "Long Net Pole" (62607). Requires Fletching.
-17. Spawns "a phase spider" (npc:123190) via `necropolis/an out of phase spider#event_combat`.
-18. Kill "a phase spider" (NPC 123190) in `necropolis` and loot "Phase Spider Silk" (55303).
-19. Forage "Pine Sap" (62650) in `jaggedpine` or `nedaria` or `qrg`.
-20. Combine in "Planar Fletching Kit" (17762): "Phase Spider Silk" (55303), "Pine Sap" (62650). Produces "Phase Netting" (62651). Requires Fletching.
-21. Combine in "Planar Fletching Kit" (17762): "Long Net Pole" (62607), "Phase Netting" (62651). Produces "Large Butterfly Net" (62646). Requires Fletching.
-22. cazicthule/"A Sickly Mosquito", say "". Gives "Captured Mosquito" (62642).
-23. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Mosquito" (62642). Produces "Sickly Mosquito Blood Sample" (62611). Requires Fletching.
-24. sirens/"A Twitching Swordfish", say "". Gives "Captured Swordfish" (62643).
-25. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Swordfish" (62643). Produces "Twitching Swordfish Blood Sample" (62612). Requires Fletching.
-26. Buy "Hinge Mold" (12027) from "Frannie" (NPC 3020) in `qrg`. Base price: 10 copper.
-27. Buy "Container Base Mold" (12062) from "Tislan" (NPC 10077) in `freporte`. Base price: 110 copper.
-28. Buy "Container Lid Mold" (12069) from "Tislan" (NPC 10077) in `freporte`. Base price: 110 copper.
-29. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
+8. Spawns "an asteatotic highborn" (npc:109907) via `veksar/player#enter`.
+9. Kill "an asteatotic highborn" (NPC 109907) in `veksar` and loot "Asteatotic Veksar Blood" (35100).
+10. Spawns "a neuralgic huntress" (npc:120136) via `westwastes/player#enter`.
+11. Kill "a neuralgic huntress" (NPC 120136) in `westwastes` and loot "Neuralgic Wyvern Blood" (72605).
+12. Summon "Collapsible Fletching Kit" (17189) by casting "Unfold Fletching Kit".
+13. Buy "Whittling Knife" (62608) from "Yoen Ormard" (NPC 279110) in `abysmal`. Base price: 50 copper.
+14. Forage "Fallen Tree Branch" (62652) in `dranik` or `draniksscar`.
+15. Combine in "Planar Fletching Kit" (17762): "Whittling Knife" (62608), "Fallen Tree Branch" (62652). Produces "Long Net Pole" (62607). Requires Fletching.
+16. Spawns "a phase spider" (npc:123190) via `necropolis/an out of phase spider#event_combat`.
+17. Kill "a phase spider" (NPC 123190) in `necropolis` and loot "Phase Spider Silk" (55303).
+18. Forage "Pine Sap" (62650) in `jaggedpine` or `nedaria` or `qrg`.
+19. Combine in "Planar Fletching Kit" (17762): "Phase Spider Silk" (55303), "Pine Sap" (62650). Produces "Phase Netting" (62651). Requires Fletching.
+20. Combine in "Planar Fletching Kit" (17762): "Long Net Pole" (62607), "Phase Netting" (62651). Produces "Large Butterfly Net" (62646). Requires Fletching.
+21. cazicthule/"A Sickly Mosquito", say "". Gives "Captured Mosquito" (62642).
+22. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Mosquito" (62642). Produces "Sickly Mosquito Blood Sample" (62611). Requires Fletching.
+23. sirens/"A Twitching Swordfish", say "". Gives "Captured Swordfish" (62643).
+24. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Swordfish" (62643). Produces "Twitching Swordfish Blood Sample" (62612). Requires Fletching.
+25. Buy "Hinge Mold" (12027) from "Frannie" (NPC 3020) in `qrg`. Base price: 10 copper.
+26. Buy "Container Base Mold" (12062) from "Tislan" (NPC 10077) in `freporte`. Base price: 110 copper.
+27. Buy "Container Lid Mold" (12069) from "Tislan" (NPC 10077) in `freporte`. Base price: 110 copper.
+28. erudnext/"Lumi Stergnon", say "Battle The Undead". Gives "Box For Bones" (17941).
     - Player: "battle the undead"
       - NPC say: Then you shall venture to Toxxulia Forest. There has been an increase in skeleton sightings lately. I do not know their origin, but I believe that your efforts will reduce their numbers! Take this box. Return it to me when you have filled it with the bones of these undead creatures and combined it. May Quellious' light guide you.
       - Condition: `(e.message:findi("battle the undead"))`
       - Linked from "new acolyte of peace" (explicit prompt).
-30. Loot "Useless Cloth Cap" (13894) from "a kobold scout" (NPC 38035) in `tox`. Drop cache: 20% chance per kill.
-31. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
-32. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). Requires Remove Traps.
-33. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
+29. Loot "Useless Cloth Cap" (13894) from "a kobold scout" (NPC 38035) in `tox`. Drop cache: 20% chance per kill.
+30. tox/"A Skeleton", hand "Useless Cloth Cap" (13894). Gives "Bone Chips" (13073).
+31. Combine in "Box For Bones" (17941): "Bone Chips" (13073). Produces "Box of Bones" (13882). Requires Remove Traps.
+32. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
     - event_trade NPC say: You have done well. Let it be known to all that you fight for the Rainkeeper. Go and continue the battle.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 13882}))`
-34. Buy "Small Brick of Steel" (66168) from "Qaelin Hailstorm" (NPC 3042) in `qrg`. Base price: 5,890 copper.
-35. qrg/"Qaelin Hailstorm", say "Need A Mark". Gives "Mark of Karana" (66172).
+33. Buy "Small Brick of Steel" (66168) from "Qaelin Hailstorm" (NPC 3042) in `qrg`. Base price: 5,890 copper.
+34. qrg/"Qaelin Hailstorm", say "Need A Mark". Gives "Mark of Karana" (66172).
     - Player: "need a mark"
       - NPC say: Here you go, if you need another please let me know.
         - Reply guard: `(deity == 207)`
@@ -217,29 +216,29 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
         - Reply guard: ``
       - Condition: `(e.message:findi("need a mark"))`
       - Linked from "hail" (explicit prompt).
-36. Combine in appropriate tradeskill container: "Hinge Mold" (12027), "Container Base Mold" (12062), "Container Lid Mold" (12069), "Water Flask" (13006), "Small Brick of Steel" (66168), "Mark of Karana" (66172). Produces "Surefall Fletching Kit" (66163). Requires Blacksmithing.
-37. Spawns "A Dragorn flunky" (npc:301080) via `bloodfields/elite dragorn jekisia#event_hp`.
-38. Kill "A Dragorn flunky" (NPC 301080) in `bloodfields` and loot "Broken Magnetized Collar" (72062).
-39. Combine in appropriate tradeskill container: "Broken Magnetized Collar" (72062). Produces "Smithy Hammer" (10489). Requires Blacksmithing.
-40. Forage "Golanda Nut" (62610) in `causeway` or `dranik` or `draniksscar` or `provinggrounds` or `riftseekers` or `wallofslaughter`.
-41. Combine in "Surefall Fletching Kit" (66163): "Smithy Hammer" (10489), "Golanda Nut" (62610). Produces "Fibrous Rope" (62609). Requires Fletching.
-42. Combine in "Surefall Fletching Kit" (66163): "Fibrous Rope" (62609). Produces "Eight-loop Lasso" (62648). Requires Fletching.
-43. chardokb/"A Leprous Chokidai", say "". Gives "Captured Chokidai" (62645).
-44. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Chokidai" (62645). Produces "Leprous Chokidai Blood Sample" (62614). Requires Fletching.
-45. droga/"A Bloated Drogan Spider", say "". Gives "Captured Spider" (62644).
-46. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Spider" (62644). Produces "Bloated Drogan Spider Blood Sample" (62613). Requires Fletching.
-47. Combine in "Borrowed Medicine Bag" (62605): "Asteatotic Veksar Blood" (35100), "Neuralgic Wyvern Blood" (72605), "Sickly Mosquito Blood Sample" (62611), "Twitching Swordfish Blood Sample" (62612), "Leprous Chokidai Blood Sample" (62614), "Bloated Drogan Spider Blood Sample" (62613). Produces "Full Medicine Bag" (62616). Requires Remove Traps.
-48. qrg/"Corun Finisc", hand "Full Medicine Bag" (62616). Gives "Corun's Notes" (62617).
+35. Combine in appropriate tradeskill container: "Hinge Mold" (12027), "Container Base Mold" (12062), "Container Lid Mold" (12069), "Water Flask" (13006), "Small Brick of Steel" (66168), "Mark of Karana" (66172). Produces "Surefall Fletching Kit" (66163). Requires Blacksmithing.
+36. Spawns "A Dragorn flunky" (npc:301080) via `bloodfields/elite dragorn jekisia#event_hp`.
+37. Kill "A Dragorn flunky" (NPC 301080) in `bloodfields` and loot "Broken Magnetized Collar" (72062).
+38. Combine in appropriate tradeskill container: "Broken Magnetized Collar" (72062). Produces "Smithy Hammer" (10489). Requires Blacksmithing.
+39. Forage "Golanda Nut" (62610) in `causeway` or `dranik` or `draniksscar` or `provinggrounds` or `riftseekers` or `wallofslaughter`.
+40. Combine in "Surefall Fletching Kit" (66163): "Smithy Hammer" (10489), "Golanda Nut" (62610). Produces "Fibrous Rope" (62609). Requires Fletching.
+41. Combine in "Surefall Fletching Kit" (66163): "Fibrous Rope" (62609). Produces "Eight-loop Lasso" (62648). Requires Fletching.
+42. chardokb/"A Leprous Chokidai", say "". Gives "Captured Chokidai" (62645).
+43. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Chokidai" (62645). Produces "Leprous Chokidai Blood Sample" (62614). Requires Fletching.
+44. droga/"A Bloated Drogan Spider", say "". Gives "Captured Spider" (62644).
+45. Combine in "Collapsible Fletching Kit" (17189): "Magical Sample Vial" (62657), "Captured Spider" (62644). Produces "Bloated Drogan Spider Blood Sample" (62613). Requires Fletching.
+46. Combine in "Borrowed Medicine Bag" (62605): "Asteatotic Veksar Blood" (35100), "Neuralgic Wyvern Blood" (72605), "Sickly Mosquito Blood Sample" (62611), "Twitching Swordfish Blood Sample" (62612), "Leprous Chokidai Blood Sample" (62614), "Bloated Drogan Spider Blood Sample" (62613). Produces "Full Medicine Bag" (62616). Requires Remove Traps.
+47. qrg/"Corun Finisc", hand "Full Medicine Bag" (62616). Gives "Corun's Notes" (62617).
     - event_trade NPC say: This is frightening. A disease that can affect mosquito and wyvern must be a truly horrible thing. I will examine these samples carefully and pass knowledge to others who are working to repair this. From what you've shown me I can tell that the disease affects both the mind and the skin. Others seek information about illnesses of the skin. I need you to uncover information about diseases of the mind. I know not where to find such information, but you are a seeker and a worthy ranger. Find someone, somewhere, that knows enough about disease that affects 'more advanced' creatures such as men. Learn about the diseases of the mind. I will seek among the folk of the glade and pine for assistance with a cure for the Maiden's Hair. Please do not give up the search, no matter how difficult. This is a terrible illness and we must stop it from spreading. Take a copy of my notes with you, they may be of use to someone with the right knowledge.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 62616}))`
-49. freeportwest/"Shana Liskia", hand "Corun's Notes" (62617). Gives "Corun's Notes - annotated" (62654).
+48. freeportwest/"Shana Liskia", hand "Corun's Notes" (62617). Gives "Corun's Notes - annotated" (62654).
     - event_trade NPC say: Well, this certainly is an interesting puzzle. I see here that these creatures were infected in their spinal columns. I'll tell you that a part of my research involves the use of the fluids of the brain and spine. I suspect that further details might be unpleasant. I might be able to help you, but I'll need materials to work with. Gather fluids from the brain of the creature with the greatest mental power that you can find. I'll test it and see if it's strong enough and has the right properties. If I can duplicate what you saw in these infected creatures, perhaps I can help. Aslo, bring back those notes that Corun made, I'll need them as well.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 62617}))`
     - event_trade NPC emote: makes a few hasty scribbles in the margins of Corun's Notes and hands them back to you.
-50. freeportwest/"Shana Liskia", hand "Thick Spinal Fluid" (40420) + "Corun's Notes - annotated" (62654). Gives "Mind Crystal" (62846).
+49. freeportwest/"Shana Liskia", hand "Thick Spinal Fluid" (40420) + "Corun's Notes - annotated" (62654). Gives "Mind Crystal" (62846).
     - event_trade NPC say: Perfect! Yes, this will work nicely. Shana looks through Corun's notes while gathering items from her stores. This should work. What I'm going to do is grow a crystal around this fluid and some of the key ingredients of the disease. The crystal will focus the power of the fluid and the elements of the disease will guide it. If this goes well, I should be able to create a crystal that will guide you to the disease. Shana places the gathered items into a violet-tinted container and casts a spell over them. A moment later she retrieves a crystal from the container. The crystal is clear except for a dark, murky coloration at the center. Take that crystal and see if you can locate any creatures with the disease. If you have any success, please return and let me know.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 40420,item2 = 62654}))`
-51. eastkarana/"Tholris", say "You Are Diseased". Gives "Red Crystal" (62618).
+50. eastkarana/"Tholris", say "You Are Diseased". Gives "Red Crystal" (62618).
     - Player: "you are diseased"
       - NPC emote: looks at you indignantly
         - Reply guard: `($saydisease==1)`
@@ -248,27 +247,27 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
       - NPC emote: shakes his head. Then he catches a glimpse of the Mind Crystal and looks thoughtful for a moment. Then he reaches into his pocket and produces two unusual crystals and hands them to you.
         - Reply guard: `($saydisease==3)`
       - Condition: `(($text=~/you are diseased/i) && plugin::check_hasitem($client, 62846))`
-52. freeportwest/"Shana Liskia", hand "Red Crystal" (62618) + "Violet Crystal" (62619). Gives "Letter to Corun" (62655).
+51. freeportwest/"Shana Liskia", hand "Red Crystal" (62618) + "Violet Crystal" (62619). Gives "Letter to Corun" (62655).
     - event_trade NPC say: Ah, well, it seems as though the crystal was attuned to these other crystals. They must have come in contact with a rather large element of the disease, otherwise I just can't see how the Mind Crystal would have noticed them. These crystals were created by someone with more experience than I have in this area. I will examine them further and attempt to learn something from them. I can tell now, though, that they were probably created in a fashion similar to the one I used to create the Mind Crystal. Shana pulls out a piece of parchment and writes a note. She gives you the note and says, Take this note to Corun along with the Mind Crystal. He can use the crystal and my notes to seek out the plague in whatever fashion he thinks is best. I need to get to work investigating these new crystals.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 62618,item2 = 62619}))`
-53. qrg/"Corun Finisc", hand "Mind Crystal" (62846) + "Letter to Corun" (62655). Gives "Red Dogwood Seed" (62844).
+52. qrg/"Corun Finisc", hand "Mind Crystal" (62846) + "Letter to Corun" (62655). Gives "Red Dogwood Seed" (62844).
     - event_trade NPC emote: looks at the crystal for a moment; confusion, disgust and curiosity chasing each other across his tired face. After reading the letter, he looks up at you.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 62846,item2 = 62655}))`
     - event_trade NPC say: This crystal seems strange, but if you and this Shana believe that it will help, then I know just the person to put it to work.' Corun puts the note and the crystal into a pouch. He reaches into another pouch to retrieve something small and hands it to you. 'This seed was brought to us by a druid of great skill. It should provide the cure we seek, but we do not know the place or circumstances under which to plant it. We have agreed to leave it to you to find that place and that time. I urge you to hasten, we do not know how long it will be until the plague is released upon us in earnest. The only thing that I know is that there may be a link between those that created the disease and the Plane of Discord. A very tenuous link, but keep the seed with you at all times, you never know when you will need it. May the Mother smile on your effort.
-54. natimbi/"Ranger 1 5", say "Hail". Gives "Senvial's Blessing" (62621).
+53. natimbi/"Ranger 1 5", say "Hail". Gives "Senvial's Blessing" (62621).
     - NPC say: Thank you for freeing me, . I am not sure how it is that you broke the power that commanded me, but for that I am very grateful. The water spirit looks at you carefully before speaking again. I sense that you will need my aid in the future. To repay my debt to you I give you my blessing. This is no mean thing, it carries with it a portion of my own power. Mine is the cool rain and soft mist. I am the essence of morning dew and the lazy fog. I have no doubt that you will use it wisely. There are more of my kin enslaved by these beasts and others like them. You appear to have the power to rescue them as you have me. I am not a being of foresight or far-seeing, mine is the realm of small, gentle things, but even I can see that you are a being of portent. I am honored to have met you. I must return to my realm. I shall never forget this place and what it has made me do, nor shall I forget the one thing that freed me.
-55. bloodfields/"Ranger 1 5", say "Hail". Gives "Grinbik's Blessing" (62622).
+54. bloodfields/"Ranger 1 5", say "Hail". Gives "Grinbik's Blessing" (62622).
     - NPC say: shouts Aaaah! A deep rumbling voice flows along the ground. I thank you, . You have freed me from such torture! Imagine me, Grinbik the Fertile, forced to kill and destroy! I was created to nurture and protect! I must go back to my own home and begin again to be what I was ment to be. I am honored and grateful to you for saving me. I see that you carry a powerful seed, nearly a seedling with its desire to grow! As my first act upon regaining myself I must aid you. If you wish that seed to flourish, you must find the land here that remains fertile. It is a rare thing but I have seen it. Take with you my blessing. This is a portion of my own power and it will aid you and that seed. I also know that my cousin Senvial is a slave here somewhere. You will need his aid as well to achieve your goal. Deliver that seedling and our blessings into the fertile ground and it will grow very quickly indeed! Thank you again ! All present should praise you for your kind heart and warrior soul.
-56. Combine recipe recipe:13412 to set `ranger_epic` to `3`.
-57. jaggedpine/"Red Dogwood Treant", say "Hail". Gives "Red Dogwood Heartwood" (62623).
+55. Combine recipe recipe:13412 to set `ranger_epic` to `3`.
+56. jaggedpine/"Red Dogwood Treant", say "Hail". Gives "Red Dogwood Heartwood" (62623).
     - Player: "hail"
       - NPC emote: looks about for a moment. It peers at the sky and the earth for a while. It then looks down and says, We finally meet. Thank you for helping me to grow. I understand that I have been blessed by spirits of rain and earth and that is why I can speak to you and move. You have given me much, my friend. Now I would give something to you. The great treant gently pulls a small piece of wood from its bole. The wood is hard and dark. It then reaches down with one of its high branches and plucks a singular flower, smaller and of blue color that differs from the white of the others. The petals fall from the flower as he reaches out and hands you these two items. I have been with you and your people for a while. I know what you seek. That seed will grow the plant you need. The heartwood is for you. May it serve you well.
       - Condition: `(e.message:findi("hail") and treesize>=8 and qglobals["ranger_epic"] == "3")`
-58. dranik/"Ranger 1 5", hand "Red Dogwood Heartwood" (62623). Gives "Wind-blessed Heartwood" (62626).
-59. qrg/"Corun Finisc", hand "Spring Dogwood Seed" (62624). Gives "Block of Purest Silver" (62625).
+57. dranik/"Ranger 1 5", hand "Red Dogwood Heartwood" (62623). Gives "Wind-blessed Heartwood" (62626).
+58. qrg/"Corun Finisc", hand "Spring Dogwood Seed" (62624). Gives "Block of Purest Silver" (62625).
     - event_trade NPC emote: look at the seed, perplexed for a moment. Then he suddenly goes into motion. He pulls a sheaf of papers from a backpack and riffles through them. He mutters to himself as he compares the seed to sketches in the notes. This is it! If we plant this seed and its seeds widely enough, it should protect and even cure the Maiden's Hair with its pollen! You've done it! Thank you! The Glade thanks you. You've saved many good and fair things from death. Corun looks crestfallen for a moment. I only wish I had something to give you to express our appreciation. From what you have told me I think this may help you. It is a rare metal, I hope you can find a worthy use for it.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 62624}))`
-60. Combine in "Planar Fletching Kit" (17762): "Wind-blessed Heartwood" (62626), "Block of Purest Silver" (62625). Produces "Heartwood Blade" (62627). Requires Fletching.
+59. Combine in "Planar Fletching Kit" (17762): "Wind-blessed Heartwood" (62626), "Block of Purest Silver" (62625). Produces "Heartwood Blade" (62627). Requires Fletching.
 
 ## Epic 2.0
 
@@ -276,7 +275,7 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 <a id="epic-item-62649"></a>
 
-**Earlier reward routes required by this graph path:** ["Swiftwind" (20487)](#epic-item-20487), ["Earthcaller" (20488)](#epic-item-20488), ["Heartwood Blade" (62627)](#epic-item-62627).
+**Earlier reward routes required by this graph path:** ["Swiftwind" (20487)](#epic-item-20487), ["Heartwood Blade" (62627)](#epic-item-62627).
 Revisit those instructions if another copy of a consumed item is needed.
 
 1. Loot "Crooked Cage" (32042) from "a Broken Skull bruiser" (NPC 226002) in `torgiran`. Drop cache: 9.9701% chance per kill.

@@ -72,6 +72,10 @@ _SPOKEN = re.compile(
 _FLAG_LUA = re.compile(
     r"""qglobals\[\s*["']([A-Za-z0-9_]+)["']\s*\]\s*(~=|==|>=|<=|>|<)\s*(nil|"?\d+"?)""",
 )
+# The 1.5 -> 2.0 scripts also compare tonumber(qglobals["..."]).
+_FLAG_LUA_NUMBER = re.compile(
+    r"""tonumber\s*\(\s*qglobals\[\s*["']([A-Za-z0-9_]+)["']\s*\]\s*\)\s*(==|>=|<=|>|<)\s*["']?(-?\d+)["']?""",
+)
 _FLAG_PERL = re.compile(
     r"""\$qglobals\{\s*["']?([A-Za-z0-9_]+)["']?\s*\}\s*(==|>=|<=|>|<)\s*["']?(\d+)""",
 )
@@ -1308,6 +1312,8 @@ def _zoneflag_name(zone_id: int | str) -> str:
 def _flags(text: str) -> list[tuple[str, str]]:
     """Quest identifier and the comparison, such as cleric_epic >= 3."""
     found: list[tuple[str, str]] = []
+    for name, op, value in _FLAG_LUA_NUMBER.findall(text):
+        found.append((name, f"{op}{value}"))
     for name, op, value in _FLAG_LUA.findall(text):
         if value == "nil":
             if op == "~=":
@@ -2083,7 +2089,7 @@ def _emit_span(
     cond = text[span[0] : span[1]]
     holds = _item_gates(cond)
     flags = _flags(cond)
-    either = bool(_OR.search(cond) and not _AND.search(cond) and (holds or len(flags) > 1))
+    either = bool(_OR.search(cond) and not _AND.search(cond) and (len(holds) + len(flags) > 1))
     group = f"{say_id}#branch:{span[0]}"
     for name, at in flags:
         edge: dict[str, object] = {
@@ -2097,6 +2103,7 @@ def _emit_span(
         edge["group"] = group
         if either:
             edge["op"] = "or"
+            edge["or_group"] = group
         edges.append(edge)
     for faction_id, at in _faction_needs(cond, text):
         edge = {
@@ -2120,6 +2127,8 @@ def _emit_span(
         }
         if op or either:
             edge["op"] = op or "or"
+            if edge["op"] == "or":
+                edge["or_group"] = group
         edges.append(edge)
     sets_here = []
     for match in _GLOBAL.finditer(text):
@@ -2145,11 +2154,18 @@ def _emit_span(
         seen.update(
             item
             for edge in edges
-            if edge.get("rel") == "needs" and edge.get("from") == say_id
+            if edge.get("rel") == "needs"
+            and (edge.get("group") == group if sets_here
+                 else edge.get("from") == say_id)
             if isinstance(item := edge.get("item"), int)
         )
         for ancestor in ancestors:
-            for item_id, op in _item_gates(text[ancestor[0] : ancestor[1]]):
+            ancestor_cond = text[ancestor[0] : ancestor[1]]
+            ancestor_items = _item_gates(ancestor_cond)
+            ancestor_flags = _flags(ancestor_cond)
+            ancestor_or = bool(_OR.search(ancestor_cond) and not _AND.search(ancestor_cond)
+                               and len(ancestor_items) + len(ancestor_flags) > 1)
+            for item_id, op in ancestor_items:
                 if item_id in seen:
                     continue
                 seen.add(item_id)
@@ -2161,8 +2177,10 @@ def _emit_span(
                     "item": item_id,
                     "group": group,
                 }
-                if op:
-                    edge["op"] = op
+                if op or ancestor_or:
+                    edge["op"] = op or "or"
+                    if edge["op"] == "or":
+                        edge["or_group"] = f"{say_id}#branch:{ancestor[0]}"
                 edges.append(edge)
         # A reward in an inner SAY branch also requires the enclosing guards.
         # Example: Llara's `ruathey` branch is nested under
@@ -2171,7 +2189,11 @@ def _emit_span(
         # unrelated outer conditions to every SAY keyword in the file.
         seen_flags = {(name, at) for name, at in flags}
         for ancestor in ancestors:
-            for name, at in _flags(text[ancestor[0] : ancestor[1]]):
+            ancestor_cond = text[ancestor[0] : ancestor[1]]
+            ancestor_flags = _flags(ancestor_cond)
+            ancestor_or = bool(_OR.search(ancestor_cond) and not _AND.search(ancestor_cond)
+                               and len(_item_gates(ancestor_cond)) + len(ancestor_flags) > 1)
+            for name, at in ancestor_flags:
                 if (name, at) in seen_flags:
                     continue
                 seen_flags.add((name, at))
@@ -2184,6 +2206,9 @@ def _emit_span(
                     "at": at,
                 }
                 edge["group"] = group
+                if ancestor_or:
+                    edge["op"] = "or"
+                    edge["or_group"] = f"{say_id}#branch:{ancestor[0]}"
                 edges.append(edge)
     for match in sets_here:
         edge = {

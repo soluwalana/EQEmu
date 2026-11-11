@@ -74,6 +74,9 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 <a id="epic-item-9955"></a>
 
+**Earlier reward routes required by this graph path:** ["Water Sprinkler of Nem Ankh" (5532)](#epic-item-5532).
+Revisit those instructions if another copy of a consumed item is needed.
+
 1. erudnext/"Lumi Stergnon", say "Hail".
     - Player: "hail"
       - NPC say: Peace and tranquility be with you. .  Are you a [new acolyte of peace] or are you [here to pay homage] to the child of tranquility?
@@ -89,24 +92,7 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 6. qeynos/"Wolten Grafe", hand "Box of Bones" (13882). Gives "Water Flask" (13006).
     - event_trade NPC say: You have done well. Let it be known to all that you fight for the Rainkeeper. Go and continue the battle.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 13882}))`
-7. timorous/"Omat Vastsea", say "Destruction". Gives "Talisman of the Plasmatic Priests" (56010).
-    - Player: "destruction"
-      - NPC say: They are in hiding, the few alcoves that I managed to find were shrouded and hidden. Take this signet and find the keeper for each alcove. Show it to him and he will drop the veil. Strike fast and exterminate the camp before he is able to cloak the camp again. Return the talisman to me with proof of the deaths of the three remaining high priests. Once you have done this, I will send you to my brother with my blessings.
-      - Condition: `($text=~/destruction/i)`
-      - Linked from "Plasmatic Priests" (explicit prompt).
-8. lavastorm/"Laura Rako", hand "Talisman of the Plasmatic Priests" (56010).
-9. Spawns "High Priestess Shima" (npc:27128) after the hand-in.
-10. Kill "High Priestess Shima" (NPC 27128) in `lavastorm` and loot "Head of High Priestess Shima" (5768).
-11. greatdivide/"Gavon Morant", hand "Talisman of the Plasmatic Priests" (56010).
-12. Spawns "High Priest Maltan" (npc:118211) after the hand-in.
-13. Kill "High Priest Maltan" (NPC 118211) in `greatdivide` and loot "Head of High Priest Maltan" (6505).
-14. scarlet/"Jimmic Adle", hand "Talisman of the Plasmatic Priests" (56010).
-15. Spawns "High Priest Valon" (npc:175308) after the hand-in.
-16. Kill "High Priest Valon" (NPC 175308) in `scarlet` and loot "Head of High Priest Valon" (6506).
-17. timorous/"Omat Vastsea", hand "Head of High Priestess Shima" (5768) + "Head of High Priest Maltan" (6505) + "Head of High Priest Valon" (6506) + "Talisman of the Plasmatic Priests" (56010).
-    - event_item NPC say: Excellent. I think this was the last of the organized Plasmatic Priests. You have done well. I will send you to my brother with my blessing. Thank you for your assistance.
-      - Event guard: `(plugin::check_handin(\%itemcount, 5768 => 1, 6505 => 1, 6506 => 1, 56010 => 1))`
-18. nedaria/"Tavon Vastsea", say "Hail". Sets `cleric_epic` to `1`.
+7. nedaria/"Tavon Vastsea", say "Hail". Sets `cleric_epic` to `1`.
     - Player: "hail"
       - NPC say: I hear you were able to put that shield to some use. That is good to hear. I was able to find some news on the leader, someone matching his description has been seen on the other side of the Wayfarer's portal in the Realm of Discord. Please visit my friend Cryssa, at the camp in Discord. She has been working on tracking the Disciple's movement in Discord.
         - Reply guard: `(e.other:HasItem(9955) and qglobals["cleric20"] ~= nil)`
@@ -116,50 +102,50 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
         - Reply guard: ``
       - Condition: `(e.other:Class() == "Cleric")`
       - Condition: `(e.message:findi("hail"))`
-19. Loot "Encrypted Note" (7135) from "a noc bloodluster" (NPC 283111) in `barindu`. Drop cache: 1.575% chance per kill.
-20. abysmal/"Shav The Cryptologist", hand "Encrypted Note" (7135).
+8. Loot "Encrypted Note" (7135) from "a noc bloodluster" (NPC 283111) in `barindu`. Drop cache: 1.575% chance per kill.
+9. abysmal/"Shav The Cryptologist", hand "Encrypted Note" (7135).
     - event_trade NPC say: Interesting, you say someone who claims to be part of the Brotherhood wrote this? This is one of the dialects used by the Legion. I am the only one able to read or write any of their languages, and this is the first I have seen of this note. From what I can tell, the author is trying to arrange a meeting with the Muramites. It sounds like the contact spot is pre-arranged, as it is only vaguely referred to here. I doubt this is the first note of this nature, perhaps if you could find earlier correspondence we can find the location of the camp.
       - Event guard: `qglobals["cleric_epic"] ~= nil and qglobals["cleric_epic"] == "1" and item_lib.check_turn_in(e.trade, {item1 = 7135})`
-21. Loot "Ripped Quarter of a Map" (9476) from "a ra`tuk bonebreaker" (NPC 284032) in `ferubi`. Drop cache: 5.6014% chance per kill.
-22. Loot "Shredded Quarter of a Map" (9447) from "a kyv eyecollector" (NPC 284052) in `ferubi`. Drop cache: 5.0901% chance per kill.
-23. Loot "Tattered Quarter of a Map" (9477) from "a mastruq warfiend" (NPC 284003) in `ferubi`. Drop cache: 5.3269% chance per kill.
-24. Loot "Torn Quarter of a Map" (8778) from "an aneuk bone binder" (NPC 284035) in `ferubi`. Drop cache: 5.1778% chance per kill.
-25. abysmal/"Shav The Cryptologist", hand "Ripped Quarter of a Map" (9476) + "Shredded Quarter of a Map" (9447) + "Tattered Quarter of a Map" (9477) + "Torn Quarter of a Map" (8778). Gives "Assembled Map" (56015).
+10. Loot "Ripped Quarter of a Map" (9476) from "a ra`tuk bonebreaker" (NPC 284032) in `ferubi`. Drop cache: 5.6014% chance per kill.
+11. Loot "Shredded Quarter of a Map" (9447) from "a kyv eyecollector" (NPC 284052) in `ferubi`. Drop cache: 5.0901% chance per kill.
+12. Loot "Tattered Quarter of a Map" (9477) from "a mastruq warfiend" (NPC 284003) in `ferubi`. Drop cache: 5.3269% chance per kill.
+13. Loot "Torn Quarter of a Map" (8778) from "an aneuk bone binder" (NPC 284035) in `ferubi`. Drop cache: 5.1778% chance per kill.
+14. abysmal/"Shav The Cryptologist", hand "Ripped Quarter of a Map" (9476) + "Shredded Quarter of a Map" (9447) + "Tattered Quarter of a Map" (9477) + "Torn Quarter of a Map" (8778). Gives "Assembled Map" (56015).
     - event_trade NPC say: Ahh yes, this is exactly what we needed.' She scratches a few notes down on a piece of paper. 'Bring this to Tweister in Nedaria's Landing. She will tell you the location of the camp.
       - Event guard: `qglobals["cleric_epic"] ~= nil and qglobals["cleric_epic"] == "2" and item_lib.check_turn_in(e.trade, {item1 = 9476, item2 = 9447, item3 = 9477, item4 = 8778})`
-26. **Unverified quest flag:** `cleric_epic` `==1` required.
-27. nedaria/"Cartographer Tweister", hand "Assembled Map" (56015).
+15. **Unverified quest flag:** `cleric_epic` `==1` required.
+16. nedaria/"Cartographer Tweister", hand "Assembled Map" (56015).
     - event_trade NPC emote: pulls out a map and a compass and begins triangulating the coordinates, 'This location is in the South Western corner of Lesser Faydark.
       - Event guard: `(qglobals["cleric_epic"] ~= nil and qglobals["cleric_epic"] >= "3" and item_lib.check_turn_in(e.trade, {item1 = 56015}))`
-28. Kill lfaydark/"A Wayfarer".
-29. Spawns "Taskmaster Mirot" (npc:57151) via `lfaydark/taskmaster mirot#signal:1`.
-30. Kill "Taskmaster Mirot" (NPC 57151) in `lfaydark` and loot "Magically Sealed Letter" (9585).
-31. nedaria/"Tavon Vastsea", hand "Magically Sealed Letter" (9585). Gives "Dark Disciples Notice of Service" (9591).
+17. Kill lfaydark/"A Wayfarer".
+18. Spawns "Taskmaster Mirot" (npc:57151) via `lfaydark/taskmaster mirot#signal:1`.
+19. Kill "Taskmaster Mirot" (NPC 57151) in `lfaydark` and loot "Magically Sealed Letter" (9585).
+20. nedaria/"Tavon Vastsea", hand "Magically Sealed Letter" (9585). Gives "Dark Disciples Notice of Service" (9591).
     - event_trade NPC emote: opens the envelope and pulls out a short letter, his brow furrows as his eyes dance across the pages. 'This is truly grim news. Until now I held hopes that the rumors held no truth, but this is irrefutable evidence of their existence. They call themselves the Disciples of Discord. As we speak they are gaining information for the Legion, gathering information about races that would prove to be powerful allies or enemies for the Legion. Bring this note to Plavo, I do not know where he is, but he must be found. His scouts may already have found what they are looking for, so make haste.
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 9585}))`
-32. wakening/"Scout Leader Plavo", hand "Dark Disciples Notice of Service" (9591).
+21. wakening/"Scout Leader Plavo", hand "Dark Disciples Notice of Service" (9591).
     - event_trade NPC say: You are from the Faydwer camp are you? I'm not terribly familiar with the faces from there. Anyway, the scouts have been sent out, and are gathering the "parts" that we believe the Legion will need to prepare for the incursion into our realm. If we are to find their good graces, we must prove that we will stop at nothing to [aid] them.
       - Event guard: `qglobals["cleric_epic"] ~= nil and qglobals["cleric_epic"] >= "4" and item_lib.check_turn_in(e.trade, {item1 = 9591})`
-33. Loot "Shissar Cerebral Cortex" (9945) from "an elite temple guard" (NPC 162026) in `ssratemple`. Drop cache: 43% chance per kill.
-34. westwastes/"Scout Pirri", say "Hail".
+22. Loot "Shissar Cerebral Cortex" (9945) from "an elite temple guard" (NPC 162026) in `ssratemple`. Drop cache: 43% chance per kill.
+23. westwastes/"Scout Pirri", say "Hail".
     - Player: "hail"
       - NPC say: You are here to "help"? I think not. I will not share my glory with anyone. The only way you will get this is by prying it from the clasped fingers of my dead hand
       - Condition: `(qglobals["cleric_epic"] ~= nil and qglobals["cleric_epic"] >= "5" and e.message:findi("hail"))`
-35. Spawns "Scout Pirri" (npc:120112) via `westwastes/scout pirri#hail`.
-36. Kill "Scout Pirri" (NPC 120112) in `westwastes` and loot "Dragon Cerebrum" (9948).
-37. Spawns "sheleric vis" (npc:179046) via `akheva/shei vinitras#event_spawn`.
-38. Kill "sheleric vis" (NPC 179046) in `akheva` and loot "Akhevan Brain Stem" (9597).
-39. wakening/"Scout Leader Plavo", hand "Shissar Cerebral Cortex" (9945) + "Dragon Cerebrum" (9948) + "Akhevan Brain Stem" (9597).
+24. Spawns "Scout Pirri" (npc:120112) via `westwastes/scout pirri#hail`.
+25. Kill "Scout Pirri" (NPC 120112) in `westwastes` and loot "Dragon Cerebrum" (9948).
+26. Spawns "sheleric vis" (npc:179046) via `akheva/shei vinitras#event_spawn`.
+27. Kill "sheleric vis" (NPC 179046) in `akheva` and loot "Akhevan Brain Stem" (9597).
+28. wakening/"Scout Leader Plavo", hand "Shissar Cerebral Cortex" (9945) + "Dragon Cerebrum" (9948) + "Akhevan Brain Stem" (9597).
     - event_trade NPC say: Excellent work! The leader will be pleased. He should be here any moment to collect them.
       - Event guard: `qglobals["cleric_epic"] ~= nil and qglobals["cleric_epic"] >= "5" and item_lib.check_turn_in(e.trade, {item1 = 9945, item2 = 9948, item3 = 9597})`
-40. Spawns "a gilded chest" (npc:119179) via `wakening/dark disciple master#event_death_complete`.
-41. Open "a gilded chest" (NPC 119179) in `wakening` and loot "Aegis of Chaotic Worship" (9954).
-42. Spawns "a murk hatchling" (npc:300084) via `wallofslaughter/a quivering egg#timer:hatch`.
-43. Kill "a murk hatchling" (NPC 300084) in `wallofslaughter` and loot "Murkglider Plasma" (13639).
-44. Loot "Bazu Plasma" (13658) from "Bazu Bonesmasher" (NPC 300000) in `wallofslaughter`. Drop cache: 43.0881% chance per kill.
-45. Loot "Pyrilen Plasma" (13667) from "a dragorn assassin" (NPC 300046) in `wallofslaughter`. Drop cache: 91.935% chance per kill.
-46. Combine in appropriate tradeskill container: "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing.
-47. Combine in appropriate tradeskill container: "Water Flask" (13006), "Aegis of Chaotic Worship" (9954), "Soul Temper" (14047). Produces "Harmony of the Soul" (9955). Requires Blacksmithing.
+29. Spawns "a gilded chest" (npc:119179) via `wakening/dark disciple master#event_death_complete`.
+30. Open "a gilded chest" (NPC 119179) in `wakening` and loot "Aegis of Chaotic Worship" (9954).
+31. Spawns "a murk hatchling" (npc:300084) via `wallofslaughter/a quivering egg#timer:hatch`.
+32. Kill "a murk hatchling" (NPC 300084) in `wallofslaughter` and loot "Murkglider Plasma" (13639).
+33. Loot "Bazu Plasma" (13658) from "Bazu Bonesmasher" (NPC 300000) in `wallofslaughter`. Drop cache: 43.0881% chance per kill.
+34. Loot "Pyrilen Plasma" (13667) from "a dragorn assassin" (NPC 300046) in `wallofslaughter`. Drop cache: 91.935% chance per kill.
+35. Combine in appropriate tradeskill container: "Murkglider Plasma" (13639), "Bazu Plasma" (13658), "Pyrilen Plasma" (13667). Produces "Soul Temper" (14047). Requires Brewing.
+36. Combine in appropriate tradeskill container: "Water Flask" (13006), "Aegis of Chaotic Worship" (9954), "Soul Temper" (14047). Produces "Harmony of the Soul" (9955). Requires Blacksmithing.
 
 **Unresolved graph dependencies:**
 - Unverified quest flag `cleric_epic` ==1: no acyclic setter
@@ -170,49 +156,42 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 <a id="epic-item-20076"></a>
 
-**Earlier reward routes required by this graph path:** ["Harmony of the Soul" (9955)](#epic-item-9955).
+**Earlier reward routes required by this graph path:** ["Water Sprinkler of Nem Ankh" (5532)](#epic-item-5532), ["Harmony of the Soul" (9955)](#epic-item-9955).
 Revisit those instructions if another copy of a consumed item is needed.
 
-1. timorous/"Omat Vastsea", say "Hail".
-    - Player: "hail"
-      - NPC say: Jhassad told me to notify him the minute you returned.  Hurry down to the beach so you do not miss him again!
-        - Reply guard: `(plugin::check_hasitem($client,28048) && plugin::check_hasitem($client,28049) && plugin::check_hasitem($client,28050))`
-      - NPC emote: bows deeply. 'I have been expecting you, $name. The waters have foretold your arrival. I am High Priest Omat Vastsea of the Triumvirate missionaries. Please feel free to enjoy the quiet solitude of this inn.'
-        - Reply guard: ``
-      - Condition: `($text=~/hail/i)`
-2. dranik/"Natvil", say "Hail". Sets `cleric20` to `1`.
+1. dranik/"Natvil", say "Hail". Sets `cleric20` to `1`.
     - Player: "hail"
       - NPC emote: examines your craftsmanship. 'Impressive, but I'm afraid that the temper was not sufficient to unlock the full potential of the shield. For now you may use it in its current state. I suspect to fully realize the latent potential of the shield you will require a soulstone from the person who it was bound to originally as well as a Globe of Discordant Energy. Return to me when you have that, I will assist you in completing its enhancement.
         - Reply guard: `e.other:HasItem(9955)`
       - NPC say: Greetings, well met, salutations, and good day! I hear you are trying to change the resonance on a shield from Discord. Well I believe that is something with which I can assist you. You will need to have a temper made from some of the native creatures of Discord, you'll need the plasma from one of the giants of Discord, one of those flying squids, and the plasma from one of those fiery women. Brewing the temper should prove no trouble for you. Once you have the temper combine it with the shield in the forge with a flask of water, and it should become attuned to you. Once you are finished return to me, so I may evaluate your work.
         - Reply guard: ``
       - Condition: `qglobals["cleric_epic"] ~= nil and qglobals["cleric_epic"] >= "5" and e.message:findi("hail")`
-3. Loot "Top Section of an Engraved Signet" (9956) from "an ikaav miragenist" (NPC 301015) in `bloodfields`. Drop cache: 6.083% chance per kill.
-4. Loot "Bottom Section of an Engraved Signet" (10399) from "an ikaav castigator" (NPC 301003) in `bloodfields`. Drop cache: 4% chance per kill.
-5. Loot "Center Section of an Engraved Signet" (10235) from "an ikaav deathbeckoner" (NPC 301008) in `bloodfields`. Drop cache: 5.126% chance per kill.
-6. bloodfields/"Cryssa", hand "Top Section of an Engraved Signet" (9956) + "Bottom Section of an Engraved Signet" (10399) + "Center Section of an Engraved Signet" (10235).
+2. Loot "Top Section of an Engraved Signet" (9956) from "an ikaav miragenist" (NPC 301015) in `bloodfields`. Drop cache: 6.083% chance per kill.
+3. Loot "Bottom Section of an Engraved Signet" (10399) from "an ikaav castigator" (NPC 301003) in `bloodfields`. Drop cache: 4% chance per kill.
+4. Loot "Center Section of an Engraved Signet" (10235) from "an ikaav deathbeckoner" (NPC 301008) in `bloodfields`. Drop cache: 5.126% chance per kill.
+5. bloodfields/"Cryssa", hand "Top Section of an Engraved Signet" (9956) + "Bottom Section of an Engraved Signet" (10399) + "Center Section of an Engraved Signet" (10235).
     - event_trade NPC say: Interesting, this appears to be a charm of some sort. If I am correct you can use this to not only locate the camp, but to break whatever illusion they are using to hide it.
       - Event guard: `(qglobals["cleric20"] ~= nil and qglobals["cleric20"] >= "2")`
       - Event guard: `(item_lib.check_turn_in(e.trade, {item1 = 9956, item2 = 10399, item3 = 10235}))`
-7. Loot "Dark Red Robe" (12433) from "default" in `wallofslaughter`.
-8. timorous/"Omat Vastsea", hand "Dark Red Robe" (12433). Gives "Robe of Plasmatic Priesthood" (12509).
+6. Loot "Dark Red Robe" (12433) from "default" in `wallofslaughter`.
+7. timorous/"Omat Vastsea", hand "Dark Red Robe" (12433). Gives "Robe of Plasmatic Priesthood" (12509).
     - event_item NPC say: What? You found this on a Disciple in Discord?  This is a robe of the Plasmatic Priesthood, without question.  Bring this to Cecilia quickly, hopefully she will be able to divine their intentions.
       - Event guard: `($client->GetGlobal("cleric20") >= 2 && plugin::check_handin(\%itemcount, 12433 => 1))`
-9. skyfire/"Warder Cecilia", hand "Robe of Plasmatic Priesthood" (12509).
+8. skyfire/"Warder Cecilia", hand "Robe of Plasmatic Priesthood" (12509).
     - event_item NPC say: Yes, Omat told me you were coming.  Let me see what I can divine from the robe.'  She holds the robe to her temple and closes her eyes.  You notice a brief glow from behind her eyelids before her eyes shoot open. 'This is truly terrible news.  The Plasmatic Priests are still fighting for the destruction of Norrath.  Fennin Ro's voice is silent to them now.  The remainder of their power faded with the Pantheon's interest in mortal affairs.  In their mad pursuit of power, they have allied themselves with Mata Muram.  They plan on trading their home-world for the promise of power.  Even now their leader is within the Muramite Trials.  Trying to earn a position of rank within the Legion.  Once he completes the trials we may lose our opportunity.  I am afraid you will have to visit the Labyrinth's trials and stop him before he is able to complete them.  Best of luck to you.'
       - Event guard: `($client->GetGlobal("cleric20") >= 2 && plugin::check_handin(\%itemcount, 12509 => 1))`
-10. Kill "Shell of the Master" (NPC 304013) in `chambersa` and loot "Journal of the Prime Disciple" (56016).
-11. Loot "Torn Journal Page" (56012) from "a lightning warrior staticfist" (NPC 316007) in `provinggrounds`. Drop cache: 5.9853% chance per kill.
-12. Loot "Ripped Journal Page" (56011) from "Girplan Scavenger" (NPC 316031) in `provinggrounds`. Drop cache: 100% chance per kill.
-13. Combine in "Journal of the Prime Disciple" (56016): "Torn Journal Page" (56012), "Ripped Journal Page" (56011). Produces "Ethereal Disciple's Journal" (56013). Requires Remove Traps.
-14. timorous/"Omat Vastsea", hand "Ethereal Disciple's Journal" (56013).
+9. Kill "Shell of the Master" (NPC 304013) in `chambersa` and loot "Journal of the Prime Disciple" (56016).
+10. Loot "Torn Journal Page" (56012) from "a lightning warrior staticfist" (NPC 316007) in `provinggrounds`. Drop cache: 5.9853% chance per kill.
+11. Loot "Ripped Journal Page" (56011) from "Girplan Scavenger" (NPC 316031) in `provinggrounds`. Drop cache: 100% chance per kill.
+12. Combine in "Journal of the Prime Disciple" (56016): "Torn Journal Page" (56012), "Ripped Journal Page" (56011). Produces "Ethereal Disciple's Journal" (56013). Requires Remove Traps.
+13. timorous/"Omat Vastsea", hand "Ethereal Disciple's Journal" (56013).
     - event_item NPC emote: grows pale as he reads the journal, 'It is just as a feared. I can't believe he is on his way here.
       - Event guard: `($client->GetGlobal("cleric20") >= 2 && plugin::check_handin(\%itemcount, 56013 => 1))`
     - event_item NPC message: The walls of the cove tremble as the Prime Disciple appears before Omat. 'Well this is an unexpected surprise, I came looking for Omat, however revenge on you, $name, will be that much sweeter.
-15. Spawns "Gefaari Drokaz" (npc:96368) after the hand-in.
-16. Kill "Gefaari Drokaz" (NPC 96368) in `timorous` and loot "Soulshard of Zordak" (56014).
-17. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
-18. dranik/"Natvil", hand "Soulshard of Zordak" (56014) + "Globe of Discordant Energy" (47100) + "Harmony of the Soul" (9955). Gives "Aegis of Superior Divinity" (20076).
+14. Spawns "Gefaari Drokaz" (npc:96368) after the hand-in.
+15. Kill "Gefaari Drokaz" (NPC 96368) in `timorous` and loot "Soulshard of Zordak" (56014).
+16. global/"Global Player", say "Recipe:19908". Gives "Globe of Discordant Energy" (47100).
+17. dranik/"Natvil", hand "Soulshard of Zordak" (56014) + "Globe of Discordant Energy" (47100) + "Harmony of the Soul" (9955). Gives "Aegis of Superior Divinity" (20076).
     - event_trade NPC say: Amazing! You have found everything.' He then pulls deftly complete the shield. 'Quickly, take this back. It will bind itself to you. You have done well.
       - Event guard: `item_lib.check_turn_in(e.trade, {item1 = 56014, item2 = 47100, item3 = 9955})`
     - event_trade NPC message: You have gained 10 ability points!

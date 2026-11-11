@@ -28,11 +28,29 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 
 <a id="epic-item-57400"></a>
 
-1. shadeweaver/"Wunshi Kashra", say "Hail".
+**Earlier reward routes required by this graph path:** ["Spear of Fate" (10651)](#epic-item-10651).
+Revisit those instructions if another copy of a consumed item is needed.
+
+1. freeportwest/"Elder Spirit Of Enlightenment", say "Hail".
     - Player: "hail"
-      - NPC say: I am glad to see you do all you can to aid the spirits. Their grasp on existence grows weaker every day and it breaks my heart. With you, though, we may stand a chance. Now, it is up to you to find two dark creatures that carry some treasures that we need and they will not be willing to part with them. First you must find a [gruesome being] whose goal is to steal spirits to make it stronger. It wears a ring that it obtained from an evil enchanter who used it to charm the very spirits of its prey. The [second beast] is just as foul.
-      - Condition: `(e.message:findi("hail") and qglobals["shaman_epic"] == "3")`
-2. **Unverified quest flag:** `shaman_epic` `==1` required.
+      - NPC emote: eyes you with an ageless wisdom.
+      - NPC say: Ah, your spirit shines brightly. Should I know you?
+      - Condition: `(e.other:Class() == "Shaman")`
+      - Condition: `(e.other:HasItem(10651) or e.other:HasItem(36223) or qglobals["shaman_pre"] == "3")`
+      - Condition: `(e.message:findi("hail"))`
+2. freeportwest/"Elder Spirit Of Enlightenment", say "Shaman". Sets `shaman_epic` to `1`.
+    - Player: "shaman"
+      - NPC say: Ah, yes. You are not only a shaman, but one who has passed the tests of the heyokah. There are many problems that face us now and I grow weaker by the day. If you feel you are ready to bear a great burden and help all of those like us, including the immortals that charge our essence and consciousness, say [it is so].
+      - Condition: `(e.other:Class() == "Shaman")`
+      - Condition: `(e.other:HasItem(10651) or e.other:HasItem(36223) or qglobals["shaman_pre"] == "3")`
+      - Condition: `(e.message:findi("shaman"))`
+      - Linked from "wasichu" (explicit prompt).
+      - Linked from "great heyokah" (explicit prompt).
+      - Linked from "wise" (explicit prompt).
+      - Linked from "trials of justice" (explicit prompt).
+      - Linked from "troubled" (explicit prompt).
+      - Linked from "meaningful way" (explicit prompt).
+      - Linked from "take part" (explicit prompt).
 3. shadeweaver/"Wunshi Kashra", say "Hand:Platinum:1000". Gives "Thatched Medicine Bag" (57704).
 4. Loot "Bleak Fungus" (57620) from "Shuddering Fungus" (NPC 157118) in `fungusgrove`. Drop cache: 71.4286% chance per kill.
 5. Spawns "Ancient Megalodon" (npc:51160) via `lakerathe/#kimm mcshannel#up to it`.
@@ -103,9 +121,6 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
       - Condition: `(e.message:findi("acknowledge") and qglobals["shaman_epic"] == "6")`
       - Linked from "take part" (explicit prompt).
 
-**Unresolved graph dependencies:**
-- Unverified quest flag `shaman_epic` ==1: no acyclic setter
-
 ## Epic 2.0
 
 ### "Blessed Spiritstaff of the Heyokah" (57405)
@@ -115,7 +130,13 @@ Generated directly from quest-graph item rewards. Unresolved dependencies are ma
 **Earlier reward routes required by this graph path:** ["Crafted Talisman of Fates" (57400)](#epic-item-57400).
 Revisit those instructions if another copy of a consumed item is needed.
 
-1. **Unverified quest flag:** `shaman_epic` `==8` required.
+1. freeportwest/"Elder Spirit Of Enlightenment", say "Prepared To Carry On". Sets `shaman_epic` to `8`.
+    - Player: "prepared to carry on"
+      - NPC say: I knew we could count on you, .  The time for Ruchu is drawing ever nearer, but we still must gather some essential elements. Soon, you will have to cross the barrier into that realm of Discord. Lupot Nukla can help you.
+      - Condition: `(e.other:Class() == "Shaman")`
+      - Condition: `(e.message:findi("prepared to carry on") and e.other:HasItem(57400))`
+      - Linked from "hail" (explicit prompt).
+      - Linked from "acknowledge" (explicit prompt).
 2. fungusgrove/"Lupot Nukla", say "Taken By Force". Sets `shaman_epic` to `9`.
     - Player: "taken by force"
       - NPC say: Over in Taelosia, the peaceful folk there found themselves overcome by the Muramites. They had stolen much of what had meaning to them. If you can track down Undari Perunea she can tell you how to find a sacred necklace of perseverance that was created by her own people, though Norrath's spirits did charm it. You will find Undari near the temples, hiding, and waiting for you. Return the talisman to me.
@@ -169,7 +190,3 @@ Revisit those instructions if another copy of a consumed item is needed.
     - event_trade NPC say: You have heard the stories of the blessings bestowed on some of Norrath's most faithful to the ways of the heyokah. To reward you for all that you've done, the spirits have chosen to bless this talisman and offer it to you as our thanks, for without you, all shaman would have suffered without our presence in this realm. Walk proud, heyokah, and never forget what you are.' All around you, you feel the strength of the spirit world begin to strengthen as the spirit leaves to tend to his wounded companions.
       - Event guard: `(qglobals["shaman_epic"] == "14" and item_lib.check_turn_in(e.trade, {item1 = 57400}))`
     - event_trade NPC message: You have gained 10 ability points!
-
-**Unresolved graph dependencies:**
-- Unverified quest flag `shaman_epic` ==1: no acyclic setter
-- Unverified quest flag `shaman_epic` ==8: no acyclic setter

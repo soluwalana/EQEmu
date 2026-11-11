@@ -183,7 +183,11 @@ Revisit those instructions if another copy of a consumed item is needed.
 1. Kill dranik/"A Minion Of Lhranc".
 2. Spawns "Lhranc" (npc:336250) via `dranik/filligno the slayer#signal:1`.
 3. Kill "Lhranc" (NPC 336250) in `dranik` and loot "Essence of the Shadowknight" (55903).
-4. **Unverified quest flag:** `shadowknight_epic` `==9` required.
+4. poknowledge/"Gilina Yilzior", say "Vision". Sets `shadowknight_epic` to `9`.
+    - Player: "vision"
+      - NPC say: My recent vision was of Lhranc. Perhaps you remember him, perhaps not. In any case, his spirit has returned from the dead. He now seeks revenge on those who killed him. There is something sinister behind his return. What exactly is going on, I do not know at this time, but I fear the worst. You must find Lhranc and [destroy] him.
+      - Condition: `(e.other:Class() == "Shadow Knight")`
+      - Condition: `(e.message:findi("vision") and e.other:HasItem(50003))`
 5. Loot "Kilidna's Head" (19098) from "Kilidna" (NPC 90186) in `citymist`. Drop cache: 100% chance per kill.
 6. poknowledge/"Gilina Yilzior", hand "Kilidna's Head" (19098).
     - event_trade NPC emote: takes the head from you and holds it by the hair. Gilina casts a small spell and the head springs to life.  'Talk, Kilidna. What has happened to you?' Kilidna's head begins to sob. 'I am sorry, master. I was corrupted by evil magic! Now look at me! I dare say I will not be able to finish my studies any time soon.' Gilina scowls, 'What did you find out while in the city of mist? Tell me now!' 'Well master, it seems that when Innoruuk's Voice was summoned to this plane, it drew the attention of many [powerful beings].'
@@ -209,4 +213,3 @@ Revisit those instructions if another copy of a consumed item is needed.
 
 **Unresolved graph dependencies:**
 - Unverified quest flag `shadowknight_epic` ==1: no acyclic setter
-- Unverified quest flag `shadowknight_epic` ==9: no acyclic setter

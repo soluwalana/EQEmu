@@ -273,10 +273,18 @@ class AcquisitionCatalog:
         if row is None:
             return None
         if isinstance(row, dict):
-            return CatalogDrop(int(row["npc"]), str(row.get("name") or ""),
-                               str(row.get("where") or "?"), float(row["chance"]))
-        return CatalogDrop(int(row.npc_id), str(row.name or ""),
-                           str(row.zone or "?"), float(row.chance))
+            return CatalogDrop(
+                int(row["npc"]),
+                str(row.get("name") or ""),
+                str(row.get("where") or "?"),
+                float(row["chance"]),
+            )
+        return CatalogDrop(
+            int(row.npc_id),
+            str(row.name or ""),
+            str(row.zone or "?"),
+            float(row.chance),
+        )
 
     def merchant(self, iid: int) -> CatalogMerchant | None:
         found = self._merchants.best(iid)
@@ -284,22 +292,33 @@ class AcquisitionCatalog:
             return None
         if isinstance(found, tuple):
             row, cost = found
-            return CatalogMerchant(int(row.npc_id), str(row.name or ""),
-                                   str(row.zone or "?"), cost)
-        return CatalogMerchant(int(found["npc"]), str(found.get("name") or ""),
-                               str(found.get("where") or "?"), None)
+            return CatalogMerchant(
+                int(row.npc_id), str(row.name or ""), str(row.zone or "?"), cost
+            )
+        return CatalogMerchant(
+            int(found["npc"]),
+            str(found.get("name") or ""),
+            str(found.get("where") or "?"),
+            None,
+        )
 
     def recipe(self, iid: int) -> CatalogRecipe | None:
         row = self._recipes.for_item(iid)
         if row is None:
             return None
         if isinstance(row, dict):
-            return CatalogRecipe(int(row["id"]),
-                                 tuple((int(i), int(n)) for i, n in row["components"]),
-                                 int(row.get("container") or 0), str(row.get("name") or ""))
-        return CatalogRecipe(int(row.id),
-                             tuple((int(i), int(n)) for i, n in row.components),
-                             int(row.container or 0), str(row.name or ""))
+            return CatalogRecipe(
+                int(row["id"]),
+                tuple((int(i), int(n)) for i, n in row["components"]),
+                int(row.get("container") or 0),
+                str(row.get("name") or ""),
+            )
+        return CatalogRecipe(
+            int(row.id),
+            tuple((int(i), int(n)) for i, n in row.components),
+            int(row.container or 0),
+            str(row.name or ""),
+        )
 
 
 class AcquisitionCycle(Exception):
@@ -336,13 +355,25 @@ class Planner:
     ) -> None:
         if key not in self.emitted:
             self.emitted.add(key)
-            self.steps.append(Step(key, text, actor, action, payload, utterance, group,
-                                   produced_items=set(produced_items)))
+            self.steps.append(
+                Step(
+                    key,
+                    text,
+                    actor,
+                    action,
+                    payload,
+                    utterance,
+                    group,
+                    produced_items=set(produced_items),
+                )
+            )
             return
 
         # An existing step can acquire additional rewards via the same action.
         if produced_items:
-            next(step for step in self.steps if step.key == key).produced_items.update(produced_items)
+            next(step for step in self.steps if step.key == key).produced_items.update(
+                produced_items
+            )
 
         # A spawn/signal traversal may emit a hand-in before its reward is
         # discovered. Preserve the same action, but enrich it with graph gifts.
@@ -368,9 +399,9 @@ class Planner:
             return False
         if rel != "loots":
             return True
-        if (str(row.get("name") or "").lower() == "needs heading validation"
-                and any(source.startswith("loot:")
-                        for source in self.g.item_sources.get(iid, ()))):
+        if str(row.get("name") or "").lower() == "needs heading validation" and any(
+            source.startswith("loot:") for source in self.g.item_sources.get(iid, ())
+        ):
             return False
         if row.get("npc") and not row.get("reachable"):
             zone = actor_of(str(row.get("from") or "")).split("/", 1)[0]
@@ -382,23 +413,42 @@ class Planner:
         rel = row.get("rel")
         inputs = self.g.inputs(row) if rel == "gives" else []
         if rel == "produces":
-            inputs = [item_id(r.get("to", "")) or 0
-                      for r in self.g.recipes.get(row.get("from", ""), [])
-                      if r.get("rel") == "consumes"]
+            inputs = [
+                item_id(r.get("to", "")) or 0
+                for r in self.g.recipes.get(row.get("from", ""), [])
+                if r.get("rel") == "consumes"
+            ]
         group = str(row.get("group") or "")
-        other_gifts = sum(r.get("rel") == "gives" and r.get("to") != f"item:{iid}"
-                          for r in self.g.group_rows(row))
-        priority = (0 if rel == "gives" and "#hand:" in group and not other_gifts
-                    else 1 if rel == "gives" and not other_gifts
-                    else 2 if rel == "gives"
-                    else 3 if rel == "produces"
-                    else 4 if rel == "loots" else 5)
-        return (100 if iid in inputs else priority, len(inputs), str(row.get("from", "")))
+        other_gifts = sum(
+            r.get("rel") == "gives" and r.get("to") != f"item:{iid}"
+            for r in self.g.group_rows(row)
+        )
+        priority = (
+            0
+            if rel == "gives" and "#hand:" in group and not other_gifts
+            else (
+                1
+                if rel == "gives" and not other_gifts
+                else (
+                    2
+                    if rel == "gives"
+                    else 3 if rel == "produces" else 4 if rel == "loots" else 5
+                )
+            )
+        )
+        return (
+            100 if iid in inputs else priority,
+            len(inputs),
+            str(row.get("from", "")),
+        )
 
     def candidates(self, iid: int) -> list[dict]:
         return sorted(
-            (row for row in self.g.producers.get(iid, ())
-             if self.eligible_producer(row, iid)),
+            (
+                row
+                for row in self.g.producers.get(iid, ())
+                if self.eligible_producer(row, iid)
+            ),
             key=lambda row: self.producer_rank(row, iid),
         )
 
@@ -407,7 +457,9 @@ class Planner:
         return next(iter(self.candidates(iid)), None)
 
     def _restore(self, snapshot: tuple) -> None:
-        mark, prior_steps, emitted, done, events, used, flags, values, errors_len = snapshot
+        mark, prior_steps, emitted, done, events, used, flags, values, errors_len = (
+            snapshot
+        )
         del self.steps[mark:]
         for step, text, payload, produced in prior_steps:
             step.text, step.payload = text, payload
@@ -423,8 +475,10 @@ class Planner:
     def _snapshot(self) -> tuple:
         return (
             len(self.steps),
-            [(step, step.text, step.payload, step.produced_items.copy())
-             for step in self.steps],
+            [
+                (step, step.text, step.payload, step.produced_items.copy())
+                for step in self.steps
+            ],
             self.emitted.copy(),
             self.done_items.copy(),
             self.active_events.copy(),
@@ -445,8 +499,11 @@ class Planner:
                 continue
             spell = source.partition(":")[2]
             scroll = next(
-                (sid for sid, name in self.g.items.items()
-                 if name.casefold() == ("Spell: " + spell).casefold()),
+                (
+                    sid
+                    for sid, name in self.g.items.items()
+                    if name.casefold() == ("Spell: " + spell).casefold()
+                ),
                 None,
             )
             if scroll is None or scroll == iid or not self.g.producers.get(scroll):
@@ -519,15 +576,22 @@ class Planner:
             if not values:
                 continue
             if kind in ("forage", "fishing", "ground"):
-                verb = {"forage": "Forage", "fishing": "Fish for",
-                        "ground": "Collect ground spawn"}[kind]
-                text = f'{verb} {self.g.name(iid)} in ' + " or ".join(
-                    f"`{zone}`" for zone in values
-                ) + "."
+                verb = {
+                    "forage": "Forage",
+                    "fishing": "Fish for",
+                    "ground": "Collect ground spawn",
+                }[kind]
+                text = (
+                    f"{verb} {self.g.name(iid)} in "
+                    + " or ".join(f"`{zone}`" for zone in values)
+                    + "."
+                )
             else:
-                text = f'Summon {self.g.name(iid)} by casting ' + " or ".join(
-                    f'"{name}"' for name in values
-                ) + "."
+                text = (
+                    f"Summon {self.g.name(iid)} by casting "
+                    + " or ".join(f'"{name}"' for name in values)
+                    + "."
+                )
             self.put(f"item-source:{kind}:{iid}", text, produced_items=(iid,))
             return True
 
@@ -538,7 +602,7 @@ class Planner:
                 self.put(
                     f"catalog-drop:{iid}",
                     f'Loot {self.g.name(iid)} from "{name or f"NPC {npc}"}" '
-                    f'(NPC {npc}) in `{zone}`. Drop cache: {chance:g}% chance per kill.',
+                    f"(NPC {npc}) in `{zone}`. Drop cache: {chance:g}% chance per kill.",
                     produced_items=(iid,),
                 )
                 return True
@@ -556,16 +620,19 @@ class Planner:
 
         recipe = self.catalog.recipe(iid)
         if recipe:
-            rid, parts, container, skill = (recipe.id, recipe.components,
-                                            recipe.container, recipe.name)
+            rid, parts, container, skill = (
+                recipe.id,
+                recipe.components,
+                recipe.container,
+                recipe.name,
+            )
             if iid not in (component for component, _ in parts):
                 snapshot = self._snapshot()
                 try:
                     for component, _count in parts:
                         self.acquire(component)
                     inputs = ", ".join(
-                        self.g.name(x) + (f" x{n}" if n != 1 else "")
-                        for x, n in parts
+                        self.g.name(x) + (f" x{n}" if n != 1 else "") for x, n in parts
                     )
                     extra = f" Requires {skill}." if skill else ""
                     self.put(
@@ -581,18 +648,19 @@ class Planner:
         # The graph's item-source hints are an independent fallback, not a
         # producer edge. Filter out sources explicitly blocked by scripts.
         loot = [
-            value for value in by_kind.get("loot", [])
+            value
+            for value in by_kind.get("loot", [])
             if (value.partition("@")[2], ident(value.partition("@")[0]))
             not in self.g.blocked_loot_names
         ]
         if loot:
             places = []
             for value in loot:
-                npc, _, zone = value.partition("@")
-                places.append(f'"{npc}"' + (f" in `{zone}`" if zone else ""))
+                n1, _, z1 = value.partition("@")
+                places.append(f'"{n1}"' + (f" in `{z1}`" if z1 else ""))
             self.put(
                 f"item-source:loot:{iid}",
-                f'Loot {self.g.name(iid)} from ' + " or ".join(places) + ".",
+                f"Loot {self.g.name(iid)} from " + " or ".join(places) + ".",
                 produced_items=(iid,),
             )
             return True
@@ -664,7 +732,9 @@ class Planner:
         ]
         for faction, at in dict.fromkeys(requirements):
             key = f"faction-need:{faction}:{at}"
-            self.put(key, f'**Faction:** `{faction}` `{at}` required. Progress unverified.')
+            self.put(
+                key, f"**Faction:** `{faction}` `{at}` required. Progress unverified."
+            )
 
     def _satisfies_flag(self, name: str, at: str) -> bool:
         value = self.flag_values.get(name)
@@ -678,16 +748,22 @@ class Planner:
         if match and value.lstrip("-").isdigit():
             op, target = match[1], int(match[2])
             actual = int(value)
-            return {"==": actual == target, ">=": actual >= target,
-                    ">": actual > target, "<=": actual <= target,
-                    "<": actual < target}[op]
+            return {
+                "==": actual == target,
+                ">=": actual >= target,
+                ">": actual > target,
+                "<=": actual <= target,
+                "<": actual < target,
+            }[op]
         return at.startswith("==") and value == at[2:].strip()
 
     def action_requirements(self, row: dict) -> None:
         """Satisfy the requirements on one action, including ungrouped guards."""
         rows = self.g.group_rows(row)
         for iid in dict.fromkeys(
-            value for r in rows if r.get("rel") == "needs"
+            value
+            for r in rows
+            if r.get("rel") == "needs"
             if (value := item_id(r.get("to", ""))) is not None
         ):
             self.acquire(iid)
@@ -706,8 +782,10 @@ class Planner:
         """Apply quest-state mutations only after the action has executed."""
         for r in self.g.group_rows(row):
             if r.get("rel") == "sets" and r.get("flag") and r.get("value") is not None:
-                if not all(self._satisfies_flag(str(need["flag"]), str(need["at"]))
-                           for need in r.get("post_write_needs", ())):
+                if not all(
+                    self._satisfies_flag(str(need["flag"]), str(need["at"]))
+                    for need in r.get("post_write_needs", ())
+                ):
                     continue
                 self.flag_values[str(r["flag"])] = str(r["value"])
 
@@ -761,6 +839,54 @@ class Planner:
                 )
         self.action_sets(row)
 
+    def setter_requirements(self, row: dict) -> None:
+        """Resolve OR guards on flag setters only, without changing item routes.
+
+        Ordinary requirements retain the existing planner behavior. A failed
+        alternative is rolled back before trying the next candidate.
+        """
+        rows = self.g.group_rows(row)
+        disjunctions: dict[str, list[dict]] = defaultdict(list)
+        for need in rows:
+            if need.get("rel") == "needs" and need.get("op") == "or":
+                key = str(need.get("or_group") or need.get("group") or need.get("from"))
+                disjunctions[key].append(need)
+        if not disjunctions:
+            self.action_requirements(row)
+            return
+
+        for need in rows:
+            if need.get("rel") != "needs" or need.get("op") == "or":
+                continue
+            iid = item_id(need.get("to", ""))
+            if iid is not None:
+                self.acquire(iid)
+            elif need.get("flag"):
+                self.flag(str(need["flag"]), str(need.get("at") or "set"))
+        for choices in disjunctions.values():
+            for need in choices:
+                snapshot = self._snapshot()
+                try:
+                    iid = item_id(need.get("to", ""))
+                    if iid is not None:
+                        self.acquire(iid)
+                    else:
+                        name = str(need["flag"])
+                        at = str(need.get("at") or "set")
+                        self.flag(name, at)
+                        if not self._satisfies_flag(name, at):
+                            raise AcquisitionCycle(
+                                f"Unverified alternative `{name}` {at}"
+                            )
+                    break
+                except AcquisitionCycle:
+                    self._restore(snapshot)
+            else:
+                raise AcquisitionCycle(
+                    "No verified alternative for setter " + str(row.get("from") or "")
+                )
+        self.faction_requirements(row)
+
     def flag(self, name: str, at: str) -> None:
         # Encounter guards may encode a numeric comparison as a bare value.
         # A requirement at="1" is equality, not an unknown predicate.
@@ -777,6 +903,7 @@ class Planner:
         self.active_flags.add(state)
         try:
             setters = self.g.flag_setters.get(name, [])
+
             def valid(row: dict) -> bool:
                 val = str(row.get("value") or "")
                 if at == "set":
@@ -784,16 +911,23 @@ class Planner:
                 match = re.fullmatch(r"(==|>=|>|<=|<)\s*(-?\d+)", at)
                 if match and val.lstrip("-").isdigit():
                     actual, target = int(val), int(match[2])
-                    return {"==": actual == target, ">=": actual >= target,
-                            ">": actual > target, "<=": actual <= target,
-                            "<": actual < target}[match[1]]
+                    return {
+                        "==": actual == target,
+                        ">=": actual >= target,
+                        ">": actual > target,
+                        "<=": actual <= target,
+                        "<": actual < target,
+                    }[match[1]]
                 return at.startswith("==") and val == at[2:].strip()
 
-            setters = sorted((r for r in setters if valid(r)), key=lambda r: (
-                0 if "#hand:" in str(r.get("from") or "") else 1,
-                int(r["value"]) if str(r.get("value") or "").isdigit() else 0,
-                str(r.get("from") or ""),
-            ))
+            setters = sorted(
+                (r for r in setters if valid(r)),
+                key=lambda r: (
+                    0 if "#hand:" in str(r.get("from") or "") else 1,
+                    int(r["value"]) if str(r.get("value") or "").isdigit() else 0,
+                    str(r.get("from") or ""),
+                ),
+            )
             for setter in setters:
                 snapshot = self._snapshot()
                 src = str(setter.get("from") or "")
@@ -802,7 +936,7 @@ class Planner:
                 try:
                     for requirement in setter.get("post_write_needs", ()):
                         self.flag(str(requirement["flag"]), str(requirement["at"]))
-                    self.action_requirements(setter)
+                    self.setter_requirements(setter)
                     if "#hand:" in src:
                         self.hand_event(src, resolve=False)
                     elif "#recipe:" in src:
@@ -812,28 +946,41 @@ class Planner:
                                 iid = item_id(rr.get("to", ""))
                                 if iid is not None:
                                     self.acquire(iid)
-                        self.put("flag:" + src, f'Combine recipe {recipe_id} to set `{name}` to `{setter.get("value")}`.')
+                        self.put(
+                            "flag:" + src,
+                            f'Combine recipe {recipe_id} to set `{name}` to `{setter.get("value")}`.',
+                        )
                     elif "#" in src:
                         word = src.split("#", 1)[1]
                         if word.startswith("event_"):
                             self.event(src)
                         else:
-                            self.put("flag:" + src,
-                                     f'{label(actor_of(src))}, say "{word.title()}". Sets `{name}` to `{setter.get("value")}`.',
-                                     actor=actor_of(src), action="say", utterance=word)
+                            self.put(
+                                "flag:" + src,
+                                f'{label(actor_of(src))}, say "{word.title()}". Sets `{name}` to `{setter.get("value")}`.',
+                                actor=actor_of(src),
+                                action="say",
+                                utterance=word,
+                            )
                     else:
                         raise AcquisitionCycle(f"cannot execute flag setter `{src}`")
                     self.action_sets(setter)
                     if not self._satisfies_flag(name, at):
-                        raise AcquisitionCycle(f"setter `{src}` failed to establish `{name}` {at}")
+                        raise AcquisitionCycle(
+                            f"setter `{src}` failed to establish `{name}` {at}"
+                        )
                     return
                 except AcquisitionCycle:
                     self._restore(snapshot)
             # Preserve the rest of the route when the graph cannot establish
             # this prerequisite, but never claim the flag was acquired.
-            self.errors.append(f"Unverified quest flag `{name}` {at}: no acyclic setter")
-            self.put(f"unverified-flag:{name}:{at}",
-                     f"**Unverified quest flag:** `{name}` `{at}` required.")
+            self.errors.append(
+                f"Unverified quest flag `{name}` {at}: no acyclic setter"
+            )
+            self.put(
+                f"unverified-flag:{name}:{at}",
+                f"**Unverified quest flag:** `{name}` `{at}` required.",
+            )
         finally:
             self.active_flags.remove(state)
 
@@ -878,8 +1025,11 @@ class Planner:
             self.event(src, target_npc=npc)
         self.action_sets(row)
         if row.get("rel") == "grounds":
-            self.put(f"ground:{src}:{iid}", f"Collect {self.g.name(iid)} at `{src}`.",
-                     produced_items=(iid,))
+            self.put(
+                f"ground:{src}:{iid}",
+                f"Collect {self.g.name(iid)} at `{src}`.",
+                produced_items=(iid,),
+            )
             return
         place = actor_of(src).split("/", 1)[0]
         if (
@@ -924,8 +1074,13 @@ class Planner:
         self.active_events.add(node)
         try:
             if node.endswith("#hail"):
-                self.put(f"hail:{node}", f'{label(actor_of(node))}, say "Hail".',
-                         actor=actor_of(node), action="say", utterance="hail")
+                self.put(
+                    f"hail:{node}",
+                    f'{label(actor_of(node))}, say "Hail".',
+                    actor=actor_of(node),
+                    action="say",
+                    utterance="hail",
+                )
             if "#signal:" in node:
                 # An NPC must have been spawned before receiving its signal.
                 self.pre_spawned_actor(actor_of(node))
@@ -942,14 +1097,28 @@ class Planner:
                 # Favor explicit player-started routes; then other routes that
                 # do not immediately revisit an active event. Do not assert
                 # that *all* signal senders must execute to receive a signal.
-                reachable = [r for r in incoming
-                             if str(r.get("from") or "") not in self.active_events]
-                incoming = sorted(reachable, key=lambda r: (
-                    0 if "#event_say" in str(r.get("from", "")) else
-                    1 if "#hand:" in str(r.get("from", "")) else
-                    2 if "#event_spawn" in str(r.get("from", "")) else 3,
-                    str(r.get("from", "")),
-                ))[:1]
+                reachable = [
+                    r
+                    for r in incoming
+                    if str(r.get("from") or "") not in self.active_events
+                ]
+                incoming = sorted(
+                    reachable,
+                    key=lambda r: (
+                        (
+                            0
+                            if "#event_say" in str(r.get("from", ""))
+                            else (
+                                1
+                                if "#hand:" in str(r.get("from", ""))
+                                else (
+                                    2 if "#event_spawn" in str(r.get("from", "")) else 3
+                                )
+                            )
+                        ),
+                        str(r.get("from", "")),
+                    ),
+                )[:1]
                 if not incoming:
                     self.errors.append(f"No acyclic signal predecessor for `{node}`")
             for edge in sorted(incoming, key=lambda r: str(r.get("from", ""))):
@@ -990,8 +1159,10 @@ class Planner:
                 elif parent.endswith("#event_say"):
                     # The source records an event, not necessarily the exact
                     # player utterance. Do not fabricate a keyword.
-                    self.put(f"talk:{parent}",
-                             f"Talk to {label(actor_of(parent))} to trigger the encounter.")
+                    self.put(
+                        f"talk:{parent}",
+                        f"Talk to {label(actor_of(parent))} to trigger the encounter.",
+                    )
                 elif "#hand:" in parent:
                     self.hand_event(parent, target_npc=target_npc)
                 elif "#event_death" in parent:
@@ -1021,8 +1192,9 @@ class Planner:
         finally:
             self.active_events.remove(node)
 
-    def hand_event(self, group: str, target_npc: int | None = None,
-                   *, resolve: bool = True) -> None:
+    def hand_event(
+        self, group: str, target_npc: int | None = None, *, resolve: bool = True
+    ) -> None:
         rows = self.g.group_rows({"group": group})
         if rows and resolve:
             self.action_requirements({"group": group})
