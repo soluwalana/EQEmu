@@ -2,6 +2,7 @@
 set -euo pipefail
 
 SRC="${EQEMU_SRC:-$HOME/other/EQEmu}"
+PEQ_DUMP="${EQEMU_PEQ_DUMP:-$HOME/other/peq-dump}"
 RUN="${EQEMU_RUN:-$HOME/other/eqemu-run}"
 source "${EQEMU_DB_ENV:-$HOME/other/eqemu-data/mariadb.env}"
 
@@ -43,11 +44,12 @@ SET FOREIGN_KEY_CHECKS = 1;
 "
 
 (
-	cd "$SRC/peq-dump"
+	cd "$PEQ_DUMP"
 	"${MYSQL[@]}" -e "source drop_all_tables.sql"
 	"${MYSQL[@]}" -e "source create_all_tables.sql"
 )
 
+(cd "$RUN" && ./world bots:disable)
+(cd "$RUN" && ./world bots:enable)
 (cd "$RUN" && ./world database:updates)
 
-"${MYSQL[@]}" <"$SRC/utils/sql/bot_tables_bootstrap.sql"

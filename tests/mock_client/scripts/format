@@ -1,5 +1,0 @@
-#!/bin/sh
-# Format eqclient3 with black. Line length comes from pyproject.toml.
-set -eu
-cd "$(dirname "$0")/.."
-python -m black eqclient3 tests/eqclient3
