@@ -170,7 +170,10 @@ class Attack(Action):
     @staticmethod
     def key(action: Action) -> tuple[int, int]:
         if isinstance(action, Attack):
-            return ((-action.level or 0), action.insert)
+            mob = action.mob
+            if not mob:
+                return (0, int(action.insert))
+            return ((-mob.level or 0), action.insert)
         return (0, int(action.insert))
 
     def step(self) -> None:
@@ -207,17 +210,17 @@ class Attack(Action):
             self.unwait("CAST")
             self.casting = False
 
-        if mob and mob.is_treasure and float(mob.distance) <= 25:
+        if self.mob and self.mob.is_treasure and float(self.mob.distance) <= 25:
             self._loop.send("OP_LDoNOpen", OP_LDoNOpen().serialize())
             return
 
-        if not mob or mob.dead:
+        if not self.mob or self.mob.dead:
             # if mob and mob.dead:
             #     loop.append(Reconstitute(241))
             self.complete = True
             return
 
-        if int(mob.hp or 0) == 0 and not mob.is_treasure:
+        if int(self.mob.hp or 0) == 0 and not self.mob.is_treasure:
             self.zero_hp += 1
             if self.zero_hp >= 10:
                 if not self.target_id:
@@ -227,35 +230,37 @@ class Attack(Action):
                 return
         else:
             self.zero_hp = 0
-        sees = self._world.line_of_sight(mob)
+        sees = self._world.line_of_sight(self.mob)
         if self.closed and not sees:
             self.closed = False
 
-        if not self.closed and (float(mob.distance) > MELEE or not sees):
+        if not self.closed and (float(self.mob.distance) > MELEE or not sees):
             if self._stuck():
-                if float(mob.distance) <= 25 and sees:
+                if float(self.mob.distance) <= 25 and sees:
                     self.closed = True
-                elif float(mob.distance) <= 25:
+                elif float(self.mob.distance) <= 25:
                     self.attacking = False
                     self.active_path = None
                     self.planned = None
-                    self.move_closer(mob.position, "los")
+                    self.move_closer(self.mob.position, "los")
                     return
                 else:
                     if self.target_id:
-                        log.info("attack unstick spawn=%s d=%.0f", self.target_id, mob.distance)
+                        log.info(
+                            "attack unstick spawn=%s d=%.0f", self.target_id, self.mob.distance
+                        )
                         # self._world.skip_spawn(target)  # skip things that are already dead
                     self.complete = True
                     return
             else:
                 self.attacking = False
-                point = mob.position
+                point = self.mob.position
                 planned = self.planned
                 if not planned or _apart(planned, point) > 15:
                     self.active_path = None
                     self.planned = point
 
-                if sees and float(mob.distance) <= 35:
+                if sees and float(self.mob.distance) <= 35:
                     length = STRIDE["los"][0]
                     path = straight(
                         self._world.position,
@@ -273,7 +278,7 @@ class Attack(Action):
 
         self.still = 0
         self.anchor = None
-        if self._hp_stuck(mob):
+        if self._hp_stuck(self.mob):
             self.misses += 1
             self.attacking = False
             self.closed = False
@@ -282,19 +287,21 @@ class Attack(Action):
             if self.misses >= 3:
 
                 if not self.target_id:
-                    log.info("attack no damage spawn=%s d=%.0f", self.target_id, mob.distance)
+                    log.info(
+                        f"attack no damage spawn={self.target_id} d={self.mob.distance:.0f}",
+                    )
                     # self._world.skip_spawn(target)  # skip things that are already dead
                 # loop.append(Reconstitute(241))
                 self.complete = True
                 return
-            self.move_closer(mob, "los")
+            self.move_closer(self.mob, "los")
             return
 
-        self.face(mob.position)
+        self.face(self.mob.position)
 
         # Class 62 is an LDoN object. Melee never puts the player on its hate list,
         # so the kill does not credit a task. Opening it does.
-        if mob.is_treasure:
+        if self.mob.is_treasure:
             self._loop.send("OP_LDoNOpen", OP_LDoNOpen().serialize())
             return
 
@@ -346,7 +353,7 @@ class Attack(Action):
         def matcher(message: EQStruct) -> bool:
             match message:
                 case OP_BecomeCorpse():
-                    return message.spawn_id in (0, self.spawn_id)
+                    return message.spawn_id in (0, self._world.self_id)
                 case _:
                     return False
 

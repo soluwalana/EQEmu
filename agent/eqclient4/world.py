@@ -12,10 +12,25 @@ if TYPE_CHECKING:
 
 import math
 import time
+import random
+import os
+import json
+from pathlib import Path as FSPath
 from collections import defaultdict
 from dataclasses import dataclass
 from typing import Literal
 
+from eqclient4.bots import Bot
+from eqclient4.structs.constants import (
+    CREATE_COMBINATIONS_RACE_TO_BITMASK,
+    RACE_ID_TO_BIT,
+    GOOD_ALIGNED_RACES,
+    CLASS_ID_TO_CODE,
+    CLASS_NAME_TO_ID,
+    TANK_CLASSES,
+    HEALER_CLASSES,
+    DPS_CLASSES,
+)
 from eqclient4.character import Character
 from eqclient4.data.bot_spells import BotSpellBook, ensure_bot_spells
 from eqclient4.data.drops import DropBook, MappedDrops, ensure_drops
@@ -89,42 +104,118 @@ class Door:
 
 
 @dataclass
-class Bot:
-    name: str = ""
-    class_id: int = 0
-    level: int = 0
-    hp: int = 0
-    max_hp: int = 0
-    mana: int = 0
-    max_mana: int = 0
-    id: int = 0
-    alive: bool = True
-
-
-@dataclass
 class Consider:
     standing: int = 0
     level_color: int = 0
     name: str = ""
 
 
-class GroupRoster:
-    """Members and leader. mode is party or raid."""
 
-    def __init__(self, mode: RosterMode) -> None:
-        self.mode: RosterMode = mode
-        self.members: list[str] = []
-        self.leader: str = ""
-        self.bots: list[Bot] = []
+class Roster:
+
+    def __init__(self, item_book: ItemBook, character: str) -> None:
+        self.item_book = item_book
+        self.character = character
+        self.group_size = 5
+        self.raid_size = 30
+        self.raid: list[Bot] = []
+        self.group: list[Bot] = []
+
+    def serialize(self) -> dict:
+        return {
+            "raid": {
+                b.name: {
+                    "owner": b.owner,
+                    "name": b.name,
+                    "race": b.race,
+                    "class_id": b.class_id,
+                    "gender": b.gender,
+                    "created": b.created,
+                }
+                for b in self.raid
+            },
+            "group": {
+                b.name: {
+                    "owner": b.owner,
+                    "name": b.name,
+                    "race": b.race,
+                    "class_id": b.class_id,
+                    "gender": b.gender,
+                    "created": b.created,
+                }
+                for b in self.group
+            },
+        }
 
 
-class Bots:
-    """Roster and heal rotation. reconstituted_at is the loop tick of the last reconstitute."""
+def race_for_class(class_id: int) -> int:
+    acceptable_combos = CREATE_COMBINATIONS_RACE_TO_BITMASK[class_id]
+    acceptable_races = []
+    for race, bitmask in RACE_ID_TO_BIT.items():
+        if bitmask & acceptable_combos and race in GOOD_ALIGNED_RACES:
+            acceptable_races.append(race)
+    return random.choice(acceptable_races)
 
-    def __init__(self) -> None:
-        self.reconstituted_at: int = 0
-        self.roster: list[Bot] = []
-        self.rotation: list[str] = []
+
+_ROSTER: Roster | None = None
+
+
+def get_roster(item_book: ItemBook, character: str) -> Roster:
+    global _ROSTER
+    if _ROSTER:
+        return _ROSTER
+
+    cache_path = FSPath.home() / ".eqclient" / "v4" / character / "raid_roster.json"
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    if os.path.exists(cache_path):
+        data = json.load(open(cache_path))
+        _ROSTER = Roster(item_book, character)
+        _ROSTER.raid = [Bot(item_book, **b) for b in data["raid"].values()]
+        _ROSTER.group = [Bot(item_book, **b) for b in data["group"].values()]
+        return _ROSTER
+
+    class_tracker = defaultdict(int)
+
+    def generate_bot(class_id: int) -> Bot:
+        class_tracker[class_id] += 1
+        suffix = ""
+        if class_tracker[class_id] > 1:
+            suffix = str(chr(ord("a") + class_tracker[class_id] - 2))
+            if suffix in "aeiou":
+                suffix = f"x{suffix}"
+
+        short = CLASS_ID_TO_CODE[class_id]
+        if short == "ENCH":  # no duplicate vowels allowed
+            short = f"x{short}"
+
+        name = f"{character[3]}" + f"{short}{suffix}".lower()
+
+        return Bot(
+            item_book,
+            owner=character,
+            name=name,
+            race=race_for_class(class_id),
+            class_id=class_id,
+            gender=1,
+        )
+
+    _ROSTER = Roster(item_book, character)
+    _ROSTER.group.append(generate_bot(CLASS_NAME_TO_ID["Cleric"]))
+    _ROSTER.group.append(generate_bot(random.choice(list(TANK_CLASSES))))
+    _ROSTER.group.append(generate_bot(random.choice(list(HEALER_CLASSES))))
+    _ROSTER.group.append(generate_bot(random.choice(list(DPS_CLASSES))))
+    _ROSTER.group.append(generate_bot(random.choice(list(DPS_CLASSES))))
+
+    for _ in range(30):
+        tank = random.choice(list(TANK_CLASSES))
+        _ROSTER.raid.append(generate_bot(tank))
+        healer = random.choice(list(HEALER_CLASSES))
+        _ROSTER.raid.append(generate_bot(healer))
+        other = random.choice(list(CLASS_ID_TO_CODE.keys()))
+        _ROSTER.raid.append(generate_bot(other))
+
+    open(cache_path, "w").write(json.dumps(_ROSTER.serialize(), indent=2))
+    return _ROSTER
 
 
 class Mob:
@@ -253,11 +344,6 @@ class World:
 
         self.self_id = 0
 
-        # Group Rosters and Bots
-        self.group = GroupRoster("party")
-        self.raid = GroupRoster("raid")
-        self.bots = Bots()
-
         # <Character Management>
         self.character = Character(name)
         # Total faction standing isn't knowable,
@@ -283,6 +369,9 @@ class World:
         self.npcs: NPCCache = NPCCache(self.quest_graph)
         self.drops: MappedDrops | DropBook = ensure_drops()
         # </Caches>
+
+        # Group Rosters and Bots
+        self.bot_roster = get_roster(self.item_book, self.character.name)
 
         # <Volatile Data>
         # Volatile Data should be cleared on Zone Change

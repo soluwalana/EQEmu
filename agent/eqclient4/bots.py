@@ -2,7 +2,6 @@
 
 import re
 from collections.abc import Iterator
-from dataclasses import dataclass
 
 from eqclient4.data.items import ItemBook
 from eqclient4.log import log
@@ -11,10 +10,17 @@ from eqclient4.structs.constants import (
     CANNOT_EQUIP,
     CANNOT_EQUIP_CONFLICT,
     CANNOT_EQUIP_LEVEL,
+    CLASS_ID_TO_NAME,
+    CLASS_NAME_TO_ID,
     DEITY_ID_TO_BIT,
+    HEALER_CLASSES,
     RACE_ID_TO_BIT,
+    RACE_ID_TO_NAME,
+    RACE_NAME_TO_ID,
+    TANK_CLASSES,
     WORN_SLOTS,
     WORN_SLOTS_BY_NAME,
+    combination_valid,
 )
 from eqclient4.structs.items import Item
 from eqclient4.structs.messages import OP_ChannelMessage, OP_SpecialMesg
@@ -27,15 +33,32 @@ _SLOT_SECTION = re.compile(r"\(Slot\s*(\d+)\s*\)")
 _TWO_HAND_TYPES = {1, 4, 35}
 
 
-@dataclass
 class Bot:
-    owner: str
-    name: str
-    race: int
-    class_id: int
-    deity: int
-    gender: int
-    level: int
+
+    def __init__(
+        self,
+        item_book: ItemBook,
+        owner: str,
+        name: str,
+        race: int,
+        class_id: int,
+        gender: int,
+        created: bool = False,
+    ):
+        self.owner: str = owner
+        self.name: str = name
+        self.race: int = race
+        self.class_id: int = class_id
+        self.gender: int = gender
+        self.level: int = 0
+        self.hp: int = 0
+        self.max_hp: int = 0
+        self.mana: int = 0
+        self.max_mana: int = 0
+        self.id: int = 0
+        self.alive: bool = False
+        self.created: bool = created
+        self.inventory: BotInventory = BotInventory(self, item_book)
 
 
 class BotInventory:
@@ -88,11 +111,6 @@ class BotInventory:
         race_bit = RACE_ID_TO_BIT.get(self.bot.race, 0)
         if not race_bit or not (item.races & race_bit):
             return CANNOT_EQUIP
-
-        if item.deity:
-            deity_bit = DEITY_ID_TO_BIT.get(self.bot.deity, 0)
-            if not deity_bit or not (item.deity & deity_bit):
-                return CANNOT_EQUIP
 
         if self.bot.level < item.required_level:
             return CANNOT_EQUIP_LEVEL

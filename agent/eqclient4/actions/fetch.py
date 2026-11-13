@@ -14,8 +14,8 @@ from eqclient4.actions.grind import LevelHoldAction
 # from eqclient4.actions.shop import ShopOffer, choose_offer
 # from eqclient4.actions.talk import Talk, append_soulbind, hail_name
 # from eqclient4.actions.trade import Trade
-from eqclient4.data.ground import GroundSpot
-from eqclient4.data.items import ItemStats
+from eqclient4.data.ground import GroundSpawn
+from eqclient4.data.items import ItemBook
 from eqclient4.data.locations import SpawnPoint
 from eqclient4.data.merchants import Seller
 from eqclient4.data.recipes import Recipe

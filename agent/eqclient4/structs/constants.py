@@ -48,11 +48,44 @@ CLASS_ID_TO_NAME: dict[int, str] = {
     15: "Beastlord",
     16: "Berserker",
 }
-
+CLASS_ID_TO_CODE: dict[int, str] = {
+    1: "WAR",
+    2: "CLER",
+    3: "PAL",
+    4: "RANG",
+    5: "SHDW",
+    6: "DRUI",
+    7: "MONK",
+    8: "BARD",
+    9: "ROGU",
+    10: "SHAM",
+    11: "NECR",
+    12: "WIZA",
+    13: "MAGI",
+    14: "ENCH",
+    15: "BEAS",
+    16: "BERS",
+}
 CLASS_NAME_TO_ID: dict[str, int] = {name: class_id for class_id, name in CLASS_ID_TO_NAME.items()}
 
-
 TANK_CLASSES = {CLASS_NAME_TO_ID[name] for name in ("Warrior", "Paladin", "Shadow Knight")}
+HEALER_CLASSES = {CLASS_NAME_TO_ID[name] for name in ("Cleric", "Druid", "Shaman")}
+
+DPS_CLASSES = {
+    CLASS_NAME_TO_ID[name]
+    for name in (
+        "Ranger",
+        "Wizard",
+        "Magician",
+        "Enchanter",
+        "Beastlord",
+        "Berserker",
+        "Rogue",
+        "Necromancer",
+        "Monk",
+    )
+}
+
 
 RACE_ID_TO_NAME: dict[int, str] = {
     1: "Human",
@@ -71,6 +104,18 @@ RACE_ID_TO_NAME: dict[int, str] = {
     130: "Vah Shir",
     330: "Froglok",
     522: "Drakkin",
+}
+
+GOOD_ALIGNED_RACES = {
+    1,
+    3,
+    4,
+    5,
+    7,
+    8,
+    11,
+    12,
+    130,
 }
 
 RACE_ID_TO_BIT = {
@@ -137,6 +182,30 @@ DEITY_ID_TO_BIT = {
 }
 
 DEITY_NAME_TO_ID: dict[str, int] = {name: deity_id for deity_id, name in DEITY_ID_TO_NAME.items()}
+
+CREATE_COMBINATIONS_RACE_TO_BITMASK = {
+    1: 15871,
+    2: 49921,
+    3: 15382,
+    4: 425,
+    5: 14342,
+    6: 15635,
+    7: 429,
+    8: 33031,
+    9: 49681,
+    10: 49681,
+    11: 303,
+    12: 15639,
+    128: 18001,
+    130: 50049,
+    330: 3863,
+    522: 15871,
+}
+
+
+def combination_valid(class_id: int, race_id: int) -> bool:
+    return CREATE_COMBINATIONS_RACE_TO_BITMASK[race_id] & (1 << (class_id - 1)) > 0
+
 
 _WORN = (
     "Charm",

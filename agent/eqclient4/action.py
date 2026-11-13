@@ -1,6 +1,6 @@
 """The action superclass. The scheduler and the bus only know this type."""
 
-from collections.abc import Callable
+from collections.abc import Callable, Collection
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -131,11 +131,17 @@ class Action:
         return self.waiting
 
     def consume(
-        self, opcode: str, match: Callable[[EQStruct], bool] | None = None
+        self, opcode: str | Collection[str], match: Callable[[EQStruct], bool] | None = None
     ) -> EQStruct | None:
         for index, message in enumerate(self.messages):
-            if message.opcode != opcode:
-                continue
+            match opcode:
+                case str():
+                    if message.opcode != opcode:
+                        continue
+                case Collection():
+                    if message.opcode not in opcode:
+                        continue
+
             if match and not match(message):
                 continue
             return self.messages.pop(index)
