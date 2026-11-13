@@ -239,12 +239,18 @@ class Item(EQStruct):
         return [class_id for class_id in range(1, 17) if self._classes & (1 << (class_id - 1))]
 
     @classes.setter
-    def classes(self, value: list[int]) -> None:
-        for class_id in range(1, 17):
-            if class_id in value:
-                self._classes |= 1 << (class_id - 1)
-            else:
-                self._classes &= ~(1 << (class_id - 1))
+    def classes(self, value: list[int] | int) -> None:
+        match value:
+            case list():
+                for class_id in range(1, 17):
+                    if class_id in value:
+                        self._classes |= 1 << (class_id - 1)
+                    else:
+                        self._classes &= ~(1 << (class_id - 1))
+            case int():
+                self._classes = value
+            case _:
+                raise ValueError(f"Invalid classes value: {value}")
 
     @property
     def augments(self) -> dict[int, Item]:

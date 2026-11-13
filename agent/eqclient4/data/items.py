@@ -170,7 +170,10 @@ def read_items(path: str) -> ItemBook:
         for line in handle:
             if not line.strip():
                 continue
-            item = Item(**json.loads(line))
+            data = json.loads(line)
+            classes = data.pop("classes")
+            item = Item(**data)
+            item.classes = classes
             book.by_id[item.item_id] = item
     return book
 

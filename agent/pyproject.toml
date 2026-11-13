@@ -11,6 +11,9 @@ dependencies = [
     "numpy",
     "sentence-transformers",
     "torch",
+    "uvicorn>=0.54.0",
+    "fastapi>=0.162.5",
+    "pydantic>=2.14.3",
 ]
 
 [project.optional-dependencies]

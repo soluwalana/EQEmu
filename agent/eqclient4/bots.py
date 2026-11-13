@@ -56,6 +56,7 @@ class Bot:
         self.mana: int = 0
         self.max_mana: int = 0
         self.id: int = 0
+        self.spawn_id: int = 0
         self.alive: bool = False
         self.created: bool = created
         self.inventory: BotInventory = BotInventory(self, item_book)

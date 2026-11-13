@@ -10,27 +10,17 @@ if TYPE_CHECKING:
     from eqclient4.loop import Loop
     from eqclient4.nav.water import WaterMap
 
-import math
-import time
-import random
-import os
 import json
-from pathlib import Path as FSPath
+import math
+import os
+import random
+import time
 from collections import defaultdict
 from dataclasses import dataclass
+from pathlib import Path as FSPath
 from typing import Literal
 
 from eqclient4.bots import Bot
-from eqclient4.structs.constants import (
-    CREATE_COMBINATIONS_RACE_TO_BITMASK,
-    RACE_ID_TO_BIT,
-    GOOD_ALIGNED_RACES,
-    CLASS_ID_TO_CODE,
-    CLASS_NAME_TO_ID,
-    TANK_CLASSES,
-    HEALER_CLASSES,
-    DPS_CLASSES,
-)
 from eqclient4.character import Character
 from eqclient4.data.bot_spells import BotSpellBook, ensure_bot_spells
 from eqclient4.data.drops import DropBook, MappedDrops, ensure_drops
@@ -74,6 +64,16 @@ from eqclient4.structs import (
     OP_TaskActivity,
     OP_TaskDescription,
 )
+from eqclient4.structs.constants import (
+    CLASS_ID_TO_CODE,
+    CLASS_NAME_TO_ID,
+    combination_valid,
+    DPS_CLASSES,
+    GOOD_ALIGNED_RACES,
+    HEALER_CLASSES,
+    RACE_ID_TO_BIT,
+    TANK_CLASSES,
+)
 from eqclient4.utils import eq_heading
 
 RosterMode = Literal["party", "raid"]
@@ -108,7 +108,6 @@ class Consider:
     standing: int = 0
     level_color: int = 0
     name: str = ""
-
 
 
 class Roster:
@@ -149,12 +148,11 @@ class Roster:
 
 
 def race_for_class(class_id: int) -> int:
-    acceptable_combos = CREATE_COMBINATIONS_RACE_TO_BITMASK[class_id]
-    acceptable_races = []
-    for race, bitmask in RACE_ID_TO_BIT.items():
-        if bitmask & acceptable_combos and race in GOOD_ALIGNED_RACES:
-            acceptable_races.append(race)
-    return random.choice(acceptable_races)
+    potential_races = []
+    for race  in RACE_ID_TO_BIT.keys():
+        if combination_valid(class_id, race) and race in GOOD_ALIGNED_RACES:
+            potential_races.append(race)
+    return random.choice(potential_races)
 
 
 _ROSTER: Roster | None = None
@@ -342,10 +340,9 @@ class World:
 
     def __init__(self, name: str) -> None:
 
-        self.self_id = 0
-
         # <Character Management>
         self.character = Character(name)
+        self.self_id = 0
         # Total faction standing isn't knowable,
         # just what can be gleaned from considerations
         self.discovered_factions: dict[int, Faction] = {}

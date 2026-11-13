@@ -7,7 +7,7 @@ _HEX = re.compile(r"0x([0-9a-fA-F]+)")
 
 
 def repo_root() -> Path:
-    return Path(__file__).resolve().parents[4]
+    return Path(__file__).resolve().parents[3]
 
 
 def load_opcodes(path: Path) -> dict[str, int]:
