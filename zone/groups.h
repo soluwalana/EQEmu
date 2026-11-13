@@ -92,6 +92,7 @@ public:
 	void	SendEndurancePacketFrom(Mob* member);
 	bool	UpdatePlayer(Mob* update);
 	void	MemberZoned(Mob* removemob);
+	void	RenameBotMember(const std::string& old_name, const std::string& new_name);
 	bool	IsLeader(const char* name);
 	inline bool IsLeader(Mob* m) { return m == leader; };
 	uint8	GroupCount();

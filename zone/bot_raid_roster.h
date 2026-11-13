@@ -49,6 +49,7 @@ bool TryPriorityHeal(Bot* bot);
 bool IsOfftank(Bot* bot);
 bool AllowMezTarget(Bot* caster, Mob* npc);
 void Forget(uint32 character_id);
+void RenameBotReference(const std::string& old_name, const std::string& new_name);
 void CompleteBotCorpseRez(Corpse* corpse, Mob* caster);
 
 }

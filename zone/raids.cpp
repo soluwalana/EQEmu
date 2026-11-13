@@ -1808,6 +1808,54 @@ void Raid::VerifyRaid()
 	}
 }
 
+void Raid::RenameBotMember(const std::string& old_name, const std::string& new_name)
+{
+	for (auto& member : members) {
+		if (!member.is_bot || !Strings::EqualFold(member.member_name, old_name)) {
+			continue;
+		}
+
+		// These functions notify clients; they do not delete/reinsert raid rows.
+		const std::string previous_name = member.member_name;
+		const uint32 group_id = member.group_number;
+		SendRaidRemoveAll(previous_name.c_str());
+		strn0cpy(member.member_name, new_name.c_str(), sizeof(member.member_name));
+
+		if (Strings::EqualFold(leadername, previous_name)) {
+			strn0cpy(leadername, new_name.c_str(), sizeof(leadername));
+		}
+		for (auto& name : main_assister_pcs) {
+			if (Strings::EqualFold(name, previous_name)) {
+				strn0cpy(name, new_name.c_str(), sizeof(name));
+			}
+		}
+		for (auto& name : main_marker_pcs) {
+			if (Strings::EqualFold(name, previous_name)) {
+				strn0cpy(name, new_name.c_str(), sizeof(name));
+			}
+		}
+		for (auto& mentor : group_mentor) {
+			if (Strings::EqualFold(mentor.name, previous_name)) {
+				mentor.name = new_name;
+			}
+		}
+
+		SendRaidAddAll(new_name.c_str());
+		if (member.is_raid_leader) {
+			SendMakeLeaderPacket(new_name.c_str());
+		}
+		SendRaidNotes();
+		if (group_id < MAX_RAID_GROUPS) {
+			for (const auto& other : members) {
+				if (other.member && !other.is_bot && other.group_number == group_id) {
+					SendGroupUpdate(other.member);
+				}
+			}
+		}
+		return;
+	}
+}
+
 void Raid::MemberZoned(Client *c)
 {
 	if (!c) {

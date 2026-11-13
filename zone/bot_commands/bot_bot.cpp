@@ -29,6 +29,7 @@ void bot_command_bot(Client *c, const Seperator *sep)
 		"botinspectmessage",
 		"botlist",
 		"botoutofcombat",
+		"botrename",
 		"botreport",
 		"botspawn",
 		"botstance",

@@ -191,6 +191,7 @@ public:
 	Mob* GetRandomMob(const glm::vec3& location = glm::vec3(0.f), float distance = 0, Mob* exclude_mob = nullptr);
 	Group* GetGroupByMob(Mob* mob);
 	Group* GetGroupByMobName(const char* name);
+	void RenameBotReferences(uint32 owner_id, const std::string& old_name, const std::string& new_name);
 	bool IsInSameGroupOrRaidGroup(Client *client1, Client *client2);
 	Group *GetGroupByClient(Client* client);
 	Group *GetGroupByID(uint32 id);

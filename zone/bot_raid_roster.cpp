@@ -646,6 +646,16 @@ void Forget(uint32 character_id)
 	g_state.erase(character_id);
 }
 
+void RenameBotReference(const std::string& old_name, const std::string& new_name)
+{
+	// A heal focus can name a bot owned by another player.
+	for (auto& entry : g_state) {
+		if (Strings::EqualFold(entry.second.heal_focus_name, old_name)) {
+			entry.second.heal_focus_name = new_name;
+		}
+	}
+}
+
 void Form(Client* owner, bool reset, bool quiet)
 {
 	if (!owner) {

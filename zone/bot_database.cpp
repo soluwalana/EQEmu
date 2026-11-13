@@ -358,6 +358,99 @@ uint32 BotDatabase::GetOwnerID(const uint32 bot_id)
 	return l.bot_id ? l.owner_id : 0;
 }
 
+bool BotDatabase::RenameBot(uint32 bot_id, uint32 owner_id, const std::string& new_name, std::string& old_name)
+{
+	old_name.clear();
+	if (!bot_id || !owner_id || new_name.empty()) {
+		return false;
+	}
+
+	// Refuse a partial rename on older databases with non-transactional tables.
+	auto engines = database.QueryDatabase(
+		"SELECT TABLE_NAME FROM information_schema.TABLES "
+		"WHERE TABLE_SCHEMA = DATABASE() AND ENGINE = 'InnoDB' "
+		"AND TABLE_NAME IN ('bot_data', 'bot_heal_rotation_targets', "
+		"'group_id', 'raid_members', 'group_leaders')"
+	);
+	if (!engines.Success() || engines.RowCount() != 5) {
+		LogError("Bot rename requires InnoDB for bot_data, bot_heal_rotation_targets, group_id, raid_members and group_leaders");
+		return false;
+	}
+
+	// Do not retry individual queries on a new connection during a transaction.
+	if (!database.QueryDatabase(std::string("START TRANSACTION"), false).Success()) {
+		return false;
+	}
+	const auto rollback = [&]() {
+		database.QueryDatabase(std::string("ROLLBACK"), false);
+		return false;
+	};
+
+	// Read the canonical name from the owned bot row, and lock it until commit.
+	auto bot = database.QueryDatabase(fmt::format(
+		"SELECT `name` FROM `bot_data` WHERE `bot_id` = {} AND `owner_id` = {} "
+		"AND `name` NOT LIKE '%-deleted-%' FOR UPDATE", bot_id, owner_id
+	), false);
+	if (!bot.Success() || bot.RowCount() != 1) {
+		return rollback();
+	}
+	const std::string previous_name = bot.begin()[0];
+	const auto old_escaped = Strings::Escape(previous_name);
+	const auto new_escaped = Strings::Escape(new_name);
+
+	// Recheck both namespaces inside the transaction. Fail closed on query errors.
+	auto existing_bot = database.QueryDatabase(fmt::format(
+		"SELECT `bot_id` FROM `bot_data` WHERE `name` = '{}' FOR UPDATE", new_escaped
+	), false);
+	if (!existing_bot.Success() || existing_bot.RowCount() != 0) {
+		return rollback();
+	}
+	auto existing_character = database.QueryDatabase(fmt::format(
+		"SELECT `id` FROM `character_data` WHERE `name` = '{}' FOR UPDATE", new_escaped
+	), false);
+	if (!existing_character.Success() || existing_character.RowCount() != 0) {
+		return rollback();
+	}
+
+	auto renamed = database.QueryDatabase(fmt::format(
+		"UPDATE `bot_data` SET `name` = '{}' WHERE `bot_id` = {} AND `owner_id` = {}",
+		new_escaped, bot_id, owner_id
+	), false);
+	if (!renamed.Success() || renamed.RowsAffected() != 1) {
+		return rollback();
+	}
+
+	// Heal targets are name-based, including targets in another owner's rotation.
+	// Group and raid members also store a name, but can be scoped by bot_id.
+	const std::vector<std::string> updates = {
+		fmt::format("UPDATE `bot_heal_rotation_targets` SET `target_name` = '{}' WHERE `target_name` = '{}'", new_escaped, old_escaped),
+		fmt::format("UPDATE `group_id` SET `name` = '{}' WHERE `bot_id` = {}", new_escaped, bot_id),
+		fmt::format("UPDATE `raid_members` SET `name` = '{}' WHERE `bot_id` = {}", new_escaped, bot_id)
+	};
+	for (const auto& update : updates) {
+		if (!database.QueryDatabase(update, false).Success()) {
+			return rollback();
+		}
+	}
+
+	// These fields contain member names, not bot IDs. marknpc is the member
+	// delegated the ability to mark NPCs, rather than the marked NPC itself.
+	for (const auto* column : {"leadername", "marknpc", "maintank", "assist", "puller", "mentoree"}) {
+		if (!database.QueryDatabase(fmt::format(
+			"UPDATE `group_leaders` SET `{0}` = '{1}' WHERE `{0}` = '{2}'",
+			column, new_escaped, old_escaped
+		), false).Success()) {
+			return rollback();
+		}
+	}
+
+	if (!database.QueryDatabase(std::string("COMMIT"), false).Success()) {
+		return rollback();
+	}
+	old_name = previous_name;
+	return true;
+}
+
 bool BotDatabase::LoadBotID(const std::string& bot_name, uint32& bot_id, uint8& bot_class_id)
 {
 	if (bot_name.empty()) {

@@ -182,6 +182,7 @@ public:
 	bool	LearnMembers();
 	void	VerifyRaid();
 	void	MemberZoned(Client *c);
+	void	RenameBotMember(const std::string& old_name, const std::string& new_name);
 	void	SendHPManaEndPacketsTo(Client *c);
 	void	SendHPManaEndPacketsFrom(Mob *mob);
 	void	SendManaPacketFrom(Mob *mob);

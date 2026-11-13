@@ -101,6 +101,7 @@ int bot_command_init(void)
 		bot_command_add("botheritage", "Changes the Drakkin heritage of a bot", AccountStatus::Player, bot_command_heritage) ||
 		bot_command_add("botinspectmessage", "Changes the inspect message of a bot", AccountStatus::Player, bot_command_inspect_message) ||
 		bot_command_add("botlist", "Lists the bots that you own", AccountStatus::Player, bot_command_list_bots) ||
+		bot_command_add("botrename", "Renames an unspawned bot that you own", AccountStatus::Player, bot_command_rename) ||
 		bot_command_add("botreport", "Orders a bot to report its readiness", AccountStatus::Player, bot_command_report) ||
 		bot_command_add("botsettings", "Lists settings related to spell types and bot combat", AccountStatus::Player, bot_command_bot_settings) ||
 		bot_command_add("botspawn", "Spawns a created bot", AccountStatus::Player, bot_command_spawn) ||

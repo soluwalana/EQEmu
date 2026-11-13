@@ -544,6 +544,40 @@ bool Group::UpdatePlayer(Mob* update) {
 	return updateSuccess;
 }
 
+void Group::RenameBotMember(const std::string& old_name, const std::string& new_name)
+{
+	bool changed = false;
+	for (auto& name : membername) {
+		if (Strings::EqualFold(name, old_name)) {
+			strn0cpy(name, new_name.c_str(), sizeof(name));
+			changed = true;
+		}
+	}
+	for (auto* role : {&MainTankName, &MainAssistName, &PullerName, &NPCMarkerName, &mentoree_name}) {
+		if (Strings::EqualFold(*role, old_name)) {
+			*role = new_name;
+			changed = true;
+		}
+	}
+	if (!changed) {
+		return;
+	}
+
+	// The member slot and its role bits are unchanged. Refresh the clients' names.
+	for (auto* member : members) {
+		if (!member || !member->IsClient()) {
+			continue;
+		}
+		auto* client = member->CastToClient();
+		for (auto& name : client->GetPP().groupMembers) {
+			if (Strings::EqualFold(name, old_name)) {
+				strn0cpy(name, new_name.c_str(), sizeof(name));
+			}
+		}
+		database.RefreshGroupFromDB(client);
+	}
+}
+
 void Group::MemberZoned(Mob* removemob) {
 
 	if (!removemob) {

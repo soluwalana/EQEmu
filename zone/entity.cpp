@@ -21,6 +21,7 @@
 #include "common/features.h"
 #include "common/guilds.h"
 #include "zone/bot.h"
+#include "zone/bot_raid_roster.h"
 #include "zone/dialogue_window.h"
 #include "zone/dynamic_zone.h"
 #include "zone/guild_mgr.h"
@@ -2111,6 +2112,22 @@ Group *EntityList::GetGroupByMob(Mob *mob)
 		++iterator;
 	}
 	return nullptr;
+}
+
+void EntityList::RenameBotReferences(uint32 owner_id, const std::string& old_name, const std::string& new_name)
+{
+	if (!owner_id || old_name.empty() || new_name.empty()) {
+		return;
+	}
+
+	// Camp does not remove group/raid names. Update every cached roster after commit.
+	for (auto *group : group_list) {
+		group->RenameBotMember(old_name, new_name);
+	}
+	for (auto *raid : raid_list) {
+		raid->RenameBotMember(old_name, new_name);
+	}
+	BotRaidRoster::RenameBotReference(old_name, new_name);
 }
 
 Group *EntityList::GetGroupByMobName(const char* name)

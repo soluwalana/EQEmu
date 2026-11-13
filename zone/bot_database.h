@@ -55,6 +55,7 @@ public:
 
 	uint32 GetOwnerID(const uint32 bot_id);
 	bool LoadBotID(const std::string& bot_name, uint32& bot_id, uint8& bot_class_id);
+	bool RenameBot(uint32 bot_id, uint32 owner_id, const std::string& new_name, std::string& old_name);
 
 	bool LoadBot(const uint32 bot_id, Bot*& loaded_bot);
 	bool SaveNewBot(Bot* b, uint32& bot_id);

@@ -17,6 +17,72 @@
 */
 #include "zone/bot_command.h"
 
+#include "common/eq_packet.h"
+#include "common/eq_packet_structs.h"
+#include "zone/entity.h"
+
+void bot_command_rename(Client *c, const Seperator *sep)
+{
+	if (helper_command_alias_fail(c, "bot_command_rename", sep->arg[0], "botrename")) {
+		return;
+	}
+
+	if (helper_is_help_or_usage(sep->arg[1]) || !sep->arg[1][0] || !sep->arg[2][0]) {
+		c->Message(Chat::White, "Usage: %s [old_name] [new_name] (bot must be camped)", sep->arg[0]);
+		return;
+	}
+
+	const std::string requested_name = sep->arg[1];
+	std::string new_name = sep->arg[2];
+	uint32 bot_id = 0;
+	uint8 bot_class = Class::None;
+
+	if (!database.botdb.LoadBotID(requested_name, bot_id, bot_class) || !bot_id ||
+		database.botdb.GetOwnerID(bot_id) != c->CharacterID()) {
+		c->Message(Chat::White, "You do not own a bot named '%s'.", requested_name.c_str());
+		return;
+	}
+
+	// Camped bots may still have group/raid membership, but must have no live entity.
+	if (entity_list.GetMobByBotID(bot_id)) {
+		c->Message(Chat::White, "You must camp '%s' before renaming it.", requested_name.c_str());
+		return;
+	}
+
+	if (new_name.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz") != std::string::npos ||
+		!Bot::IsValidName(new_name)) {
+		c->Message(Chat::White, "'%s' is not a valid bot name.", new_name.c_str());
+		return;
+	}
+
+	if (!database.botdb.QueryNameAvailability(new_name)) {
+		c->Message(Chat::White, "The name '%s' is unavailable.", new_name.c_str());
+		return;
+	}
+
+	std::string old_name;
+	if (!database.botdb.RenameBot(bot_id, c->CharacterID(), new_name, old_name)) {
+		c->Message(Chat::White, "Failed to rename '%s'. Check the zone server log.", requested_name.c_str());
+		return;
+	}
+
+	// The database is committed before changing any cached names or notifying clients.
+	entity_list.RenameBotReferences(c->CharacterID(), old_name, new_name);
+
+	// Notify the owner even though the bot has no spawned entity.
+	EQApplicationPacket outapp(OP_MobRename, sizeof(MobRename_Struct));
+	auto *data = reinterpret_cast<MobRename_Struct *>(outapp.pBuffer);
+	outapp.priority = 6;
+	strn0cpy(data->old_name, old_name.c_str(), sizeof(data->old_name));
+	strn0cpy(data->old_name_again, old_name.c_str(), sizeof(data->old_name_again));
+	strn0cpy(data->new_name, new_name.c_str(), sizeof(data->new_name));
+	data->unknown192 = 0;
+	data->unknown196 = 1;
+	c->QueuePacket(&outapp);
+
+	c->Message(Chat::White, "Bot '%s' renamed to '%s' (ID %u).", old_name.c_str(), new_name.c_str(), bot_id);
+}
+
 void bot_command_surname(Client *c, const Seperator *sep)
 {
 	if (sep->arg[1][0] == '\0' || sep->IsNumber(1)) {
