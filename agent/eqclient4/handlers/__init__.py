@@ -1,6 +1,8 @@
 MODULES = (
-    "tasks",
     "items",
-    "zoning",
+    "mobs",
     "profile",
+    "spawns",
+    "tasks",
+    "zoning",
 )

@@ -172,32 +172,78 @@ class Spawn(EQStruct):
         return spawn
 
 
-def _pack_server_position(spawn_id: int, x: float, y: float, z: float, heading: int = 0) -> bytes:
+def _pack_server_position(
+    spawn_id: int,
+    x: float,
+    y: float,
+    z: float,
+    heading: float = 0,
+    vehicle_id: int = 0,
+    animation: int = 0,
+    delta_x: float = 0.0,
+    delta_y: float = 0.0,
+    delta_z: float = 0.0,
+    delta_heading: float = 0.0,
+) -> bytes:
     """RoF2 PlayerPositionUpdateServer_Struct. 24 bytes."""
-    # common/eq_packet_structs.h:1391
     return struct.pack(
         "<HHIIIII",
         spawn_id & 0xFFFF,
-        0,
-        bitword((0, 12), (pack_eq19(y), 19), (0, 1)),
-        0,
-        bitword((pack_eq19(x), 19), ((int(heading) * 4) & 0xFFF, 12), (0, 1)),
-        bitword((0, 10), (pack_eq19(z), 19), (0, 3)),
-        0,
+        vehicle_id & 0xFFFF,
+        bitword(
+            (0, 12),
+            (pack_eq19(y), 19),
+            (0, 1),
+        ),
+        bitword(
+            (int(delta_z * 64), 13),
+            (int(delta_x * 64), 13),
+            (0, 6),
+        ),
+        bitword(
+            (pack_eq19(x), 19),
+            (int(heading * 4), 12),
+            (0, 1),
+        ),
+        bitword(
+            (int(delta_heading * 20), 10),
+            (pack_eq19(z), 19),
+            (0, 3),
+        ),
+        bitword(
+            (animation, 10),
+            (int(delta_y * 64), 13),
+            (0, 9),
+        ),
     )
 
 
-def _read_server_position(data: bytes) -> tuple[int, float, float, float, int]:
+def _read_server_position(data: bytes) -> "OP_ClientUpdate":
     need(data, 24, "server position")
-    spawn_id = struct.unpack_from("<H", data)[0]
-    word_y, _delta, word_x, word_z, _anim = struct.unpack_from("<IIIII", data, 4)
-    heading = bitfield(word_x, 19, 12, signed=False) // 4
-    return (
+
+    (
         spawn_id,
-        bitfield(word_x, 0, 19) / 8.0,
-        bitfield(word_y, 12, 19) / 8.0,
-        bitfield(word_z, 10, 19) / 8.0,
-        heading,
+        vehicle_id,
+        word_y,
+        word_delta,
+        word_x,
+        word_z,
+        word_anim,
+    ) = struct.unpack_from("<HHIIIII", data)
+
+    return OP_ClientUpdate(
+        spawn_id=spawn_id,
+        x=bitfield(word_x, 0, 19) / 8.0,
+        y=bitfield(word_y, 12, 19) / 8.0,
+        z=bitfield(word_z, 10, 19) / 8.0,
+        heading=bitfield(word_x, 19, 12, signed=False) / 4.0,
+        animation=bitfield(word_anim, 0, 10),
+        delta_x=bitfield(word_delta, 13, 13) / 64.0,
+        delta_y=bitfield(word_anim, 10, 13) / 64.0,
+        delta_z=bitfield(word_delta, 0, 13) / 64.0,
+        server=True,
+        vehicle_id=vehicle_id,
+        delta_heading=bitfield(word_z, 0, 10) / 20.0,
     )
 
 
@@ -207,78 +253,97 @@ class OP_ClientUpdate(EQStruct):
     x: float
     y: float
     z: float
+
     sequence: int = 0
-    heading: int = 0
+    heading: float = 0
     animation: int = 0
+
     delta_x: float = 0.0
     delta_y: float = 0.0
     delta_z: float = 0.0
+
     server: bool = False
+
+    # Additional movement fields
+    vehicle_id: int = 0
+    delta_heading: float = 0.0
+
+    # Client-only placeholder bytes at offset 6
+    unknown06: bytes = b"\x00\x00\x00\x00"
 
     def serialize(self) -> bytes:
         if self.server:
-            return _pack_server_position(self.spawn_id, self.x, self.y, self.z, self.heading)
-        # common/eq_packet_structs.h:1419
+            return _pack_server_position(
+                self.spawn_id,
+                self.x,
+                self.y,
+                self.z,
+                self.heading,
+                vehicle_id=self.vehicle_id,
+                animation=self.animation,
+                delta_x=self.delta_x,
+                delta_y=self.delta_y,
+                delta_z=self.delta_z,
+                delta_heading=self.delta_heading,
+            )
+
         return struct.pack(
             "<HHH4sfIffffIfI",
             self.sequence & 0xFFFF,
             self.spawn_id & 0xFFFF,
-            0,
-            b"\x00\x00\x00\x00",
+            self.vehicle_id & 0xFFFF,
+            self.unknown06,
             self.delta_x,
-            (int(self.heading) * 4) & 0xFFF,
+            int(self.heading * 4) & 0xFFF,
             self.x,
             self.delta_z,
             self.z,
             self.y,
             self.animation & 0x3FF,
             self.delta_y,
-            0,
+            int(self.delta_heading * 20) & 0x3FF,
         )
 
     @classmethod
-    def deserialize(cls, data: bytes) -> OP_ClientUpdate:
-        if len(data) >= 46:
-            sequence, spawn_id = struct.unpack_from("<HH", data)
-            delta_x = struct.unpack_from("<f", data, 10)[0]
-            heading = read_u32(data, 14) & 0xFFF
-            x = struct.unpack_from("<f", data, 18)[0]
-            delta_z = struct.unpack_from("<f", data, 22)[0]
-            z = struct.unpack_from("<f", data, 26)[0]
-            y = struct.unpack_from("<f", data, 30)[0]
-            animation = read_u32(data, 34) & 0x3FF
-            delta_y = struct.unpack_from("<f", data, 38)[0]
-            return cls(
-                int(spawn_id),
-                float(x),
-                float(y),
-                float(z),
-                int(sequence),
-                int(heading) // 4,
-                int(animation),
-                float(delta_x),
-                float(delta_y),
-                float(delta_z),
-                False,
-            )
-        spawn_id, x, y, z, heading = _read_server_position(data)
-        return cls(spawn_id, x, y, z, heading=heading, server=True)
+    def deserialize(cls, data: bytes) -> "OP_ClientUpdate":
+        if len(data) == 24:
+            return _read_server_position(data)
 
+        if len(data) not in (46, 47):
+            raise ValueError(f"OP_ClientUpdate: unexpected size {len(data)}")
 
-@dataclass
-class OP_MobUpdate(EQStruct):
-    spawn_id: int
-    x: float
-    y: float
-    z: float
+        (
+            sequence,
+            spawn_id,
+            vehicle_id,
+            unknown06,
+            delta_x,
+            heading_word,
+            x,
+            delta_z,
+            z,
+            y,
+            animation_word,
+            delta_y,
+            delta_heading_word,
+        ) = struct.unpack_from("<HHH4sfIffffIfI", data)
 
-    def serialize(self) -> bytes:
-        return _pack_server_position(self.spawn_id, self.x, self.y, self.z)
-
-    @classmethod
-    def deserialize(cls, data: bytes) -> OP_MobUpdate:
-        spawn_id, x, y, z, _heading = _read_server_position(data)
-        return cls(spawn_id, x, y, z)
+        return cls(
+            spawn_id=spawn_id,
+            x=x,
+            y=y,
+            z=z,
+            sequence=sequence,
+            heading=bitfield(heading_word, 0, 12, signed=False) / 4.0,
+            animation=bitfield(animation_word, 0, 10, signed=False),
+            delta_x=delta_x,
+            delta_y=delta_y,
+            delta_z=delta_z,
+            server=False,
+            vehicle_id=vehicle_id,
+            delta_heading=bitfield(delta_heading_word, 0, 10) / 20.0,
+            unknown06=unknown06,
+        )
 
 
 @dataclass

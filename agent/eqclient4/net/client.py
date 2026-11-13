@@ -86,12 +86,15 @@ def _create_character(
     )
     reply = _wait_opcode(session, approve, deadline)
     try:
-        approved = OP_ApproveName.deserialize(reply).approved
+        approved_payload = OP_ApproveName.deserialize(reply)
     except ValueError:
         log.error("approve-name reply failed to parse", exc_info=True)
-        approved = False
-    if not approved:
+        raise SessionError(f"approved payload failed to parse {name!r}")
+
+    log.info(f"approved payload: {approved_payload}")
+    if not approved_payload.approved:
         raise SessionError(f"world rejected the name {name!r}")
+
     strength, stamina, agility, dexterity, wisdom, intelligence, charisma = sheet.stats
     created = OP_CharacterCreate(
         sheet.class_id,

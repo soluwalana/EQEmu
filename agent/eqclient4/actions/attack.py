@@ -99,7 +99,6 @@ class Attack(Action):
         world: World,
         loop: Loop,
         target_id: int,
-        *,
         cautious: bool = False,
     ) -> None:
         super().__init__(world, loop)

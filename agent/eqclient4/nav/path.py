@@ -76,8 +76,6 @@ def straight(
     length: float,
 ) -> Path:
     """One stride toward a mob already in sight. The mesh walk around a room loses it."""
-    origin = _xyz(origin)
-    goal = _xyz(goal)
     points = _trim(origin, [origin, goal], goal)
     return Path(
         distance=_horiz(origin, goal),
@@ -106,14 +104,13 @@ def route(
     ``length`` is the caller's stride. Swim is applied by movement: this
     function still reports the door and whether the point is in water.
     """
-    origin = _xyz(origin)
     goal, zoneline = _goal(destination, zone, origin)
     points, fallback = _polyline(origin, goal, zone)
     nxt = along(origin, points, length)
     live = doors_on_stride(origin, nxt, doors)
     door = live[0] if live else zoneline
     if live:
-        nxt = _door_xyz(live[0])
+        nxt = live[0].position
     wet = _in_liquid(water, nxt) or _in_liquid(water, goal)
     return Path(
         distance=_length(origin, points, goal),
@@ -139,7 +136,7 @@ def trim_points(
     Walking the whole list from the current spot steps back onto the polygon
     just left. The next stride steps off it, and the two spots trade places.
     """
-    kept = [_xyz(point) for point in points]
+    kept = [point for point in points]
     while kept and _horiz(here, kept[0]) <= reach:
         kept.pop(0)
     while len(kept) > 1 and _behind(here, kept[0], kept[1]):
@@ -151,7 +148,7 @@ def cut_to_step(
     points: list[tuple[float, float, float]], step: tuple[float, float, float]
 ) -> list[tuple[float, float, float]]:
     """Drop the prefix this stride already passed, so the next one does not walk it again."""
-    route = [_xyz(point) for point in points]
+    route = [point for point in points]
     if len(route) < 2:
         return route
     nearest = min(range(len(route)), key=lambda index: _horiz(step, route[index]))
@@ -166,13 +163,11 @@ def along(
     length: float,
 ) -> tuple[float, float, float]:
     """Walk up to ``length`` horizontal yards along ``points``."""
-    origin = _xyz(origin)
     if length <= 0.0 or not points:
         return origin
     prev = origin
     left = float(length)
     for point in points:
-        point = _xyz(point)
         span = _horiz(prev, point)
         if span <= 1e-06:
             prev = point
@@ -188,7 +183,7 @@ def along(
             )
         left -= span
         prev = point
-    return _xyz(points[-1])
+    return points[-1]
 
 
 def doors_on_stride(
@@ -196,11 +191,9 @@ def doors_on_stride(
     end: tuple[float, float, float],
     doors: dict[int, Door] | list[Door] | None,
     reach: float = DOOR_REACH,
-) -> list:
+) -> list[Door]:
     """Closed doors whose position lies on the segment, nearest first."""
-    origin = _xyz(origin)
-    end = _xyz(end)
-    hits = []
+    hits: list[tuple[float, Door]] = []
     for door in iter_doors(doors):
         if door.opened:
             continue
@@ -219,18 +212,18 @@ def doors_on_stride(
             continue
         hits.append((tee, door))
     hits.sort(key=lambda item: item[0])
-    return [door for _tee, door in hits]
+    return [door for _, door in hits]
 
 
 def find(
     loop: Loop, world: World, mob: Mob, origin: tuple[float, float, float] | None = None
 ) -> bool:
     """OP_FindPersonRequest when the mob is not nearby and the mesh has no route."""
-    origin = _xyz(origin) if origin is not None else _world_origin(world)
+    origin = origin if origin else world.position
     if is_nearby(world, mob, origin):
         return False
-    goal = mob_point(mob)
-    if goal is None or mesh_reaches(world.zone or "", origin, goal):
+    goal = mob.position
+    if not goal or mesh_reaches(world.zone or "", origin, goal):
         return False
     loop.send(
         "OP_FindPersonRequest",
@@ -250,7 +243,7 @@ def track(
     character = world.character
     if not (character.abilities.skills.get(TRACK_SKILL, 0) > 0):
         return False
-    origin = _xyz(origin) if origin is not None else _world_origin(world)
+    origin = origin if origin else world.position
     if is_nearby(world, mob, origin):
         return False
     loop.send("OP_Track", OP_Track().serialize())
@@ -268,34 +261,29 @@ def find_waypoints(payload: bytes) -> list[tuple[float, float, float]]:
 def mesh_reaches(
     zone: str, origin: tuple[float, float, float], goal: tuple[float, float, float]
 ) -> bool:
-    if not zone or goal is None:
+    if not zone or not goal:
         return False
     try:
         mesh = load_nav(zone)
     except (OSError, ValueError):
         log.error("nav mesh for %s failed to load", zone, exc_info=True)
         return False
-    if mesh is None:
+    if not mesh:
         return False
-    return bool(mesh.reaches(_xyz(origin), _xyz(goal)))
+    return bool(mesh.reaches(origin, goal))
 
 
 def iter_doors(doors: dict[int, Door] | list[Door] | None) -> Iterator[Door]:
     if not doors:
         return
 
-    if isinstance(doors, dict):
-        yield from doors.values()
-        return
-
-    yield from doors
-
-
-def mob_point(mob: Mob) -> tuple[float, float, float] | None:
-    pos = mob.position
-    if pos is None:
-        return None
-    return _xyz(pos)
+    match doors:
+        case dict():
+            yield from doors.values()
+        case list():
+            yield from doors
+        case _:
+            return
 
 
 def is_nearby(
@@ -331,13 +319,15 @@ def _goal(
 
 
 def _point(
-    destination: tuple[float, float, float] | str | Mob,
+    destination: tuple[float, float, float] | Mob,
 ) -> tuple[float, float, float] | None:
-    if destination is None or isinstance(destination, str):
-        return None
-    if isinstance(destination, (tuple, list)) and len(destination) >= 3:
-        return _xyz(destination)
-    return mob_point(destination)
+    match destination:
+        case tuple():
+            return destination
+        case Mob():
+            return destination.position
+        case _:
+            return None
 
 
 def _polyline(
@@ -373,15 +363,20 @@ def _trim(
     points: list[tuple[float, float, float]],
     goal: tuple[float, float, float],
 ) -> list[tuple[float, float, float]]:
-    pts = [_xyz(point) for point in points]
+    pts = [point for point in points]
+
     while pts and _horiz(origin, pts[0]) <= 1.0:
         pts.pop(0)
+
     while len(pts) > 1 and _behind(origin, pts[0], pts[1]):
         pts.pop(0)
+
     if not pts:
         return [goal]
+
     if _horiz(pts[-1], goal) > 1.0:
         pts.append(goal)
+
     return pts
 
 
@@ -445,17 +440,11 @@ def _graph() -> ZoneGraph | None:
     return _GRAPH
 
 
-def _world_origin(world: World) -> tuple[float, float, float]:
-    pos = world.position if world is not None else None
-    if isinstance(pos, (tuple, list)) and len(pos) >= 3:
-        return _xyz(pos)
-    return (0.0, 0.0, 0.0)
-
-
 def _range_of(origin: tuple[float, float, float], mob: Mob) -> float:
-    point = mob_point(mob)
+    point = mob.position
     if point is not None:
         return _horiz(origin, point)
+
     raw = mob.distance
     try:
         return float(raw)
@@ -465,21 +454,14 @@ def _range_of(origin: tuple[float, float, float], mob: Mob) -> float:
 
 
 def _in_liquid(water: WaterMap | None, point: tuple[float, float, float]) -> bool:
-    if water is None or point is None:
+    if not water or not point:
         return False
+
     try:
         return bool(water.in_liquid(point[0], point[1], point[2]))
     except (TypeError, ValueError):
         log.error("liquid check failed", exc_info=True)
         return False
-
-
-def _door_xyz(door: Door) -> tuple[float, float, float]:
-    return (float(door.x), float(door.y), float(door.z))
-
-
-def _xyz(point: tuple[float, float, float]) -> tuple[float, float, float]:
-    return (float(point[0]), float(point[1]), float(point[2]))
 
 
 def _horiz(a: tuple[float, float, float], b: tuple[float, float, float]) -> float:

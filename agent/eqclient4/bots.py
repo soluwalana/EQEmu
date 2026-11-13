@@ -1,7 +1,16 @@
-"""Minimal EQEmu bot identity and equipment eligibility."""
+"""Bot functionality.
 
+Must not import World or Loop.
+"""
+
+import json
+import os
+import random
 import re
+from collections import defaultdict
 from collections.abc import Iterator
+from pathlib import Path as FSPath
+from typing import Literal
 
 from eqclient4.data.items import ItemBook
 from eqclient4.log import log
@@ -10,13 +19,12 @@ from eqclient4.structs.constants import (
     CANNOT_EQUIP,
     CANNOT_EQUIP_CONFLICT,
     CANNOT_EQUIP_LEVEL,
-    CLASS_ID_TO_NAME,
+    CLASS_ID_TO_CODE,
     CLASS_NAME_TO_ID,
-    DEITY_ID_TO_BIT,
+    DPS_CLASSES,
+    GOOD_ALIGNED_RACES,
     HEALER_CLASSES,
     RACE_ID_TO_BIT,
-    RACE_ID_TO_NAME,
-    RACE_NAME_TO_ID,
     TANK_CLASSES,
     WORN_SLOTS,
     WORN_SLOTS_BY_NAME,
@@ -31,6 +39,115 @@ _SLOT_LINE = re.compile(r"\bSlot\s+(\d+)\s+\([^)]+\)\s*\|\s*(.*)", re.IGNORECASE
 _SLOT_SECTION = re.compile(r"\(Slot\s*(\d+)\s*\)")
 # 1, 4 and 35 are the EQ 2H slashing, 2H blunt, and 2H piercing item types.
 _TWO_HAND_TYPES = {1, 4, 35}
+
+
+RosterMode = Literal["party", "raid"]
+
+
+class Roster:
+
+    def __init__(self, item_book: ItemBook, character: str) -> None:
+        self.item_book = item_book
+        self.character = character
+        self.group_size = 5
+        self.raid_size = 30
+        self.raid: list[Bot] = []
+        self.group: list[Bot] = []
+
+    def serialize(self) -> dict:
+        return {
+            "raid": {
+                b.name: {
+                    "owner": b.owner,
+                    "name": b.name,
+                    "race": b.race,
+                    "class_id": b.class_id,
+                    "gender": b.gender,
+                    "created": b.created,
+                }
+                for b in self.raid
+            },
+            "group": {
+                b.name: {
+                    "owner": b.owner,
+                    "name": b.name,
+                    "race": b.race,
+                    "class_id": b.class_id,
+                    "gender": b.gender,
+                    "created": b.created,
+                }
+                for b in self.group
+            },
+        }
+
+
+def race_for_class(class_id: int) -> int:
+    potential_races = []
+    for race in RACE_ID_TO_BIT.keys():
+        if combination_valid(class_id, race) and race in GOOD_ALIGNED_RACES:
+            potential_races.append(race)
+    return random.choice(potential_races)
+
+
+_ROSTER: Roster | None = None
+
+
+def get_roster(item_book: ItemBook, character: str) -> Roster:
+    global _ROSTER
+    if _ROSTER:
+        return _ROSTER
+
+    cache_path = FSPath.home() / ".eqclient" / "v4" / character / "raid_roster.json"
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    if os.path.exists(cache_path):
+        data = json.load(open(cache_path))
+        _ROSTER = Roster(item_book, character)
+        _ROSTER.raid = [Bot(item_book, **b) for b in data["raid"].values()]
+        _ROSTER.group = [Bot(item_book, **b) for b in data["group"].values()]
+        return _ROSTER
+
+    class_tracker = defaultdict(int)
+
+    def generate_bot(class_id: int) -> Bot:
+        class_tracker[class_id] += 1
+        suffix = ""
+        if class_tracker[class_id] > 1:
+            suffix = str(chr(ord("a") + class_tracker[class_id] - 2))
+            if suffix in "aeiou":
+                suffix = f"x{suffix}"
+
+        short = CLASS_ID_TO_CODE[class_id]
+        if short == "ENCH":  # no duplicate vowels allowed
+            short = f"x{short}"
+
+        name = f"{character[3]}" + f"{short}{suffix}".lower()
+
+        return Bot(
+            item_book,
+            owner=character,
+            name=name,
+            race=race_for_class(class_id),
+            class_id=class_id,
+            gender=1,
+        )
+
+    _ROSTER = Roster(item_book, character)
+    _ROSTER.group.append(generate_bot(CLASS_NAME_TO_ID["Cleric"]))
+    _ROSTER.group.append(generate_bot(random.choice(list(TANK_CLASSES))))
+    _ROSTER.group.append(generate_bot(random.choice(list(HEALER_CLASSES))))
+    _ROSTER.group.append(generate_bot(random.choice(list(DPS_CLASSES))))
+    _ROSTER.group.append(generate_bot(random.choice(list(DPS_CLASSES))))
+
+    for _ in range(30):
+        tank = random.choice(list(TANK_CLASSES))
+        _ROSTER.raid.append(generate_bot(tank))
+        healer = random.choice(list(HEALER_CLASSES))
+        _ROSTER.raid.append(generate_bot(healer))
+        other = random.choice(list(CLASS_ID_TO_CODE.keys()))
+        _ROSTER.raid.append(generate_bot(other))
+
+    open(cache_path, "w").write(json.dumps(_ROSTER.serialize(), indent=2))
+    return _ROSTER
 
 
 class Bot:

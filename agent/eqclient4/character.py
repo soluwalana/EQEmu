@@ -32,6 +32,7 @@ from eqclient4.structs import (
     OP_ShopPlayerBuy,
     OP_SkillUpdate,
     OP_Stamina,
+    OP_ZoneEntry,
     ProfileBind,
     SpellBuff,
 )
@@ -381,9 +382,7 @@ class Character:
                 if payload.spawn.name == char.name and payload.spawn.npc == 0:
                     char.self_id = payload.spawn.spawn_id
                     log.info(char.event("new-spawn", f"New spawn {char.self_id}", True))
-
                 return
-
             case OP_PlayerProfile():
                 log.info(char.load(payload))
                 log.info(char.render())

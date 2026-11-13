@@ -24,6 +24,7 @@ class ProfileHandler(Handler):
         "OP_SendAATable",
         "OP_AAExpUpdate",
         "OP_ShopPlayerBuy",
+        "OP_ZoneEntry",
     )
 
     def on(self, opcode: str, payload: EQStruct) -> None:

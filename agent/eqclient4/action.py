@@ -6,16 +6,16 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from eqclient4.loop import Loop
     from eqclient4.nav.path import Path
-    from eqclient4.world import Mob, World
+    from eqclient4.world import World
 
+from eqclient4.mob import Mob
 from eqclient4.nav.travel import first_leg
-from eqclient4.structs import EQStruct, OP_Consider, OP_TargetMouse
+from eqclient4.structs import EQStruct, OP_Consider, OP_MobHealth, OP_TargetMouse
 
-
-def _consider_id(payload: EQStruct) -> int:
-    if isinstance(payload, OP_Consider):
-        return int(payload.target_id)
-    return 0
+# def _consider_id(payload: EQStruct) -> int:
+#     if isinstance(payload, OP_Consider):
+#         return int(payload.target_id)
+#     return 0
 
 
 class Action:
@@ -41,7 +41,6 @@ class Action:
 
         # Targeting helper fields
         self.target_id = 0
-        self.consider_sent = False
         self.target_sent = False
         self.mob_targeted = 0
 
@@ -77,24 +76,25 @@ class Action:
             self.target_sent = True
             return
 
-        if not self.consider_sent:
-            spawn = int(self._world.self_id or 0)
-            self._loop.send(
-                "OP_Consider",
-                OP_Consider(spawn, int(mob.id)).serialize(),
-            )
-            self.consider_sent = True
-            return
+        # if not self.consider_sent:
+        #     spawn = int(self._world.self_id or 0)
+        #     self._loop.send(
+        #         "OP_Consider",
+        #         OP_Consider(spawn, int(mob.id)).serialize(),
+        #     )
+        #     self.consider_sent = True
+        #     return
 
-        message = self.consume(
-            "OP_Consider",
-            lambda message: _consider_id(message) == int(self.target_id),
-        )
+        def mh_matcher(message: EQStruct) -> bool:
+            if isinstance(message, OP_MobHealth):
+                return message.spawn_id == int(self.target_id)
+            return False
+
+        message = self.consume("OP_MobHealth", mh_matcher)
         if message:
             mob.targeted = True
             self.mob_targeted = self.target_id
             self.unwait("TARGET")
-            self.consider_sent = False
             self.target_sent = False
             return
 
@@ -155,7 +155,7 @@ class Action:
         self.messages.append(payload)
 
     def opcodes(self) -> tuple[str, ...]:
-        return ("OP_Consider",)
+        return ("OP_MobHealth",)
 
     @staticmethod
     def key(action: Action) -> tuple[object, ...]:

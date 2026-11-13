@@ -10,17 +10,11 @@ if TYPE_CHECKING:
     from eqclient4.loop import Loop
     from eqclient4.nav.water import WaterMap
 
-import json
 import math
-import os
-import random
 import time
 from collections import defaultdict
-from dataclasses import dataclass
-from pathlib import Path as FSPath
-from typing import Literal
 
-from eqclient4.bots import Bot
+from eqclient4.bots import get_roster
 from eqclient4.character import Character
 from eqclient4.data.bot_spells import BotSpellBook, ensure_bot_spells
 from eqclient4.data.drops import DropBook, MappedDrops, ensure_drops
@@ -34,6 +28,7 @@ from eqclient4.data.recipes import RecipeBook, ensure_recipes
 from eqclient4.data.spells import SpellBook, ensure_spells
 from eqclient4.inventory import CharacterInventory, Merchant
 from eqclient4.log import log
+from eqclient4.mob import Mob, MobMap
 from eqclient4.nav.maps import ZoneMap, load_map
 from eqclient4.nav.navmesh import NavMesh, load_nav
 from eqclient4.nav.path import (
@@ -45,7 +40,7 @@ from eqclient4.nav.path import (
     doors_on_stride,
 )
 from eqclient4.nav.path import find as path_find
-from eqclient4.nav.path import is_nearby, iter_doors, mob_point, route
+from eqclient4.nav.path import is_nearby, iter_doors, route
 from eqclient4.nav.path import track as path_track
 from eqclient4.nav.path import trim_points
 from eqclient4.nav.travel import ZoneGraph, ensure_zone_graph
@@ -58,265 +53,12 @@ from eqclient4.structs import (
     OP_Consider,
     OP_FindPersonReply,
     OP_FloatListThing,
-    OP_MobUpdate,
     OP_MoveDoor,
     OP_NewZone,
     OP_TaskActivity,
     OP_TaskDescription,
 )
-from eqclient4.structs.constants import (
-    CLASS_ID_TO_CODE,
-    CLASS_NAME_TO_ID,
-    combination_valid,
-    DPS_CLASSES,
-    GOOD_ALIGNED_RACES,
-    HEALER_CLASSES,
-    RACE_ID_TO_BIT,
-    TANK_CLASSES,
-)
-from eqclient4.utils import eq_heading
-
-RosterMode = Literal["party", "raid"]
-
-
-class Faction:
-    """One faction. amount stays None until a server message confirms it.
-
-    maxed is 1 when the faction cannot get better, -1 when it cannot get worse,
-    and 0 otherwise. changed is set when better or worse arrives with no number.
-    """
-
-    def __init__(self, amount: int | None = None, maxed: int = 0, changed: bool = False) -> None:
-        self.amount = amount
-        self.maxed = maxed
-        self.changed = changed
-
-
-@dataclass
-class Door:
-    id: int
-    name: str
-    x: float
-    y: float
-    z: float
-    open_type: int = 0
-    opened: bool = False
-
-
-@dataclass
-class Consider:
-    standing: int = 0
-    level_color: int = 0
-    name: str = ""
-
-
-class Roster:
-
-    def __init__(self, item_book: ItemBook, character: str) -> None:
-        self.item_book = item_book
-        self.character = character
-        self.group_size = 5
-        self.raid_size = 30
-        self.raid: list[Bot] = []
-        self.group: list[Bot] = []
-
-    def serialize(self) -> dict:
-        return {
-            "raid": {
-                b.name: {
-                    "owner": b.owner,
-                    "name": b.name,
-                    "race": b.race,
-                    "class_id": b.class_id,
-                    "gender": b.gender,
-                    "created": b.created,
-                }
-                for b in self.raid
-            },
-            "group": {
-                b.name: {
-                    "owner": b.owner,
-                    "name": b.name,
-                    "race": b.race,
-                    "class_id": b.class_id,
-                    "gender": b.gender,
-                    "created": b.created,
-                }
-                for b in self.group
-            },
-        }
-
-
-def race_for_class(class_id: int) -> int:
-    potential_races = []
-    for race  in RACE_ID_TO_BIT.keys():
-        if combination_valid(class_id, race) and race in GOOD_ALIGNED_RACES:
-            potential_races.append(race)
-    return random.choice(potential_races)
-
-
-_ROSTER: Roster | None = None
-
-
-def get_roster(item_book: ItemBook, character: str) -> Roster:
-    global _ROSTER
-    if _ROSTER:
-        return _ROSTER
-
-    cache_path = FSPath.home() / ".eqclient" / "v4" / character / "raid_roster.json"
-    cache_path.parent.mkdir(parents=True, exist_ok=True)
-    if os.path.exists(cache_path):
-        data = json.load(open(cache_path))
-        _ROSTER = Roster(item_book, character)
-        _ROSTER.raid = [Bot(item_book, **b) for b in data["raid"].values()]
-        _ROSTER.group = [Bot(item_book, **b) for b in data["group"].values()]
-        return _ROSTER
-
-    class_tracker = defaultdict(int)
-
-    def generate_bot(class_id: int) -> Bot:
-        class_tracker[class_id] += 1
-        suffix = ""
-        if class_tracker[class_id] > 1:
-            suffix = str(chr(ord("a") + class_tracker[class_id] - 2))
-            if suffix in "aeiou":
-                suffix = f"x{suffix}"
-
-        short = CLASS_ID_TO_CODE[class_id]
-        if short == "ENCH":  # no duplicate vowels allowed
-            short = f"x{short}"
-
-        name = f"{character[3]}" + f"{short}{suffix}".lower()
-
-        return Bot(
-            item_book,
-            owner=character,
-            name=name,
-            race=race_for_class(class_id),
-            class_id=class_id,
-            gender=1,
-        )
-
-    _ROSTER = Roster(item_book, character)
-    _ROSTER.group.append(generate_bot(CLASS_NAME_TO_ID["Cleric"]))
-    _ROSTER.group.append(generate_bot(random.choice(list(TANK_CLASSES))))
-    _ROSTER.group.append(generate_bot(random.choice(list(HEALER_CLASSES))))
-    _ROSTER.group.append(generate_bot(random.choice(list(DPS_CLASSES))))
-    _ROSTER.group.append(generate_bot(random.choice(list(DPS_CLASSES))))
-
-    for _ in range(30):
-        tank = random.choice(list(TANK_CLASSES))
-        _ROSTER.raid.append(generate_bot(tank))
-        healer = random.choice(list(HEALER_CLASSES))
-        _ROSTER.raid.append(generate_bot(healer))
-        other = random.choice(list(CLASS_ID_TO_CODE.keys()))
-        _ROSTER.raid.append(generate_bot(other))
-
-    open(cache_path, "w").write(json.dumps(_ROSTER.serialize(), indent=2))
-    return _ROSTER
-
-
-class Mob:
-    """One spawn. distance and direction are refreshed from our position."""
-
-    def __init__(
-        self,
-        id: int,
-        name: str = "",
-        npc: int = 0,
-        level: int = 0,
-        position: tuple[float, float, float] = (0.0, 0.0, 0.0),
-        hp: int = 0,
-        last_name: str = "",
-    ) -> None:
-        self.id = id
-        self.name = name
-        self.last_name = last_name or ""
-        self.npc = npc
-        self.level = level
-        self.body = 0
-        self.class_id = 0
-        self.race = 0
-        self.hp: int = hp
-        self.max_hp: int = 0
-        self.mana: int | None = None
-        self.max_mana: int | None = None
-        self.consider: Consider | None = None
-        self.faction_id = 0
-        self.faction_last_considered: int | None = None
-        self.targeted = False
-        self.dead = False
-        self._consider_sent = False
-        self._consider_change_sent = False
-        self.distance = 0.0
-        self.direction = 0
-        self._position = (0.0, 0.0, 0.0)
-        self.position = position
-
-    def spoken_name(self) -> str:
-        """The name you hail. A trailing 000 is the unique suffix, and the last name is his title."""
-        kept = []
-        for ch in (self.name or "").replace("_", " "):
-            if ch.isalpha() or ch in " '-`":
-                kept.append(ch)
-            else:
-                kept.append(" ")
-        return " ".join("".join(kept).split())
-
-    @property
-    def spawn_id(self) -> int:
-        return self.id
-
-    @property
-    def position(self) -> tuple[float, float, float]:
-        return self._position
-
-    @position.setter
-    def position(self, point: tuple[float, float, float]) -> None:
-        self._position = (float(point[0]), float(point[1]), float(point[2]))
-
-    @property
-    def is_treasure(self) -> bool:
-        """An LDoN object. Melee does not credit it. Opening it does."""
-        if int(self.class_id or 0) == 62:
-            return True
-        return False
-
-
-class MobMap(dict[int, Mob]):
-    """mobs[id] = Mob. Assigning a mob attaches it and measures distance."""
-
-    def __init__(self, world: World) -> None:
-        super().__init__()
-        self._world = world
-
-    def __setitem__(self, key: int, mob: Mob) -> None:
-        super().__setitem__(key, mob)
-        self._world.measure(mob)
-
-    def mob_named(self, name: str) -> Mob | None:
-        want = " ".join((name or "").replace("_", " ").lower().split())
-        if not want:
-            return None
-        exact = None
-        partial = None
-        for mob in self.values():
-            found = mob.spoken_name().lower()
-            if found == want:
-                exact = mob
-                break
-            if want in found and not partial:
-                partial = mob
-        return exact or partial
-
-    def find_mob(self, spawn_id: int) -> Mob | None:
-        for mob_id, mob in self.items():
-            if mob_id == spawn_id or mob.id == spawn_id:
-                return mob
-            short = spawn_id & 65535
-            if short == (mob_id & 65535) or short == (mob.id & 65535):
-                return mob
-        return None
+from eqclient4.utils import Door, Faction, eq_heading
 
 
 class TaskBook:
@@ -343,6 +85,7 @@ class World:
         # <Character Management>
         self.character = Character(name)
         self.self_id = 0
+
         # Total faction standing isn't knowable,
         # just what can be gleaned from considerations
         self.discovered_factions: dict[int, Faction] = {}
@@ -479,29 +222,17 @@ class World:
         return [mob for mob in self.nearby(NEARBY_YARDS) if not mob.id != self.self_id]
 
     def needs_consider(self, mob: Mob) -> bool:
+        if not mob.faction_id:
+            return True
         faction = self.faction(mob.faction_id)
-        amount = faction.amount
-        maxed = faction.maxed
-        changed = faction.changed
-        sent = mob._consider_sent or mob.faction_last_considered is not None
-        if not sent:
+        if mob.faction_last_considered:
             return True
 
-        if maxed:
-            return False
-
-        if changed and not mob._consider_change_sent:
+        if mob.faction_last_considered != faction.amount:
             return True
 
-        return amount != mob.faction_last_considered
-
-    def remember_consider(self, mob: Mob) -> None:
-        faction = self.faction(mob.faction_id)
-        amount = faction.amount
-        changed = faction.changed
-        mob.faction_last_considered = amount
-        mob._consider_sent = True
-        mob._consider_change_sent = changed
+        # already matches last consider, no need for another
+        return False
 
     def faction(self, faction_id: int) -> Faction:
         found = self.discovered_factions.get(faction_id)
@@ -545,24 +276,13 @@ STRIDE_MOB_RADIUS = 2.0
 _COMMIT_TOLERANCE = 0.35
 
 
-@dataclass
-class MovementAnnotatedMob:
-    """A mob already on the current stride. Values are copied off the Mob."""
-
-    mob: Mob
-    distance: float | None = None
-    direction: float | None = None
-    consider: Consider | None = None
-    targeted: bool = False
-
-
 class Movement:
     """Position, the stride in flight, and the packets that move us."""
 
     def __init__(self, world: World) -> None:
         self.world = world
         self.position: tuple = (0.0, 0.0, 0.0)
-        self.heading: int = 0
+        self.heading: float = 0
         self.asked: tuple | None = None
         self.asked_tick: int = 0
         self.anim: int = 0
@@ -587,7 +307,6 @@ class Movement:
         """Opcodes the bus should deliver to handle()."""
         return (
             "OP_ClientUpdate",
-            "OP_MobUpdate",
             "OP_NewZone",
             "OP_MoveDoor",
             "OP_FindPersonReply",
@@ -631,7 +350,7 @@ class Movement:
         """Bus entry. Our position, a zone entry, an opened door, or find waypoints."""
 
         match payload:
-            case OP_ClientUpdate() | OP_MobUpdate():
+            case OP_ClientUpdate():
                 self._on_position(payload)
             case OP_NewZone():
                 self._on_new_zone(payload)
@@ -779,37 +498,22 @@ class Movement:
 
         return seen
 
-    def mobs_on_path(self, mobs: list[Mob]) -> list[MovementAnnotatedMob]:
+    def mobs_on_path(self) -> list[Mob]:
         """Mobs on the current stride, or None. Does not send OP_Consider.
 
         Each result is a MovementAnnotatedMob. distance, direction, consider, and
         targeted are the values already on the Mob.
         """
-        if not mobs:
+        if not self.path:
             return []
 
         here = self.position
-        end = self.asked
-        if not end and self.path:
-            end = self.path.next_point
-
-        if not end:
-            return []
 
         found = []
-        for mob in mobs:
-            if not _mob_on_stride(here, end, mob):
+        for mob in self.world.mobs.values():
+            if not _mob_on_path(here, self.path, mob):
                 continue
-
-            found.append(
-                MovementAnnotatedMob(
-                    mob=mob,
-                    distance=mob.distance,
-                    direction=mob.direction,
-                    consider=mob.consider,
-                    targeted=bool(mob.targeted),
-                )
-            )
+            found.append(mob)
         return found
 
     def find(self, loop: Loop, mob: Mob) -> bool:
@@ -1161,16 +865,16 @@ class Movement:
                 continue
             if not self.world.needs_consider(mob):
                 continue
+
             spawn = int(self.world.self_id or 0)
             loop.send("OP_Consider", OP_Consider(spawn, mob.id).serialize())
-            self.world.remember_consider(mob)
 
-    def _on_position(self, row: OP_ClientUpdate | OP_MobUpdate) -> None:
+    def _on_position(self, row: OP_ClientUpdate) -> None:
         spawn_id = int(row.spawn_id)
         x, y, z = float(row.x), float(row.y), float(row.z)
         heading = None
 
-        if isinstance(row, OP_ClientUpdate) and not row.server:
+        if not row.server:
             heading = row.heading
 
         if self.world.self_id != spawn_id:
@@ -1279,9 +983,9 @@ def _is_reclaim(loop: Loop, sender: Action | None) -> bool:
 def _sweep_visible(world: World, origin: tuple[float, float, float], mob: Mob) -> bool:
     """One cached ray. A miss falls back to line_of_sight, which peeks headings."""
     mapped = _zone_map(world)
-    if mapped is None:
+    if not mapped:
         return world.line_of_sight(mob)
-    end = mob_point(mob)
+    end = mob.position
     if end is None:
         return False
     return bool(mapped.clear(origin, end, headings=1))
@@ -1289,7 +993,7 @@ def _sweep_visible(world: World, origin: tuple[float, float, float], mob: Mob) -
 
 def _zone_map(world: World) -> ZoneMap | None:
     mesh = world.mesh
-    if mesh is not None:
+    if mesh:
         return mesh
     zone = world.zone or ""
     if not zone:
@@ -1297,33 +1001,35 @@ def _zone_map(world: World) -> ZoneMap | None:
     return load_map(zone)
 
 
-def _mob_on_stride(
-    here: tuple[float, float, float], end: tuple[float, float, float], mob: Mob
+def _mob_on_path(
+    here: tuple[float, float, float],
+    path: Path,
+    mob: Mob,
 ) -> bool:
-    point = mob_point(mob)
+    point = mob.position
+    points = trim_points(path.points, here) or [path.destination]
 
-    if not point:
-        return False
+    start = here
+    traveled = 0.0
 
-    if abs(point[2] - here[2]) > 20.0 and abs(point[2] - end[2]) > 20.0:
-        return False
+    for end in points:
+        length = _horiz(start, end)
 
-    dx, dy = (end[0] - here[0], end[1] - here[1])
-    length = dx * dx + dy * dy
+        if length <= 1e-6:
+            start = end
+            continue
 
-    if length <= 1e-06:
-        return False
+        gap, tee = _segment_project(point, start, end)
+        along = traveled + tee * length
+        z = start[2] + tee * (end[2] - start[2])
 
-    tee = ((point[0] - here[0]) * dx + (point[1] - here[1]) * dy) / length
-    if tee <= 0.0 or tee > 1.0:
-        return False
+        if along >= 1.0 and gap <= STRIDE_MOB_RADIUS and abs(point[2] - z) <= 20.0:
+            return True
 
-    along_yards = math.sqrt(tee * tee * length)
-    if along_yards < 1.0:
-        return False
+        traveled += length
+        start = end
 
-    nearest = (here[0] + tee * dx, here[1] + tee * dy)
-    return math.hypot(point[0] - nearest[0], point[1] - nearest[1]) <= STRIDE_MOB_RADIUS
+    return False
 
 
 def _horiz(a: tuple[float, float, float], b: tuple[float, float, float]) -> float:
@@ -1337,9 +1043,7 @@ def _dest_key(destination: tuple[float, float, float] | Mob) -> str | None:
             return f"p:{round(float(destination[0]), 1)}:{round(float(destination[1]), 1)}:{round(float(destination[2]), 1)}"
 
         case Mob() as mob:
-            point = mob_point(mob)
-            if point is None:
-                return None
+            point = mob.position
             return f"m:{mob.id}:{round(point[0], 1)}:{round(point[1], 1)}:{round(point[2], 1)}"
 
         case _:

@@ -91,12 +91,22 @@ class FormParty(Action):
                 "", self._world.character.name, 100, SAY_CHANNEL, 0, 0, 100, "Hello, world!"
             ).serialize(),
         )
+
+        self._loop.send(
+            "OP_ChannelMessage",
+            OP_ChannelMessage(
+                "", self._world.character.name, 100, SAY_CHANNEL, 0, 0, 100, "Hello, world! 2"
+            ).serialize(),
+        )
+
+        self._loop.send(
+            "OP_ChannelMessage",
+            OP_ChannelMessage(
+                "", self._world.character.name, 100, SAY_CHANNEL, 0, 0, 100, "Hello, world! 3"
+            ).serialize(),
+        )
         # Reconstitute or create the party
-        pass
+        self.complete = True
 
-
-"""
-Form command is called with either reform or 
-
-
-"""
+    def expecting_text(self) -> bool:
+        return False

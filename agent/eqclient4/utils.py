@@ -1,5 +1,7 @@
 import math
 import re
+from dataclasses import dataclass
+from enum import IntEnum
 
 NAME_RE = re.compile(r"\s*\d+$")
 
@@ -295,9 +297,65 @@ def crc32(data: bytes, key: int | None = None) -> int:
     return (~crc) & 0xFFFFFFFF
 
 
-def normalize_name(name: str) -> str:
-    """Fold EQ spawn names: underscores, backticks, and trailing instance digits."""
-    folded = " ".join(
-        (name or "").lower().replace("_", " ").replace("`", " ").replace("#", " ").split()
+def normalize_mob_name(name: str) -> str:
+    return " ".join(
+        re.sub(r"\d+", "", name)
+        .lower()
+        .replace("_", " ")
+        .replace("`", " ")
+        .replace("#", " ")
+        .split()
     )
-    return NAME_RE.sub("", folded).strip()
+
+
+class FactionStanding(IntEnum):
+    ALLY = 1
+    WARMLY = 2
+    KINDLY = 3
+    AMIABLY = 4
+    INDIFFERENT = 5
+    SCOWLS = 6
+    THREATENINGLY = 7
+    DUBIOUSLY = 8
+    APPREHENSIVELY = 9
+
+
+class Faction:
+    """One faction. amount stays None until a server message confirms it.
+
+    maxed is 1 when the faction cannot get better, -1 when it cannot get worse,
+    and 0 otherwise. changed is set when better or worse arrives with no number.
+    """
+
+    def __init__(self, amount: int | None = None, maxed: int = 0, standing: FactionStanding | None = None) -> None:
+        self.amount = amount
+        self.maxed = maxed
+        self.standing = standing
+
+    def set_estimated_faction_amount(self, fs: FactionStanding) -> None:
+        self.amount = {
+            FactionStanding.ALLY: 1550, 
+            FactionStanding.WARMLY: 925,
+            FactionStanding.KINDLY: 625,
+            FactionStanding.AMIABLY: 300,
+            FactionStanding.INDIFFERENT: 50,
+            FactionStanding.APPREHENSIVELY: -50,
+            FactionStanding.DUBIOUSLY: -300,
+            FactionStanding.THREATENINGLY: -625,
+            FactionStanding.SCOWLS: -1375,
+        }[fs]
+        self.standing = fs
+
+@dataclass
+class Door:
+    id: int
+    name: str
+    x: float
+    y: float
+    z: float
+    open_type: int = 0
+    opened: bool = False
+
+    @property
+    def position(self) -> tuple[float, float, float]:
+        return (self.x, self.y, self.z)

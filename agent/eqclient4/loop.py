@@ -277,7 +277,7 @@ class Loop:
 
         self._note(winner)
         winner.yielding = False
-        winner.step()
+        self._step_action(winner)
 
         self._note(winner)
         if winner.yielding:
@@ -299,7 +299,7 @@ class Loop:
 
             self._note(nxt)
             nxt.yielding = False
-            nxt.step()
+            self._step_action(nxt)
 
             self._note(nxt)
             if nxt.completed:
@@ -310,6 +310,9 @@ class Loop:
             return nxt
         self._finish()
         return winner
+
+    def _step_action(self, action: Action) -> None:
+        action.step()
 
     def drop(self, action: Action) -> None:
         queue = self.queue

@@ -57,9 +57,15 @@ class GroundSpawnBook:
         if Path(DEFAULT_LOCATIONS).is_file():
             with open(DEFAULT_LOCATIONS, "r") as f:
                 data = json.load(f)
-                self.spots = data["spots"]
+                self.spots = {
+                    int(item_id): tuple(GroundSpawn(**spawn) for spawn in spawns)
+                    for item_id, spawns in data["spots"].items()
+                }
                 self.zones = data["zones"]
-                self.zone_spawns = data["zone_spawns"]
+                self.zone_spawns = {
+                    int(zone_id): list(GroundSpawn(**spawn) for spawn in spawns)
+                    for zone_id, spawns in data["zone_spawns"].items()
+                }
                 return
 
         if not Path(DEFAULT_LOCATIONS).is_file():
