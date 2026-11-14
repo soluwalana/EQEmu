@@ -17,7 +17,7 @@ from eqclient4.net.sheet import CreateCharacter
 from eqclient4.structs import EQStruct, OP_NewZone
 from eqclient4.world import World
 
-PULSE = 0.1
+PULSE = 0.05
 
 
 class Schedule:

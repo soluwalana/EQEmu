@@ -30,9 +30,8 @@ class Mob:
         self.class_id = class_id
         self.race = race
         self.hp: int = hp
-        self.max_hp: int = 0
         self.mana: int | None = None
-        self.max_mana: int | None = None
+        self.endurance: int | None = None
         self.heading: float = 0.0
         self.animation: int = 0
         self.faction_id: int | None = None

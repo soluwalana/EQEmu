@@ -226,9 +226,8 @@ class Bot:
         self.gender: int = gender
         self.level: int = 0
         self.hp: int = 0
-        self.max_hp: int = 0
         self.mana: int = 0
-        self.max_mana: int = 0
+        self.endurance: int = 0
         self.id: int = 0
         self.spawn_id: int = 0
         self.alive: bool = False

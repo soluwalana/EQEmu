@@ -61,28 +61,32 @@ HEAL_ROTATION_COMMON_FAILURES = [
     r"\w+ is not a (?:current )?member of a Heal Rotation",
 ]
 BOT_LIST_FAILURE_RE = re.compile(
-    "|".join([
-        r"You have no bots meeting this criteria\.",
-        r"A numeric value or name is required to use the filter property of this command",
-        *BOT_COMMAND_FAILURES,
-    ])
+    "|".join(
+        [
+            r"You have no bots meeting this criteria\.",
+            r"A numeric value or name is required to use the filter property of this command",
+            *BOT_COMMAND_FAILURES,
+        ]
+    )
 )
 RAID_FORMATION_FAILURE_RE = re.compile(
-    "|".join([
-        r"You do not own any bots\.",
-        r"Could not save the bot raid roster\.",
-        r"Bots are disabled on this server\.",
-        r"The bot raid roster table is missing\.",
-        r"You have no active bot raid roster\.",
-        r"Leave your group before forming a bot raid\.",
-        r"Could not create a raid\.",
-        r"You must be level \d+ to spawn .*bots\.",
-        r"You cannot camp or spawn bots while feigned\.",
-        r"You cannot camp or spawn bots while your raid is engaged\.",
-        r"You cannot camp or spawn bots while your group is engaged,",
-        r"You cannot camp or spawn bots while you are engaged,",
-        *BOT_COMMAND_FAILURES,
-    ])
+    "|".join(
+        [
+            r"You do not own any bots\.",
+            r"Could not save the bot raid roster\.",
+            r"Bots are disabled on this server\.",
+            r"The bot raid roster table is missing\.",
+            r"You have no active bot raid roster\.",
+            r"Leave your group before forming a bot raid\.",
+            r"Could not create a raid\.",
+            r"You must be level \d+ to spawn .*bots\.",
+            r"You cannot camp or spawn bots while feigned\.",
+            r"You cannot camp or spawn bots while your raid is engaged\.",
+            r"You cannot camp or spawn bots while your group is engaged,",
+            r"You cannot camp or spawn bots while you are engaged,",
+            *BOT_COMMAND_FAILURES,
+        ]
+    )
 )
 
 
@@ -224,14 +228,13 @@ class FormParty(Action):
 
         self.wait("spawn")
 
-    def check_failure(self, pattern: re.Pattern):
+    def check_failure(self, pattern: re.Pattern) -> None:
         failure = self.re_has_response(pattern)
         if failure or time.monotonic() - self._reply_started >= REPLY_TIMEOUT:
             log.error(f"Command Failed: {failure.group(0) if failure else 'reply timeout'}")
             self.waiting.clear()
             self.complete = True
             self.failed = True
-
 
     def creation(self) -> None:
         """State transition: botlist -> init | spawn
@@ -396,65 +399,68 @@ class FormParty(Action):
             )
         )
 
-        clerics = sorted(
-            self.filter_by_class("Cleric"),
-            key=lambda x: x.id
-        )
+        clerics = sorted(self.filter_by_class("Cleric"), key=lambda x: x.id)
         if clerics:
             clr = clerics[0]
-        
-            self._commands.extend([
-                _Command(
-                    f"^healrotationstop {clr.name}",
-                    rf"{clr.name}'s Heal Rotation is (?:now|already) inactive",
-                    [
-                        rf"Failed to stop {clr.name}'s Heal Rotation",
-                        *HEAL_ROTATION_COMMON_FAILURES,
-                    ],
-                    clr,
-                ),
-                _Command(
-                    f"^healrotationcleartargets {clr.name}",
-                    rf"All targets have been cleared from {clr.name}'s Heal Rotation",
-                    [
-                        rf"Failed to clear all targets from {clr.name}'s Heal Rotation",
-                        *HEAL_ROTATION_COMMON_FAILURES,
-                    ],
-                    clr,
-                ),
-                _Command(
-                    f"^healrotationremovemember {clr.name}",
-                    rf"{clr.name} has been removed from their Heal Rotation",
-                    [
-                        rf"Failed to remove {clr.name} from their Heal Rotation",
-                        *HEAL_ROTATION_COMMON_FAILURES,
-                    ],
-                    clr,
-                ),
-                _Command(
-                    f"^healrotationdelete {clr.name}",
-                    rf"Succeeded in deleting {clr.name}'s heal rotation",
-                    [
-                        rf"Failed to delete {clr.name}'s heal rotation",
-                        *HEAL_ROTATION_COMMON_FAILURES,
-                    ],
-                    clr,
-                ),
-                _Command(
-                    f"^healrotationcreate {clr.name} 3 on on on",
-                    "(?:" + "|".join((
-                        rf"Successfully added {clr.name} as a current member to a new Heal Rotation",
-                        rf"Successfully loaded {clr.name}'s Heal Rotation",
-                        rf"{clr.name} is already a current member of a Heal Rotation",
-                    )) + ")",
-                    [
-                        rf"Failed to add {clr.name} as a current member to a new Heal Rotation",
-                        r"You must <target> or \[name\] a creator as a bot that you own to use this command",
-                        r"Error: Creator bot dereferenced to nullptr",
-                    ],
-                    clr,
-                )
-            ])
+
+            self._commands.extend(
+                [
+                    _Command(
+                        f"^healrotationstop {clr.name}",
+                        rf"{clr.name}'s Heal Rotation is (?:now|already) inactive",
+                        [
+                            rf"Failed to stop {clr.name}'s Heal Rotation",
+                            *HEAL_ROTATION_COMMON_FAILURES,
+                        ],
+                        clr,
+                    ),
+                    _Command(
+                        f"^healrotationcleartargets {clr.name}",
+                        rf"All targets have been cleared from {clr.name}'s Heal Rotation",
+                        [
+                            rf"Failed to clear all targets from {clr.name}'s Heal Rotation",
+                            *HEAL_ROTATION_COMMON_FAILURES,
+                        ],
+                        clr,
+                    ),
+                    _Command(
+                        f"^healrotationremovemember {clr.name}",
+                        rf"{clr.name} has been removed from their Heal Rotation",
+                        [
+                            rf"Failed to remove {clr.name} from their Heal Rotation",
+                            *HEAL_ROTATION_COMMON_FAILURES,
+                        ],
+                        clr,
+                    ),
+                    _Command(
+                        f"^healrotationdelete {clr.name}",
+                        rf"Succeeded in deleting {clr.name}'s heal rotation",
+                        [
+                            rf"Failed to delete {clr.name}'s heal rotation",
+                            *HEAL_ROTATION_COMMON_FAILURES,
+                        ],
+                        clr,
+                    ),
+                    _Command(
+                        f"^healrotationcreate {clr.name} 3 on on on",
+                        "(?:"
+                        + "|".join(
+                            (
+                                rf"Successfully added {clr.name} as a current member to a new Heal Rotation",
+                                rf"Successfully loaded {clr.name}'s Heal Rotation",
+                                rf"{clr.name} is already a current member of a Heal Rotation",
+                            )
+                        )
+                        + ")",
+                        [
+                            rf"Failed to add {clr.name} as a current member to a new Heal Rotation",
+                            r"You must <target> or \[name\] a creator as a bot that you own to use this command",
+                            r"Error: Creator bot dereferenced to nullptr",
+                        ],
+                        clr,
+                    ),
+                ]
+            )
 
         for bot in self.action_bots():
             if not bot.spawned:
@@ -497,7 +503,7 @@ class FormParty(Action):
                 failure_patterns = BOT_COMMAND_FAILURES
                 log.warning(f"No failure patterns provided for command: {command.text}")
 
-            failure_pattern = re.compile("(" + '|'.join(failure_patterns) + ")")
+            failure_pattern = re.compile("(" + "|".join(failure_patterns) + ")")
 
             failure = None
             if failure_pattern:
@@ -694,28 +700,30 @@ class FormParty(Action):
             4: (55, 80),
         }
         for armor, (critical, safe) in _adjust_map.items():
-            self._commands.extend([
-                _Command(
-                    f"^healrotationadjustsafe {armor} {safe} {healer.name}",
-                    rf"Class Armor Type \d+ safe value \d+(?:\.\d+)?% set for {healer.name}'s Heal Rotation",
-                    [
-                        rf"Safe value \d+(?:\.\d+)?%\({armor}\) does not exceed critical value \d+(?:\.\d+)?%\({armor}\) for {healer.name}'s Heal Rotation",
-                        r"You must specify a valid \[armor_type: \d+-\d+\] to use this command",
-                        *HEAL_ROTATION_COMMON_FAILURES,
-                    ],
-                    healer,
-                ),
-                _Command(
-                    f"^healrotationadjustcritical {armor} {critical} {healer.name}",
-                    rf"Class Armor Type \d+ critical value \d+(?:\.\d+)?% set for {healer.name}'s Heal Rotation",
-                    [
-                        rf"Critical value \d+(?:\.\d+)?%\({armor}\) exceeds safe value \d+(?:\.\d+)?%\({armor}\) for {healer.name}'s Heal Rotation",
-                        r"You must specify a valid \[armor_type: \d+-\d+\] to use this command",
-                        *HEAL_ROTATION_COMMON_FAILURES,
-                    ],
-                    healer,
-                ),
-            ])
+            self._commands.extend(
+                [
+                    _Command(
+                        f"^healrotationadjustsafe {armor} {safe} {healer.name}",
+                        rf"Class Armor Type \d+ safe value \d+(?:\.\d+)?% set for {healer.name}'s Heal Rotation",
+                        [
+                            rf"Safe value \d+(?:\.\d+)?%\({armor}\) does not exceed critical value \d+(?:\.\d+)?%\({armor}\) for {healer.name}'s Heal Rotation",
+                            r"You must specify a valid \[armor_type: \d+-\d+\] to use this command",
+                            *HEAL_ROTATION_COMMON_FAILURES,
+                        ],
+                        healer,
+                    ),
+                    _Command(
+                        f"^healrotationadjustcritical {armor} {critical} {healer.name}",
+                        rf"Class Armor Type \d+ critical value \d+(?:\.\d+)?% set for {healer.name}'s Heal Rotation",
+                        [
+                            rf"Critical value \d+(?:\.\d+)?%\({armor}\) exceeds safe value \d+(?:\.\d+)?%\({armor}\) for {healer.name}'s Heal Rotation",
+                            r"You must specify a valid \[armor_type: \d+-\d+\] to use this command",
+                            *HEAL_ROTATION_COMMON_FAILURES,
+                        ],
+                        healer,
+                    ),
+                ]
+            )
 
         self._commands.append(
             _Command(
@@ -740,7 +748,7 @@ class FormParty(Action):
                 f"^healrotationstart {healer.name}",
                 rf"{healer.name}'s Heal Rotation is (?:now|already) active",
                 [
-                    rf"Failed to start {healer.name}'s Heal Rotation", 
+                    rf"Failed to start {healer.name}'s Heal Rotation",
                     rf"{healer.name} is not a current member of a Heal Rotation",
                     *HEAL_ROTATION_COMMON_FAILURES,
                 ],
@@ -749,16 +757,18 @@ class FormParty(Action):
                 "1",
             )
         )
-        self._commands.append(_Command(
-            f"^healrotationlist {healer.name}",
-            r"^Heal Rotation Targets:$",
-            [
-                rf"{healer.name} is not a current member of a Heal Rotation",
-                r"\(0\) None",
-                *HEAL_ROTATION_COMMON_FAILURES,
-            ],
-            healer,
-        ))
+        self._commands.append(
+            _Command(
+                f"^healrotationlist {healer.name}",
+                r"^Heal Rotation Targets:$",
+                [
+                    rf"{healer.name} is not a current member of a Heal Rotation",
+                    r"\(0\) None",
+                    *HEAL_ROTATION_COMMON_FAILURES,
+                ],
+                healer,
+            )
+        )
 
     def re_has_response(self, matcher: re.Pattern) -> re.Match | None:
         def _message_text(msg: EQStruct) -> str:
@@ -784,7 +794,7 @@ class FormParty(Action):
         return bots
 
     def filter_by_class(self, class_name: str) -> list[Bot]:
-        output :list[Bot] = []
+        output: list[Bot] = []
         for bot in self.action_bots():
             if bot.class_id == CLASS_NAME_TO_ID[class_name]:
                 output.append(bot)
@@ -837,5 +847,5 @@ class FormParty(Action):
             ).serialize(),
         )
         self._loop._flush()
-        time.sleep(0.1)
+        time.sleep(0.05)
         self._loop.pump()

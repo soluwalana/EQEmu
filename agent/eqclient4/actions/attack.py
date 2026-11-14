@@ -229,7 +229,7 @@ class Attack(Action):
                 return
         else:
             self.zero_hp = 0
-        sees = self._world.line_of_sight(self.mob)
+        sees = self._world.line_of_sight(self.mob.position)
         if self.closed and not sees:
             self.closed = False
 
@@ -480,5 +480,5 @@ class Attack(Action):
 
     def report(self) -> str:
         if self.mob:
-            return f"{super().report()} target={self.mob.spoken_name()} d={self.mob.distance:.0f} hp={self.mob.hp}"
+            return f"{super().report()} target={self.mob.spoken_name} d={self.mob.distance:.0f} hp={self.mob.hp}"
         return f"{super().report()} targeting={self.target_id}"

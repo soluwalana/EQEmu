@@ -1,3 +1,4 @@
+from eqclient4.bots import Bot
 from eqclient4.handler import Handler
 from eqclient4.log import log
 from eqclient4.structs import (
@@ -6,7 +7,9 @@ from eqclient4.structs import (
     OP_Consider,
     OP_Death,
     OP_DeleteSpawn,
+    OP_MobEnduranceUpdate,
     OP_MobHealth,
+    OP_MobManaUpdate,
     OP_MobRename,
     OP_NewSpawn,
     OP_ZoneEntry,
@@ -21,6 +24,8 @@ class MobsHandler(Handler):
         "OP_ZoneEntry",
         "OP_DeleteSpawn",
         "OP_MobHealth",
+        "OP_MobManaUpdate",
+        "OP_MobEnduranceUpdate",
         "OP_Death",
         "OP_ClientUpdate",
         "OP_Consider",
@@ -28,6 +33,8 @@ class MobsHandler(Handler):
     )
 
     def on(self, opcode: str, payload: EQStruct) -> None:
+        mob: Mob | None = None
+        bot: Bot | None = None
         match payload:
             case OP_NewSpawn():
                 if payload.spawn.name == self.world.character.name:
@@ -88,7 +95,43 @@ class MobsHandler(Handler):
                 return
 
             case OP_MobHealth():
-                pass
+                bot = self.world.bot_roster.bot_by_spawn_id(payload.spawn_id)
+                if bot:
+                    bot.hp = payload.percent
+                    return
+
+                mob = self.world.mobs.get(payload.spawn_id)
+                if not mob:
+                    log.error(f"Mob health for unknown spawn: {payload.spawn_id}")
+                    return
+                mob.hp = payload.percent
+                return
+
+            case OP_MobManaUpdate():
+                bot = self.world.bot_roster.bot_by_spawn_id(payload.spawn_id)
+                if bot:
+                    bot.mana = payload.percent
+                    return
+
+                mob = self.world.mobs.get(payload.spawn_id)
+                if not mob:
+                    log.error(f"Mob health for unknown spawn: {payload.spawn_id}")
+                    return
+                mob.mana = payload.percent
+                return
+
+            case OP_MobEnduranceUpdate():
+                bot = self.world.bot_roster.bot_by_spawn_id(payload.spawn_id)
+                if bot:
+                    bot.endurance = payload.percent
+                    return
+
+                mob = self.world.mobs.get(payload.spawn_id)
+                if not mob:
+                    log.error(f"Mob health for unknown spawn: {payload.spawn_id}")
+                    return
+                mob.endurance = payload.percent
+                return
 
             case OP_Death():
                 bot = self.world.bot_roster.bot_by_spawn_id(payload.spawn_id)
@@ -156,22 +199,6 @@ class MobsHandler(Handler):
                 if not faction.standing or faction.standing != mob.faction_last_considered:
                     faction.standing = FactionStanding(payload.faction)
 
-                return
-
-            case OP_MobHealth():
-                bot = self.world.bot_roster.bot_by_spawn_id(payload.spawn_id)
-                if bot:
-                    bot.hp = payload.percent
-                    bot.max_hp = 100
-                    return
-
-                if payload.spawn_id not in self.world.mobs:
-                    log.error(f"Mob health for unknown spawn: {payload.spawn_id}")
-                    return
-
-                mob = self.world.mobs[payload.spawn_id]
-                mob.hp = payload.percent
-                mob.max_hp = 100
                 return
 
             case OP_MobRename():

@@ -329,15 +329,10 @@ class Client:
         Once the channels are up, this only reads the receiver queue.
         """
         self.start_io()
-        if self.world is not None:
+        if self.world:
             self.world.pump(0)
         session = self.session
-        if (
-            session is not None
-            and session.connected
-            and (not session.closed)
-            and (not session.needs_rezone)
-        ):
+        if session and session.connected and (not session.closed) and (not session.needs_rezone):
             drain(session, self.on_app, timeout)
         rows = self._inbox
         self._inbox = []
@@ -364,15 +359,15 @@ class Client:
             _print_say(payload, self.character)
         send(self.session, require(self.opcodes, opcode_name), payload)
 
-    def say(
-        self, text: str, *, language: int = 0, lang_skill: int = 100, pump: bool = True
-    ) -> None:
-        self._chat(text, SAY_CHANNEL, language=language, lang_skill=lang_skill, pump=pump)
+    # def say(
+    #     self, text: str, *, language: int = 0, lang_skill: int = 100, pump: bool = True
+    # ) -> None:
+    #     self._chat(text, SAY_CHANNEL, language=language, lang_skill=lang_skill, pump=pump)
 
-    def command(self, text: str, *, pump: bool = True) -> None:
-        if not text.startswith("^"):
-            text = "^" + text
-        self._chat(text, SAY_CHANNEL, pump=pump)
+    # def command(self, text: str, *, pump: bool = True) -> None:
+    #     if not text.startswith("^"):
+    #         text = "^" + text
+    #     self._chat(text, SAY_CHANNEL, pump=pump)
 
     def close(self) -> None:
         self.stop_io()
@@ -382,22 +377,22 @@ class Client:
         self.session = None
         self.world = None
 
-    def _chat(
-        self,
-        text: str,
-        channel: int,
-        target: str = "",
-        *,
-        language: int = 0,
-        lang_skill: int = 100,
-        pump: bool = True,
-    ) -> None:
-        payload = OP_ChannelMessage(
-            target, self.character, language, channel, skill=lang_skill, text=text
-        ).serialize()
-        self.send("OP_ChannelMessage", payload)
-        if pump:
-            self.pump(0.05)
+    # def _chat(
+    #     self,
+    #     text: str,
+    #     channel: int,
+    #     target: str = "",
+    #     *,
+    #     language: int = 0,
+    #     lang_skill: int = 100,
+    #     pump: bool = True,
+    # ) -> None:
+    #     payload = OP_ChannelMessage(
+    #         target, self.character, language, channel, skill=lang_skill, text=text
+    #     ).serialize()
+    #     self.send("OP_ChannelMessage", payload)
+    #     if pump:
+    #         self.pump(0.05)
 
 
 def _print_say(payload: bytes, character: str) -> None:

@@ -48,6 +48,8 @@ from eqclient4.structs import OPERATIONS, EQStruct, bytes_to_eqstruct
 from eqclient4.structs.items import Item
 from eqclient4.world import Mob, World
 from fastapi import Body, FastAPI, HTTPException, Query
+from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi.responses import HTMLResponse
 from pydantic import TypeAdapter, ValidationError
 
 
@@ -699,7 +701,7 @@ def create_app(
     opcodes: dict[str, int],
     loop: DebugLoop | None = None,
 ) -> FastAPI:
-    app = FastAPI(title="EQClient4 packet and action debugger")
+    app = FastAPI(title="EQClient4 packet and action debugger", docs_url=None)
     action_modules = ActionModules()
     available = {
         name for name, cls in OPERATIONS.items() if opcodes.get(name) and is_dataclass(cls)
@@ -977,6 +979,25 @@ def create_app(
             "next_after_id": records[-1]["id"] if records else after_id,
             "has_more": len(rows) > limit,
         }
+
+    @app.get("/docs", include_in_schema=False)
+    async def docs() -> HTMLResponse:
+        response = get_swagger_ui_html(
+            openapi_url="/openapi.json",
+            title="API Docs",
+            swagger_js_url="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.32.14/swagger-ui-bundle.js",
+            swagger_css_url="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5.32.14/swagger-ui.css",
+        )
+
+        html = (
+            bytes(response.body)
+            .decode()
+            .replace(
+                "<html>",
+                '<html class="dark-mode">',
+            )
+        )
+        return HTMLResponse(html)
 
     return app
 
