@@ -895,6 +895,7 @@ void bot_command_heal_rotation_delete(Client* c, const Seperator* sep)
 	}
 
 	if (!database.botdb.DeleteHealRotation(current_member->GetBotID())) {
+		c->Message(Chat::White, "Failed to delete %s's heal rotation", current_member->GetCleanName());
 		return;
 	}
 
