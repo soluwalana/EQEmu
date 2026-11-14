@@ -226,7 +226,6 @@ class BotSpellBook:
         class_id: int,
         level: int,
         roles: set[str],
-        *,
         since_level: int = 0,
     ) -> list[BotSpellEntry]:
         wanted: set[int] = set()

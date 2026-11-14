@@ -164,6 +164,7 @@ class Loop:
         self.world.zone = ""
         self.world.zone_formed = None
         self.world.safe = None
+        self.world.bot_roster.clear_spawns()
         self.world.ground_spawns.clear()
         self.world.mobs.clear()
         self.world.aggro_mobs.clear()
@@ -258,16 +259,7 @@ class Loop:
         if self.session_open():
             self._transferred = False
 
-        for packet in self.client.pump(PULSE):
-            self.recv_count += 1
-            self.world.inventory.tick = self.recv_count
-            match packet:
-                case (str() as opcode, bytes() as payload):
-                    self.capture.record("recv", opcode, payload)
-                    self.bus.publish(opcode, payload)
-                case _:
-                    log.error(f"unknown packet: {packet}")
-                    raise RuntimeError("unknown packet")
+        self.pump()
 
         winner = self.queue.head()
         if winner is None:
@@ -351,6 +343,18 @@ class Loop:
         self._flush()
         self._report()
         self.capture.commit()
+
+    def pump(self) -> None:
+        for packet in self.client.pump(PULSE):
+            self.recv_count += 1
+            self.world.inventory.tick = self.recv_count
+            match packet:
+                case (str() as opcode, bytes() as payload):
+                    self.capture.record("recv", opcode, payload)
+                    self.bus.publish(opcode, payload)
+                case _:
+                    log.error(f"unknown packet: {packet}")
+                    raise RuntimeError("unknown packet")
 
     def _flush(self) -> None:
         batch = list(self.outbound)

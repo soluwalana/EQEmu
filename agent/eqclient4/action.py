@@ -12,11 +12,6 @@ from eqclient4.mob import Mob
 from eqclient4.nav.travel import first_leg
 from eqclient4.structs import EQStruct, OP_Consider, OP_MobHealth, OP_TargetMouse
 
-# def _consider_id(payload: EQStruct) -> int:
-#     if isinstance(payload, OP_Consider):
-#         return int(payload.target_id)
-#     return 0
-
 
 class Action:
     def __init__(self, world: World, loop: Loop) -> None:
@@ -43,13 +38,11 @@ class Action:
         self.target_id = 0
         self.target_sent = False
         self.mob_targeted = 0
+        self._consider_sent = False
 
         # Movement helper fields
         self.zoneline: tuple[float, float, float] | None = None
         self.zoneline_dest: str | None = None
-
-    def _hear(self) -> None:
-        return
 
     def step(self) -> None:
         if not self.target_id:
@@ -69,37 +62,43 @@ class Action:
             self.move_closer(mob)
             return
 
+        if self.mob_targeted == self.target_id:
+            return
+
         if not self.target_sent:
             self._loop.send(
-                "OP_TargetMouse", OP_TargetMouse(int(self.target_id) & 65535).serialize()
+                "OP_TargetMouse",
+                OP_TargetMouse(int(self.target_id) & 65535).serialize(),
             )
             self.target_sent = True
             return
 
-        # if not self.consider_sent:
-        #     spawn = int(self._world.self_id or 0)
-        #     self._loop.send(
-        #         "OP_Consider",
-        #         OP_Consider(spawn, int(mob.id)).serialize(),
-        #     )
-        #     self.consider_sent = True
-        #     return
+        if not self._consider_sent:
+            self._loop.send(
+                "OP_Consider",
+                OP_Consider(
+                    player_id=int(self._world.self_id or 0), target_id=int(self.target_id) & 65535
+                ).serialize(),
+            )
+            self._consider_sent = True
+            return
 
-        def mh_matcher(message: EQStruct) -> bool:
-            if isinstance(message, OP_MobHealth):
-                return message.spawn_id == int(self.target_id)
-            return False
-
-        message = self.consume("OP_MobHealth", mh_matcher)
+        message = self.consume("OP_Consider", self.con_matcher)
         if message:
             mob.targeted = True
             self.mob_targeted = self.target_id
             self.unwait("TARGET")
             self.target_sent = False
+            self._consider_sent = False
             return
 
+    def con_matcher(self, message: EQStruct) -> bool:
+        if isinstance(message, OP_Consider):
+            return message.target_id == int(self.target_id)
+        return False
+
     def can_see_mob(self, mob: Mob) -> bool:
-        if self._world.line_of_sight(mob):
+        if self._world.line_of_sight(mob.position):
             return True
         self.move_closer(mob)
         return False
@@ -155,7 +154,7 @@ class Action:
         self.messages.append(payload)
 
     def opcodes(self) -> tuple[str, ...]:
-        return ("OP_MobHealth",)
+        return ("OP_Consider",)
 
     @staticmethod
     def key(action: Action) -> tuple[object, ...]:

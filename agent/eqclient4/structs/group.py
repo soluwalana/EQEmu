@@ -260,3 +260,26 @@ def _read_group(data: bytes, full_opcode: bool) -> tuple[int, str, list[str], st
     if len(data) >= 132:
         return int(action), fixed(data, 4, 64), [], fixed(data, 68, 64), False
     return int(action), "", [], "", False
+
+
+@dataclass
+class OP_GroupLeadershipAAUpdate(EQStruct):
+    ranks: tuple[int, ...] = (0,) * 16
+    npc_marker_id: int = 0
+
+    def serialize(self) -> bytes:
+        return struct.pack(
+            "<4x16I196xI52x",
+            *self.ranks,
+            self.npc_marker_id,
+        )
+
+    @classmethod
+    def deserialize(cls, data: bytes) -> OP_GroupLeadershipAAUpdate:
+        need(data, 320, "OP_GroupLeadershipAAUpdate")
+        values = struct.unpack_from("<4x16I196xI52x", data)
+
+        return cls(
+            ranks=values[:16],
+            npc_marker_id=values[16],
+        )

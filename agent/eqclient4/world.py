@@ -14,7 +14,7 @@ import math
 import time
 from collections import defaultdict
 
-from eqclient4.bots import get_roster
+from eqclient4.bots import Bot, get_roster
 from eqclient4.character import Character
 from eqclient4.data.bot_spells import BotSpellBook, ensure_bot_spells
 from eqclient4.data.drops import DropBook, MappedDrops, ensure_drops
@@ -120,6 +120,7 @@ class World:
         self.zone: str | None = None
         self.zone_id = -1
         self.zone_formed: str | None = None
+        self.active_group: dict[int, Bot] = {}
 
         #   Active mesh
         self.mesh: ZoneMap | None = None
@@ -200,7 +201,7 @@ class World:
         found.sort(key=lambda mob: (mob.distance, mob.id))
         return found
 
-    def line_of_sight(self, mob: Mob) -> bool:
+    def line_of_sight(self, target: tuple[float, float, float]) -> bool:
         """True when the mesh can see mob from our position.
 
         world.mesh.clear(start, end) is used when a mesh is set. With no mesh,
@@ -208,7 +209,7 @@ class World:
         means the shot is clear.
         """
         start = self.position
-        end = mob.position
+        end = target
         mesh = self.mesh
         if not mesh:
             mesh = load_map(self.zone or "")
@@ -649,7 +650,7 @@ class Movement:
             return
 
         origin = self.position
-        if not (is_nearby(self.world, mob, origin) or self.world.line_of_sight(mob)):
+        if not (is_nearby(self.world, mob, origin) or self.world.line_of_sight(mob.position)):
             return
 
         path.find_waypoints = False
@@ -861,7 +862,7 @@ class Movement:
             return
 
         for mob in self.world.consider_mobs():
-            if not self.world.line_of_sight(mob):
+            if not self.world.line_of_sight(mob.position):
                 continue
             if not self.world.needs_consider(mob):
                 continue
@@ -984,7 +985,7 @@ def _sweep_visible(world: World, origin: tuple[float, float, float], mob: Mob) -
     """One cached ray. A miss falls back to line_of_sight, which peeks headings."""
     mapped = _zone_map(world)
     if not mapped:
-        return world.line_of_sight(mob)
+        return world.line_of_sight(mob.position)
     end = mob.position
     if end is None:
         return False

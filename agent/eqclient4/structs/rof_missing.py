@@ -637,6 +637,11 @@ class OP_BuffCreate(EQStruct):
 
 
 @dataclass
+class OP_TargetBuffs(OP_BuffCreate):
+    """RoF2 target buff snapshot; identical wire format to OP_BuffCreate."""
+
+
+@dataclass
 class OP_AAExpUpdate(EQStruct):
     unknown00: int = 0
     aapoints_unspent: int = 0

@@ -5,4 +5,5 @@ MODULES = (
     "spawns",
     "tasks",
     "zoning",
+    "grouping",
 )

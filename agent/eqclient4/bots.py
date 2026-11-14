@@ -66,6 +66,7 @@ class Roster:
                     "class_id": b.class_id,
                     "gender": b.gender,
                     "created": b.created,
+                    "settings": b.settings,
                 }
                 for name, b in self.raid.items()
             },
@@ -77,10 +78,17 @@ class Roster:
                     "class_id": b.class_id,
                     "gender": b.gender,
                     "created": b.created,
+                    "settings": b.settings,
                 }
                 for name, b in self.group.items()
             },
         }
+
+    def clear_spawns(self) -> None:
+        for bot in self.all_bots():
+            bot.spawn_id = 0
+            bot.spawned = False
+            bot.alive = False
 
     def save(self) -> None:
         self.roster_cache_path.parent.mkdir(parents=True, exist_ok=True)
@@ -97,6 +105,9 @@ class Roster:
             return list(self._bot_names)
         return list(self._bot_names)
 
+    def bot_spawn_ids(self) -> list[int]:
+        return [b.spawn_id for b in self.all_bots()]
+
     def bot_by_name(self, name: str) -> Bot | None:
         if name in self.raid:
             return self.raid[name]
@@ -106,7 +117,7 @@ class Roster:
 
     def bot_by_spawn_id(self, spawn_id: int) -> Bot | None:
         for bot in self.all_bots():
-            if bot.spawn_id == spawn_id:
+            if bot.spawned and bot.spawn_id == spawn_id:
                 return bot
         return None
 
@@ -151,7 +162,7 @@ def get_roster(item_book: ItemBook, character: str) -> Roster:
         _ROSTER.deserialize()
         return _ROSTER
 
-    class_tracker = defaultdict(int)
+    class_tracker = defaultdict[int, int](int)
 
     def generate_bot(class_id: int) -> Bot:
         class_tracker[class_id] += 1
@@ -206,6 +217,7 @@ class Bot:
         class_id: int,
         gender: int,
         created: bool = False,
+        settings: dict[str, str] | None = None,
     ):
         self.owner: str = owner
         self.name: str = name
@@ -225,7 +237,9 @@ class Bot:
         self.position: tuple[float, float, float] = (0, 0, 0)
         self.heading: float = 0
         self.animation: int = 0
+        self.settings: dict[str, str] | None = settings
         self.inventory: BotInventory = BotInventory(self, item_book)
+        self.targeted: bool = False
 
 
 class BotInventory:

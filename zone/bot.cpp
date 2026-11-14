@@ -2801,11 +2801,10 @@ bool Bot::TryMeditate() {
 		}
 
 		BotMeditate(IsSitting());
-
-		if (!(GetPlayerState() & static_cast<uint32>(PlayerState::Aggressive))) {
-			SendAddPlayerState(PlayerState::Aggressive);
+		if (IsEngaged() &&
+			!(GetPlayerState() & static_cast<uint32>(PlayerState::Aggressive))) {
+			 SendAddPlayerState(PlayerState::Aggressive);
 		}
-
 		return true;
 	}
 

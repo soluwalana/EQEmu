@@ -41,6 +41,8 @@ class MobsHandler(Handler):
                     bot.spawned = True
                     bot.spawn_id = payload.spawn.spawn_id
                     bot.alive = True
+                    bot.level = payload.spawn.level
+                    bot.position = (payload.spawn.x, payload.spawn.y, payload.spawn.z)
                     return
 
                 spawn = payload.spawn
@@ -71,8 +73,16 @@ class MobsHandler(Handler):
                 pass
 
             case OP_DeleteSpawn():
+                bot = self.world.bot_roster.bot_by_spawn_id(payload.spawn_id)
+                if bot:
+                    bot.spawned = False
+                    bot.alive = False
+                    bot.spawn_id = 0
+                    return
+
                 if payload.spawn_id not in self.world.mobs:
                     return
+
                 mob = self.world.mobs.pop(payload.spawn_id)
                 mob.deleted = True
                 return
@@ -81,6 +91,13 @@ class MobsHandler(Handler):
                 pass
 
             case OP_Death():
+                bot = self.world.bot_roster.bot_by_spawn_id(payload.spawn_id)
+                if bot:
+                    bot.alive = False
+                    bot.spawned = False
+                    bot.spawn_id = 0
+                    return
+
                 if payload.spawn_id not in self.world.mobs:
                     return
                 mob = self.world.mobs[payload.spawn_id]
@@ -115,6 +132,9 @@ class MobsHandler(Handler):
             case OP_Consider():
                 if payload.player_id != self.world.self_id:
                     log.error(f"Consider from non-self player: {payload.player_id}")
+                    return
+
+                if payload.target_id in self.world.bot_roster.bot_spawn_ids():
                     return
 
                 if payload.target_id not in self.world.mobs:
@@ -155,6 +175,12 @@ class MobsHandler(Handler):
                 return
 
             case OP_MobRename():
+
+                bot = self.world.bot_roster.bot_by_name(payload.old_name)
+                if bot:
+                    bot.name = payload.new_name
+                    return
+
                 for mob in self.world.mobs.values():
                     if mob.name == payload.old_name:
                         mob.name = payload.new_name

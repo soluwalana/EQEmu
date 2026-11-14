@@ -368,6 +368,26 @@ class InnateState(IntEnum):
     DISABLED = 255
 
 
+GROUP_LEADERSHIP_AA_NAMES = (
+    "MarkNPC",  # 0
+    "NPCHealth",  # 1
+    "DelegateMainAssist",  # 2
+    "DelegateMarkNPC",  # 3
+    "Unknown4",  # 4
+    "Unknown5",  # 5
+    "InspectBuffs",  # 6
+    "Unknown7",  # 7
+    "SpellAwareness",  # 8
+    "OffenseEnhancement",  # 9
+    "ManaEnhancement",  # 10
+    "HealthEnhancement",  # 11
+    "HealthRegeneration",  # 12
+    "FindPathToPC",  # 13
+    "HealthOfTargetsTarget",  # 14
+    "Unknown15",  # 15
+)
+
+
 class AASkill(IntEnum):
     """EQEmu legacy aaID enumeration: named AA RANK IDs, not ability IDs."""
 

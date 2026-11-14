@@ -72,6 +72,26 @@ class OP_ChannelMessage(EQStruct):
 
 
 @dataclass
+class OP_ColoredText(EQStruct):
+    color: int
+    text: str
+
+    def serialize(self) -> bytes:
+        return struct.pack("<I", self.color & 0xFFFFFFFF) + put_cstr(self.text)
+
+    @classmethod
+    def deserialize(cls, data: bytes) -> OP_ColoredText:
+        need(data, 5, "OP_ColoredText")
+        color = read_u32(data, 0)
+        text, _ = cstring(data, 4)
+        return cls(color, text)
+
+    @property
+    def text_parts(self) -> tuple[str | ItemLink, ...]:
+        return parse_message_parts(self.text)
+
+
+@dataclass
 class OP_SpecialMesg(EQStruct):
     header: bytes = b"\x00\x00\x00"
     msg_type: int = 0

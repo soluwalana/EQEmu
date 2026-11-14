@@ -734,3 +734,33 @@ class OP_FindPersonReply(EQStruct):
 
 def _close(a: tuple[float, float, float], b: tuple[float, float, float]) -> bool:
     return (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2 <= 0.01
+
+
+@dataclass
+class OP_MobManaUpdate(EQStruct):
+    spawn_id: int
+    percent: int
+
+    def serialize(self) -> bytes:
+        return struct.pack("<HB", self.spawn_id & 0xFFFF, self.percent & 0xFF)
+
+    @classmethod
+    def deserialize(cls, data: bytes) -> OP_MobManaUpdate:
+        need(data, 3, "OP_MobManaUpdate")
+        spawn_id, percent = struct.unpack_from("<HB", data)
+        return cls(int(spawn_id), int(percent))
+
+
+@dataclass
+class OP_MobEnduranceUpdate(EQStruct):
+    spawn_id: int
+    percent: int
+
+    def serialize(self) -> bytes:
+        return struct.pack("<HB", self.spawn_id & 0xFFFF, self.percent & 0xFF)
+
+    @classmethod
+    def deserialize(cls, data: bytes) -> OP_MobEnduranceUpdate:
+        need(data, 3, "OP_MobEnduranceUpdate")
+        spawn_id, percent = struct.unpack_from("<HB", data)
+        return cls(int(spawn_id), int(percent))
