@@ -23,7 +23,7 @@ if TYPE_CHECKING:
 
 import math
 from dataclasses import dataclass, field
-from pathlib import Path as GraphFile
+from pathlib import Path as FSPath
 
 from eqclient4.log import log
 from eqclient4.nav.navmesh import load_nav
@@ -51,7 +51,7 @@ _ZONE_POINT_REACH = 12.0
 
 
 @dataclass
-class Path:
+class EQPath:
     """One planned walk. ``distance`` is yards from the committed position."""
 
     distance: float
@@ -74,10 +74,10 @@ def straight(
     origin: tuple[float, float, float],
     goal: tuple[float, float, float],
     length: float,
-) -> Path:
+) -> EQPath:
     """One stride toward a mob already in sight. The mesh walk around a room loses it."""
     points = _trim(origin, [origin, goal], goal)
-    return Path(
+    return EQPath(
         distance=_horiz(origin, goal),
         points=points,
         mode="los",
@@ -98,7 +98,7 @@ def route(
     water: WaterMap | None = None,
     length: float = 10.5,
     mode: str = "run",
-) -> Path:
+) -> EQPath:
     """Next mesh point, a door on this stride or a zoneline, and water.
 
     ``length`` is the caller's stride. Swim is applied by movement: this
@@ -112,7 +112,7 @@ def route(
     if live:
         nxt = live[0].position
     wet = _in_liquid(water, nxt) or _in_liquid(water, goal)
-    return Path(
+    return EQPath(
         distance=_length(origin, points, goal),
         points=points,
         door=door,
@@ -431,7 +431,7 @@ def _graph() -> ZoneGraph | None:
         return _GRAPH
     _GRAPH_TRIED = True
     try:
-        file = GraphFile(DEFAULT_ZONE_GRAPH)
+        file = FSPath(DEFAULT_ZONE_GRAPH)
         if file.is_file():
             _GRAPH = read_zone_graph(str(file))
     except (OSError, ValueError, ImportError):

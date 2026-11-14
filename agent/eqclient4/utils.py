@@ -327,14 +327,16 @@ class Faction:
     and 0 otherwise. changed is set when better or worse arrives with no number.
     """
 
-    def __init__(self, amount: int | None = None, maxed: int = 0, standing: FactionStanding | None = None) -> None:
+    def __init__(
+        self, amount: int | None = None, maxed: int = 0, standing: FactionStanding | None = None
+    ) -> None:
         self.amount = amount
         self.maxed = maxed
         self.standing = standing
 
     def set_estimated_faction_amount(self, fs: FactionStanding) -> None:
         self.amount = {
-            FactionStanding.ALLY: 1550, 
+            FactionStanding.ALLY: 1550,
             FactionStanding.WARMLY: 925,
             FactionStanding.KINDLY: 625,
             FactionStanding.AMIABLY: 300,
@@ -345,6 +347,7 @@ class Faction:
             FactionStanding.SCOWLS: -1375,
         }[fs]
         self.standing = fs
+
 
 @dataclass
 class Door:

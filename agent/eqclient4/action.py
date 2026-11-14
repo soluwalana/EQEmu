@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from eqclient4.loop import Loop
-    from eqclient4.nav.path import Path
+    from eqclient4.nav.path import EQPath
     from eqclient4.world import World
 
 from eqclient4.mob import Mob
@@ -36,7 +36,7 @@ class Action:
         self.waiting: list[str] = []
 
         self.waited = 0
-        self.active_path: Path | None = None
+        self.active_path: EQPath | None = None
         self.active_path_dest: tuple[float, float, float] | Mob | None = None
 
         # Targeting helper fields

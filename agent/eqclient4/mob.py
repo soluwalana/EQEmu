@@ -3,7 +3,8 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from eqclient4.world import World
 
-from eqclient4.utils import normalize_mob_name,  FactionStanding
+from eqclient4.utils import FactionStanding, normalize_mob_name
+
 
 class Mob:
     """One spawn. distance and direction are refreshed from our position."""
@@ -73,7 +74,7 @@ class Mob:
         if int(self.class_id or 0) == 62:
             return True
         return False
-    
+
     @property
     def kos(self) -> bool:
         return self.faction_last_considered in (

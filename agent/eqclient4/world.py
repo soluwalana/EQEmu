@@ -34,7 +34,7 @@ from eqclient4.nav.navmesh import NavMesh, load_nav
 from eqclient4.nav.path import (
     NEARBY_YARDS,
     STRIDE,
-    Path,
+    EQPath,
     along,
     cut_to_step,
     doors_on_stride,
@@ -291,13 +291,13 @@ class Movement:
         self.sequence: int = 0
         self.caller_mode: str = "run"
         self.advanced: bool = False
-        self.path: Path | None = None
+        self.path: EQPath | None = None
         self.clicked: set = set()
         self.open_ids: set = set()
         self.find_mob: Mob | None = None
         self._nav: NavMesh | None = None
         self._nav_zone: str | None = None
-        self._routes: dict[tuple[str, str], Path] = {}
+        self._routes: dict[tuple[str, str], EQPath] = {}
 
     @property
     def stride_committed(self) -> bool:
@@ -365,7 +365,7 @@ class Movement:
         self,
         destination: tuple[float, float, float] | Mob,
         mode: str,
-    ) -> Path:
+    ) -> EQPath:
         """Return a Path. Does not send OP_Consider and does not write a position.
 
         ``loop`` is accepted and ignored so a distance read cannot send.
@@ -434,7 +434,7 @@ class Movement:
         self.heading = want
         self._emit(loop, here, 0, "face")
 
-    def advance(self, loop: Loop, path: Path, sender: Action | None = None) -> None:
+    def advance(self, loop: Loop, path: EQPath, sender: Action | None = None) -> None:
         """One stride. The only builder of OP_ClientUpdate and the only door click.
 
         While the last stride is not committed and the short timeout has not
@@ -551,7 +551,7 @@ class Movement:
         length: float,
         anim: int,
         zone: str,
-    ) -> Path | None:
+    ) -> EQPath | None:
         """The polyline already searched for this goal, measured from where we stand now."""
         key = _dest_key(destination)
         if not key:
@@ -578,12 +578,12 @@ class Movement:
 
     def _follow(
         self,
-        found: Path,
+        found: EQPath,
         origin: tuple[float, float, float],
         mode: str,
         length: float,
         anim: int,
-    ) -> Path | None:
+    ) -> EQPath | None:
         if (
             _same(found.origin, origin, tol=0.5)
             and found.mode == mode
@@ -621,7 +621,7 @@ class Movement:
         self,
         zone: str,
         destination: tuple[float, float, float] | Mob,
-        path: Path,
+        path: EQPath,
     ) -> None:
         key = _dest_key(destination)
         if not key:
@@ -629,7 +629,7 @@ class Movement:
 
         self._routes[(zone, key)] = path
 
-    def _keep_find_path(self, built: Path) -> Path | None:
+    def _keep_find_path(self, built: EQPath) -> EQPath | None:
         current = self.path
 
         if not current or not current.find_waypoints:
@@ -643,7 +643,7 @@ class Movement:
 
         return current
 
-    def _drop_find(self, path: Path) -> None:
+    def _drop_find(self, path: EQPath) -> None:
         mob = self.find_mob
         if not mob or not path.find_waypoints:
             return
@@ -670,7 +670,7 @@ class Movement:
         path.next_point = fresh.next_point
         path.origin = origin
 
-    def _aim(self, path: Path, here: tuple[float, float, float]) -> tuple[float, float, float]:
+    def _aim(self, path: EQPath, here: tuple[float, float, float]) -> tuple[float, float, float]:
         if path.z_only:
             target = path.swim_z if path.swim_z is not None else path.destination[2]
             return _z_step(here, target, path.stride_length)
@@ -818,7 +818,7 @@ class Movement:
         self.clicked.add(ident)
         loop.send("OP_ClickDoor", OP_ClickDoor(ident).serialize())
 
-    def _click_doors(self, path: Path) -> list[Door]:
+    def _click_doors(self, path: EQPath) -> list[Door]:
         doors = list(self.world.doors.values())
         extra = path.door
         if isinstance(extra, Door):
@@ -1003,7 +1003,7 @@ def _zone_map(world: World) -> ZoneMap | None:
 
 def _mob_on_path(
     here: tuple[float, float, float],
-    path: Path,
+    path: EQPath,
     mob: Mob,
 ) -> bool:
     point = mob.position
@@ -1051,7 +1051,7 @@ def _dest_key(destination: tuple[float, float, float] | Mob) -> str | None:
 
 
 def _ahead(
-    here: tuple[float, float, float], path: Path, limit: float = 12.0
+    here: tuple[float, float, float], path: EQPath, limit: float = 12.0
 ) -> tuple[list[tuple[float, float, float]], float] | None:
     """Points still in front of us, and the yards left along them.
 
@@ -1080,7 +1080,7 @@ def _ahead(
     return None
 
 
-def _on_polyline(here: tuple[float, float, float], path: Path, limit: float = 18.0) -> bool:
+def _on_polyline(here: tuple[float, float, float], path: EQPath, limit: float = 18.0) -> bool:
     goal = path.destination
     points = [path.origin, *path.points]
     if not points or _horiz(points[-1], goal) > 0.5:

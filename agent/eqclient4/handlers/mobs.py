@@ -7,12 +7,13 @@ from eqclient4.structs import (
     OP_Death,
     OP_DeleteSpawn,
     OP_MobHealth,
+    OP_MobRename,
     OP_NewSpawn,
     OP_ZoneEntry,
-    OP_MobRename,
 )
-from eqclient4.world import Mob
 from eqclient4.utils import FactionStanding
+from eqclient4.world import Mob
+
 
 class MobsHandler(Handler):
     opcodes = (
@@ -32,16 +33,26 @@ class MobsHandler(Handler):
                 if payload.spawn.name == self.world.character.name:
                     return
 
+                if payload.spawn.name in self.world.bot_roster.bot_names():
+                    bot = self.world.bot_roster.bot_by_name(payload.spawn.name)
+                    if not bot:
+                        log.error(f"Bot in names but {payload.spawn.name} not found in roster ???")
+                        return
+                    bot.spawned = True
+                    bot.spawn_id = payload.spawn.spawn_id
+                    bot.alive = True
+                    return
+
                 spawn = payload.spawn
                 if spawn.spawn_id in self.world.mobs:
                     mob = self.world.mobs[spawn.spawn_id]
                 else:
                     mob = Mob(id=spawn.spawn_id)
-                
-                faction_id : int | None = None
+
+                faction_id: int | None = None
                 if self.world.zone:
                     faction_id = self.world.faction_hits.primary(self.world.zone, mob.name)
-                
+
                 # Do not normalize the name here, factions normalizes differently than
                 # Hailing does.
                 mob.name = spawn.name
@@ -79,6 +90,13 @@ class MobsHandler(Handler):
             case OP_ClientUpdate():
                 if payload.spawn_id == self.world.self_id:
                     # Handled by Movement Listener
+                    return
+
+                bot = self.world.bot_roster.bot_by_spawn_id(payload.spawn_id)
+                if bot:
+                    bot.position = (payload.x, payload.y, payload.z)
+                    bot.heading = payload.heading
+                    bot.animation = payload.animation
                     return
 
                 if payload.spawn_id not in self.world.mobs:
@@ -121,10 +139,16 @@ class MobsHandler(Handler):
                 return
 
             case OP_MobHealth():
+                bot = self.world.bot_roster.bot_by_spawn_id(payload.spawn_id)
+                if bot:
+                    bot.hp = payload.percent
+                    bot.max_hp = 100
+                    return
+
                 if payload.spawn_id not in self.world.mobs:
                     log.error(f"Mob health for unknown spawn: {payload.spawn_id}")
                     return
-                
+
                 mob = self.world.mobs[payload.spawn_id]
                 mob.hp = payload.percent
                 mob.max_hp = 100

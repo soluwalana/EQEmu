@@ -51,13 +51,15 @@ class Roster:
         self.character = character
         self.group_size = 5
         self.raid_size = 30
-        self.raid: list[Bot] = []
-        self.group: list[Bot] = []
+        self.raid: dict[str, Bot] = {}
+        self.group: dict[str, Bot] = {}
+        self.roster_cache_path = FSPath.home() / ".eqclient" / "v4" / character / "raid_roster.json"
+        self._bot_names: set[str] | None = None
 
     def serialize(self) -> dict:
         return {
             "raid": {
-                b.name: {
+                name: {
                     "owner": b.owner,
                     "name": b.name,
                     "race": b.race,
@@ -65,10 +67,10 @@ class Roster:
                     "gender": b.gender,
                     "created": b.created,
                 }
-                for b in self.raid
+                for name, b in self.raid.items()
             },
             "group": {
-                b.name: {
+                name: {
                     "owner": b.owner,
                     "name": b.name,
                     "race": b.race,
@@ -76,9 +78,56 @@ class Roster:
                     "gender": b.gender,
                     "created": b.created,
                 }
-                for b in self.group
+                for name, b in self.group.items()
             },
         }
+
+    def save(self) -> None:
+        self.roster_cache_path.parent.mkdir(parents=True, exist_ok=True)
+        open(self.roster_cache_path, "w").write(json.dumps(self.serialize(), indent=2))
+
+    def deserialize(self) -> None:
+        data = json.load(open(self.roster_cache_path))
+        self.raid = {name: Bot(self.item_book, **b) for name, b in data["raid"].items()}
+        self.group = {name: Bot(self.item_book, **b) for name, b in data["group"].items()}
+
+    def bot_names(self) -> list[str]:
+        if not self._bot_names:
+            self._bot_names = set(b.name for b in self.all_bots())
+            return list(self._bot_names)
+        return list(self._bot_names)
+
+    def bot_by_name(self, name: str) -> Bot | None:
+        if name in self.raid:
+            return self.raid[name]
+        if name in self.group:
+            return self.group[name]
+        return None
+
+    def bot_by_spawn_id(self, spawn_id: int) -> Bot | None:
+        for bot in self.all_bots():
+            if bot.spawn_id == spawn_id:
+                return bot
+        return None
+
+    def add_bot(self, group: bool, bot: Bot) -> None:
+        if group:
+            self.group[bot.name] = bot
+        else:
+            self.raid[bot.name] = bot
+        self._bot_names = None
+
+    def add_raid_bot(self, bot: Bot) -> None:
+        self.add_bot(False, bot)
+
+    def add_group_bot(self, bot: Bot) -> None:
+        self.add_bot(True, bot)
+
+    def all_bots(self) -> Iterator[Bot]:
+        for bot in self.group.values():
+            yield bot
+        for bot in self.raid.values():
+            yield bot
 
 
 def race_for_class(class_id: int) -> int:
@@ -97,13 +146,9 @@ def get_roster(item_book: ItemBook, character: str) -> Roster:
     if _ROSTER:
         return _ROSTER
 
-    cache_path = FSPath.home() / ".eqclient" / "v4" / character / "raid_roster.json"
-    cache_path.parent.mkdir(parents=True, exist_ok=True)
-    if os.path.exists(cache_path):
-        data = json.load(open(cache_path))
-        _ROSTER = Roster(item_book, character)
-        _ROSTER.raid = [Bot(item_book, **b) for b in data["raid"].values()]
-        _ROSTER.group = [Bot(item_book, **b) for b in data["group"].values()]
+    _ROSTER = Roster(item_book, character)
+    if _ROSTER.roster_cache_path.exists():
+        _ROSTER.deserialize()
         return _ROSTER
 
     class_tracker = defaultdict(int)
@@ -120,7 +165,7 @@ def get_roster(item_book: ItemBook, character: str) -> Roster:
         if short == "ENCH":  # no duplicate vowels allowed
             short = f"x{short}"
 
-        name = f"{character[3]}" + f"{short}{suffix}".lower()
+        name = f"{character[0:3]}" + f"{short}{suffix}".lower()
 
         return Bot(
             item_book,
@@ -132,21 +177,21 @@ def get_roster(item_book: ItemBook, character: str) -> Roster:
         )
 
     _ROSTER = Roster(item_book, character)
-    _ROSTER.group.append(generate_bot(CLASS_NAME_TO_ID["Cleric"]))
-    _ROSTER.group.append(generate_bot(random.choice(list(TANK_CLASSES))))
-    _ROSTER.group.append(generate_bot(random.choice(list(HEALER_CLASSES))))
-    _ROSTER.group.append(generate_bot(random.choice(list(DPS_CLASSES))))
-    _ROSTER.group.append(generate_bot(random.choice(list(DPS_CLASSES))))
+    _ROSTER.add_group_bot(generate_bot(CLASS_NAME_TO_ID["Cleric"]))
+    _ROSTER.add_group_bot(generate_bot(random.choice(list(TANK_CLASSES))))
+    _ROSTER.add_group_bot(generate_bot(random.choice(list(HEALER_CLASSES))))
+    _ROSTER.add_group_bot(generate_bot(random.choice(list(DPS_CLASSES))))
+    _ROSTER.add_group_bot(generate_bot(random.choice(list(DPS_CLASSES))))
 
-    for _ in range(30):
+    while len(list(_ROSTER.all_bots())) < 30:
         tank = random.choice(list(TANK_CLASSES))
-        _ROSTER.raid.append(generate_bot(tank))
+        _ROSTER.add_raid_bot(generate_bot(tank))
         healer = random.choice(list(HEALER_CLASSES))
-        _ROSTER.raid.append(generate_bot(healer))
+        _ROSTER.add_raid_bot(generate_bot(healer))
         other = random.choice(list(CLASS_ID_TO_CODE.keys()))
-        _ROSTER.raid.append(generate_bot(other))
+        _ROSTER.add_raid_bot(generate_bot(other))
 
-    open(cache_path, "w").write(json.dumps(_ROSTER.serialize(), indent=2))
+    _ROSTER.save()
     return _ROSTER
 
 
@@ -176,6 +221,10 @@ class Bot:
         self.spawn_id: int = 0
         self.alive: bool = False
         self.created: bool = created
+        self.spawned: bool = False
+        self.position: tuple[float, float, float] = (0, 0, 0)
+        self.heading: float = 0
+        self.animation: int = 0
         self.inventory: BotInventory = BotInventory(self, item_book)
 
 
