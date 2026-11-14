@@ -35,10 +35,54 @@ REPLY_TIMEOUT = 8.0
 BOT_COUNT_RE = re.compile(r"(\d+) Of \d+ bots? shown, \d+ (?:are|is) owned by you\.")
 NO_BOTS_RE = re.compile(r"You have no bots\.")
 BOT_RESPONSE_RE = re.compile(
-    r"Bot (\d+) \| (.*) is a Level (\d+) (\w+) (\w+(?:\s+\w+)?) (\w+) owned by (\w+)\."
+    r"Bot (\d+) \| (.*) is a Level (\d+) (\w+) (\w+(?:\s+\w+)?) (\w+(?:\s+\w+)?) owned by (\w+)\."
 )
 RAID_FORMED_RE = re.compile(
     r"Bot raid formed\. (\d+) bots spawned, (\d+) newly joined, (\d+) left out\."
+)
+
+BOT_COMMAND_FAILURES = [
+    r"Bot commands not available\.",
+    r"Your access level is not high enough to use this bot command\.",
+    r"Bot command '[^']+' not recognized\.",
+    r"Bot command \S+ is not enabled on this server\.",
+    r"Undefined linker usage in \w+ \([^)]+\)",
+    r"^[Uu]sage: ",
+]
+
+ACTIONABLE_FAILURES = [
+    r"Command passed null 'ActionableBot' criteria",
+    r"You have no spawned bots meeting this criteria - type: '[^']+'",
+    r"This command does not allow 'ActionableBot' criteria '[^']+'",
+]
+HEAL_ROTATION_COMMON_FAILURES = [
+    r"You must <target> or \[name\] a current member as a bot that you own to use this command",
+    r"Error: Current member bot dereferenced to nullptr",
+    r"\w+ is not a (?:current )?member of a Heal Rotation",
+]
+BOT_LIST_FAILURE_RE = re.compile(
+    "|".join([
+        r"You have no bots meeting this criteria\.",
+        r"A numeric value or name is required to use the filter property of this command",
+        *BOT_COMMAND_FAILURES,
+    ])
+)
+RAID_FORMATION_FAILURE_RE = re.compile(
+    "|".join([
+        r"You do not own any bots\.",
+        r"Could not save the bot raid roster\.",
+        r"Bots are disabled on this server\.",
+        r"The bot raid roster table is missing\.",
+        r"You have no active bot raid roster\.",
+        r"Leave your group before forming a bot raid\.",
+        r"Could not create a raid\.",
+        r"You must be level \d+ to spawn .*bots\.",
+        r"You cannot camp or spawn bots while feigned\.",
+        r"You cannot camp or spawn bots while your raid is engaged\.",
+        r"You cannot camp or spawn bots while your group is engaged,",
+        r"You cannot camp or spawn bots while you are engaged,",
+        *BOT_COMMAND_FAILURES,
+    ])
 )
 
 
@@ -52,7 +96,7 @@ class _Command:
     value: str = ""
     target: bool = False
     sent: bool = False
-    ticks_waited: int = 0
+    sent_at: float = 0.0
     recv: bool = False
     recv_response: re.Match | None = None
     failure_msg: str | None = None
@@ -66,6 +110,7 @@ class FormParty(Action):
         self.raid = raid
         self.start_time = time.time()
         self._commands: list[_Command] = []
+        self._reply_started = 0.0
         self.wait("init")
 
     def opcodes(self) -> tuple[str, ...]:
@@ -173,11 +218,20 @@ class FormParty(Action):
         if any(not bot.created for bot in self._world.bot_roster.all_bots()):
             log.info(f"Some bots are not created - waiting for botlist")
             self.wait("botlist")
-
+            self._reply_started = time.monotonic()
             self.send_channel_message("^botlist")
             return
 
         self.wait("spawn")
+
+    def check_failure(self, pattern: re.Pattern):
+        failure = self.re_has_response(pattern)
+        if failure or time.monotonic() - self._reply_started >= REPLY_TIMEOUT:
+            log.error(f"Command Failed: {failure.group(0) if failure else 'reply timeout'}")
+            self.waiting.clear()
+            self.complete = True
+            self.failed = True
+
 
     def creation(self) -> None:
         """State transition: botlist -> init | spawn
@@ -194,6 +248,7 @@ class FormParty(Action):
 
         if not count and not no_bots:
             log.info(f"No count or no bots - waiting")
+            self.check_failure(BOT_LIST_FAILURE_RE)
             return
 
         if no_bots:
@@ -265,6 +320,7 @@ class FormParty(Action):
             if self.waiting_for("raid-formation"):
                 reply = self.re_has_response(RAID_FORMED_RE)
                 if not reply:
+                    self.check_failure(RAID_FORMATION_FAILURE_RE)
                     return
 
                 if int(reply.group(3)):
@@ -276,6 +332,7 @@ class FormParty(Action):
                 self.wait("configure")
                 return
 
+            self._reply_started = time.monotonic()
             self.send_channel_message("^raidform all")
             self.wait("raid-formation")
             return
@@ -331,7 +388,11 @@ class FormParty(Action):
             _Command(
                 "^follow reset spawned",
                 r"(?:\d+ of your bots are following you\.|\w+ says, 'Following [^']+\.')",
-                []
+                [
+                    r"You must <target> a friendly player, bot or merc within your group or raid to use this command",
+                    r"\w+ says, 'I cannot follow myself, you want me to run circles\?",
+                    *ACTIONABLE_FAILURES,
+                ],
             )
         )
 
@@ -345,10 +406,10 @@ class FormParty(Action):
             self._commands.extend([
                 _Command(
                     f"^healrotationstop {clr.name}",
-                    rf"{clr.name}'s Heal Rotation is now inactive|{clr.name}'s Heal Rotation is already inactive",
+                    rf"{clr.name}'s Heal Rotation is (?:now|already) inactive",
                     [
-                        rf"{clr.name}'s is not a current member of a Heal Rotation",
                         rf"Failed to stop {clr.name}'s Heal Rotation",
+                        *HEAL_ROTATION_COMMON_FAILURES,
                     ],
                     clr,
                 ),
@@ -356,8 +417,8 @@ class FormParty(Action):
                     f"^healrotationcleartargets {clr.name}",
                     rf"All targets have been cleared from {clr.name}'s Heal Rotation",
                     [
-                        rf"{clr.name}'s is not a current member of a Heal Rotation",
                         rf"Failed to clear all targets from {clr.name}'s Heal Rotation",
+                        *HEAL_ROTATION_COMMON_FAILURES,
                     ],
                     clr,
                 ),
@@ -365,23 +426,31 @@ class FormParty(Action):
                     f"^healrotationremovemember {clr.name}",
                     rf"{clr.name} has been removed from their Heal Rotation",
                     [
-                        rf"{clr.name} is not a current member of a Heal Rotation",
                         rf"Failed to remove {clr.name} from their Heal Rotation",
+                        *HEAL_ROTATION_COMMON_FAILURES,
                     ],
                     clr,
                 ),
                 _Command(
                     f"^healrotationdelete {clr.name}",
                     rf"Succeeded in deleting {clr.name}'s heal rotation",
-                    [rf"Failed to delete {clr.name}'s heal rotation"],
+                    [
+                        rf"Failed to delete {clr.name}'s heal rotation",
+                        *HEAL_ROTATION_COMMON_FAILURES,
+                    ],
                     clr,
                 ),
                 _Command(
                     f"^healrotationcreate {clr.name} 3 on on on",
-                    rf"Successfully added {clr.name} as a current member to a new Heal Rotation",
-                    [
+                    "(?:" + "|".join((
+                        rf"Successfully added {clr.name} as a current member to a new Heal Rotation",
                         rf"Successfully loaded {clr.name}'s Heal Rotation",
                         rf"{clr.name} is already a current member of a Heal Rotation",
+                    )) + ")",
+                    [
+                        rf"Failed to add {clr.name} as a current member to a new Heal Rotation",
+                        r"You must <target> or \[name\] a creator as a bot that you own to use this command",
+                        r"Error: Creator bot dereferenced to nullptr",
                     ],
                     clr,
                 )
@@ -406,59 +475,64 @@ class FormParty(Action):
             if command.recv or command.failure_msg:
                 continue
 
-            if command.target:
+            if command.target and not command.sent:
                 assert command.bot
                 if not self.mob_targeted == command.bot.spawn_id:
                     self.target_id = command.bot.spawn_id
                     return
 
             if not command.sent:
-                self.send_channel_message(command.text)
+                self.messages.clear()  # Discard previous replies
+                command.sent_at = time.monotonic()
                 command.sent = True
-            
-            success_pattern = re.compile(command.response_pattern)
-            success = self.re_has_response(success_pattern)
+                self.send_channel_message(command.text)
+                return
 
+            failure_pattern = None
 
-            failure = None
+            failure_patterns = []
             if len(command.failure_patterns) > 0:
-                failure_pattern = re.compile(f"({'|'.join(command.failure_patterns)})")
-                failure = self.re_has_response(failure_pattern)
+                failure_patterns = command.failure_patterns + BOT_COMMAND_FAILURES
             else:
+                failure_patterns = BOT_COMMAND_FAILURES
                 log.warning(f"No failure patterns provided for command: {command.text}")
 
-            if command.ticks_waited > 40:
-                log.error(f"Command {command.text} timed out after 30 ticks")
-                command.failure_msg = "fail: timeout"
-                return
+            failure_pattern = re.compile("(" + '|'.join(failure_patterns) + ")")
 
-            command.ticks_waited += 1
-
-            if not failure and not success:
-                return
+            failure = None
+            if failure_pattern:
+                failure = self.re_has_response(failure_pattern)
 
             if failure:
                 command.failure_msg = failure.group(0)
+                log.error(f"Command Failed: {command.failure_msg}")
                 return
 
-            if not success:
-                log.debug(f"Waiting for response to command: {command.text}")
+            if time.monotonic() - command.sent_at >= REPLY_TIMEOUT:
+                log.error(f"Command {command.text} timed out after {REPLY_TIMEOUT} seconds")
+                command.failure_msg = "fail: timeout"
                 return
 
-            command.recv = True
-            command.recv_response = success
+            success_pattern = re.compile(command.response_pattern)
+            success = self.re_has_response(success_pattern)
 
-            if command.bot and command.text.startswith("^healrotationcreate"):
-                self.rotation_commands(command.bot, success.group(0))
+            if success:
+                command.recv = True
+                command.recv_response = success
 
-            if command.bot and command.setting:
-                settings = command.bot.settings or {}
-                if command.setting == "stance":
-                    for key in ("spellholds", "sit", "stop_melee", "follow"):
-                        settings.pop(key, None)
-                settings[command.setting] = command.value
-                command.bot.settings = settings
-                self._world.bot_roster.save()
+                if command.bot and command.text.startswith("^healrotationcreate"):
+                    self.rotation_commands(command.bot)
+
+                if command.bot and command.setting:
+                    settings = command.bot.settings or {}
+                    if command.setting == "stance":
+                        for key in ("spellholds", "sit", "stop_melee", "follow"):
+                            settings.pop(key, None)
+                    settings[command.setting] = command.value
+                    command.bot.settings = settings
+                    self._world.bot_roster.save()
+
+            return
 
         self.unwait("send-commands")
 
@@ -477,7 +551,11 @@ class FormParty(Action):
                 _Command(
                     f"^botstance {stance} byname {name}",
                     rf"{name} says, 'I am now set to the stance \[{label}\]",
-                    [],  # fill in
+                    [
+                        r"You must choose a valid stance ID, use .* for information regarding this command\.",
+                        r"Incorrect argument, use .* for information regarding this command\.",
+                        *ACTIONABLE_FAILURES,
+                    ],
                     bot,
                     "stance",
                     stance,
@@ -486,30 +564,37 @@ class FormParty(Action):
 
         if bot.class_id in _CASTERS:
             # Stance changes load stance-specific defaults, so reapply these settings.
-            for key, value, command, response in (
+            for key, value, command, response, failures in (
                 (
                     "spellholds",
                     "0",
                     f"^spellholds 0 0 byname {name}",
                     r"My \[[^\]]+\] spell hold was \[disabled\]",
+                    [
+                        r"You must choose a valid spell type\. Spell types range from \d+ to \d+",
+                        r"You must enter either 0 for disabled or 1 for enabled\.",
+                    ],
                 ),
                 (
                     "sit",
                     "90",
                     f"^sitmanapercent 90 byname {name}",
                     r"I will now sit in combat whe[mn] at or below \[90%\] mana",
+                    [r"You must enter a value between 0-100 \(0% to 100% of health\)\."],
                 ),
                 (
                     "stop_melee",
                     "1",
                     f"^botstopmeleelevel 1 byname {name}",
                     r"My stop melee level was set to 1\.",
+                    [r"You must provide a value between 0-255\."],
                 ),
                 (
                     "follow",
                     "10",
                     f"^botfollowdistance set 10 byname {name}",
                     r"Following [^']+ at a distance of 10(?:\.0+)?\.",
+                    [r"You must enter a value between 1 and \d+\."],
                 ),
             ):
                 if not changed_stance and saved.get(key) == value:
@@ -519,7 +604,11 @@ class FormParty(Action):
                     _Command(
                         command,
                         rf"{name} says, '{response}",
-                        [],  # fill in
+                        [
+                            *failures,
+                            r"Incorrect argument, use .* for information regarding this command\.",
+                            *ACTIONABLE_FAILURES,
+                        ],
                         bot,
                         key,
                         value,
@@ -539,9 +628,14 @@ class FormParty(Action):
                 self._commands.append(
                     _Command(
                         f"^spellsettingsadd {spell_id} {max(1, spell.priority)} 0 100",
-                        rf"Spell Setting Added \| Spell: .* \({spell_id}\)",
+                        f"(?:{'|'.join([
+                            rf'Spell Setting Added \| Spell: .* \({spell_id}\)',
+                            rf'{name} already has a spell setting for .* \({spell_id}\)'
+                        ])})",
                         [
-                            rf"{name} already has a spell setting for .* \({spell_id}\)",
+                            r"You must target a bot that you own to use this command\.",
+                            rf"Spell ID {spell_id} is invalid or could not be found\.",
+                            rf"Failed to add spell setting for {name}\.",
                         ],
                         bot,
                         key,
@@ -550,13 +644,7 @@ class FormParty(Action):
                     )
                 )
 
-    def rotation_commands(self, healer: Bot, response: str) -> None:
-        loaded = "successfully loaded" in response.lower()
-        if loaded:
-            # Don't recreate a loaded rotation
-            return
-
-        # existing = "already a current member" in response.lower()
+    def rotation_commands(self, healer: Bot) -> None:
 
         # A fresh rotation has no persisted server-side members or targets.
         for bot in self.action_bots():
@@ -572,7 +660,10 @@ class FormParty(Action):
                     rf"Successfully added {bot.name} as a current member of this Heal Rotation",
                     [
                         rf"{bot.name} is already a current member",
-                        rf"Failed to add {bot.name} as a current member to a new Heal Rotation",
+                        rf"Failed to add {bot.name} as a current member of this Heal Rotation",
+                        r"You must \[name\] a new member as a bot that you own to use this command",
+                        r"Error: New member bot dereferenced to nullptr",
+                        *HEAL_ROTATION_COMMON_FAILURES,
                     ],
                 )
             )
@@ -589,6 +680,8 @@ class FormParty(Action):
                     [
                         rf"Failed to add heal target with a name of '{target}'",
                         rf"No target exists by the name '{target}'",
+                        rf"{target}'s entity type is not an allowable heal target",
+                        *HEAL_ROTATION_COMMON_FAILURES,
                     ],
                 )
             )
@@ -604,14 +697,22 @@ class FormParty(Action):
             self._commands.extend([
                 _Command(
                     f"^healrotationadjustsafe {armor} {safe} {healer.name}",
-                    rf"Class Armor Type \d+ safe value \d+(?:\.\d+)? set for {healer.name}'s Heal Rotation",
-                    [rf"Safe value \d+(?:\.\d+)?%(\d+) does not exceed critical value \d+(?:\.\d+)?%(\d+) for {healer.name}'s Heal Rotation"],
+                    rf"Class Armor Type \d+ safe value \d+(?:\.\d+)?% set for {healer.name}'s Heal Rotation",
+                    [
+                        rf"Safe value \d+(?:\.\d+)?%\({armor}\) does not exceed critical value \d+(?:\.\d+)?%\({armor}\) for {healer.name}'s Heal Rotation",
+                        r"You must specify a valid \[armor_type: \d+-\d+\] to use this command",
+                        *HEAL_ROTATION_COMMON_FAILURES,
+                    ],
                     healer,
                 ),
                 _Command(
                     f"^healrotationadjustcritical {armor} {critical} {healer.name}",
-                    rf"Class Armor Type \d+ critical value \d+(?:\.\d+)? set for {healer.name}'s Heal Rotation",
-                    [rf"Critical value \d+(?:\.\d+)?%(\d+) exceeds safe value \d+(?:\.\d+)?%(\d+) for {healer.name}'s Heal Rotation"],
+                    rf"Class Armor Type \d+ critical value \d+(?:\.\d+)?% set for {healer.name}'s Heal Rotation",
+                    [
+                        rf"Critical value \d+(?:\.\d+)?%\({armor}\) exceeds safe value \d+(?:\.\d+)?%\({armor}\) for {healer.name}'s Heal Rotation",
+                        r"You must specify a valid \[armor_type: \d+-\d+\] to use this command",
+                        *HEAL_ROTATION_COMMON_FAILURES,
+                    ],
                     healer,
                 ),
             ])
@@ -624,6 +725,7 @@ class FormParty(Action):
                     rf"Failed to save heal rotation members",
                     rf"Failed to save heal rotation targets",
                     rf"{healer.name} is not a current member of a Heal Rotation",
+                    *HEAL_ROTATION_COMMON_FAILURES,
                 ],
                 healer,
                 "heal",
@@ -640,9 +742,10 @@ class FormParty(Action):
                 [
                     rf"Failed to start {healer.name}'s Heal Rotation", 
                     rf"{healer.name} is not a current member of a Heal Rotation",
+                    *HEAL_ROTATION_COMMON_FAILURES,
                 ],
-                healer if loaded else None,
-                "heal" if loaded else "",
+                healer,
+                "heal",
                 "1",
             )
         )
@@ -652,6 +755,7 @@ class FormParty(Action):
             [
                 rf"{healer.name} is not a current member of a Heal Rotation",
                 r"\(0\) None",
+                *HEAL_ROTATION_COMMON_FAILURES,
             ],
             healer,
         ))

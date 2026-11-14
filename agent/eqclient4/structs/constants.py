@@ -35,7 +35,7 @@ CLASS_ID_TO_NAME: dict[int, str] = {
     2: "Cleric",
     3: "Paladin",
     4: "Ranger",
-    5: "Shadow Knight",
+    5: "Shadowknight",
     6: "Druid",
     7: "Monk",
     8: "Bard",
@@ -68,7 +68,7 @@ CLASS_ID_TO_CODE: dict[int, str] = {
 }
 CLASS_NAME_TO_ID: dict[str, int] = {name: class_id for class_id, name in CLASS_ID_TO_NAME.items()}
 
-TANK_CLASSES = {CLASS_NAME_TO_ID[name] for name in ("Warrior", "Paladin", "Shadow Knight")}
+TANK_CLASSES = {CLASS_NAME_TO_ID[name] for name in ("Warrior", "Paladin", "Shadowknight")}
 HEALER_CLASSES = {CLASS_NAME_TO_ID[name] for name in ("Cleric", "Druid", "Shaman")}
 
 DPS_CLASSES = {

@@ -22,6 +22,7 @@ class Action:
         self._world: World = world
         self._loop: Loop = loop
         self.zone = self._world.zone or ""
+        self.failed = False
 
         self.durable = False
         self.complete = False
