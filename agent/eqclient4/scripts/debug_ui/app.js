@@ -15,7 +15,7 @@ function entityTint(entity, bot = false) {
 }
 function entityColor(entity, bot = false) { return `rgb(${entityTint(entity, bot).join(',')})`; }
 function losLabel(entity) { return entity.los === true ? (state?.los_map === false ? 'LoS assumed clear (no collision map)' : 'In LoS') : entity.los === false ? 'Out of LoS' : 'LoS unknown'; }
-let state = null, tab = 'overview', selectedMob = null, selectedSlot = null, openBag = null, actionCatalog = new Map(), activeAction = null, lastInventory = '', mapHits = new Map(), selectedItem = null, paramReaders = [], actionGeneration = 0;
+let state = null, tab = 'overview', selectedMob = null, selectedGround = null, selectedSlot = null, openBag = null, actionCatalog = new Map(), activeAction = null, lastInventory = '', mapHits = new Map(), selectedItem = null, paramReaders = [], actionGeneration = 0;
 const logs = { wire: { after: -1, rows: [], paused: false, busy: false }, combat: { after: -1, rows: [], paused: false, busy: false } };
 async function api(path, options = {}) { const r = await fetch(path, { cache: 'no-store', ...options }); if (!r.ok) {
     let x;
@@ -45,10 +45,24 @@ function setTab(name) { tab = name; document.querySelectorAll('.tab').forEach(e 
 document.querySelectorAll('nav button').forEach(e => e.onclick = () => setTab(e.dataset.tab));
 function bar(label, val, max, kind, pct) { const p = pct ?? (max > 0 ? 100 * val / max : null); return `<div class="resource"><div class="line"><span>${esc(label)}</span><b>${esc(val)}${max > 0 ? ' / ' + esc(max) : ''}${p !== null ? ' · ' + Math.round(p) + '%' : ''}</b></div><div class="track"><div class="fill ${kind}" style="width:${Math.max(0, Math.min(100, p ?? 0))}%"></div></div></div>`; }
 function mini(v, kind) { return v == null ? '—' : `${esc(v)}%<div class="track"><div class="fill ${kind}" style="width:${Math.max(0, Math.min(100, Number(v) || 0))}%"></div></div>`; }
+// One observed drop may match several database item definitions. Keep its
+// identity in the drop-ID namespace, not the mob spawn-ID namespace.
+function groundDrops(spawns) {
+    const drops = new Map();
+    for (const g of spawns ?? []) {
+        if (!drops.has(g.drop_id))
+            drops.set(g.drop_id, { drop_id: g.drop_id, position: g.position, items: new Map() });
+        drops.get(g.drop_id).items.set(g.item_id, { item_id: g.item_id, name: g.name });
+    }
+    return [...drops.values()].map(g => ({ ...g, items: [...g.items.values()], name: [...new Set([...g.items.values()].map(i => i.name))].join(' / ') }));
+}
 function render() {
     if (!state)
         return;
     const s = state, c = s.character;
+    if (selectedGround && (selectedGround.zone !== s.zone_id || selectedGround.instance !== s.instance ||
+        !(s.ground_spawns ?? []).some(g => g.drop_id === selectedGround.id)))
+        selectedGround = null;
     text('zonehead', `${s.zone ?? '—'} · ${s.zone_id}`);
     text('metrics', `Tick ${s.tick.toLocaleString()}  ·  ↑ ${s.sent.toLocaleString()}  ↓ ${s.received.toLocaleString()}  ·  ${s.mobs.length} entities`);
     status(s.ready ? 'Connected' : 'Zone not ready', s.ready);
@@ -84,6 +98,23 @@ function render() {
 // This is the dashboard-selected entity, not a change to the agent's target.
 function renderCurrentTarget() {
     const s = state;
+    if (selectedGround) {
+        const drop = groundDrops(s.ground_spawns).find(g => g.drop_id === selectedGround.id);
+        if (drop) {
+            const p = drop.position;
+            const hasPosition = validPosition(p) && Number.isFinite(p[2]);
+            const dz = hasPosition ? p[2] - s.position[2] : null;
+            const distance = hasPosition ? Math.hypot(p[0] - s.position[0], p[1] - s.position[1], dz) : null;
+            text('targetname', drop.name);
+            text('targetidentity', `Ground spawn · Drop #${drop.drop_id}`);
+            const values = [ ['Item ID', drop.items.map(i => i.item_id).join(' / ')], ['Distance', distance == null ? '—' : `${num(distance)} yd`], ['ΔZ', dz == null ? '—' : `${dz >= 0 ? '+' : ''}${num(dz)}`], ['Position', hasPosition ? `X ${num(p[0])} Y ${num(p[1])} Z ${num(p[2])}` : '—'] ];
+            html('targetmetrics', values.map(([label, value]) => `<div class="target-metric"><span>${esc(label)}</span><b>${esc(value)}</b></div>`).join(''));
+            text('mobdetail', pretty({ kind: 'ground_spawn', ...drop }));
+            $('mobaction').disabled = true;
+            $('cleartarget').disabled = false;
+            return;
+        }
+    }
     const bot = s.bots.find(b => b.spawned && b.id === selectedMob);
     const m = bot || s.mobs.find(m => m.id === selectedMob);
     text('targetname', m ? m.name : selectedMob === null ? 'No target selected' : 'Entity no longer present');
@@ -100,7 +131,7 @@ function renderCurrentTarget() {
     $('mobaction').disabled = !m;
     $('cleartarget').disabled = selectedMob === null;
 }
-$('cleartarget').onclick = () => { selectedMob = null; if (state) render(); };
+$('cleartarget').onclick = () => inspectMob(null, false);
 function renderBuffs() { const c = state.character, buffs = Object.values(c.buffs ?? {}); html('buffs', buffs.slice(0, 18).map(b => `<div class="row"><span>Spell #${esc(b.spell_id ?? b.spellid ?? '—')}</span><span class="muted">${esc(b.duration ?? b.tics_remaining ?? '')} ticks</span></div>`).join('') || '<p class="muted">No tracked buffs.</p>'); }
 function botSpawnLabel(b) {
     if (!b.spawned)
@@ -137,11 +168,24 @@ function fitBotRadius(minimum) {
 function inspectMob(id, openWorld = true) {
     // Selection is not a camera command. A marker click stays on its map;
     // list clicks may open the World inspector, but never resize either map.
+    selectedGround = null;
     selectedMob = id;
     if (openWorld && tab !== 'world')
         setTab('world');
     else if (state)
         render();
+}
+function inspectGround(id) {
+    if (!state || !(state.ground_spawns ?? []).some(g => g.drop_id === id))
+        return;
+    selectedMob = null;
+    selectedGround = { id, zone: state.zone_id, instance: state.instance };
+    if (tab !== 'world') {
+        setTab('world');
+        window.EQMap3D?.showGroundSpawns('worldmap');
+    } else {
+        render();
+    }
 }
 $('nearby').onclick = $('moblist').onclick = $('bots').onclick = e => {
     const b = e.target.closest('[data-mob]');
@@ -202,7 +246,7 @@ function draw(id, radius) {
             if (canvas.height !== height) canvas.height = height;
         }
     }
-    if (window.EQMap3D?.draw(id, radius, state, selectedMob, mapHits, layoutBotMarkers))
+    if (window.EQMap3D?.draw(id, radius, state, selectedMob, mapHits, layoutBotMarkers, selectedGround?.id ?? null))
         return;
     draw2d(id, radius);
 }
@@ -316,6 +360,26 @@ function draw2d(id, radius) {
             ctx.fillText(b.bot.name, b.x + botRadius + 4, b.y - botRadius - 3);
         }
     }
+    // The same layer toggle and drop IDs work in the 2D fallback.
+    if (window.EQMap3D?.groundSpawnsVisible(id) ?? true) {
+        for (const g of groundDrops(s.ground_spawns)) {
+            if (!validPosition(g.position)) continue;
+            const [x, y] = xy(g.position);
+            if (x < 0 || x > w || y < 0 || y > h) continue;
+            const selected = selectedGround?.id === g.drop_id;
+            ctx.save();
+            ctx.fillStyle = '#62dce0';
+            ctx.strokeStyle = selected ? '#fff' : '#123d49';
+            ctx.lineWidth = selected ? 2.5 : 1.5;
+            ctx.beginPath(); ctx.moveTo(x, y-6); ctx.lineTo(x+6, y); ctx.lineTo(x, y+6); ctx.lineTo(x-6, y); ctx.closePath(); ctx.fill(); ctx.stroke();
+            if (selected) {
+                ctx.beginPath(); ctx.arc(x, y, 10, 0, 2*Math.PI); ctx.stroke();
+                ctx.font = '12px monospace'; ctx.fillStyle = '#c8fbff'; ctx.fillText(g.name, x+12, y-8);
+            }
+            ctx.restore();
+            hits.push({ x, y, radius: 8, kind: 'ground', name: g.name, id: g.drop_id, detail: 'Ground spawn' });
+        }
+    }
     const spawned = s.bots.filter(b => b.spawned).length;
     const unknown = s.bots.filter(b => b.spawned && !validPosition(b.position)).length;
     text(id + 'bots', `${bots.length} / ${spawned} spawned bots in view${spawned - bots.length - unknown > 0 ? ` · ${spawned - bots.length - unknown} outside view` : ''}${unknown ? ` · ${unknown} without position` : ''}`);
@@ -325,8 +389,9 @@ function mapHit(id, event) {
     const canvas = $(id), rect = canvas.getBoundingClientRect();
     const x = (event.clientX - rect.left) * canvas.width / rect.width, y = (event.clientY - rect.top) * canvas.height / rect.height;
     const hits = (mapHits.get(id) || []).map(m => ({ ...m, d: Math.hypot(x - m.x, y - m.y) })).sort((a, b) => a.d - b.d);
-    // Prefer a visible bot marker over a mob hidden behind it.
-    return hits.find(m => m.bot && m.d <= m.radius + 3) ?? hits.find(m => m.kind ? m.d <= m.radius : m.d < 15);
+    // Ground diamonds have a tight hit area and sit on top of mob markers.
+    // Otherwise retain the existing bot-over-mob selection preference.
+    return hits.find(m => m.kind === 'ground' && m.d <= m.radius) ?? hits.find(m => m.bot && m.d <= m.radius + 3) ?? hits.find(m => m.kind ? m.d <= m.radius : m.d < 15);
 }
 for (const id of ['minimap', 'worldmap']) {
     const legend = $(id + 'bots').parentElement.querySelector('.legend');
@@ -337,7 +402,8 @@ for (const id of ['minimap', 'worldmap']) {
     }
     $(id).onclick = e => {
         const hit = mapHit(id, e);
-        if (!hit?.kind) inspectMob(hit?.id ?? null, false);
+        if (hit?.kind === 'ground') inspectGround(hit.id);
+        else if (!hit?.kind) inspectMob(hit?.id ?? null, false);
     };
     $(id).onmousemove = e => {
         const hit = mapHit(id, e);

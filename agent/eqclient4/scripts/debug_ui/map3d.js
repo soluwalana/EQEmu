@@ -173,7 +173,7 @@
             button('Orbit',()=>{this.el=.72;this.az=-.55;this.redraw();});
             button('Fit target',()=>this.fitTarget());
             check('Terrain',true,v=>this.terrain=v); check('Navmesh',true,v=>this.nav=v); check('Water',true,v=>this.water=v);
-            check('Doors',true,v=>this.doors=v); check('Ground spawns',false,v=>this.groundSpawns=v);
+            check('Doors',true,v=>this.doors=v); this.groundCheck=check('Ground spawns',false,v=>this.groundSpawns=v);
             check('Cutaway',false,v=>this.cut=v);
             check('Local geometry',false,v=>this.localGeometry=v);
             check('Show hidden mobs',false,v=>this.showHiddenMobs=v);
@@ -284,11 +284,11 @@
         }
         resetCamera(){this.follow=true;this.center=null;this.zoom=1;this.manualRadius=null;}
         resetZoom(){this.zoom=1;this.manualRadius=null;}
-        redraw(){if(this.latest){const [radius,state,selected,hits,layout]=this.latest; if(this.mode3d)this.draw(radius,state,selected,hits,layout);else if(typeof window.EQMap3D.fallback==='function')window.EQMap3D.fallback(this.id,radius);}}
+        redraw(){if(this.latest){const [radius,state,selected,hits,layout,selectedGround]=this.latest; if(this.mode3d)this.draw(radius,state,selected,hits,layout,selectedGround);else if(typeof window.EQMap3D.fallback==='function')window.EQMap3D.fallback(this.id,radius);}}
         fitTarget(){
-            if(!this.latest)return;const [radius,s,selected]=this.latest;
-            const target=[...s.mobs,...s.bots.filter(b=>b.spawned)].find(m=>m.id===selected);
-            if(!target||!valid(target.position)){this.info.textContent='Select a mob or bot first.';return;}
+            if(!this.latest)return;const [radius,s,selected,,,selectedGround]=this.latest;
+            const target=selectedGround!==null ? (s.ground_spawns??[]).find(g=>g.drop_id===selectedGround) : [...s.mobs,...s.bots.filter(b=>b.spawned)].find(m=>m.id===selected);
+            if(!target||!valid(target.position)){this.info.textContent='Select a mob, bot or ground spawn first.';return;}
             this.center=s.position.map((v,i)=>(v+target.position[i])/2);this.follow=false;
             this.manualRadius=radius;
             this.zoom=Math.max(12,Math.hypot(...sub(target.position,s.position))*.65)/radius;this.redraw();
@@ -314,8 +314,8 @@
                 this.buffers.push({kind,buffer,count:vertices.length/3});
             }
         }
-        draw(radius,s,selected,hits,layout){
-            this.latest=[radius,s,selected,hits,layout];this.load(s.zone);
+        draw(radius,s,selected,hits,layout,selectedGround){
+            this.latest=[radius,s,selected,hits,layout,selectedGround];this.load(s.zone);
             radius=this.manualRadius??radius;
             const hud=this.hud, gl=this.gl, w=hud.width,h=hud.height;
             // The HUD and GPU backing stores must have identical dimensions
@@ -426,17 +426,14 @@
                 objectHits.push({x,y,radius,kind:'door',name:d.name,id:d.id,detail});
             }
             if(this.groundSpawns){
-                const drops=new Map();
-                for(const g of s.ground_spawns??[]){
+                for(const g of groundDrops(s.ground_spawns)){
                     if(!objectVisible(g.position))continue;
-                    if(!drops.has(g.drop_id))drops.set(g.drop_id,{...g,names:new Set()});
-                    drops.get(g.drop_id).names.add(g.name);
-                }
-                for(const g of drops.values()){
                     const p=project(g.position);if(!visible(p))continue;
-                    const [x,y]=p;ctx.save();ctx.fillStyle='#62dce0';ctx.strokeStyle='#123d49';ctx.lineWidth=1.5;
+                    const selectedDrop=g.drop_id===selectedGround;
+                    const [x,y]=p;ctx.save();ctx.fillStyle='#62dce0';ctx.strokeStyle=selectedDrop?'#fff':'#123d49';ctx.lineWidth=selectedDrop?2.5:1.5;
                     ctx.beginPath();ctx.moveTo(x,y-6);ctx.lineTo(x+6,y);ctx.lineTo(x,y+6);ctx.lineTo(x-6,y);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();
-                    objectHits.push({x,y,radius:7,kind:'ground',name:[...g.names].join(' / '),id:g.drop_id,detail:'Ground spawn'});
+                    if(selectedDrop){ring(p,10,'#fff');label(g.name,p,'#c8fbff');}
+                    objectHits.push({x,y,radius:8,kind:'ground',name:g.name,id:g.drop_id,detail:'Ground spawn'});
                 }
             }
             // Keep object identifiers separate from mob spawn IDs. Hover can
@@ -458,13 +455,15 @@
     window.EQMap3D={
         resetCamera(id){views.get(id)?.resetCamera();},
         resetZoom(id){views.get(id)?.resetZoom();},
-        draw(id,radius,state,selected,hits,layout){
+        groundSpawnsVisible(id){return views.get(id)?.groundSpawns??true;},
+        showGroundSpawns(id){const v=views.get(id);if(v){v.groundSpawns=true;v.groundCheck.checked=true;v.redraw();}},
+        draw(id,radius,state,selected,hits,layout,selectedGround=null){
             if(!state||!valid(state.position))return false;
             let v=views.get(id);
             if(v===undefined){try{v=new View(id);views.set(id,v);}catch(e){views.set(id,null);console.warn('3D map unavailable',e);const note=document.createElement('p');note.className='eq3d-info';note.textContent='3D unavailable ('+e.message+'); showing 2D map.';document.getElementById(id).after(note);return false;}}
-            if(!v)return false;v.latest=[radius,state,selected,hits,layout];
+            if(!v)return false;v.latest=[radius,state,selected,hits,layout,selectedGround];
             if(!v.mode3d)return false;
-            v.draw(radius,state,selected,hits,layout);return true;
+            v.draw(radius,state,selected,hits,layout,selectedGround);return true;
         },
     };
 })();
