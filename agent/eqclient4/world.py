@@ -128,7 +128,7 @@ class World:
 
         #   Zone in point, considered safe normally
         self.safe: tuple[float, float, float] | None = None
-        self.exit_doors: dict[str, dict[int, list[int]]] = {}
+        self.exit_doors: dict[str, dict[int, list[int]]] = self.zone_graph.doors
         self.at_water = False
 
         #   Water Maps loaded from zoning in this session
@@ -271,7 +271,6 @@ class World:
         self.ground_spawns.clear()
         self.mobs.clear()
         self.aggro_mobs.clear()
-        self.exit_doors.clear()
         self.doors.clear()
         self.active_merchants.clear()
         self.clicked_doors = set()

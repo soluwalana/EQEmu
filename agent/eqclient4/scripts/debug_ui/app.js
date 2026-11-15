@@ -61,7 +61,7 @@ function groundDrops(spawns) {
 }
 // Static world objects are encoded as doors with doorid=-1 (uint8 255).
 // Keep their wire representation intact, but do not draw them as interactive doors.
-const doorMarkers = doors => (doors ?? []).filter(d => d.id !== 255);
+const doorMarkers = doors => (doors ?? []).filter(d => d.id !== 255 || d.is_exit);
 // Shared vector icons: identical shapes/colors in both maps and their legends.
 // All paths are centered in a 24x24 coordinate space; no external icon library.
 const mapObjectIcons = {
@@ -88,7 +88,8 @@ function mapObjectIcon(object, kind) {
 function doorDetails(object) {
     const icon = mapObjectIcon(object, 'door');
     const status = object.kind === 'door' ? '' : ` · wire state ${object.opened ? 'open' : 'closed'}`;
-    return `${icon.label}${status} · type ${object.open_type} · heading ${num(object.heading)} · size ${object.size ?? 100}% · incline ${object.incline ?? 0}`;
+    const exit = object.is_exit ? ` · Exit${object.exit_destinations?.length ? ' to zone ' + object.exit_destinations.join(' / ') : ''}` : '';
+    return `${icon.label}${status} · type ${object.open_type} · heading ${num(object.heading)} · size ${object.size ?? 100}% · incline ${object.incline ?? 0}${exit}`;
 }
 function canvasViewport(canvas) {
     const rect = canvas.getBoundingClientRect();
@@ -167,7 +168,7 @@ function drawMapObjects(ctx, id, s, project, visible, showDoors, showGround, sel
 function closeDoorPopup() {
     selectedDoor = null;
     const popup = $('doorpopup');
-    if (popup?.open) popup.close();
+    if (popup) popup.hidden = true;
 }
 function renderDoorPopup() {
     if (!selectedDoor) return;
@@ -182,7 +183,7 @@ function renderDoorPopup() {
     text('doorpopup-position', validPosition(p) ? `X ${num(p[0])} · Y ${num(p[1])} · Z ${num(p[2])}` : 'Position unavailable');
     text('doorpopup-data', pretty(d));
     const popup = $('doorpopup');
-    if (popup.open) {
+    if (!popup.hidden) {
         const padding = 12;
         popup.style.left = `${Math.max(padding, Math.min(selectedDoor.clientX + padding, window.innerWidth - popup.offsetWidth - padding))}px`;
         popup.style.top = `${Math.max(padding, Math.min(selectedDoor.clientY + padding, window.innerHeight - popup.offsetHeight - padding))}px`;
@@ -192,13 +193,11 @@ function inspectDoor(hit, event) {
     if (!state) return;
     selectedDoor = { id: hit.id, zone: state.zone_id, instance: state.instance, clientX: event.clientX, clientY: event.clientY };
     const popup = $('doorpopup');
+    popup.hidden = false;
     renderDoorPopup();
-    if (!selectedDoor) return;
-    if (!popup.open) popup.show();
-    render();
+    if (selectedDoor) render();
 }
 $('doorpopup-close').onclick = () => { closeDoorPopup(); if (state) render(); };
-$('doorpopup').addEventListener('close', () => { if (!$('doorpopup').open && selectedDoor) { selectedDoor = null; if (state) render(); } });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && selectedDoor) { closeDoorPopup(); if (state) render(); } });
 
 // Item definitions are immutable cache entries, independent of drop/slot identity.
@@ -585,13 +584,17 @@ for (const id of ['minimap', 'worldmap']) {
         // Do not touch selection or camera state when changing hover.
         if (!window.EQMap3D?.redraw(id)) draw(id, id === 'worldmap' ? Number($('radius').value) : fitBotRadius(200));
     };
-    canvas.onclick = e => {
+    const select = e => {
         mapPointer.set(id, { clientX: e.clientX, clientY: e.clientY });
         const hit = mapHit(id, e);
         if (hit?.kind === 'ground') inspectGround(hit.id);
         else if (hit?.kind === 'door') inspectDoor(hit, e);
         else inspectMob(hit?.id ?? null, false);
     };
+    canvas.onclick = select;
+    // A completed 3D pointer gesture selects directly, even if the browser
+    // does not synthesize a click after pointer capture.
+    canvas.addEventListener('eq-map-select', e => select(e.detail));
     canvas.onmousemove = e => {
         const previous = hoverKey(mapHit(id, mapPointer.get(id)));
         mapPointer.set(id, { clientX: e.clientX, clientY: e.clientY });

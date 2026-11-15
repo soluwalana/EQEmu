@@ -165,3 +165,7 @@ main:has(#world.active){max-width:none}
 .object-popup p{margin:8px 0;overflow-wrap:anywhere}
 #worlditemcards>.itemcard{display:block;min-width:0}
 #worlditemcards .stats{margin:12px 0}
+
+/* The object inspector is a non-modal fixed overlay, not a native dialog. */
+.object-popup[hidden]{display:none!important}
+.object-popup:not([hidden]){display:block}

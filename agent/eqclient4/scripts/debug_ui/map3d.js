@@ -161,10 +161,12 @@
             // Left drag pans; right/Alt drag orbits. Keep Shift/middle pan.
             // Only a real drag suppresses the subsequent marker click.
             this.hud.addEventListener('pointerdown',e=>{
-                if(!this.mode3d || e.button>2 || this.drag)return;
+                if(e.button>2 || this.drag)return;
                 this.skipClick=false;
+                if(!this.mode3d)return;
                 this.drag={pointer:e.pointerId,x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY,
-                    pan:e.shiftKey||e.button===1||(e.button===0&&!e.altKey),moved:false};
+                    pan:e.shiftKey||e.button===1||(e.button===0&&!e.altKey),
+                    select:e.button===0&&!e.altKey&&!e.shiftKey,moved:false};
                 this.hud.setPointerCapture(e.pointerId);
             });
             this.hud.addEventListener('pointermove',e=>{
@@ -192,8 +194,15 @@
             });
             const end=e=>{
                 if(this.drag?.pointer!==e.pointerId)return;
-                if(this.drag.moved)this.skipClick=true;
+                const d=this.drag;
                 this.drag=null;
+                if(d.moved)this.skipClick=true;
+                else if(e.type==='pointerup' && d.select){
+                    // Pointer capture can interfere with native click synthesis.
+                    // Dispatch one explicit selection; suppress its duplicate click.
+                    this.skipClick=true;
+                    this.hud.dispatchEvent(new CustomEvent('eq-map-select',{detail:{clientX:e.clientX,clientY:e.clientY}}));
+                }
             };
             this.hud.addEventListener('pointerup',end);
             this.hud.addEventListener('pointercancel',end);
