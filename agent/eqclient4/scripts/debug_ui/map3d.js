@@ -124,7 +124,7 @@
             this.id=id; this.hud=document.getElementById(id); this.az=-.55; this.el=.72;
             this.follow=true; this.center=null; this.zoom=1; this.manualRadius=null; this.zone=null; this.generation=0;
             this.terrain=true; this.nav=true; this.water=true; this.cut=false; this.cutHeight=0; this.mode3d=true;
-            this.localGeometry=false; this.showHiddenMobs=false;
+            this.localGeometry=false;
             this.doors=true; this.groundSpawns=true;
             this.buffers=[]; this.geometry=null; this.minZ=null; this.error=''; this.latest=null; this.drag=null; this.skipClick=false;
             const glCanvas=document.createElement('canvas'); glCanvas.className='eq3d-gl';
@@ -157,7 +157,6 @@
             check('Doors / objects',true,v=>this.doors=v); this.groundCheck=check('Ground spawns',true,v=>this.groundSpawns=v);
             check('Cutaway',false,v=>this.cut=v);
             check('Local geometry',false,v=>this.localGeometry=v);
-            check('Show hidden mobs',false,v=>this.showHiddenMobs=v);
             const cut=document.createElement('input');cut.type='range';cut.min='0';cut.max='150';cut.value=String(this.cutHeight);cut.title='World-Z cut plane: player Z plus optional roof clearance';
             const label=document.createElement('label');label.append('Roof offset ',cut);tools.append(label);
             cut.oninput=()=>{this.cutHeight=Number(cut.value);this.redraw();};
@@ -341,7 +340,7 @@
             // A selected target remains an intentional X-ray diagnostic.
             const objectVisible=p=>valid(p) && p[2]<=highZ &&
                 (!this.localGeometry || horizontalDistance(p,s.position)<=range);
-            const mobVisible=m=>this.showHiddenMobs || m.id===selected || objectVisible(m.position);
+            const mobVisible=m=>m.id===selected || objectVisible(m.position);
             const line=(a,b,color,dashed=false,width=1.5)=>{ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.setLineDash(dashed?[5,4]:[]);ctx.stroke();ctx.setLineDash([]);};
             const circle=(p,r,color,stroke)=>{ctx.beginPath();ctx.arc(p[0],p[1],r,0,2*Math.PI);ctx.fillStyle=color;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.5;ctx.stroke();}};
             const label=(msg,p,color='#dce9f6')=>{const width=ctx.measureText(msg).width,x=clamp(p[0]+3,0,Math.max(0,w-width-6)),y=clamp(p[1]-15,0,h-17);ctx.fillStyle='#09111c';ctx.fillRect(x,y,width+6,17);ctx.fillStyle=color;ctx.fillText(msg,x+3,y+13);};
