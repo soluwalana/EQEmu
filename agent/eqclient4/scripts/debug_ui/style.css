@@ -230,3 +230,14 @@ main:has(#world.active){flex:1;display:flex;flex-direction:column;min-height:0;w
 .spawn-input-row{display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap}
 .spawn-input-row input{flex:1 1 90px;width:0;min-width:0}
 .use-target-id{flex:0 0 auto;white-space:nowrap;font-size:11px;padding:6px 8px;color:var(--cyan)}
+
+/* Packet rules apply to both streams without changing capture or polling. */
+.packet-rules{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:7px 10px;align-items:center;margin:0 0 12px}
+.packet-rules label{font-size:12px;color:var(--gold)}
+.packet-rules input{width:100%;font-family:var(--mono);font-size:12px}
+.packet-rule-note{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.packet-rule-note small{letter-spacing:0;font-size:11px}
+.packet-rule-note button,.packet-inspector-actions button{font-size:12px;padding:5px 8px}
+.packet-inspector-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:8px}
+.packet-inspector-actions strong{flex:1 1 100%;color:var(--cyan);overflow-wrap:anywhere}
+@media(max-width:650px){.packet-rules{grid-template-columns:1fr}}

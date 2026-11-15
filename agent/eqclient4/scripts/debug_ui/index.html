@@ -220,7 +220,7 @@
        </span>
       </h2>
       <div class="inline">
-       <input id="wirefilter" placeholder="Filter opcode / message"/>
+       <input id="wirefilter" placeholder="Search opcode / message / payload" aria-label="Search wire packets"/>
        <select id="direction">
         <option value="all">
          Both directions
@@ -235,6 +235,13 @@
        <button id="pausewire">
         Pause
        </button>
+      </div>
+      <div class="packet-rules">
+       <label for="wireinclude">Include opcodes</label>
+       <input id="wireinclude" placeholder="OP_Damage, OP_SpecialMesg" autocomplete="off" spellcheck="false"/>
+       <label for="wireexclude">Exclude opcodes</label>
+       <input id="wireexclude" placeholder="OP_ClientUpdate, OP_MobHealth" autocomplete="off" spellcheck="false"/>
+       <div class="packet-rule-note"><small>Both logs · comma/space-separated · exclusions win · empty include = all</small><button id="clearpacketrules" type="button">Clear lists</button></div>
       </div>
       <div class="log" id="wirelog">
       </div>
@@ -258,6 +265,11 @@
       <h2>
        Packet inspector
       </h2>
+      <div class="packet-inspector-actions">
+       <strong id="packetopcode">No packet selected</strong>
+       <button id="packetinclude" type="button" disabled>+ Include opcode</button>
+       <button id="packetexclude" type="button" disabled>+ Exclude opcode</button>
+      </div>
       <pre id="packetdetail">Select a packet to inspect decoded fields and wire bytes.</pre>
      </article>
      <article class="panel">

@@ -964,8 +964,44 @@ function packetSummary(p) { const v = p.payload; if (!v)
     return `${entityName(v.entity_id)} · ${v.entries?.length ?? 0} buff icons`; if (p.opcode === 'OP_BeginCast')
     return `${entityName(v.caster_id ?? v.caster)} · casting spell #${v.spell_id}`; return v.message ?? v.text ?? JSON.stringify(v); }
 function packetLine(p) { let summary = packetSummary(p); return `<button class="packet" data-packet="${p.id}" title="${esc(summary)}"><span class="stamp">${esc(p.timestamp.slice(11, 23))}</span> <span class="${p.direction}">${p.direction === 'recv' ? '↓' : '↑'}</span> ${esc(p.opcode)} <span class="stamp">${p.size} B</span> ${esc(summary)}</button>`; }
-function renderLog(kind) { const l = logs[kind], box = $(kind + 'log'), q = $(kind + 'filter').value.toLowerCase(), dir = kind === 'wire' ? $('direction').value : 'all'; let rows = l.rows.filter(p => (dir === 'all' || p.direction === dir) && (!q || (p.opcode + ' ' + packetSummary(p) + ' ' + JSON.stringify(p.payload ?? '')).toLowerCase().includes(q))); const tail = box.scrollHeight - box.scrollTop - box.clientHeight < 40; html(kind + 'log', rows.slice(-500).map(packetLine).join('')); if (tail)
-    box.scrollTop = box.scrollHeight; text(kind + 'count', `${rows.length} buffered${l.paused ? ' · paused' : ''}${l.more ? ' · catching up' : ''}`); }
+// Shared exact opcode rules; search text and direction still apply independently.
+function opcodeTerms(value) {
+    return [...new Map(value.split(/[\s,;]+/).filter(Boolean).map(s => [s.toLowerCase(), s])).values()];
+}
+function packetRules() {
+    return { include: new Set(opcodeTerms($('wireinclude').value).map(s => s.toLowerCase())),
+        exclude: new Set(opcodeTerms($('wireexclude').value).map(s => s.toLowerCase())) };
+}
+function opcodeAllowed(opcode, rules) {
+    const key = String(opcode).toLowerCase();
+    return !rules.exclude.has(key) && (!rules.include.size || rules.include.has(key));
+}
+function refreshPacketFilters() {
+    renderLog('wire');
+    renderLog('combat');
+}
+let inspectedPacket = null, packetSelection = 0;
+function addPacketRule(kind) {
+    if (!inspectedPacket?.opcode) return;
+    const opcode = inspectedPacket.opcode, key = opcode.toLowerCase();
+    const input = $(kind === 'include' ? 'wireinclude' : 'wireexclude');
+    const other = $(kind === 'include' ? 'wireexclude' : 'wireinclude');
+    const terms = opcodeTerms(input.value);
+    if (!terms.some(s => s.toLowerCase() === key)) terms.push(opcode);
+    input.value = terms.join(', ');
+    // An explicit inspector action moves this opcode to the chosen list.
+    other.value = opcodeTerms(other.value).filter(s => s.toLowerCase() !== key).join(', ');
+    refreshPacketFilters();
+}
+$('wireinclude').oninput = $('wireexclude').oninput = refreshPacketFilters;
+$('clearpacketrules').onclick = () => {
+    $('wireinclude').value = $('wireexclude').value = '';
+    refreshPacketFilters();
+};
+$('packetinclude').onclick = () => addPacketRule('include');
+$('packetexclude').onclick = () => addPacketRule('exclude');
+function renderLog(kind) { const l = logs[kind], box = $(kind + 'log'), q = $(kind + 'filter').value.toLowerCase(), dir = kind === 'wire' ? $('direction').value : 'all'; const rules = packetRules(); let rows = l.rows.filter(p => opcodeAllowed(p.opcode, rules) && (dir === 'all' || p.direction === dir) && (!q || (p.opcode + ' ' + packetSummary(p) + ' ' + JSON.stringify(p.payload ?? '')).toLowerCase().includes(q))); const tail = box.scrollHeight - box.scrollTop - box.clientHeight < 40; html(kind + 'log', rows.slice(-500).map(packetLine).join('')); if (tail)
+    box.scrollTop = box.scrollHeight; text(kind + 'count', `${rows.length} / ${l.rows.length} buffered${l.paused ? ' · paused' : ''}${l.more ? ' · catching up' : ''}`); }
 async function pollLog(kind) { const l = logs[kind]; if (l.busy || l.paused)
     return; l.busy = true; try {
     let r = await api(`/dashboard/packets?stream=${kind}&after=${l.after}&limit=250`);
@@ -989,13 +1025,28 @@ finally {
 for (const k of ['wire', 'combat']) {
     $('pause' + k).onclick = () => { logs[k].paused = !logs[k].paused; text('pause' + k, logs[k].paused ? 'Resume' : 'Pause'); renderLog(k); };
     $(k + 'filter').oninput = () => renderLog(k);
-    $(k + 'log').onclick = async (e) => { let b = e.target.closest('[data-packet]'); if (b)
+    $(k + 'log').onclick = async e => {
+        const button = e.target.closest('[data-packet]');
+        if (!button) return;
+        const generation = ++packetSelection;
+        const id = button.dataset.packet;
+        inspectedPacket = null;
+        $('packetinclude').disabled = $('packetexclude').disabled = true;
+        text('packetopcode', 'Loading packet…');
+        text('packetdetail', 'Loading…');
         try {
-            text('packetdetail', pretty(await api('/dashboard/packet/' + b.dataset.packet)));
-        }
-        catch (e) {
+            const packet = await api('/dashboard/packet/' + id);
+            if (generation !== packetSelection) return;
+            inspectedPacket = packet;
+            text('packetopcode', packet.opcode);
+            text('packetdetail', pretty(packet));
+            $('packetinclude').disabled = $('packetexclude').disabled = !packet.opcode;
+        } catch (e) {
+            if (generation !== packetSelection) return;
+            text('packetopcode', 'Packet unavailable');
             text('packetdetail', e.message);
-        } };
+        }
+    };
 }
 $('direction').onchange = () => renderLog('wire');
 // No overlapping state requests: an expensive EQ tick must not accumulate HTTP work.
