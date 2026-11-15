@@ -114,8 +114,15 @@ summary{cursor:pointer;color:var(--muted)}
 .field .field{margin:8px 0 8px 12px;padding-left:10px;border-left:1px solid var(--edge)}
 .field textarea{margin:0}
 .field input[type=number]{font-family:var(--mono)}
-#equipmentpreview{grid-template-columns:repeat(8,minmax(0,1fr))}
-#equipmentpreview .slot{min-height:54px}
+/* The equipment grid follows the six-column EQ inventory arrangement at
+   every breakpoint. Scroll horizontally rather than rearranging slot positions. */
+.slots.equipment{grid-template-columns:repeat(6,minmax(54px,1fr));grid-auto-rows:minmax(70px,auto);gap:5px;overflow-x:auto;padding:2px}
+.equipment .slot{min-height:70px;min-width:0;justify-content:center;border-color:#8c7751}
+.equipment .slot.empty{border-color:#3c4653}
+.equipment .slotname{line-height:1.15}
+.equipment .itemname{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.equipment-gap{pointer-events:none}
+.bot-link{font-weight:700;border:0;padding:0;background:none;color:var(--ink);text-align:left}
+.bot-link:hover,.bot-link:focus-visible{color:var(--green);text-decoration:underline}
+.map-status{font-size:11px;margin:7px 0 0;color:var(--green)}
 h2 button{font-size:11px;padding:4px 8px;color:var(--muted)}
-@media(max-width:650px){#equipmentpreview{grid-template-columns:repeat(4,minmax(0,1fr))}
-}

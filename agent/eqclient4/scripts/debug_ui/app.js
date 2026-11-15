@@ -47,7 +47,7 @@ function render() {
         text('coins', (c.coin ?? []).map((v, i) => `${v} ${['pp', 'gp', 'sp', 'cp'][i]}`).join(' · '));
         text('party', s.party_mode ?? 'Solo');
         text('position', `X ${num(s.position[0])}  Y ${num(s.position[1])}  Z ${num(s.position[2])}  H ${num(s.heading)} / 512`);
-        draw('minimap', 200);
+        draw('minimap', fitBotRadius(200));
         renderBots();
         renderNearby();
         renderQueue();
@@ -73,15 +73,100 @@ function render() {
         renderRuns();
 }
 function renderBuffs() { const c = state.character, buffs = Object.values(c.buffs ?? {}); html('buffs', buffs.slice(0, 18).map(b => `<div class="row"><span>Spell #${esc(b.spell_id ?? b.spellid ?? '—')}</span><span class="muted">${esc(b.duration ?? b.tics_remaining ?? '')} ticks</span></div>`).join('') || '<p class="muted">No tracked buffs.</p>'); }
-function renderBots() { const b = state.bots; text('botcount', `${b.filter(x => x.spawned).length} / ${b.length} spawned`); html('bots', b.map(x => `<tr><td><b>${esc(x.name)}</b><div class="dim">#${x.bot_id} · Lv ${x.level}</div></td><td>${esc(cls[x.class_id])}</td><td class="${x.spawned ? (x.alive ? 'goodtext' : 'danger') : 'dim'}">${x.spawned ? (x.alive ? (x.grouped ? 'Grouped' : 'Spawned') : 'Dead') : 'Offline'}</td><td>${x.spawned ? mini(x.hp, '') : '—'}</td><td>${x.spawned ? mini(x.mana, 'mana') : '—'}</td><td>${x.spawned ? mini(x.endurance, 'endurance') : '—'}</td><td>${x.spawned ? num(x.distance) + ' yd' : '—'}</td></tr>`).join('')); }
-function mobButton(m) { return `<button data-mob="${m.id}"><span>${esc(m.name)} <small>Lv ${m.level}</small></span><span class="${m.aggro ? 'danger' : 'dim'}">${m.dead ? 'Dead' : num(m.distance) + ' yd'} · ${esc(m.hp)}%</span></button>`; }
+function botSpawnLabel(b) {
+    if (!b.spawned)
+        return 'Not spawned';
+    return b.id > 0 ? `Spawn #${b.id}` : 'Spawn ID unknown';
+}
+function renderBots() {
+    const bots = state.bots;
+    text('botcount', `${bots.filter(b => b.spawned).length} / ${bots.length} spawned`);
+    html('bots', bots.map(b => {
+        const name = b.spawned && b.id > 0
+            ? `<button class="bot-link" data-mob="${b.id}" title="Locate ${esc(b.name)} on the world map">${esc(b.name)}</button>`
+            : `<b>${esc(b.name)}</b>`;
+        return `<tr><td>${name}<div class="dim">${esc(botSpawnLabel(b))} · Lv ${b.level}</div></td><td>${esc(cls[b.class_id])}</td><td class="${b.spawned ? (b.alive ? 'goodtext' : 'danger') : 'dim'}">${b.spawned ? (b.alive ? (b.grouped ? 'Grouped' : 'Spawned') : 'Dead') : 'Offline'}</td><td>${b.spawned ? mini(b.hp, '') : '—'}</td><td>${b.spawned ? mini(b.mana, 'mana') : '—'}</td><td>${b.spawned ? mini(b.endurance, 'endurance') : '—'}</td><td>${b.spawned ? num(b.distance) + ' yd' : '—'}</td></tr>`;
+    }).join(''));
+}
+function mobButton(m) { return `<button data-mob="${m.id}"><span>${esc(m.name)} <small>${m.bot ? 'Bot · ' : ''}Lv ${m.level}</small></span><span class="${m.aggro ? 'danger' : 'dim'}">${m.dead ? 'Dead' : num(m.distance) + ' yd'} · ${esc(m.hp)}%</span></button>`; }
 function renderNearby() { const m = state.mobs.filter(x => x.distance <= 200 && !x.dead); text('mobcount', `${m.length} within 200 yd`); html('nearby', m.slice(0, 30).map(mobButton).join('') || '<p class="muted">No nearby entities.</p>'); }
 function renderQueue() { const a = state.actions, cur = a.queue.find(x => x.insert === a.active); html('current', cur ? `<div class="activecard"><strong>${esc(cur.class_name)}</strong><p>Priority ${cur.priority} · #${cur.insert}</p><p>Waiting: ${esc((cur.waiting ?? []).join(', ') || '—')}</p><p>${esc(cur.source || 'Manual action')} · ${esc(cur.zone)}</p></div>` : '<div class="activecard"><strong>Idle</strong><p>No active action</p></div>'); html('queue', a.queue.map(x => `<div class="row"><b>${esc(x.class_name)}</b><span class="muted">${x.priority} · ${esc((x.waiting ?? []).join(', ') || 'ready')}</span></div>`).join('') || '<p class="muted">Queue empty.</p>'); $('queue').className = 'list'; }
-function renderMobs() { let q = $('mobquery').value.toLowerCase(), near = $('onlynear').checked; let rows = state.mobs.filter(m => (!q || m.name.toLowerCase().includes(q) || m.raw_name.toLowerCase().includes(q) || String(m.id) === q) && (!near || m.distance <= 200)); html('moblist', rows.slice(0, 500).map(mobButton).join('') + `<p class="muted">${Math.min(rows.length, 500)} of ${rows.length} matches</p>`); }
-function inspectMob(id) { selectedMob = id; setTab('world'); render(); }
-$('nearby').onclick = $('moblist').onclick = e => { const b = e.target.closest('[data-mob]'); if (b)
-    inspectMob(Number(b.dataset.mob)); };
+function renderMobs() {
+    const q = $('mobquery').value.toLowerCase(), near = $('onlynear').checked;
+    const entities = [...state.mobs, ...state.bots.filter(b => b.spawned && b.id > 0).map(b => ({ ...b, bot: true, dead: !b.alive }))];
+    const rows = entities.filter(m => (!q || m.name.toLowerCase().includes(q) || (m.raw_name ?? m.name).toLowerCase().includes(q) || String(m.id) === q) && (!near || m.distance <= 200)).sort((a, b) => a.distance - b.distance);
+    html('moblist', rows.slice(0, 500).map(mobButton).join('') + `<p class="muted">${Math.min(rows.length, 500)} of ${rows.length} matches</p>`);
+}
+function validPosition(point) {
+    return Array.isArray(point) && point.length >= 2 && Number.isFinite(point[0]) && Number.isFinite(point[1]);
+}
+function fitBotRadius(minimum) {
+    const p = state.position;
+    const farthest = Math.max(0, ...state.bots.filter(b => b.spawned && validPosition(b.position)).map(b => Math.hypot(b.position[0] - p[0], b.position[1] - p[1])));
+    return Math.max(minimum, Math.ceil(farthest * 1.15 / 25) * 25);
+}
+function inspectMob(id) {
+    selectedMob = id;
+    const m = state?.bots.find(b => b.spawned && b.id === id) ?? state?.mobs.find(m => m.id === id);
+    if (m && validPosition(m.position)) {
+        const p = state.position, distance = Math.hypot(m.position[0] - p[0], m.position[1] - p[1]);
+        if (distance > Number($('radius').value)) {
+            const radius = Math.ceil(distance * 1.15 / 25) * 25;
+            $('radius').max = String(Math.max(Number($('radius').max), radius));
+            $('radius').value = String(radius);
+            text('radiuslabel', radius + ' yd');
+        }
+    }
+    setTab('world');
+}
+$('nearby').onclick = $('moblist').onclick = $('bots').onclick = e => {
+    const b = e.target.closest('[data-mob]');
+    if (b)
+        inspectMob(Number(b.dataset.mob));
+};
 $('mobquery').oninput = $('onlynear').onchange = () => state && renderMobs();
+
+// Separate display markers in screen space. Their anchor coordinates never
+// change: a thin leader connects each displaced marker to its real position.
+// Reserving the player footprint keeps following bots from disappearing
+// underneath the heading arrow, including when every bot is on the same point.
+function layoutBotMarkers(bots, project, width, height, radius) {
+    const markers = [], gap = 2 * radius + 5;
+    const inside = (x, y) => x >= radius + 2 && x <= width - radius - 2 && y >= radius + 2 && y <= height - radius - 2;
+    const free = (x, y) => inside(x, y)
+        && Math.hypot(x - width / 2, y - height / 2) >= 14 + radius + 3
+        && markers.every(m => Math.hypot(x - m.x, y - m.y) >= gap);
+    for (const bot of bots.filter(b => b.spawned && validPosition(b.position)).sort((a, b) => a.id - b.id || a.name.localeCompare(b.name))) {
+        const [ax, ay] = project(bot.position);
+        if (ax < 0 || ax > width || ay < 0 || ay > height)
+            continue;
+        let x = ax, y = ay;
+        if (!free(x, y)) {
+            // Try progressively larger rings, keeping the marker close to
+            // the anchor. Stable ordering avoids arbitrary per-frame jitter.
+            let found = false;
+            for (let ring = 1; ring <= Math.ceil(Math.hypot(width, height) / gap) && !found; ring++) {
+                const distance = ring * gap, n = Math.max(8, Math.ceil(2 * Math.PI * distance / gap));
+                for (let i = 0; i < n; i++) {
+                    const angle = -Math.PI / 2 + 2 * Math.PI * i / n;
+                    const nx = ax + Math.cos(angle) * distance, ny = ay + Math.sin(angle) * distance;
+                    if (free(nx, ny)) {
+                        x = nx;
+                        y = ny;
+                        found = true;
+                        break;
+                    }
+                }
+            }
+            if (!found) {
+                x = Math.max(radius + 2, Math.min(width - radius - 2, ax));
+                y = Math.max(radius + 2, Math.min(height - radius - 2, ay));
+            }
+        }
+        markers.push({ bot, ax, ay, x, y });
+    }
+    return markers;
+}
 function draw(id, radius) {
     const canvas = $(id), ctx = canvas.getContext('2d'), w = canvas.width, h = canvas.height, s = state, p = s.position, scale = Math.min(w, h) / (2 * radius);
     const xy = pos => [w / 2 + (pos[0] - p[0]) * scale, h / 2 - (pos[1] - p[1]) * scale];
@@ -90,7 +175,7 @@ function draw(id, radius) {
     ctx.fillRect(0, 0, w, h);
     ctx.strokeStyle = '#1d2d40';
     ctx.lineWidth = 1;
-    const step = radius > 500 ? 100 : radius > 150 ? 50 : 25;
+    const step = radius > 500 ? Math.max(100, Math.ceil(radius / 500) * 100) : radius > 150 ? 50 : 25;
     for (let x = Math.ceil((p[0] - w / 2 / scale) / step) * step; x < p[0] + w / 2 / scale; x += step) {
         let [sx] = xy([x, p[1]]);
         ctx.beginPath();
@@ -133,12 +218,28 @@ function draw(id, radius) {
         ctx.strokeStyle = '#fff';
         ctx.lineWidth = 2;
         ctx.stroke();
-    } hits.push({ x, y, id: m.id }); if (id === 'worldmap' && (m.id === selectedMob || m.aggro)) {
+    } hits.push({ x, y, id: m.id, name: m.name, radius: size, bot: false }); if (id === 'worldmap' && (m.id === selectedMob || m.aggro)) {
         ctx.fillStyle = '#e2e9f3';
         ctx.fillText(m.name, x + 8, y - 7);
     } }
     s.mobs.filter(m => !m.dead).forEach(m => marker(m, m.aggro ? '#ec7784' : '#dfbb77', m.aggro ? 5 : 3));
-    s.bots.filter(b => b.spawned).forEach(b => marker(b, '#6ccc91', 4));
+    const botRadius = Math.max(7, 5 * Math.min(2, w / Math.max(1, canvas.clientWidth)));
+    const bots = layoutBotMarkers(s.bots, xy, w, h, botRadius);
+    // Draw true-position anchors and leaders before the player arrow.
+    ctx.lineWidth = 1.2;
+    ctx.strokeStyle = 'rgba(108, 204, 145, 0.7)';
+    ctx.fillStyle = '#6ccc91';
+    for (const b of bots) {
+        if (Math.hypot(b.x - b.ax, b.y - b.ay) > 1) {
+            ctx.beginPath();
+            ctx.moveTo(b.ax, b.ay);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(b.ax, b.ay, 2, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+    }
     ctx.fillStyle = '#5bc9d5';
     ctx.save();
     ctx.translate(w / 2, h / 2); // EQ heading: 0=+Y, 128=+X. Canvas y is inverted.
@@ -151,19 +252,79 @@ function draw(id, radius) {
     ctx.closePath();
     ctx.fill();
     ctx.restore();
+    // Bots sit on top of the NPC layer and outside the player footprint.
+    for (const b of bots) {
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, botRadius, 0, 2 * Math.PI);
+        ctx.fillStyle = '#6ccc91';
+        ctx.fill();
+        ctx.strokeStyle = b.bot.id === selectedMob ? '#fff' : '#102a20';
+        ctx.lineWidth = b.bot.id === selectedMob ? 2.5 : 2;
+        ctx.stroke();
+        ctx.fillStyle = '#103524';
+        ctx.font = `bold ${Math.round(botRadius + 2)}px system-ui`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('B', b.x, b.y);
+        ctx.textAlign = 'start';
+        ctx.textBaseline = 'alphabetic';
+        if (b.bot.id > 0)
+            hits.push({ x: b.x, y: b.y, id: b.bot.id, name: b.bot.name, radius: botRadius, bot: true });
+        if (b.bot.id === selectedMob) {
+            ctx.font = '12px monospace';
+            ctx.fillStyle = '#e2e9f3';
+            ctx.fillText(b.bot.name, b.x + botRadius + 4, b.y - botRadius - 3);
+        }
+    }
+    const spawned = s.bots.filter(b => b.spawned).length;
+    const unknown = s.bots.filter(b => b.spawned && !validPosition(b.position)).length;
+    text(id + 'bots', `${bots.length} / ${spawned} spawned bots in view${spawned - bots.length - unknown > 0 ? ` · ${spawned - bots.length - unknown} outside view` : ''}${unknown ? ` · ${unknown} without position` : ''}`);
     mapHits.set(id, hits);
 }
-for (const id of ['minimap', 'worldmap'])
-    $(id).onclick = e => { const r = $(id).getBoundingClientRect(), x = (e.clientX - r.left) * $(id).width / r.width, y = (e.clientY - r.top) * $(id).height / r.height; const m = (mapHits.get(id) || []).map(m => ({ ...m, d: Math.hypot(x - m.x, y - m.y) })).sort((a, b) => a.d - b.d)[0]; if (m && m.d < 15)
-        inspectMob(m.id); };
+function mapHit(id, event) {
+    const canvas = $(id), rect = canvas.getBoundingClientRect();
+    const x = (event.clientX - rect.left) * canvas.width / rect.width, y = (event.clientY - rect.top) * canvas.height / rect.height;
+    const hits = (mapHits.get(id) || []).map(m => ({ ...m, d: Math.hypot(x - m.x, y - m.y) })).sort((a, b) => a.d - b.d);
+    // Prefer a visible bot marker over a mob hidden behind it.
+    return hits.find(m => m.bot && m.d <= m.radius + 3) ?? hits.find(m => m.d < 15);
+}
+for (const id of ['minimap', 'worldmap']) {
+    $(id).onclick = e => {
+        const hit = mapHit(id, e);
+        if (hit)
+            inspectMob(hit.id);
+    };
+    $(id).onmousemove = e => {
+        const hit = mapHit(id, e);
+        $(id).style.cursor = hit ? 'pointer' : 'default';
+        $(id).title = hit ? `${hit.name} · Spawn #${hit.id}` : '';
+    };
+    $(id).onmouseleave = () => { $(id).title = ''; $(id).style.cursor = 'default'; };
+}
 $('radius').oninput = () => { text('radiuslabel', $('radius').value + ' yd'); if (state)
     draw('worldmap', Number($('radius').value)); };
+function setWorldRadius(radius) {
+    $('radius').max = String(Math.max(3000, Math.ceil(radius)));
+    $('radius').value = String(Math.ceil(radius));
+    $('radius').oninput();
+}
 $('fitpath').onclick = () => { if (!state?.path)
-    return; const p = state.position; const r = Math.max(50, ...state.path.points.map(v => Math.hypot(v[0] - p[0], v[1] - p[1]))) * 1.15; $('radius').value = Math.min(3000, r); $('radius').oninput(); };
+    return; const p = state.position; const r = Math.max(50, ...state.path.points.map(v => Math.hypot(v[0] - p[0], v[1] - p[1]))) * 1.15; setWorldRadius(Math.min(3000, r)); };
+$('fitbots').onclick = () => { if (state)
+    setWorldRadius(fitBotRadius(50)); };
+// Original EQ character-sheet arrangement, not numerical inventory order.
+// A blank at upper left preserves the staggered first row in the reference.
+// Each number is a native RoF2 worn slot (constants._WORN).
+const EQUIPMENT_LAYOUT = [
+    null, 1, 5, 3, 2, 4,
+    15, 6, 9, 12, 10, 16,
+    7, 17, 8, 20, 18, 19,
+    13, 14, 11, 22, 0, 21,
+];
 const addressKey = a => `${a.type}:${a.main_slot}:${a.sub_index}:${a.aug_index}`;
 function slotButton(a, label, entry) { const i = entry?.item, key = addressKey(a); return `<button class="slot ${i ? '' : 'empty'} ${selectedSlot === key ? 'selected' : ''}" data-slot="${key}" title="${esc(i?.name ?? label)}"><span class="slotname">${esc(label)}</span><span class="itemname">${esc(i?.name ?? 'Empty')}</span>${i?.stack > 1 ? `<span class="stack">×${i.stack}</span>` : ''}</button>`; }
 function renderInventory() { const inv = state.inventory, lookup = new Map(inv.slots.map(e => [addressKey(e.address), e])); const mk = (t, m, s = -1, a = -1) => ({ type: t, main_slot: m, sub_index: s, aug_index: a }); const at = (t, m, label) => { const a = mk(t, m); return slotButton(a, label, lookup.get(addressKey(a))); }; const signature = JSON.stringify([inv, selectedSlot, openBag]); if (signature === lastInventory)
-    return; lastInventory = signature; const equipment = inv.worn.map((n, i) => at(0, i, n)).join(''); html('equipment', equipment); html('equipmentpreview', equipment); html('gearstats', Object.entries(inv.gear ?? {}).map(([k, v]) => `<div class="stat"><span>${esc(k.replaceAll('_', ' '))}</span><b>${esc(v)}</b></div>`).join('')); html('general', Array.from({ length: 10 }, (_, i) => at(0, 23 + i, `Pack ${i + 1}`)).join('') + at(0, 33, 'Cursor')); html('bank', inv.slots.filter(e => e.address.type === 1 || e.address.type === 2).filter(e => e.address.sub_index === -1 && e.address.aug_index === -1).map(e => slotButton(e.address, `${e.address.type === 1 ? 'Bank' : 'Shared'} ${e.address.main_slot + 1}`, e)).join('') || '<p class="muted">Not loaded or empty.</p>'); let e = lookup.get(openBag ?? selectedSlot); if (e) {
+    return; lastInventory = signature; const equipment = EQUIPMENT_LAYOUT.map(i => i === null ? '<span class="equipment-gap" aria-hidden="true"></span>' : at(0, i, inv.worn[i])).join(''); html('equipment', equipment); html('equipmentpreview', equipment); html('gearstats', Object.entries(inv.gear ?? {}).map(([k, v]) => `<div class="stat"><span>${esc(k.replaceAll('_', ' '))}</span><b>${esc(v)}</b></div>`).join('')); html('general', Array.from({ length: 10 }, (_, i) => at(0, 23 + i, `Pack ${i + 1}`)).join('') + at(0, 33, 'Cursor')); html('bank', inv.slots.filter(e => e.address.type === 1 || e.address.type === 2).filter(e => e.address.sub_index === -1 && e.address.aug_index === -1).map(e => slotButton(e.address, `${e.address.type === 1 ? 'Bank' : 'Shared'} ${e.address.main_slot + 1}`, e)).join('') || '<p class="muted">Not loaded or empty.</p>'); let e = lookup.get(openBag ?? selectedSlot); if (e) {
     const a = e.address;
     let cells = [];
     if (e.item.bag_slots > 0) {
