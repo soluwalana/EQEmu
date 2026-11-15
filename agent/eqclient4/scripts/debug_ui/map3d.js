@@ -7,6 +7,9 @@
     const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
     const valid = p => Array.isArray(p) && p.length >= 3 && p.slice(0,3).every(Number.isFinite);
     const MIN_ELEVATION = 0, MAX_ELEVATION = Math.PI / 2;
+    const horizontalDistance = (a,b) => Math.hypot(a[0]-b[0],a[1]-b[1]);
+    // Cover the viewport's full diagonal at top view, not just its short axis.
+    const localRadius = (radius,zoom,w,h) => radius*zoom*Math.hypot(w,h)/Math.min(w,h);
     const shaders = {
         vertex: `#version 300 es
             in vec3 position;
@@ -23,14 +26,22 @@
             precision highp float;
             in vec3 world; in vec3 bary; uniform vec3 tint; uniform int navStyle;
             uniform float lowZ, highZ, opacity;
-            uniform vec3 center; uniform vec2 horizontalAxis;
-            uniform float horizontalRange; out vec4 color;
+            uniform vec2 localCenter;
+            uniform float localRange; out vec4 color;
             void main(){
-                // The roof cut is always a horizontal world-Z plane. The
-                // local XY viewing footprint is independent of camera tilt.
-                if(world.z<lowZ || world.z>highZ) discard;
-                if(abs(dot(world.xy-center.xy,horizontalAxis))>horizontalRange) discard;
+                // Compute derivatives before fragment rejection at slice edges.
                 vec3 n=normalize(cross(dFdx(world),dFdy(world)));
+                // Cutaway is ONLY a world-Z plane, independent of the camera.
+                if(world.z<lowZ || world.z>highZ) discard;
+                // Optional local geometry is a player-centered circle, not a
+                // camera-facing slab. Dither its outer band rather than writing
+                // an opaque background-colored fragment over nearby geometry.
+                if(localRange>0.0){
+                    float d=length(world.xy-localCenter);
+                    float keep=1.0-smoothstep(localRange*.85,localRange,d);
+                    float threshold=fract(dot(floor(gl_FragCoord.xy),vec2(.75487766,.56984029)));
+                    if(d>=localRange || threshold>=keep) discard;
+                }
                 float lighting=0.45+0.55*abs(dot(n,normalize(vec3(.35,.4,.85))));
                 vec3 lit=tint*lighting;
                 if(navStyle==1){ vec3 edge=smoothstep(vec3(0.0),fwidth(bary)*1.2,bary); lit=mix(lit*.55,lit,min(edge.x,min(edge.y,edge.z))); }
@@ -113,6 +124,7 @@
             this.id=id; this.hud=document.getElementById(id); this.az=-.55; this.el=.72;
             this.follow=true; this.center=null; this.zoom=1; this.zone=null; this.generation=0;
             this.terrain=true; this.nav=true; this.water=true; this.cut=false; this.cutHeight=0; this.mode3d=true;
+            this.localGeometry=false; this.showHiddenMobs=false;
             this.buffers=[]; this.geometry=null; this.minZ=null; this.error=''; this.latest=null; this.drag=null; this.skipClick=false;
             const glCanvas=document.createElement('canvas'); glCanvas.className='eq3d-gl';
             glCanvas.width=this.hud.width; glCanvas.height=this.hud.height;
@@ -120,7 +132,7 @@
             this.gl=glCanvas.getContext('webgl2',{antialias:true,alpha:false});
             if(!this.gl) throw Error('WebGL2 unavailable');
             const gl=this.gl; this.prog=program(gl); this.loc={};
-            for(const name of ['center','right','up','nearAxis','scale','depthScale','lift','tint','lowZ','highZ','navStyle','opacity','horizontalAxis','horizontalRange'])
+            for(const name of ['center','right','up','nearAxis','scale','depthScale','lift','tint','lowZ','highZ','navStyle','opacity','localCenter','localRange'])
                 this.loc[name]=gl.getUniformLocation(this.prog,name);
             this.attr=gl.getAttribLocation(this.prog,'position');
             gl.enable(gl.DEPTH_TEST); gl.clearColor(.039,.067,.105,1);
@@ -139,6 +151,8 @@
             button('Fit target',()=>this.fitTarget());
             check('Terrain',true,v=>this.terrain=v); check('Navmesh',true,v=>this.nav=v); check('Water',true,v=>this.water=v);
             check('Cutaway',false,v=>this.cut=v);
+            check('Local geometry',false,v=>this.localGeometry=v);
+            check('Show hidden mobs',false,v=>this.showHiddenMobs=v);
             const cut=document.createElement('input');cut.type='range';cut.min='0';cut.max='150';cut.value=String(this.cutHeight);cut.title='World-Z cut plane: player Z plus optional roof clearance';
             const label=document.createElement('label');label.append('Roof offset ',cut);tools.append(label);
             cut.oninput=()=>{this.cutHeight=Number(cut.value);this.redraw();};
@@ -235,12 +249,13 @@
             gl.viewport(0,0,w,h);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.useProgram(this.prog);
             const l=this.loc;gl.uniform3fv(l.center,center);gl.uniform3fv(l.right,right);gl.uniform3fv(l.up,up);gl.uniform3fv(l.nearAxis,nearAxis);
             gl.uniform2f(l.scale,2*scale/w,2*scale/h);gl.uniform1f(l.depthScale,depthScale);
-            gl.uniform1f(l.lowZ,-1e9);gl.uniform1f(l.highZ,this.cut?s.position[2]+this.cutHeight:1e9);
-            // Orthographic depth used to span the entire zone. At low tilt,
-            // far-away hills and walls then filled the tunnel's projection.
-            // Bound the horizontal viewing footprint, without using a camera-
-            // dependent Z cut or clipping any lower floors within that footprint.
-            gl.uniform2f(l.horizontalAxis,sa,-ca);gl.uniform1f(l.horizontalRange,radius*this.zoom);
+            const highZ=this.cut?s.position[2]+this.cutHeight:1e9;
+            const range=localRadius(radius,this.zoom,w,h);
+            gl.uniform1f(l.lowZ,-1e9);gl.uniform1f(l.highZ,highZ);
+            // Full geometry is the default. The optional local footprint stays
+            // fixed around the agent even while the camera pans or orbits.
+            gl.uniform2f(l.localCenter,s.position[0],s.position[1]);
+            gl.uniform1f(l.localRange,this.localGeometry?range:0);
             gl.bindVertexArray(null);gl.enableVertexAttribArray(this.attr);
             for(const b of this.buffers){
                 if(!b.count||b.kind==='collision'&&!this.terrain||b.kind==='nav'&&!this.nav||b.kind==='water'&&!this.water)continue;
@@ -256,6 +271,13 @@
             }
             const ctx=hud.getContext('2d');ctx.clearRect(0,0,w,h);ctx.font='12px monospace';
             const visible=p=>p[0]>=0&&p[0]<=w&&p[1]>=0&&p[1]<=h;
+            // The default mob overlay is local to the visible slice. With the
+            // optional local geometry enabled it uses precisely that footprint;
+            // otherwise follow the camera focus so panning can inspect elsewhere.
+            // A selected target remains an intentional X-ray diagnostic.
+            const mobCenter=this.localGeometry?s.position:center;
+            const mobVisible=m=>this.showHiddenMobs || m.id===selected ||
+                (m.position[2]<=highZ && horizontalDistance(m.position,mobCenter)<=range);
             const line=(a,b,color,dashed=false,width=1.5)=>{ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.setLineDash(dashed?[5,4]:[]);ctx.stroke();ctx.setLineDash([]);};
             const circle=(p,r,color,stroke)=>{ctx.beginPath();ctx.arc(p[0],p[1],r,0,2*Math.PI);ctx.fillStyle=color;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.5;ctx.stroke();}};
             const label=(msg,p,color='#dce9f6')=>{const width=ctx.measureText(msg).width,x=clamp(p[0]+3,0,Math.max(0,w-width-6)),y=clamp(p[1]-15,0,h-17);ctx.fillStyle='#09111c';ctx.fillRect(x,y,width+6,17);ctx.fillStyle=color;ctx.fillText(msg,x+3,y+13);};
@@ -265,9 +287,11 @@
             const entities=[], instances=[], botRadius=Math.max(8,6*Math.min(2,w/Math.max(1,hud.clientWidth)));
             const sphere=(point,pixels,tint)=>instances.push(...point,pixels/scale,...tint);
             const ring=(p,r,color)=>{ctx.beginPath();ctx.arc(p[0],p[1],r,0,2*Math.PI);ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.stroke();};
+            let hiddenMobs=0;
             for(const m of s.mobs){
                 if(m.dead||!valid(m.position))continue;
                 const p=project(m.position);if(!visible(p))continue;
+                if(!mobVisible(m)){hiddenMobs++;continue;}
                 const size=m.aggro?7:5;
                 sphere(m.position,size,entityTint(m).map(v=>v/255));
                 if(m.id===selected)ring(p,size+2,'#fff');
@@ -303,7 +327,7 @@
             const axis=[w-35,h-32];for(const [v,color,name] of [[[1,0,0],'#ec7784','X'],[[0,1,0],'#6ccc91','Y'],[[0,0,1],'#699fe8','Z']]){const p=[axis[0]+dot(v,right)*22,axis[1]-dot(v,up)*22];line(axis,p,color,false,2);ctx.fillStyle=color;ctx.fillText(name,p[0],p[1]);}
             hits.set(this.id,entities);
             const count=s.bots.filter(b=>b.spawned).length;document.getElementById(this.id+'bots').textContent=`${bots.length} / ${count} spawned bots in view`;
-            const data=this.geometry;this.info.textContent=this.error?`${this.error} · live entities still shown`:data?`${(data.collision.length/9).toLocaleString()} collision triangles · ${(data.nav.length/9).toLocaleString()} nav triangles · ${data.flags&4?(data.water.length/9).toLocaleString()+' water triangles':'No water map'} · ${this.cut?'Z ≤ '+(s.position[2]+this.cutHeight).toFixed(1):'All floors'} · local geometry depth ±${Math.round(radius*this.zoom)} yd · route/spheres X-ray · drag orbit, Shift+drag pan, wheel zoom`:'Loading zone geometry…';
+            const data=this.geometry;this.info.textContent=this.error?`${this.error} · live entities still shown`:data?`${(data.collision.length/9).toLocaleString()} collision triangles · ${(data.nav.length/9).toLocaleString()} nav triangles · ${data.flags&4?(data.water.length/9).toLocaleString()+' water triangles':'No water map'} · ${this.cut?'Z ≤ '+(s.position[2]+this.cutHeight).toFixed(1):'All floors'} · ${this.localGeometry?'Local geometry '+Math.round(range)+' yd':'Full geometry'} · ${hiddenMobs} mobs hidden · route/spheres X-ray · drag orbit, Shift+drag pan, wheel zoom`:'Loading zone geometry…';
         }
     }
     window.EQMap3D={
