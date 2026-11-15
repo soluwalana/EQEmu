@@ -102,14 +102,14 @@ function validPosition(point) {
 }
 function fitBotRadius(minimum) {
     const p = state.position;
-    const farthest = Math.max(0, ...state.bots.filter(b => b.spawned && validPosition(b.position)).map(b => Math.hypot(b.position[0] - p[0], b.position[1] - p[1])));
+    const farthest = Math.max(0, ...state.bots.filter(b => b.spawned && validPosition(b.position)).map(b => Math.hypot(b.position[0] - p[0], b.position[1] - p[1], (b.position[2] ?? p[2]) - p[2])));
     return Math.max(minimum, Math.ceil(farthest * 1.15 / 25) * 25);
 }
 function inspectMob(id) {
     selectedMob = id;
     const m = state?.bots.find(b => b.spawned && b.id === id) ?? state?.mobs.find(m => m.id === id);
     if (m && validPosition(m.position)) {
-        const p = state.position, distance = Math.hypot(m.position[0] - p[0], m.position[1] - p[1]);
+        const p = state.position, distance = Math.hypot(m.position[0] - p[0], m.position[1] - p[1], (m.position[2] ?? p[2]) - p[2]);
         if (distance > Number($('radius').value)) {
             const radius = Math.ceil(distance * 1.15 / 25) * 25;
             $('radius').max = String(Math.max(Number($('radius').max), radius));
@@ -130,11 +130,11 @@ $('mobquery').oninput = $('onlynear').onchange = () => state && renderMobs();
 // change: a thin leader connects each displaced marker to its real position.
 // Reserving the player footprint keeps following bots from disappearing
 // underneath the heading arrow, including when every bot is on the same point.
-function layoutBotMarkers(bots, project, width, height, radius) {
+function layoutBotMarkers(bots, project, width, height, radius, player = [width / 2, height / 2]) {
     const markers = [], gap = 2 * radius + 5;
     const inside = (x, y) => x >= radius + 2 && x <= width - radius - 2 && y >= radius + 2 && y <= height - radius - 2;
     const free = (x, y) => inside(x, y)
-        && Math.hypot(x - width / 2, y - height / 2) >= 14 + radius + 3
+        && Math.hypot(x - player[0], y - player[1]) >= 14 + radius + 3
         && markers.every(m => Math.hypot(x - m.x, y - m.y) >= gap);
     for (const bot of bots.filter(b => b.spawned && validPosition(b.position)).sort((a, b) => a.id - b.id || a.name.localeCompare(b.name))) {
         const [ax, ay] = project(bot.position);
@@ -168,6 +168,12 @@ function layoutBotMarkers(bots, project, width, height, radius) {
     return markers;
 }
 function draw(id, radius) {
+    if (window.EQMap3D?.draw(id, radius, state, selectedMob, mapHits, layoutBotMarkers))
+        return;
+    draw2d(id, radius);
+}
+if (window.EQMap3D) window.EQMap3D.fallback = (id, radius) => draw2d(id, radius);
+function draw2d(id, radius) {
     const canvas = $(id), ctx = canvas.getContext('2d'), w = canvas.width, h = canvas.height, s = state, p = s.position, scale = Math.min(w, h) / (2 * radius);
     const xy = pos => [w / 2 + (pos[0] - p[0]) * scale, h / 2 - (pos[1] - p[1]) * scale];
     ctx.clearRect(0, 0, w, h);
@@ -301,7 +307,7 @@ for (const id of ['minimap', 'worldmap']) {
     };
     $(id).onmouseleave = () => { $(id).title = ''; $(id).style.cursor = 'default'; };
 }
-$('radius').oninput = () => { text('radiuslabel', $('radius').value + ' yd'); if (state)
+$('radius').oninput = () => { window.EQMap3D?.resetZoom('worldmap'); text('radiuslabel', $('radius').value + ' yd'); if (state)
     draw('worldmap', Number($('radius').value)); };
 function setWorldRadius(radius) {
     $('radius').max = String(Math.max(3000, Math.ceil(radius)));
@@ -309,9 +315,9 @@ function setWorldRadius(radius) {
     $('radius').oninput();
 }
 $('fitpath').onclick = () => { if (!state?.path)
-    return; const p = state.position; const r = Math.max(50, ...state.path.points.map(v => Math.hypot(v[0] - p[0], v[1] - p[1]))) * 1.15; setWorldRadius(Math.min(3000, r)); };
-$('fitbots').onclick = () => { if (state)
-    setWorldRadius(fitBotRadius(50)); };
+    return; window.EQMap3D?.resetCamera('worldmap'); const p = state.position; const r = Math.max(50, ...state.path.points.map(v => Math.hypot(v[0] - p[0], v[1] - p[1], (v[2] ?? p[2]) - p[2]))) * 1.15; setWorldRadius(r); };
+$('fitbots').onclick = () => { if (state) {
+    window.EQMap3D?.resetCamera('worldmap'); setWorldRadius(fitBotRadius(50)); } };
 // Original EQ character-sheet arrangement, not numerical inventory order.
 // A blank at upper left preserves the staggered first row in the reference.
 // Each number is a native RoF2 worn slot (constants._WORN).

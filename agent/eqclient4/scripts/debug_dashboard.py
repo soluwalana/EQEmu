@@ -64,6 +64,9 @@ def install_dashboard(
 ) -> None:
     root = Path(__file__).with_name("debug_ui")
     app.mount("/dashboard/assets", StaticFiles(directory=root), name="dashboard-assets")
+    from eqclient4.scripts.debug_geometry import install_geometry
+
+    install_geometry(app)
 
     @app.get("/", include_in_schema=False)
     @app.get("/dashboard", include_in_schema=False)
