@@ -308,13 +308,13 @@
             }
             const ctx=hud.getContext('2d');ctx.clearRect(0,0,w,h);ctx.font='12px monospace';
             const visible=p=>p[0]>=0&&p[0]<=w&&p[1]>=0&&p[1]<=h;
-            // The default mob overlay is local to the visible slice. With the
-            // optional local geometry enabled it uses precisely that footprint;
-            // otherwise follow the camera focus so panning can inspect elsewhere.
+            // Match the geometry's world-space clipping rules. Full geometry
+            // has no horizontal range limit; the screen projection handles
+            // viewport culling independently of zoom and camera tilt.
             // A selected target remains an intentional X-ray diagnostic.
-            const mobCenter=this.localGeometry?s.position:center;
             const mobVisible=m=>this.showHiddenMobs || m.id===selected ||
-                (m.position[2]<=highZ && horizontalDistance(m.position,mobCenter)<=range);
+                (m.position[2]<=highZ &&
+                    (!this.localGeometry || horizontalDistance(m.position,s.position)<=range));
             const line=(a,b,color,dashed=false,width=1.5)=>{ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.setLineDash(dashed?[5,4]:[]);ctx.stroke();ctx.setLineDash([]);};
             const circle=(p,r,color,stroke)=>{ctx.beginPath();ctx.arc(p[0],p[1],r,0,2*Math.PI);ctx.fillStyle=color;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.5;ctx.stroke();}};
             const label=(msg,p,color='#dce9f6')=>{const width=ctx.measureText(msg).width,x=clamp(p[0]+3,0,Math.max(0,w-width-6)),y=clamp(p[1]-15,0,h-17);ctx.fillStyle='#09111c';ctx.fillRect(x,y,width+6,17);ctx.fillStyle=color;ctx.fillText(msg,x+3,y+13);};
