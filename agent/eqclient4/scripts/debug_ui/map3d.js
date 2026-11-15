@@ -140,8 +140,11 @@
             this.initSpheres();
             const wrap=document.createElement('div'); wrap.className='eq3d-wrap';
             this.hud.before(wrap); wrap.append(glCanvas,this.hud); this.hud.classList.add('eq3d-hud');
-            const tools=document.createElement('div'); tools.className='eq3d-tools'; wrap.before(tools);
-            const info=document.createElement('p'); info.className='eq3d-info'; wrap.after(info); this.info=info;
+            const tools=document.createElement('div'); tools.className='eq3d-tools';
+            const toolsHost=document.getElementById('maptools');
+            if(toolsHost)toolsHost.append(tools);else wrap.before(tools);
+            const info=document.getElementById('mapinfo')??document.createElement('p');
+            info.className='eq3d-info';if(!info.isConnected)wrap.after(info);this.info=info;
             const button=(label,fn)=>{ const b=document.createElement('button');b.type='button';b.textContent=label;b.onclick=fn;tools.append(b);return b;};
             const check=(label,value,fn)=>{const l=document.createElement('label'), i=document.createElement('input');i.type='checkbox';i.checked=value;l.append(i,document.createTextNode(label));tools.append(l);i.onchange=()=>{fn(i.checked);this.redraw();};return i;};
             this.toggle=button('2D view',()=>{this.mode3d=!this.mode3d;this.toggle.textContent=this.mode3d?'2D view':'3D view';this.glCanvas.hidden=!this.mode3d;this.hud.classList.toggle('eq3d-hud',this.mode3d);this.redraw();});
@@ -392,6 +395,7 @@
             hits.set(this.id,entities);refreshMapHover(this.id);
             const count=s.bots.filter(b=>b.spawned).length;document.getElementById(this.id+'bots').textContent=`${bots.length} / ${count} spawned bots in view`;
             const data=this.geometry;this.info.textContent=this.error?`${this.error} · live entities still shown`:data?`${(data.collision.length/9).toLocaleString()} collision triangles · ${(data.nav.length/9).toLocaleString()} nav triangles · ${data.flags&4?(data.water.length/9).toLocaleString()+' water triangles':'No water map'} · ${this.cut?'Z ≤ '+(s.position[2]+this.cutHeight).toFixed(1):'All floors'} · ${this.localGeometry?'Local geometry '+Math.round(range)+' yd':'Full geometry'} · ${hiddenMobs} mobs hidden · doors/objects: ${entities.filter(e=>e.kind==='door').length}/${doorMarkers(s.doors).length} visible · drops: ${entities.filter(e=>e.kind==='ground').length}/${groundDrops(s.ground_spawns).length} visible · route/spheres/icons X-ray · drag pan, right/Alt-drag orbit, wheel zoom`:'Loading zone geometry…';
+            this.info.title=this.info.textContent;
         }
     }
     window.EQMap3D={
@@ -404,7 +408,7 @@
         draw(id,radius,state,selected,hits,layout,selectedGround=null){
             if(!state||!valid(state.position))return false;
             let v=views.get(id);
-            if(v===undefined){try{v=new View(id);views.set(id,v);}catch(e){views.set(id,null);console.warn('3D map unavailable',e);const note=document.createElement('p');note.className='eq3d-info';note.textContent='3D unavailable ('+e.message+'); showing 2D map.';document.getElementById(id).after(note);return false;}}
+            if(v===undefined){try{v=new View(id);views.set(id,v);}catch(e){views.set(id,null);console.warn('3D map unavailable',e);const note=document.getElementById('mapinfo')??document.createElement('p');note.className='eq3d-info';note.textContent='3D unavailable ('+e.message+'); showing 2D map.';if(!note.isConnected)document.getElementById(id).after(note);return false;}}
             if(!v)return false;v.latest=[radius,state,selected,hits,layout,selectedGround];
             if(!v.mode3d)return false;
             v.draw(radius,state,selected,hits,layout,selectedGround);return true;

@@ -15,10 +15,11 @@ function entityTint(entity, bot = false) {
 }
 function entityColor(entity, bot = false) { return `rgb(${entityTint(entity, bot).join(',')})`; }
 function losLabel(entity) { return entity.los === true ? (state?.los_map === false ? 'LoS assumed clear (no collision map)' : 'In LoS') : entity.los === false ? 'Out of LoS' : 'LoS unknown'; }
-let state = null, tab = 'overview', selectedMob = null, selectedGround = null, selectedSlot = null, openBag = null, actionCatalog = new Map(), activeAction = null, lastInventory = '', mapHits = new Map(), selectedItem = null, paramReaders = [], actionGeneration = 0;
+let state = null, tab = 'world', selectedMob = null, selectedGround = null, selectedSlot = null, openBag = null, actionCatalog = new Map(), activeAction = null, lastInventory = '', mapHits = new Map(), selectedItem = null, paramReaders = [], actionGeneration = 0;
 const mapPointer = new Map();
 let selectedDoor = null;
 const itemDefinitions = new Map();
+let actionsLoading = false;
 const logs = { wire: { after: -1, rows: [], paused: false, busy: false }, combat: { after: -1, rows: [], paused: false, busy: false } };
 async function api(path, options = {}) { const r = await fetch(path, { cache: 'no-store', ...options }); if (!r.ok) {
     let x;
@@ -39,13 +40,39 @@ function html(id, v) { const el = $(id); if (htmlCache.get(el) !== v) {
     htmlCache.set(el, v);
 } }
 function status(msg, ok) { text('status', msg); $('status').className = 'pill ' + (ok ? 'good' : 'bad'); }
-function setTab(name) { closeDoorPopup(); tab = name; document.querySelectorAll('.tab').forEach(e => e.classList.toggle('active', e.id === name)); document.querySelectorAll('nav button').forEach(e => e.classList.toggle('active', e.dataset.tab === name)); if (state)
-    render(); if (name === 'actions' && !actionCatalog.size)
-    loadActions(); if (name === 'logs') {
-    renderLog('wire');
-    renderLog('combat');
-} }
+function setTargetDetails(open) {
+    $('targetpanel').hidden = !open;
+    $('targetdetails').setAttribute('aria-expanded', String(open));
+}
+function setTab(name) {
+    if (name !== 'world' && name !== 'logs') return;
+    closeDoorPopup();
+    tab = name;
+    document.querySelectorAll('.tab').forEach(e => e.classList.toggle('active', e.id === name));
+    document.querySelectorAll('nav button').forEach(e => e.classList.toggle('active', e.dataset.tab === name));
+    if (state) render();
+    if (name === 'world' && !actionCatalog.size) loadActions();
+    if (name === 'logs') {
+        renderLog('wire');
+        renderLog('combat');
+    }
+}
 document.querySelectorAll('nav button').forEach(e => e.onclick = () => setTab(e.dataset.tab));
+$('targetdetails').onclick = () => setTargetDetails($('targetpanel').hidden);
+$('closetargetdetails').onclick = () => setTargetDetails(false);
+// Native disclosures retain their state across polls and view changes.
+// Opening a panel immediately refreshes it from the latest snapshot.
+for (const id of ['characterpanel', 'inventory', 'currentpanel', 'actionpanel', 'botpanel', 'nearbypanel', 'zoneentities']) {
+    $(id).addEventListener('toggle', () => {
+        if (!$(id).open || tab !== 'world') return;
+        if (id === 'actionpanel' && !actionCatalog.size) loadActions();
+        if (state) render();
+    });
+}
+if (window.matchMedia('(max-width: 800px)').matches) {
+    $('characterpanel').open = false;
+    $('currentpanel').open = false;
+}
 function bar(label, val, max, kind, pct) { const p = pct ?? (max > 0 ? 100 * val / max : null); return `<div class="resource"><div class="line"><span>${esc(label)}</span><b>${esc(val)}${max > 0 ? ' / ' + esc(max) : ''}${p !== null ? ' · ' + Math.round(p) + '%' : ''}</b></div><div class="track"><div class="fill ${kind}" style="width:${Math.max(0, Math.min(100, p ?? 0))}%"></div></div></div>`; }
 function mini(v, kind) { return v == null ? '—' : `${esc(v)}%<div class="track"><div class="fill ${kind}" style="width:${Math.max(0, Math.min(100, Number(v) || 0))}%"></div></div>`; }
 // One observed drop may match several database item definitions. Keep its
@@ -272,45 +299,38 @@ $('worlditemcards').onclick = e => {
     renderCurrentTarget();
 };
 function render() {
-    if (!state)
-        return;
+    if (!state) return;
     const s = state, c = s.character;
     if (selectedGround && (selectedGround.zone !== s.zone_id || selectedGround.instance !== s.instance ||
-        !(s.ground_spawns ?? []).some(g => g.drop_id === selectedGround.id)))
+        !(s.ground_spawns ?? []).some(g => g.drop_id === selectedGround.id))) {
         selectedGround = null;
+        setTargetDetails(false);
+    }
     renderDoorPopup();
     text('zonehead', `${s.zone ?? '—'} · ${s.zone_id}`);
     text('metrics', `Tick ${s.tick.toLocaleString()}  ·  ↑ ${s.sent.toLocaleString()}  ↓ ${s.received.toLocaleString()}  ·  ${s.mobs.length} entities`);
     status(s.ready ? 'Connected' : 'Zone not ready', s.ready);
-    if (tab === 'overview') {
-        text('charname', c.name);
-        text('charlevel', `Lv ${c.level} · ${c.race_name} ${c.class_name}`);
-        html('resources', bar('Health', c.hp, c.max_hp, '', c.hp_percent ?? undefined) + bar('Mana', c.mana, c.max_mana, 'mana') + bar('Endurance', c.endurance, c.max_endurance, 'endurance'));
-        html('attributes', [['STR', c.strength], ['STA', c.stamina], ['AGI', c.agility], ['DEX', c.dexterity], ['WIS', c.wisdom], ['INT', c.intelligence], ['CHA', c.charisma], ['AA', c.aa_points], ['XP', c.exp], ['AA spent', c.aa_points_spent], ['Food', c.food], ['Water', c.water]].map(([k, v]) => `<div class="stat"><span>${k}</span><b>${esc(v)}</b></div>`).join(''));
-        text('coins', (c.coin ?? []).map((v, i) => `${v} ${['pp', 'gp', 'sp', 'cp'][i]}`).join(' · '));
-        text('party', s.party_mode ?? 'Solo');
-        text('position', `X ${num(s.position[0])}  Y ${num(s.position[1])}  Z ${num(s.position[2])}  H ${num(s.heading)} / 512`);
-        draw('minimap', fitBotRadius(200));
-        renderBots();
-        renderNearby();
-        renderQueue();
-    }
-    if (tab === 'overview') {
-        renderInventory();
-        renderBuffs();
-    }
-    if (tab === 'inventory')
-        renderInventory();
-    if (tab === 'world') {
-        text('worldzone', `${s.zone} · instance ${s.instance}`);
-        // The inspector can wrap and change the layout; size/draw the map afterwards.
-        renderCurrentTarget();
-        draw('worldmap', Number($('radius').value));
-        renderMobs();
-        text('pathdetail', s.path ? pretty(s.path) : 'No active path.');
-    }
-    if (tab === 'actions')
-        renderRuns();
+    if (tab !== 'world') return;
+
+    text('charname', c.name);
+    text('charlevel', `Lv ${c.level} · ${c.race_name} ${c.class_name}`);
+    html('resources', bar('Health', c.hp, c.max_hp, '', c.hp_percent ?? undefined) + bar('Mana', c.mana, c.max_mana, 'mana') + bar('Endurance', c.endurance, c.max_endurance, 'endurance'));
+    html('attributes', [['STR', c.strength], ['STA', c.stamina], ['AGI', c.agility], ['DEX', c.dexterity], ['WIS', c.wisdom], ['INT', c.intelligence], ['CHA', c.charisma], ['AA', c.aa_points], ['XP', c.exp], ['AA spent', c.aa_points_spent], ['Food', c.food], ['Water', c.water]].map(([k, v]) => `<div class="stat"><span>${k}</span><b>${esc(v)}</b></div>`).join(''));
+    text('coins', (c.coin ?? []).map((v, i) => `${v} ${['pp', 'gp', 'sp', 'cp'][i]}`).join(' · '));
+    text('party', s.party_mode ?? 'Solo');
+    text('position', `X ${num(s.position[0])}  Y ${num(s.position[1])}  Z ${num(s.position[2])}  H ${num(s.heading)} / 512`);
+    renderBuffs();
+    renderQueue();
+    renderRuns();
+    renderBots();
+    renderNearby();
+    if ($('inventory').open) renderInventory();
+    if ($('nearbypanel').open && $('zoneentities').open) renderMobs();
+    text('worldzone', `${s.zone} · instance ${s.instance}`);
+    renderCurrentTarget();
+    text('pathdetail', s.path ? pretty(s.path) : 'No active path.');
+    // The map owns a single viewport; the overlays never affect its size.
+    draw('worldmap', Number($('radius').value));
 }
 // This is the dashboard-selected entity, not a change to the agent's target.
 function renderCurrentTarget() {
@@ -350,7 +370,7 @@ function renderCurrentTarget() {
     $('mobaction').disabled = !m;
     $('cleartarget').disabled = selectedMob === null;
 }
-$('cleartarget').onclick = () => inspectMob(null, false);
+$('cleartarget').onclick = () => inspectMob(null);
 function renderBuffs() { const c = state.character, buffs = Object.values(c.buffs ?? {}); html('buffs', buffs.slice(0, 18).map(b => `<div class="row"><span>Spell #${esc(b.spell_id ?? b.spellid ?? '—')}</span><span class="muted">${esc(b.duration ?? b.tics_remaining ?? '')} ticks</span></div>`).join('') || '<p class="muted">No tracked buffs.</p>'); }
 function botSpawnLabel(b) {
     if (!b.spawned)
@@ -360,6 +380,7 @@ function botSpawnLabel(b) {
 function renderBots() {
     const bots = state.bots;
     text('botcount', `${bots.filter(b => b.spawned).length} / ${bots.length} spawned`);
+    if (!$('botpanel').open) return;
     html('bots', bots.map(b => {
         const name = b.spawned && b.id > 0
             ? `<button class="bot-link" data-mob="${b.id}" title="Locate ${esc(b.name)} on the world map">${esc(b.name)}</button>`
@@ -368,7 +389,7 @@ function renderBots() {
     }).join(''));
 }
 function mobButton(m) { return `<button data-mob="${m.id}"><span>${esc(m.name)} <small>${m.bot ? 'Bot · ' : ''}Lv ${m.level}</small></span><span class="${m.aggro ? 'danger' : 'dim'}">${m.dead ? 'Dead' : num(m.distance) + ' yd'} · ${esc(m.hp)}%</span></button>`; }
-function renderNearby() { const m = state.mobs.filter(x => x.distance <= 200 && !x.dead); text('mobcount', `${m.length} within 200 yd`); html('nearby', m.slice(0, 30).map(mobButton).join('') || '<p class="muted">No nearby entities.</p>'); }
+function renderNearby() { const m = state.mobs.filter(x => x.distance <= 200 && !x.dead); text('mobcount', `${m.length} within 200 yd`); if (!$('nearbypanel').open) return; html('nearby', m.slice(0, 30).map(mobButton).join('') || '<p class="muted">No nearby entities.</p>'); }
 function renderQueue() { const a = state.actions, cur = a.queue.find(x => x.insert === a.active); html('current', cur ? `<div class="activecard"><strong>${esc(cur.class_name)}</strong><p>Priority ${cur.priority} · #${cur.insert}</p><p>Waiting: ${esc((cur.waiting ?? []).join(', ') || '—')}</p><p>${esc(cur.source || 'Manual action')} · ${esc(cur.zone)}</p></div>` : '<div class="activecard"><strong>Idle</strong><p>No active action</p></div>'); html('queue', a.queue.map(x => `<div class="row"><b>${esc(x.class_name)}</b><span class="muted">${x.priority} · ${esc((x.waiting ?? []).join(', ') || 'ready')}</span></div>`).join('') || '<p class="muted">Queue empty.</p>'); $('queue').className = 'list'; }
 function renderMobs() {
     const q = $('mobquery').value.toLowerCase(), near = $('onlynear').checked;
@@ -384,29 +405,21 @@ function fitBotRadius(minimum) {
     const farthest = Math.max(0, ...state.bots.filter(b => b.spawned && validPosition(b.position)).map(b => Math.hypot(b.position[0] - p[0], b.position[1] - p[1], (b.position[2] ?? p[2]) - p[2])));
     return Math.max(minimum, Math.ceil(farthest * 1.15 / 25) * 25);
 }
-function inspectMob(id, openWorld = true) {
-    // Selection is not a camera command. A marker click stays on its map;
-    // list clicks may open the World inspector, but never resize either map.
+function inspectMob(id) {
+    // Select on the existing map; never change views or the camera.
     closeDoorPopup();
     selectedGround = null;
     selectedMob = id;
-    if (openWorld && tab !== 'world')
-        setTab('world');
-    else if (state)
-        render();
+    if (id === null) setTargetDetails(false);
+    if (state) render();
 }
 function inspectGround(id) {
-    if (!state || !(state.ground_spawns ?? []).some(g => g.drop_id === id))
-        return;
+    if (!state || !(state.ground_spawns ?? []).some(g => g.drop_id === id)) return;
     closeDoorPopup();
     selectedMob = null;
     selectedGround = { id, zone: state.zone_id, instance: state.instance };
-    if (tab !== 'world') {
-        setTab('world');
-        window.EQMap3D?.showGroundSpawns('worldmap');
-    } else {
-        render();
-    }
+    setTargetDetails(true);
+    render();
 }
 $('nearby').onclick = $('moblist').onclick = $('bots').onclick = e => {
     const b = e.target.closest('[data-mob]');
@@ -602,7 +615,8 @@ function refreshMapHover(id) {
     return hit;
 }
 function hoverKey(hit) { return hit?.kind ? `${hit.kind}:${hit.id}` : ''; }
-for (const id of ['minimap', 'worldmap']) {
+{
+    const id = 'worldmap';
     const canvas = $(id), legend = $(id + 'bots').parentElement.querySelector('.legend');
     if (legend) {
         for (const spec of Object.values(mapObjectIcons)) {
@@ -623,14 +637,14 @@ for (const id of ['minimap', 'worldmap']) {
     const redrawHover = () => {
         if (!state) return;
         // Do not touch selection or camera state when changing hover.
-        if (!window.EQMap3D?.redraw(id)) draw(id, id === 'worldmap' ? Number($('radius').value) : fitBotRadius(200));
+        if (!window.EQMap3D?.redraw(id)) draw(id, Number($('radius').value));
     };
     const select = e => {
         mapPointer.set(id, { clientX: e.clientX, clientY: e.clientY });
         const hit = mapHit(id, e);
         if (hit?.kind === 'ground') inspectGround(hit.id);
         else if (hit?.kind === 'door') inspectDoor(hit, e);
-        else inspectMob(hit?.id ?? null, false);
+        else inspectMob(hit?.id ?? null);
     };
     canvas.onclick = select;
     // A completed 3D pointer gesture selects directly, even if the browser
@@ -670,7 +684,7 @@ const EQUIPMENT_LAYOUT = [
 const addressKey = a => `${a.type}:${a.main_slot}:${a.sub_index}:${a.aug_index}`;
 function slotButton(a, label, entry) { const i = entry?.item, key = addressKey(a); return `<button class="slot ${i ? '' : 'empty'} ${selectedSlot === key ? 'selected' : ''}" data-slot="${key}" title="${esc(i?.name ?? label)}"><span class="slotname">${esc(label)}</span><span class="itemname">${esc(i?.name ?? 'Empty')}</span>${i?.stack > 1 ? `<span class="stack">×${i.stack}</span>` : ''}</button>`; }
 function renderInventory() { const inv = state.inventory, lookup = new Map(inv.slots.map(e => [addressKey(e.address), e])); const mk = (t, m, s = -1, a = -1) => ({ type: t, main_slot: m, sub_index: s, aug_index: a }); const at = (t, m, label) => { const a = mk(t, m); return slotButton(a, label, lookup.get(addressKey(a))); }; const signature = JSON.stringify([inv, selectedSlot, openBag]); if (signature === lastInventory)
-    return; lastInventory = signature; const equipment = EQUIPMENT_LAYOUT.map(i => i === null ? '<span class="equipment-gap" aria-hidden="true"></span>' : at(0, i, inv.worn[i])).join(''); html('equipment', equipment); html('equipmentpreview', equipment); html('gearstats', Object.entries(inv.gear ?? {}).map(([k, v]) => `<div class="stat"><span>${esc(k.replaceAll('_', ' '))}</span><b>${esc(v)}</b></div>`).join('')); html('general', Array.from({ length: 10 }, (_, i) => at(0, 23 + i, `Pack ${i + 1}`)).join('') + at(0, 33, 'Cursor')); html('bank', inv.slots.filter(e => e.address.type === 1 || e.address.type === 2).filter(e => e.address.sub_index === -1 && e.address.aug_index === -1).map(e => slotButton(e.address, `${e.address.type === 1 ? 'Bank' : 'Shared'} ${e.address.main_slot + 1}`, e)).join('') || '<p class="muted">Not loaded or empty.</p>'); let e = lookup.get(openBag ?? selectedSlot); if (e) {
+    return; lastInventory = signature; const equipment = EQUIPMENT_LAYOUT.map(i => i === null ? '<span class="equipment-gap" aria-hidden="true"></span>' : at(0, i, inv.worn[i])).join(''); html('equipment', equipment); html('gearstats', Object.entries(inv.gear ?? {}).map(([k, v]) => `<div class="stat"><span>${esc(k.replaceAll('_', ' '))}</span><b>${esc(v)}</b></div>`).join('')); html('general', Array.from({ length: 10 }, (_, i) => at(0, 23 + i, `Pack ${i + 1}`)).join('') + at(0, 33, 'Cursor')); html('bank', inv.slots.filter(e => e.address.type === 1 || e.address.type === 2).filter(e => e.address.sub_index === -1 && e.address.aug_index === -1).map(e => slotButton(e.address, `${e.address.type === 1 ? 'Bank' : 'Shared'} ${e.address.main_slot + 1}`, e)).join('') || '<p class="muted">Not loaded or empty.</p>'); let e = lookup.get(openBag ?? selectedSlot); if (e) {
     const a = e.address;
     let cells = [];
     if (e.item.bag_slots > 0) {
@@ -685,7 +699,7 @@ function renderInventory() { const inv = state.inventory, lookup = new Map(inv.s
 else
     html('bagdetail', ''); }
 function selectSlot(key) { if (!state)
-    return; selectedSlot = key; const [t, m, s, a] = key.split(':').map(Number); if (s === -1 && a === -1)
+    return; $('inventoryinspector').open = true; selectedSlot = key; const [t, m, s, a] = key.split(':').map(Number); if (s === -1 && a === -1)
     openBag = key; lastInventory = ''; renderInventory(); const x = state.inventory.slots.find(x => addressKey(x.address) === key); if (x)
     inspectItem(x.item.item_id, x);
 else {
@@ -694,16 +708,11 @@ else {
 } }
 $('inventory').onclick = e => { let b = e.target.closest('[data-slot]'); if (b)
     selectSlot(b.dataset.slot); };
-$('equipmentpreview').onclick = e => { const b = e.target.closest('[data-slot]'); if (b) {
-    setTab('inventory');
-    selectSlot(b.dataset.slot);
-} };
-$('openinventory').onclick = () => setTab('inventory');
 function itemCardMarkup(x, id, instance = null) {
     const statNames = [['AC', 'ac'], ['Damage', 'damage'], ['Delay', 'delay'], ['HP', 'hp'], ['Mana', 'mana'], ['Endurance', 'endurance'], ['STR', 'strength'], ['STA', 'stamina'], ['AGI', 'agility'], ['DEX', 'dexterity'], ['WIS', 'wisdom'], ['INT', 'intelligence'], ['CHA', 'charisma'], ['Attack', 'attack'], ['Haste', 'haste'], ['Magic resist', 'resist_magic'], ['Fire resist', 'resist_fire'], ['Cold resist', 'resist_cold'], ['Poison resist', 'resist_poison'], ['Disease resist', 'resist_disease']];
     return `<div class="itemtitle">${esc(x.name)}</div><div class="muted">#${id} · ${esc(x.required_level ? 'Required level ' + x.required_level : 'No required level')} ${x.no_drop ? ' · NO DROP' : ''}${x.lore_group ? ' · LORE' : ''}</div>${instance ? `<p>Slot ${esc(instance.client_slot)} · Stack ${esc(instance.item.stack)} · Charges ${esc(instance.item.charges)}${instance.item.attuned ? ' · Attuned' : ''}</p>` : ''}<div class="stats">${statNames.filter(([_, k]) => x[k]).map(([label, k]) => `<div class="stat"><span>${label}</span><b>${esc(x[k])}</b></div>`).join('')}</div>${x.bag_slots ? `<p>${x.bag_slots} bag slots · Size ${esc(x.bag_size)}</p>` : ''}<p class="muted">${x.classes?.map(k => cls[k]).filter(Boolean).join(' · ') ?? ''}</p>${[['Click', 'click_effect'], ['Proc', 'proc_effect'], ['Worn', 'worn_effect'], ['Focus', 'focus_effect'], ['Bard', 'bard_effect'], ['Scroll', 'scroll_effect']].filter(([_, key]) => Number(x[key]) > 0).map(([label, key]) => `<p class="muted">${label}: Spell #${esc(x[key])}</p>`).join('')}${x.recommended_level ? `<p class="muted">Recommended level ${esc(x.recommended_level)}</p>` : ''}${x.no_transfer ? '<p class="muted">NO TRANSFER</p>' : ''}`;
 }
-async function inspectItem(id, instance = null) { selectedItem = id; text('itemcard', 'Loading item #' + id + '…'); text('itemdetail', ''); try {
+async function inspectItem(id, instance = null) { $('inventoryinspector').open = true; selectedItem = id; text('itemcard', 'Loading item #' + id + '…'); text('itemdetail', ''); try {
     let x = await api('/item/' + id);
     if (selectedItem !== id)
         return;
@@ -726,7 +735,10 @@ catch (e) {
 } };
 $('itemresults').onclick = e => { let b = e.target.closest('[data-item]'); if (b)
     inspectItem(Number(b.dataset.item)); };
-async function loadActions() { text('actionhint', 'Loading action modules…'); try {
+async function loadActions() {
+    if (actionsLoading) return;
+    actionsLoading = true;
+    text('actionhint', 'Loading action modules…'); try {
     const names = await api('/actions/modules');
     let results = await Promise.allSettled(names.map(async (n) => [n, await api('/actions/modules/' + n)]));
     actionCatalog.clear();
@@ -746,7 +758,9 @@ async function loadActions() { text('actionhint', 'Loading action modules…'); 
 }
 catch (e) {
     text('actionhint', e.message);
-} }
+}
+finally { actionsLoading = false; }
+}
 function element(tag, props = {}, children = []) { const el = document.createElement(tag); Object.assign(el, props); children.forEach(c => el.append(c)); return el; }
 function fieldControl(schema, defs, required, label, defaultValue, spawn = false) {
     const outer = element('div', { className: 'field' }), title = element('label', { textContent: label + (required ? ' *' : '') });
@@ -860,8 +874,17 @@ function refreshEntityOptions() {
     entities.sort((a, b) => a.id - b.id || a.name.localeCompare(b.name));
     html('entityids', entities.map(m => `<option value="${m.id}" label="${esc(m.name)}"></option>`).join(''));
 }
-$('mobaction').onclick = () => { setTab('actions'); if (activeAction)
-    showAction(); };
+$('mobaction').onclick = () => {
+    $('actionpanel').open = true;
+    $('actionpanel').scrollIntoView({ block: 'nearest' });
+    // Preserve other action arguments; only replace the selected spawn ID.
+    if (selectedMob !== null) {
+        for (const input of $('params').querySelectorAll('[data-spawn="true"]'))
+            input.value = String(selectedMob);
+    }
+    if (!actionCatalog.size) loadActions();
+    else $('actionselect').focus({ preventScroll: true });
+};
 $('actionselect').onchange = showAction;
 $('reload').onclick = async () => { if (!activeAction)
     return; let a = activeAction; try {
@@ -956,4 +979,5 @@ catch (e) {
     status('Disconnected / busy', false);
     text('metrics', e.message);
 } pollLog('wire'); pollLog('combat'); setTimeout(tick, Math.max(0, 200 - (performance.now() - start))); }
+loadActions();
 tick();
