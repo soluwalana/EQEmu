@@ -226,8 +226,8 @@ main:has(#world.active){flex:1;display:flex;flex-direction:column;min-height:0;w
 @media(max-width:650px){body:has(#world.active){height:auto;min-height:100dvh}.workspace .target-metrics{flex-basis:100%}.workspace .world-target{padding:6px 8px}.workspace-left,.workspace-right{width:calc(50% - 12px)}.workspace .overlay-body{padding:7px;max-height:350px}.workspace .target-inspector .overlay-body{max-height:none}.workspace .overlay-panel>summary{padding:8px 6px;font-size:12px}.overlay-panel>summary span{float:none;display:block;margin-left:14px;max-width:calc(100% - 14px)}.workspace .map-stage{min-height:420px}.workspace-map-status .legend{font-size:9px}}
 @media(max-height:660px){body:has(#world.active){height:auto;min-height:100dvh}main:has(#world.active){min-height:500px}.workspace .map-stage{min-height:360px}}
 
-/* Chat occupies the central map strip, without resizing the canvas. */
-.chat-panel{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:min(640px,46%);z-index:3}
+/* Chat is the last panel in the right-hand overlay stack. */
+.chat-panel{min-width:0}
 .chat-body{padding:6px 9px;min-width:0}
 .chat-log{height:clamp(105px,24vh,260px);overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;font-size:12px;line-height:1.5;overflow-wrap:anywhere}
 .chat-line{padding:2px 0;white-space:pre-wrap;border-bottom:1px solid #ffffff0a}
@@ -238,7 +238,6 @@ main:has(#world.active){flex:1;display:flex;flex-direction:column;min-height:0;w
 .chat-link:hover,.chat-link:focus-visible{color:#fff}
 .chat-footer{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:10px;padding-top:4px}
 .chat-footer button{padding:3px 7px;font-size:11px}
-@media(max-width:1000px){.chat-panel{width:min(640px,calc(100% - 16px))}}
 
 /* Nonmodal map object inspector: keep the map available while inspecting. */
 .object-popup{position:fixed;inset:auto;margin:0;width:min(380px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;z-index:10;background:#141d29;color:var(--ink);border:1px solid #506078;border-radius:10px;padding:14px;box-shadow:0 8px 30px #0008}
