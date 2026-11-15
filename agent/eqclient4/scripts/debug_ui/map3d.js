@@ -21,14 +21,14 @@
         fragment: `#version 300 es
             precision highp float;
             in vec3 world; in vec3 bary; uniform vec3 tint; uniform int navStyle;
-            uniform float lowZ, highZ; out vec4 color;
+            uniform float lowZ, highZ, opacity; out vec4 color;
             void main(){
                 if(world.z<lowZ || world.z>highZ) discard;
                 vec3 n=normalize(cross(dFdx(world),dFdy(world)));
                 float lighting=0.45+0.55*abs(dot(n,normalize(vec3(.35,.4,.85))));
                 vec3 lit=tint*lighting;
                 if(navStyle==1){ vec3 edge=smoothstep(vec3(0.0),fwidth(bary)*1.2,bary); lit=mix(lit*.55,lit,min(edge.x,min(edge.y,edge.z))); }
-                color=vec4(lit,1.0);
+                color=vec4(lit,opacity);
             }`,
     };
     function program(gl) {
@@ -46,17 +46,17 @@
     }
     function fetchGeometry(zone) {
         if (cache.has(zone)) return cache.get(zone);
-        const promise = fetch('/dashboard/geometry/'+encodeURIComponent(zone)).then(async response => {
+        const promise = fetch('/dashboard/geometry/'+encodeURIComponent(zone)+'?format=2').then(async response => {
             if (!response.ok) {
                 let message=`HTTP ${response.status}`;
                 try { message=(await response.json()).detail || message; } catch (_) {}
                 throw Error(message);
             }
             const raw=await response.arrayBuffer(), h=new DataView(raw);
-            if (raw.byteLength<16 || h.getUint32(0,true)!==0x31475145) throw Error('Invalid EQG1 geometry');
-            const nc=h.getUint32(4,true), nn=h.getUint32(8,true), flags=h.getUint32(12,true);
-            if (nc%3 || nn%3 || raw.byteLength!==16+12*(nc+nn)) throw Error('Invalid geometry length');
-            return {collision:new Float32Array(raw,16,nc*3), nav:new Float32Array(raw,16+nc*12,nn*3), flags};
+            if (raw.byteLength<20 || h.getUint32(0,true)!==0x32475145) throw Error('Invalid EQG2 geometry');
+            const nc=h.getUint32(4,true), nn=h.getUint32(8,true), nw=h.getUint32(12,true), flags=h.getUint32(16,true);
+            if (nc%3 || nn%3 || nw%3 || raw.byteLength!==20+12*(nc+nn+nw)) throw Error('Invalid geometry length');
+            return {collision:new Float32Array(raw,20,nc*3), nav:new Float32Array(raw,20+nc*12,nn*3), water:new Float32Array(raw,20+(nc+nn)*12,nw*3), flags};
         });
         cache.set(zone,promise);
         // Retain two zones, not the entire map repository.
@@ -68,7 +68,7 @@
         constructor(id) {
             this.id=id; this.hud=document.getElementById(id); this.az=-.55; this.el=.72;
             this.follow=true; this.center=null; this.zoom=1; this.zone=null; this.generation=0;
-            this.terrain=true; this.nav=true; this.cut=false; this.cutHeight=18; this.mode3d=true;
+            this.terrain=true; this.nav=true; this.water=true; this.cut=false; this.cutHeight=18; this.mode3d=true;
             this.buffers=[]; this.geometry=null; this.error=''; this.latest=null; this.drag=null; this.skipClick=false;
             const glCanvas=document.createElement('canvas'); glCanvas.className='eq3d-gl';
             glCanvas.width=this.hud.width; glCanvas.height=this.hud.height;
@@ -76,7 +76,7 @@
             this.gl=glCanvas.getContext('webgl2',{antialias:true,alpha:false});
             if(!this.gl) throw Error('WebGL2 unavailable');
             const gl=this.gl; this.prog=program(gl); this.loc={};
-            for(const name of ['center','right','up','nearAxis','scale','depthScale','lift','tint','lowZ','highZ','navStyle'])
+            for(const name of ['center','right','up','nearAxis','scale','depthScale','lift','tint','lowZ','highZ','navStyle','opacity'])
                 this.loc[name]=gl.getUniformLocation(this.prog,name);
             this.attr=gl.getAttribLocation(this.prog,'position');
             gl.enable(gl.DEPTH_TEST); gl.clearColor(.039,.067,.105,1);
@@ -92,7 +92,7 @@
             button('Side',()=>{this.el=0;this.az=0;this.redraw();});
             button('Orbit',()=>{this.el=.72;this.az=-.55;this.redraw();});
             button('Fit target',()=>this.fitTarget());
-            check('Terrain',true,v=>this.terrain=v); check('Navmesh',true,v=>this.nav=v);
+            check('Terrain',true,v=>this.terrain=v); check('Navmesh',true,v=>this.nav=v); check('Water',true,v=>this.water=v);
             check('Cutaway',false,v=>this.cut=v);
             const cut=document.createElement('input');cut.type='range';cut.min='-50';cut.max='150';cut.value=String(this.cutHeight);cut.title='Cut plane relative to player Z';
             const label=document.createElement('label');label.append('Z cut ',cut);tools.append(label);
@@ -132,7 +132,7 @@
         clearBuffers(){for(const b of this.buffers)this.gl.deleteBuffer(b.buffer);this.buffers=[];}
         upload(data){
             this.clearBuffers();const gl=this.gl;
-            for(const [kind,vertices] of [['collision',data.collision],['nav',data.nav]]){
+            for(const [kind,vertices] of [['collision',data.collision],['nav',data.nav],['water',data.water]]){
                 const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,vertices,gl.STATIC_DRAW);
                 this.buffers.push({kind,buffer,count:vertices.length/3});
             }
@@ -152,12 +152,16 @@
             gl.uniform1f(l.lowZ,-1e9);gl.uniform1f(l.highZ,this.cut?s.position[2]+this.cutHeight:1e9);
             gl.enableVertexAttribArray(this.attr);
             for(const b of this.buffers){
-                if(!b.count||b.kind==='collision'&&!this.terrain||b.kind==='nav'&&!this.nav)continue;
+                if(!b.count||b.kind==='collision'&&!this.terrain||b.kind==='nav'&&!this.nav||b.kind==='water'&&!this.water)continue;
                 gl.bindBuffer(gl.ARRAY_BUFFER,b.buffer);gl.vertexAttribPointer(this.attr,3,gl.FLOAT,false,0,0);
-                gl.uniform1i(l.navStyle,b.kind==='nav'?1:0);gl.uniform1f(l.lift,b.kind==='nav'?.20:0);gl.uniform3fv(l.tint,b.kind==='nav'?[.20,.49,.39]:[.34,.43,.53]);
+                const wet=b.kind==='water';
+                gl.uniform1i(l.navStyle,b.kind==='nav'?1:0);gl.uniform1f(l.lift,b.kind==='nav'?.20:0);gl.uniform3fv(l.tint,wet?[.12,.55,.95]:b.kind==='nav'?[.20,.49,.39]:[.34,.43,.53]);
+                gl.uniform1f(l.opacity,wet?.60:1);
+                if(wet){gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.depthMask(false);}
                 // Nav polygons sit slightly above collision surfaces. Depth
                 // testing still reveals actual upper floors and occlusion.
                 gl.drawArrays(gl.TRIANGLES,0,b.count);
+                if(wet){gl.depthMask(true);gl.disable(gl.BLEND);}
             }
             const ctx=hud.getContext('2d');ctx.clearRect(0,0,w,h);ctx.font='12px monospace';
             const visible=p=>p[0]>=0&&p[0]<=w&&p[1]>=0&&p[1]<=h;
@@ -185,7 +189,7 @@
             const axis=[w-35,h-32];for(const [v,color,name] of [[[1,0,0],'#ec7784','X'],[[0,1,0],'#6ccc91','Y'],[[0,0,1],'#699fe8','Z']]){const p=[axis[0]+dot(v,right)*22,axis[1]-dot(v,up)*22];line(axis,p,color,false,2);ctx.fillStyle=color;ctx.fillText(name,p[0],p[1]);}
             hits.set(this.id,entities);
             const count=s.bots.filter(b=>b.spawned).length;document.getElementById(this.id+'bots').textContent=`${bots.length} / ${count} spawned bots in view`;
-            const data=this.geometry;this.info.textContent=this.error?`${this.error} · live entities still shown`:data?`${(data.collision.length/9).toLocaleString()} collision triangles · ${(data.nav.length/9).toLocaleString()} nav triangles · ${this.cut?'Z ≤ '+(s.position[2]+this.cutHeight).toFixed(1):'All floors'} · route/markers X-ray · drag orbit, Shift+drag pan, wheel zoom`:'Loading zone geometry…';
+            const data=this.geometry;this.info.textContent=this.error?`${this.error} · live entities still shown`:data?`${(data.collision.length/9).toLocaleString()} collision triangles · ${(data.nav.length/9).toLocaleString()} nav triangles · ${data.flags&4?(data.water.length/9).toLocaleString()+' water triangles':'No water map'} · ${this.cut?'Z ≤ '+(s.position[2]+this.cutHeight).toFixed(1):'All floors'} · route/markers X-ray · drag orbit, Shift+drag pan, wheel zoom`:'Loading zone geometry…';
         }
     }
     window.EQMap3D={

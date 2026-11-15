@@ -14,6 +14,7 @@ import hashlib
 import importlib
 import importlib.util
 import inspect
+import logging
 import math
 import os
 import sqlite3
@@ -1052,6 +1053,17 @@ def main() -> None:
         loop.run_once()
         app = create_app(commands, capture, name, dict(loop.client.opcodes), loop)
         server = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=args.port))
+
+        class SkipSuccessfulAccess(logging.Filter):
+            def filter(self, record: logging.LogRecord) -> bool:
+                # Uvicorn access log args: client, method, path, version, status.
+                # Leave error/redirect access records and all agent logs alone.
+                args = record.args
+                return not (
+                    isinstance(args, tuple) and len(args) == 5 and args[-1] == 200
+                )
+
+        logging.getLogger("uvicorn.access").addFilter(SkipSuccessfulAccess())
         thread = threading.Thread(target=server.run, name="eq-debug-http", daemon=True)
         thread.start()
         log.info("debug HTTP: http://127.0.0.1:%d/dashboard (Swagger: /docs)", args.port)
