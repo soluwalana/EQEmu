@@ -42,7 +42,12 @@ class DoorsHandler(Handler):
             if not previous:
                 doors[found.id] = found
                 continue
-            
+
+            if found.opened:
+                self.world.open_doors.add(found.id)
+            else:
+                self.world.open_doors.discard(found.id)
+
             doors[found.id].opened = found.opened
 
     def move(self, row: OP_MoveDoor) -> None:
