@@ -34,7 +34,9 @@ AGGRESSIVE = "5"
 BURN = "7"
 REPLY_TIMEOUT = 8.0
 
-RAID_CLEAR_RE = re.compile(r"Bot raid roster will not form again until you .* The raid is unchanged\.")
+RAID_CLEAR_RE = re.compile(
+    r"Bot raid roster will not form again until you .* The raid is unchanged\."
+)
 RAID_CLEAR_FAILURE_RE = re.compile(r"Could not update the bot raid roster\.")
 
 BOT_COUNT_RE = re.compile(r"(\d+) Of \d+ bots? shown, \d+ (?:are|is) owned by you\.")

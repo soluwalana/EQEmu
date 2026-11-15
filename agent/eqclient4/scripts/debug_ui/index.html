@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <title>
+   EQClient · Live Agent
+  </title>
+  <link href="/dashboard/assets/style.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <header>
+   <div class="brand">
+    <span class="mark">
+     EQ
+    </span>
+    <div>
+     <h1>
+      Agent Observatory
+     </h1>
+     <small>
+      EQCLIENT4 / LIVE DEBUGGER
+     </small>
+    </div>
+   </div>
+   <div class="headstatus">
+    <span class="pill" id="status">
+     Connecting
+    </span>
+    <span id="zonehead">
+     —
+    </span>
+    <a href="/docs">
+     API docs ↗
+    </a>
+   </div>
+  </header>
+  <nav>
+   <button class="active" data-tab="overview">
+    Overview
+   </button>
+   <button data-tab="inventory">
+    Inventory
+   </button>
+   <button data-tab="world">
+    World &amp; pathing
+   </button>
+   <button data-tab="actions">
+    Actions
+   </button>
+   <button data-tab="logs">
+    Packet logs
+   </button>
+   <span class="refresh">
+    ● 200 ms live
+   </span>
+  </nav>
+  <main>
+   <section class="tab active" id="overview">
+    <div class="grid overview">
+     <article class="panel character">
+      <h2>
+       Character
+       <span id="charlevel">
+       </span>
+      </h2>
+      <div class="name" id="charname">
+       —
+      </div>
+      <div id="resources">
+      </div>
+      <div class="stats" id="attributes">
+      </div>
+      <div class="coins" id="coins">
+      </div>
+     </article>
+     <article class="panel location">
+      <h2>
+       Location
+       <span id="party">
+       </span>
+      </h2>
+      <div class="position" id="position">
+      </div>
+      <canvas height="330" id="minimap" width="600">
+      </canvas>
+      <div class="legend">
+       <i class="self">
+       </i>
+       Player
+       <i class="bot">
+       </i>
+       Bots
+       <i class="npc">
+       </i>
+       Mobs
+       <i class="aggro">
+       </i>
+       Aggro
+      </div>
+     </article>
+     <article class="panel activity">
+      <h2>
+       Current action
+      </h2>
+      <div id="current">
+      </div>
+      <h3>
+       Scheduler queue
+      </h3>
+      <div id="queue">
+      </div>
+      <h3>
+       Active buffs
+      </h3>
+      <div class="list" id="buffs">
+      </div>
+     </article>
+     <article class="panel wide">
+      <h2>
+       Bot roster
+       <span id="botcount">
+       </span>
+      </h2>
+      <p class="muted">
+       Resources reflect the latest tracked packets; zero may be the initial value before an update.
+      </p>
+      <div class="scroll">
+       <table>
+        <thead>
+         <tr>
+          <th>
+           Bot
+          </th>
+          <th>
+           Class
+          </th>
+          <th>
+           Status
+          </th>
+          <th>
+           HP
+          </th>
+          <th>
+           Mana
+          </th>
+          <th>
+           Endurance
+          </th>
+          <th>
+           Distance
+          </th>
+         </tr>
+        </thead>
+        <tbody id="bots">
+        </tbody>
+       </table>
+      </div>
+     </article>
+     <article class="panel">
+      <h2>
+       Nearby mobs
+       <span id="mobcount">
+       </span>
+      </h2>
+      <div class="scroll list" id="nearby">
+      </div>
+     </article>
+     <article class="panel wide">
+      <h2>
+       Equipment preview
+       <button id="openinventory" type="button">
+        Open inventory →
+       </button>
+      </h2>
+      <div class="slots equipment" id="equipmentpreview">
+      </div>
+     </article>
+    </div>
+   </section>
+   <section class="tab" id="inventory">
+    <div class="grid two">
+     <article class="panel">
+      <h2>
+       Equipment &amp; possessions
+      </h2>
+      <div class="slots equipment" id="equipment">
+      </div>
+      <h3>
+       Equipped item contributions
+      </h3>
+      <div class="stats" id="gearstats">
+      </div>
+      <p class="muted">
+       Item totals only; not server-calculated character AC, ATK, or resists.
+      </p>
+      <h3>
+       General inventory
+      </h3>
+      <div class="slots" id="general">
+      </div>
+      <h3>
+       Bank &amp; shared bank (observed)
+      </h3>
+      <div class="slots" id="bank">
+      </div>
+      <div id="bagdetail">
+      </div>
+      <p class="muted">
+       Slots show the latest observed inventory. Bank contents may be unavailable until opened in game.
+      </p>
+     </article>
+     <article class="panel">
+      <h2>
+       Item cache
+      </h2>
+      <form class="inline" id="itemform">
+       <input id="itemquery" placeholder="Item name or ID" required=""/>
+       <button>
+        Search
+       </button>
+      </form>
+      <div class="list" id="itemresults">
+      </div>
+      <h3>
+       Item inspector
+      </h3>
+      <div class="itemcard" id="itemcard">
+       Select an inventory slot or item result.
+      </div>
+      <details>
+       <summary>
+        Full item definition / instance
+       </summary>
+       <pre id="itemdetail"></pre>
+      </details>
+     </article>
+    </div>
+   </section>
+   <section class="tab" id="world">
+    <div class="grid two">
+     <article class="panel">
+      <h2>
+       Live world
+       <span id="worldzone">
+       </span>
+      </h2>
+      <div class="inline">
+       <label>
+        Radius
+        <input id="radius" max="3000" min="50" type="range" value="350"/>
+       </label>
+       <span id="radiuslabel">
+        350 yd
+       </span>
+       <button id="fitpath" type="button">
+        Fit path
+       </button>
+      </div>
+      <canvas height="650" id="worldmap" width="1000">
+      </canvas>
+      <div class="legend">
+       <i class="self">
+       </i>
+       Player
+       <i class="bot">
+       </i>
+       Bots
+       <i class="npc">
+       </i>
+       Mobs
+       <i class="aggro">
+       </i>
+       Aggro
+       <i class="path">
+       </i>
+       Planned path
+      </div>
+      <h3>
+       Current route
+      </h3>
+      <pre id="pathdetail">No active path.</pre>
+     </article>
+     <article class="panel">
+      <h2>
+       Zone entities
+      </h2>
+      <div class="inline">
+       <input id="mobquery" placeholder="Name or spawn ID"/>
+       <label>
+        <input id="onlynear" type="checkbox"/>
+        Nearby only
+       </label>
+      </div>
+      <div class="list scroll" id="moblist">
+      </div>
+      <h3>
+       Entity inspector
+      </h3>
+      <button disabled="" id="mobaction" type="button">
+       Use selected spawn in action
+      </button>
+      <pre id="mobdetail">Select a mob or map marker.</pre>
+     </article>
+    </div>
+   </section>
+   <section class="tab" id="actions">
+    <div class="grid two">
+     <article class="panel">
+      <h2>
+       Action launcher
+      </h2>
+      <div class="inline">
+       <select id="actionselect">
+       </select>
+       <button id="reload" type="button">
+        Reload module
+       </button>
+      </div>
+      <p class="muted" id="actionhint">
+      </p>
+      <form id="actionform">
+       <div id="params">
+       </div>
+       <button class="primary" id="launch">
+        Queue action
+       </button>
+      </form>
+      <p class="muted" id="actionresult">
+      </p>
+      <h3>
+       Raw packet sender
+      </h3>
+      <form id="packetform">
+       <select id="opcode">
+       </select>
+       <textarea id="packetbody" placeholder="JSON packet fields" rows="5">{}</textarea>
+       <button>
+        Send packet
+       </button>
+      </form>
+      <pre id="packetresult"></pre>
+     </article>
+     <article class="panel">
+      <h2>
+       Action runs
+      </h2>
+      <div class="list" id="runs">
+      </div>
+     </article>
+    </div>
+   </section>
+   <section class="tab" id="logs">
+    <div class="grid two">
+     <article class="panel">
+      <h2>
+       Incoming / outgoing
+       <span id="wirecount">
+       </span>
+      </h2>
+      <div class="inline">
+       <input id="wirefilter" placeholder="Filter opcode / message"/>
+       <select id="direction">
+        <option value="all">
+         Both directions
+        </option>
+        <option value="recv">
+         Incoming
+        </option>
+        <option value="send">
+         Outgoing
+        </option>
+       </select>
+       <button id="pausewire">
+        Pause
+       </button>
+      </div>
+      <div class="log" id="wirelog">
+      </div>
+     </article>
+     <article class="panel">
+      <h2>
+       Combat &amp; resources
+       <span id="combatcount">
+       </span>
+      </h2>
+      <div class="inline">
+       <input id="combatfilter" placeholder="Filter combat"/>
+       <button id="pausecombat">
+        Pause
+       </button>
+      </div>
+      <div class="log" id="combatlog">
+      </div>
+     </article>
+     <article class="panel wide">
+      <h2>
+       Packet inspector
+      </h2>
+      <pre id="packetdetail">Select a packet to inspect decoded fields and wire bytes.</pre>
+     </article>
+    </div>
+   </section>
+  </main>
+  <footer>
+   <span id="metrics">
+    Waiting for agent…
+   </span>
+   <span>
+    Local debug session · RoF2
+   </span>
+  </footer>
+  <script defer="" src="/dashboard/assets/app.js">
+  </script>
+ </body>
+</html>

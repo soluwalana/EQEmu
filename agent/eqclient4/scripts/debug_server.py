@@ -999,6 +999,20 @@ def create_app(
         )
         return HTMLResponse(html)
 
+    from eqclient4.scripts.debug_dashboard import install_dashboard
+
+    install_dashboard(
+        app,
+        with_loop,
+        query,
+        character,
+        item_snapshot,
+        action_snapshot,
+        json_value,
+        bytes_to_eqstruct,
+        action_modules,
+    )
+
     return app
 
 
@@ -1040,7 +1054,7 @@ def main() -> None:
         server = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=args.port))
         thread = threading.Thread(target=server.run, name="eq-debug-http", daemon=True)
         thread.start()
-        log.info("debug HTTP: http://127.0.0.1:%d/docs", args.port)
+        log.info("debug HTTP: http://127.0.0.1:%d/dashboard (Swagger: /docs)", args.port)
         while thread.is_alive():
             loop.run_once()
             if loop.client.closed:

@@ -63,16 +63,18 @@ class GroupingHandler(Handler):
             case OP_GroupUpdate() | OP_GroupUpdateB():
                 # Raid subgroup packets must not replace the raid roster.
                 if self.world.party_mode == "raid":
-                    log.error(f"Raid party group unexpected when adding regular group members: {payload}")
+                    log.error(
+                        f"Raid party group unexpected when adding regular group members: {payload}"
+                    )
                     return
                 if payload.action == GroupAction.DISBAND:
                     self.world.active_group.clear()
                     self.world.party_mode = None
                     return
-                
+
                 if payload.full or payload.action == GroupAction.JOIN:
                     self.world.party_mode = "group"
-                
+
                 members = payload.members
                 if payload.full:
                     self.world.active_group.clear()
@@ -83,7 +85,7 @@ class GroupingHandler(Handler):
                             self.world.active_group[bot.spawn_id] = bot
                         elif member:
                             log.error(f"Bot not found: {member}")
-            
+
                 elif payload.action == GroupAction.JOIN and payload.your_name:
                     bot = self.world.bot_roster.bot_by_name(payload.your_name)
                     if bot:
@@ -136,14 +138,14 @@ class GroupingHandler(Handler):
                 if not bot:
                     log.error(f"Bot not found: {payload.your_name}")
                     return
-                
+
                 if payload.action == RaidAction.ADD:
                     log.info(f"Adding bot to active group: {bot.name}")
                     self.world.active_group[bot.spawn_id] = bot
                 elif self.world.party_mode == "raid":
                     log.info(f"Removing bot from active group: {bot.name}")
                     self.world.active_group.pop(bot.spawn_id, None)
-                
+
                 return
 
             case _:
