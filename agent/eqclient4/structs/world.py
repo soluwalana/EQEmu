@@ -1,4 +1,6 @@
+import re
 import struct
+from collections.abc import Collection
 from dataclasses import dataclass, field
 from enum import Enum, IntEnum
 
@@ -141,12 +143,25 @@ class Door(EQStruct):
             opened=bool(state) != bool(invert)
         )
 
+    @staticmethod
+    def normalize_model(name: str) -> str:
+        """Normalize client model names and PEQ id_file strings for comparison."""
+        return name.strip().upper().removesuffix("_ACTORDEF").removeprefix("OBJ_")
+
+    @property
+    def model_key(self) -> str:
+        return self.normalize_model(self.name)
+
     @property
     def kind(self) -> DoorKind:
+        return self.classify()
+
+    def classify(self, weapon_models: Collection[str] = ()) -> DoorKind:
         """Classify the model for the debug map, without changing its wire type.
 
         OP_SpawnDoor includes props as well as doors. Open type specifies
-        behavior, not the model's identity. Unknown models stay generic.
+        behavior, not the model's identity. The optional item-cache model
+        index can identify opaque IT models; unknown models stay generic.
         """
         t = self.open_type
         if t == DoorOpenType.TELEPORTER:
@@ -156,8 +171,10 @@ class Door(EQStruct):
         if t in (115, 116, 120, 125, 130, 135, 140, 142, 143, 144, 145, 146, 150, 151, 152):
             return DoorKind.TRAP
 
-        model = self.name.upper().removeprefix("OBJ_").removesuffix("_ACTORDEF")
-        parts = model.replace("-", "_").split("_")
+        model = self.model_key
+        # Zone-specific names can embed the object token (e.g. TUTORIALDOOR1).
+        # Separate numeric suffixes and punctuation, but keep model prefixes.
+        parts = re.findall(r"[A-Z]+", model)
         if any(p.startswith(("TREE", "PALM", "SHRUB", "BUSH")) for p in parts):
             return DoorKind.TREE
         if t == DoorOpenType.BUYER_STALL or any(
@@ -168,7 +185,9 @@ class Door(EQStruct):
         if any(p.startswith(("SWORD", "SPEAR", "DAGGER", "AXE", "MACE", "LANCE",
                              "HALBERD", "WEAPON")) or p == "BOW" for p in parts):
             return DoorKind.WEAPON
-        if any(p.startswith(("DOOR", "GATE", "PORTCULLIS")) for p in parts):
+        if model and model in weapon_models:
+            return DoorKind.WEAPON
+        if re.search(r"(?:DOOR|PORTCULLIS|DRAWBRIDGE|HATCH|GATE(?!KEEPER))", model):
             return DoorKind.DOOR
         # Only the documented moving/invisible door types; the gaps in
         # the sliding range are stationary props, not sliding doors.

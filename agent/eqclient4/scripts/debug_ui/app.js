@@ -17,6 +17,8 @@ function entityColor(entity, bot = false) { return `rgb(${entityTint(entity, bot
 function losLabel(entity) { return entity.los === true ? (state?.los_map === false ? 'LoS assumed clear (no collision map)' : 'In LoS') : entity.los === false ? 'Out of LoS' : 'LoS unknown'; }
 let state = null, tab = 'overview', selectedMob = null, selectedGround = null, selectedSlot = null, openBag = null, actionCatalog = new Map(), activeAction = null, lastInventory = '', mapHits = new Map(), selectedItem = null, paramReaders = [], actionGeneration = 0;
 const mapPointer = new Map();
+let selectedDoor = null;
+const itemDefinitions = new Map();
 const logs = { wire: { after: -1, rows: [], paused: false, busy: false }, combat: { after: -1, rows: [], paused: false, busy: false } };
 async function api(path, options = {}) { const r = await fetch(path, { cache: 'no-store', ...options }); if (!r.ok) {
     let x;
@@ -37,7 +39,7 @@ function html(id, v) { const el = $(id); if (htmlCache.get(el) !== v) {
     htmlCache.set(el, v);
 } }
 function status(msg, ok) { text('status', msg); $('status').className = 'pill ' + (ok ? 'good' : 'bad'); }
-function setTab(name) { tab = name; document.querySelectorAll('.tab').forEach(e => e.classList.toggle('active', e.id === name)); document.querySelectorAll('nav button').forEach(e => e.classList.toggle('active', e.dataset.tab === name)); if (state)
+function setTab(name) { closeDoorPopup(); tab = name; document.querySelectorAll('.tab').forEach(e => e.classList.toggle('active', e.id === name)); document.querySelectorAll('nav button').forEach(e => e.classList.toggle('active', e.dataset.tab === name)); if (state)
     render(); if (name === 'actions' && !actionCatalog.size)
     loadActions(); if (name === 'logs') {
     renderLog('wire');
@@ -73,6 +75,7 @@ const mapObjectIcons = {
     trap: { label: 'Trap', color: '#ec7784', path: 'M12 3 L22 21 H2 Z M12 9 V14 M12 17 V17.5' },
     mechanism: { label: 'Mechanism', color: '#dfbb77', path: 'M20 7 A9 9 0 1 0 21 15 M20 2 V7 H15 M12 8 A4 4 0 1 1 12 16 A4 4 0 1 1 12 8' },
     object: { label: 'Object', color: '#8c9caf', path: 'M12 2 L21 7 V17 L12 22 L3 17 V7 Z M3 7 L12 12 L21 7 M12 12 V22' },
+    unclassified: { label: 'Unclassified', color: '#ec7784', path: 'M8 8 A4 4 0 1 1 13 12 L12 14 V16 M12 20 V20.5' },
     ground: { label: 'Ground spawn', color: '#62dce0', path: 'M12 5 L19 12 L12 19 L5 12 Z', filled: true },
 };
 const mapObjectPaths = new Map(Object.values(mapObjectIcons).map(icon => [icon, new Path2D(icon.path)]));
@@ -80,7 +83,12 @@ function mapObjectIcon(object, kind) {
     if (kind === 'ground') return mapObjectIcons.ground;
     // Only classified physical doors use the open/closed bracket symbols.
     if (object.kind === 'door') return mapObjectIcons[object.opened ? 'open' : 'closed'];
-    return mapObjectIcons[object.kind] ?? mapObjectIcons.object;
+    return Object.hasOwn(mapObjectIcons, object.kind) ? mapObjectIcons[object.kind] : mapObjectIcons.unclassified;
+}
+function doorDetails(object) {
+    const icon = mapObjectIcon(object, 'door');
+    const status = object.kind === 'door' ? '' : ` · wire state ${object.opened ? 'open' : 'closed'}`;
+    return `${icon.label}${status} · type ${object.open_type} · heading ${num(object.heading)} · size ${object.size ?? 100}% · incline ${object.incline ?? 0}`;
 }
 function canvasViewport(canvas) {
     const rect = canvas.getBoundingClientRect();
@@ -117,7 +125,7 @@ function drawMapObjects(ctx, id, s, project, visible, showDoors, showGround, sel
         // Never clamp the origin to the screen edge: an off-screen object is not a hit target.
         if (x < 0 || x > canvas.width || y < 0 || y > canvas.height) return;
         const ground = kind === 'ground', icon = mapObjectIcon(object, kind);
-        const detail = ground ? icon.label : `${icon.label} · type ${object.open_type} · heading ${num(object.heading)} · size ${object.size ?? 100}%`;
+        const detail = ground ? icon.label : doorDetails(object);
         objects.push({ x, y, rx: (ground ? 8 : 11) * sx, ry: (ground ? 8 : 11) * sy,
             kind, id: ground ? object.drop_id : object.id, name: object.name, detail, object, icon });
     };
@@ -126,7 +134,7 @@ function drawMapObjects(ctx, id, s, project, visible, showDoors, showGround, sel
     const hover = pickMapHit([...entityHits, ...objects], mapPoint(canvas, mapPointer.get(id)));
     for (const hit of objects) {
         const { x, y, kind } = hit, ground = kind === 'ground';
-        const selected = ground && hit.id === selectedDrop;
+        const selected = ground ? hit.id === selectedDrop : selectedDoor?.id === hit.id && selectedDoor.zone === s.zone_id && selectedDoor.instance === s.instance;
         const hovered = hover?.kind === kind && hover.id === hit.id;
         ctx.save(); ctx.translate(x, y); ctx.scale(sx, sy);
         ctx.lineJoin = 'round'; ctx.lineCap = 'round';
@@ -145,17 +153,84 @@ function drawMapObjects(ctx, id, s, project, visible, showDoors, showGround, sel
         }
         ctx.restore();
         if (selected) {
-            ctx.save(); ctx.font = `${12 * sy}px monospace`; ctx.fillStyle = '#c8fbff';
+            ctx.save(); ctx.font = `${12 * sy}px monospace`; ctx.fillStyle = icon.color;
             ctx.textAlign = 'start'; ctx.textBaseline = 'alphabetic';
             const textWidth = ctx.measureText(hit.name).width;
             const tx = Math.max(0, Math.min(canvas.width - textWidth - 4, x + 14 * sx));
             const ty = Math.max(14 * sy, Math.min(canvas.height - 2, y - 8 * sy));
             ctx.fillStyle = '#09111c'; ctx.fillRect(tx, ty - 12 * sy, textWidth + 4, 15 * sy);
-            ctx.fillStyle = '#c8fbff'; ctx.fillText(hit.name, tx + 2, ty); ctx.restore();
+            ctx.fillStyle = icon.color; ctx.fillText(hit.name, tx + 2, ty); ctx.restore();
         }
     }
     return objects;
 }
+function closeDoorPopup() {
+    selectedDoor = null;
+    const popup = $('doorpopup');
+    if (popup?.open) popup.close();
+}
+function renderDoorPopup() {
+    if (!selectedDoor) return;
+    const d = state?.doors?.find(d => d.id === selectedDoor.id);
+    if (!d || selectedDoor.zone !== state.zone_id || selectedDoor.instance !== state.instance) {
+        closeDoorPopup();
+        return;
+    }
+    text('doorpopup-title', d.name);
+    text('doorpopup-summary', `${d.kind === 'door' ? 'Door' : 'Object'} #${d.id} · ${doorDetails(d)}`);
+    const p = d.position;
+    text('doorpopup-position', validPosition(p) ? `X ${num(p[0])} · Y ${num(p[1])} · Z ${num(p[2])}` : 'Position unavailable');
+    text('doorpopup-data', pretty(d));
+    const popup = $('doorpopup');
+    if (popup.open) {
+        const padding = 12;
+        popup.style.left = `${Math.max(padding, Math.min(selectedDoor.clientX + padding, window.innerWidth - popup.offsetWidth - padding))}px`;
+        popup.style.top = `${Math.max(padding, Math.min(selectedDoor.clientY + padding, window.innerHeight - popup.offsetHeight - padding))}px`;
+    }
+}
+function inspectDoor(hit, event) {
+    if (!state) return;
+    selectedDoor = { id: hit.id, zone: state.zone_id, instance: state.instance, clientX: event.clientX, clientY: event.clientY };
+    const popup = $('doorpopup');
+    renderDoorPopup();
+    if (!selectedDoor) return;
+    if (!popup.open) popup.show();
+    render();
+}
+$('doorpopup-close').onclick = () => { closeDoorPopup(); if (state) render(); };
+$('doorpopup').addEventListener('close', () => { if (!$('doorpopup').open && selectedDoor) { selectedDoor = null; if (state) render(); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && selectedDoor) { closeDoorPopup(); if (state) render(); } });
+
+// Item definitions are immutable cache entries, independent of drop/slot identity.
+// Deduplicate in-flight requests and avoid an HTTP request on every state poll.
+function cachedItem(id) {
+    if (itemDefinitions.has(id)) return itemDefinitions.get(id);
+    const entry = { pending: true, value: null, error: null };
+    itemDefinitions.set(id, entry);
+    api('/item/' + encodeURIComponent(id)).then(value => { entry.value = value; }, error => { entry.error = error.message; })
+        .finally(() => {
+            entry.pending = false;
+            if (tab === 'world' && selectedGround) renderCurrentTarget();
+        });
+    return entry;
+}
+function renderGroundItems(drop) {
+    const panel = $('worlditems');
+    panel.hidden = !drop;
+    if (!drop) { html('worlditemcards', ''); return; }
+    html('worlditemcards', drop.items.map(item => {
+        const id = item.item_id, entry = cachedItem(id);
+        if (entry.pending) return `<div class="itemcard">Loading ${esc(item.name)} (#${esc(id)})…</div>`;
+        if (entry.error) return `<div class="itemcard">${esc(item.name)} (#${esc(id)}): ${esc(entry.error)} <button type="button" data-retry-item="${esc(id)}">Retry</button></div>`;
+        return `<div class="itemcard">${itemCardMarkup(entry.value, id)}<details><summary>Full item definition</summary><pre>${esc(pretty(entry.value))}</pre></details></div>`;
+    }).join(''));
+}
+$('worlditemcards').onclick = e => {
+    const button = e.target.closest('[data-retry-item]');
+    if (!button) return;
+    itemDefinitions.delete(Number(button.dataset.retryItem));
+    renderCurrentTarget();
+};
 function render() {
     if (!state)
         return;
@@ -163,6 +238,7 @@ function render() {
     if (selectedGround && (selectedGround.zone !== s.zone_id || selectedGround.instance !== s.instance ||
         !(s.ground_spawns ?? []).some(g => g.drop_id === selectedGround.id)))
         selectedGround = null;
+    renderDoorPopup();
     text('zonehead', `${s.zone ?? '—'} · ${s.zone_id}`);
     text('metrics', `Tick ${s.tick.toLocaleString()}  ·  ↑ ${s.sent.toLocaleString()}  ↓ ${s.received.toLocaleString()}  ·  ${s.mobs.length} entities`);
     status(s.ready ? 'Connected' : 'Zone not ready', s.ready);
@@ -211,11 +287,13 @@ function renderCurrentTarget() {
             const values = [ ['Item ID', drop.items.map(i => i.item_id).join(' / ')], ['Distance', distance == null ? '—' : `${num(distance)} yd`], ['ΔZ', dz == null ? '—' : `${dz >= 0 ? '+' : ''}${num(dz)}`], ['Position', hasPosition ? `X ${num(p[0])} Y ${num(p[1])} Z ${num(p[2])}` : '—'] ];
             html('targetmetrics', values.map(([label, value]) => `<div class="target-metric"><span>${esc(label)}</span><b>${esc(value)}</b></div>`).join(''));
             text('mobdetail', pretty({ kind: 'ground_spawn', ...drop }));
+            renderGroundItems(drop);
             $('mobaction').disabled = true;
             $('cleartarget').disabled = false;
             return;
         }
     }
+    renderGroundItems(null);
     const bot = s.bots.find(b => b.spawned && b.id === selectedMob);
     const m = bot || s.mobs.find(m => m.id === selectedMob);
     text('targetname', m ? m.name : selectedMob === null ? 'No target selected' : 'Entity no longer present');
@@ -269,6 +347,7 @@ function fitBotRadius(minimum) {
 function inspectMob(id, openWorld = true) {
     // Selection is not a camera command. A marker click stays on its map;
     // list clicks may open the World inspector, but never resize either map.
+    closeDoorPopup();
     selectedGround = null;
     selectedMob = id;
     if (openWorld && tab !== 'world')
@@ -279,6 +358,7 @@ function inspectMob(id, openWorld = true) {
 function inspectGround(id) {
     if (!state || !(state.ground_spawns ?? []).some(g => g.drop_id === id))
         return;
+    closeDoorPopup();
     selectedMob = null;
     selectedGround = { id, zone: state.zone_id, instance: state.instance };
     if (tab !== 'world') {
@@ -509,7 +589,8 @@ for (const id of ['minimap', 'worldmap']) {
         mapPointer.set(id, { clientX: e.clientX, clientY: e.clientY });
         const hit = mapHit(id, e);
         if (hit?.kind === 'ground') inspectGround(hit.id);
-        else if (!hit?.kind) inspectMob(hit?.id ?? null, false);
+        else if (hit?.kind === 'door') inspectDoor(hit, e);
+        else inspectMob(hit?.id ?? null, false);
     };
     canvas.onmousemove = e => {
         const previous = hoverKey(mapHit(id, mapPointer.get(id)));
@@ -574,12 +655,15 @@ $('equipmentpreview').onclick = e => { const b = e.target.closest('[data-slot]')
     selectSlot(b.dataset.slot);
 } };
 $('openinventory').onclick = () => setTab('inventory');
+function itemCardMarkup(x, id, instance = null) {
+    const statNames = [['AC', 'ac'], ['Damage', 'damage'], ['Delay', 'delay'], ['HP', 'hp'], ['Mana', 'mana'], ['Endurance', 'endurance'], ['STR', 'strength'], ['STA', 'stamina'], ['AGI', 'agility'], ['DEX', 'dexterity'], ['WIS', 'wisdom'], ['INT', 'intelligence'], ['CHA', 'charisma'], ['Attack', 'attack'], ['Haste', 'haste'], ['Magic resist', 'resist_magic'], ['Fire resist', 'resist_fire'], ['Cold resist', 'resist_cold'], ['Poison resist', 'resist_poison'], ['Disease resist', 'resist_disease']];
+    return `<div class="itemtitle">${esc(x.name)}</div><div class="muted">#${id} · ${esc(x.required_level ? 'Required level ' + x.required_level : 'No required level')} ${x.no_drop ? ' · NO DROP' : ''}${x.lore_group ? ' · LORE' : ''}</div>${instance ? `<p>Slot ${esc(instance.client_slot)} · Stack ${esc(instance.item.stack)} · Charges ${esc(instance.item.charges)}${instance.item.attuned ? ' · Attuned' : ''}</p>` : ''}<div class="stats">${statNames.filter(([_, k]) => x[k]).map(([label, k]) => `<div class="stat"><span>${label}</span><b>${esc(x[k])}</b></div>`).join('')}</div>${x.bag_slots ? `<p>${x.bag_slots} bag slots · Size ${esc(x.bag_size)}</p>` : ''}<p class="muted">${x.classes?.map(k => cls[k]).filter(Boolean).join(' · ') ?? ''}</p>${[['Click', 'click_effect'], ['Proc', 'proc_effect'], ['Worn', 'worn_effect'], ['Focus', 'focus_effect'], ['Bard', 'bard_effect'], ['Scroll', 'scroll_effect']].filter(([_, key]) => Number(x[key]) > 0).map(([label, key]) => `<p class="muted">${label}: Spell #${esc(x[key])}</p>`).join('')}${x.recommended_level ? `<p class="muted">Recommended level ${esc(x.recommended_level)}</p>` : ''}${x.no_transfer ? '<p class="muted">NO TRANSFER</p>' : ''}`;
+}
 async function inspectItem(id, instance = null) { selectedItem = id; text('itemcard', 'Loading item #' + id + '…'); text('itemdetail', ''); try {
     let x = await api('/item/' + id);
     if (selectedItem !== id)
         return;
-    const statNames = [['AC', 'ac'], ['Damage', 'damage'], ['Delay', 'delay'], ['HP', 'hp'], ['Mana', 'mana'], ['Endurance', 'endurance'], ['STR', 'strength'], ['STA', 'stamina'], ['AGI', 'agility'], ['DEX', 'dexterity'], ['WIS', 'wisdom'], ['INT', 'intelligence'], ['CHA', 'charisma'], ['Attack', 'attack'], ['Haste', 'haste'], ['Magic resist', 'resist_magic'], ['Fire resist', 'resist_fire'], ['Cold resist', 'resist_cold'], ['Poison resist', 'resist_poison'], ['Disease resist', 'resist_disease']];
-    html('itemcard', `<div class="itemtitle">${esc(x.name)}</div><div class="muted">#${id} · ${esc(x.required_level ? 'Required level ' + x.required_level : 'No required level')} ${x.no_drop ? ' · NO DROP' : ''}${x.lore_group ? ' · LORE' : ''}</div>${instance ? `<p>Slot ${esc(instance.client_slot)} · Stack ${esc(instance.item.stack)} · Charges ${esc(instance.item.charges)}${instance.item.attuned ? ' · Attuned' : ''}</p>` : ''}<div class="stats">${statNames.filter(([_, k]) => x[k]).map(([label, k]) => `<div class="stat"><span>${label}</span><b>${esc(x[k])}</b></div>`).join('')}</div>${x.bag_slots ? `<p>${x.bag_slots} bag slots · Size ${esc(x.bag_size)}</p>` : ''}<p class="muted">${x.classes?.map(k => cls[k]).filter(Boolean).join(' · ') ?? ''}</p>`);
+    html('itemcard', itemCardMarkup(x, id, instance));
     text('itemdetail', pretty({ definition: x, instance }));
 }
 catch (e) {

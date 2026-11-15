@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any, get_type_hints
 
 from eqclient4.nav.maps import ZoneMap, _read_map
+from eqclient4.structs import Door
 from eqclient4.structs.constants import _WORN, CLASS_ID_TO_NAME, RACE_ID_TO_NAME
 from eqclient4.world import Mob
 from fastapi import FastAPI, HTTPException, Query
@@ -83,6 +84,9 @@ def install_dashboard(
     los_error = False
     los_results: dict[tuple, bool] = {}
     los_cursor = 0
+    # Build the model index once per loaded item book, not on every UI poll.
+    weapon_model_book = None
+    weapon_models: frozenset[str] = frozenset()
 
     def annotate_los(data: dict, source: ZoneMap | None) -> dict:
         nonlocal los_zone, los_source, los_mesh, los_error, los_cursor
@@ -158,7 +162,15 @@ def install_dashboard(
     @app.get("/dashboard/state")
     def state():
         def collect(loop):
+            nonlocal weapon_model_book, weapon_models
             w = loop.world
+            if weapon_model_book is not w.item_book:
+                weapon_model_book = w.item_book
+                weapon_models = frozenset(
+                    Door.normalize_model(item.id_file)
+                    for item in w.item_book.by_id.values()
+                    if item.id_file and item.damage > 0 and item.delay > 0
+                )
             c = w.character
             pos = w.position
             move = w.movement
@@ -306,7 +318,8 @@ def install_dashboard(
                     "doors": [
                         {"id": d.id, "name": d.name, "position": d.position,
                          "opened": d.opened, "open_type": d.open_type,
-                         "kind": d.kind.value,
+                         "kind": d.classify(weapon_models).value,
+                         "model_key": d.model_key,
                          "heading": d.heading, "incline": d.incline,
                          "size": d.size, "invert_state": d.invert_state,
                          "door_param": d.door_param}

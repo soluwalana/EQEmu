@@ -282,6 +282,10 @@
       <article class="panel">
        <h2>Entity inspector</h2>
        <pre id="mobdetail">Select a mob or map marker.</pre>
+       <section id="worlditems" hidden>
+        <h3>Cached item definition</h3>
+        <div id="worlditemcards" class="list"></div>
+       </section>
        <details>
         <summary>Current route</summary>
         <pre id="pathdetail">No active path.</pre>
@@ -396,6 +400,18 @@
     Local debug session · RoF2
    </span>
   </footer>
+  <dialog id="doorpopup" class="object-popup" aria-labelledby="doorpopup-title">
+   <div class="inline object-popup-heading">
+    <strong id="doorpopup-title"></strong>
+    <button id="doorpopup-close" type="button" aria-label="Close object inspector">Close</button>
+   </div>
+   <p id="doorpopup-summary"></p>
+   <p class="position" id="doorpopup-position"></p>
+   <details>
+    <summary>Full object record</summary>
+    <pre id="doorpopup-data"></pre>
+   </details>
+  </dialog>
   <script defer="" src="/dashboard/assets/map3d.js">
   </script>
   <script defer="" src="/dashboard/assets/app.js">
