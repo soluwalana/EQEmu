@@ -139,7 +139,7 @@ int bot_command_init(void)
 		bot_command_add("healrotationclearhot", "Clears the HOT of a heal rotation instance", AccountStatus::Player, bot_command_heal_rotation_clear_hot) ||
 		bot_command_add("healrotationcleartargets", "Removes all targets from a heal rotation instance", AccountStatus::Player, bot_command_heal_rotation_clear_targets) ||
 		bot_command_add("healrotationcreate", "Creates a bot heal rotation instance and designates a leader", AccountStatus::Player, bot_command_heal_rotation_create) ||
-		bot_command_add("healrotationdelete", "Deletes a bot heal rotation entry by leader", AccountStatus::Player, bot_command_heal_rotation_delete) ||
+		bot_command_add("healrotationdelete", "Deletes live and saved bot heal rotations by leader or all", AccountStatus::Player, bot_command_heal_rotation_delete) ||
 		bot_command_add("healrotationfastheals", "Enables or disables fast heals within the heal rotation instance", AccountStatus::Player, bot_command_heal_rotation_fast_heals) ||
 		bot_command_add("healrotationlist", "Reports heal rotation instance(s) information", AccountStatus::Player, bot_command_heal_rotation_list) ||
 		bot_command_add("healrotationremovemember", "Removes a bot from a heal rotation instance", AccountStatus::Player, bot_command_heal_rotation_remove_member) ||

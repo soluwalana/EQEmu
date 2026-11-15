@@ -871,7 +871,21 @@ void bot_command_heal_rotation_delete(Client* c, const Seperator* sep)
 	}
 
 	if (all_flag) {
-		database.botdb.DeleteAllHealRotations(c->CharacterID());
+		if (!database.botdb.DeleteAllHealRotations(c->CharacterID())) {
+			c->Message(Chat::White, "Failed to delete all heal rotations");
+			return;
+		}
+
+		std::vector<Bot*> spawned_bots;
+		MyBots::PopulateSBL_BySpawnedBots(c, spawned_bots);
+		for (auto* bot : spawned_bots) {
+			if (bot && !bot->DestroyHealRotation()) {
+				c->Message(Chat::White, "Failed to delete all heal rotations");
+				return;
+			}
+		}
+
+		c->Message(Chat::White, "Succeeded in deleting all heal rotations");
 		return;
 	}
 
@@ -894,7 +908,8 @@ void bot_command_heal_rotation_delete(Client* c, const Seperator* sep)
 		return;
 	}
 
-	if (!database.botdb.DeleteHealRotation(current_member->GetBotID())) {
+	if (!database.botdb.DeleteHealRotation(current_member->GetBotID()) ||
+		!current_member->DestroyHealRotation()) {
 		c->Message(Chat::White, "Failed to delete %s's heal rotation", current_member->GetCleanName());
 		return;
 	}

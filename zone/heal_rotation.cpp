@@ -126,9 +126,13 @@ bool HealRotation::RemoveMemberFromPool(Bot* hr_member)
 		if (member_iter != hr_member)
 			continue;
 
+		const bool was_active = m_is_active;
 		m_member_is_casting.erase(hr_member);
 		m_member_pool.remove(hr_member);
 		valid_state();
+		if (!was_active) {
+			Stop();
+		}
 		return true;
 	}
 	return false;
@@ -137,8 +141,6 @@ bool HealRotation::RemoveMemberFromPool(Bot* hr_member)
 bool HealRotation::RemoveTargetFromPool(Mob* hr_target)
 {
 	if (!hr_target)
-		return true;
-	if (!valid_state())
 		return true;
 
 	for (auto target_iter : m_target_pool) {
@@ -153,8 +155,15 @@ bool HealRotation::RemoveTargetFromPool(Mob* hr_target)
 		m_target_healing_stats_2.erase(hr_target);
 		m_target_healing_stats_1.erase(hr_target);
 		m_target_pool.remove(hr_target);
-		m_casting_target_poke = false;
-		bias_targets();
+
+		// Removing a target must not restart a stopped rotation.
+		if (m_is_active && valid_state()) {
+			m_casting_target_poke = false;
+			bias_targets();
+		} else {
+			m_casting_target_poke = true;
+			m_active_heal_target = false;
+		}
 		return true;
 	}
 
@@ -163,43 +172,45 @@ bool HealRotation::RemoveTargetFromPool(Mob* hr_target)
 
 bool HealRotation::ClearMemberPool()
 {
-	m_is_active = false;
-	m_cycle_pool.clear();
-	m_casting_target_poke = false;
-	m_active_heal_target = false;
-
-	if (!ClearTargetPool())
+	if (!ClearTargetPool()) {
 		LogError("failed to clear m_target_pool (size: [{}])", m_target_pool.size());
+		return false;
+	}
 
-	auto& clear_list = const_cast<const std::list<Bot*>&>(m_member_pool);
-	for (auto member_iter : clear_list)
-		member_iter->LeaveHealRotationMemberPool();
+	// Detach the list before callbacks remove their back-references.
+	std::list<Bot*> clear_list;
+	clear_list.swap(m_member_pool);
+	m_member_is_casting.clear();
 
-	return true;
+	for (auto* member : clear_list) {
+		if (member && member->MemberOfHealRotation()->get() == this) {
+			member->LeaveHealRotationMemberPool();
+		}
+	}
+
+	return m_member_pool.empty();
 }
 
 bool HealRotation::ClearTargetPool()
 {
+	Stop();
 	m_hot_target = nullptr;
 	m_hot_active = false;
-	m_is_active = false;
-
-	auto& clear_list = const_cast<const std::list<Mob*>&>(m_target_pool);
-	for (auto target_iter : clear_list)
-		target_iter->LeaveHealRotationTargetPool();
-
-	//m_casting_target_poke = false;
-	//bias_targets();
-
-	// strange crash point...
-	// bias_targets() should be returning on m_target_pool.empty()
-	// and setting this two properties as below
 	m_casting_target_poke = true;
-	m_active_heal_target = false;
-	// instead, the list retains mob shared_ptrs and
-	// attempts to process them - and crashes program
-	// predominate when adaptive_healing = true
-	// (shared_ptr now has a delayed gc action? this did work before...)
+
+	// LeaveHealRotationTargetPool calls back into RemoveTargetFromPool.
+	// Detach the list first so that it cannot invalidate our iterators,
+	// re-enter target cleanup, or sort the pool during teardown.
+	std::list<Mob*> clear_list;
+	clear_list.swap(m_target_pool);
+	m_target_healing_stats_1.clear();
+	m_target_healing_stats_2.clear();
+
+	for (auto* target : clear_list) {
+		if (target && target->TargetOfHealRotation()->get() == this) {
+			target->LeaveHealRotationTargetPool();
+		}
+	}
 
 	return m_target_pool.empty();
 }

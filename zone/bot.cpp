@@ -8088,8 +8088,17 @@ bool Bot::DestroyHealRotation()
 	if (!IsHealRotationMember())
 		return true;
 
-	m_member_of_heal_rotation->ClearTargetPool();
-	m_member_of_heal_rotation->ClearMemberPool();
+	// Clearing members releases their shared_ptrs, including our own.
+	// Keep the rotation alive until all cleanup callbacks have returned.
+	auto rotation = m_member_of_heal_rotation;
+	if (!rotation->ClearMemberPool()) {
+		return false;
+	}
+
+	// A member previously pruned from the pool can still hold a reference.
+	if (m_member_of_heal_rotation == rotation) {
+		m_member_of_heal_rotation.reset();
+	}
 
 	return !IsHealRotationMember();
 }
