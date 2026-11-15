@@ -34,7 +34,7 @@ class Talk(Action):
         self.active_path = None
         self.sent = False
         self.task_text = task_text
-        self.received : list[EQStruct] = []
+        self.received: list[EQStruct] = []
         self.ticks_after_send = 0
 
     def opcodes(self) -> tuple[str, ...]:

@@ -298,7 +298,7 @@ def construct_action(run: ActionRun, world: World, loop: Loop) -> Action:
         elif annotation is not None:
             bound.arguments[name] = TypeAdapter(annotation).validate_python(input_value(value))
     action = cls(*bound.args, **bound.kwargs)
-    if getattr(action, "_world", None) is not world or getattr(action, "_loop", None) is not loop:
+    if getattr(action, "world", None) is not world or getattr(action, "loop", None) is not loop:
         raise TypeError("Action must initialize its base with the live world and loop")
     return action
 

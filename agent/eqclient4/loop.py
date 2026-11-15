@@ -160,6 +160,7 @@ class Loop:
 
     def start(self, login: Login, creation: CreateCharacter) -> Client:
         for action in self.journal.load_actions():
+            action.loop = self
             self.queue.restore(action)
 
         session = connect(login, creation)

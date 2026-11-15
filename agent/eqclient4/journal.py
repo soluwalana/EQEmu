@@ -544,7 +544,7 @@ def _kind(action: Action) -> str:
     return f"{cls.__module__}:{cls.__qualname__}"
 
 
-_HELD = ("messages", "active_path", "_world")
+_HELD = ("messages", "active_path", "world", "loop")
 
 
 def _dump(action: Action) -> bytes:

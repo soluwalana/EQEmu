@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from eqclient4.nav.path import EQPath
     from eqclient4.world import World
 
+from eqclient4.bots import Bot
 from eqclient4.log import log
 from eqclient4.mob import Mob
 from eqclient4.nav.travel import first_leg
@@ -78,9 +79,97 @@ class Action:
 
         self.commands: list[Command] = []
 
-    def target(self) -> None:
+    def _send_target_mouse(self) -> None:
+        self.loop.send(
+            "OP_TargetMouse",
+            OP_TargetMouse(int(self.target_id) & 65535).serialize(),
+        )
+        self.target_sent = True
+        return
 
-        pass
+    def _send_consider(self) -> None:
+        self.loop.send(
+            "OP_Consider",
+            OP_Consider(
+                player_id=int(self.world.self_id or 0), target_id=int(self.target_id) & 65535
+            ).serialize(),
+        )
+        self._consider_sent = True
+        return
+
+    def handle_mob_targeting(self, mob: Mob) -> None:
+        if self.mob_targeted != self.target_id:
+            self.wait("TARGET")
+
+        if not self.can_see_mob(mob):
+            return
+
+        if mob.is_treasure and float(mob.distance) > 25:
+            self.move_closer(mob)
+            return
+
+        if self.mob_targeted == self.target_id:
+            return
+
+        if not self.target_sent:
+            self._send_target_mouse()
+            return
+
+        if not self._consider_sent:
+            self._send_consider()
+            return
+
+        message = self.consume("OP_Consider", self.con_matcher)
+        if message:
+            mob.targeted = True
+            self.mob_targeted = self.target_id
+            self.unwait("TARGET")
+            self.target_sent = False
+            self._consider_sent = False
+            return
+
+    def handle_bot_targeting(self, bot: Bot) -> None:
+        if self.mob_targeted != self.target_id:
+            previous = self.world.bot_roster.bot_by_spawn_id(self.mob_targeted)
+            if previous:
+                previous.targeted = False
+            self.wait("bot-target")
+
+        if not self.world.line_of_sight(bot.position):
+            self.send_channel_message(f"^botsummon byname {bot.name}")
+            return
+
+        if self.mob_targeted == self.target_id:
+            return
+
+        if not self.target_sent:
+            self._send_target_mouse()
+            return
+
+        if not self._consider_sent:
+            self._send_consider()
+            return
+
+        message = self.consume("OP_Consider", self.con_matcher)
+        if message:
+            bot.targeted = True
+            self.mob_targeted = self.target_id
+            self.unwait("bot-target")
+            self.target_sent = False
+            self._consider_sent = False
+            return
+
+    def handle_targeting(self) -> None:
+        if not self.target_id:
+            return
+
+        if mob := self.world.mobs.find_mob(self.target_id):
+            self.handle_mob_targeting(mob)
+            return
+
+        if bot := self.world.bot_roster.bot_by_spawn_id(self.target_id):
+            self.handle_bot_targeting(bot)
+            return
 
     def send_commands(self) -> None:
         """Complete after all commands have been sent and response or timeout has occurred."""
@@ -101,18 +190,15 @@ class Action:
                 self.send_channel_message(command.text, sleep_time=0.025)
                 return
 
-            failure_pattern = None
-
             failure_patterns = []
             if len(command.failure_patterns) > 0:
                 failure_patterns = command.failure_patterns
             else:
                 log.warning(f"No failure patterns provided for command: {command.text}")
 
-            failure_pattern = re.compile("(" + "|".join(failure_patterns) + ")")
-
             failure = None
-            if failure_pattern:
+            if failure_patterns:
+                failure_pattern = re.compile("(" + "|".join(failure_patterns) + ")")
                 failure = self.re_has_response(failure_pattern)
 
             if failure:
@@ -143,52 +229,9 @@ class Action:
         self.unwait("send-commands")
 
     def step(self) -> None:
-        if not self.target_id:
-            return
 
-        mob = self.world.mobs.find_mob(self.target_id)
-        if not mob:
-            return
-
-        if self.mob_targeted != self.target_id:
-            self.wait("TARGET")
-
-        if not self.can_see_mob(mob):
-            return
-
-        if mob.is_treasure and float(mob.distance) > 25:
-            self.move_closer(mob)
-            return
-
-        if self.mob_targeted == self.target_id:
-            return
-
-        if not self.target_sent:
-            self.loop.send(
-                "OP_TargetMouse",
-                OP_TargetMouse(int(self.target_id) & 65535).serialize(),
-            )
-            self.target_sent = True
-            return
-
-        if not self._consider_sent:
-            self.loop.send(
-                "OP_Consider",
-                OP_Consider(
-                    player_id=int(self.world.self_id or 0), target_id=int(self.target_id) & 65535
-                ).serialize(),
-            )
-            self._consider_sent = True
-            return
-
-        message = self.consume("OP_Consider", self.con_matcher)
-        if message:
-            mob.targeted = True
-            self.mob_targeted = self.target_id
-            self.unwait("TARGET")
-            self.target_sent = False
-            self._consider_sent = False
-            return
+        self.handle_targeting()
+        
 
     def re_has_response(self, matcher: re.Pattern) -> re.Match | None:
         def _message_text(msg: EQStruct) -> str:

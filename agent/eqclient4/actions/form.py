@@ -1,5 +1,6 @@
 import re
 import time
+from functools import partial
 from typing import TYPE_CHECKING, Callable
 
 from eqclient4.action import Action, Command
@@ -112,61 +113,13 @@ class FormParty(Action):
             "OP_Consider",
         )
 
-    def bot_target(self) -> None:
-        if not self.target_id:
-            return
-
-        bot = self.world.bot_roster.bot_by_spawn_id(self.target_id)
-        if not bot:
-            return
-
-        if self.mob_targeted != self.target_id:
-            previous = self.world.bot_roster.bot_by_spawn_id(self.mob_targeted)
-            if previous:
-                previous.targeted = False
-            self.wait("bot-target")
-
-        if not self.world.line_of_sight(bot.position):
-            self.send_channel_message(f"^botsummon byname {bot.name}")
-            return
-
-        if self.mob_targeted == self.target_id:
-            return
-
-        if not self.target_sent:
-            self.loop.send(
-                "OP_TargetMouse",
-                OP_TargetMouse(int(self.target_id) & 65535).serialize(),
-            )
-            self.target_sent = True
-            return
-
-        if not self._consider_sent:
-            self.loop.send(
-                "OP_Consider",
-                OP_Consider(
-                    player_id=int(self.world.self_id or 0), target_id=int(self.target_id) & 65535
-                ).serialize(),
-            )
-            self._consider_sent = True
-            return
-
-        message = self.consume("OP_Consider", self.con_matcher)
-        if message:
-            bot.targeted = True
-            self.mob_targeted = self.target_id
-            self.unwait("bot-target")
-            self.target_sent = False
-            self._consider_sent = False
-            return
-
     def step(self) -> None:
+        super().step()
+        if self.waiting_for("TARGET"):
+            return
+
         if self.waiting_for("formation-check"):
             self.prepare_formation()
-            return
-
-        self.bot_target()
-        if self.waiting_for("bot-target"):
             return
 
         if self.waiting_for("init"):
@@ -456,8 +409,8 @@ class FormParty(Action):
                     *ACTIONABLE_FAILURES,
                     *BOT_COMMAND_FAILURES,
                 ],
-                success_callback=lambda: log.info("Follow reset spawned"),
-                failure_callback=lambda: log.error("Failed to reset follow"),
+                success_callback=partial(log.info, "Follow reset spawned"),
+                failure_callback=partial(log.error, "Failed to reset follow"),
             )
         )
 
@@ -474,9 +427,9 @@ class FormParty(Action):
                             rf"Failed to stop {clr.name}'s Heal Rotation",
                             *HEAL_ROTATION_COMMON_FAILURES,
                         ],
-                        success_callback=lambda: log.info(f"Heal rotation stopped for {clr.name}"),
-                        failure_callback=lambda: log.error(
-                            f"Failed to stop heal rotation for {clr.name}"
+                        success_callback=partial(log.info, f"Heal rotation stopped for {clr.name}"),
+                        failure_callback=partial(
+                            log.error, f"Failed to stop heal rotation for {clr.name}"
                         ),
                     ),
                     Command(
@@ -494,11 +447,11 @@ class FormParty(Action):
                             rf"Failed to remove {clr.name} from their Heal Rotation",
                             *HEAL_ROTATION_COMMON_FAILURES,
                         ],
-                        success_callback=lambda: log.info(
-                            f"Heal rotation cleared targets for {clr.name}"
+                        success_callback=partial(
+                            log.info, f"Heal rotation cleared targets for {clr.name}"
                         ),
-                        failure_callback=lambda: log.error(
-                            f"Failed to clear targets for {clr.name}"
+                        failure_callback=partial(
+                            log.error, f"Failed to clear targets for {clr.name}"
                         ),
                     ),
                     Command(
@@ -508,9 +461,9 @@ class FormParty(Action):
                             rf"Failed to delete {clr.name}'s heal rotation",
                             *HEAL_ROTATION_COMMON_FAILURES,
                         ],
-                        success_callback=lambda: log.info(f"Heal rotation deleted for {clr.name}"),
-                        failure_callback=lambda: log.error(
-                            f"Failed to delete heal rotation for {clr.name}"
+                        success_callback=partial(log.info, f"Heal rotation deleted for {clr.name}"),
+                        failure_callback=partial(
+                            log.error, f"Failed to delete heal rotation for {clr.name}"
                         ),
                     ),
                     Command(
@@ -531,8 +484,8 @@ class FormParty(Action):
                             *BOT_COMMAND_FAILURES,
                         ],
                         success_callback=lambda: self.rotation_commands(clr),
-                        failure_callback=lambda: log.error(
-                            f"Failed to create heal rotation for {clr.name}"
+                        failure_callback=partial(
+                            log.error, f"Failed to create heal rotation for {clr.name}"
                         ),
                     ),
                 ]
@@ -582,7 +535,7 @@ class FormParty(Action):
                         *BOT_COMMAND_FAILURES,
                     ],
                     success_callback=self.settings_saver(bot, "stance", stance),
-                    failure_callback=lambda: log.error(f"Failed to set stance for {name}"),
+                    failure_callback=partial(log.error, f"Failed to set stance for {name}"),
                 )
             )
 
@@ -645,7 +598,7 @@ class FormParty(Action):
                             *BOT_COMMAND_FAILURES,
                         ],
                         success_callback=self.settings_saver(bot, key, value),
-                        failure_callback=lambda: log.error(f"Failed to set {key} for {name}"),
+                        failure_callback=partial(log.error, f"Failed to set {key} for {name}"),
                     )
                 )
 
@@ -699,9 +652,9 @@ class FormParty(Action):
                         r"Error: New member bot dereferenced to nullptr",
                         *HEAL_ROTATION_COMMON_FAILURES,
                     ],
-                    success_callback=lambda: log.info(f"Heal rotation added member {bot.name}"),
-                    failure_callback=lambda: log.error(
-                        f"Failed to add member {bot.name} to heal rotation"
+                    success_callback=partial(log.info, f"Heal rotation added member {bot.name}"),
+                    failure_callback=partial(
+                        log.error, f"Failed to add member {bot.name} to heal rotation"
                     ),
                 )
             )
@@ -721,6 +674,13 @@ class FormParty(Action):
                         rf"{target}'s entity type is not an allowable heal target",
                         *HEAL_ROTATION_COMMON_FAILURES,
                     ],
+                    success_callback=partial(
+                        log.info, f"Heal rotation added target {target} to {healer.name}"
+                    ),
+                    failure_callback=partial(
+                        log.error,
+                        f"Failed to add target {target} to heal rotation for {healer.name}",
+                    ),
                 )
             )
 
@@ -742,11 +702,11 @@ class FormParty(Action):
                             r"You must specify a valid \[armor_type: \d+-\d+\] to use this command",
                             *HEAL_ROTATION_COMMON_FAILURES,
                         ],
-                        success_callback=lambda: log.info(
-                            f"Heal rotation adjusted safe for {healer.name}"
+                        success_callback=partial(
+                            log.info, f"Heal rotation adjusted safe for {healer.name}"
                         ),
-                        failure_callback=lambda: log.error(
-                            f"Failed to adjust safe for {healer.name}"
+                        failure_callback=partial(
+                            log.error, f"Failed to adjust safe for {healer.name}"
                         ),
                     ),
                     Command(
@@ -757,11 +717,11 @@ class FormParty(Action):
                             r"You must specify a valid \[armor_type: \d+-\d+\] to use this command",
                             *HEAL_ROTATION_COMMON_FAILURES,
                         ],
-                        success_callback=lambda: log.info(
-                            f"Heal rotation adjusted critical for {healer.name}"
+                        success_callback=partial(
+                            log.info, f"Heal rotation adjusted critical for {healer.name}"
                         ),
-                        failure_callback=lambda: log.error(
-                            f"Failed to adjust critical for {healer.name}"
+                        failure_callback=partial(
+                            log.error, f"Failed to adjust critical for {healer.name}"
                         ),
                     ),
                 ]
@@ -778,8 +738,8 @@ class FormParty(Action):
                     *HEAL_ROTATION_COMMON_FAILURES,
                 ],
                 success_callback=self.settings_saver(healer, "heal", "1"),
-                failure_callback=lambda: log.error(
-                    f"Failed to save heal rotation for {healer.name}"
+                failure_callback=partial(
+                    log.error, f"Failed to save heal rotation for {healer.name}"
                 ),
             )
         )
@@ -797,8 +757,8 @@ class FormParty(Action):
                     *BOT_COMMAND_FAILURES,
                 ],
                 success_callback=self.settings_saver(healer, "heal", "1"),
-                failure_callback=lambda: log.error(
-                    f"Failed to start heal rotation for {healer.name}"
+                failure_callback=partial(
+                    log.error, f"Failed to start heal rotation for {healer.name}"
                 ),
             )
         )
@@ -812,9 +772,9 @@ class FormParty(Action):
                     *HEAL_ROTATION_COMMON_FAILURES,
                     *BOT_COMMAND_FAILURES,
                 ],
-                success_callback=lambda: log.info(f"Heal rotation listed for {healer.name}"),
-                failure_callback=lambda: log.error(
-                    f"Failed to list heal rotation for {healer.name}"
+                success_callback=partial(log.info, f"Heal rotation listed for {healer.name}"),
+                failure_callback=partial(
+                    log.error, f"Failed to list heal rotation for {healer.name}"
                 ),
             )
         )
