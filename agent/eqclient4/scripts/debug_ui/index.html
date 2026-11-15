@@ -249,7 +249,13 @@
         <input id="wireexclude" placeholder="Type opcode…" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="wireexcludesuggestions"/>
         <div class="opcode-suggestions" id="wireexcludesuggestions" role="listbox" aria-label="Exclude opcode suggestions" hidden></div>
        </div>
-       <div class="packet-rule-note"><small>Both logs · Tab/Enter to add · × to remove · exclusions win · empty include = all</small><button id="clearpacketrules" type="button">Clear lists</button></div>
+       <div class="packet-rule-note"><small>Tab/Enter to add · × to remove · exclusions win · empty include = all</small><button id="wireclearpacketrules" type="button">Clear lists</button></div>
+      </div>
+      <div class="packet-history-controls">
+       <button id="wirehistoryload" type="button">Load history</button>
+       <button id="wirehistoryolder" type="button" disabled>Load older</button>
+       <button id="wirehistorylive" type="button" disabled>Return to live</button>
+       <small id="wirehistorystatus">Live · history searches the capture database.</small>
       </div>
       <div class="log" id="wirelog">
       </div>
@@ -261,10 +267,36 @@
        </span>
       </h2>
       <div class="inline">
-       <input id="combatfilter" placeholder="Filter combat"/>
+       <input id="combatfilter" placeholder="Search opcode / message / payload" aria-label="Search combat packets"/>
+       <select id="combatdirection" aria-label="Combat direction">
+        <option value="all">Both directions</option>
+        <option value="recv">Incoming</option>
+        <option value="send">Outgoing</option>
+       </select>
        <button id="pausecombat">
         Pause
        </button>
+      </div>
+      <div class="packet-rules">
+       <label for="combatinclude">Include opcodes</label>
+       <div class="opcode-editor" id="combatincludeeditor">
+        <div class="opcode-chip-row" id="combatincludechips"></div>
+        <input id="combatinclude" placeholder="Type opcode…" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="combatincludesuggestions"/>
+        <div class="opcode-suggestions" id="combatincludesuggestions" role="listbox" aria-label="Include opcode suggestions" hidden></div>
+       </div>
+       <label for="combatexclude">Exclude opcodes</label>
+       <div class="opcode-editor" id="combatexcludeeditor">
+        <div class="opcode-chip-row" id="combatexcludechips"></div>
+        <input id="combatexclude" placeholder="Type opcode…" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="combatexcludesuggestions"/>
+        <div class="opcode-suggestions" id="combatexcludesuggestions" role="listbox" aria-label="Exclude opcode suggestions" hidden></div>
+       </div>
+       <div class="packet-rule-note"><small>Tab/Enter to add · × to remove · exclusions win · empty include = all</small><button id="combatclearpacketrules" type="button">Clear lists</button></div>
+      </div>
+      <div class="packet-history-controls">
+       <button id="combathistoryload" type="button">Load history</button>
+       <button id="combathistoryolder" type="button" disabled>Load older</button>
+       <button id="combathistorylive" type="button" disabled>Return to live</button>
+       <small id="combathistorystatus">Live · history searches the capture database.</small>
       </div>
       <div class="log" id="combatlog">
       </div>

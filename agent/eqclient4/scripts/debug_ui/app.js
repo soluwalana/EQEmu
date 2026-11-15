@@ -963,12 +963,12 @@ function packetSummary(p) { const v = p.payload; if (!v)
     return `${entityName(v.entity_id)} · ${v.fade ? 'Faded' : 'Buff'} spell #${v.buff?.spell_id} · ${v.buff?.duration} ticks`; if (p.opcode === 'OP_BuffCreate' || p.opcode === 'OP_TargetBuffs')
     return `${entityName(v.entity_id)} · ${v.entries?.length ?? 0} buff icons`; if (p.opcode === 'OP_BeginCast')
     return `${entityName(v.caster_id ?? v.caster)} · casting spell #${v.spell_id}`; return v.message ?? v.text ?? JSON.stringify(v); }
-function packetLine(p) { let summary = packetSummary(p); return `<button class="packet" data-packet="${p.id}" title="${esc(summary)}"><span class="stamp">${esc(p.timestamp.slice(11, 23))}</span> <span class="${p.direction}">${p.direction === 'recv' ? '↓' : '↑'}</span> ${esc(p.opcode)} <span class="stamp">${p.size} B</span> ${esc(summary)}</button>`; }
-// Shared exact opcode rules. Draft text is not a filter until committed.
+function packetLine(p, stream) { let summary = packetSummary(p); const selected = inspectedStream === stream && String(p.id) === selectedPacketId; return `<button class="packet${selected ? ' selected-packet' : ''}" aria-pressed="${selected}" data-packet="${p.id}" title="${esc(summary)}"><span class="stamp">${esc(p.timestamp.slice(11, 23))}</span> <span class="${p.direction}">${p.direction === 'recv' ? '↓' : '↑'}</span> ${esc(p.opcode)} <span class="stamp">${p.size} B</span> ${esc(summary)}</button>`; }
+// Per-stream exact opcode rules. Draft text is not a filter until committed.
 function opcodeTerms(value) {
     return [...new Map(value.split(/[\s,;]+/).filter(Boolean).map(s => [s.toLowerCase(), s])).values()];
 }
-const packetRuleLists = { include: new Map(), exclude: new Map() };
+const packetRuleLists = Object.fromEntries(["wire", "combat"].map(stream => [stream, { include: new Map(), exclude: new Map() }]));
 const observedOpcodes = new Map();
 function rememberOpcode(opcode) {
     if (typeof opcode === 'string' && opcode) observedOpcodes.set(opcode.toLowerCase(), opcode);
@@ -981,35 +981,44 @@ function knownPacketOpcodes() {
     }
     return known;
 }
-function packetRules() {
-    return { include: new Set(packetRuleLists.include.keys()), exclude: new Set(packetRuleLists.exclude.keys()) };
+function packetRules(stream) {
+    const lists = packetRuleLists[stream];
+    return { include: new Set(lists.include.keys()), exclude: new Set(lists.exclude.keys()) };
 }
 function opcodeAllowed(opcode, rules) {
     const key = String(opcode).toLowerCase();
     return !rules.exclude.has(key) && (!rules.include.size || rules.include.has(key));
 }
-function refreshPacketFilters() {
-    renderLog('wire');
-    renderLog('combat');
+function refreshPacketFilters(stream) {
+    const l = logs[stream];
+    // Invalidate in-flight live queries and restart at the matching tail.
+    l.generation = (l.generation ?? 0) + 1;
+    l.after = -1;
+    if (!l.paused) l.rows = [];
+    l.resetRows = true;
+    l.more = false;
+    renderLog(stream);
+    if (l.history) loadHistory(stream, true);
+    if (!l.paused) pollLog(stream);
 }
 const packetRuleEditors = {};
-function updatePacketRules() {
-    for (const editor of Object.values(packetRuleEditors)) editor.renderChips();
-    refreshPacketFilters();
+function updatePacketRules(stream) {
+    for (const editor of Object.values(packetRuleEditors[stream])) editor.renderChips();
+    refreshPacketFilters(stream);
 }
-function putPacketRule(kind, opcode, move = false) {
+function putPacketRule(stream, kind, opcode, move = false) {
     const value = opcode.trim();
     if (!value) return;
     const key = value.toLowerCase();
     const known = knownPacketOpcodes();
-    packetRuleLists[kind].set(key, known.get(key) ?? value);
+    packetRuleLists[stream][kind].set(key, known.get(key) ?? value);
     // Explicit inspector actions move the opcode rather than leaving a conflict.
-    if (move) packetRuleLists[kind === 'include' ? 'exclude' : 'include'].delete(key);
+    if (move) packetRuleLists[stream][kind === 'include' ? 'exclude' : 'include'].delete(key);
 }
-function createPacketRuleEditor(kind) {
-    const input = $('wire' + kind), chips = $('wire' + kind + 'chips');
-    const suggestions = $('wire' + kind + 'suggestions');
-    const list = packetRuleLists[kind];
+function createPacketRuleEditor(stream, kind) {
+    const input = $(stream + kind), chips = $(stream + kind + 'chips');
+    const suggestions = $(stream + kind + 'suggestions');
+    const list = packetRuleLists[stream][kind];
     let matches = [], active = 0;
     function closeSuggestions() {
         suggestions.hidden = true;
@@ -1042,14 +1051,14 @@ function createPacketRuleEditor(kind) {
         suggestions.children[active]?.scrollIntoView({ block: 'nearest' });
     }
     function commit(value) {
-        for (const op of opcodeTerms(value)) putPacketRule(kind, op);
+        for (const op of opcodeTerms(value)) putPacketRule(stream, kind, op);
         input.value = '';
         closeSuggestions();
-        updatePacketRules();
+        updatePacketRules(stream);
     }
     function remove(key, focus = true) {
         list.delete(key);
-        updatePacketRules();
+        updatePacketRules(stream);
         if (focus) input.focus();
         renderSuggestions();
     }
@@ -1067,9 +1076,9 @@ function createPacketRuleEditor(kind) {
         const parts = input.value.split(/[\s,;]+/);
         if (parts.length > 1) {
             const draft = parts.pop();
-            for (const op of opcodeTerms(parts.join(' '))) putPacketRule(kind, op);
+            for (const op of opcodeTerms(parts.join(' '))) putPacketRule(stream, kind, op);
             input.value = draft;
-            updatePacketRules();
+            updatePacketRules(stream);
         }
         renderSuggestions();
     };
@@ -1103,63 +1112,145 @@ function createPacketRuleEditor(kind) {
     };
     return { renderChips, clearDraft() { input.value = ''; closeSuggestions(); } };
 }
-for (const kind of ['include', 'exclude']) packetRuleEditors[kind] = createPacketRuleEditor(kind);
-let inspectedPacket = null, packetSelection = 0;
-function addPacketRule(kind) {
-    if (!inspectedPacket?.opcode) return;
-    rememberOpcode(inspectedPacket.opcode);
-    putPacketRule(kind, inspectedPacket.opcode, true);
-    updatePacketRules();
+for (const stream of ['wire', 'combat']) {
+    packetRuleEditors[stream] = {};
+    for (const kind of ['include', 'exclude'])
+        packetRuleEditors[stream][kind] = createPacketRuleEditor(stream, kind);
+    $(stream + 'clearpacketrules').onclick = () => {
+        for (const kind of ['include', 'exclude']) {
+            packetRuleLists[stream][kind].clear();
+            packetRuleEditors[stream][kind].clearDraft();
+        }
+        updatePacketRules(stream);
+    };
 }
-$('clearpacketrules').onclick = () => {
-    for (const kind of ['include', 'exclude']) {
-        packetRuleLists[kind].clear();
-        packetRuleEditors[kind].clearDraft();
-    }
-    updatePacketRules();
-};
+let inspectedPacket = null, packetSelection = 0, inspectedStream = null, selectedPacketId = null;
+function addPacketRule(kind) {
+    if (!inspectedPacket?.opcode || !inspectedStream) return;
+    rememberOpcode(inspectedPacket.opcode);
+    putPacketRule(inspectedStream, kind, inspectedPacket.opcode, true);
+    updatePacketRules(inspectedStream);
+}
 $('packetinclude').onclick = () => addPacketRule('include');
 $('packetexclude').onclick = () => addPacketRule('exclude');
-function renderLog(kind) { const l = logs[kind], box = $(kind + 'log'), q = $(kind + 'filter').value.toLowerCase(), dir = kind === 'wire' ? $('direction').value : 'all'; const rules = packetRules(); let rows = l.rows.filter(p => opcodeAllowed(p.opcode, rules) && (dir === 'all' || p.direction === dir) && (!q || (p.opcode + ' ' + packetSummary(p) + ' ' + JSON.stringify(p.payload ?? '')).toLowerCase().includes(q))); const tail = box.scrollHeight - box.scrollTop - box.clientHeight < 40; html(kind + 'log', rows.slice(-500).map(packetLine).join('')); if (tail)
-    box.scrollTop = box.scrollHeight; text(kind + 'count', `${rows.length} / ${l.rows.length} buffered${l.paused ? ' · paused' : ''}${l.more ? ' · catching up' : ''}`); }
-async function pollLog(kind) { const l = logs[kind]; if (l.busy || l.paused)
-    return; l.busy = true; try {
-    let r = await api(`/dashboard/packets?stream=${kind}&after=${l.after}&limit=250`);
-    l.after = r.next;
-    l.more = r.has_more;
-    if (r.packets.length) {
+function packetQuery(stream) {
+    const params = new URLSearchParams({ stream, direction: $(stream === 'wire' ? 'direction' : 'combatdirection').value });
+    for (const kind of ['include', 'exclude'])
+        for (const opcode of packetRuleLists[stream][kind].values()) params.append(kind, opcode);
+    return params;
+}
+function renderLog(stream) {
+    const l = logs[stream], box = $(stream + 'log'), h = l.history;
+    const q = $(stream + 'filter').value.trim().toLowerCase();
+    const dir = $(stream === 'wire' ? 'direction' : 'combatdirection').value;
+    const rules = packetRules(stream);
+    // History is already filtered before pagination on the server.
+    const rows = h ? h.rows : l.rows.filter(p => opcodeAllowed(p.opcode, rules) &&
+        (dir === 'all' || p.direction === dir) && (!q || (p.opcode + ' ' + packetSummary(p) + ' ' + JSON.stringify(p.payload ?? '')).toLowerCase().includes(q)));
+    const tail = box.scrollHeight - box.scrollTop - box.clientHeight < 40;
+    html(stream + 'log', rows.slice(-500).map(p => packetLine(p, stream)).join(''));
+    if (!h && tail && tab === 'logs') box.scrollTop = box.scrollHeight;
+    text(stream + 'count', h ? `${rows.length} historical${h.loading ? ' · loading…' : ''}` : `${rows.length} / ${l.rows.length} buffered${l.paused ? ' · paused' : ''}${l.more ? ' · catching up' : ''}`);
+    $(stream + 'historyolder').disabled = !h || h.loading || !h.more;
+    $(stream + 'historylive').disabled = !h;
+    $(stream + 'historyload').disabled = !!h?.loading;
+    text(stream + 'historystatus', h ? (h.error || (h.loading ? 'Searching capture…' : h.more ? 'Older matching records may be available.' : 'Beginning of matching history.')) : 'Live · history searches the capture database.');
+}
+async function loadHistory(stream, reset = false) {
+    const l = logs[stream];
+    if (!reset && (!l.history || l.history.loading || !l.history.more)) return;
+    const h = reset ? { rows: [], before: null, more: true, loading: false, error: '' } : l.history;
+    l.history = h;
+    h.loading = true;
+    h.error = '';
+    renderLog(stream);
+    const params = packetQuery(stream);
+    params.set('limit', '250');
+    params.set('q', $(stream + 'filter').value);
+    if (h.before !== null) params.set('before', String(h.before));
+    try {
+        const r = await api('/dashboard/packets/history?' + params);
+        if (l.history !== h) return;
+        h.rows = r.packets;
+        h.before = r.next_before;
+        h.more = r.has_more;
         for (const packet of r.packets) rememberOpcode(packet.opcode);
-        l.rows.push(...r.packets);
-        if (l.rows.length > 1500)
-            l.rows.splice(0, l.rows.length - 1500);
+    } catch (e) {
+        if (l.history !== h) return;
+        h.error = e.message;
+    } finally {
+        if (l.history === h) {
+            h.loading = false;
+            renderLog(stream);
+            $(stream + 'log').scrollTop = 0;
+        }
     }
-    if (tab === 'logs')
-        renderLog(kind);
 }
-catch (e) {
-    if (tab === 'logs')
-        text(kind + 'count', e.message);
+async function pollLog(stream) {
+    const l = logs[stream];
+    if (l.busy || l.paused) return;
+    l.busy = true;
+    const generation = l.generation ?? 0;
+    try {
+        const params = packetQuery(stream);
+        params.set('after', String(l.after));
+        params.set('limit', '250');
+        const r = await api('/dashboard/packets?' + params);
+        if (generation !== (l.generation ?? 0)) return;
+        if (l.resetRows || l.after === -1) { l.rows = []; l.resetRows = false; }
+        l.after = r.next;
+        l.more = r.has_more;
+        if (r.packets.length) {
+            for (const packet of r.packets) rememberOpcode(packet.opcode);
+            l.rows.push(...r.packets);
+            if (l.rows.length > 1500) l.rows.splice(0, l.rows.length - 1500);
+        }
+        if (tab === 'logs' && !l.history) renderLog(stream);
+    } catch (e) {
+        if (tab === 'logs' && !l.history && generation === (l.generation ?? 0)) text(stream + 'count', e.message);
+    } finally {
+        l.busy = false;
+    }
 }
-finally {
-    l.busy = false;
-} }
-for (const k of ['wire', 'combat']) {
-    $('pause' + k).onclick = () => { logs[k].paused = !logs[k].paused; text('pause' + k, logs[k].paused ? 'Resume' : 'Pause'); renderLog(k); };
-    $(k + 'filter').oninput = () => renderLog(k);
-    $(k + 'log').onclick = async e => {
+for (const stream of ['wire', 'combat']) {
+    const l = logs[stream];
+    $('pause' + stream).onclick = () => {
+        l.paused = !l.paused;
+        text('pause' + stream, l.paused ? 'Resume' : 'Pause');
+        renderLog(stream);
+    };
+    let searchTimer;
+    $(stream + 'filter').oninput = () => {
+        clearTimeout(searchTimer);
+        if (l.history) {
+            // Discard the old query immediately so its response cannot replace the new one.
+            l.history = { rows: [], before: null, more: false, loading: true, error: '' };
+            renderLog(stream);
+            const pending = l.history;
+            searchTimer = setTimeout(() => { if (l.history === pending) loadHistory(stream, true); }, 250);
+        } else renderLog(stream);
+    };
+    $(stream === 'wire' ? 'direction' : 'combatdirection').onchange = () => refreshPacketFilters(stream);
+    $(stream + 'historyload').onclick = () => loadHistory(stream, true);
+    $(stream + 'historyolder').onclick = () => loadHistory(stream);
+    $(stream + 'historylive').onclick = () => { l.history = null; renderLog(stream); };
+    $(stream + 'log').onclick = async e => {
         const button = e.target.closest('[data-packet]');
         if (!button) return;
         const generation = ++packetSelection;
         const id = button.dataset.packet;
+        selectedPacketId = id;
+        inspectedStream = stream;
         inspectedPacket = null;
         $('packetinclude').disabled = $('packetexclude').disabled = true;
         text('packetopcode', 'Loading packet…');
         text('packetdetail', 'Loading…');
+        renderLog('wire'); renderLog('combat');
         try {
             const packet = await api('/dashboard/packet/' + id);
             if (generation !== packetSelection) return;
             inspectedPacket = packet;
-            text('packetopcode', packet.opcode);
+            text('packetopcode', `${packet.opcode} · ${stream === 'wire' ? 'Wire' : 'Combat'} · #${packet.id}`);
             text('packetdetail', pretty(packet));
             $('packetinclude').disabled = $('packetexclude').disabled = !packet.opcode;
         } catch (e) {
@@ -1169,7 +1260,6 @@ for (const k of ['wire', 'combat']) {
         }
     };
 }
-$('direction').onchange = () => renderLog('wire');
 // No overlapping state requests: an expensive EQ tick must not accumulate HTTP work.
 async function tick() { const start = performance.now(); try {
     state = await api('/dashboard/state');

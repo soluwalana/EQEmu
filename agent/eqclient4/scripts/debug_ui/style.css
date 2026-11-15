@@ -231,7 +231,7 @@ main:has(#world.active){flex:1;display:flex;flex-direction:column;min-height:0;w
 .spawn-input-row input{flex:1 1 90px;width:0;min-width:0}
 .use-target-id{flex:0 0 auto;white-space:nowrap;font-size:11px;padding:6px 8px;color:var(--cyan)}
 
-/* Packet rules apply to both streams without changing capture or polling. */
+/* Independent packet rules and history controls for each stream. */
 .packet-rules{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:7px 10px;align-items:center;margin:0 0 12px}
 .packet-rules label{font-size:12px;color:var(--gold)}
 .packet-rules input{width:100%;font-family:var(--mono);font-size:12px}
@@ -248,7 +248,7 @@ main:has(#world.active){flex:1;display:flex;flex-direction:column;min-height:0;w
 .opcode-chip-row{display:contents}
 .packet-rules .opcode-editor input{flex:1 1 120px;width:0;min-width:90px;padding:5px 2px;border:0;background:transparent;outline:none}
 .opcode-chip{display:inline-flex;align-items:center;gap:5px;max-width:100%;min-width:0;background:#233e45;color:#bcf0f2;border:1px solid #365b63;border-radius:5px;padding:3px 4px 3px 7px;font:11px var(--mono)}
-#wireexcludeeditor .opcode-chip{background:#422b37;border-color:#70404f;color:#f6b9c0}
+#wireexcludeeditor .opcode-chip,#combatexcludeeditor .opcode-chip{background:#422b37;border-color:#70404f;color:#f6b9c0}
 .opcode-chip>span{overflow-wrap:anywhere;min-width:0}
 .opcode-chip-remove{padding:0 4px;border:0;background:transparent;color:inherit;font-size:15px;line-height:1.15;flex:none}
 .opcode-chip-remove:hover,.opcode-chip-remove:focus-visible{background:#ffffff20;outline:1px solid currentColor}
@@ -256,3 +256,8 @@ main:has(#world.active){flex:1;display:flex;flex-direction:column;min-height:0;w
 .opcode-suggestions[hidden]{display:none}
 .opcode-suggestion{font:12px var(--mono);padding:7px 8px;border-radius:4px;cursor:pointer;overflow-wrap:anywhere}
 .opcode-suggestion[aria-selected=true],.opcode-suggestion:hover{background:#254e54;color:#eaffff}
+
+.packet-history-controls{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:0 0 10px}
+.packet-history-controls button{font-size:12px;padding:5px 8px}
+.packet-history-controls small{flex:1 1 100%;letter-spacing:0;font-size:11px}
+.packet.selected-packet{background:#254e54;color:#eaffff;box-shadow:inset 3px 0 var(--cyan)}

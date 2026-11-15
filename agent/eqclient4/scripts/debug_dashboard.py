@@ -430,23 +430,55 @@ def install_dashboard(
 
         return with_loop(search)
 
+    def packet_clause(stream: str, direction: str, include: list[str], exclude: list[str]):
+        ops = sorted(COMBAT)
+        clause = "Character = ? AND Op_Code " + ("IN" if stream == "combat" else "NOT IN")
+        clause += " (" + ",".join("?" for _ in ops) + ")"
+        args = [character, *ops]
+        if direction != "all":
+            clause += " AND Direction = ?"
+            args.append(direction)
+        for terms, operator in ((include, "IN"), (exclude, "NOT IN")):
+            keys = sorted({term.strip().lower() for term in terms if term.strip()})
+            if keys:
+                clause += " AND lower(Op_Code) " + operator + " (" + ",".join("?" for _ in keys) + ")"
+                args.extend(keys)
+        return clause, args
+
+    def packet_row(r, stream: str, *, decode_all: bool = False) -> dict:
+        raw = bytes(r["Bytes"])
+        payload = None
+        # High-volume movement packets need only metadata in the live view.
+        if decode_all or stream == "combat" or r["Op_Code"] in {
+            "OP_ChannelMessage", "OP_SpecialMesg", "OP_SimpleMessage",
+        }:
+            try:
+                parsed = decode_packet(r["Op_Code"], raw)
+                payload = json_value(parsed) if parsed is not None else None
+            except Exception:
+                pass
+        return {
+            "id": r["id"],
+            "timestamp": r["TimeSeen"],
+            "opcode": r["Op_Code"],
+            "direction": r["Direction"],
+            "size": len(raw),
+            "payload": payload,
+        }
+
     @app.get("/dashboard/packets")
     def packets(
         after: int = Query(-1, ge=-1),
         limit: int = Query(250, ge=1, le=1000),
         stream: str = Query("wire", pattern="^(wire|combat)$"),
+        direction: str = Query("all", pattern="^(all|recv|send)$"),
+        include: list[str] = Query(default=[]),
+        exclude: list[str] = Query(default=[]),
     ):
-        # Separate cursors let combat remain responsive during packet floods.
-        # Initial request tails the capture rather than replaying login history.
-        ops = sorted(COMBAT)
-        clause = "Character = ? AND Op_Code " + ("IN" if stream == "combat" else "NOT IN")
-        clause += " (" + ",".join("?" for _ in ops) + ")"
-        args = [character, *ops]
-        # Snapshot the high-water mark first. If a sparse stream has no new
-        # matching rows, advance to this mark instead of rescanning history.
-        # The upper bound prevents races with new commits between queries.
+        # Filter before LIMIT so excluded floods never consume the live buffer.
+        clause, args = packet_clause(stream, direction, include, exclude)
         high = query("SELECT COALESCE(MAX(rowid), 0) AS high FROM packets", [])[0]["high"]
-        if after > high:  # capture was replaced/truncated
+        if after > high:
             after = -1
         if after == -1:
             rows = query(
@@ -465,32 +497,58 @@ def install_dashboard(
                 [*args, after, high, limit + 1],
             )
             cursor = rows[limit - 1]["id"] if len(rows) > limit else high
+        return {
+            "packets": [packet_row(r, stream) for r in rows[:limit]],
+            "next": cursor,
+            "has_more": len(rows) > limit,
+        }
+
+    @app.get("/dashboard/packets/history")
+    def packet_history(
+        before: int | None = Query(None, ge=1),
+        limit: int = Query(250, ge=1, le=1000),
+        stream: str = Query("wire", pattern="^(wire|combat)$"),
+        direction: str = Query("all", pattern="^(all|recv|send)$"),
+        include: list[str] = Query(default=[]),
+        exclude: list[str] = Query(default=[]),
+        q: str = Query("", max_length=4096),
+    ):
+        # Historical pages use an exclusive rowid cursor, never the live cursor.
+        # Decode/search bounded batches, advancing past *scanned* rows even
+        # when none match. A sparse search can continue with Load older.
+        import json
+
+        clause, args = packet_clause(stream, direction, include, exclude)
+        high = query("SELECT COALESCE(MAX(rowid), 0) AS high FROM packets", [])[0]["high"]
+        cursor = min(before, high + 1) if before is not None else high + 1
+        needle = q.strip().lower()
+        scan_limit = max(limit, 2000) if needle else limit
+        rows = query(
+            "SELECT rowid AS id, TimeSeen, Op_Code, Direction, Bytes FROM packets WHERE "
+            + clause
+            + " AND rowid < ? ORDER BY rowid DESC LIMIT ?",
+            [*args, cursor, scan_limit + 1],
+        )
         result = []
-        for r in rows[:limit]:
-            raw = bytes(r["Bytes"])
-            payload = None
-            # High-volume movement packets need only metadata until inspected.
-            if stream == "combat" or r["Op_Code"] in {
-                "OP_ChannelMessage",
-                "OP_SpecialMesg",
-                "OP_SimpleMessage",
-            }:
-                try:
-                    parsed = decode_packet(r["Op_Code"], raw)
-                    payload = json_value(parsed) if parsed is not None else None
-                except Exception:
-                    pass
-            result.append(
-                {
-                    "id": r["id"],
-                    "timestamp": r["TimeSeen"],
-                    "opcode": r["Op_Code"],
-                    "direction": r["Direction"],
-                    "size": len(raw),
-                    "payload": payload,
-                }
-            )
-        return {"packets": result, "next": cursor, "has_more": len(rows) > limit}
+        scanned = 0
+        for r in rows[:scan_limit]:
+            cursor = r["id"]
+            scanned += 1
+            packet = packet_row(r, stream, decode_all=bool(needle))
+            if needle:
+                haystack = str(packet["opcode"]) + " " + json.dumps(
+                    packet["payload"], ensure_ascii=False, default=str
+                )
+                if needle not in haystack.lower():
+                    continue
+            result.append(packet)
+            if len(result) == limit:
+                break
+        return {
+            "packets": list(reversed(result)),
+            "next_before": cursor,
+            "has_more": scanned < len(rows),
+        }
 
     @app.get("/dashboard/packet/{packet_id}")
     def packet(packet_id: int):
