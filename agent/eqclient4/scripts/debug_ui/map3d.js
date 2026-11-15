@@ -86,6 +86,27 @@
         }
         return new Float32Array(vertices);
     }
+    // The packet describes placement and scale, not the client's actual mesh.
+    // Use a simple hinged panel as a diagnostic proxy (EQ heading: 512/rev).
+    function doorPanel(door) {
+        const heading=(Number.isFinite(door.heading)?door.heading:0)*2*Math.PI/512;
+        const size=Number.isFinite(door.size)&&door.size>0?door.size/100:1;
+        const width=8*size,height=12*size,thickness=.6*size;
+        const across=[Math.cos(heading),-Math.sin(heading),0];
+        const normal=[Math.sin(heading),Math.cos(heading),0];
+        // Approximate the packet position as the base center of the closed leaf.
+        const hinge=door.position.map((v,i)=>v-across[i]*width/2);
+        const axis=door.opened?normal:across;
+        const depth=door.opened?across.map(v=>-v):normal;
+        const at=(x,y,z)=>hinge.map((v,i)=>v+axis[i]*x+depth[i]*y+(i===2?z:0));
+        const points=[at(0,-thickness/2,0),at(width,-thickness/2,0),
+            at(width,thickness/2,0),at(0,thickness/2,0),
+            at(0,-thickness/2,height),at(width,-thickness/2,height),
+            at(width,thickness/2,height),at(0,thickness/2,height)];
+        const faces=[0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,
+            1,2,6,1,6,5,2,3,7,2,7,6,3,0,4,3,4,7];
+        return {points,vertices:faces.flatMap(i=>points[i]),center:at(width/2,0,height/2)};
+    }
     function program(gl, sources=shaders) {
         const compile = (type, source) => {
             const s = gl.createShader(type); gl.shaderSource(s, source); gl.compileShader(s);
@@ -138,6 +159,7 @@
             this.attr=gl.getAttribLocation(this.prog,'position');
             gl.enable(gl.DEPTH_TEST); gl.clearColor(.039,.067,.105,1);
             this.initSpheres();
+            this.doorBuffer=gl.createBuffer();
             const wrap=document.createElement('div'); wrap.className='eq3d-wrap';
             this.hud.before(wrap); wrap.append(glCanvas,this.hud); this.hud.classList.add('eq3d-hud');
             const tools=document.createElement('div'); tools.className='eq3d-tools'; wrap.before(tools);
@@ -240,6 +262,26 @@
             gl.drawArraysInstanced(gl.TRIANGLES,0,sphere.count,instances.length/7);
             gl.bindVertexArray(null);
         }
+        drawDoors(panels){
+            if(!panels.length)return;
+            const gl=this.gl,l=this.loc;
+            // Camera/geometry uniforms are already set by draw(). Doors use
+            // the terrain depth buffer, but the cutaway filters their anchors
+            // rather than slicing the panels to zero height at floor level.
+            gl.useProgram(this.prog);gl.bindVertexArray(null);
+            gl.bindBuffer(gl.ARRAY_BUFFER,this.doorBuffer);
+            gl.enableVertexAttribArray(this.attr);gl.vertexAttribPointer(this.attr,3,gl.FLOAT,false,0,0);
+            gl.uniform1f(l.highZ,1e9);gl.uniform1f(l.localRange,0);
+            gl.uniform1i(l.navStyle,0);gl.uniform1f(l.lift,0);gl.uniform1f(l.opacity,1);
+            for(const opened of [false,true]){
+                const vertices=[];
+                for(const p of panels)if(Boolean(p.door.opened)===opened)vertices.push(...p.model.vertices);
+                if(!vertices.length)continue;
+                gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(vertices),gl.DYNAMIC_DRAW);
+                gl.uniform3fv(l.tint,opened?[.71,.57,.96]:[.95,.65,.33]);
+                gl.drawArrays(gl.TRIANGLES,0,vertices.length/3);
+            }
+        }
         resetCamera(){this.follow=true;this.center=null;this.zoom=1;this.manualRadius=null;}
         resetZoom(){this.zoom=1;this.manualRadius=null;}
         redraw(){if(this.latest){const [radius,state,selected,hits,layout]=this.latest; if(this.mode3d)this.draw(radius,state,selected,hits,layout);else if(typeof window.EQMap3D.fallback==='function')window.EQMap3D.fallback(this.id,radius);}}
@@ -321,6 +363,16 @@
             const objectVisible=p=>valid(p) && p[2]<=highZ &&
                 (!this.localGeometry || horizontalDistance(p,s.position)<=range);
             const mobVisible=m=>this.showHiddenMobs || m.id===selected || objectVisible(m.position);
+            const doorPanels=[];
+            if(this.doors)for(const door of s.doors??[]){
+                if(!objectVisible(door.position))continue;
+                const model=doorPanel(door), corners=model.points.map(project);
+                const xs=corners.map(p=>p[0]),ys=corners.map(p=>p[1]);
+                const bounds=[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)];
+                if(bounds[2]<0||bounds[0]>w||bounds[3]<0||bounds[1]>h)continue;
+                doorPanels.push({door,model,bounds});
+            }
+            this.drawDoors(doorPanels);
             const line=(a,b,color,dashed=false,width=1.5)=>{ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.setLineDash(dashed?[5,4]:[]);ctx.stroke();ctx.setLineDash([]);};
             const circle=(p,r,color,stroke)=>{ctx.beginPath();ctx.arc(p[0],p[1],r,0,2*Math.PI);ctx.fillStyle=color;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.5;ctx.stroke();}};
             const label=(msg,p,color='#dce9f6')=>{const width=ctx.measureText(msg).width,x=clamp(p[0]+3,0,Math.max(0,w-width-6)),y=clamp(p[1]-15,0,h-17);ctx.fillStyle='#09111c';ctx.fillRect(x,y,width+6,17);ctx.fillStyle=color;ctx.fillText(msg,x+3,y+13);};
@@ -360,19 +412,18 @@
                 const d=Math.hypot(end[0]-player[0],end[1]-player[1]);if(d>.01)line(player,[player[0]+(end[0]-player[0])/d*18,player[1]+(end[1]-player[1])/d*18],'#5bc9d5',false,3);
             }
             this.drawSpheres(instances,center,right,up,nearAxis,scale,depthScale,w,h);
-            // Door and ground-spawn symbols are screen-facing diagnostic markers,
-            // anchored to the observed world position, not fabricated models.
+            // Keep a small anchor dot for distant/occluded panels, and hover
+            // over their projected footprint without using a mob spawn ID.
             const objectHits=[];
-            if(this.doors)for(const d of s.doors??[]){
-                if(!objectVisible(d.position))continue;
-                const p=project(d.position);if(!visible(p))continue;
-                const [x,y]=p, color=d.opened?'#b69df5':'#f2a65a';
-                ctx.save();ctx.strokeStyle=color;ctx.fillStyle='#101923';ctx.lineWidth=2;
-                ctx.fillRect(x-6,y-9,12,18);ctx.strokeRect(x-6,y-9,12,18);
-                if(d.opened){ctx.beginPath();ctx.moveTo(x-6,y-9);ctx.lineTo(x+2,y-5);ctx.lineTo(x+2,y+5);ctx.lineTo(x-6,y+9);ctx.stroke();}
-                else{ctx.beginPath();ctx.arc(x+3,y,1.5,0,2*Math.PI);ctx.fillStyle=color;ctx.fill();}
-                ctx.restore();
-                objectHits.push({x,y,radius:10,kind:'door',name:d.name,id:d.id,detail:d.opened?'Open':'Closed'});
+            for(const {door:d,model,bounds} of doorPanels){
+                const [left,top,rightEdge,bottom]=bounds;
+                const p=project(model.center), anchor=project(d.position);
+                const color=d.opened?'#b69df5':'#f2a65a';
+                if(visible(anchor))circle(anchor,2,color,'#101923');
+                const x=clamp(p[0],0,w),y=clamp(p[1],0,h);
+                const radius=Math.max(8,Math.hypot(rightEdge-left,bottom-top)/2);
+                const detail=`${d.opened?'Open':'Closed'} · type ${d.open_type} · heading ${Number(d.heading??0).toFixed(1)} · size ${d.size??100}% · incline ${d.incline??0} · proxy model`;
+                objectHits.push({x,y,radius,kind:'door',name:d.name,id:d.id,detail});
             }
             if(this.groundSpawns){
                 const drops=new Map();
@@ -401,7 +452,7 @@
             const axis=[w-35,h-32];for(const [v,color,name] of [[[1,0,0],'#ec7784','X'],[[0,1,0],'#6ccc91','Y'],[[0,0,1],'#699fe8','Z']]){const p=[axis[0]+dot(v,right)*22,axis[1]-dot(v,up)*22];line(axis,p,color,false,2);ctx.fillStyle=color;ctx.fillText(name,p[0],p[1]);}
             hits.set(this.id,entities);
             const count=s.bots.filter(b=>b.spawned).length;document.getElementById(this.id+'bots').textContent=`${bots.length} / ${count} spawned bots in view`;
-            const data=this.geometry;this.info.textContent=this.error?`${this.error} · live entities still shown`:data?`${(data.collision.length/9).toLocaleString()} collision triangles · ${(data.nav.length/9).toLocaleString()} nav triangles · ${data.flags&4?(data.water.length/9).toLocaleString()+' water triangles':'No water map'} · ${this.cut?'Z ≤ '+(s.position[2]+this.cutHeight).toFixed(1):'All floors'} · ${this.localGeometry?'Local geometry '+Math.round(range)+' yd':'Full geometry'} · ${hiddenMobs} mobs hidden · route/spheres X-ray · drag pan, right/Alt-drag orbit, wheel zoom`:'Loading zone geometry…';
+            const data=this.geometry;this.info.textContent=this.error?`${this.error} · live entities still shown`:data?`${(data.collision.length/9).toLocaleString()} collision triangles · ${(data.nav.length/9).toLocaleString()} nav triangles · ${data.flags&4?(data.water.length/9).toLocaleString()+' water triangles':'No water map'} · ${this.cut?'Z ≤ '+(s.position[2]+this.cutHeight).toFixed(1):'All floors'} · ${this.localGeometry?'Local geometry '+Math.round(range)+' yd':'Full geometry'} · ${hiddenMobs} mobs hidden · doors: scaled proxy panels · route/spheres X-ray · drag pan, right/Alt-drag orbit, wheel zoom`:'Loading zone geometry…';
         }
     }
     window.EQMap3D={

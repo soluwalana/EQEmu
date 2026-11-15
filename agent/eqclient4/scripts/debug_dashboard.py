@@ -305,7 +305,10 @@ def install_dashboard(
                     "mobs": mobs,
                     "doors": [
                         {"id": d.id, "name": d.name, "position": d.position,
-                         "opened": d.opened, "open_type": d.open_type}
+                         "opened": d.opened, "open_type": d.open_type,
+                         "heading": d.heading, "incline": d.incline,
+                         "size": d.size, "invert_state": d.invert_state,
+                         "door_param": d.door_param}
                         for d in w.doors.values()
                     ],
                     "ground_spawns": [

@@ -49,13 +49,11 @@ from eqclient4.quests.graph import QuestGraph, ensure_graph
 from eqclient4.structs import (
     EQStruct,
     Door,
-    DoorAction,
     OP_ClickDoor,
     OP_ClientUpdate,
     OP_Consider,
     OP_FindPersonReply,
     OP_FloatListThing,
-    OP_MoveDoor,
     OP_NewZone,
     OP_TaskActivity,
     OP_TaskDescription,
