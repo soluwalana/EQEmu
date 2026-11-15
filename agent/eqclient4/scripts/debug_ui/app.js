@@ -326,7 +326,7 @@ function mapHit(id, event) {
     const x = (event.clientX - rect.left) * canvas.width / rect.width, y = (event.clientY - rect.top) * canvas.height / rect.height;
     const hits = (mapHits.get(id) || []).map(m => ({ ...m, d: Math.hypot(x - m.x, y - m.y) })).sort((a, b) => a.d - b.d);
     // Prefer a visible bot marker over a mob hidden behind it.
-    return hits.find(m => m.bot && m.d <= m.radius + 3) ?? hits.find(m => m.d < 15);
+    return hits.find(m => m.bot && m.d <= m.radius + 3) ?? hits.find(m => m.kind ? m.d <= m.radius : m.d < 15);
 }
 for (const id of ['minimap', 'worldmap']) {
     const legend = $(id + 'bots').parentElement.querySelector('.legend');
@@ -337,12 +337,12 @@ for (const id of ['minimap', 'worldmap']) {
     }
     $(id).onclick = e => {
         const hit = mapHit(id, e);
-        inspectMob(hit?.id ?? null, false);
+        if (!hit?.kind) inspectMob(hit?.id ?? null, false);
     };
     $(id).onmousemove = e => {
         const hit = mapHit(id, e);
         $(id).style.cursor = hit ? 'pointer' : 'default';
-        $(id).title = hit ? `${hit.name} · Spawn #${hit.id} · ${losLabel(hit)}` : '';
+        $(id).title = hit ? (hit.kind ? `${hit.name} · ${hit.kind === 'door' ? 'Door' : 'Drop'} #${hit.id} · ${hit.detail}` : `${hit.name} · Spawn #${hit.id} · ${losLabel(hit)}`) : '';
     };
     $(id).onmouseleave = () => { $(id).title = ''; $(id).style.cursor = 'default'; };
 }

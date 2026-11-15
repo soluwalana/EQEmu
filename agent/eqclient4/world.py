@@ -48,6 +48,8 @@ from eqclient4.nav.water import WaterMap, load_water
 from eqclient4.quests.graph import QuestGraph, ensure_graph
 from eqclient4.structs import (
     EQStruct,
+    Door,
+    DoorAction,
     OP_ClickDoor,
     OP_ClientUpdate,
     OP_Consider,
@@ -58,7 +60,7 @@ from eqclient4.structs import (
     OP_TaskActivity,
     OP_TaskDescription,
 )
-from eqclient4.utils import Door, Faction, eq_heading
+from eqclient4.utils import Faction, eq_heading
 
 
 class TaskBook:
@@ -920,11 +922,25 @@ class Movement:
 
     def _on_move_door(self, row: OP_MoveDoor) -> None:
         door_id = row.door_id
-        self.open_ids.add(door_id)
-        self.clicked.discard(door_id)
         mem_door = self.world.doors.get(door_id)
-        if mem_door:
-            mem_door.opened = True
+
+        if not mem_door:
+            return
+
+        if row.action not in (DoorAction.OPEN, DoorAction.CLOSE):
+            return
+
+        if row.action == DoorAction.OPEN:
+            mem_door.opened = not bool(mem_door.invert_state)
+        else:
+            mem_door.opened = bool(mem_door.invert_state)
+
+        if mem_door.opened:
+            self.open_ids.add(door_id)
+        else:
+            self.open_ids.discard(door_id)
+
+        self.clicked.discard(door_id)
 
     def _on_find_reply(self, row: OP_FindPersonReply) -> None:
         points = list(row.points)

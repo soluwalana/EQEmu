@@ -348,17 +348,3 @@ class Faction:
         }[fs]
         self.standing = fs
 
-
-@dataclass
-class Door:
-    id: int
-    name: str
-    x: float
-    y: float
-    z: float
-    open_type: int = 0
-    opened: bool = False
-
-    @property
-    def position(self) -> tuple[float, float, float]:
-        return (self.x, self.y, self.z)

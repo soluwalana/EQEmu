@@ -125,6 +125,7 @@
             this.follow=true; this.center=null; this.zoom=1; this.manualRadius=null; this.zone=null; this.generation=0;
             this.terrain=true; this.nav=true; this.water=true; this.cut=false; this.cutHeight=0; this.mode3d=true;
             this.localGeometry=false; this.showHiddenMobs=false;
+            this.doors=true; this.groundSpawns=false;
             this.buffers=[]; this.geometry=null; this.minZ=null; this.error=''; this.latest=null; this.drag=null; this.skipClick=false;
             const glCanvas=document.createElement('canvas'); glCanvas.className='eq3d-gl';
             glCanvas.width=this.hud.width; glCanvas.height=this.hud.height;
@@ -150,6 +151,7 @@
             button('Orbit',()=>{this.el=.72;this.az=-.55;this.redraw();});
             button('Fit target',()=>this.fitTarget());
             check('Terrain',true,v=>this.terrain=v); check('Navmesh',true,v=>this.nav=v); check('Water',true,v=>this.water=v);
+            check('Doors',true,v=>this.doors=v); check('Ground spawns',false,v=>this.groundSpawns=v);
             check('Cutaway',false,v=>this.cut=v);
             check('Local geometry',false,v=>this.localGeometry=v);
             check('Show hidden mobs',false,v=>this.showHiddenMobs=v);
@@ -316,9 +318,9 @@
             // has no horizontal range limit; the screen projection handles
             // viewport culling independently of zoom and camera tilt.
             // A selected target remains an intentional X-ray diagnostic.
-            const mobVisible=m=>this.showHiddenMobs || m.id===selected ||
-                (m.position[2]<=highZ &&
-                    (!this.localGeometry || horizontalDistance(m.position,s.position)<=range));
+            const objectVisible=p=>valid(p) && p[2]<=highZ &&
+                (!this.localGeometry || horizontalDistance(p,s.position)<=range);
+            const mobVisible=m=>this.showHiddenMobs || m.id===selected || objectVisible(m.position);
             const line=(a,b,color,dashed=false,width=1.5)=>{ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.setLineDash(dashed?[5,4]:[]);ctx.stroke();ctx.setLineDash([]);};
             const circle=(p,r,color,stroke)=>{ctx.beginPath();ctx.arc(p[0],p[1],r,0,2*Math.PI);ctx.fillStyle=color;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.5;ctx.stroke();}};
             const label=(msg,p,color='#dce9f6')=>{const width=ctx.measureText(msg).width,x=clamp(p[0]+3,0,Math.max(0,w-width-6)),y=clamp(p[1]-15,0,h-17);ctx.fillStyle='#09111c';ctx.fillRect(x,y,width+6,17);ctx.fillStyle=color;ctx.fillText(msg,x+3,y+13);};
@@ -358,6 +360,37 @@
                 const d=Math.hypot(end[0]-player[0],end[1]-player[1]);if(d>.01)line(player,[player[0]+(end[0]-player[0])/d*18,player[1]+(end[1]-player[1])/d*18],'#5bc9d5',false,3);
             }
             this.drawSpheres(instances,center,right,up,nearAxis,scale,depthScale,w,h);
+            // Door and ground-spawn symbols are screen-facing diagnostic markers,
+            // anchored to the observed world position, not fabricated models.
+            const objectHits=[];
+            if(this.doors)for(const d of s.doors??[]){
+                if(!objectVisible(d.position))continue;
+                const p=project(d.position);if(!visible(p))continue;
+                const [x,y]=p, color=d.opened?'#b69df5':'#f2a65a';
+                ctx.save();ctx.strokeStyle=color;ctx.fillStyle='#101923';ctx.lineWidth=2;
+                ctx.fillRect(x-6,y-9,12,18);ctx.strokeRect(x-6,y-9,12,18);
+                if(d.opened){ctx.beginPath();ctx.moveTo(x-6,y-9);ctx.lineTo(x+2,y-5);ctx.lineTo(x+2,y+5);ctx.lineTo(x-6,y+9);ctx.stroke();}
+                else{ctx.beginPath();ctx.arc(x+3,y,1.5,0,2*Math.PI);ctx.fillStyle=color;ctx.fill();}
+                ctx.restore();
+                objectHits.push({x,y,radius:10,kind:'door',name:d.name,id:d.id,detail:d.opened?'Open':'Closed'});
+            }
+            if(this.groundSpawns){
+                const drops=new Map();
+                for(const g of s.ground_spawns??[]){
+                    if(!objectVisible(g.position))continue;
+                    if(!drops.has(g.drop_id))drops.set(g.drop_id,{...g,names:new Set()});
+                    drops.get(g.drop_id).names.add(g.name);
+                }
+                for(const g of drops.values()){
+                    const p=project(g.position);if(!visible(p))continue;
+                    const [x,y]=p;ctx.save();ctx.fillStyle='#62dce0';ctx.strokeStyle='#123d49';ctx.lineWidth=1.5;
+                    ctx.beginPath();ctx.moveTo(x,y-6);ctx.lineTo(x+6,y);ctx.lineTo(x,y+6);ctx.lineTo(x-6,y);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();
+                    objectHits.push({x,y,radius:7,kind:'ground',name:[...g.names].join(' / '),id:g.drop_id,detail:'Ground spawn'});
+                }
+            }
+            // Keep object identifiers separate from mob spawn IDs. Hover can
+            // inspect objects, but selecting them must never target an NPC.
+            entities.push(...objectHits);
             const target=[...s.mobs,...s.bots.filter(b=>b.spawned)].find(m=>m.id===selected);
             if(target&&valid(target.position)){
                 const p=project(target.position), base=project([target.position[0],target.position[1],s.position[2]]), dz=target.position[2]-s.position[2];

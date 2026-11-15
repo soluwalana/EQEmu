@@ -303,6 +303,18 @@ def install_dashboard(
                     },
                     "bots": bots,
                     "mobs": mobs,
+                    "doors": [
+                        {"id": d.id, "name": d.name, "position": d.position,
+                         "opened": d.opened, "open_type": d.open_type}
+                        for d in w.doors.values()
+                    ],
+                    "ground_spawns": [
+                        {"drop_id": g.instance_id, "item_id": g.item_id,
+                         "name": item.name if (item := w.item_book.get(g.item_id)) else f"Item #{g.item_id}",
+                         "position": (g.observed_x, g.observed_y, g.observed_z)}
+                        for spawns in w.ground_spawns.values()
+                        for g in spawns
+                    ],
                     "path": (
                         None
                         if path is None

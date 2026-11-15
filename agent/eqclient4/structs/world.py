@@ -1,5 +1,6 @@
 import struct
 from dataclasses import dataclass, field
+from enum import IntEnum
 
 from eqclient4.structs.wire import (
     EQStruct,
@@ -16,33 +17,96 @@ from eqclient4.structs.wire import (
 DOOR_SIZE = 100
 
 
+class DoorAction(IntEnum):
+    OPEN = 0x02
+    CLOSE = 0x03
+
+    OPEN_INVERTED = 0x03
+    CLOSE_INVERTED = 0x02
+
+
 @dataclass
 class Door(EQStruct):
-    door_id: int
+    id: int
     name: str
     x: float
     y: float
     z: float
     open_type: int
 
+    heading: float = 0.0
+    incline: int = 0
+    size: int = 100
+    state_at_spawn: int = 0
+    invert_state: int = 0
+    door_param: int = 0xFFFFFFFF
+
+    opened: bool = field(default=False, repr=False)
+
     def serialize(self) -> bytes:
         blob = bytearray(DOOR_SIZE)
         put_fixed(blob, 0, self.name, 32)
-        # common/patches/rof2_structs.h:3002
-        struct.pack_into("<fff", blob, 32, self.y, self.x, self.z)
-        blob[60] = self.door_id & 0xFF
-        blob[61] = self.open_type & 0xFF
-        # common/patches/rof2.cpp:3785 unknown0081
-        struct.pack_into("<B", blob, 81, 1)
-        # common/patches/rof2.cpp:3787 unknown0083
-        struct.pack_into("<B", blob, 83, 1)
+
+        struct.pack_into(
+            "<ffffII",
+            blob,
+            32,
+            self.y,
+            self.x,
+            self.z,
+            self.heading,
+            self.incline,
+            self.size,
+        )
+
+        struct.pack_into(
+            "<BBBBI",
+            blob,
+            60,
+            self.id,
+            self.open_type,
+            self.state_at_spawn,
+            self.invert_state,
+            self.door_param,
+        )
+
+        blob[81] = 1
+        blob[83] = 1
+
         return bytes(blob)
 
     @classmethod
     def deserialize(cls, data: bytes) -> Door:
         need(data, DOOR_SIZE, "door")
-        y, x, z = struct.unpack_from("<fff", data, 32)
-        return cls(data[60], fixed(data, 0, 32), x, y, z, data[61])
+
+        y, x, z, heading, incline, size = struct.unpack_from(
+            "<ffffII", data, 32
+        )
+
+        door_id, open_type, state, invert, param = (
+            struct.unpack_from("<BBBBI", data, 60)
+        )
+
+        return cls(
+            id=door_id,
+            name=fixed(data, 0, 32),
+            x=x,
+            y=y,
+            z=z,
+            open_type=open_type,
+            heading=heading,
+            incline=incline,
+            size=size,
+            state_at_spawn=state,
+            invert_state=invert,
+            door_param=param,
+            opened=bool(state) != bool(invert)
+        )
+
+    @property
+    def position(self) -> tuple[float, float, float]:
+        return (self.x, self.y, self.z)
+
 
 
 def _door_list(data: bytes) -> list[Door]:
