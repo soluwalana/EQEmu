@@ -4,9 +4,14 @@ from __future__ import annotations
 
 import inspect
 import math
+import struct
+import threading
+import time
+import zlib
 from pathlib import Path
 from typing import Any, get_type_hints
 
+from eqclient4.nav.maps import ZoneMap, _read_map
 from eqclient4.structs.constants import _WORN, CLASS_ID_TO_NAME, RACE_ID_TO_NAME
 from eqclient4.world import Mob
 from fastapi import FastAPI, HTTPException, Query
@@ -67,6 +72,83 @@ def install_dashboard(
     from eqclient4.scripts.debug_geometry import install_geometry
 
     install_geometry(app)
+
+    # The dashboard uses the same full heading-peek collision test as
+    # World.line_of_sight, but never modifies the agent's spatial/ray caches.
+    # All expensive work happens after releasing DebugLoop.state_lock.
+    los_lock = threading.Lock()
+    los_zone: str | None = None
+    los_source: ZoneMap | None = None
+    los_mesh: ZoneMap | None = None
+    los_error = False
+    los_results: dict[tuple, bool] = {}
+    los_cursor = 0
+
+    def annotate_los(data: dict, source: ZoneMap | None) -> dict:
+        nonlocal los_zone, los_source, los_mesh, los_error, los_cursor
+        with los_lock:
+            zone = (data["zone"] or "").lower()
+            if zone != los_zone or source is not los_source:
+                los_zone, los_source = zone, source
+                los_results.clear()
+                los_cursor = 0
+                los_error = False
+                try:
+                    # Collision triangles are immutable zone data. Give the
+                    # dashboard its own ZoneMap index; no shared mutable cache.
+                    los_mesh = (
+                        ZoneMap(source.triangles) if source is not None else _read_map(zone)
+                    )
+                except (OSError, ValueError, struct.error, zlib.error):
+                    los_mesh = None
+                    los_error = True
+            origin = tuple(data["position"])
+            pending = []
+            # Bots first, then nearest mobs. Exact XYZ keys avoid the coarse
+            # single-ray cache's false positives near walls and staircases.
+            for row in (*data["bots"], *data["mobs"]):
+                row["los"] = None
+                point = row["position"]
+                if (
+                    point is None
+                    or row.get("dead")
+                    or len(point) != 3
+                    or not all(isinstance(v, (int, float)) and math.isfinite(v) for v in point)
+                ):
+                    continue
+                if los_error:
+                    continue
+                if los_mesh is None:
+                    # Same missing-map fallback as World.line_of_sight.
+                    row["los"] = True
+                    continue
+                key = (origin, tuple(point))
+                if key in los_results:
+                    row["los"] = los_results[key]
+                else:
+                    pending.append((row, key))
+            # Bound work per HTTP snapshot. Unchecked entities stay unknown,
+            # not falsely blocked. Rotate through misses while moving.
+            deadline = time.monotonic() + 0.025
+            if pending and los_mesh is not None:
+                start = los_cursor % len(pending)
+                checked = 0
+                for index in range(len(pending)):
+                    if index and time.monotonic() >= deadline:
+                        break
+                    row, key = pending[(start + index) % len(pending)]
+                    result = los_results.get(key)
+                    if result is None:
+                        result = los_mesh.clear(*key)
+                        los_results[key] = result
+                    row["los"] = result
+                    checked += 1
+                los_cursor = start + checked if checked < len(pending) else 0
+            if len(los_results) > 32768:
+                los_results.clear()
+            data["los_map"] = los_mesh is not None
+            data["los_error"] = los_error
+        return data
 
     @app.get("/", include_in_schema=False)
     @app.get("/dashboard", include_in_schema=False)
@@ -162,7 +244,7 @@ def install_dashboard(
                     for key in gear_fields:
                         gear[key] += getattr(item, key, 0)
             path = move.path
-            return json_value(
+            return w.mesh, json_value(
                 {
                     "ready": loop.commands.ready.is_set(),
                     "tick": loop.tick,
@@ -252,7 +334,8 @@ def install_dashboard(
                 }
             )
 
-        return with_loop(collect)
+        source, data = with_loop(collect)
+        return annotate_los(data, source)
 
     @app.get("/dashboard/action/{module}/{class_name}")
     def describe_action(module: str, class_name: str):

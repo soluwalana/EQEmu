@@ -2,6 +2,19 @@
 const $ = id => document.getElementById(id), esc = v => String(v ?? '—').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const cls = ['—', 'Warrior', 'Cleric', 'Paladin', 'Ranger', 'Shadowknight', 'Druid', 'Monk', 'Bard', 'Rogue', 'Shaman', 'Necromancer', 'Wizard', 'Magician', 'Enchanter', 'Beastlord', 'Berserker'];
 const pretty = v => JSON.stringify(v, null, 2), num = v => Number.isFinite(Number(v)) && v !== null ? Number(v).toFixed(1) : '—';
+// Preserve entity category hues, desaturate only confirmed blocked entities.
+// Unknown is deliberately neutral, not a claim that a ray was obstructed.
+function entityTint(entity, bot = false) {
+    const bright = bot ? [108,204,145] : entity.aggro ? [236,119,132] : [223,187,119];
+    if (entity.los === true) return bright;
+    if (entity.los === false) {
+        const gray = 125;
+        return bright.map(v => Math.round(gray + (v - gray) * .32));
+    }
+    return [122,130,143];
+}
+function entityColor(entity, bot = false) { return `rgb(${entityTint(entity, bot).join(',')})`; }
+function losLabel(entity) { return entity.los === true ? (state?.los_map === false ? 'LoS assumed clear (no collision map)' : 'In LoS') : entity.los === false ? 'Out of LoS' : 'LoS unknown'; }
 let state = null, tab = 'overview', selectedMob = null, selectedSlot = null, openBag = null, actionCatalog = new Map(), activeAction = null, lastInventory = '', mapHits = new Map(), selectedItem = null, paramReaders = [], actionGeneration = 0;
 const logs = { wire: { after: -1, rows: [], paused: false, busy: false }, combat: { after: -1, rows: [], paused: false, busy: false } };
 async function api(path, options = {}) { const r = await fetch(path, { cache: 'no-store', ...options }); if (!r.ok) {
@@ -224,18 +237,18 @@ function draw2d(id, radius) {
         ctx.strokeStyle = '#fff';
         ctx.lineWidth = 2;
         ctx.stroke();
-    } hits.push({ x, y, id: m.id, name: m.name, radius: size, bot: false }); if (id === 'worldmap' && (m.id === selectedMob || m.aggro)) {
+    } hits.push({ x, y, id: m.id, name: m.name, radius: size, bot: false, los: m.los }); if (id === 'worldmap' && (m.id === selectedMob || m.aggro)) {
         ctx.fillStyle = '#e2e9f3';
         ctx.fillText(m.name, x + 8, y - 7);
     } }
-    s.mobs.filter(m => !m.dead).forEach(m => marker(m, m.aggro ? '#ec7784' : '#dfbb77', m.aggro ? 5 : 3));
+    s.mobs.filter(m => !m.dead).forEach(m => marker(m, entityColor(m), m.aggro ? 5 : 3));
     const botRadius = Math.max(7, 5 * Math.min(2, w / Math.max(1, canvas.clientWidth)));
     const bots = layoutBotMarkers(s.bots, xy, w, h, botRadius);
     // Draw true-position anchors and leaders before the player arrow.
     ctx.lineWidth = 1.2;
-    ctx.strokeStyle = 'rgba(108, 204, 145, 0.7)';
-    ctx.fillStyle = '#6ccc91';
     for (const b of bots) {
+        ctx.strokeStyle = entityColor(b.bot, true);
+        ctx.fillStyle = entityColor(b.bot, true);
         if (Math.hypot(b.x - b.ax, b.y - b.ay) > 1) {
             ctx.beginPath();
             ctx.moveTo(b.ax, b.ay);
@@ -262,7 +275,7 @@ function draw2d(id, radius) {
     for (const b of bots) {
         ctx.beginPath();
         ctx.arc(b.x, b.y, botRadius, 0, 2 * Math.PI);
-        ctx.fillStyle = '#6ccc91';
+        ctx.fillStyle = entityColor(b.bot, true);
         ctx.fill();
         ctx.strokeStyle = b.bot.id === selectedMob ? '#fff' : '#102a20';
         ctx.lineWidth = b.bot.id === selectedMob ? 2.5 : 2;
@@ -275,7 +288,7 @@ function draw2d(id, radius) {
         ctx.textAlign = 'start';
         ctx.textBaseline = 'alphabetic';
         if (b.bot.id > 0)
-            hits.push({ x: b.x, y: b.y, id: b.bot.id, name: b.bot.name, radius: botRadius, bot: true });
+            hits.push({ x: b.x, y: b.y, id: b.bot.id, name: b.bot.name, radius: botRadius, bot: true, los: b.bot.los });
         if (b.bot.id === selectedMob) {
             ctx.font = '12px monospace';
             ctx.fillStyle = '#e2e9f3';
@@ -295,6 +308,12 @@ function mapHit(id, event) {
     return hits.find(m => m.bot && m.d <= m.radius + 3) ?? hits.find(m => m.d < 15);
 }
 for (const id of ['minimap', 'worldmap']) {
+    const legend = $(id + 'bots').parentElement.querySelector('.legend');
+    if (legend) {
+        const hint = document.createElement('span');
+        hint.textContent = 'Bright: in LoS · muted hue: blocked · slate: unknown';
+        legend.append(hint);
+    }
     $(id).onclick = e => {
         const hit = mapHit(id, e);
         if (hit)
@@ -303,7 +322,7 @@ for (const id of ['minimap', 'worldmap']) {
     $(id).onmousemove = e => {
         const hit = mapHit(id, e);
         $(id).style.cursor = hit ? 'pointer' : 'default';
-        $(id).title = hit ? `${hit.name} · Spawn #${hit.id}` : '';
+        $(id).title = hit ? `${hit.name} · Spawn #${hit.id} · ${losLabel(hit)}` : '';
     };
     $(id).onmouseleave = () => { $(id).title = ''; $(id).style.cursor = 'default'; };
 }

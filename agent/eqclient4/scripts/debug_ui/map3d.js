@@ -269,23 +269,23 @@
                 if(m.dead||!valid(m.position))continue;
                 const p=project(m.position);if(!visible(p))continue;
                 const size=m.aggro?7:5;
-                sphere(m.position,size,m.aggro?[.93,.46,.52]:[.87,.73,.47]);
+                sphere(m.position,size,entityTint(m).map(v=>v/255));
                 if(m.id===selected)ring(p,size+2,'#fff');
-                entities.push({x:p[0],y:p[1],id:m.id,name:m.name,radius:size,bot:false});
+                entities.push({x:p[0],y:p[1],id:m.id,name:m.name,radius:size,bot:false,los:m.los});
                 if(m.id===selected||m.aggro)label(m.name,p);
             }
             const bots=layout(s.bots.filter(b=>valid(b.position)),project,w,h,botRadius,player);
             for(const b of bots){
                 const dx=b.x-b.ax,dy=b.y-b.ay;
-                if(Math.hypot(dx,dy)>1)line([b.ax,b.ay],[b.x,b.y],'#6ccc91');
+                if(Math.hypot(dx,dy)>1)line([b.ax,b.ay],[b.x,b.y],entityColor(b.bot,true));
                 // Keep clustered bots independently clickable. Convert the
                 // marker displacement back into the camera plane; its leader
                 // line still identifies the true, unmodified bot position.
                 const point=b.bot.position.map((v,i)=>v+(dx*right[i]-dy*up[i])/scale);
-                sphere(point,botRadius,[.42,.80,.57]);
+                sphere(point,botRadius,entityTint(b.bot,true).map(v=>v/255));
                 if(b.bot.id===selected)ring([b.x,b.y],botRadius+2,'#fff');
                 ctx.fillStyle='#103524';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('B',b.x,b.y);ctx.textAlign='start';ctx.textBaseline='alphabetic';
-                if(b.bot.id>0)entities.push({x:b.x,y:b.y,id:b.bot.id,name:b.bot.name,radius:botRadius,bot:true});
+                if(b.bot.id>0)entities.push({x:b.x,y:b.y,id:b.bot.id,name:b.bot.name,radius:botRadius,bot:true,los:b.bot.los});
             }
             if(visible(player)){
                 const angle=s.heading*2*Math.PI/512, end=project([s.position[0]+Math.sin(angle)*14,s.position[1]+Math.cos(angle)*14,s.position[2]]);
@@ -296,7 +296,7 @@
             const target=[...s.mobs,...s.bots.filter(b=>b.spawned)].find(m=>m.id===selected);
             if(target&&valid(target.position)){
                 const p=project(target.position), base=project([target.position[0],target.position[1],s.position[2]]), dz=target.position[2]-s.position[2];
-                line(player,base,'#95b8cf',true);line(base,p,'#ecb36e',true,2);ring(p,9,'#ecb36e');label(`${target.name}  ΔZ ${dz>=0?'+':''}${dz.toFixed(1)}`,p,'#ffe1b4');
+                line(player,base,'#95b8cf',true);line(base,p,'#ecb36e',true,2);ring(p,9,'#ecb36e');label(`${target.name}  ΔZ ${dz>=0?'+':''}${dz.toFixed(1)} · ${losLabel(target)}`,p,'#ffe1b4');
             }
             ctx.fillStyle='#a4b8cb';ctx.fillText(`Z ${s.position[2].toFixed(1)} · ${Math.round(radius*this.zoom)} yd · ${Math.round(this.el*180/Math.PI)}° tilt`,10,h-12);
             if(s.path){const dz=valid(s.path.destination)?s.path.destination[2]-s.position[2]:null;ctx.fillText(`Path: ${s.path.mode??'—'}${s.path.fallback?' · FALLBACK':''}${dz!==null?' · destination ΔZ '+dz.toFixed(1):''}${s.movement?.refused?' · stride refused':''}`,10,h-29);}
