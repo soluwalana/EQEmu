@@ -828,7 +828,7 @@ float Mob::GetFixedZ(const glm::vec3 &destination, int32 z_find_offset) {
 	return new_z;
 }
 
-void Mob::FixZ(int32 z_find_offset /*= 5*/, bool fix_client_z /*= false*/) {
+void Mob::FixZ(int32 z_find_offset /*= 5*/, bool fix_client_z /*= false*/, bool preserve_path_level /*= false*/) {
 	if (IsClient() && !fix_client_z) {
 		return;
 	}
@@ -846,7 +846,25 @@ void Mob::FixZ(int32 z_find_offset /*= 5*/, bool fix_client_z /*= false*/) {
 	}
 
 	glm::vec3 current_loc(m_Position);
-	float new_z = GetFixedZ(current_loc, z_find_offset);
+	float new_z;
+	if (preserve_path_level) {
+		if (!zone->HasMap()) {
+			return;
+		}
+		const auto offset = GetZOffset();
+		auto probe = current_loc;
+		probe.z -= offset;
+		auto ground = zone->zonemap->FindClosestZ(probe, nullptr);
+		// Path interpolation is the reference. Never turn a small correction
+		// into a jump to a different floor or the ceiling of the room below.
+		if (ground == BEST_Z_INVALID || std::abs(ground - probe.z) > 4.0f) {
+			return;
+		}
+		new_z = ground + offset;
+	}
+	else {
+		new_z = GetFixedZ(current_loc, z_find_offset);
+	}
 
 	// reject z if it is too far from the current z
 	if (std::abs(new_z - m_Position.z) > 100) {

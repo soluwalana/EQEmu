@@ -24,6 +24,7 @@
 
 #include "recastnavigation/DetourCommon.h"
 #include "recastnavigation/DetourNavMeshQuery.h"
+#include <cmath>
 #include <cstdio>
 #include <memory>
 #include <vector>
@@ -230,10 +231,12 @@ IPathfinder::IPath PathfinderNavmesh::FindPath(const glm::vec3 &start, const glm
 						Route.push_back(glm::vec3(p.x, p.z, p.y));
 					}
 					else {
-						auto &p = straight_path[0];
+						// Keep the raw Detour waypoint for subsequent interpolation.
+						auto p = straight_path[0];
 
 						float h = 0.0f;
-						if (dtStatusSucceed(GetPolyHeightOnPath(path, npoly, p, &h))) {
+						if (dtStatusSucceed(GetPolyHeightNoConnections(start_ref, &p[0], &h)) ||
+							dtStatusSucceed(GetPolyHeightOnPath(path, npoly, p, &h))) {
 							p.y = h + opts.offset;
 						}
 
@@ -282,7 +285,15 @@ IPathfinder::IPath PathfinderNavmesh::FindPath(const glm::vec3 &start, const glm
 							}
 
 							float h = 0.0f;
-							if (dtStatusSucceed(GetPolyHeightOnPath(path, npoly, current_pt, &h))) {
+							// ALL_CROSSINGS gives the polygon entered at each waypoint.
+							// Prefer the current segment (or the next polygon at its end)
+							// rather than an overlapping XY elsewhere in the corridor.
+							auto preferred = straight_path_polys[i];
+							if (total >= dist && straight_path_polys[i + 1]) {
+								preferred = straight_path_polys[i + 1];
+							}
+							if ((preferred && dtStatusSucceed(GetPolyHeightNoConnections(preferred, &current_pt[0], &h))) ||
+								dtStatusSucceed(GetPolyHeightOnPath(path, npoly, current_pt, &h))) {
 								current_pt.y = h + opts.offset;
 							}
 
@@ -569,13 +580,28 @@ dtStatus PathfinderNavmesh::GetPolyHeightOnPath(const dtPolyRef *path, const int
 		return DT_FAILURE;
 	}
 
+	// A path may pass through the same X/Z on multiple floors (Detour Y is height).
+	// A horizontal containment test alone cannot choose the intended level.
+	bool found = false;
+	float best_height = 0.0f;
+	float best_delta = 0.0f;
 	for (int i = 0; i < path_len; ++i) {
-		dtPolyRef ref = path[i];
-
-		if (dtStatusSucceed(GetPolyHeightNoConnections(ref, &pos[0], h))) {
-			return DT_SUCCESS;
+		float candidate = 0.0f;
+		if (dtStatusFailed(GetPolyHeightNoConnections(path[i], &pos[0], &candidate))) {
+			continue;
+		}
+		const float delta = std::abs(candidate - pos.y);
+		if (!found || delta < best_delta) {
+			found = true;
+			best_height = candidate;
+			best_delta = delta;
 		}
 	}
-
+	if (found) {
+		if (h) {
+			*h = best_height;
+		}
+		return DT_SUCCESS;
+	}
 	return DT_FAILURE;
 }

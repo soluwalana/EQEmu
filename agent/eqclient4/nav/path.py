@@ -128,18 +128,19 @@ def route(
     )
 
 
+def _reached(here: tuple[float, float, float], point: tuple[float, float, float], reach: float) -> bool:
+    # Navmesh and collision elevations can differ slightly on the same floor.
+    return _horiz(here, point) <= reach and abs(here[2] - point[2]) <= 4.0
+
+
 def trim_points(
     points: list[tuple[float, float, float]],
     here: tuple[float, float, float],
     reach: float = 1.0,
 ) -> list[tuple[float, float, float]]:
-    """Drop a center already reached, and one that sits behind the next center.
-
-    Walking the whole list from the current spot steps back onto the polygon
-    just left. The next stride steps off it, and the two spots trade places.
-    """
+    """Discard reached waypoints without treating another floor as reached."""
     kept = [point for point in points]
-    while kept and _horiz(here, kept[0]) <= reach:
+    while kept and _reached(here, kept[0], reach):
         kept.pop(0)
     while len(kept) > 1 and _behind(here, kept[0], kept[1]):
         kept.pop(0)
@@ -149,13 +150,11 @@ def trim_points(
 def cut_to_step(
     points: list[tuple[float, float, float]], step: tuple[float, float, float]
 ) -> list[tuple[float, float, float]]:
-    """Drop the prefix this stride already passed, so the next one does not walk it again."""
+    """Drop the prefix this stride already passed, comparing all three axes."""
     route = [point for point in points]
     if len(route) < 2:
         return route
-    nearest = min(range(len(route)), key=lambda index: _horiz(step, route[index]))
-    if nearest == 0:
-        return route
+    nearest = min(range(len(route)), key=lambda index: math.dist(step, route[index]))
     return route[nearest:]
 
 
@@ -164,28 +163,35 @@ def along(
     points: list[tuple[float, float, float]],
     length: float,
 ) -> tuple[float, float, float]:
-    """Walk up to ``length`` horizontal yards along ``points``."""
+    """Walk up to ``length`` yards along the three-dimensional route."""
+    return along_progress(origin, points, length)[0]
+
+
+def along_progress(
+    origin: tuple[float, float, float],
+    points: list[tuple[float, float, float]],
+    length: float,
+) -> tuple[tuple[float, float, float], int]:
+    """Return a stride and the number of fully traversed waypoints, in order."""
     if length <= 0.0 or not points:
-        return origin
+        return origin, 0
     prev = origin
     left = float(length)
-    for point in points:
-        span = _horiz(prev, point)
+    for index, point in enumerate(points):
+        span = math.dist(prev, point)
         if span <= 1e-06:
             prev = point
             continue
-        if span + 1e-09 >= left:
+        if span > left + 1e-09:
             scale = left / span
-            # Z is the waypoint, not a blend between centers. A blend sits
-            # between floors and the zone leaves the client where it was.
             return (
                 prev[0] + (point[0] - prev[0]) * scale,
                 prev[1] + (point[1] - prev[1]) * scale,
-                point[2],
-            )
+                prev[2] + (point[2] - prev[2]) * scale,
+            ), index
         left -= span
         prev = point
-    return points[-1]
+    return points[-1], len(points)
 
 
 def doors_on_stride(
@@ -367,7 +373,7 @@ def _trim(
 ) -> list[tuple[float, float, float]]:
     pts = [point for point in points]
 
-    while pts and _horiz(origin, pts[0]) <= 1.0:
+    while pts and _reached(origin, pts[0], 1.0):
         pts.pop(0)
 
     while len(pts) > 1 and _behind(origin, pts[0], pts[1]):
@@ -376,7 +382,7 @@ def _trim(
     if not pts:
         return [goal]
 
-    if _horiz(pts[-1], goal) > 1.0:
+    if not _reached(pts[-1], goal, 1.0):
         pts.append(goal)
 
     return pts
@@ -390,10 +396,10 @@ def _length(
     total = 0.0
     prev = origin
     chain = list(points)
-    if not chain or _horiz(chain[-1], goal) > 0.5:
+    if not chain or math.dist(chain[-1], goal) > 0.5:
         chain.append(goal)
     for point in chain:
-        total += _horiz(prev, point)
+        total += math.dist(prev, point)
         prev = point
     return total
 
@@ -479,6 +485,8 @@ def _behind(
     point: tuple[float, float, float],
     nxt: tuple[float, float, float],
 ) -> bool:
+    if abs(point[2] - here[2]) > 4.0:
+        return False
     vx, vy = (point[0] - here[0], point[1] - here[1])
     gx, gy = (nxt[0] - here[0], nxt[1] - here[1])
     if gx * gx + gy * gy < 1.0:

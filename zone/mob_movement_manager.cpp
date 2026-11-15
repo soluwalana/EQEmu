@@ -26,6 +26,7 @@
 #include "zone/water_map.h"
 #include "zone/zone.h"
 
+#include <cmath>
 #include <cstdlib>
 #include <deque>
 #include <map>
@@ -183,7 +184,7 @@ public:
 		//When speed changes
 		if (current_speed != m_last_sent_speed) {
 			if (RuleB(Map, FixZWhenPathing)) {
-				mob->FixZ();
+				mob->FixZ(5, false, true);
 			}
 
 			m_distance_moved_since_correction = 0.0;
@@ -196,7 +197,7 @@ public:
 		//If x seconds have passed without sending an update.
 		if (current_time - m_last_sent_time >= 5.0) {
 			if (RuleB(Map, FixZWhenPathing)) {
-				mob->FixZ();
+				mob->FixZ(5, false, true);
 			}
 
 			m_distance_moved_since_correction = 0.0;
@@ -228,7 +229,7 @@ public:
 			mob->SetPosition(m_move_to_x, m_move_to_y, m_move_to_z);
 
 			if (RuleB(Map, FixZWhenPathing)) {
-				mob->FixZ();
+				mob->FixZ(5, false, true);
 			}
 			return true;
 		}
@@ -251,7 +252,7 @@ public:
 				m_distance_moved_since_correction += distance_moved;
 				if (m_distance_moved_since_correction > (mob->IsEngaged() ? 1 : 10)) {
 					m_distance_moved_since_correction = 0.0;
-					mob->FixZ();
+					mob->FixZ(5, false, true);
 				}
 			}
 		}
@@ -372,7 +373,7 @@ public:
 			mob->SetPosition(m_move_to_x, m_move_to_y, m_move_to_z);
 
 			if (RuleB(Map, FixZWhenPathing)) {
-				mob->FixZ();
+				mob->FixZ(5, false, true);
 			}
 			return true;
 		}
@@ -575,7 +576,7 @@ public:
 		if (mob->IsMoving()) {
 			mob->SetMoving(false);
 			if (RuleB(Map, FixZWhenPathing)) {
-				mob->FixZ();
+				mob->FixZ(5, false, true);
 			}
 			mob_movement_manager->SendCommandToClients(mob, 0.0, 0.0, 0.0, 0.0, 0, ClientRangeCloseMedium);
 		}
@@ -672,12 +673,17 @@ void AdjustRoute(std::list<IPathfinder::IPathNode> &nodes, Mob *who)
 	auto offset = who->GetZOffset();
 
 	for (auto &node : nodes) {
-		if (!zone->watermap->InLiquid(node.pos)) {
-			auto best_z = zone->zonemap->FindBestZ(node.pos, nullptr);
-			if (best_z != BEST_Z_INVALID) {
-				node.pos.z = best_z + offset;
-			}
-		} // todo: floating logic?
+		if (node.teleport || zone->watermap->InLiquid(node.pos)) {
+			continue;
+		}
+		// Smoothed navmesh nodes already include the mob's Z offset. Correct
+		// around that planned floor, not the first collision below a raised ray.
+		auto probe = node.pos;
+		probe.z -= offset;
+		auto best_z = zone->zonemap->FindClosestZ(probe, nullptr);
+		if (best_z != BEST_Z_INVALID && std::abs(best_z - probe.z) <= 4.0f) {
+			node.pos.z = best_z + offset;
+		}
 	}
 }
 

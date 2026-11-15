@@ -36,7 +36,7 @@ from eqclient4.nav.path import (
     STRIDE,
     EQPath,
     along,
-    cut_to_step,
+    along_progress,
     doors_on_stride,
 )
 from eqclient4.nav.path import find as path_find
@@ -690,53 +690,58 @@ class Movement:
             target = path.swim_z if path.swim_z is not None else path.destination[2]
             return _z_step(here, target, path.stride_length)
 
+        if path.fallback and not path.find_waypoints and abs(path.destination[2] - here[2]) > 4.0:
+            # No connected corridor to that level. A direct fallback would
+            # cut through the floor; wait for a valid route or Find reply.
+            return here
+
         points = trim_points(path.points, here)
-        nxt = along(here, points or [path.destination], path.stride_length)
-        path.points = cut_to_step(points, nxt) if points else points
-        return self._on_floor(here, nxt)
+        chain = points or [path.destination]
+        length = path.stride_length
+        # If a full stride would leave the floor, shorten the stride along the
+        # route instead of clamping its Z while still advancing the full XY.
+        for _ in range(5):
+            nxt, passed = along_progress(here, chain, length)
+            floor = self._on_floor(here, nxt)
+            if floor != here or nxt == here:
+                # Advance only through the traversed prefix, never a later XY
+                # overlap on the same route. Keep the final waypoint until reached.
+                path.points = chain[min(passed, len(chain) - 1):]
+                return floor
+            length *= 0.5
+        path.points = points
+        return here
 
     def _on_floor(
         self,
         here: tuple[float, float, float],
         step: tuple[float, float, float],
     ) -> tuple[float, float, float]:
-        """Keep the step on the floor. A stride climbs a ramp; it does not teleport in Z."""
-        target_z = step[2]
-        ground = self._ground((step[0], step[1], here[2]))
-        if ground:
+        """Correct around the planned route level, never an arbitrary floor below."""
+        if step == here:
+            return here
+        mesh = self._mesh()
+        mesh_z = mesh.surface_z(step) if mesh else None
+        reference = mesh_z if mesh_z is not None else step[2]
+        zone_map = load_map(self.world.zone or "") if self.world else None
+        ground = zone_map.ground((step[0], step[1], reference), max_delta=4.0) if zone_map else None
+        if ground is not None and abs(ground - step[2]) <= 4.0:
             target_z = ground
-
+        elif mesh_z is not None:
+            target_z = mesh_z
+        elif zone_map:
+            # There is geometry here, but no surface near the intended level.
+            # Do not send a point between floors or fall to an unrelated level.
+            return here
         else:
-            mesh = self._mesh()
-            if mesh:
-                poly = mesh.nearest((step[0], step[1], here[2]))
-                if (
-                    poly
-                    and _horiz((step[0], step[1], 0.0), (poly.center[0], poly.center[1], 0.0))
-                    <= 18.0
-                ):
-                    target_z = poly.center[2]
+            target_z = step[2]
 
         gap = target_z - here[2]
         travel = max(_horiz(here, step), 0.5)
         budget = min(10.0, max(2.0, travel * 1.5))
         if abs(gap) > budget:
-            target_z = here[2] + (budget if gap > 0 else -budget)
-
+            return here
         return (step[0], step[1], target_z)
-
-    def _ground(self, point: tuple[float, float, float]) -> float | None:
-        """Collision floor at this step. None when the zone has no map."""
-        world = self.world
-        zone = world.zone if world else ""
-        if not zone:
-            return None
-
-        zone_map = load_map(zone)
-        if not zone_map:
-            return None
-
-        return zone_map.ground(point)
 
     def _mesh(self) -> NavMesh | None:
         world = self.world
@@ -1058,27 +1063,25 @@ def _dest_key(destination: tuple[float, float, float] | Mob) -> str | None:
 def _ahead(
     here: tuple[float, float, float], path: EQPath, limit: float = 12.0
 ) -> tuple[list[tuple[float, float, float]], float] | None:
-    """Points still in front of us, and the yards left along them.
-
-    The first corridor segment we are still standing on wins, so a later bend
-    that passes nearby does not skip the walk between.
-    """
+    """First matching corridor segment, including its interpolated elevation."""
     goal = path.destination
     chain = [path.origin, *path.points]
-    if not chain or _horiz(chain[-1], goal) > 0.5:
+    if math.dist(chain[-1], goal) > 0.5:
         chain.append(goal)
 
     for index in range(1, len(chain)):
-        gap, tee = _segment_project(here, chain[index - 1], chain[index])
-        if gap > limit:
-            continue
         start = chain[index - 1]
         end = chain[index]
+        gap, tee = _segment_project(here, start, end)
+        if _horiz(start, end) <= 1e-6 and abs(end[2] - start[2]) > 1e-6:
+            tee = min(1.0, max(0.0, (here[2] - start[2]) / (end[2] - start[2])))
         proj = (
             start[0] + (end[0] - start[0]) * tee,
             start[1] + (end[1] - start[1]) * tee,
-            end[2],
+            start[2] + (end[2] - start[2]) * tee,
         )
+        if gap > limit or abs(here[2] - proj[2]) > 4.0:
+            continue
         rest = chain[index:]
         return rest, _route_length(proj, rest, goal)
 
@@ -1086,16 +1089,9 @@ def _ahead(
 
 
 def _on_polyline(here: tuple[float, float, float], path: EQPath, limit: float = 18.0) -> bool:
-    goal = path.destination
-    points = [path.origin, *path.points]
-    if not points or _horiz(points[-1], goal) > 0.5:
-        points.append(goal)
-
-    for index in range(1, len(points)):
-        if _segment_gap(here, points[index - 1], points[index]) <= limit:
-            return True
-
-    return _horiz(here, goal) <= limit
+    return _ahead(here, path, limit) is not None or (
+        _horiz(here, path.destination) <= limit and abs(here[2] - path.destination[2]) <= 4.0
+    )
 
 
 def _segment_project(
@@ -1136,11 +1132,11 @@ def _route_length(
     total = 0.0
     prev = origin
     chain = list(points)
-    if not chain or _horiz(chain[-1], goal) > 0.5:
+    if not chain or math.dist(chain[-1], goal) > 0.5:
         chain.append(goal)
 
     for point in chain:
-        total += _horiz(prev, point)
+        total += math.dist(prev, point)
         prev = point
 
     return total

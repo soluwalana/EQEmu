@@ -65,12 +65,22 @@ class ZoneMap:
                 return True
         return False
 
-    def ground(self, point: Point) -> float | None:
-        """Walkable surface at this XY.
+    def ground(self, point: Point, max_delta: float | None = None) -> float | None:
+        """Collision surface at XY, optionally bounded around a planned elevation.
 
-        The highest face at or just above ``z``. A point under the floor takes
-        the next face above it. A ceiling far overhead is not the floor.
+        Without a bound, preserve the existing ground lookup for other callers.
+        Navigation supplies the intended route Z and a narrow tolerance; a
+        distant floor or ceiling in a stacked room is not a valid correction.
         """
+        if max_delta is not None:
+            closest = None
+            for triangle in self._candidates(point):
+                height = _surface_z(triangle, point)
+                if height is None or abs(height - point[2]) > max_delta:
+                    continue
+                if closest is None or (abs(height - point[2]), height) < (abs(closest - point[2]), closest):
+                    closest = height
+            return closest
         below = None
         above = None
         limit = point[2] + 2.0

@@ -1261,7 +1261,7 @@ public:
 	void				SendToFixZ(float new_x, float new_y, float new_z);
 	float				GetZOffset() const;
 	float               GetDefaultRaceSize(int race_id = -1, int gender_id = -1) const;
-	void 				FixZ(int32 z_find_offset = 5, bool fix_client_z = false);
+	void 				FixZ(int32 z_find_offset = 5, bool fix_client_z = false, bool preserve_path_level = false);
 	float				GetFixedZ(const glm::vec3 &destination, int32 z_find_offset = 5);
 	virtual int			GetStuckBehavior() const { return 0; }
 

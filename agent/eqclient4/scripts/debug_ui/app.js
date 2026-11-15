@@ -133,7 +133,8 @@ function pickMapHit(hits, point) {
         return m.kind === 'ground' ? dx + dy <= 1 : dx <= 1 && dy <= 1;
     };
     // Match paint order: ground diamonds, then door brackets, then entity markers.
-    return candidates.find(m => m.kind === 'ground' && objectHit(m))
+    return candidates.find(m => m.kind === 'bot-group' && m.d <= m.radius)
+        ?? candidates.find(m => m.kind === 'ground' && objectHit(m))
         ?? candidates.find(m => m.kind === 'door' && objectHit(m))
         ?? candidates.find(m => m.bot && m.d <= m.radius + 3)
         ?? candidates.find(m => !m.kind && m.d < 15) ?? null;
@@ -192,7 +193,44 @@ function drawMapObjects(ctx, id, s, project, visible, showDoors, showGround, sel
     }
     return objects;
 }
+let selectedBotGroup = null;
+function closeBotGroupPopup() {
+    selectedBotGroup = null;
+    $('botpopup').hidden = true;
+}
+function renderBotGroupPopup() {
+    if (!selectedBotGroup) return;
+    const group = selectedBotGroup;
+    if (!state || group.zone !== state.zone_id || group.instance !== state.instance) {
+        closeBotGroupPopup();
+        return;
+    }
+    const bots = state.bots.filter(b => b.spawned && group.ids.includes(b.id));
+    if (!bots.length) { closeBotGroupPopup(); return; }
+    text('botpopup-title', `${bots.length} bots · Select target`);
+    // Stable rows: movement/HP polling must not replace a button under the pointer.
+    html('botpopup-list', bots.sort((a, b) => a.id - b.id).map(b =>
+        `<button type="button" data-group-bot="${b.id}"><span>${esc(b.name)}</span><span class="muted">#${b.id} · ${esc(cls[b.class_id] ?? 'Unknown')}</span></button>`
+    ).join(''));
+    const popup = $('botpopup'), pad = 12;
+    popup.hidden = false;
+    popup.style.left = `${Math.max(pad, Math.min(group.clientX + pad, window.innerWidth - popup.offsetWidth - pad))}px`;
+    popup.style.top = `${Math.max(pad, Math.min(group.clientY + pad, window.innerHeight - popup.offsetHeight - pad))}px`;
+}
+function inspectBotGroup(hit, event) {
+    if (!state) return;
+    closeDoorPopup();
+    selectedBotGroup = { ids: hit.members.map(b => b.id), zone: state.zone_id,
+        instance: state.instance, clientX: event.clientX, clientY: event.clientY };
+    renderBotGroupPopup();
+}
+$('botpopup-close').onclick = closeBotGroupPopup;
+$('botpopup-list').onclick = e => {
+    const button = e.target.closest('[data-group-bot]');
+    if (button) inspectMob(Number(button.dataset.groupBot));
+};
 function closeDoorPopup() {
+    closeBotGroupPopup();
     selectedDoor = null;
     const popup = $('doorpopup');
     if (popup) popup.hidden = true;
@@ -218,6 +256,7 @@ function renderDoorPopup() {
 }
 function inspectDoor(hit, event) {
     if (!state) return;
+    closeBotGroupPopup();
     selectedDoor = { id: hit.id, zone: state.zone_id, instance: state.instance, clientX: event.clientX, clientY: event.clientY };
     const popup = $('doorpopup');
     popup.hidden = false;
@@ -225,7 +264,7 @@ function inspectDoor(hit, event) {
     if (selectedDoor) render();
 }
 $('doorpopup-close').onclick = () => { closeDoorPopup(); if (state) render(); };
-document.addEventListener('keydown', e => { if (e.key === 'Escape' && selectedDoor) { closeDoorPopup(); if (state) render(); } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && (selectedDoor || selectedBotGroup)) { closeDoorPopup(); if (state) render(); } });
 
 // Item definitions are immutable cache entries, independent of drop/slot identity.
 // Deduplicate in-flight requests and avoid an HTTP request on every state poll.
@@ -307,6 +346,7 @@ function render() {
         setTargetDetails(false);
     }
     renderDoorPopup();
+    renderBotGroupPopup();
     text('zonehead', `${s.zone ?? '—'} · ${s.zone_id}`);
     text('metrics', `Tick ${s.tick.toLocaleString()}  ·  ↑ ${s.sent.toLocaleString()}  ↓ ${s.received.toLocaleString()}  ·  ${s.mobs.length} entities`);
     status(s.ready ? 'Connected' : 'Zone not ready', s.ready);
@@ -428,46 +468,81 @@ $('nearby').onclick = $('moblist').onclick = $('bots').onclick = e => {
 };
 $('mobquery').oninput = $('onlynear').onchange = () => state && renderMobs();
 
-// Separate display markers in screen space. Their anchor coordinates never
-// change: a thin leader connects each displaced marker to its real position.
-// Reserving the player footprint keeps following bots from disappearing
-// underneath the heading arrow, including when every bot is on the same point.
+// Cluster overlapping screen projections, never the underlying world positions.
+// Stable spawn ordering makes the grouping and marker placement deterministic.
 function layoutBotMarkers(bots, project, width, height, radius, player = [width / 2, height / 2]) {
-    const markers = [], gap = 2 * radius + 5;
-    const inside = (x, y) => x >= radius + 2 && x <= width - radius - 2 && y >= radius + 2 && y <= height - radius - 2;
-    const free = (x, y) => inside(x, y)
-        && Math.hypot(x - player[0], y - player[1]) >= 14 + radius + 3
-        && markers.every(m => Math.hypot(x - m.x, y - m.y) >= gap);
-    for (const bot of bots.filter(b => b.spawned && validPosition(b.position)).sort((a, b) => a.id - b.id || a.name.localeCompare(b.name))) {
-        const [ax, ay] = project(bot.position);
-        if (ax < 0 || ax > width || ay < 0 || ay > height)
-            continue;
+    const points = bots.filter(b => b.spawned && validPosition(b.position))
+        .sort((a, b) => a.id - b.id || a.name.localeCompare(b.name))
+        .map(bot => ({ bot, point: project(bot.position) }))
+        .filter(({ point: [x, y] }) => x >= 0 && x <= width && y >= 0 && y <= height);
+    const parent = points.map((_, i) => i), overlap = 2 * radius + 5;
+    function root(i) { while (parent[i] !== i) { parent[i] = parent[parent[i]]; i = parent[i]; } return i; }
+    for (let i = 0; i < points.length; i++) for (let j = 0; j < i; j++) {
+        const a = points[i].point, b = points[j].point;
+        if (Math.hypot(a[0] - b[0], a[1] - b[1]) < overlap) parent[root(i)] = root(j);
+    }
+    const groups = new Map();
+    points.forEach((p, i) => { const key = root(i); if (!groups.has(key)) groups.set(key, []); groups.get(key).push(p); });
+    const markers = [];
+    for (const group of groups.values()) {
+        const members = group.map(p => p.bot), count = members.length;
+        const label = count === 1 ? 'B' : `B${count}`;
+        const r = count === 1 ? radius : Math.max(radius + 4, Math.ceil((label.length * 7 + 6) / 2));
+        const ax = group.reduce((n, p) => n + p.point[0], 0) / count;
+        const ay = group.reduce((n, p) => n + p.point[1], 0) / count;
+        const free = (x, y) => x >= r + 2 && x <= width - r - 2 && y >= r + 2 && y <= height - r - 2
+            && Math.hypot(x - player[0], y - player[1]) >= 14 + r + 3
+            && markers.every(m => Math.hypot(x - m.x, y - m.y) >= r + m.radius + 5);
         let x = ax, y = ay;
         if (!free(x, y)) {
-            // Try progressively larger rings, keeping the marker close to
-            // the anchor. Stable ordering avoids arbitrary per-frame jitter.
             let found = false;
+            const gap = 2 * r + 5;
             for (let ring = 1; ring <= Math.ceil(Math.hypot(width, height) / gap) && !found; ring++) {
                 const distance = ring * gap, n = Math.max(8, Math.ceil(2 * Math.PI * distance / gap));
                 for (let i = 0; i < n; i++) {
                     const angle = -Math.PI / 2 + 2 * Math.PI * i / n;
                     const nx = ax + Math.cos(angle) * distance, ny = ay + Math.sin(angle) * distance;
-                    if (free(nx, ny)) {
-                        x = nx;
-                        y = ny;
-                        found = true;
-                        break;
-                    }
+                    if (free(nx, ny)) { x = nx; y = ny; found = true; break; }
                 }
             }
             if (!found) {
-                x = Math.max(radius + 2, Math.min(width - radius - 2, ax));
-                y = Math.max(radius + 2, Math.min(height - radius - 2, ay));
+                x = Math.max(r + 2, Math.min(width - r - 2, ax));
+                y = Math.max(r + 2, Math.min(height - r - 2, ay));
             }
         }
-        markers.push({ bot, ax, ay, x, y });
+        markers.push({ members, ax, ay, x, y, radius: r, label });
     }
     return markers;
+}
+// Shared HUD icons for 2D and 3D. One displaced cluster needs at most one leader.
+function drawBotMarkers(ctx, markers, selected, hits, showName = false) {
+    ctx.save();
+    for (const m of markers) {
+        const bot = m.members.find(b => b.los === true) ?? m.members[0];
+        const color = entityColor(bot, true), target = m.members.find(b => b.id === selected);
+        if (Math.hypot(m.x - m.ax, m.y - m.ay) > 1) {
+            ctx.strokeStyle = color; ctx.lineWidth = 1.2; ctx.beginPath();
+            ctx.moveTo(m.ax, m.ay); ctx.lineTo(m.x, m.y); ctx.stroke();
+        }
+        ctx.beginPath(); ctx.arc(m.x, m.y, m.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = color; ctx.fill();
+        ctx.strokeStyle = target ? '#fff' : '#102a20'; ctx.lineWidth = target ? 2.5 : 2; ctx.stroke();
+        ctx.fillStyle = '#103524';
+        ctx.font = `bold ${Math.min(13, Math.round(m.radius + 2))}px system-ui`;
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(m.label, m.x, m.y);
+        ctx.textAlign = 'start'; ctx.textBaseline = 'alphabetic';
+        const members = m.members.filter(b => b.id > 0);
+        if (m.members.length > 1 && members.length) hits.push({ x: m.x, y: m.y, radius: m.radius, bot: true,
+            kind: 'bot-group', id: members[0].id, name: `${m.members.length} bots`, members });
+        else if (members.length === 1) hits.push({ x: m.x, y: m.y, radius: m.radius, bot: true,
+            id: members[0].id, name: members[0].name, los: members[0].los });
+        if (showName && target) {
+            ctx.font = '12px monospace'; ctx.fillStyle = '#e2e9f3';
+            ctx.fillText(target.name, m.x + m.radius + 4, m.y - m.radius - 3);
+        }
+    }
+    ctx.restore();
 }
 function draw(id, radius) {
     // Size the backing store to the actual full-width viewport. CSS fixes
@@ -543,21 +618,6 @@ function draw2d(id, radius) {
     s.mobs.filter(m => !m.dead).forEach(m => marker(m, entityColor(m), m.aggro ? 5 : 3));
     const botRadius = Math.max(7, 5 * Math.min(2, w / Math.max(1, canvas.clientWidth)));
     const bots = layoutBotMarkers(s.bots, xy, w, h, botRadius);
-    // Draw true-position anchors and leaders before the player arrow.
-    ctx.lineWidth = 1.2;
-    for (const b of bots) {
-        ctx.strokeStyle = entityColor(b.bot, true);
-        ctx.fillStyle = entityColor(b.bot, true);
-        if (Math.hypot(b.x - b.ax, b.y - b.ay) > 1) {
-            ctx.beginPath();
-            ctx.moveTo(b.ax, b.ay);
-            ctx.lineTo(b.x, b.y);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.arc(b.ax, b.ay, 2, 0, 2 * Math.PI);
-            ctx.fill();
-        }
-    }
     ctx.fillStyle = '#5bc9d5';
     ctx.save();
     ctx.translate(w / 2, h / 2); // EQ heading: 0=+Y, 128=+X. Canvas y is inverted.
@@ -570,36 +630,14 @@ function draw2d(id, radius) {
     ctx.closePath();
     ctx.fill();
     ctx.restore();
-    // Bots sit on top of the NPC layer and outside the player footprint.
-    for (const b of bots) {
-        ctx.beginPath();
-        ctx.arc(b.x, b.y, botRadius, 0, 2 * Math.PI);
-        ctx.fillStyle = entityColor(b.bot, true);
-        ctx.fill();
-        ctx.strokeStyle = b.bot.id === selectedMob ? '#fff' : '#102a20';
-        ctx.lineWidth = b.bot.id === selectedMob ? 2.5 : 2;
-        ctx.stroke();
-        ctx.fillStyle = '#103524';
-        ctx.font = `bold ${Math.round(botRadius + 2)}px system-ui`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('B', b.x, b.y);
-        ctx.textAlign = 'start';
-        ctx.textBaseline = 'alphabetic';
-        if (b.bot.id > 0)
-            hits.push({ x: b.x, y: b.y, id: b.bot.id, name: b.bot.name, radius: botRadius, bot: true, los: b.bot.los });
-        if (b.bot.id === selectedMob) {
-            ctx.font = '12px monospace';
-            ctx.fillStyle = '#e2e9f3';
-            ctx.fillText(b.bot.name, b.x + botRadius + 4, b.y - botRadius - 3);
-        }
-    }
+    drawBotMarkers(ctx, bots, selectedMob, hits, true);
     hits.push(...drawMapObjects(ctx, id, s, xy, validPosition,
         window.EQMap3D?.doorsVisible(id) ?? true,
         window.EQMap3D?.groundSpawnsVisible(id) ?? true, selectedGround?.id ?? null, hits));
     const spawned = s.bots.filter(b => b.spawned).length;
     const unknown = s.bots.filter(b => b.spawned && !validPosition(b.position)).length;
-    text(id + 'bots', `${bots.length} / ${spawned} spawned bots in view${spawned - bots.length - unknown > 0 ? ` · ${spawned - bots.length - unknown} outside view` : ''}${unknown ? ` · ${unknown} without position` : ''}`);
+    const visibleBots = bots.reduce((n, b) => n + b.members.length, 0);
+    text(id + 'bots', `${visibleBots} / ${spawned} spawned bots in view${spawned - visibleBots - unknown > 0 ? ` · ${spawned - visibleBots - unknown} outside view` : ''}${unknown ? ` · ${unknown} without position` : ''}`);
     mapHits.set(id, hits);
     refreshMapHover(id);
 }
@@ -609,7 +647,7 @@ function mapHit(id, event) {
 function refreshMapHover(id) {
     const canvas = $(id), hit = mapHit(id, mapPointer.get(id));
     const cursor = hit ? 'pointer' : 'default';
-    const title = hit ? (hit.kind ? `${hit.name} · ${hit.kind === 'ground' ? 'Drop' : hit.object.kind === 'door' ? 'Door' : 'Object'} #${hit.id} · ${hit.detail}` : `${hit.name} · Spawn #${hit.id} · ${losLabel(hit)}`) : '';
+    const title = hit?.kind === 'bot-group' ? `${hit.name} · Click to select a bot` : hit ? (hit.kind ? `${hit.name} · ${hit.kind === 'ground' ? 'Drop' : hit.object.kind === 'door' ? 'Door' : 'Object'} #${hit.id} · ${hit.detail}` : `${hit.name} · Spawn #${hit.id} · ${losLabel(hit)}`) : '';
     if (canvas.style.cursor !== cursor) canvas.style.cursor = cursor;
     if (canvas.title !== title) canvas.title = title;
     return hit;
@@ -642,7 +680,8 @@ function hoverKey(hit) { return hit?.kind ? `${hit.kind}:${hit.id}` : ''; }
     const select = e => {
         mapPointer.set(id, { clientX: e.clientX, clientY: e.clientY });
         const hit = mapHit(id, e);
-        if (hit?.kind === 'ground') inspectGround(hit.id);
+        if (hit?.kind === 'bot-group') inspectBotGroup(hit, e);
+        else if (hit?.kind === 'ground') inspectGround(hit.id);
         else if (hit?.kind === 'door') inspectDoor(hit, e);
         else inspectMob(hit?.id ?? null);
     };

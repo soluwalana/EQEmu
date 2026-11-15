@@ -196,7 +196,7 @@ class Attack(Action):
         # tick_recasts(self)
         self._bars()
         self._cure_flag()
-        self._string_251()
+        # self._string_251()
         # if not self.waiting_for("CAST") and fill_bar(loop, world):
         #     return
 
@@ -315,6 +315,7 @@ class Attack(Action):
 
         # Each OP_AutoAttack(1) restarts the swing timer. Send it once per engagement.
         if not self.attacking:
+            log.info("attack autoattack")
             self._loop.send("OP_AutoAttack", OP_AutoAttack(1).serialize())
             self.attacking = True
 

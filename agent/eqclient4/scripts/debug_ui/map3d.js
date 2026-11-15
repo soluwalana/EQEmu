@@ -362,18 +362,7 @@
                 if(m.id===selected||m.aggro)label(m.name,p);
             }
             const bots=layout(s.bots.filter(b=>valid(b.position)),project,w,h,botRadius,player);
-            for(const b of bots){
-                const dx=b.x-b.ax,dy=b.y-b.ay;
-                if(Math.hypot(dx,dy)>1)line([b.ax,b.ay],[b.x,b.y],entityColor(b.bot,true));
-                // Keep clustered bots independently clickable. Convert the
-                // marker displacement back into the camera plane; its leader
-                // line still identifies the true, unmodified bot position.
-                const point=b.bot.position.map((v,i)=>v+(dx*right[i]-dy*up[i])/scale);
-                sphere(point,botRadius,entityTint(b.bot,true).map(v=>v/255));
-                if(b.bot.id===selected)ring([b.x,b.y],botRadius+2,'#fff');
-                ctx.fillStyle='#103524';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('B',b.x,b.y);ctx.textAlign='start';ctx.textBaseline='alphabetic';
-                if(b.bot.id>0)entities.push({x:b.x,y:b.y,id:b.bot.id,name:b.bot.name,radius:botRadius,bot:true,los:b.bot.los});
-            }
+            drawBotMarkers(ctx,bots,selected,entities);
             if(visible(player)){
                 const angle=s.heading*2*Math.PI/512, end=project([s.position[0]+Math.sin(angle)*14,s.position[1]+Math.cos(angle)*14,s.position[2]]);
                 sphere(s.position,8,[.36,.79,.84]);ring(player,9,'#d0faff');
@@ -392,7 +381,7 @@
             // Draw objects last so target/path labels cannot hide their markers.
             entities.push(...drawMapObjects(ctx,this.id,s,project,objectVisible,this.doors,this.groundSpawns,selectedGround,entities));
             hits.set(this.id,entities);refreshMapHover(this.id);
-            const count=s.bots.filter(b=>b.spawned).length;document.getElementById(this.id+'bots').textContent=`${bots.length} / ${count} spawned bots in view`;
+            const count=s.bots.filter(b=>b.spawned).length;document.getElementById(this.id+'bots').textContent=`${bots.reduce((n,b)=>n+b.members.length,0)} / ${count} spawned bots in view`;
             const data=this.geometry;this.info.textContent=this.error?`${this.error} · live entities still shown`:data?`${(data.collision.length/9).toLocaleString()} collision triangles · ${(data.nav.length/9).toLocaleString()} nav triangles · ${data.flags&4?(data.water.length/9).toLocaleString()+' water triangles':'No water map'} · ${this.cut?'Z ≤ '+(s.position[2]+this.cutHeight).toFixed(1):'All floors'} · ${this.localGeometry?'Local geometry '+Math.round(range)+' yd':'Full geometry'} · ${hiddenMobs} mobs hidden · doors/objects: ${entities.filter(e=>e.kind==='door').length}/${doorMarkers(s.doors).length} visible · drops: ${entities.filter(e=>e.kind==='ground').length}/${groundDrops(s.ground_spawns).length} visible · route/spheres/icons X-ray · drag pan, right/Alt-drag orbit, wheel zoom`:'Loading zone geometry…';
             this.info.title=this.info.textContent;
         }

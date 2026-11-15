@@ -56,15 +56,18 @@ class NavMesh:
     _by_id: dict[tuple[int, int], _Poly] | None = None
 
     def nearest(self, point: tuple[float, float, float]) -> _Poly | None:
-        inside = [poly for poly in self.polys if _contains(poly, point[0], point[1])]
+        inside = [(poly, z) for poly in self.polys if (z := _poly_height(poly, point)) is not None]
         if inside:
-            return min(inside, key=lambda poly: abs(poly.center[2] - point[2]))
+            return min(inside, key=lambda pair: abs(pair[1] - point[2]))[0]
         if not self.polys:
             return None
-        return min(
-            self.polys,
-            key=lambda poly: _horiz(poly.center, point) + abs(poly.center[2] - point[2]) * 0.01,
-        )
+        return min(self.polys, key=lambda poly: math.dist(poly.center, point))
+
+    def surface_z(self, point: tuple[float, float, float], max_delta: float = 4.0) -> float | None:
+        """Actual polygon height at XY on the planned level, not its center Z."""
+        heights = [z for poly in self.polys
+                   if (z := _poly_height(poly, point)) is not None and abs(z - point[2]) <= max_delta]
+        return min(heights, key=lambda z: (abs(z - point[2]), z)) if heights else None
 
     def path(
         self,
@@ -120,6 +123,8 @@ class NavMesh:
             return (begin, end)
         if _horiz(onto_start.center, start) > _SURFACE or _horiz(onto_goal.center, goal) > _SURFACE:
             return (begin, end)
+        if abs(onto_start.center[2] - start[2]) > 10.0 or abs(onto_goal.center[2] - goal[2]) > 10.0:
+            return (begin, end)
         return (onto_start, onto_goal)
 
     def _parts(self) -> list[set[tuple[int, int]]]:
@@ -172,7 +177,7 @@ class NavMesh:
             poly = lookup.get(pid)
             if poly is None:
                 continue
-            dist = _horiz(poly.center, point)
+            dist = math.dist(poly.center, point)
             if dist < best_d:
                 best = poly
                 best_d = dist
@@ -418,6 +423,26 @@ def _astar(
                 came[neighbor] = current
                 heapq.heappush(open_heap, (step + _horiz(other.center, goal.center), neighbor))
     return [start]
+
+
+def _poly_height(poly: _Poly, point: tuple[float, float, float]) -> float | None:
+    """Interpolate the Detour polygon fan at XY; shared edges count as inside."""
+    x, y = point[:2]
+    if len(poly.verts) < 3:
+        return None
+    ax, ay, az = poly.verts[0]
+    for i in range(1, len(poly.verts) - 1):
+        bx, by, bz = poly.verts[i]
+        cx, cy, cz = poly.verts[i + 1]
+        den = (by - cy) * (ax - cx) + (cx - bx) * (ay - cy)
+        if abs(den) < 1e-8:
+            continue
+        a = ((by - cy) * (x - cx) + (cx - bx) * (y - cy)) / den
+        b = ((cy - ay) * (x - cx) + (ax - cx) * (y - cy)) / den
+        c = 1.0 - a - b
+        if min(a, b, c) >= -1e-3:
+            return a * az + b * bz + c * cz
+    return None
 
 
 def _contains(poly: _Poly, x: float, y: float) -> bool:

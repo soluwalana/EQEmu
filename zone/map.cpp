@@ -89,7 +89,7 @@ float Map::FindClosestZ(glm::vec3 &start, glm::vec3 *result) const {
 	// Unlike FindBestZ, this method finds the closest Z value above or below the specified point.
 	//
 	if (!imp)
-		return false;
+		return BEST_Z_INVALID;
 
 	float ClosestZ = BEST_Z_INVALID;
 
