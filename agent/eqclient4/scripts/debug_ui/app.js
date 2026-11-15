@@ -52,6 +52,7 @@ function setTab(name) {
     document.querySelectorAll('nav button').forEach(e => e.classList.toggle('active', e.dataset.tab === name));
     if (state) render();
     if (name === 'world' && !actionCatalog.size) loadActions();
+    if (name === 'world' && chat.follow && $('chatpanel').open) scrollChatLatest();
     if (name === 'logs') {
         renderLog('wire');
         renderLog('combat');
@@ -1481,6 +1482,98 @@ for (const stream of ['wire', 'combat']) {
         }
     };
 }
+// Chat has its own unfiltered cursor; wire/combat filters never hide dialogue.
+const CHAT_OPCODES = ['OP_ChannelMessage', 'OP_SpecialMesg', 'OP_SimpleMessage'];
+const chat = { after: null, busy: false, count: 0, follow: true };
+const chatLog = $('chatlog');
+function chatParts(value) {
+    const parts = [], source = String(value ?? '');
+    const re = /\x12([0-9a-fA-F]{56})([^\x12]+)\x12/g;
+    let at = 0;
+    for (const m of source.matchAll(re)) {
+        if (m.index > at) parts.push(source.slice(at, m.index));
+        const h = m[1], item_id = parseInt(h.slice(1, 6), 16);
+        parts.push({ label: m[2], item_id,
+            augments: Array.from({ length: 6 }, (_, i) => parseInt(h.slice(6 + i * 5, 11 + i * 5), 16)),
+            link_hash: parseInt(h.slice(48, 56), 16),
+            icon: parseInt(h.slice(43, 48), 16) });
+        at = m.index + m[0].length;
+    }
+    if (at < source.length) parts.push(source.slice(at));
+    return parts;
+}
+function appendChatText(node, value) {
+    for (const part of chatParts(value)) {
+        if (typeof part === 'string') { node.append(document.createTextNode(part)); continue; }
+        const link = element('button', { type: 'button', className: 'chat-link', textContent: part.label,
+            title: part.item_id === 0xfffff ? 'Activate saylink' : 'Inspect item #' + part.item_id });
+        link.onclick = async () => {
+            if (part.item_id !== 0xfffff) {
+                $('inventory').open = true;
+                inspectItem(part.item_id);
+                return;
+            }
+            // Native link activation preserves silent links and custom labels.
+            // The server resolves the actual phrase from the encoded augment ID.
+            link.disabled = true;
+            try {
+                const { item_id, augments, link_hash, icon } = part;
+                await post('/send/OP_ItemLinkClick', { item_id, augments, link_hash, icon: icon & 0xffff });
+                text('chatstatus', 'Saylink queued');
+            } catch (e) { text('chatstatus', e.message); }
+            finally { link.disabled = false; }
+        };
+        node.append(link);
+    }
+}
+function chatLine(packet) {
+    const v = packet.payload;
+    const line = element('div', { className: 'chat-line' + (packet.direction === 'send' ? ' chat-outgoing' : '') });
+    line.append(element('span', { className: 'chat-stamp', textContent: String(packet.timestamp ?? '').slice(11, 19) + (packet.direction === 'send' ? ' ↑' : ' ↓') + ' ' }));
+    if (!v) { line.append(document.createTextNode(packet.opcode + ' (undecoded)')); return line; }
+    let speaker = '', message = '';
+    if (packet.opcode === 'OP_ChannelMessage') {
+        speaker = v.sender || (packet.direction === 'send' ? state?.character?.name : '') || 'Chat';
+        message = v.text ?? '';
+    } else if (packet.opcode === 'OP_SpecialMesg') {
+        // Special messages frequently already contain the speaker in the text.
+        message = v.message ?? '';
+        if (v.speaker && !String(message).toLowerCase().includes(v.speaker.toLowerCase())) speaker = v.speaker;
+    } else {
+        message = packet.chat_text ?? (v.texts?.length ? v.texts.join(' ') : '[String #' + v.string_id + ']');
+    }
+    if (speaker) line.append(element('span', { className: 'chat-speaker', textContent: speaker + ': ' }));
+    appendChatText(line, message);
+    return line;
+}
+function scrollChatLatest() { chatLog.scrollTop = chatLog.scrollHeight; chat.follow = true; }
+chatLog.addEventListener('scroll', () => {
+    if (tab === 'world' && $('chatpanel').open) chat.follow = chatLog.scrollHeight - chatLog.scrollTop - chatLog.clientHeight < 24;
+});
+$('chatlatest').onclick = scrollChatLatest;
+$('chatpanel').addEventListener('toggle', () => { if ($('chatpanel').open && chat.follow) scrollChatLatest(); });
+if (window.matchMedia('(max-width: 1000px)').matches) $('chatpanel').open = false;
+async function pollChat() {
+    if (chat.busy) return;
+    chat.busy = true;
+    try {
+        if (chat.after === null) chat.after = await ensurePacketSession();
+        const params = new URLSearchParams({ stream: 'wire', direction: 'all', after: String(chat.after), limit: '250' });
+        for (const opcode of CHAT_OPCODES) params.append('include', opcode);
+        const r = await api('/dashboard/packets?' + params);
+        if (r.reset) { chatLog.replaceChildren(); chat.count = 0; chat.follow = true; }
+        const fragment = document.createDocumentFragment();
+        for (const packet of r.packets) fragment.append(chatLine(packet));
+        chatLog.append(fragment);
+        chat.after = r.next;
+        chat.count += r.packets.length;
+        text('chatcount', `${chat.count} messages`);
+        if (chat.follow && tab === 'world' && $('chatpanel').open) scrollChatLatest();
+        if (r.has_more) text('chatstatus', 'Catching up…');
+        else if ($('chatstatus').textContent === 'Catching up…') text('chatstatus', '');
+    } catch (e) { text('chatstatus', e.message); }
+    finally { chat.busy = false; }
+}
 // No overlapping state requests: an expensive EQ tick must not accumulate HTTP work.
 async function tick() { const start = performance.now(); try {
     state = await api('/dashboard/state');
@@ -1489,7 +1582,7 @@ async function tick() { const start = performance.now(); try {
 catch (e) {
     status('Disconnected / busy', false);
     text('metrics', e.message);
-} pollLog('wire'); pollLog('combat'); setTimeout(tick, Math.max(0, 200 - (performance.now() - start))); }
+} pollLog('wire'); pollLog('combat'); pollChat(); setTimeout(tick, Math.max(0, 200 - (performance.now() - start))); }
 // Anchor packet retention when the page opens, before the first state poll.
 ensurePacketSession().catch(() => {}); // polling retries transient failures
 loadActions();

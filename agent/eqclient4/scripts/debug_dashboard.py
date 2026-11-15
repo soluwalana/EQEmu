@@ -478,6 +478,25 @@ def install_dashboard(
                 payload = json_value(parsed) if parsed is not None else None
             except Exception:
                 pass
+        chat_text = None
+        if r["Op_Code"] == "OP_SimpleMessage" and isinstance(payload, dict):
+            import re
+
+            from eqclient4.data.strings import EQ_STRS
+
+            string_id = payload.get("string_id")
+            args = payload.get("texts") or []
+            template = EQ_STRS.get(string_id)
+            if template is None:
+                chat_text = f"[String #{string_id}]" + (" " + " ".join(args) if args else "")
+            else:
+                # EQ localized strings use numbered substitutions. Leave missing
+                # arguments visible rather than silently dropping them.
+                chat_text = re.sub(
+                    r"%([1-9][0-9]*)",
+                    lambda m: args[int(m[1]) - 1] if int(m[1]) <= len(args) else m[0],
+                    template,
+                )
         return {
             "id": r["id"],
             "timestamp": r["TimeSeen"],
@@ -485,6 +504,7 @@ def install_dashboard(
             "direction": r["Direction"],
             "size": len(raw),
             "payload": payload,
+            "chat_text": chat_text,
         }
 
     @app.get("/dashboard/packets/cursor")
