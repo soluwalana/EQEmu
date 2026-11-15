@@ -850,8 +850,16 @@ catch (e) {
     if (generation === actionGeneration)
         text('actionhint', e.message);
 } }
-function refreshEntityOptions() { if (!state || !$('entityids'))
-    return; html('entityids', [...state.mobs, ...state.bots.filter(b => b.spawned)].map(m => `<option value="${m.id}" label="${esc(m.name)}"></option>`).join('')); }
+function refreshEntityOptions() {
+    if (!state || !$('entityids')) return;
+    // Replacing datalist options can dismiss the browser's native popup.
+    // Freeze suggestions while editing; the next poll after blur refreshes them.
+    if (document.activeElement?.dataset.spawn === 'true') return;
+    const entities = [...state.mobs, ...state.bots.filter(b => b.spawned)];
+    // The snapshot sorts mobs by distance, which changes as they move.
+    entities.sort((a, b) => a.id - b.id || a.name.localeCompare(b.name));
+    html('entityids', entities.map(m => `<option value="${m.id}" label="${esc(m.name)}"></option>`).join(''));
+}
 $('mobaction').onclick = () => { setTab('actions'); if (activeAction)
     showAction(); };
 $('actionselect').onchange = showAction;

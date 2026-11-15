@@ -19,13 +19,14 @@ if TYPE_CHECKING:
     from eqclient4.loop import Loop
     from eqclient4.nav.travel import Transit, ZoneGraph
     from eqclient4.nav.water import WaterMap
-    from eqclient4.world import Door, Mob, World
+    from eqclient4.world import World
 
 import math
 from dataclasses import dataclass, field
 from pathlib import Path as FSPath
 
 from eqclient4.log import log
+from eqclient4.mob import Mob
 from eqclient4.nav.navmesh import load_nav
 from eqclient4.nav.travel import DEFAULT_ZONE_GRAPH, first_leg, read_zone_graph
 from eqclient4.structs import (
@@ -33,6 +34,7 @@ from eqclient4.structs import (
     OP_FindPersonRequest,
     OP_Track,
     OP_TrackTarget,
+    Door,
 )
 
 _V1_STEP = 14.0
