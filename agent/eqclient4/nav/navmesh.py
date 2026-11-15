@@ -19,7 +19,7 @@ _SURFACE = 40.0
 
 def _repo_root() -> Path:
     """EQEmu checkout. navmesh.py lives in agent/eqclient4/nav/."""
-    return Path(__file__).resolve().parents[4]
+    return Path(__file__).resolve().parents[3]
 
 
 def maps_root() -> Path | None:

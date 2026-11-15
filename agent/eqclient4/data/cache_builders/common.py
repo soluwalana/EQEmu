@@ -8,7 +8,7 @@ from pathlib import Path
 
 CACHE_DIR = Path.home() / ".eqclient"
 # cache_builders/ → data/ → eqclient4/ → EQEmu/
-DEFAULT_PEQ = Path(__file__).resolve().parents[3] / "peq-dump" / "create_tables_content.sql"
+DEFAULT_PEQ = Path(__file__).resolve().parents[4] / "peq-dump" / "create_tables_content.sql"
 
 
 def peq_path(peq: str | Path | None = None) -> Path:

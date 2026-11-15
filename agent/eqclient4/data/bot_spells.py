@@ -130,7 +130,7 @@ ROLE_TYPES = {
 }
 
 DEFAULT_BOT_SPELLS = str(Path.home() / ".eqclient" / "bot_spells.jsonl")
-_BOOTSTRAP = Path(__file__).resolve().parents[4] / "utils" / "sql" / "bot_tables_bootstrap.sql"
+_BOOTSTRAP = Path(__file__).resolve().parents[3] / "utils" / "sql" / "bot_tables_bootstrap.sql"
 _BOT_LIST_LO = 3001
 _BOT_LIST_HI = 3016
 
