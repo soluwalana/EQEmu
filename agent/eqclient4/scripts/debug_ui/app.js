@@ -118,19 +118,14 @@ function fitBotRadius(minimum) {
     const farthest = Math.max(0, ...state.bots.filter(b => b.spawned && validPosition(b.position)).map(b => Math.hypot(b.position[0] - p[0], b.position[1] - p[1], (b.position[2] ?? p[2]) - p[2])));
     return Math.max(minimum, Math.ceil(farthest * 1.15 / 25) * 25);
 }
-function inspectMob(id) {
+function inspectMob(id, openWorld = true) {
+    // Selection is not a camera command. A marker click stays on its map;
+    // list clicks may open the World inspector, but never resize either map.
     selectedMob = id;
-    const m = state?.bots.find(b => b.spawned && b.id === id) ?? state?.mobs.find(m => m.id === id);
-    if (m && validPosition(m.position)) {
-        const p = state.position, distance = Math.hypot(m.position[0] - p[0], m.position[1] - p[1], (m.position[2] ?? p[2]) - p[2]);
-        if (distance > Number($('radius').value)) {
-            const radius = Math.ceil(distance * 1.15 / 25) * 25;
-            $('radius').max = String(Math.max(Number($('radius').max), radius));
-            $('radius').value = String(radius);
-            text('radiuslabel', radius + ' yd');
-        }
-    }
-    setTab('world');
+    if (openWorld && tab !== 'world')
+        setTab('world');
+    else if (state)
+        render();
 }
 $('nearby').onclick = $('moblist').onclick = $('bots').onclick = e => {
     const b = e.target.closest('[data-mob]');
@@ -317,7 +312,7 @@ for (const id of ['minimap', 'worldmap']) {
     $(id).onclick = e => {
         const hit = mapHit(id, e);
         if (hit)
-            inspectMob(hit.id);
+            inspectMob(hit.id, false);
     };
     $(id).onmousemove = e => {
         const hit = mapHit(id, e);

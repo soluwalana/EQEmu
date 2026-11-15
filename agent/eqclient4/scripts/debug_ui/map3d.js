@@ -122,7 +122,7 @@
     class View {
         constructor(id) {
             this.id=id; this.hud=document.getElementById(id); this.az=-.55; this.el=.72;
-            this.follow=true; this.center=null; this.zoom=1; this.zone=null; this.generation=0;
+            this.follow=true; this.center=null; this.zoom=1; this.manualRadius=null; this.zone=null; this.generation=0;
             this.terrain=true; this.nav=true; this.water=true; this.cut=false; this.cutHeight=0; this.mode3d=true;
             this.localGeometry=false; this.showHiddenMobs=false;
             this.buffers=[]; this.geometry=null; this.minZ=null; this.error=''; this.latest=null; this.drag=null; this.skipClick=false;
@@ -144,7 +144,7 @@
             const button=(label,fn)=>{ const b=document.createElement('button');b.type='button';b.textContent=label;b.onclick=fn;tools.append(b);return b;};
             const check=(label,value,fn)=>{const l=document.createElement('label'), i=document.createElement('input');i.type='checkbox';i.checked=value;l.append(i,document.createTextNode(label));tools.append(l);i.onchange=()=>{fn(i.checked);this.redraw();};return i;};
             this.toggle=button('2D view',()=>{this.mode3d=!this.mode3d;this.toggle.textContent=this.mode3d?'2D view':'3D view';this.glCanvas.hidden=!this.mode3d;this.hud.classList.toggle('eq3d-hud',this.mode3d);this.redraw();});
-            button('Follow player',()=>{this.follow=true;this.zoom=1;this.redraw();});
+            button('Follow player',()=>{this.resetCamera();this.redraw();});
             button('Top',()=>{this.el=MAX_ELEVATION;this.az=0;this.redraw();});
             button('Side',()=>{this.el=MIN_ELEVATION;this.az=0;this.redraw();});
             button('Orbit',()=>{this.el=.72;this.az=-.55;this.redraw();});
@@ -156,21 +156,54 @@
             const cut=document.createElement('input');cut.type='range';cut.min='0';cut.max='150';cut.value=String(this.cutHeight);cut.title='World-Z cut plane: player Z plus optional roof clearance';
             const label=document.createElement('label');label.append('Roof offset ',cut);tools.append(label);
             cut.oninput=()=>{this.cutHeight=Number(cut.value);this.redraw();};
-            // Pointer capture prevents a drag ending over a mob from selecting it.
-            this.hud.addEventListener('pointerdown',e=>{if(!this.mode3d || e.button>1)return;this.skipClick=false;this.drag={x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY,pan:e.shiftKey||e.button===1,moved:false};this.hud.setPointerCapture(e.pointerId);});
+            // Left drag pans; right/Alt drag orbits. Keep Shift/middle pan.
+            // Only a real drag suppresses the subsequent marker click.
+            this.hud.addEventListener('pointerdown',e=>{
+                if(!this.mode3d || e.button>2 || this.drag)return;
+                this.skipClick=false;
+                this.drag={pointer:e.pointerId,x:e.clientX,y:e.clientY,startX:e.clientX,startY:e.clientY,
+                    pan:e.shiftKey||e.button===1||(e.button===0&&!e.altKey),moved:false};
+                this.hud.setPointerCapture(e.pointerId);
+            });
             this.hud.addEventListener('pointermove',e=>{
-                if(!this.drag||!this.mode3d)return;
-                const d=this.drag, dx=e.clientX-d.x,dy=e.clientY-d.y; d.x=e.clientX;d.y=e.clientY;
-                if(Math.hypot(e.clientX-d.startX,e.clientY-d.startY)>4)d.moved=true;
-                if(!d.moved)return;
-                if(d.pan){const camera=this.camera; if(!camera)return;const r=this.hud.getBoundingClientRect(), k=camera.scale*r.width/this.hud.width; this.follow=false;this.center=camera.center.map((v,i)=>v-dx*camera.right[i]/k+dy*camera.up[i]/k);}
-                else{this.az-=dx*.009;this.el=clamp(this.el+dy*.009,MIN_ELEVATION,MAX_ELEVATION);}
+                if(!this.drag||!this.mode3d||e.pointerId!==this.drag.pointer)return;
+                const d=this.drag, camera=this.camera;
+                if(!camera)return;
+                if(!d.moved){
+                    if(Math.hypot(e.clientX-d.startX,e.clientY-d.startY)<=4)return;
+                    d.moved=true;
+                    // Freeze the current base radius before manual navigation.
+                    // Otherwise the overview's auto-fit can resize a panned map.
+                    this.manualRadius=camera.radius;
+                }
+                const dx=e.clientX-d.x,dy=e.clientY-d.y;d.x=e.clientX;d.y=e.clientY;
+                if(d.pan){
+                    const r=this.hud.getBoundingClientRect();
+                    const kx=camera.scale*r.width/this.hud.width,ky=camera.scale*r.height/this.hud.height;
+                    if(kx<=0||ky<=0)return;
+                    this.follow=false;
+                    this.center=camera.center.map((v,i)=>v-dx*camera.right[i]/kx+dy*camera.up[i]/ky);
+                }else{
+                    this.az-=dx*.009;this.el=clamp(this.el+dy*.009,MIN_ELEVATION,MAX_ELEVATION);
+                }
                 this.redraw();
             });
-            const end=()=>{if(this.drag?.moved)this.skipClick=true;this.drag=null;};
-            this.hud.addEventListener('pointerup',end);this.hud.addEventListener('pointercancel',end);
+            const end=e=>{
+                if(this.drag?.pointer!==e.pointerId)return;
+                if(this.drag.moved)this.skipClick=true;
+                this.drag=null;
+            };
+            this.hud.addEventListener('pointerup',end);
+            this.hud.addEventListener('pointercancel',end);
+            this.hud.addEventListener('lostpointercapture',end);
+            this.hud.addEventListener('contextmenu',e=>{if(this.mode3d)e.preventDefault();});
             this.hud.addEventListener('click',e=>{if(this.skipClick){this.skipClick=false;e.stopImmediatePropagation();}},true);
-            this.hud.addEventListener('wheel',e=>{if(!this.mode3d)return;e.preventDefault();this.zoom=clamp(this.zoom*Math.exp(e.deltaY*.001),.03,30);this.redraw();},{passive:false});
+            this.hud.addEventListener('wheel',e=>{
+                if(!this.mode3d)return;
+                e.preventDefault();
+                if(this.camera)this.manualRadius=this.camera.radius;
+                this.zoom=clamp(this.zoom*Math.exp(e.deltaY*.001),.03,30);this.redraw();
+            },{passive:false});
             this.glCanvas.addEventListener('webglcontextlost',e=>{e.preventDefault();this.error='WebGL context lost; use 2D view or reload';this.mode3d=false;this.glCanvas.hidden=true;this.hud.classList.remove('eq3d-hud');this.toggle.disabled=true;this.redraw();});
         }
         initSpheres(){
@@ -205,18 +238,21 @@
             gl.drawArraysInstanced(gl.TRIANGLES,0,sphere.count,instances.length/7);
             gl.bindVertexArray(null);
         }
+        resetCamera(){this.follow=true;this.center=null;this.zoom=1;this.manualRadius=null;}
+        resetZoom(){this.zoom=1;this.manualRadius=null;}
         redraw(){if(this.latest){const [radius,state,selected,hits,layout]=this.latest; if(this.mode3d)this.draw(radius,state,selected,hits,layout);else if(typeof window.EQMap3D.fallback==='function')window.EQMap3D.fallback(this.id,radius);}}
         fitTarget(){
             if(!this.latest)return;const [radius,s,selected]=this.latest;
             const target=[...s.mobs,...s.bots.filter(b=>b.spawned)].find(m=>m.id===selected);
             if(!target||!valid(target.position)){this.info.textContent='Select a mob or bot first.';return;}
             this.center=s.position.map((v,i)=>(v+target.position[i])/2);this.follow=false;
+            this.manualRadius=radius;
             this.zoom=Math.max(12,Math.hypot(...sub(target.position,s.position))*.65)/radius;this.redraw();
         }
         load(zone){
             if(zone===this.zone)return;
             this.zone=zone;this.generation++;const generation=this.generation;
-            this.follow=true;this.center=null;this.zoom=1;this.geometry=null;this.minZ=null;this.error='';this.clearBuffers();
+            this.resetCamera();this.geometry=null;this.minZ=null;this.error='';this.clearBuffers();
             if(!zone)return;
             fetchGeometry(zone).then(data=>{if(this.generation!==generation)return;this.geometry=data;this.upload(data);this.redraw();}).catch(e=>{if(this.generation!==generation)return;this.error=e.message;this.redraw();});
         }
@@ -236,6 +272,7 @@
         }
         draw(radius,s,selected,hits,layout){
             this.latest=[radius,s,selected,hits,layout];this.load(s.zone);
+            radius=this.manualRadius??radius;
             const hud=this.hud, gl=this.gl, w=hud.width,h=hud.height;
             if(this.minZ!==null&&!this.follow&&this.center)
                 this.center[2]=Math.max(this.center[2],Math.min(this.minZ,s.position[2]));
@@ -245,7 +282,7 @@
             const right=[ca,sa,0], up=[-sa*se,ca*se,ce], nearAxis=[sa*ce,-ca*ce,se];
             const scale=Math.min(w,h)/(2*radius*this.zoom), depthScale=1/Math.max(100000,radius*this.zoom*16);
             const project=p=>{const d=sub(p,center);return [w/2+dot(d,right)*scale,h/2-dot(d,up)*scale];};
-            this.camera={center,right,up,scale};
+            this.camera={center,right,up,scale,radius};
             gl.viewport(0,0,w,h);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gl.useProgram(this.prog);
             const l=this.loc;gl.uniform3fv(l.center,center);gl.uniform3fv(l.right,right);gl.uniform3fv(l.up,up);gl.uniform3fv(l.nearAxis,nearAxis);
             gl.uniform2f(l.scale,2*scale/w,2*scale/h);gl.uniform1f(l.depthScale,depthScale);
@@ -327,12 +364,12 @@
             const axis=[w-35,h-32];for(const [v,color,name] of [[[1,0,0],'#ec7784','X'],[[0,1,0],'#6ccc91','Y'],[[0,0,1],'#699fe8','Z']]){const p=[axis[0]+dot(v,right)*22,axis[1]-dot(v,up)*22];line(axis,p,color,false,2);ctx.fillStyle=color;ctx.fillText(name,p[0],p[1]);}
             hits.set(this.id,entities);
             const count=s.bots.filter(b=>b.spawned).length;document.getElementById(this.id+'bots').textContent=`${bots.length} / ${count} spawned bots in view`;
-            const data=this.geometry;this.info.textContent=this.error?`${this.error} · live entities still shown`:data?`${(data.collision.length/9).toLocaleString()} collision triangles · ${(data.nav.length/9).toLocaleString()} nav triangles · ${data.flags&4?(data.water.length/9).toLocaleString()+' water triangles':'No water map'} · ${this.cut?'Z ≤ '+(s.position[2]+this.cutHeight).toFixed(1):'All floors'} · ${this.localGeometry?'Local geometry '+Math.round(range)+' yd':'Full geometry'} · ${hiddenMobs} mobs hidden · route/spheres X-ray · drag orbit, Shift+drag pan, wheel zoom`:'Loading zone geometry…';
+            const data=this.geometry;this.info.textContent=this.error?`${this.error} · live entities still shown`:data?`${(data.collision.length/9).toLocaleString()} collision triangles · ${(data.nav.length/9).toLocaleString()} nav triangles · ${data.flags&4?(data.water.length/9).toLocaleString()+' water triangles':'No water map'} · ${this.cut?'Z ≤ '+(s.position[2]+this.cutHeight).toFixed(1):'All floors'} · ${this.localGeometry?'Local geometry '+Math.round(range)+' yd':'Full geometry'} · ${hiddenMobs} mobs hidden · route/spheres X-ray · drag pan, right/Alt-drag orbit, wheel zoom`:'Loading zone geometry…';
         }
     }
     window.EQMap3D={
-        resetCamera(id){const v=views.get(id);if(v){v.follow=true;v.zoom=1;}},
-        resetZoom(id){const v=views.get(id);if(v)v.zoom=1;},
+        resetCamera(id){views.get(id)?.resetCamera();},
+        resetZoom(id){views.get(id)?.resetZoom();},
         draw(id,radius,state,selected,hits,layout){
             if(!state||!valid(state.position))return false;
             let v=views.get(id);
