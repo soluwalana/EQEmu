@@ -6,6 +6,7 @@ nav vertex count, availability flags), or EQG2 with a water vertex count before
 the flags. Both are followed by packed float32 XYZ vertices.
 Each consecutive group of three vertices is a triangle.
 """
+
 from __future__ import annotations
 
 import re
@@ -15,13 +16,12 @@ import zlib
 from array import array
 from functools import lru_cache
 
-from fastapi import FastAPI, HTTPException, Query
-from fastapi.responses import Response
-
 from eqclient4.nav.maps import _read_map
 from eqclient4.nav.navmesh import load_nav, maps_root
 from eqclient4.nav.water import load_water
 from eqclient4.scripts.debug_water import water_vertices
+from fastapi import FastAPI, HTTPException, Query
+from fastapi.responses import Response
 
 
 @lru_cache(maxsize=2)

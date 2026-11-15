@@ -36,7 +36,7 @@ class Zone(LevelHoldAction):
                 self.complete = True
             return
 
-        if not self._loop.session_open():
+        if not self.loop.session_open():
             return
 
         if self.hold_for_level(self.destination):
@@ -45,9 +45,9 @@ class Zone(LevelHoldAction):
 
         self.priority = 400
 
-        point = self._world.position
-        zone_id = self._world.zone_graph.zones.get(self.destination, 0)
-        self._loop.send(
+        point = self.world.position
+        zone_id = self.world.zone_graph.zones.get(self.destination, 0)
+        self.loop.send(
             "OP_ZoneChange",
             OP_ZoneChange(
                 self.destination,

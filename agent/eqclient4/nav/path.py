@@ -30,11 +30,11 @@ from eqclient4.mob import Mob
 from eqclient4.nav.navmesh import load_nav
 from eqclient4.nav.travel import DEFAULT_ZONE_GRAPH, first_leg, read_zone_graph
 from eqclient4.structs import (
+    Door,
     OP_FindPersonReply,
     OP_FindPersonRequest,
     OP_Track,
     OP_TrackTarget,
-    Door,
 )
 
 _V1_STEP = 14.0
@@ -128,7 +128,9 @@ def route(
     )
 
 
-def _reached(here: tuple[float, float, float], point: tuple[float, float, float], reach: float) -> bool:
+def _reached(
+    here: tuple[float, float, float], point: tuple[float, float, float], reach: float
+) -> bool:
     # Navmesh and collision elevations can differ slightly on the same floor.
     return _horiz(here, point) <= reach and abs(here[2] - point[2]) <= 4.0
 

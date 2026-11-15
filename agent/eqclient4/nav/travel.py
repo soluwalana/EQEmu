@@ -458,9 +458,7 @@ def _merge_quest_doors(graph: ZoneGraph, quest_doors: dict[str, dict[int, list[i
         for door_id, destinations in by_door.items():
             for dest_id in destinations:
                 dest_id = int(dest_id)
-                dest = (
-                    _name_of(dest_id, graph.zones) or zone_name_of(dest_id) or f"zone{dest_id}"
-                )
+                dest = _name_of(dest_id, graph.zones) or zone_name_of(dest_id) or f"zone{dest_id}"
                 need = (
                     TransitNeed(zone_flag=dest_id)
                     if dest in graph.flagged or dest_id in graph.flagged.values()

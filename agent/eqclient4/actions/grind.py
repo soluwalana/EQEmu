@@ -29,19 +29,19 @@ class Grind(Action):
         self.suspended = True
 
     def step(self) -> None:
-        if not self._world.zone:
+        if not self.world.zone:
             log.error(f"Not zoned in yet to grind level {self.level}")
             return
 
         target = int(self.level or 0)
-        current_level = self._world.character.level
+        current_level = self.world.character.level
         if current_level >= target:
             self.complete = True
             return
 
         self.suspended = False
 
-        if self.camp and self.camp != self._world.zone:
+        if self.camp and self.camp != self.world.zone:
             point = self.next_zoneline(self.camp)
             if not point:
                 log.error(f"No zoneline found to grind in {self.camp}")
@@ -51,7 +51,7 @@ class Grind(Action):
             self.move_closer(point)
             return
 
-        zone = camp_for_level(current_level, self._world.zone or "")
+        zone = camp_for_level(current_level, self.world.zone or "")
         if not zone:
             log.error(f"No zones to grind in for level {current_level}")
             self.crash()
@@ -59,7 +59,7 @@ class Grind(Action):
 
         self.camp = zone.zone
 
-        if self.camp != self._world.zone:
+        if self.camp != self.world.zone:
             log.info(f"Moving to zone {self.camp} to grind level {self.level}")
             return
 
@@ -71,18 +71,18 @@ class Grind(Action):
         return
 
     def report(self) -> str:
-        return f"{super().report()} level={self._world.character.level} -> {self.level}  camp={self.camp}"
+        return f"{super().report()} level={self.world.character.level} -> {self.level}  camp={self.camp}"
 
 
 class LevelHoldAction(Action):
     def hold_for_level(self, zone: str) -> bool:
         """Queue a grind when the zone requires a higher level."""
 
-        if not zone_reachable(zone, self._world.character.level):
+        if not zone_reachable(zone, self.world.character.level):
             return False
 
         need = zone_recommended_level(zone)
-        g = Grind(self._world, self._loop, need)
+        g = Grind(self.world, self.loop, need)
         g.source = f"grind:{need}"
         g.priority = self.priority + 1
         return self.yield_to(g)

@@ -100,9 +100,7 @@ def install_dashboard(
                 try:
                     # Collision triangles are immutable zone data. Give the
                     # dashboard its own ZoneMap index; no shared mutable cache.
-                    los_mesh = (
-                        ZoneMap(source.triangles) if source is not None else _read_map(zone)
-                    )
+                    los_mesh = ZoneMap(source.triangles) if source is not None else _read_map(zone)
                 except (OSError, ValueError, struct.error, zlib.error):
                     los_mesh = None
                     los_error = True
@@ -327,21 +325,37 @@ def install_dashboard(
                     "bots": bots,
                     "mobs": mobs,
                     "doors": [
-                        {"id": d.id, "name": d.name, "position": d.position,
-                         "opened": d.opened, "open_type": d.open_type,
-                         "kind": "door" if d.id in exit_doors else d.classify(weapon_models).value,
-                         "is_exit": d.id in exit_doors,
-                         "exit_destinations": exit_doors.get(d.id, []),
-                         "model_key": d.model_key,
-                         "heading": d.heading, "incline": d.incline,
-                         "size": d.size, "invert_state": d.invert_state,
-                         "door_param": d.door_param}
+                        {
+                            "id": d.id,
+                            "name": d.name,
+                            "position": d.position,
+                            "opened": d.opened,
+                            "open_type": d.open_type,
+                            "kind": (
+                                "door" if d.id in exit_doors else d.classify(weapon_models).value
+                            ),
+                            "is_exit": d.id in exit_doors,
+                            "exit_destinations": exit_doors.get(d.id, []),
+                            "model_key": d.model_key,
+                            "heading": d.heading,
+                            "incline": d.incline,
+                            "size": d.size,
+                            "invert_state": d.invert_state,
+                            "door_param": d.door_param,
+                        }
                         for d in w.doors.values()
                     ],
                     "ground_spawns": [
-                        {"drop_id": g.instance_id, "item_id": g.item_id,
-                         "name": item.name if (item := w.item_book.get(g.item_id)) else f"Item #{g.item_id}",
-                         "position": (g.observed_x, g.observed_y, g.observed_z)}
+                        {
+                            "drop_id": g.instance_id,
+                            "item_id": g.item_id,
+                            "name": (
+                                item.name
+                                if (item := w.item_book.get(g.item_id))
+                                else f"Item #{g.item_id}"
+                            ),
+                            "position": (g.observed_x, g.observed_y, g.observed_z),
+                        }
                         for spawns in w.ground_spawns.values()
                         for g in spawns
                     ],
@@ -444,7 +458,7 @@ def install_dashboard(
         ops = sorted(COMBAT)
         clause = "Character = ? AND Op_Code " + ("IN" if stream == "combat" else "NOT IN")
         clause += " (" + ",".join("?" for _ in ops) + ")"
-        args = [character, *ops]
+        args: list[str | int] = [character, *ops]
         if direction != "all":
             clause += " AND Direction = ?"
             args.append(direction)
@@ -470,9 +484,16 @@ def install_dashboard(
         raw = bytes(r["Bytes"])
         payload = None
         # High-volume movement packets need only metadata in the live view.
-        if decode_all or stream == "combat" or r["Op_Code"] in {
-            "OP_ChannelMessage", "OP_SpecialMesg", "OP_SimpleMessage",
-        }:
+        if (
+            decode_all
+            or stream == "combat"
+            or r["Op_Code"]
+            in {
+                "OP_ChannelMessage",
+                "OP_SpecialMesg",
+                "OP_SimpleMessage",
+            }
+        ):
             try:
                 parsed = decode_packet(r["Op_Code"], raw)
                 payload = json_value(parsed) if parsed is not None else None
@@ -484,7 +505,7 @@ def install_dashboard(
 
             from eqclient4.data.strings import EQ_STRS
 
-            string_id = payload.get("string_id")
+            string_id = payload.get("string_id") or 0
             args = payload.get("texts") or []
             template = EQ_STRS.get(string_id)
             if template is None:
@@ -587,8 +608,10 @@ def install_dashboard(
             scanned += 1
             packet = packet_row(r, stream, decode_all=bool(needle))
             if needle:
-                haystack = str(packet["opcode"]) + " " + json.dumps(
-                    packet["payload"], ensure_ascii=False, default=str
+                haystack = (
+                    str(packet["opcode"])
+                    + " "
+                    + json.dumps(packet["payload"], ensure_ascii=False, default=str)
                 )
                 if needle not in haystack.lower():
                     continue

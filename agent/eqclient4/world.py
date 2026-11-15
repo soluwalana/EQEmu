@@ -47,8 +47,8 @@ from eqclient4.nav.travel import ZoneGraph, ensure_zone_graph
 from eqclient4.nav.water import WaterMap, load_water
 from eqclient4.quests.graph import QuestGraph, ensure_graph
 from eqclient4.structs import (
-    EQStruct,
     Door,
+    EQStruct,
     OP_ClickDoor,
     OP_ClientUpdate,
     OP_Consider,
@@ -154,8 +154,8 @@ class World:
 
         # Movement and Position
         self.movement = Movement(self)
-        self.clicked_doors = set()
-        self.open_doors = set()
+        self.clicked_doors: set[int] = set()
+        self.open_doors: set[int] = set()
 
         # </Volatile Data>
 
@@ -706,7 +706,7 @@ class Movement:
             if floor != here or nxt == here:
                 # Advance only through the traversed prefix, never a later XY
                 # overlap on the same route. Keep the final waypoint until reached.
-                path.points = chain[min(passed, len(chain) - 1):]
+                path.points = chain[min(passed, len(chain) - 1) :]
                 return floor
             length *= 0.5
         path.points = points

@@ -1,6 +1,9 @@
 """The action superclass. The scheduler and the bus only know this type."""
 
+import re
+import time
 from collections.abc import Callable, Collection
+from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -8,9 +11,37 @@ if TYPE_CHECKING:
     from eqclient4.nav.path import EQPath
     from eqclient4.world import World
 
+from eqclient4.log import log
 from eqclient4.mob import Mob
 from eqclient4.nav.travel import first_leg
-from eqclient4.structs import EQStruct, OP_Consider, OP_MobHealth, OP_TargetMouse
+from eqclient4.structs import (
+    SAY_CHANNEL,
+    EQStruct,
+    OP_ChannelMessage,
+    OP_Consider,
+    OP_SpecialMesg,
+    OP_TargetMouse,
+)
+
+REPLY_TIMEOUT = 8.0
+
+
+@dataclass
+class Command:
+    """A command to be processed and waited on."""
+
+    text: str
+    response_pattern: str
+    failure_patterns: list[str]
+    target_id: int | None = None
+    target: bool = False
+    sent: bool = False
+    sent_at: float = 0.0
+    recv: bool = False
+    recv_response: re.Match | None = None
+    failure_msg: str | None = None
+    success_callback: Callable[[], None] | None = None
+    failure_callback: Callable[[], None] | None = None
 
 
 class Action:
@@ -19,9 +50,9 @@ class Action:
         self.priority = 0
         self.insert = 0
         self.started = 0.0
-        self._world: World = world
-        self._loop: Loop = loop
-        self.zone = self._world.zone or ""
+        self.world: World = world
+        self.loop: Loop = loop
+        self.zone = self.world.zone or ""
         self.failed = False
 
         self.durable = False
@@ -45,11 +76,77 @@ class Action:
         self.zoneline: tuple[float, float, float] | None = None
         self.zoneline_dest: str | None = None
 
+        self.commands: list[Command] = []
+
+    def target(self) -> None:
+
+        pass
+
+    def send_commands(self) -> None:
+        """Complete after all commands have been sent and response or timeout has occurred."""
+        for command in self.commands:
+
+            if command.recv or command.failure_msg:
+                continue
+
+            if command.target and not command.sent:
+                if not self.mob_targeted == command.target_id:
+                    self.target_id = command.target_id or 0
+                    return
+
+            if not command.sent:
+                self.messages.clear()  # Discard previous replies
+                command.sent_at = time.monotonic()
+                command.sent = True
+                self.send_channel_message(command.text, sleep_time=0.025)
+                return
+
+            failure_pattern = None
+
+            failure_patterns = []
+            if len(command.failure_patterns) > 0:
+                failure_patterns = command.failure_patterns
+            else:
+                log.warning(f"No failure patterns provided for command: {command.text}")
+
+            failure_pattern = re.compile("(" + "|".join(failure_patterns) + ")")
+
+            failure = None
+            if failure_pattern:
+                failure = self.re_has_response(failure_pattern)
+
+            if failure:
+                command.failure_msg = failure.group(0)
+                log.error(f"Command Failed: {command.failure_msg}")
+                if command.failure_callback:
+                    command.failure_callback()
+                return
+
+            if time.monotonic() - command.sent_at >= REPLY_TIMEOUT:
+                log.error(f"Command {command.text} timed out after {REPLY_TIMEOUT} seconds")
+                command.failure_msg = "fail: timeout"
+                if command.failure_callback:
+                    command.failure_callback()
+                return
+
+            success_pattern = re.compile(command.response_pattern)
+            success = self.re_has_response(success_pattern)
+
+            if success:
+                command.recv = True
+                command.recv_response = success
+                if command.success_callback:
+                    command.success_callback()
+
+            return
+
+        self.unwait("send-commands")
+
     def step(self) -> None:
         if not self.target_id:
             return
 
-        mob = self._world.mobs.find_mob(self.target_id)
+        mob = self.world.mobs.find_mob(self.target_id)
         if not mob:
             return
 
@@ -67,7 +164,7 @@ class Action:
             return
 
         if not self.target_sent:
-            self._loop.send(
+            self.loop.send(
                 "OP_TargetMouse",
                 OP_TargetMouse(int(self.target_id) & 65535).serialize(),
             )
@@ -75,10 +172,10 @@ class Action:
             return
 
         if not self._consider_sent:
-            self._loop.send(
+            self.loop.send(
                 "OP_Consider",
                 OP_Consider(
-                    player_id=int(self._world.self_id or 0), target_id=int(self.target_id) & 65535
+                    player_id=int(self.world.self_id or 0), target_id=int(self.target_id) & 65535
                 ).serialize(),
             )
             self._consider_sent = True
@@ -93,13 +190,48 @@ class Action:
             self._consider_sent = False
             return
 
+    def re_has_response(self, matcher: re.Pattern) -> re.Match | None:
+        def _message_text(msg: EQStruct) -> str:
+            match msg:
+                case OP_ChannelMessage():
+                    return msg.text
+                case OP_SpecialMesg():
+                    return msg.message
+                case _:
+                    return ""
+
+        for idx, msg in enumerate(self.messages):
+            text = _message_text(msg)
+            if m := matcher.search(text):
+                self.messages.pop(idx)
+                return m
+        return None
+
+    def send_channel_message(self, message: str, sleep_time: float = 0.1) -> None:
+        self.loop.send(
+            "OP_ChannelMessage",
+            OP_ChannelMessage(
+                "",
+                self.world.character.name,
+                100,
+                SAY_CHANNEL,
+                0,
+                0,
+                100,
+                message,
+            ).serialize(),
+        )
+        self.loop._flush()
+        time.sleep(sleep_time)
+        self.loop.pump()
+
     def con_matcher(self, message: EQStruct) -> bool:
         if isinstance(message, OP_Consider):
-            return message.target_id == int(self.target_id)
+            return message.target_id == (self.target_id or 0)
         return False
 
     def can_see_mob(self, mob: Mob) -> bool:
-        if self._world.line_of_sight(mob.position):
+        if self.world.line_of_sight(mob.position):
             return True
         self.move_closer(mob)
         return False
@@ -155,7 +287,7 @@ class Action:
         self.messages.append(payload)
 
     def opcodes(self) -> tuple[str, ...]:
-        return ("OP_Consider",)
+        return ("OP_Consider", "OP_ChannelMessage", "OP_SpecialMesg")
 
     @staticmethod
     def key(action: Action) -> tuple[object, ...]:
@@ -163,12 +295,12 @@ class Action:
         return (-action.insert,)
 
     def forget(self) -> None:
-        self._loop.queue.remove(self.insert)
-        self._loop.journal.clear_source(self.source)
+        self.loop.queue.remove(self.insert)
+        self.loop.journal.clear_source(self.source)
 
     def yield_to(self, new: Action) -> bool:
         """Queue the next piece of work. Same-band handoff waits until the next pulse."""
-        if not self._loop.queue.append(new):
+        if not self.loop.queue.append(new):
             return False
 
         self.yielding = True
@@ -180,17 +312,17 @@ class Action:
             dest_location = dest.position
 
         if not self.active_path or self.active_path_dest != dest_location:
-            self.active_path = self._world.movement.plan(dest_location, mode)
+            self.active_path = self.world.movement.plan(dest_location, mode)
             self.active_path_dest = dest_location
 
-        self._world.movement.advance(self._loop, self.active_path)
+        self.world.movement.advance(self.loop, self.active_path)
 
     def face(self, dest: tuple[float, float, float] | Mob) -> None:
         match dest:
             case (_, _, _):
-                self._world.movement.face(self._loop, dest)
+                self.world.movement.face(self.loop, dest)
             case Mob():
-                self._world.movement.face(self._loop, dest.position)
+                self.world.movement.face(self.loop, dest.position)
             case _:
                 raise ValueError(
                     f"Invalid destination type: {type(dest)}, expected tuple[float, float, float] or Mob"
@@ -209,9 +341,9 @@ class Action:
 
         self.zoneline_dest = destination
 
-        here = (self._world.zone or "").lower()
+        here = (self.world.zone or "").lower()
         dest = (destination or "").lower()
-        leg = first_leg(self._world.zone_graph, here, dest)
+        leg = first_leg(self.world.zone_graph, here, dest)
         if leg:
             spot = self._transit_point(leg.zone, leg.door_id, leg.dest)
             if spot:
@@ -227,7 +359,7 @@ class Action:
         door_id: int,
         dest: str = "",
     ) -> tuple[float, float, float] | None:
-        transit = self._world.zone_graph.transit_at(zone, door_id)
+        transit = self.world.zone_graph.transit_at(zone, door_id)
         if transit and (transit.x or transit.y or transit.z):
             return (transit.x, transit.y, transit.z)
 
@@ -244,7 +376,7 @@ class Action:
         if not home or not target:
             return None
 
-        for transit in self._world.zone_graph.transits_from(target):
+        for transit in self.world.zone_graph.transits_from(target):
             if transit.dest != home:
                 continue
             if transit.dest_x or transit.dest_y or transit.dest_z:
@@ -254,11 +386,11 @@ class Action:
 
     def _script_exit(self, here: str, destination: str) -> tuple[float, float, float] | None:
         """The live door a quest script uses to leave, when the zone graph has no hop."""
-        exits = self._world.exit_doors.get(here, {})
+        exits = self.world.exit_doors.get(here, {})
         if not exits:
             return None
 
-        dest_id = self._world.zone_graph.zones.get(destination, 0)
+        dest_id = self.world.zone_graph.zones.get(destination, 0)
 
         chosen = 0
         if dest_id:
@@ -276,9 +408,9 @@ class Action:
         return self._door_point(chosen)
 
     def _door_point(self, door_id: int) -> tuple[float, float, float] | None:
-        door = self._world.doors.get(door_id)
+        door = self.world.doors.get(door_id)
         if door is None and door_id < 256:
-            for live in self._world.doors.values():
+            for live in self.world.doors.values():
                 if live.id % 256 == door_id:
                     door = live
                     break
@@ -290,9 +422,9 @@ class Action:
 
     def exit_kind(self, destination: str) -> str:
         """How the next hop leaves: door, stone, or point. Empty when the graph has no hop."""
-        graph = self._world.zone_graph
+        graph = self.world.zone_graph
 
-        leg = first_leg(graph, (self._world.zone or "").lower(), (destination or "").lower())
+        leg = first_leg(graph, (self.world.zone or "").lower(), (destination or "").lower())
         if not leg:
             return ""
         transit = graph.transit_at(leg.zone, leg.door_id)
@@ -302,14 +434,14 @@ class Action:
 
     def painted_line(self, anchor: tuple[float, float, float]) -> tuple[float, float, float] | None:
         """A watermap zone-line sample near a zone point. Outdoor lines are volumes, not the row."""
-        if not self._world.zone:
+        if not self.world.zone:
             return None
-        water = self._world.get_water_map(self._world.zone)
+        water = self.world.get_water_map(self.world.zone)
         if not water:
             return None
         if water.in_zone_line(anchor[0], anchor[1], anchor[2]):
             return anchor
-        here = self._world.position
+        here = self.world.position
         return water.nearest_zone_line(here[0], here[1], here[2], anchor=anchor, reach=300, step=10)
 
     def crash(self) -> None:

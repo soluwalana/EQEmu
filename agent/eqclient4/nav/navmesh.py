@@ -65,8 +65,11 @@ class NavMesh:
 
     def surface_z(self, point: tuple[float, float, float], max_delta: float = 4.0) -> float | None:
         """Actual polygon height at XY on the planned level, not its center Z."""
-        heights = [z for poly in self.polys
-                   if (z := _poly_height(poly, point)) is not None and abs(z - point[2]) <= max_delta]
+        heights = [
+            z
+            for poly in self.polys
+            if (z := _poly_height(poly, point)) is not None and abs(z - point[2]) <= max_delta
+        ]
         return min(heights, key=lambda z: (abs(z - point[2]), z)) if heights else None
 
     def path(

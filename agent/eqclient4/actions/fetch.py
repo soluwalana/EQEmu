@@ -70,11 +70,11 @@ class Fetch(LevelHoldAction):
             log.info("Not fetching an item")
             return
 
-        if not self._world.zone:
+        if not self.world.zone:
             log.error(f"Not zoned in yet to fetch {self.request.item_id}")
             return
 
-        self.item = self._world.item_book.get(self.request.item_id)
+        self.item = self.world.item_book.get(self.request.item_id)
         if not self.item:
             log.error(f"Item {self.request.item_id} not found in item book")
             self.crash()
@@ -87,10 +87,10 @@ class Fetch(LevelHoldAction):
         # 4. Craft it
 
         zone_ground_spots = []
-        possible_ground_locations = self._world.ground_book.spots.get(self.request.item_id, ())
+        possible_ground_locations = self.world.ground_book.spots.get(self.request.item_id, ())
         if possible_ground_locations:
             for loc in possible_ground_locations:
-                if loc.zone_id != self._world.zone_id:
+                if loc.zone_id != self.world.zone_id:
                     continue
 
                 zone_ground_spots.append(
@@ -107,19 +107,19 @@ class Fetch(LevelHoldAction):
             self.ground_locations_index = 0
             return
 
-        merchants = self._world.merchants.best(self.request.item_id, self._world.zone)
+        merchants = self.world.merchants.best(self.request.item_id, self.world.zone)
         if merchants:
             self.merchant = merchants[0]
             self.purchase_cost = merchants[1]
             return
 
-        mob_locations = self._world.item_locations.points(self.request.item_id)
+        mob_locations = self.world.item_locations.points(self.request.item_id)
         if mob_locations:
             self.mob_locations = mob_locations
             self.mob_locations_index = 0
             return
 
-        recipe = self._world.recipes.for_item(self.request.item_id)
+        recipe = self.world.recipes.for_item(self.request.item_id)
         if recipe:
             self.recipe = recipe
             return
@@ -143,7 +143,7 @@ class Fetch(LevelHoldAction):
         if not self.request.copper:
             return True
 
-        if self._world.character.total_copper >= self.request.copper:
+        if self.world.character.total_copper >= self.request.copper:
             return True
 
         return False
@@ -153,7 +153,7 @@ class Fetch(LevelHoldAction):
         if not self.request.item_id:
             return True
 
-        number_held = self._world.inventory.held(self.request.item_id)
+        number_held = self.world.inventory.held(self.request.item_id)
         if number_held >= self.request.count:
             return True
         return False
@@ -212,9 +212,9 @@ class Fetch(LevelHoldAction):
     def report(self) -> str:
         res = f"{super().report()}"
         if self.request.item_id:
-            res += f"item={self.item.name} count={self.request.count} held={self._world.inventory.held(self.request.item_id)}"
+            res += f"item={self.item.name} count={self.request.count} held={self.world.inventory.held(self.request.item_id)}"
         if self.request.copper:
-            res += f"copper={self.request.copper} / {self._world.character.total_copper}"
+            res += f"copper={self.request.copper} / {self.world.character.total_copper}"
         return res
 
     # def _seek(self, loop: Loop, world: World) -> None:

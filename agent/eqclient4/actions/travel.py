@@ -27,7 +27,7 @@ class Travel(LevelHoldAction):
         self.suspended = True
 
     def step(self) -> None:
-        if self._world.zone == self.destination:
+        if self.world.zone == self.destination:
             self.complete = True
             return
 
@@ -66,7 +66,7 @@ class Travel(LevelHoldAction):
     def _crossing(self, point: tuple[float, float, float]) -> bool:
         """A zone point zones when we ask from the painted line. Doors do not."""
         if self.waiting_for("ZONE"):
-            if self._world.zone == self.destination or self.consume("OP_NewZone"):
+            if self.world.zone == self.destination or self.consume("OP_NewZone"):
                 self.complete = True
                 return True
 
@@ -77,27 +77,27 @@ class Travel(LevelHoldAction):
             self.unwait("ZONE")
             self.waited = 0
 
-        here = self._world.position
+        here = self.world.position
         if (here[0] - point[0]) ** 2 + (here[1] - point[1]) ** 2 > 625.0:
             return False
 
-        if not self._loop.session_open():
+        if not self.loop.session_open():
             return True
 
-        dest_id = self._world.zone_graph.zones.get(self.destination)
+        dest_id = self.world.zone_graph.zones.get(self.destination)
         if not dest_id:
             return False
 
         log.info(
             "zone line %s -> %s (%s) at (%.0f, %.0f, %.0f)",
-            self._world.zone,
+            self.world.zone,
             self.destination,
             dest_id,
             here[0],
             here[1],
             here[2],
         )
-        self._loop.send(
+        self.loop.send(
             "OP_ZoneChange",
             OP_ZoneChange(
                 self.destination,

@@ -96,11 +96,11 @@ class MobMap(dict[int, Mob]):
 
     def __init__(self, world: World) -> None:
         super().__init__()
-        self._world = world
+        self.world = world
 
     def __setitem__(self, key: int, mob: Mob) -> None:
         super().__setitem__(key, mob)
-        self._world.measure(mob)
+        self.world.measure(mob)
 
     def mob_named(self, name: str) -> Mob | None:
         want = normalize_mob_name(name)

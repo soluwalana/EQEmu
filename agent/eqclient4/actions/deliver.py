@@ -28,7 +28,7 @@ class Deliver(Action):
         item_id = int(self.item)
 
         # Don't have the item so can't deliver it
-        if self._world.inventory.held(item_id) <= 0:
+        if self.world.inventory.held(item_id) <= 0:
             log.error(f"Not holding item {item_id} to deliver to {self.npc}")
             self.complete = True
             return

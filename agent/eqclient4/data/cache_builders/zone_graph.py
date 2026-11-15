@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from eqclient4.nav.travel import DEFAULT_ZONE_GRAPH, ensure_zone_graph as ensure_zone_graph
+from eqclient4.nav.travel import DEFAULT_ZONE_GRAPH
+from eqclient4.nav.travel import ensure_zone_graph as ensure_zone_graph
 
 
 def main() -> None:

@@ -254,11 +254,11 @@ from eqclient4.structs.tasks import (
 )
 from eqclient4.structs.wire import OPERATIONS, EQStruct, InventorySlot, cstring
 from eqclient4.structs.world import (
+    DOOR_SIZE,
+    Door,
     DoorAction,
     DoorKind,
     DoorOpenType,
-    DOOR_SIZE,
-    Door,
     OP_ClickDoor,
     OP_ClickObject,
     OP_Doors,

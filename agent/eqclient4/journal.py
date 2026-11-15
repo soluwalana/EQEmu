@@ -532,7 +532,7 @@ class Journal:
             return None
         action.messages = []
         action.active_path = None
-        action._world = self.world
+        action.world = self.world
         action.suspended = True
         action.yielding = False
         action.complete = False

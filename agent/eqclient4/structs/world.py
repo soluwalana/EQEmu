@@ -119,13 +119,9 @@ class Door(EQStruct):
     def deserialize(cls, data: bytes) -> Door:
         need(data, DOOR_SIZE, "door")
 
-        y, x, z, heading, incline, size = struct.unpack_from(
-            "<ffffII", data, 32
-        )
+        y, x, z, heading, incline, size = struct.unpack_from("<ffffII", data, 32)
 
-        door_id, open_type, state, invert, param = (
-            struct.unpack_from("<BBBBI", data, 60)
-        )
+        door_id, open_type, state, invert, param = struct.unpack_from("<BBBBI", data, 60)
 
         return cls(
             id=door_id,
@@ -140,7 +136,7 @@ class Door(EQStruct):
             state_at_spawn=state,
             invert_state=invert,
             door_param=param,
-            opened=bool(state) != bool(invert)
+            opened=bool(state) != bool(invert),
         )
 
     @staticmethod
@@ -178,12 +174,28 @@ class Door(EQStruct):
         if any(p.startswith(("TREE", "PALM", "SHRUB", "BUSH")) for p in parts):
             return DoorKind.TREE
         if t == DoorOpenType.BUYER_STALL or any(
-            p.startswith(("TABLE", "CHAIR", "BENCH", "BED", "DESK", "BOOKCASE",
-                          "CABINET", "SHELF", "STOOL", "THRONE")) for p in parts
+            p.startswith(
+                (
+                    "TABLE",
+                    "CHAIR",
+                    "BENCH",
+                    "BED",
+                    "DESK",
+                    "BOOKCASE",
+                    "CABINET",
+                    "SHELF",
+                    "STOOL",
+                    "THRONE",
+                )
+            )
+            for p in parts
         ):
             return DoorKind.FURNITURE
-        if any(p.startswith(("SWORD", "SPEAR", "DAGGER", "AXE", "MACE", "LANCE",
-                             "HALBERD", "WEAPON")) or p == "BOW" for p in parts):
+        if any(
+            p.startswith(("SWORD", "SPEAR", "DAGGER", "AXE", "MACE", "LANCE", "HALBERD", "WEAPON"))
+            or p == "BOW"
+            for p in parts
+        ):
             return DoorKind.WEAPON
         if model and model in weapon_models:
             return DoorKind.WEAPON
@@ -191,8 +203,7 @@ class Door(EQStruct):
             return DoorKind.DOOR
         # Only the documented moving/invisible door types; the gaps in
         # the sliding range are stationary props, not sliding doors.
-        if 0 <= t <= 8 or t in (10, 11, 12, 15, 16, 17, 20, 21, 22,
-                                25, 26, 27, 45, 50, 53, 54):
+        if 0 <= t <= 8 or t in (10, 11, 12, 15, 16, 17, 20, 21, 22, 25, 26, 27, 45, 50, 53, 54):
             return DoorKind.DOOR
         if t in (30, 35, 36, 40, 100, 101, 102, 105, 106, 107):
             return DoorKind.MECHANISM
@@ -201,7 +212,6 @@ class Door(EQStruct):
     @property
     def position(self) -> tuple[float, float, float]:
         return (self.x, self.y, self.z)
-
 
 
 def _door_list(data: bytes) -> list[Door]:

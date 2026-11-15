@@ -78,7 +78,10 @@ class ZoneMap:
                 height = _surface_z(triangle, point)
                 if height is None or abs(height - point[2]) > max_delta:
                     continue
-                if closest is None or (abs(height - point[2]), height) < (abs(closest - point[2]), closest):
+                if closest is None or (abs(height - point[2]), height) < (
+                    abs(closest - point[2]),
+                    closest,
+                ):
                     closest = height
             return closest
         below = None

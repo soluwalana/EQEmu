@@ -347,4 +347,3 @@ class Faction:
             FactionStanding.SCOWLS: -1375,
         }[fs]
         self.standing = fs
-

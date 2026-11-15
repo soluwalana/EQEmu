@@ -1059,9 +1059,7 @@ def main() -> None:
                 # Uvicorn access log args: client, method, path, version, status.
                 # Leave error/redirect access records and all agent logs alone.
                 args = record.args
-                return not (
-                    isinstance(args, tuple) and len(args) == 5 and args[-1] == 200
-                )
+                return not (isinstance(args, tuple) and len(args) == 5 and args[-1] == 200)
 
         logging.getLogger("uvicorn.access").addFilter(SkipSuccessfulAccess())
         thread = threading.Thread(target=server.run, name="eq-debug-http", daemon=True)

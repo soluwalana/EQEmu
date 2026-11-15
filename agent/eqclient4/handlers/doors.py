@@ -2,16 +2,16 @@
 
 from __future__ import annotations
 
+from eqclient4.handler import Handler
+from eqclient4.log import log
 from eqclient4.structs import (
-    EQStruct,
     DoorAction,
-    OP_DoorSpawn,
+    EQStruct,
     OP_Doors,
+    OP_DoorSpawn,
     OP_MoveDoor,
     OP_SpawnDoor,
 )
-from eqclient4.handler import Handler
-from eqclient4.log import log
 
 
 class DoorsHandler(Handler):
@@ -28,11 +28,11 @@ class DoorsHandler(Handler):
                 self.doors(payload)
             case OP_MoveDoor():
                 self.move(payload)
-    
+
     def doors(self, row: OP_SpawnDoor | OP_DoorSpawn | OP_Doors) -> None:
         if not row.doors:
             return
-        
+
         doors = self.world.doors
         for found in row.doors:
 
@@ -68,4 +68,3 @@ class DoorsHandler(Handler):
             self.world.open_doors.discard(door_id)
 
         self.world.clicked_doors.discard(door_id)
-

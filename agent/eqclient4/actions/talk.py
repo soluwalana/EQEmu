@@ -30,11 +30,11 @@ class Talk(Action):
         super().__init__(world, loop)
         self.priority = priority
         self.npc_id = npc_id
-        self.npc: Mob | None = self._world.mobs.find_mob(npc_id)
+        self.npc: Mob | None = self.world.mobs.find_mob(npc_id)
         self.active_path = None
         self.sent = False
         self.task_text = task_text
-        self.received = []
+        self.received : list[EQStruct] = []
         self.ticks_after_send = 0
 
     def opcodes(self) -> tuple[str, ...]:
@@ -58,11 +58,11 @@ class Talk(Action):
             return
 
         if not self.active_path:
-            self.active_path = self._world.movement.plan(self.npc, "run")
+            self.active_path = self.world.movement.plan(self.npc, "run")
             self.move_closer(self.active_path.destination, "run")
             return
 
-        self._world.measure(self.npc)
+        self.world.measure(self.npc)
 
         if self.npc.distance > 10:
             self.move_closer(self.active_path.destination, "run")
@@ -74,11 +74,11 @@ class Talk(Action):
             return
 
         if not self.sent:
-            self._loop.send(
+            self.loop.send(
                 "OP_ChannelMessage",
                 OP_ChannelMessage(
                     self.npc.spoken_name,
-                    self._world.character.name,
+                    self.world.character.name,
                     100,
                     SAY_CHANNEL,
                     0,

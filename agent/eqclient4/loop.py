@@ -83,7 +83,7 @@ class Schedule:
         action.source = source
         if not action.zone:
             action.zone = self.world.zone or ""
-        action._world = self.world
+        action.world = self.world
 
         self.append(action)
         return action

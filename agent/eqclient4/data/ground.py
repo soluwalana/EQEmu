@@ -112,7 +112,7 @@ class GroundSpawnBook:
         for spawns in self.spots.values():
             for spawn in spawns:
                 if (
-                    spawn.min_x  - eps <= x <= spawn.max_x + eps
+                    spawn.min_x - eps <= x <= spawn.max_x + eps
                     and spawn.min_y - eps <= y <= spawn.max_y + eps
                     and -99999.9 <= z <= spawn.max_z + eps
                 ):

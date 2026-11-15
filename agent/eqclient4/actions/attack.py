@@ -104,65 +104,25 @@ class Attack(Action):
         super().__init__(world, loop)
         self.priority = 300
         self.target_id = target_id
-        self.active_path = None
-        self.opened = False
-        self.casting = False
-        self.heal_requested = False
-        self.cure_requested = False
+
         self.ability_ready: dict[CombatSkill, float] = {}
         self.cautious = bool(cautious)
 
         self.mob: Mob | None = None
-        self.cast_target = 0
-        self._gem_recast: dict[int, int] = {}
-        self.landed: set[str] = set()
-        self.resting = False
-        self.anchor: tuple[float, float] | None = None
-        self.still = 0
-
-        self.closed = False
+        self.bot_opened = False
         self.attacking = False
-        self.planned: tuple[float, float, float] | None = None
-        self.swing_hp = -1
-        self.swing_still = 0
-        self.misses = 0
-        self.zero_hp = 0
-
-    def __setstate__(self, state: dict[str, object]) -> None:
-        self.__dict__.update(state)
-        if "landed" not in self.__dict__:
-            self.landed = set()
-        if "resting" not in self.__dict__:
-            self.resting = False
-        if "closed" not in self.__dict__:
-            self.closed = False
-        if "attacking" not in self.__dict__:
-            self.attacking = False
-        if "planned" not in self.__dict__:
-            self.planned = None
-        if "swing_hp" not in self.__dict__:
-            self.swing_hp = -1
-        if "swing_still" not in self.__dict__:
-            self.swing_still = 0
-        if "misses" not in self.__dict__:
-            self.misses = 0
-        if "zero_hp" not in self.__dict__:
-            self.zero_hp = 0
 
     def opcodes(self) -> tuple[str, ...]:
         return super().opcodes() + (
-            "OP_Consider",
             "OP_BecomeCorpse",
             "OP_HPUpdate",
-            "OP_MobHealth",
             "OP_Buff",
             "OP_SimpleMessage",
         )
 
     def suspend(self) -> None:
         self.active_path = None
-        self.opened = False
-        self._loop.send("OP_AutoAttack", OP_AutoAttack(0).serialize())
+        self.loop.send("OP_AutoAttack", OP_AutoAttack(0).serialize())
         self.attacking = False
         self.suspended = True
 
@@ -182,7 +142,7 @@ class Attack(Action):
 
         spawn = self.target_id
         if not self.mob:
-            mob = self._world.mobs.get(spawn)
+            mob = self.world.mobs.get(spawn)
             if not mob:
                 log.error("attack target=%s missing", spawn)
                 self.complete = True
@@ -210,7 +170,7 @@ class Attack(Action):
             self.casting = False
 
         if self.mob and self.mob.is_treasure and float(self.mob.distance) <= 25:
-            self._loop.send("OP_LDoNOpen", OP_LDoNOpen().serialize())
+            self.loop.send("OP_LDoNOpen", OP_LDoNOpen().serialize())
             return
 
         if not self.mob or self.mob.dead:
@@ -224,12 +184,12 @@ class Attack(Action):
             if self.zero_hp >= 10:
                 if not self.target_id:
                     log.info("attack dead spawn=%s", self.target_id)
-                    # self._world.skip_spawn(target)  # skip things that are already dead
+                    # self.world.skip_spawn(target)  # skip things that are already dead
                 self.complete = True
                 return
         else:
             self.zero_hp = 0
-        sees = self._world.line_of_sight(self.mob.position)
+        sees = self.world.line_of_sight(self.mob.position)
         if self.closed and not sees:
             self.closed = False
 
@@ -248,7 +208,7 @@ class Attack(Action):
                         log.info(
                             "attack unstick spawn=%s d=%.0f", self.target_id, self.mob.distance
                         )
-                        # self._world.skip_spawn(target)  # skip things that are already dead
+                        # self.world.skip_spawn(target)  # skip things that are already dead
                     self.complete = True
                     return
             else:
@@ -262,13 +222,13 @@ class Attack(Action):
                 if sees and float(self.mob.distance) <= 35:
                     length = STRIDE["los"][0]
                     path = straight(
-                        self._world.position,
+                        self.world.position,
                         point,
                         length,
                     )
                     self.active_path = path
                     self.active_path_dest = point
-                    self._world.movement.advance(self._loop, path)
+                    self.world.movement.advance(self.loop, path)
                     return
 
                 mode = "walk" if self.cautious else "los"
@@ -289,7 +249,7 @@ class Attack(Action):
                     log.info(
                         f"attack no damage spawn={self.target_id} d={self.mob.distance:.0f}",
                     )
-                    # self._world.skip_spawn(target)  # skip things that are already dead
+                    # self.world.skip_spawn(target)  # skip things that are already dead
                 # loop.append(Reconstitute(241))
                 self.complete = True
                 return
@@ -301,7 +261,7 @@ class Attack(Action):
         # Class 62 is an LDoN object. Melee never puts the player on its hate list,
         # so the kill does not credit a task. Opening it does.
         if self.mob.is_treasure:
-            self._loop.send("OP_LDoNOpen", OP_LDoNOpen().serialize())
+            self.loop.send("OP_LDoNOpen", OP_LDoNOpen().serialize())
             return
 
         if not self.opened:
@@ -316,7 +276,7 @@ class Attack(Action):
         # Each OP_AutoAttack(1) restarts the swing timer. Send it once per engagement.
         if not self.attacking:
             log.info("attack autoattack")
-            self._loop.send("OP_AutoAttack", OP_AutoAttack(1).serialize())
+            self.loop.send("OP_AutoAttack", OP_AutoAttack(1).serialize())
             self.attacking = True
 
         self._ability()
@@ -336,7 +296,7 @@ class Attack(Action):
 
     def _stuck(self) -> bool:
         """True after five seconds on the same spot, still out of melee."""
-        here = (round(self._world.position[0], 1), round(self._world.position[1], 1))
+        here = (round(self.world.position[0], 1), round(self.world.position[1], 1))
         if here == self.anchor:
             self.still += 1
         else:
@@ -353,7 +313,7 @@ class Attack(Action):
         def matcher(message: EQStruct) -> bool:
             match message:
                 case OP_BecomeCorpse():
-                    return message.spawn_id in (0, self._world.self_id)
+                    return message.spawn_id in (0, self.world.self_id)
                 case _:
                     return False
 
@@ -459,7 +419,7 @@ class Attack(Action):
         now = time.time()
 
         for skill, duration in REUSE_TIMES.items():
-            has_skill = self._world.character.abilities.combat_skill_known(skill)
+            has_skill = self.world.character.abilities.combat_skill_known(skill)
             if not has_skill:
                 continue
 
@@ -472,9 +432,9 @@ class Attack(Action):
             if skill == CombatSkill.TAUNT:
                 if not should_taunt:
                     continue
-                self._loop.send("OP_Taunt", OP_Taunt(self.target_id).serialize())
+                self.loop.send("OP_Taunt", OP_Taunt(self.target_id).serialize())
             else:
-                self._loop.send(
+                self.loop.send(
                     "OP_CombatAbility",
                     OP_CombatAbility(self.target_id, skill=skill).serialize(),
                 )
