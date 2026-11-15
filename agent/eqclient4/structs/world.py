@@ -1,6 +1,6 @@
 import struct
 from dataclasses import dataclass, field
-from enum import IntEnum
+from enum import Enum, IntEnum
 
 from eqclient4.structs.wire import (
     EQStruct,
@@ -47,6 +47,20 @@ class DoorOpenType(IntEnum):
     BLADE_TRAP = 135
     CRUSH_TRAP = 140
     BUYER_STALL = 155
+
+
+class DoorKind(str, Enum):
+    """Visual classification, not a protocol field or navigation rule."""
+
+    DOOR = "door"
+    TREE = "tree"
+    FURNITURE = "furniture"
+    WEAPON = "weapon"
+    PORTAL = "portal"
+    LIFT = "lift"
+    TRAP = "trap"
+    MECHANISM = "mechanism"
+    OBJECT = "object"
 
 
 @dataclass
@@ -126,6 +140,44 @@ class Door(EQStruct):
             door_param=param,
             opened=bool(state) != bool(invert)
         )
+
+    @property
+    def kind(self) -> DoorKind:
+        """Classify the model for the debug map, without changing its wire type.
+
+        OP_SpawnDoor includes props as well as doors. Open type specifies
+        behavior, not the model's identity. Unknown models stay generic.
+        """
+        t = self.open_type
+        if t == DoorOpenType.TELEPORTER:
+            return DoorKind.PORTAL
+        if t in (DoorOpenType.LIFT, DoorOpenType.LIFT_DRAWBRIDGE):
+            return DoorKind.LIFT
+        if t in (115, 116, 120, 125, 130, 135, 140, 142, 143, 144, 145, 146, 150, 151, 152):
+            return DoorKind.TRAP
+
+        model = self.name.upper().removeprefix("OBJ_").removesuffix("_ACTORDEF")
+        parts = model.replace("-", "_").split("_")
+        if any(p.startswith(("TREE", "PALM", "SHRUB", "BUSH")) for p in parts):
+            return DoorKind.TREE
+        if t == DoorOpenType.BUYER_STALL or any(
+            p.startswith(("TABLE", "CHAIR", "BENCH", "BED", "DESK", "BOOKCASE",
+                          "CABINET", "SHELF", "STOOL", "THRONE")) for p in parts
+        ):
+            return DoorKind.FURNITURE
+        if any(p.startswith(("SWORD", "SPEAR", "DAGGER", "AXE", "MACE", "LANCE",
+                             "HALBERD", "WEAPON")) or p == "BOW" for p in parts):
+            return DoorKind.WEAPON
+        if any(p.startswith(("DOOR", "GATE", "PORTCULLIS")) for p in parts):
+            return DoorKind.DOOR
+        # Only the documented moving/invisible door types; the gaps in
+        # the sliding range are stationary props, not sliding doors.
+        if 0 <= t <= 8 or t in (10, 11, 12, 15, 16, 17, 20, 21, 22,
+                                25, 26, 27, 45, 50, 53, 54):
+            return DoorKind.DOOR
+        if t in (30, 35, 36, 40, 100, 101, 102, 105, 106, 107):
+            return DoorKind.MECHANISM
+        return DoorKind.OBJECT
 
     @property
     def position(self) -> tuple[float, float, float]:

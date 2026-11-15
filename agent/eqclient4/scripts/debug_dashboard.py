@@ -306,6 +306,7 @@ def install_dashboard(
                     "doors": [
                         {"id": d.id, "name": d.name, "position": d.position,
                          "opened": d.opened, "open_type": d.open_type,
+                         "kind": d.kind.value,
                          "heading": d.heading, "incline": d.incline,
                          "size": d.size, "invert_state": d.invert_state,
                          "door_param": d.door_param}

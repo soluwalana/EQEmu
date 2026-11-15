@@ -60,7 +60,28 @@ function groundDrops(spawns) {
 // Static world objects are encoded as doors with doorid=-1 (uint8 255).
 // Keep their wire representation intact, but do not draw them as interactive doors.
 const doorMarkers = doors => (doors ?? []).filter(d => d.id !== 255);
-const mapObjectColors = { open: '#b69df5', closed: '#f2a65a', ground: '#62dce0' };
+// Shared vector icons: identical shapes/colors in both maps and their legends.
+// All paths are centered in a 24x24 coordinate space; no external icon library.
+const mapObjectIcons = {
+    open: { label: 'Open door', color: '#b69df5', path: 'M8 3 H4 V21 H8 M16 3 H20 V21 H16' },
+    closed: { label: 'Closed door', color: '#f2a65a', path: 'M8 3 H4 V21 H8 M16 3 H20 V21 H16 M9 9 L15 15 M15 9 L9 15' },
+    tree: { label: 'Tree', color: '#6ccc91', path: 'M12 2 L5 10 H9 L3 17 H10 V22 H14 V17 H21 L15 10 H19 Z' },
+    furniture: { label: 'Furniture', color: '#a4b8cb', path: 'M3 6 H21 V10 H3 Z M5 10 V21 M19 10 V21' },
+    weapon: { label: 'Weapon', color: '#c6cedb', path: 'M3 3 L8 4 L17 13 L13 17 L4 8 Z M10 20 L20 10 M16 16 L21 21 M19 23 L23 19' },
+    portal: { label: 'Portal', color: '#d6a0ff', path: 'M12 3 A9 9 0 1 1 12 21 A9 9 0 1 1 12 3 M12 8 A4 4 0 1 1 12 16 A4 4 0 1 1 12 8' },
+    lift: { label: 'Lift', color: '#699fe8', path: 'M7 20 V4 M3 8 L7 4 L11 8 M17 4 V20 M13 16 L17 20 L21 16' },
+    trap: { label: 'Trap', color: '#ec7784', path: 'M12 3 L22 21 H2 Z M12 9 V14 M12 17 V17.5' },
+    mechanism: { label: 'Mechanism', color: '#dfbb77', path: 'M20 7 A9 9 0 1 0 21 15 M20 2 V7 H15 M12 8 A4 4 0 1 1 12 16 A4 4 0 1 1 12 8' },
+    object: { label: 'Object', color: '#8c9caf', path: 'M12 2 L21 7 V17 L12 22 L3 17 V7 Z M3 7 L12 12 L21 7 M12 12 V22' },
+    ground: { label: 'Ground spawn', color: '#62dce0', path: 'M12 5 L19 12 L12 19 L5 12 Z', filled: true },
+};
+const mapObjectPaths = new Map(Object.values(mapObjectIcons).map(icon => [icon, new Path2D(icon.path)]));
+function mapObjectIcon(object, kind) {
+    if (kind === 'ground') return mapObjectIcons.ground;
+    // Only classified physical doors use the open/closed bracket symbols.
+    if (object.kind === 'door') return mapObjectIcons[object.opened ? 'open' : 'closed'];
+    return mapObjectIcons[object.kind] ?? mapObjectIcons.object;
+}
 function canvasViewport(canvas) {
     const rect = canvas.getBoundingClientRect();
     const width = rect.width - 2 * canvas.clientLeft, height = rect.height - 2 * canvas.clientTop;
@@ -95,32 +116,30 @@ function drawMapObjects(ctx, id, s, project, visible, showDoors, showGround, sel
         const [x, y] = project(object.position);
         // Never clamp the origin to the screen edge: an off-screen object is not a hit target.
         if (x < 0 || x > canvas.width || y < 0 || y > canvas.height) return;
-        const ground = kind === 'ground';
-        const detail = ground ? 'Ground spawn' : `${object.opened ? 'Open' : 'Closed'} · type ${object.open_type} · heading ${num(object.heading)} · size ${object.size ?? 100}%`;
-        objects.push({ x, y, rx: (ground ? 8 : 10) * sx, ry: (ground ? 8 : 9) * sy,
-            kind, id: ground ? object.drop_id : object.id, name: object.name, detail, object });
+        const ground = kind === 'ground', icon = mapObjectIcon(object, kind);
+        const detail = ground ? icon.label : `${icon.label} · type ${object.open_type} · heading ${num(object.heading)} · size ${object.size ?? 100}%`;
+        objects.push({ x, y, rx: (ground ? 8 : 11) * sx, ry: (ground ? 8 : 11) * sy,
+            kind, id: ground ? object.drop_id : object.id, name: object.name, detail, object, icon });
     };
     if (showDoors) for (const d of doorMarkers(s.doors)) add(d, 'door');
     if (showGround) for (const g of groundDrops(s.ground_spawns)) add(g, 'ground');
     const hover = pickMapHit([...entityHits, ...objects], mapPoint(canvas, mapPointer.get(id)));
     for (const hit of objects) {
-        const { x, y, kind, object } = hit, ground = kind === 'ground';
+        const { x, y, kind } = hit, ground = kind === 'ground';
         const selected = ground && hit.id === selectedDrop;
         const hovered = hover?.kind === kind && hover.id === hit.id;
         ctx.save(); ctx.translate(x, y); ctx.scale(sx, sy);
         ctx.lineJoin = 'round'; ctx.lineCap = 'round';
-        const color = ground ? mapObjectColors.ground : object.opened ? mapObjectColors.open : mapObjectColors.closed;
-        if (ground) {
-            ctx.beginPath(); ctx.moveTo(0, -6); ctx.lineTo(6, 0); ctx.lineTo(0, 6); ctx.lineTo(-6, 0); ctx.closePath();
-            ctx.fillStyle = color; ctx.fill(); ctx.strokeStyle = '#123d49'; ctx.lineWidth = 1.5; ctx.stroke();
+        const icon = hit.icon, path = mapObjectPaths.get(icon);
+        ctx.save(); ctx.scale(.8, .8); ctx.translate(-12, -12);
+        if (icon.filled) {
+            ctx.fillStyle = icon.color; ctx.fill(path);
+            ctx.strokeStyle = '#123d49'; ctx.lineWidth = 1.8; ctx.stroke(path);
         } else {
-            // [ ] / [×], centered at the packet's exact XYZ, with no fabricated hinge or height.
-            ctx.beginPath(); ctx.moveTo(-4, -7); ctx.lineTo(-8, -7); ctx.lineTo(-8, 7); ctx.lineTo(-4, 7);
-            ctx.moveTo(4, -7); ctx.lineTo(8, -7); ctx.lineTo(8, 7); ctx.lineTo(4, 7);
-            if (!object.opened) { ctx.moveTo(-3, -3); ctx.lineTo(3, 3); ctx.moveTo(3, -3); ctx.lineTo(-3, 3); }
-            ctx.strokeStyle = '#101923'; ctx.lineWidth = 4; ctx.stroke();
-            ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
+            ctx.strokeStyle = '#101923'; ctx.lineWidth = 4.5; ctx.stroke(path);
+            ctx.strokeStyle = icon.color; ctx.lineWidth = 2.5; ctx.stroke(path);
         }
+        ctx.restore();
         if (selected || hovered) {
             ctx.beginPath(); ctx.arc(0, 0, 12, 0, 2 * Math.PI); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
         }
@@ -457,7 +476,7 @@ function mapHit(id, event) {
 function refreshMapHover(id) {
     const canvas = $(id), hit = mapHit(id, mapPointer.get(id));
     const cursor = hit ? 'pointer' : 'default';
-    const title = hit ? (hit.kind ? `${hit.name} · ${hit.kind === 'door' ? 'Door' : 'Drop'} #${hit.id} · ${hit.detail}` : `${hit.name} · Spawn #${hit.id} · ${losLabel(hit)}`) : '';
+    const title = hit ? (hit.kind ? `${hit.name} · ${hit.kind === 'ground' ? 'Drop' : hit.object.kind === 'door' ? 'Door' : 'Object'} #${hit.id} · ${hit.detail}` : `${hit.name} · Spawn #${hit.id} · ${losLabel(hit)}`) : '';
     if (canvas.style.cursor !== cursor) canvas.style.cursor = cursor;
     if (canvas.title !== title) canvas.title = title;
     return hit;
@@ -466,10 +485,16 @@ function hoverKey(hit) { return hit?.kind ? `${hit.kind}:${hit.id}` : ''; }
 for (const id of ['minimap', 'worldmap']) {
     const canvas = $(id), legend = $(id + 'bots').parentElement.querySelector('.legend');
     if (legend) {
-        for (const [glyph, color, name] of [['[ ]', mapObjectColors.open, 'Open door'], ['[×]', mapObjectColors.closed, 'Closed door'], ['◆', mapObjectColors.ground, 'Ground spawn']]) {
-            const entry = document.createElement('span'), icon = document.createElement('b');
-            icon.textContent = glyph; icon.style.color = color; icon.style.fontFamily = 'monospace';
-            entry.append(icon, document.createTextNode(' ' + name)); legend.append(entry);
+        for (const spec of Object.values(mapObjectIcons)) {
+            const entry = document.createElement('span');
+            const ns = 'http://www.w3.org/2000/svg', icon = document.createElementNS(ns, 'svg');
+            icon.setAttribute('viewBox', '0 0 24 24'); icon.setAttribute('width', '18'); icon.setAttribute('height', '18');
+            icon.setAttribute('aria-hidden', 'true'); icon.style.verticalAlign = 'middle';
+            const path = document.createElementNS(ns, 'path'); path.setAttribute('d', spec.path);
+            path.setAttribute('fill', spec.filled ? spec.color : 'none');
+            path.setAttribute('stroke', spec.color); path.setAttribute('stroke-width', '2.5');
+            path.setAttribute('stroke-linecap', 'round'); path.setAttribute('stroke-linejoin', 'round');
+            icon.append(path); entry.append(icon, document.createTextNode(' ' + spec.label)); legend.append(entry);
         }
         const hint = document.createElement('span');
         hint.textContent = 'Bright: in LoS · muted hue: blocked · slate: unknown';

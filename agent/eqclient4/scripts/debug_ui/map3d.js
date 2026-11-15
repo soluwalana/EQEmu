@@ -151,7 +151,7 @@
             button('Orbit',()=>{this.el=.72;this.az=-.55;this.redraw();});
             button('Fit target',()=>this.fitTarget());
             check('Terrain',true,v=>this.terrain=v); check('Navmesh',true,v=>this.nav=v); check('Water',true,v=>this.water=v);
-            check('Doors',true,v=>this.doors=v); this.groundCheck=check('Ground spawns',true,v=>this.groundSpawns=v);
+            check('Doors / objects',true,v=>this.doors=v); this.groundCheck=check('Ground spawns',true,v=>this.groundSpawns=v);
             check('Cutaway',false,v=>this.cut=v);
             check('Local geometry',false,v=>this.localGeometry=v);
             check('Show hidden mobs',false,v=>this.showHiddenMobs=v);
@@ -382,7 +382,7 @@
             entities.push(...drawMapObjects(ctx,this.id,s,project,objectVisible,this.doors,this.groundSpawns,selectedGround,entities));
             hits.set(this.id,entities);refreshMapHover(this.id);
             const count=s.bots.filter(b=>b.spawned).length;document.getElementById(this.id+'bots').textContent=`${bots.length} / ${count} spawned bots in view`;
-            const data=this.geometry;this.info.textContent=this.error?`${this.error} · live entities still shown`:data?`${(data.collision.length/9).toLocaleString()} collision triangles · ${(data.nav.length/9).toLocaleString()} nav triangles · ${data.flags&4?(data.water.length/9).toLocaleString()+' water triangles':'No water map'} · ${this.cut?'Z ≤ '+(s.position[2]+this.cutHeight).toFixed(1):'All floors'} · ${this.localGeometry?'Local geometry '+Math.round(range)+' yd':'Full geometry'} · ${hiddenMobs} mobs hidden · doors: ${entities.filter(e=>e.kind==='door').length}/${doorMarkers(s.doors).length} visible · drops: ${entities.filter(e=>e.kind==='ground').length}/${groundDrops(s.ground_spawns).length} visible · route/spheres/icons X-ray · drag pan, right/Alt-drag orbit, wheel zoom`:'Loading zone geometry…';
+            const data=this.geometry;this.info.textContent=this.error?`${this.error} · live entities still shown`:data?`${(data.collision.length/9).toLocaleString()} collision triangles · ${(data.nav.length/9).toLocaleString()} nav triangles · ${data.flags&4?(data.water.length/9).toLocaleString()+' water triangles':'No water map'} · ${this.cut?'Z ≤ '+(s.position[2]+this.cutHeight).toFixed(1):'All floors'} · ${this.localGeometry?'Local geometry '+Math.round(range)+' yd':'Full geometry'} · ${hiddenMobs} mobs hidden · doors/objects: ${entities.filter(e=>e.kind==='door').length}/${doorMarkers(s.doors).length} visible · drops: ${entities.filter(e=>e.kind==='ground').length}/${groundDrops(s.ground_spawns).length} visible · route/spheres/icons X-ray · drag pan, right/Alt-drag orbit, wheel zoom`:'Loading zone geometry…';
         }
     }
     window.EQMap3D={

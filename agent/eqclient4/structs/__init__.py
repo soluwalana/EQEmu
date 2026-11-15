@@ -255,6 +255,8 @@ from eqclient4.structs.tasks import (
 from eqclient4.structs.wire import OPERATIONS, EQStruct, InventorySlot, cstring
 from eqclient4.structs.world import (
     DoorAction,
+    DoorKind,
+    DoorOpenType,
     DOOR_SIZE,
     Door,
     OP_ClickDoor,
@@ -541,6 +543,8 @@ __all__ = [
     "OP_MobEnduranceUpdate",
     "OP_GroupLeadershipAAUpdate",
     "DoorAction",
+    "DoorKind",
+    "DoorOpenType",
 ]
 
 
