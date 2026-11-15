@@ -108,12 +108,13 @@ class GroundSpawnBook:
     def spawns_at_coordinates(self, x: float, y: float, z: float) -> list[GroundSpawn]:
         """Spawns at this coordinates."""
         possible = []
+        eps = 0.001
         for spawns in self.spots.values():
             for spawn in spawns:
                 if (
-                    spawn.min_x <= x <= spawn.max_x
-                    and spawn.min_y <= y <= spawn.max_y
-                    and spawn.max_z >= z
+                    spawn.min_x  - eps <= x <= spawn.max_x + eps
+                    and spawn.min_y - eps <= y <= spawn.max_y + eps
+                    and -99999.9 <= z <= spawn.max_z + eps
                 ):
                     possible.append(spawn)
         return possible

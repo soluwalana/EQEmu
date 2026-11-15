@@ -25,6 +25,30 @@ class DoorAction(IntEnum):
     CLOSE_INVERTED = 0x02
 
 
+class DoorOpenType(IntEnum):
+    SWING_BACKWARD = 0
+    SWING_FORWARD = 5
+    STATIC_CLICK_ONCE = 9
+    SLIDE_FORWARD = 10
+    STATIC = 31
+    SLIDE_SIDEWAYS = 45
+    INVISIBLE = 50
+    STATIC_56 = 56
+    TELEPORTER = 57
+    STATIC_INTERACTABLE = 58
+    LIFT = 59
+    LIFT_DRAWBRIDGE = 60
+    ROTATE_HEADING = 100
+    ROTATE_INCLINE = 105
+    SAW_TRAP = 115
+    SPEAR_TRAP_VERTICAL = 120
+    SPEAR_TRAP_HORIZONTAL = 125
+    PENDULUM_TRAP = 130
+    BLADE_TRAP = 135
+    CRUSH_TRAP = 140
+    BUYER_STALL = 155
+
+
 @dataclass
 class Door(EQStruct):
     id: int
