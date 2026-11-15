@@ -156,6 +156,8 @@ class World:
 
         # Movement and Position
         self.movement = Movement(self)
+        self.clicked_doors = set()
+        self.open_doors = set()
 
         # </Volatile Data>
 
@@ -259,6 +261,25 @@ class World:
         self.water_maps[zone] = water
         return water
 
+    def reset(self) -> None:
+        self.self_id = 0
+        self.zone_id = -1
+        self.zone = ""
+        self.zone_formed = None
+        self.safe = None
+        self.bot_roster.clear_spawns()
+        self.active_group.clear()
+        self.party_mode = None
+        self.ground_spawns.clear()
+        self.mobs.clear()
+        self.aggro_mobs.clear()
+        self.exit_doors.clear()
+        self.doors.clear()
+        self.active_merchants.clear()
+        self.clicked_doors = set()
+        self.open_doors = set()
+        self.movement.reset()
+
 
 class NPCCache:
     def __init__(self, quest_graph: QuestGraph) -> None:
@@ -296,8 +317,6 @@ class Movement:
         self.caller_mode: str = "run"
         self.advanced: bool = False
         self.path: EQPath | None = None
-        self.clicked: set = set()
-        self.open_ids: set = set()
         self.find_mob: Mob | None = None
         self._nav: NavMesh | None = None
         self._nav_zone: str | None = None
@@ -331,8 +350,6 @@ class Movement:
         self.advanced = False
         self.path = None
         self._routes = {}
-        self.clicked = set()
-        self.open_ids = set()
         self.find_mob = None
 
     def snap(self, point: tuple[float, float, float]) -> None:
@@ -813,13 +830,13 @@ class Movement:
             return
 
         ident = door.id
-        if ident in self.clicked or ident in self.open_ids:
+        if ident in self.world.clicked_doors or ident in self.world.open_doors:
             return
 
         if door.opened:
             return
 
-        self.clicked.add(ident)
+        self.world.clicked_doors.add(ident)
         loop.send("OP_ClickDoor", OP_ClickDoor(ident).serialize())
 
     def _click_doors(self, path: EQPath) -> list[Door]:
@@ -836,7 +853,7 @@ class Movement:
         doors: dict[int, Door] | list[Door],
     ) -> Door | None:
         for door in doors_on_stride(here, nxt, doors):
-            if door.id in self.open_ids:
+            if door.id in self.world.open_doors:
                 continue
             if door.opened:
                 continue
@@ -847,7 +864,7 @@ class Movement:
             if door.opened:
                 continue
 
-            if door.id in self.open_ids:
+            if door.id in self.world.open_doors:
                 continue
             spot = (float(door.x), float(door.y), float(door.z))
 
@@ -913,34 +930,10 @@ class Movement:
         self.position = safe
         self.path = None
         self._routes = {}
-        self.clicked = set()
-        self.open_ids = set()
         self.find_mob = None
         self.write_world(safe)
         if _short:
             self.world.zone = _short
-
-    def _on_move_door(self, row: OP_MoveDoor) -> None:
-        door_id = row.door_id
-        mem_door = self.world.doors.get(door_id)
-
-        if not mem_door:
-            return
-
-        if row.action not in (DoorAction.OPEN, DoorAction.CLOSE):
-            return
-
-        if row.action == DoorAction.OPEN:
-            mem_door.opened = not bool(mem_door.invert_state)
-        else:
-            mem_door.opened = bool(mem_door.invert_state)
-
-        if mem_door.opened:
-            self.open_ids.add(door_id)
-        else:
-            self.open_ids.discard(door_id)
-
-        self.clicked.discard(door_id)
 
     def _on_find_reply(self, row: OP_FindPersonReply) -> None:
         points = list(row.points)
