@@ -2766,6 +2766,25 @@ def _quest_scripts(folder: Path) -> list[Path]:
     return sorted(files)
 
 
+def scan_quest_doors(root: str) -> dict[str, dict[int, list[int]]]:
+    """Read scripted exit destinations without building the full quest graph."""
+    found: dict[str, dict[int, list[int]]] = {}
+    base = Path(root)
+    if not base.is_dir():
+        return found
+    for folder in sorted(
+        path for path in base.iterdir() if path.is_dir() and path.name not in _SKIP_DIRS
+    ):
+        for path in _quest_scripts(folder):
+            text = path.read_text(encoding="utf-8", errors="replace")
+            for door_id, destinations in door_destinations(text).items():
+                known = found.setdefault(folder.name.lower(), {}).setdefault(door_id, [])
+                for zone_id in destinations:
+                    if zone_id not in known:
+                        known.append(zone_id)
+    return found
+
+
 @dataclass
 class QuestGraph:
     """Says, the items they name, and the hand-off that takes or gives each item.

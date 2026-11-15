@@ -213,16 +213,57 @@ function cachedItem(id) {
         });
     return entry;
 }
+let worldItemKey = null;
+const worldItemCards = new Map();
 function renderGroundItems(drop) {
-    const panel = $('worlditems');
+    const panel = $('worlditems'), container = $('worlditemcards');
     panel.hidden = !drop;
-    if (!drop) { html('worlditemcards', ''); return; }
-    html('worlditemcards', drop.items.map(item => {
+    const key = drop ? JSON.stringify([state.zone_id, state.instance, drop.drop_id]) : null;
+    if (key !== worldItemKey) {
+        container.replaceChildren();
+        worldItemCards.clear();
+        worldItemKey = key;
+    }
+    if (!drop) return;
+
+    const ids = new Set(drop.items.map(item => item.item_id));
+    for (const [id, card] of worldItemCards) {
+        if (!ids.has(id)) {
+            card.el.remove();
+            worldItemCards.delete(id);
+        }
+    }
+    for (const item of drop.items) {
         const id = item.item_id, entry = cachedItem(id);
-        if (entry.pending) return `<div class="itemcard">Loading ${esc(item.name)} (#${esc(id)})…</div>`;
-        if (entry.error) return `<div class="itemcard">${esc(item.name)} (#${esc(id)}): ${esc(entry.error)} <button type="button" data-retry-item="${esc(id)}">Retry</button></div>`;
-        return `<div class="itemcard">${itemCardMarkup(entry.value, id)}<details><summary>Full item definition</summary><pre>${esc(pretty(entry.value))}</pre></details></div>`;
-    }).join(''));
+        let card = worldItemCards.get(id);
+        if (!card) {
+            const el = document.createElement('div');
+            el.className = 'itemcard';
+            container.appendChild(el);
+            card = { el };
+            worldItemCards.set(id, card);
+        }
+        // Polling updates live target metrics, not immutable item-card DOM.
+        if (card.entry === entry && card.pending === entry.pending &&
+            card.value === entry.value && card.error === entry.error &&
+            card.name === item.name) continue;
+        const expanded = card.el.querySelector('details')?.open ?? false;
+        const previous = card.el.querySelector('pre');
+        const scrollTop = previous?.scrollTop ?? 0, scrollLeft = previous?.scrollLeft ?? 0;
+        if (entry.pending) {
+            card.el.innerHTML = `Loading ${esc(item.name)} (#${esc(id)})…`;
+        } else if (entry.error) {
+            card.el.innerHTML = `${esc(item.name)} (#${esc(id)}): ${esc(entry.error)} <button type="button" data-retry-item="${esc(id)}">Retry</button>`;
+        } else {
+            card.el.innerHTML = `${itemCardMarkup(entry.value, id)}<details><summary>Full item definition</summary><pre>${esc(pretty(entry.value))}</pre></details>`;
+            card.el.querySelector('details').open = expanded;
+            const pre = card.el.querySelector('pre');
+            pre.scrollTop = scrollTop;
+            pre.scrollLeft = scrollLeft;
+        }
+        Object.assign(card, { entry, pending: entry.pending, value: entry.value,
+            error: entry.error, name: item.name });
+    }
 }
 $('worlditemcards').onclick = e => {
     const button = e.target.closest('[data-retry-item]');

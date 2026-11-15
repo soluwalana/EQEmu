@@ -447,31 +447,36 @@ def build_zone_graph(
         _add_transit(graph, transit)
 
     if quest_doors:
-        for zone, by_door in quest_doors.items():
-            home = (zone or "").lower()
-            for door_id, destinations in by_door.items():
-                for dest_id in destinations:
-                    dest_id = int(dest_id)
-                    dest = (
-                        _name_of(dest_id, graph.zones) or zone_name_of(dest_id) or f"zone{dest_id}"
-                    )
-                    need = (
-                        TransitNeed(zone_flag=dest_id)
-                        if dest in graph.flagged or dest_id in graph.flagged.values()
-                        else TransitNeed()
-                    )
-                    _add_transit(
-                        graph,
-                        Transit(
-                            zone=home,
-                            door_id=int(door_id),
-                            dest=dest,
-                            dest_id=dest_id,
-                            via="script",
-                            need=need,
-                        ),
-                    )
+        _merge_quest_doors(graph, quest_doors)
     return graph
+
+
+def _merge_quest_doors(graph: ZoneGraph, quest_doors: dict[str, dict[int, list[int]]]) -> None:
+    """Add scripted exits without discarding database transits."""
+    for zone, by_door in quest_doors.items():
+        home = (zone or "").lower()
+        for door_id, destinations in by_door.items():
+            for dest_id in destinations:
+                dest_id = int(dest_id)
+                dest = (
+                    _name_of(dest_id, graph.zones) or zone_name_of(dest_id) or f"zone{dest_id}"
+                )
+                need = (
+                    TransitNeed(zone_flag=dest_id)
+                    if dest in graph.flagged or dest_id in graph.flagged.values()
+                    else TransitNeed()
+                )
+                _add_transit(
+                    graph,
+                    Transit(
+                        zone=home,
+                        door_id=int(door_id),
+                        dest=dest,
+                        dest_id=dest_id,
+                        via="script",
+                        need=need,
+                    ),
+                )
 
 
 def bake_from_dump(path: str | Path) -> list[dict]:
@@ -554,8 +559,22 @@ def ensure_zone_graph(
     """Load zone_graph.jsonl, or build once from the peq dump."""
     path = path or os.environ.get("EQEMU_ZONE_GRAPH", DEFAULT_ZONE_GRAPH)
     file = Path(path)
-    if file.is_file() and (not rebuild):
-        return read_zone_graph(path)
+    if file.is_file() and not rebuild:
+        graph = read_zone_graph(path)
+        if quest_doors:
+            count = len(graph.transits)
+            _merge_quest_doors(graph, quest_doors)
+            if len(graph.transits) != count:
+                graph.index()
+                write_zone_graph(graph, path)
+        return graph
+
+    if quest_doors is None and (root := os.environ.get("EQEMU_QUESTS")):
+        # A cold build (including the standalone cache builder) must include
+        # scripted exits even if the full quest graph has not been built yet.
+        from eqclient4.quests.graph import scan_quest_doors
+
+        quest_doors = scan_quest_doors(root)
 
     dump = peq_path(peq)
     graph = build_zone_graph(dump, quest_doors) if dump.is_file() else ZoneGraph()
