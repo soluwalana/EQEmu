@@ -165,6 +165,8 @@ class Loop:
         self.world.zone_formed = None
         self.world.safe = None
         self.world.bot_roster.clear_spawns()
+        self.world.active_group.clear()
+        self.world.party_mode = None
         self.world.ground_spawns.clear()
         self.world.mobs.clear()
         self.world.aggro_mobs.clear()

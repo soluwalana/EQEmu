@@ -124,6 +124,23 @@ class OP_GroupUpdateB(OP_GroupUpdate):
 
 
 @dataclass
+class OP_GroupDisband(EQStruct):
+    name1: str = ""
+    name2: str = ""
+
+    def serialize(self) -> bytes:
+        # RoF2 GroupGeneric_Struct: two names plus five uint32 fields.
+        out = bytearray(148)
+        put_fixed(out, 0, self.name1, 64)
+        put_fixed(out, 64, self.name2, 64)
+        return bytes(out)
+
+    @classmethod
+    def deserialize(cls, data: bytes) -> OP_GroupDisband:
+        return cls(*two_names(data))
+
+
+@dataclass
 class OP_GroupDisbandYou(EQStruct):
     your_name: str = ""
     member_name: str = ""
@@ -207,6 +224,28 @@ class OP_RaidUpdate(EQStruct):
         # common/patches/rof2_structs.h:4370 RaidGeneral_Struct
         need(data, 140, "OP_RaidUpdate")
         return cls(int(read_u32(data)), fixed(data, 4, 64), fixed(data, 72, 64))
+
+
+@dataclass
+class OP_RaidInvite(EQStruct):
+    action: int = 0
+    player_name: str = ""
+    leader_name: str = ""
+    parameter: int = 0
+
+    def serialize(self) -> bytes:
+        # RoF2 RaidGeneral_Struct, used for client raid commands.
+        out = bytearray(140)
+        struct.pack_into("<I", out, 0, self.action)
+        put_fixed(out, 4, self.player_name, 64)
+        put_fixed(out, 72, self.leader_name, 64)
+        struct.pack_into("<I", out, 136, self.parameter)
+        return bytes(out)
+
+    @classmethod
+    def deserialize(cls, data: bytes) -> OP_RaidInvite:
+        need(data, 140, cls.__name__)
+        return cls(read_u32(data), fixed(data, 4, 64), fixed(data, 72, 64), read_u32(data, 136))
 
 
 @dataclass

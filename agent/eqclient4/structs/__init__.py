@@ -30,6 +30,7 @@ from eqclient4.structs.combat import (
     OP_Taunt,
 )
 from eqclient4.structs.group import (
+    OP_GroupDisband,
     OP_GroupDisbandOther,
     OP_GroupDisbandYou,
     OP_GroupInvite,
@@ -37,6 +38,7 @@ from eqclient4.structs.group import (
     OP_GroupLeadershipAAUpdate,
     OP_GroupUpdate,
     OP_GroupUpdateB,
+    OP_RaidInvite,
     OP_RaidJoin,
     OP_RaidUpdate,
 )
@@ -410,6 +412,7 @@ __all__ = [
     "OP_GMTrainSkill",
     "OP_GMTraining",
     "OP_GroundSpawn",
+    "OP_GroupDisband",
     "OP_GroupDisbandOther",
     "OP_GroupDisbandYou",
     "OP_GroupInvite",
@@ -454,6 +457,7 @@ __all__ = [
     "OP_PlayerStateAdd",
     "OP_PlayerStateRemove",
     "OP_PopupResponse",
+    "OP_RaidInvite",
     "OP_RaidJoin",
     "OP_RaidUpdate",
     "OP_ReadBook",

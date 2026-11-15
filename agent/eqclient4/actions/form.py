@@ -23,7 +23,9 @@ from eqclient4.structs import (
     EQStruct,
     OP_ChannelMessage,
     OP_Consider,
+    OP_GroupDisband,
     OP_GroupInvite,
+    OP_RaidInvite,
     OP_SpecialMesg,
     OP_TargetMouse,
 )
@@ -31,6 +33,9 @@ from eqclient4.structs import (
 AGGRESSIVE = "5"
 BURN = "7"
 REPLY_TIMEOUT = 8.0
+
+RAID_CLEAR_RE = re.compile(r"Bot raid roster will not form again until you .* The raid is unchanged\.")
+RAID_CLEAR_FAILURE_RE = re.compile(r"Could not update the bot raid roster\.")
 
 BOT_COUNT_RE = re.compile(r"(\d+) Of \d+ bots? shown, \d+ (?:are|is) owned by you\.")
 NO_BOTS_RE = re.compile(r"You have no bots\.")
@@ -115,7 +120,7 @@ class FormParty(Action):
         self.start_time = time.time()
         self._commands: list[_Command] = []
         self._reply_started = 0.0
-        self.wait("init")
+        self.wait("formation-check")
 
     def opcodes(self) -> tuple[str, ...]:
         return (
@@ -175,6 +180,10 @@ class FormParty(Action):
             return
 
     def step(self) -> None:
+        if self.waiting_for("formation-check"):
+            self.prepare_formation()
+            return
+
         self.bot_target()
         if self.waiting_for("bot-target"):
             return
@@ -210,6 +219,52 @@ class FormParty(Action):
         log.info(f"Finished forming party in {time.time() - self.start_time} seconds")
         # Reconstitute or create the party
         self.complete = True
+
+    def prepare_formation(self) -> None:
+        """Leave an incompatible party before spawning or inviting bots."""
+        mode = self._world.party_mode
+        desired = "raid" if self.raid else "group"
+
+        if self.waiting_for("raid-clear"):
+            if not self.re_has_response(RAID_CLEAR_RE):
+                self.check_failure(RAID_CLEAR_FAILURE_RE)
+                return
+            self.unwait("raid-clear")
+
+        elif self.waiting_for("party-disband"):
+            if mode is not None:
+                if time.monotonic() - self._reply_started >= REPLY_TIMEOUT:
+                    log.error("Timed out leaving %s", mode)
+                    self.waiting.clear()
+                    self.failed = True
+                    self.complete = True
+                return
+            self.unwait("party-disband")
+
+        elif mode == "raid" and desired == "group":
+            # Clear only the persisted auto-form flag, not the saved roster.
+            self.messages.clear()
+            self._reply_started = time.monotonic()
+            self.wait("raid-clear")
+            self.send_channel_message("^raidform clear")
+            return
+
+        if mode is not None and mode != desired:
+            name = self._world.character.name
+            self._reply_started = time.monotonic()
+            self.wait("party-disband")
+            if mode == "raid":
+                # RaidCommandDisband (5): remove the owner and owned bots.
+                self._loop.send("OP_RaidInvite", OP_RaidInvite(5, name, name).serialize())
+            else:
+                # The server uses the current target for group disband.
+                # Clear it so the leader disbands rather than kicking a bot.
+                self._loop.send("OP_TargetMouse", OP_TargetMouse(0).serialize())
+                self._loop.send("OP_GroupDisband", OP_GroupDisband(name, name).serialize())
+            return
+
+        self.unwait("formation-check")
+        self.wait("init")
 
     def send_list(self) -> None:
         """State transition: init -> botlist | spawn
@@ -491,7 +546,7 @@ class FormParty(Action):
                 self.messages.clear()  # Discard previous replies
                 command.sent_at = time.monotonic()
                 command.sent = True
-                self.send_channel_message(command.text)
+                self.send_channel_message(command.text, sleep_time=0.025)
                 return
 
             failure_pattern = None
@@ -832,7 +887,7 @@ class FormParty(Action):
             bot.level = int(m.group(3))
             m = self.re_has_response(BOT_RESPONSE_RE)
 
-    def send_channel_message(self, message: str) -> None:
+    def send_channel_message(self, message: str, sleep_time: float = 0.1) -> None:
         self._loop.send(
             "OP_ChannelMessage",
             OP_ChannelMessage(
@@ -847,5 +902,5 @@ class FormParty(Action):
             ).serialize(),
         )
         self._loop._flush()
-        time.sleep(0.05)
+        time.sleep(sleep_time)
         self._loop.pump()

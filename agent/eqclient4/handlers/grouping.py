@@ -61,6 +61,18 @@ class GroupingHandler(Handler):
     def on(self, opcode: str, payload: EQStruct) -> None:
         match payload:
             case OP_GroupUpdate() | OP_GroupUpdateB():
+                # Raid subgroup packets must not replace the raid roster.
+                if self.world.party_mode == "raid":
+                    log.error(f"Raid party group unexpected when adding regular group members: {payload}")
+                    return
+                if payload.action == GroupAction.DISBAND:
+                    self.world.active_group.clear()
+                    self.world.party_mode = None
+                    return
+                
+                if payload.full or payload.action == GroupAction.JOIN:
+                    self.world.party_mode = "group"
+                
                 members = payload.members
                 if payload.full:
                     self.world.active_group.clear()
@@ -69,8 +81,9 @@ class GroupingHandler(Handler):
                         if bot:
                             log.info(f"Adding bot to active group: {bot.name}")
                             self.world.active_group[bot.spawn_id] = bot
-                        else:
+                        elif member:
                             log.error(f"Bot not found: {member}")
+            
                 elif payload.action == GroupAction.JOIN and payload.your_name:
                     bot = self.world.bot_roster.bot_by_name(payload.your_name)
                     if bot:
@@ -82,34 +95,55 @@ class GroupingHandler(Handler):
                 return
 
             case OP_GroupDisbandOther():
+                if self.world.party_mode == "raid":
+                    return
                 bot = self.world.bot_roster.bot_by_name(payload.member_name)
                 if bot:
                     log.info(f"Removing bot from active group: {bot.name}")
-                    self.world.active_group.pop(bot.spawn_id)
+                    self.world.active_group.pop(bot.spawn_id, None)
                 else:
                     log.error(f"Bot not found: {payload.member_name}")
                 return
 
             case OP_GroupDisbandYou():
-                self.world.active_group.clear()
+                # This opcode also reports leaving a subgroup of a raid.
+                if self.world.party_mode != "raid":
+                    self.world.active_group.clear()
+                    self.world.party_mode = None
                 return
 
             case OP_RaidUpdate():
+                # Raid lifecycle packets may name the owner, not a bot.
+                if payload.action == RaidAction.CREATE:
+                    self.world.active_group.clear()
+                    self.world.party_mode = "raid"
+                    return
+
+                if payload.action in (RaidAction.DISBAND, RaidAction.NO_RAID):
+                    if self.world.party_mode == "raid":
+                        self.world.active_group.clear()
+                        self.world.party_mode = None
+                    return
+
+                if payload.action == RaidAction.ADD:
+                    if self.world.party_mode != "raid":
+                        self.world.active_group.clear()
+                        self.world.party_mode = "raid"
+                elif payload.action not in (RaidAction.REMOVE_2, RaidAction.REMOVE_1):
+                    return
+
                 bot = self.world.bot_roster.bot_by_name(payload.your_name)
                 if not bot:
                     log.error(f"Bot not found: {payload.your_name}")
                     return
-                # common/raid.h: raidAdd=0, raidRemove2=1, raidRemove1=3,
-                # raidDisband=5, raidCreate=8, raidNoRaid=10.
-                if payload.action == RaidAction.ADD and payload.your_name:
+                
+                if payload.action == RaidAction.ADD:
                     log.info(f"Adding bot to active group: {bot.name}")
                     self.world.active_group[bot.spawn_id] = bot
-                elif payload.action in (RaidAction.REMOVE_2, RaidAction.REMOVE_1):
+                elif self.world.party_mode == "raid":
                     log.info(f"Removing bot from active group: {bot.name}")
-                    self.world.active_group.pop(bot.spawn_id)
-                elif payload.action in (RaidAction.DISBAND, RaidAction.CREATE, RaidAction.NO_RAID):
-                    log.info(f"Clearing active group")
-                    self.world.active_group.clear()
+                    self.world.active_group.pop(bot.spawn_id, None)
+                
                 return
 
             case _:

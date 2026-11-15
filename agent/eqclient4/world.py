@@ -121,6 +121,7 @@ class World:
         self.zone_id = -1
         self.zone_formed: str | None = None
         self.active_group: dict[int, Bot] = {}
+        self.party_mode: str | None = None  # None, "group", or "raid"
 
         #   Active mesh
         self.mesh: ZoneMap | None = None
