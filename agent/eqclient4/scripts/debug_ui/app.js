@@ -762,6 +762,18 @@ catch (e) {
 finally { actionsLoading = false; }
 }
 function element(tag, props = {}, children = []) { const el = document.createElement(tag); Object.assign(el, props); children.forEach(c => el.append(c)); return el; }
+// The dashboard selection uses a spawn ID, never an item/drop/door ID.
+function selectedSpawn() {
+    if (!state || selectedGround || selectedMob === null || selectedMob <= 0) return null;
+    return state.bots.find(b => b.spawned && b.id === selectedMob)
+        ?? state.mobs.find(m => m.id === selectedMob) ?? null;
+}
+function updateTargetButton(button, target = selectedSpawn()) {
+    const label = target ? `Use targeted ID (#${target.id})` : 'Use targeted ID';
+    if (button.textContent !== label) button.textContent = label;
+    button.disabled = !target;
+    button.title = target ? `Copy ${target.name}'s spawn ID` : 'Select a mob or spawned bot on the map';
+}
 function fieldControl(schema, defs, required, label, defaultValue, spawn = false) {
     const outer = element('div', { className: 'field' }), title = element('label', { textContent: label + (required ? ' *' : '') });
     outer.append(title);
@@ -823,8 +835,8 @@ function fieldControl(schema, defs, required, label, defaultValue, spawn = false
         if (spawn) {
             input.setAttribute('list', 'entityids');
             input.dataset.spawn = 'true';
-            if (selectedMob !== null)
-                input.value = String(selectedMob);
+            const target = selectedSpawn();
+            if (target) input.value = String(target.id);
         }
         if (schema.minimum !== undefined)
             input.min = schema.minimum;
@@ -836,7 +848,19 @@ function fieldControl(schema, defs, required, label, defaultValue, spawn = false
         input = element('textarea', { rows: 3, required, placeholder: 'JSON value' });
         read = () => input.value.trim() === '' ? undefined : JSON.parse(input.value);
     }
-    outer.append(input);
+    if (input.dataset.spawn === 'true') {
+        const row = element('div', { className: 'spawn-input-row' });
+        const useTarget = element('button', { type: 'button', className: 'use-target-id' });
+        useTarget.onclick = () => {
+            const target = selectedSpawn();
+            if (target) input.value = String(target.id);
+        };
+        updateTargetButton(useTarget);
+        row.append(input, useTarget);
+        outer.append(row);
+    } else {
+        outer.append(input);
+    }
     const note = element('small', { textContent: defaultValue === undefined ? (required ? 'Required' : 'Optional') : 'Default: ' + JSON.stringify(defaultValue) });
     outer.append(note);
     return { node: outer, read };
@@ -865,6 +889,9 @@ catch (e) {
         text('actionhint', e.message);
 } }
 function refreshEntityOptions() {
+    const target = selectedSpawn();
+    for (const button of $('params').querySelectorAll('.use-target-id'))
+        updateTargetButton(button, target);
     if (!state || !$('entityids')) return;
     // Replacing datalist options can dismiss the browser's native popup.
     // Freeze suggestions while editing; the next poll after blur refreshes them.
@@ -878,9 +905,10 @@ $('mobaction').onclick = () => {
     $('actionpanel').open = true;
     $('actionpanel').scrollIntoView({ block: 'nearest' });
     // Preserve other action arguments; only replace the selected spawn ID.
-    if (selectedMob !== null) {
+    const target = selectedSpawn();
+    if (target) {
         for (const input of $('params').querySelectorAll('[data-spawn="true"]'))
-            input.value = String(selectedMob);
+            input.value = String(target.id);
     }
     if (!actionCatalog.size) loadActions();
     else $('actionselect').focus({ preventScroll: true });

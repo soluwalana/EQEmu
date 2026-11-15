@@ -225,3 +225,8 @@ main:has(#world.active){flex:1;display:flex;flex-direction:column;min-height:0;w
 /* The object inspector is a non-modal fixed overlay, not a native dialog. */
 .object-popup[hidden]{display:none!important}
 .object-popup:not([hidden]){display:block}
+
+/* Keep target-copy actions next to their own spawn input, not the submit button. */
+.spawn-input-row{display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap}
+.spawn-input-row input{flex:1 1 90px;width:0;min-width:0}
+.use-target-id{flex:0 0 auto;white-space:nowrap;font-size:11px;padding:6px 8px;color:var(--cyan)}
