@@ -239,74 +239,55 @@
     </div>
    </section>
    <section class="tab" id="world">
-    <div class="grid two">
+    <div class="grid world-layout">
      <article class="panel">
-      <h2>
-       Live world
-       <span id="worldzone">
-       </span>
-      </h2>
+      <h2>Live world <span id="worldzone"></span></h2>
       <div class="inline">
-       <label>
-        Radius
-        <input id="radius" max="3000" min="50" type="range" value="350"/>
-       </label>
-       <span id="radiuslabel">
-        350 yd
-       </span>
-       <button id="fitpath" type="button">
-        Fit path
-       </button>
-       <button id="fitbots" type="button">
-        Fit bots
-       </button>
+       <label>Radius <input id="radius" max="3000" min="50" type="range" value="350"/></label>
+       <span id="radiuslabel">350 yd</span>
+       <button id="fitpath" type="button">Fit path</button>
+       <button id="fitbots" type="button">Fit bots</button>
       </div>
-      <canvas height="650" id="worldmap" width="1000">
-      </canvas>
+      <div class="world-target" aria-label="Current target">
+       <div class="world-target-main">
+        <span class="target-label">Current target</span>
+        <strong id="targetname">No target selected</strong>
+        <span class="muted" id="targetidentity"></span>
+       </div>
+       <div class="target-metrics" id="targetmetrics"></div>
+       <div class="target-actions">
+        <button disabled id="mobaction" type="button">Use in action</button>
+        <button disabled id="cleartarget" type="button">Clear</button>
+       </div>
+      </div>
+      <canvas height="800" id="worldmap" width="1600"></canvas>
       <p class="map-status" id="worldmapbots"></p>
       <div class="legend">
-       <i class="self">
-       </i>
-       Player
-       <i class="bot">
-       </i>
-       Bots
-       <i class="npc">
-       </i>
-       Mobs
-       <i class="aggro">
-       </i>
-       Aggro
-       <i class="path">
-       </i>
-       Planned path
+       <i class="self"></i> Player
+       <i class="bot"></i> Bots
+       <i class="npc"></i> Mobs
+       <i class="aggro"></i> Aggro
+       <i class="path"></i> Planned path
       </div>
-      <h3>
-       Current route
-      </h3>
-      <pre id="pathdetail">No active path.</pre>
      </article>
-     <article class="panel">
-      <h2>
-       Zone entities
-      </h2>
-      <div class="inline">
-       <input id="mobquery" placeholder="Name or spawn ID"/>
-       <label>
-        <input id="onlynear" type="checkbox"/>
-        Nearby only
-       </label>
-      </div>
-      <div class="list scroll" id="moblist">
-      </div>
-      <h3>
-       Entity inspector
-      </h3>
-      <button disabled="" id="mobaction" type="button">
-       Use selected spawn in action
-      </button>
-      <pre id="mobdetail">Select a mob or map marker.</pre>
-     </article>
+     <div class="grid two world-details">
+      <article class="panel">
+       <h2>Zone entities</h2>
+       <div class="inline">
+        <input id="mobquery" placeholder="Name or spawn ID"/>
+        <label><input id="onlynear" type="checkbox"/> Nearby only</label>
+       </div>
+       <div class="list scroll" id="moblist"></div>
+      </article>
+      <article class="panel">
+       <h2>Entity inspector</h2>
+       <pre id="mobdetail">Select a mob or map marker.</pre>
+       <details>
+        <summary>Current route</summary>
+        <pre id="pathdetail">No active path.</pre>
+       </details>
+      </article>
+     </div>
     </div>
    </section>
    <section class="tab" id="actions">

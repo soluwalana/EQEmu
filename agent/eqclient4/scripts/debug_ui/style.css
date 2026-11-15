@@ -138,3 +138,22 @@ h2 button{font-size:11px;padding:4px 8px;color:var(--muted)}
 .eq3d-tools input[type=range]{width:85px}
 .eq3d-info{font-size:11px;color:var(--muted);margin:5px 0;line-height:1.4}
 .eq3d-wrap .eq3d-gl[hidden]{display:none}
+
+/* World workspace: full-width map, compact live target, details below. */
+main:has(#world.active){max-width:none}
+.world-layout{grid-template-columns:minmax(0,1fr)}
+.world-layout #worldmap{width:100%;height:clamp(360px,65vh,780px)}
+.world-target{display:flex;align-items:center;flex-wrap:wrap;gap:12px 20px;padding:12px 14px;margin:10px 0;background:#0e1825;border:1px solid #34465a;border-radius:8px}
+.world-target-main{display:flex;flex-direction:column;gap:2px;min-width:160px;flex:1 1 190px}
+.target-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
+.world-target-main strong{font-size:16px;overflow-wrap:anywhere}
+.world-target-main .muted{font-size:11px}
+.target-metrics{display:flex;flex:2 1 340px;flex-wrap:wrap;gap:8px 20px;align-items:center}
+.target-metric{display:flex;flex-direction:column;gap:2px;font-size:12px}
+.target-metric span{font-size:10px;color:var(--muted)}
+.target-metric b{font-weight:600;color:var(--ink)}
+.target-actions{display:flex;flex-wrap:wrap;gap:6px}
+.target-actions button{font-size:12px;padding:6px 9px}
+.world-details{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+@media(max-width:900px){.world-details{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:650px){.world-layout #worldmap{height:clamp(300px,55vh,540px)}.target-metrics{flex-basis:100%}}

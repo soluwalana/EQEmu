@@ -76,15 +76,31 @@ function render() {
         draw('worldmap', Number($('radius').value));
         renderMobs();
         text('pathdetail', s.path ? pretty(s.path) : 'No active path.');
-        if (selectedMob !== null) {
-            let m = s.mobs.find(x => x.id === selectedMob) || s.bots.find(x => x.id === selectedMob && x.spawned);
-            text('mobdetail', m ? pretty(m) : 'Entity is no longer present.');
-            $('mobaction').disabled = !m;
-        }
+        renderCurrentTarget();
     }
     if (tab === 'actions')
         renderRuns();
 }
+// This is the dashboard-selected entity, not a change to the agent's target.
+function renderCurrentTarget() {
+    const s = state;
+    const bot = s.bots.find(b => b.spawned && b.id === selectedMob);
+    const m = bot || s.mobs.find(m => m.id === selectedMob);
+    text('targetname', m ? m.name : selectedMob === null ? 'No target selected' : 'Entity no longer present');
+    text('targetidentity', m ? `Spawn #${m.id} · Lv ${m.level} · ${cls[m.class_id] ?? 'Unknown'}` : '');
+    if (m) {
+        const dz = validPosition(m.position) && Number.isFinite(m.position[2]) ? m.position[2] - s.position[2] : null;
+        const location = validPosition(m.position) ? `X ${num(m.position[0])} Y ${num(m.position[1])} Z ${num(m.position[2])}` : '—';
+        const values = [ ['HP', m.dead || (bot && !bot.alive) ? 'Dead' : m.hp == null ? '—' : `${m.hp}%`], ['Distance', `${num(m.distance)} yd`], ['ΔZ', dz == null ? '—' : `${dz >= 0 ? '+' : ''}${num(dz)}`], ['Visibility', losLabel(m)], ['Position', location] ];
+        html('targetmetrics', values.map(([label, value]) => `<div class="target-metric"><span>${esc(label)}</span><b>${esc(value)}</b></div>`).join(''));
+    } else {
+        html('targetmetrics', '');
+    }
+    text('mobdetail', m ? pretty(m) : selectedMob === null ? 'Select a mob or map marker.' : 'Entity is no longer present.');
+    $('mobaction').disabled = !m;
+    $('cleartarget').disabled = selectedMob === null;
+}
+$('cleartarget').onclick = () => { selectedMob = null; if (state) render(); };
 function renderBuffs() { const c = state.character, buffs = Object.values(c.buffs ?? {}); html('buffs', buffs.slice(0, 18).map(b => `<div class="row"><span>Spell #${esc(b.spell_id ?? b.spellid ?? '—')}</span><span class="muted">${esc(b.duration ?? b.tics_remaining ?? '')} ticks</span></div>`).join('') || '<p class="muted">No tracked buffs.</p>'); }
 function botSpawnLabel(b) {
     if (!b.spawned)
@@ -176,6 +192,16 @@ function layoutBotMarkers(bots, project, width, height, radius, player = [width 
     return markers;
 }
 function draw(id, radius) {
+    // Size the backing store to the actual full-width viewport. CSS fixes
+    // its displayed height independently, so resizing cannot change layout.
+    if (id === 'worldmap') {
+        const canvas = $(id);
+        const width = canvas.clientWidth, height = canvas.clientHeight;
+        if (width > 0 && height > 0) {
+            if (canvas.width !== width) canvas.width = width;
+            if (canvas.height !== height) canvas.height = height;
+        }
+    }
     if (window.EQMap3D?.draw(id, radius, state, selectedMob, mapHits, layoutBotMarkers))
         return;
     draw2d(id, radius);

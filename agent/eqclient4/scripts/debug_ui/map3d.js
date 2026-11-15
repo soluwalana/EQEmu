@@ -274,6 +274,10 @@
             this.latest=[radius,s,selected,hits,layout];this.load(s.zone);
             radius=this.manualRadius??radius;
             const hud=this.hud, gl=this.gl, w=hud.width,h=hud.height;
+            // The HUD and GPU backing stores must have identical dimensions
+            // after a responsive layout change (including tab/window resize).
+            if(this.glCanvas.width!==w)this.glCanvas.width=w;
+            if(this.glCanvas.height!==h)this.glCanvas.height=h;
             if(this.minZ!==null&&!this.follow&&this.center)
                 this.center[2]=Math.max(this.center[2],Math.min(this.minZ,s.position[2]));
             const center=this.follow||!this.center?s.position:this.center;
