@@ -331,7 +331,6 @@ class Movement:
         return (
             "OP_ClientUpdate",
             "OP_NewZone",
-            "OP_MoveDoor",
             "OP_FindPersonReply",
         )
 

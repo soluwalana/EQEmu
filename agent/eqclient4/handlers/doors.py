@@ -39,7 +39,6 @@ class DoorsHandler(Handler):
             previous = doors.get(found.id)
             if not previous:
                 doors[found.id] = found
-                continue
 
             if found.opened:
                 self.world.open_doors.add(found.id)
