@@ -158,22 +158,6 @@ class Loop:
         self.tick: int = 0
         self._status = ""
 
-    def clear_volatile(self) -> None:
-        self.world.self_id = 0
-        self.world.zone_id = -1
-        self.world.zone = ""
-        self.world.zone_formed = None
-        self.world.safe = None
-        self.world.bot_roster.clear_spawns()
-        self.world.active_group.clear()
-        self.world.party_mode = None
-        self.world.ground_spawns.clear()
-        self.world.mobs.clear()
-        self.world.aggro_mobs.clear()
-        self.world.exit_doors.clear()
-        self.world.doors.clear()
-        self.world.active_merchants.clear()
-
     def start(self, login: Login, creation: CreateCharacter) -> Client:
         for action in self.journal.load_actions():
             self.queue.restore(action)
@@ -406,7 +390,7 @@ class Loop:
         # The zone-in that follows is a new entrance. A same-zone weather refresh
         # does not come through here, so the party has to be built again.
         self.world.zone_formed = None
-        self.clear_volatile()
+        self.world.reset()
         transfer_zone(self.client)
 
     def _note(self, action: Action | None) -> None:
