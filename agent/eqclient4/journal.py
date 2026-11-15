@@ -536,6 +536,7 @@ class Journal:
         action.suspended = True
         action.yielding = False
         action.complete = False
+        action.commands = []
         return action
 
 
@@ -544,7 +545,7 @@ def _kind(action: Action) -> str:
     return f"{cls.__module__}:{cls.__qualname__}"
 
 
-_HELD = ("messages", "active_path", "world", "loop")
+_HELD = ("messages", "active_path", "world", "loop", "commands")
 
 
 def _dump(action: Action) -> bytes:

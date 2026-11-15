@@ -133,7 +133,7 @@ class Action:
             previous = self.world.bot_roster.bot_by_spawn_id(self.mob_targeted)
             if previous:
                 previous.targeted = False
-            self.wait("bot-target")
+            self.wait("TARGET")
 
         if not self.world.line_of_sight(bot.position):
             self.send_channel_message(f"^botsummon byname {bot.name}")
@@ -154,7 +154,7 @@ class Action:
         if message:
             bot.targeted = True
             self.mob_targeted = self.target_id
-            self.unwait("bot-target")
+            self.unwait("TARGET")
             self.target_sent = False
             self._consider_sent = False
             return
