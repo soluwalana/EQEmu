@@ -6,4 +6,5 @@ MODULES = (
     "tasks",
     "zoning",
     "grouping",
+    "doors",
 )

@@ -375,8 +375,6 @@ class Movement:
                 self._on_position(payload)
             case OP_NewZone():
                 self._on_new_zone(payload)
-            case OP_MoveDoor():
-                self._on_move_door(payload)
             case OP_FindPersonReply():
                 self._on_find_reply(payload)
             case _:
