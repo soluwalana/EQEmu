@@ -86,27 +86,6 @@
         }
         return new Float32Array(vertices);
     }
-    // The packet describes placement and scale, not the client's actual mesh.
-    // Use a simple hinged panel as a diagnostic proxy (EQ heading: 512/rev).
-    function doorPanel(door) {
-        const heading=(Number.isFinite(door.heading)?door.heading:0)*2*Math.PI/512;
-        const size=Number.isFinite(door.size)&&door.size>0?door.size/100:1;
-        const width=8*size,height=12*size,thickness=.6*size;
-        const across=[Math.cos(heading),-Math.sin(heading),0];
-        const normal=[Math.sin(heading),Math.cos(heading),0];
-        // Approximate the packet position as the base center of the closed leaf.
-        const hinge=door.position.map((v,i)=>v-across[i]*width/2);
-        const axis=door.opened?normal:across;
-        const depth=door.opened?across.map(v=>-v):normal;
-        const at=(x,y,z)=>hinge.map((v,i)=>v+axis[i]*x+depth[i]*y+(i===2?z:0));
-        const points=[at(0,-thickness/2,0),at(width,-thickness/2,0),
-            at(width,thickness/2,0),at(0,thickness/2,0),
-            at(0,-thickness/2,height),at(width,-thickness/2,height),
-            at(width,thickness/2,height),at(0,thickness/2,height)];
-        const faces=[0,2,1,0,3,2,4,5,6,4,6,7,0,1,5,0,5,4,
-            1,2,6,1,6,5,2,3,7,2,7,6,3,0,4,3,4,7];
-        return {points,vertices:faces.flatMap(i=>points[i]),center:at(width/2,0,height/2)};
-    }
     function program(gl, sources=shaders) {
         const compile = (type, source) => {
             const s = gl.createShader(type); gl.shaderSource(s, source); gl.compileShader(s);
@@ -146,7 +125,7 @@
             this.follow=true; this.center=null; this.zoom=1; this.manualRadius=null; this.zone=null; this.generation=0;
             this.terrain=true; this.nav=true; this.water=true; this.cut=false; this.cutHeight=0; this.mode3d=true;
             this.localGeometry=false; this.showHiddenMobs=false;
-            this.doors=true; this.groundSpawns=false;
+            this.doors=true; this.groundSpawns=true;
             this.buffers=[]; this.geometry=null; this.minZ=null; this.error=''; this.latest=null; this.drag=null; this.skipClick=false;
             const glCanvas=document.createElement('canvas'); glCanvas.className='eq3d-gl';
             glCanvas.width=this.hud.width; glCanvas.height=this.hud.height;
@@ -159,7 +138,6 @@
             this.attr=gl.getAttribLocation(this.prog,'position');
             gl.enable(gl.DEPTH_TEST); gl.clearColor(.039,.067,.105,1);
             this.initSpheres();
-            this.doorBuffer=gl.createBuffer();
             const wrap=document.createElement('div'); wrap.className='eq3d-wrap';
             this.hud.before(wrap); wrap.append(glCanvas,this.hud); this.hud.classList.add('eq3d-hud');
             const tools=document.createElement('div'); tools.className='eq3d-tools'; wrap.before(tools);
@@ -173,7 +151,7 @@
             button('Orbit',()=>{this.el=.72;this.az=-.55;this.redraw();});
             button('Fit target',()=>this.fitTarget());
             check('Terrain',true,v=>this.terrain=v); check('Navmesh',true,v=>this.nav=v); check('Water',true,v=>this.water=v);
-            check('Doors',true,v=>this.doors=v); this.groundCheck=check('Ground spawns',false,v=>this.groundSpawns=v);
+            check('Doors',true,v=>this.doors=v); this.groundCheck=check('Ground spawns',true,v=>this.groundSpawns=v);
             check('Cutaway',false,v=>this.cut=v);
             check('Local geometry',false,v=>this.localGeometry=v);
             check('Show hidden mobs',false,v=>this.showHiddenMobs=v);
@@ -262,26 +240,6 @@
             gl.drawArraysInstanced(gl.TRIANGLES,0,sphere.count,instances.length/7);
             gl.bindVertexArray(null);
         }
-        drawDoors(panels){
-            if(!panels.length)return;
-            const gl=this.gl,l=this.loc;
-            // Camera/geometry uniforms are already set by draw(). Doors use
-            // the terrain depth buffer, but the cutaway filters their anchors
-            // rather than slicing the panels to zero height at floor level.
-            gl.useProgram(this.prog);gl.bindVertexArray(null);
-            gl.bindBuffer(gl.ARRAY_BUFFER,this.doorBuffer);
-            gl.enableVertexAttribArray(this.attr);gl.vertexAttribPointer(this.attr,3,gl.FLOAT,false,0,0);
-            gl.uniform1f(l.highZ,1e9);gl.uniform1f(l.localRange,0);
-            gl.uniform1i(l.navStyle,0);gl.uniform1f(l.lift,0);gl.uniform1f(l.opacity,1);
-            for(const opened of [false,true]){
-                const vertices=[];
-                for(const p of panels)if(Boolean(p.door.opened)===opened)vertices.push(...p.model.vertices);
-                if(!vertices.length)continue;
-                gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(vertices),gl.DYNAMIC_DRAW);
-                gl.uniform3fv(l.tint,opened?[.71,.57,.96]:[.95,.65,.33]);
-                gl.drawArrays(gl.TRIANGLES,0,vertices.length/3);
-            }
-        }
         resetCamera(){this.follow=true;this.center=null;this.zoom=1;this.manualRadius=null;}
         resetZoom(){this.zoom=1;this.manualRadius=null;}
         redraw(){if(this.latest){const [radius,state,selected,hits,layout,selectedGround]=this.latest; if(this.mode3d)this.draw(radius,state,selected,hits,layout,selectedGround);else if(typeof window.EQMap3D.fallback==='function')window.EQMap3D.fallback(this.id,radius);}}
@@ -317,9 +275,18 @@
         draw(radius,s,selected,hits,layout,selectedGround){
             this.latest=[radius,s,selected,hits,layout,selectedGround];this.load(s.zone);
             radius=this.manualRadius??radius;
-            const hud=this.hud, gl=this.gl, w=hud.width,h=hud.height;
-            // The HUD and GPU backing stores must have identical dimensions
-            // after a responsive layout change (including tab/window resize).
+            const hud=this.hud, gl=this.gl;
+            // Measure after the canvas is wrapped and the inspector is laid out.
+            // The CSS viewport and both backing stores must agree on every draw.
+            const rect=hud.getBoundingClientRect();
+            if(rect.width<=0||rect.height<=0)return;
+            if(this.id==='worldmap'){
+                const width=Math.max(1,Math.round(rect.width)),height=Math.max(1,Math.round(rect.height));
+                if(hud.width!==width)hud.width=width;
+                if(hud.height!==height)hud.height=height;
+            }
+            const w=hud.width,h=hud.height;
+            this.glCanvas.style.width=rect.width+'px';this.glCanvas.style.height=rect.height+'px';
             if(this.glCanvas.width!==w)this.glCanvas.width=w;
             if(this.glCanvas.height!==h)this.glCanvas.height=h;
             if(this.minZ!==null&&!this.follow&&this.center)
@@ -363,16 +330,6 @@
             const objectVisible=p=>valid(p) && p[2]<=highZ &&
                 (!this.localGeometry || horizontalDistance(p,s.position)<=range);
             const mobVisible=m=>this.showHiddenMobs || m.id===selected || objectVisible(m.position);
-            const doorPanels=[];
-            if(this.doors)for(const door of s.doors??[]){
-                if(!objectVisible(door.position))continue;
-                const model=doorPanel(door), corners=model.points.map(project);
-                const xs=corners.map(p=>p[0]),ys=corners.map(p=>p[1]);
-                const bounds=[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)];
-                if(bounds[2]<0||bounds[0]>w||bounds[3]<0||bounds[1]>h)continue;
-                doorPanels.push({door,model,bounds});
-            }
-            this.drawDoors(doorPanels);
             const line=(a,b,color,dashed=false,width=1.5)=>{ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.setLineDash(dashed?[5,4]:[]);ctx.stroke();ctx.setLineDash([]);};
             const circle=(p,r,color,stroke)=>{ctx.beginPath();ctx.arc(p[0],p[1],r,0,2*Math.PI);ctx.fillStyle=color;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1.5;ctx.stroke();}};
             const label=(msg,p,color='#dce9f6')=>{const width=ctx.measureText(msg).width,x=clamp(p[0]+3,0,Math.max(0,w-width-6)),y=clamp(p[1]-15,0,h-17);ctx.fillStyle='#09111c';ctx.fillRect(x,y,width+6,17);ctx.fillStyle=color;ctx.fillText(msg,x+3,y+13);};
@@ -412,33 +369,6 @@
                 const d=Math.hypot(end[0]-player[0],end[1]-player[1]);if(d>.01)line(player,[player[0]+(end[0]-player[0])/d*18,player[1]+(end[1]-player[1])/d*18],'#5bc9d5',false,3);
             }
             this.drawSpheres(instances,center,right,up,nearAxis,scale,depthScale,w,h);
-            // Keep a small anchor dot for distant/occluded panels, and hover
-            // over their projected footprint without using a mob spawn ID.
-            const objectHits=[];
-            for(const {door:d,model,bounds} of doorPanels){
-                const [left,top,rightEdge,bottom]=bounds;
-                const p=project(model.center), anchor=project(d.position);
-                const color=d.opened?'#b69df5':'#f2a65a';
-                if(visible(anchor))circle(anchor,2,color,'#101923');
-                const x=clamp(p[0],0,w),y=clamp(p[1],0,h);
-                const radius=Math.max(8,Math.hypot(rightEdge-left,bottom-top)/2);
-                const detail=`${d.opened?'Open':'Closed'} · type ${d.open_type} · heading ${Number(d.heading??0).toFixed(1)} · size ${d.size??100}% · incline ${d.incline??0} · proxy model`;
-                objectHits.push({x,y,radius,kind:'door',name:d.name,id:d.id,detail});
-            }
-            if(this.groundSpawns){
-                for(const g of groundDrops(s.ground_spawns)){
-                    if(!objectVisible(g.position))continue;
-                    const p=project(g.position);if(!visible(p))continue;
-                    const selectedDrop=g.drop_id===selectedGround;
-                    const [x,y]=p;ctx.save();ctx.fillStyle='#62dce0';ctx.strokeStyle=selectedDrop?'#fff':'#123d49';ctx.lineWidth=selectedDrop?2.5:1.5;
-                    ctx.beginPath();ctx.moveTo(x,y-6);ctx.lineTo(x+6,y);ctx.lineTo(x,y+6);ctx.lineTo(x-6,y);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();
-                    if(selectedDrop){ring(p,10,'#fff');label(g.name,p,'#c8fbff');}
-                    objectHits.push({x,y,radius:8,kind:'ground',name:g.name,id:g.drop_id,detail:'Ground spawn'});
-                }
-            }
-            // Keep object identifiers separate from mob spawn IDs. Hover can
-            // inspect objects, but selecting them must never target an NPC.
-            entities.push(...objectHits);
             const target=[...s.mobs,...s.bots.filter(b=>b.spawned)].find(m=>m.id===selected);
             if(target&&valid(target.position)){
                 const p=project(target.position), base=project([target.position[0],target.position[1],s.position[2]]), dz=target.position[2]-s.position[2];
@@ -447,14 +377,19 @@
             ctx.fillStyle='#a4b8cb';ctx.fillText(`Z ${s.position[2].toFixed(1)} · ${Math.round(radius*this.zoom)} yd · ${Math.round(this.el*180/Math.PI)}° tilt`,10,h-12);
             if(s.path){const dz=valid(s.path.destination)?s.path.destination[2]-s.position[2]:null;ctx.fillText(`Path: ${s.path.mode??'—'}${s.path.fallback?' · FALLBACK':''}${dz!==null?' · destination ΔZ '+dz.toFixed(1):''}${s.movement?.refused?' · stride refused':''}`,10,h-29);}
             const axis=[w-35,h-32];for(const [v,color,name] of [[[1,0,0],'#ec7784','X'],[[0,1,0],'#6ccc91','Y'],[[0,0,1],'#699fe8','Z']]){const p=[axis[0]+dot(v,right)*22,axis[1]-dot(v,up)*22];line(axis,p,color,false,2);ctx.fillStyle=color;ctx.fillText(name,p[0],p[1]);}
-            hits.set(this.id,entities);
+            // The HUD uses the identical world-to-screen projection as the mesh.
+            // Draw objects last so target/path labels cannot hide their markers.
+            entities.push(...drawMapObjects(ctx,this.id,s,project,objectVisible,this.doors,this.groundSpawns,selectedGround,entities));
+            hits.set(this.id,entities);refreshMapHover(this.id);
             const count=s.bots.filter(b=>b.spawned).length;document.getElementById(this.id+'bots').textContent=`${bots.length} / ${count} spawned bots in view`;
-            const data=this.geometry;this.info.textContent=this.error?`${this.error} · live entities still shown`:data?`${(data.collision.length/9).toLocaleString()} collision triangles · ${(data.nav.length/9).toLocaleString()} nav triangles · ${data.flags&4?(data.water.length/9).toLocaleString()+' water triangles':'No water map'} · ${this.cut?'Z ≤ '+(s.position[2]+this.cutHeight).toFixed(1):'All floors'} · ${this.localGeometry?'Local geometry '+Math.round(range)+' yd':'Full geometry'} · ${hiddenMobs} mobs hidden · doors: scaled proxy panels · route/spheres X-ray · drag pan, right/Alt-drag orbit, wheel zoom`:'Loading zone geometry…';
+            const data=this.geometry;this.info.textContent=this.error?`${this.error} · live entities still shown`:data?`${(data.collision.length/9).toLocaleString()} collision triangles · ${(data.nav.length/9).toLocaleString()} nav triangles · ${data.flags&4?(data.water.length/9).toLocaleString()+' water triangles':'No water map'} · ${this.cut?'Z ≤ '+(s.position[2]+this.cutHeight).toFixed(1):'All floors'} · ${this.localGeometry?'Local geometry '+Math.round(range)+' yd':'Full geometry'} · ${hiddenMobs} mobs hidden · doors: ${entities.filter(e=>e.kind==='door').length}/${doorMarkers(s.doors).length} visible · drops: ${entities.filter(e=>e.kind==='ground').length}/${groundDrops(s.ground_spawns).length} visible · route/spheres/icons X-ray · drag pan, right/Alt-drag orbit, wheel zoom`:'Loading zone geometry…';
         }
     }
     window.EQMap3D={
         resetCamera(id){views.get(id)?.resetCamera();},
         resetZoom(id){views.get(id)?.resetZoom();},
+        redraw(id){const v=views.get(id);if(!v)return false;v.redraw();return true;},
+        doorsVisible(id){return views.get(id)?.doors??true;},
         groundSpawnsVisible(id){return views.get(id)?.groundSpawns??true;},
         showGroundSpawns(id){const v=views.get(id);if(v){v.groundSpawns=true;v.groundCheck.checked=true;v.redraw();}},
         draw(id,radius,state,selected,hits,layout,selectedGround=null){

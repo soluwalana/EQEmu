@@ -16,6 +16,7 @@ function entityTint(entity, bot = false) {
 function entityColor(entity, bot = false) { return `rgb(${entityTint(entity, bot).join(',')})`; }
 function losLabel(entity) { return entity.los === true ? (state?.los_map === false ? 'LoS assumed clear (no collision map)' : 'In LoS') : entity.los === false ? 'Out of LoS' : 'LoS unknown'; }
 let state = null, tab = 'overview', selectedMob = null, selectedGround = null, selectedSlot = null, openBag = null, actionCatalog = new Map(), activeAction = null, lastInventory = '', mapHits = new Map(), selectedItem = null, paramReaders = [], actionGeneration = 0;
+const mapPointer = new Map();
 const logs = { wire: { after: -1, rows: [], paused: false, busy: false }, combat: { after: -1, rows: [], paused: false, busy: false } };
 async function api(path, options = {}) { const r = await fetch(path, { cache: 'no-store', ...options }); if (!r.ok) {
     let x;
@@ -56,6 +57,86 @@ function groundDrops(spawns) {
     }
     return [...drops.values()].map(g => ({ ...g, items: [...g.items.values()], name: [...new Set([...g.items.values()].map(i => i.name))].join(' / ') }));
 }
+// Static world objects are encoded as doors with doorid=-1 (uint8 255).
+// Keep their wire representation intact, but do not draw them as interactive doors.
+const doorMarkers = doors => (doors ?? []).filter(d => d.id !== 255);
+const mapObjectColors = { open: '#b69df5', closed: '#f2a65a', ground: '#62dce0' };
+function canvasViewport(canvas) {
+    const rect = canvas.getBoundingClientRect();
+    const width = rect.width - 2 * canvas.clientLeft, height = rect.height - 2 * canvas.clientTop;
+    return { left: rect.left + canvas.clientLeft, top: rect.top + canvas.clientTop,
+        width, height, sx: width > 0 ? canvas.width / width : 1, sy: height > 0 ? canvas.height / height : 1 };
+}
+function pickMapHit(hits, point) {
+    if (!point) return null;
+    const [x, y] = point;
+    const candidates = hits.map(m => ({ ...m, d: Math.hypot(x - m.x, y - m.y) })).sort((a, b) => a.d - b.d);
+    const objectHit = m => {
+        const dx = Math.abs(x - m.x) / m.rx, dy = Math.abs(y - m.y) / m.ry;
+        return m.kind === 'ground' ? dx + dy <= 1 : dx <= 1 && dy <= 1;
+    };
+    // Match paint order: ground diamonds, then door brackets, then entity markers.
+    return candidates.find(m => m.kind === 'ground' && objectHit(m))
+        ?? candidates.find(m => m.kind === 'door' && objectHit(m))
+        ?? candidates.find(m => m.bot && m.d <= m.radius + 3)
+        ?? candidates.find(m => !m.kind && m.d < 15) ?? null;
+}
+function mapPoint(canvas, event) {
+    if (!event) return null;
+    const v = canvasViewport(canvas);
+    if (v.width <= 0 || v.height <= 0) return null;
+    const x = (event.clientX - v.left) * v.sx, y = (event.clientY - v.top) * v.sy;
+    return x >= 0 && x <= canvas.width && y >= 0 && y <= canvas.height ? [x, y] : null;
+}
+function drawMapObjects(ctx, id, s, project, visible, showDoors, showGround, selectedDrop, entityHits) {
+    const canvas = ctx.canvas, { sx, sy } = canvasViewport(canvas), objects = [];
+    const add = (object, kind) => {
+        if (!visible(object.position)) return;
+        const [x, y] = project(object.position);
+        // Never clamp the origin to the screen edge: an off-screen object is not a hit target.
+        if (x < 0 || x > canvas.width || y < 0 || y > canvas.height) return;
+        const ground = kind === 'ground';
+        const detail = ground ? 'Ground spawn' : `${object.opened ? 'Open' : 'Closed'} · type ${object.open_type} · heading ${num(object.heading)} · size ${object.size ?? 100}%`;
+        objects.push({ x, y, rx: (ground ? 8 : 10) * sx, ry: (ground ? 8 : 9) * sy,
+            kind, id: ground ? object.drop_id : object.id, name: object.name, detail, object });
+    };
+    if (showDoors) for (const d of doorMarkers(s.doors)) add(d, 'door');
+    if (showGround) for (const g of groundDrops(s.ground_spawns)) add(g, 'ground');
+    const hover = pickMapHit([...entityHits, ...objects], mapPoint(canvas, mapPointer.get(id)));
+    for (const hit of objects) {
+        const { x, y, kind, object } = hit, ground = kind === 'ground';
+        const selected = ground && hit.id === selectedDrop;
+        const hovered = hover?.kind === kind && hover.id === hit.id;
+        ctx.save(); ctx.translate(x, y); ctx.scale(sx, sy);
+        ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+        const color = ground ? mapObjectColors.ground : object.opened ? mapObjectColors.open : mapObjectColors.closed;
+        if (ground) {
+            ctx.beginPath(); ctx.moveTo(0, -6); ctx.lineTo(6, 0); ctx.lineTo(0, 6); ctx.lineTo(-6, 0); ctx.closePath();
+            ctx.fillStyle = color; ctx.fill(); ctx.strokeStyle = '#123d49'; ctx.lineWidth = 1.5; ctx.stroke();
+        } else {
+            // [ ] / [×], centered at the packet's exact XYZ, with no fabricated hinge or height.
+            ctx.beginPath(); ctx.moveTo(-4, -7); ctx.lineTo(-8, -7); ctx.lineTo(-8, 7); ctx.lineTo(-4, 7);
+            ctx.moveTo(4, -7); ctx.lineTo(8, -7); ctx.lineTo(8, 7); ctx.lineTo(4, 7);
+            if (!object.opened) { ctx.moveTo(-3, -3); ctx.lineTo(3, 3); ctx.moveTo(3, -3); ctx.lineTo(-3, 3); }
+            ctx.strokeStyle = '#101923'; ctx.lineWidth = 4; ctx.stroke();
+            ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
+        }
+        if (selected || hovered) {
+            ctx.beginPath(); ctx.arc(0, 0, 12, 0, 2 * Math.PI); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+        }
+        ctx.restore();
+        if (selected) {
+            ctx.save(); ctx.font = `${12 * sy}px monospace`; ctx.fillStyle = '#c8fbff';
+            ctx.textAlign = 'start'; ctx.textBaseline = 'alphabetic';
+            const textWidth = ctx.measureText(hit.name).width;
+            const tx = Math.max(0, Math.min(canvas.width - textWidth - 4, x + 14 * sx));
+            const ty = Math.max(14 * sy, Math.min(canvas.height - 2, y - 8 * sy));
+            ctx.fillStyle = '#09111c'; ctx.fillRect(tx, ty - 12 * sy, textWidth + 4, 15 * sy);
+            ctx.fillStyle = '#c8fbff'; ctx.fillText(hit.name, tx + 2, ty); ctx.restore();
+        }
+    }
+    return objects;
+}
 function render() {
     if (!state)
         return;
@@ -87,10 +168,11 @@ function render() {
         renderInventory();
     if (tab === 'world') {
         text('worldzone', `${s.zone} · instance ${s.instance}`);
+        // The inspector can wrap and change the layout; size/draw the map afterwards.
+        renderCurrentTarget();
         draw('worldmap', Number($('radius').value));
         renderMobs();
         text('pathdetail', s.path ? pretty(s.path) : 'No active path.');
-        renderCurrentTarget();
     }
     if (tab === 'actions')
         renderRuns();
@@ -360,57 +442,60 @@ function draw2d(id, radius) {
             ctx.fillText(b.bot.name, b.x + botRadius + 4, b.y - botRadius - 3);
         }
     }
-    // The same layer toggle and drop IDs work in the 2D fallback.
-    if (window.EQMap3D?.groundSpawnsVisible(id) ?? true) {
-        for (const g of groundDrops(s.ground_spawns)) {
-            if (!validPosition(g.position)) continue;
-            const [x, y] = xy(g.position);
-            if (x < 0 || x > w || y < 0 || y > h) continue;
-            const selected = selectedGround?.id === g.drop_id;
-            ctx.save();
-            ctx.fillStyle = '#62dce0';
-            ctx.strokeStyle = selected ? '#fff' : '#123d49';
-            ctx.lineWidth = selected ? 2.5 : 1.5;
-            ctx.beginPath(); ctx.moveTo(x, y-6); ctx.lineTo(x+6, y); ctx.lineTo(x, y+6); ctx.lineTo(x-6, y); ctx.closePath(); ctx.fill(); ctx.stroke();
-            if (selected) {
-                ctx.beginPath(); ctx.arc(x, y, 10, 0, 2*Math.PI); ctx.stroke();
-                ctx.font = '12px monospace'; ctx.fillStyle = '#c8fbff'; ctx.fillText(g.name, x+12, y-8);
-            }
-            ctx.restore();
-            hits.push({ x, y, radius: 8, kind: 'ground', name: g.name, id: g.drop_id, detail: 'Ground spawn' });
-        }
-    }
+    hits.push(...drawMapObjects(ctx, id, s, xy, validPosition,
+        window.EQMap3D?.doorsVisible(id) ?? true,
+        window.EQMap3D?.groundSpawnsVisible(id) ?? true, selectedGround?.id ?? null, hits));
     const spawned = s.bots.filter(b => b.spawned).length;
     const unknown = s.bots.filter(b => b.spawned && !validPosition(b.position)).length;
     text(id + 'bots', `${bots.length} / ${spawned} spawned bots in view${spawned - bots.length - unknown > 0 ? ` · ${spawned - bots.length - unknown} outside view` : ''}${unknown ? ` · ${unknown} without position` : ''}`);
     mapHits.set(id, hits);
+    refreshMapHover(id);
 }
 function mapHit(id, event) {
-    const canvas = $(id), rect = canvas.getBoundingClientRect();
-    const x = (event.clientX - rect.left) * canvas.width / rect.width, y = (event.clientY - rect.top) * canvas.height / rect.height;
-    const hits = (mapHits.get(id) || []).map(m => ({ ...m, d: Math.hypot(x - m.x, y - m.y) })).sort((a, b) => a.d - b.d);
-    // Ground diamonds have a tight hit area and sit on top of mob markers.
-    // Otherwise retain the existing bot-over-mob selection preference.
-    return hits.find(m => m.kind === 'ground' && m.d <= m.radius) ?? hits.find(m => m.bot && m.d <= m.radius + 3) ?? hits.find(m => m.kind ? m.d <= m.radius : m.d < 15);
+    return pickMapHit(mapHits.get(id) ?? [], mapPoint($(id), event));
 }
+function refreshMapHover(id) {
+    const canvas = $(id), hit = mapHit(id, mapPointer.get(id));
+    const cursor = hit ? 'pointer' : 'default';
+    const title = hit ? (hit.kind ? `${hit.name} · ${hit.kind === 'door' ? 'Door' : 'Drop'} #${hit.id} · ${hit.detail}` : `${hit.name} · Spawn #${hit.id} · ${losLabel(hit)}`) : '';
+    if (canvas.style.cursor !== cursor) canvas.style.cursor = cursor;
+    if (canvas.title !== title) canvas.title = title;
+    return hit;
+}
+function hoverKey(hit) { return hit?.kind ? `${hit.kind}:${hit.id}` : ''; }
 for (const id of ['minimap', 'worldmap']) {
-    const legend = $(id + 'bots').parentElement.querySelector('.legend');
+    const canvas = $(id), legend = $(id + 'bots').parentElement.querySelector('.legend');
     if (legend) {
+        for (const [glyph, color, name] of [['[ ]', mapObjectColors.open, 'Open door'], ['[×]', mapObjectColors.closed, 'Closed door'], ['◆', mapObjectColors.ground, 'Ground spawn']]) {
+            const entry = document.createElement('span'), icon = document.createElement('b');
+            icon.textContent = glyph; icon.style.color = color; icon.style.fontFamily = 'monospace';
+            entry.append(icon, document.createTextNode(' ' + name)); legend.append(entry);
+        }
         const hint = document.createElement('span');
         hint.textContent = 'Bright: in LoS · muted hue: blocked · slate: unknown';
         legend.append(hint);
     }
-    $(id).onclick = e => {
+    const redrawHover = () => {
+        if (!state) return;
+        // Do not touch selection or camera state when changing hover.
+        if (!window.EQMap3D?.redraw(id)) draw(id, id === 'worldmap' ? Number($('radius').value) : fitBotRadius(200));
+    };
+    canvas.onclick = e => {
+        mapPointer.set(id, { clientX: e.clientX, clientY: e.clientY });
         const hit = mapHit(id, e);
         if (hit?.kind === 'ground') inspectGround(hit.id);
         else if (!hit?.kind) inspectMob(hit?.id ?? null, false);
     };
-    $(id).onmousemove = e => {
-        const hit = mapHit(id, e);
-        $(id).style.cursor = hit ? 'pointer' : 'default';
-        $(id).title = hit ? (hit.kind ? `${hit.name} · ${hit.kind === 'door' ? 'Door' : 'Drop'} #${hit.id} · ${hit.detail}` : `${hit.name} · Spawn #${hit.id} · ${losLabel(hit)}`) : '';
+    canvas.onmousemove = e => {
+        const previous = hoverKey(mapHit(id, mapPointer.get(id)));
+        mapPointer.set(id, { clientX: e.clientX, clientY: e.clientY });
+        if (previous !== hoverKey(refreshMapHover(id))) redrawHover();
     };
-    $(id).onmouseleave = () => { $(id).title = ''; $(id).style.cursor = 'default'; };
+    canvas.onmouseleave = () => {
+        const previous = hoverKey(mapHit(id, mapPointer.get(id)));
+        mapPointer.delete(id); refreshMapHover(id);
+        if (previous) redrawHover();
+    };
 }
 $('radius').oninput = () => { window.EQMap3D?.resetZoom('worldmap'); text('radiuslabel', $('radius').value + ' yd'); if (state)
     draw('worldmap', Number($('radius').value)); };
