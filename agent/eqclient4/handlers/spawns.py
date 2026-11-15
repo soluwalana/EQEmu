@@ -19,7 +19,12 @@ class SpawnsHandler(Handler):
                 potential_spawns = self.world.ground_book.spawns_at_coordinates(
                     payload.x, payload.y, payload.z
                 )
+                if not potential_spawns:
+                    log.error(f"No potential spawns found at {payload.x}, {payload.y}, {payload.z}")
+                    return
+
                 for spawn in potential_spawns:
+                    log.info(f"Adding spawn {spawn} at {payload.x}, {payload.y}, {payload.z}")
                     self.world.ground_spawns.setdefault(spawn.item_id, []).append(
                         LiveGroundSpawn(
                             **asdict(spawn),

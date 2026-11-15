@@ -195,16 +195,16 @@ def _take_ground(
         return
 
     spawn = GroundSpawn(
-        zone_id,
-        (min_x + max_x) / 2.0,
-        (min_y + max_y) / 2.0,
-        min_x,
-        min_y,
-        max_x,
-        max_y,
-        max_z,
-        item_id,
-        respawn_time,
+        zone_id=zone_id,
+        x=(min_x + max_x) / 2.0,
+        y=(min_y + max_y) / 2.0,
+        min_x=min_x,
+        min_y=min_y,
+        max_x=max_x,
+        max_y=max_y,
+        max_z=max_z,
+        item_id=item_id,
+        respawn_time=respawn_time,
     )
     spots.setdefault(item_id, []).append(spawn)
     zone_spawns.setdefault(zone_id, []).append(spawn)
