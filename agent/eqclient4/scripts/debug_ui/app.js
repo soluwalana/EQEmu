@@ -337,8 +337,7 @@ for (const id of ['minimap', 'worldmap']) {
     }
     $(id).onclick = e => {
         const hit = mapHit(id, e);
-        if (hit)
-            inspectMob(hit.id, false);
+        inspectMob(hit?.id ?? null, false);
     };
     $(id).onmousemove = e => {
         const hit = mapHit(id, e);
