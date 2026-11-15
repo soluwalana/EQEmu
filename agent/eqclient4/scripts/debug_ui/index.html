@@ -249,13 +249,14 @@
         <input id="wireexclude" placeholder="Type opcode…" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="wireexcludesuggestions"/>
         <div class="opcode-suggestions" id="wireexcludesuggestions" role="listbox" aria-label="Exclude opcode suggestions" hidden></div>
        </div>
-       <div class="packet-rule-note"><small>Tab/Enter to add · × to remove · exclusions win · empty include = all</small><button id="wireclearpacketrules" type="button">Clear lists</button></div>
+       <div class="packet-rule-note"><small>Tab/Enter to add · × to remove · prefix* supported · exclusions win · empty include = all</small><button id="wireclearpacketrules" type="button">Clear lists</button></div>
       </div>
       <div class="packet-history-controls">
        <button id="wirehistoryload" type="button">Load history</button>
        <button id="wirehistoryolder" type="button" disabled>Load older</button>
+       <button id="wirehistorynewer" type="button" disabled>Load newer</button>
        <button id="wirehistorylive" type="button" disabled>Return to live</button>
-       <small id="wirehistorystatus">Live · history searches the capture database.</small>
+       <small id="wirehistorystatus">Live session · starting capture cursor…</small>
       </div>
       <div class="log" id="wirelog">
       </div>
@@ -290,13 +291,14 @@
         <input id="combatexclude" placeholder="Type opcode…" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="combatexcludesuggestions"/>
         <div class="opcode-suggestions" id="combatexcludesuggestions" role="listbox" aria-label="Exclude opcode suggestions" hidden></div>
        </div>
-       <div class="packet-rule-note"><small>Tab/Enter to add · × to remove · exclusions win · empty include = all</small><button id="combatclearpacketrules" type="button">Clear lists</button></div>
+       <div class="packet-rule-note"><small>Tab/Enter to add · × to remove · prefix* supported · exclusions win · empty include = all</small><button id="combatclearpacketrules" type="button">Clear lists</button></div>
       </div>
       <div class="packet-history-controls">
        <button id="combathistoryload" type="button">Load history</button>
        <button id="combathistoryolder" type="button" disabled>Load older</button>
+       <button id="combathistorynewer" type="button" disabled>Load newer</button>
        <button id="combathistorylive" type="button" disabled>Return to live</button>
-       <small id="combathistorystatus">Live · history searches the capture database.</small>
+       <small id="combathistorystatus">Live session · starting capture cursor…</small>
       </div>
       <div class="log" id="combatlog">
       </div>

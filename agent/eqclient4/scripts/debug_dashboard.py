@@ -438,11 +438,22 @@ def install_dashboard(
         if direction != "all":
             clause += " AND Direction = ?"
             args.append(direction)
-        for terms, operator in ((include, "IN"), (exclude, "NOT IN")):
+        # Exact opcodes and terminal-* prefixes, case-insensitive. Bind every
+        # value; underscores in opcode names are literal, not LIKE wildcards.
+        for terms, negate in ((include, False), (exclude, True)):
             keys = sorted({term.strip().lower() for term in terms if term.strip()})
-            if keys:
-                clause += " AND lower(Op_Code) " + operator + " (" + ",".join("?" for _ in keys) + ")"
-                args.extend(keys)
+            exact = [key for key in keys if not key.endswith("*")]
+            predicates = []
+            if exact:
+                predicates.append("lower(Op_Code) IN (" + ",".join("?" for _ in exact) + ")")
+                args.extend(exact)
+            for key in keys:
+                if key.endswith("*"):
+                    prefix = key[:-1]
+                    predicates.append("substr(lower(Op_Code), 1, ?) = ?")
+                    args.extend((len(prefix), prefix))
+            if predicates:
+                clause += " AND " + ("NOT " if negate else "") + "(" + " OR ".join(predicates) + ")"
         return clause, args
 
     def packet_row(r, stream: str, *, decode_all: bool = False) -> dict:
@@ -466,6 +477,13 @@ def install_dashboard(
             "payload": payload,
         }
 
+    @app.get("/dashboard/packets/cursor")
+    def packet_cursor():
+        # A shared high-water mark for both streams, captured at page startup.
+        # Filter changes replay from this mark, not from the latest tail.
+        high = query("SELECT COALESCE(MAX(rowid), 0) AS high FROM packets", [])[0]["high"]
+        return {"cursor": high}
+
     @app.get("/dashboard/packets")
     def packets(
         after: int = Query(-1, ge=-1),
@@ -478,8 +496,10 @@ def install_dashboard(
         # Filter before LIMIT so excluded floods never consume the live buffer.
         clause, args = packet_clause(stream, direction, include, exclude)
         high = query("SELECT COALESCE(MAX(rowid), 0) AS high FROM packets", [])[0]["high"]
-        if after > high:
-            after = -1
+        reset = after > high
+        if reset:
+            # The capture was truncated/replaced. Start the new capture at 0.
+            after = 0
         if after == -1:
             rows = query(
                 "SELECT rowid AS id, TimeSeen, Op_Code, Direction, Bytes FROM packets WHERE "
@@ -501,6 +521,7 @@ def install_dashboard(
             "packets": [packet_row(r, stream) for r in rows[:limit]],
             "next": cursor,
             "has_more": len(rows) > limit,
+            "reset": reset,
         }
 
     @app.get("/dashboard/packets/history")
@@ -548,6 +569,7 @@ def install_dashboard(
             "packets": list(reversed(result)),
             "next_before": cursor,
             "has_more": scanned < len(rows),
+            "scanned": scanned,
         }
 
     @app.get("/dashboard/packet/{packet_id}")

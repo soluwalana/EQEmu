@@ -1003,11 +1003,30 @@ function packetSummary(p) { const v = p.payload; if (!v)
     return `${entityName(v.entity_id)} · ${v.entries?.length ?? 0} buff icons`; if (p.opcode === 'OP_BeginCast')
     return `${entityName(v.caster_id ?? v.caster)} · casting spell #${v.spell_id}`; return v.message ?? v.text ?? JSON.stringify(v); }
 function packetLine(p, stream) { let summary = packetSummary(p); const selected = inspectedStream === stream && String(p.id) === selectedPacketId; return `<button class="packet${selected ? ' selected-packet' : ''}" aria-pressed="${selected}" data-packet="${p.id}" title="${esc(summary)}"><span class="stamp">${esc(p.timestamp.slice(11, 23))}</span> <span class="${p.direction}">${p.direction === 'recv' ? '↓' : '↑'}</span> ${esc(p.opcode)} <span class="stamp">${p.size} B</span> ${esc(summary)}</button>`; }
-// Per-stream exact opcode rules. Draft text is not a filter until committed.
+// Per-stream opcode rules (exact or terminal-* prefix). Draft text is not a filter until committed.
 function opcodeTerms(value) {
     return [...new Map(value.split(/[\s,;]+/).filter(Boolean).map(s => [s.toLowerCase(), s])).values()];
 }
-const packetRuleLists = Object.fromEntries(["wire", "combat"].map(stream => [stream, { include: new Map(), exclude: new Map() }]));
+const DEFAULT_PACKET_EXCLUDES = {
+    wire: ['OP_ClientUpdate', 'OP_PlayerState*', 'OP_FloatListThing'],
+    combat: ['OP_MobManaUpdate', 'OP_MobEnduranceUpdate'],
+};
+const packetRuleLists = Object.fromEntries(['wire', 'combat'].map(stream => [stream, {
+    include: new Map(),
+    exclude: new Map(DEFAULT_PACKET_EXCLUDES[stream].map(op => [op.toLowerCase(), op])),
+}]));
+const PACKET_PAGE_SIZE = 500;
+let packetSessionStart = null, packetSessionRequest = null;
+function ensurePacketSession() {
+    if (packetSessionStart !== null) return Promise.resolve(packetSessionStart);
+    if (!packetSessionRequest) {
+        packetSessionRequest = api('/dashboard/packets/cursor').then(r => {
+            packetSessionStart = r.cursor;
+            return packetSessionStart;
+        }).finally(() => { packetSessionRequest = null; });
+    }
+    return packetSessionRequest;
+}
 const observedOpcodes = new Map();
 function rememberOpcode(opcode) {
     if (typeof opcode === 'string' && opcode) observedOpcodes.set(opcode.toLowerCase(), opcode);
@@ -1024,15 +1043,22 @@ function packetRules(stream) {
     const lists = packetRuleLists[stream];
     return { include: new Set(lists.include.keys()), exclude: new Set(lists.exclude.keys()) };
 }
+function opcodeMatches(key, rule) {
+    return rule.endsWith('*') ? key.startsWith(rule.slice(0, -1)) : key === rule;
+}
 function opcodeAllowed(opcode, rules) {
     const key = String(opcode).toLowerCase();
-    return !rules.exclude.has(key) && (!rules.include.size || rules.include.has(key));
+    return ![...rules.exclude].some(rule => opcodeMatches(key, rule)) &&
+        (!rules.include.size || [...rules.include].some(rule => opcodeMatches(key, rule)));
 }
 function refreshPacketFilters(stream) {
     const l = logs[stream];
-    // Invalidate in-flight live queries and restart at the matching tail.
+    // Replay the whole window session with the new rules. Do not discard the
+    // session anchor, even when an exclusion is removed after hours of use.
     l.generation = (l.generation ?? 0) + 1;
     l.after = -1;
+    l.liveBefore = null;
+    l.searchCache = null;
     if (!l.paused) l.rows = [];
     l.resetRows = true;
     l.more = false;
@@ -1052,7 +1078,14 @@ function putPacketRule(stream, kind, opcode, move = false) {
     const known = knownPacketOpcodes();
     packetRuleLists[stream][kind].set(key, known.get(key) ?? value);
     // Explicit inspector actions move the opcode rather than leaving a conflict.
-    if (move) packetRuleLists[stream][kind === 'include' ? 'exclude' : 'include'].delete(key);
+    if (move) {
+        const other = packetRuleLists[stream][kind === 'include' ? 'exclude' : 'include'];
+        other.delete(key);
+        // An explicit include must also remove an exclusion prefix covering it.
+        // Excluding one opcode does not erase a broader inclusion prefix.
+        if (kind === 'include') for (const rule of other.keys())
+            if (opcodeMatches(key, rule)) other.delete(rule);
+    }
 }
 function createPacketRuleEditor(stream, kind) {
     const input = $(stream + kind), chips = $(stream + kind + 'chips');
@@ -1153,8 +1186,10 @@ function createPacketRuleEditor(stream, kind) {
 }
 for (const stream of ['wire', 'combat']) {
     packetRuleEditors[stream] = {};
-    for (const kind of ['include', 'exclude'])
+    for (const kind of ['include', 'exclude']) {
         packetRuleEditors[stream][kind] = createPacketRuleEditor(stream, kind);
+        packetRuleEditors[stream][kind].renderChips();
+    }
     $(stream + 'clearpacketrules').onclick = () => {
         for (const kind of ['include', 'exclude']) {
             packetRuleLists[stream][kind].clear();
@@ -1178,42 +1213,110 @@ function packetQuery(stream) {
         for (const opcode of packetRuleLists[stream][kind].values()) params.append(kind, opcode);
     return params;
 }
+// Keep every matching session packet. Only the visible page is rendered as
+// DOM; paging backwards never discards rows or changes the live cursor.
+function matchingLiveRows(stream) {
+    const l = logs[stream], q = $(stream + 'filter').value.trim().toLowerCase();
+    if (!q && !l.resetRows) return l.rows; // already filtered in SQL
+    const dir = $(stream === 'wire' ? 'direction' : 'combatdirection').value;
+    const key = JSON.stringify([q, dir, l.generation ?? 0, !!l.resetRows]);
+    let cache = l.searchCache;
+    if (!cache || cache.source !== l.rows || cache.key !== key) {
+        cache = l.searchCache = { source: l.rows, key, scanned: 0, rows: [] };
+    }
+    const rules = packetRules(stream);
+    // A running text search examines each newly received row only once.
+    for (; cache.scanned < l.rows.length; cache.scanned++) {
+        const p = l.rows[cache.scanned];
+        if (opcodeAllowed(p.opcode, rules) && (dir === 'all' || p.direction === dir) &&
+            (!q || (p.opcode + ' ' + packetSummary(p) + ' ' + JSON.stringify(p.payload ?? '')).toLowerCase().includes(q))) {
+            cache.rows.push(p);
+        }
+    }
+    return cache.rows;
+}
+function livePage(l, rows) {
+    let end = rows.length;
+    if (l.liveBefore != null) {
+        // Row IDs are ordered, so new packets do not move an older page.
+        let lo = 0, hi = rows.length;
+        while (lo < hi) {
+            const mid = Math.floor((lo + hi) / 2);
+            if (rows[mid].id < l.liveBefore) lo = mid + 1;
+            else hi = mid;
+        }
+        end = lo;
+    }
+    return { start: Math.max(0, end - PACKET_PAGE_SIZE), end };
+}
+function showHistoryPage(h, index) {
+    h.index = index;
+    const page = h.pages[index];
+    h.rows = page.rows;
+    h.before = page.before;
+    h.more = page.more;
+}
 function renderLog(stream) {
     const l = logs[stream], box = $(stream + 'log'), h = l.history;
-    const q = $(stream + 'filter').value.trim().toLowerCase();
-    const dir = $(stream === 'wire' ? 'direction' : 'combatdirection').value;
-    const rules = packetRules(stream);
-    // History is already filtered before pagination on the server.
-    const rows = h ? h.rows : l.rows.filter(p => opcodeAllowed(p.opcode, rules) &&
-        (dir === 'all' || p.direction === dir) && (!q || (p.opcode + ' ' + packetSummary(p) + ' ' + JSON.stringify(p.payload ?? '')).toLowerCase().includes(q)));
+    const rows = h ? h.rows : matchingLiveRows(stream);
+    const { start, end } = h ? { start: 0, end: rows.length } : livePage(l, rows);
     const tail = box.scrollHeight - box.scrollTop - box.clientHeight < 40;
-    html(stream + 'log', rows.slice(-500).map(p => packetLine(p, stream)).join(''));
-    if (!h && tail && tab === 'logs') box.scrollTop = box.scrollHeight;
-    text(stream + 'count', h ? `${rows.length} historical${h.loading ? ' · loading…' : ''}` : `${rows.length} / ${l.rows.length} buffered${l.paused ? ' · paused' : ''}${l.more ? ' · catching up' : ''}`);
-    $(stream + 'historyolder').disabled = !h || h.loading || !h.more;
-    $(stream + 'historylive').disabled = !h;
+    html(stream + 'log', rows.slice(start, end).map(p => packetLine(p, stream)).join(''));
+    if (!h && l.liveBefore == null && tail && tab === 'logs') box.scrollTop = box.scrollHeight;
+    text(stream + 'count', h ? `${rows.length} historical${h.loading ? ' · loading…' : ''}` : `${rows.length.toLocaleString()} / ${l.rows.length.toLocaleString()} session${l.paused ? ' · paused' : ''}${l.more ? ' · catching up' : ''}`);
+    $(stream + 'historyolder').disabled = h ? h.loading || (!h.more && h.index + 1 >= h.pages.length) : start === 0;
+    $(stream + 'historynewer').disabled = h ? h.loading || h.index <= 0 : l.liveBefore == null;
+    $(stream + 'historylive').disabled = !h && l.liveBefore == null;
     $(stream + 'historyload').disabled = !!h?.loading;
-    text(stream + 'historystatus', h ? (h.error || (h.loading ? 'Searching capture…' : h.more ? 'Older matching records may be available.' : 'Beginning of matching history.')) : 'Live · history searches the capture database.');
+    const sessionRange = rows.length ? `Showing ${start + 1}–${end} of ${rows.length.toLocaleString()} matching session packets.` : 'No matching session packets yet.';
+    const historyStatus = h ? (h.error || (h.loading ? `Searching capture… ${h.scanned.toLocaleString()} candidates scanned` : h.more ? `History page ${h.index + 1} · older matches may be available.` : `History page ${h.index + 1} · beginning of matching history.`)) : null;
+    text(stream + 'historystatus', historyStatus ?? `${sessionRange} ${l.liveBefore == null ? 'Live' : 'Older session page'} · Load history searches the entire capture.`);
 }
 async function loadHistory(stream, reset = false) {
     const l = logs[stream];
-    if (!reset && (!l.history || l.history.loading || !l.history.more)) return;
-    const h = reset ? { rows: [], before: null, more: true, loading: false, error: '' } : l.history;
+    if (!reset && (!l.history || l.history.loading)) return;
+    const h = reset ? { rows: [], pages: [], index: -1, before: null, more: true, loading: false, error: '', scanned: 0 } : l.history;
     l.history = h;
+    if (!reset && h.index + 1 < h.pages.length) {
+        showHistoryPage(h, h.index + 1);
+        renderLog(stream);
+        $(stream + 'log').scrollTop = 0;
+        return;
+    }
+    if (!h.more) return;
     h.loading = true;
     h.error = '';
+    h.scanned = 0;
     renderLog(stream);
     const params = packetQuery(stream);
-    params.set('limit', '250');
     params.set('q', $(stream + 'filter').value);
-    if (h.before !== null) params.set('before', String(h.before));
+    let before = h.before, more = true;
+    const found = [];
     try {
-        const r = await api('/dashboard/packets/history?' + params);
-        if (l.history !== h) return;
-        h.rows = r.packets;
-        h.before = r.next_before;
-        h.more = r.has_more;
-        for (const packet of r.packets) rememberOpcode(packet.opcode);
+        // A bounded server query may find no matches in a noisy capture.
+        // Continue automatically until the page is full or the capture ends.
+        while (more && found.length < 250) {
+            params.set('limit', String(250 - found.length));
+            if (before !== null) params.set('before', String(before));
+            const r = await api('/dashboard/packets/history?' + params);
+            if (l.history !== h) return; // canceled or superseded filter
+            if (r.has_more && (r.next_before <= 0 || (before !== null && r.next_before >= before)))
+                throw Error('History cursor did not advance');
+            before = r.next_before;
+            more = r.has_more;
+            h.scanned += r.scanned ?? r.packets.length;
+            found.unshift(...r.packets);
+            for (const packet of r.packets) rememberOpcode(packet.opcode);
+            text(stream + 'historystatus', `Searching capture… ${h.scanned.toLocaleString()} candidates scanned`);
+        }
+        if (found.length || !h.pages.length) {
+            h.pages.push({ rows: found, before, more });
+            showHistoryPage(h, h.pages.length - 1);
+        } else {
+            // No older matches: retain the last useful page.
+            h.more = false;
+            h.pages[h.index].more = false;
+        }
     } catch (e) {
         if (l.history !== h) return;
         h.error = e.message;
@@ -1231,18 +1334,26 @@ async function pollLog(stream) {
     l.busy = true;
     const generation = l.generation ?? 0;
     try {
+        const sessionStart = await ensurePacketSession();
+        if (generation !== (l.generation ?? 0) || l.paused) return;
         const params = packetQuery(stream);
-        params.set('after', String(l.after));
-        params.set('limit', '250');
+        params.set('after', String(l.after === -1 ? sessionStart : l.after));
+        params.set('limit', '1000');
         const r = await api('/dashboard/packets?' + params);
         if (generation !== (l.generation ?? 0)) return;
+        if (r.reset) {
+            // A replaced capture invalidates old row IDs and the session anchor.
+            packetSessionStart = 0;
+            l.liveBefore = null;
+            l.rows = [];
+            l.searchCache = null;
+        }
         if (l.resetRows || l.after === -1) { l.rows = []; l.resetRows = false; }
         l.after = r.next;
         l.more = r.has_more;
         if (r.packets.length) {
             for (const packet of r.packets) rememberOpcode(packet.opcode);
             l.rows.push(...r.packets);
-            if (l.rows.length > 1500) l.rows.splice(0, l.rows.length - 1500);
         }
         if (tab === 'logs' && !l.history) renderLog(stream);
     } catch (e) {
@@ -1261,9 +1372,11 @@ for (const stream of ['wire', 'combat']) {
     let searchTimer;
     $(stream + 'filter').oninput = () => {
         clearTimeout(searchTimer);
+        l.liveBefore = null;
+        l.searchCache = null;
         if (l.history) {
             // Discard the old query immediately so its response cannot replace the new one.
-            l.history = { rows: [], before: null, more: false, loading: true, error: '' };
+            l.history = { rows: [], pages: [], index: -1, before: null, more: false, loading: true, error: '', scanned: 0 };
             renderLog(stream);
             const pending = l.history;
             searchTimer = setTimeout(() => { if (l.history === pending) loadHistory(stream, true); }, 250);
@@ -1271,8 +1384,31 @@ for (const stream of ['wire', 'combat']) {
     };
     $(stream === 'wire' ? 'direction' : 'combatdirection').onchange = () => refreshPacketFilters(stream);
     $(stream + 'historyload').onclick = () => loadHistory(stream, true);
-    $(stream + 'historyolder').onclick = () => loadHistory(stream);
-    $(stream + 'historylive').onclick = () => { l.history = null; renderLog(stream); };
+    $(stream + 'historyolder').onclick = () => {
+        if (l.history) { loadHistory(stream); return; }
+        const rows = matchingLiveRows(stream), { start } = livePage(l, rows);
+        if (start > 0) l.liveBefore = rows[start].id;
+        renderLog(stream);
+        $(stream + 'log').scrollTop = 0;
+    };
+    $(stream + 'historynewer').onclick = () => {
+        if (l.history) {
+            const h = l.history;
+            if (h.index > 0 && !h.loading) showHistoryPage(h, h.index - 1);
+        } else {
+            const rows = matchingLiveRows(stream), { end } = livePage(l, rows);
+            const next = Math.min(end + PACKET_PAGE_SIZE, rows.length);
+            l.liveBefore = next < rows.length ? rows[next].id : null;
+        }
+        renderLog(stream);
+        $(stream + 'log').scrollTop = 0;
+    };
+    $(stream + 'historylive').onclick = () => {
+        l.history = null;
+        l.liveBefore = null;
+        renderLog(stream);
+        $(stream + 'log').scrollTop = $(stream + 'log').scrollHeight;
+    };
     $(stream + 'log').onclick = async e => {
         const button = e.target.closest('[data-packet]');
         if (!button) return;
@@ -1308,5 +1444,7 @@ catch (e) {
     status('Disconnected / busy', false);
     text('metrics', e.message);
 } pollLog('wire'); pollLog('combat'); setTimeout(tick, Math.max(0, 200 - (performance.now() - start))); }
+// Anchor packet retention when the page opens, before the first state poll.
+ensurePacketSession().catch(() => {}); // polling retries transient failures
 loadActions();
 tick();
