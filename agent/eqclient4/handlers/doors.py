@@ -19,9 +19,7 @@ class DoorsHandler(Handler):
         "OP_SpawnDoor",
         "OP_DoorSpawn",
         "OP_Doors",
-        "OP_GroundSpawn",
         "OP_MoveDoor",
-        "OP_ClickObject",
     )
 
     def on(self, opcode: str, payload: EQStruct) -> None:
