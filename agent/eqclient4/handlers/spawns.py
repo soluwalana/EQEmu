@@ -24,7 +24,7 @@ class SpawnsHandler(Handler):
                     return
 
                 for spawn in potential_spawns:
-                    log.info(f"Adding spawn {spawn} at {payload.x}, {payload.y}, {payload.z}")
+                    log.info(f"Adding spawn {spawn.item_id} at {payload.x}, {payload.y}, {payload.z}")
                     self.world.ground_spawns.setdefault(spawn.item_id, []).append(
                         LiveGroundSpawn(
                             **asdict(spawn),

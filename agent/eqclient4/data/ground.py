@@ -113,7 +113,7 @@ class GroundSpawnBook:
                 if (
                     spawn.min_x <= x <= spawn.max_x
                     and spawn.min_y <= y <= spawn.max_y
-                    and spawn.max_z == z
+                    and spawn.max_z >= z
                 ):
                     possible.append(spawn)
         return possible
