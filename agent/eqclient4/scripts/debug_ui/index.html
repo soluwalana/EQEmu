@@ -69,7 +69,7 @@
      <div class="map-surface">
       <canvas height="800" id="worldmap" width="1600"></canvas>
      </div>
-     <aside class="workspace-sidebar workspace-left" aria-label="Character and inventory">
+     <aside class="workspace-sidebar workspace-left" aria-label="Character, inventory and tasks">
       <details class="overlay-panel" id="characterpanel" open>
        <summary>Character <span id="charlevel"></span></summary>
        <div class="overlay-body">
@@ -119,6 +119,13 @@
          <div class="slots" id="bank"></div>
          <p class="muted">Slots show the latest observed inventory. Bank contents may be unavailable until opened in game.</p>
         </details>
+       </div>
+      </details>
+      <details class="overlay-panel" id="taskpanel">
+       <summary>TaskBook <span id="taskcount"></span></summary>
+       <div class="overlay-body">
+        <div id="tasklist" class="task-list"></div>
+        <p id="taskempty" class="muted">No tasks observed.</p>
        </div>
       </details>
      </aside>

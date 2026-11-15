@@ -314,6 +314,16 @@ def install_dashboard(
                         "gear": gear,
                         "worn": list(_WORN),
                     },
+                    "tasks": [
+                        {
+                            "task": task,
+                            "activities": sorted(
+                                w.tasks.activities.get(task.task_id, {}).values(),
+                                key=lambda activity: activity.activity_id,
+                            ),
+                        }
+                        for task in w.tasks.sequenced_tasks()
+                    ],
                     "bots": bots,
                     "mobs": mobs,
                     "doors": [

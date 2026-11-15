@@ -38,6 +38,7 @@ RAID_CLEAR_RE = re.compile(
     r"Bot raid roster will not form again until you .* The raid is unchanged\."
 )
 RAID_CLEAR_FAILURE_RE = re.compile(r"Could not update the bot raid roster\.")
+RAID_CAMP_RE = re.compile(r"Bots camped\. Their raid seats are kept\.")
 
 BOT_COUNT_RE = re.compile(r"(\d+) Of \d+ bots? shown, \d+ (?:are|is) owned by you\.")
 NO_BOTS_RE = re.compile(r"You have no bots\.")
@@ -232,6 +233,29 @@ class FormParty(Action):
                 self.check_failure(RAID_CLEAR_FAILURE_RE)
                 return
             self.unwait("raid-clear")
+            # Camp before disbanding: disband removes seats, not live bots.
+            self.messages.clear()
+            self._reply_started = time.monotonic()
+            self.wait("raid-camp")
+            self.send_channel_message("^raidform camp")
+            return
+
+        elif self.waiting_for("raid-camp"):
+            if not self.re_has_response(RAID_CAMP_RE):
+                self.check_failure(RAID_FORMATION_FAILURE_RE)
+                return
+            self.unwait("raid-camp")
+            self.wait("raid-camp-despawn")
+            self._reply_started = time.monotonic()
+            return
+
+        elif self.waiting_for("raid-camp-despawn"):
+            # The acknowledgement can precede OP_DeleteSpawn. Do not reuse
+            # stale spawn IDs when the existing group formation runs.
+            if any(bot.spawned for bot in self._world.bot_roster.all_bots()):
+                self.check_failure(RAID_FORMATION_FAILURE_RE)
+                return
+            self.unwait("raid-camp-despawn")
 
         elif self.waiting_for("party-disband"):
             if mode is not None:

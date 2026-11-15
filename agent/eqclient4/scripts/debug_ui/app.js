@@ -62,7 +62,7 @@ $('targetdetails').onclick = () => setTargetDetails($('targetpanel').hidden);
 $('closetargetdetails').onclick = () => setTargetDetails(false);
 // Native disclosures retain their state across polls and view changes.
 // Opening a panel immediately refreshes it from the latest snapshot.
-for (const id of ['characterpanel', 'inventory', 'currentpanel', 'actionpanel', 'botpanel', 'nearbypanel', 'zoneentities']) {
+for (const id of ['characterpanel', 'inventory', 'taskpanel', 'currentpanel', 'actionpanel', 'botpanel', 'nearbypanel', 'zoneentities']) {
     $(id).addEventListener('toggle', () => {
         if (!$(id).open || tab !== 'world') return;
         if (id === 'actionpanel' && !actionCatalog.size) loadActions();
@@ -337,6 +337,51 @@ $('worlditemcards').onclick = e => {
     itemDefinitions.delete(Number(button.dataset.retryItem));
     renderCurrentTarget();
 };
+// TaskBook mirrors the observed task and activity records, never the action queue.
+const taskCards = new Map();
+const taskKinds = { 1: 'Deliver', 2: 'Kill', 3: 'Loot', 4: 'Speak with', 5: 'Explore', 6: 'Tradeskill', 7: 'Fish', 8: 'Forage', 9: 'Cast on', 10: 'Use skill on', 11: 'Touch', 13: 'Collect', 100: 'Give cash' };
+const taskTypes = ['Task', 'Shared task', 'Quest', 'Event'];
+function taskActivityMarkup(a) {
+    const done = !a.locked && a.goal > 0 && a.done >= a.goal;
+    const status = a.locked ? 'Locked' : done ? 'Complete' : 'In progress';
+    const title = a.locked ? `Activity ${a.activity_id + 1}` : a.description || a.target || taskKinds[a.kind] || `Activity ${a.activity_id + 1}`;
+    const meta = [!a.locked && taskKinds[a.kind], a.optional ? 'Optional' : '', !a.locked && a.target ? `Target: ${a.target}` : '', !a.locked && a.zone_id > 0 ? `Zone #${a.zone_id}` : ''].filter(Boolean);
+    const progress = !a.locked && a.goal > 0 ? bar('Progress', a.done, a.goal, '') : '';
+    return `<div class="task-activity${done ? ' task-complete' : ''}"><div class="task-activity-heading"><b>${esc(title)}</b><span class="task-state">${esc(status)}</span></div>${meta.length ? `<div class="muted task-meta">${esc(meta.join(' · '))}</div>` : ''}${progress}</div>`;
+}
+function renderTaskBook() {
+    const tasks = state.tasks ?? [];
+    text('taskcount', `${tasks.length} ${tasks.length === 1 ? 'task' : 'tasks'}`);
+    if (!$('taskpanel').open) return;
+    const list = $('tasklist'), ids = new Set(tasks.map(({task}) => task.task_id));
+    for (const [id, card] of taskCards) {
+        if (!ids.has(id)) { card.node.remove(); taskCards.delete(id); }
+    }
+    $('taskempty').hidden = tasks.length > 0;
+    tasks.forEach(({task, activities}, index) => {
+        let card = taskCards.get(task.task_id);
+        if (!card) {
+            const node = document.createElement('details');
+            node.className = 'task-card';
+            node.open = true;
+            const summary = document.createElement('summary'), body = document.createElement('div');
+            body.className = 'task-card-body';
+            node.append(summary, body);
+            card = {node, summary, body, markup: null};
+            taskCards.set(task.task_id, card);
+        }
+        const complete = activities.filter(a => !a.locked && a.goal > 0 && a.done >= a.goal).length;
+        const summary = `${task.title || 'Task #' + task.task_id} · ${complete}/${activities.length} objectives`;
+        if (card.summary.textContent !== summary) card.summary.textContent = summary;
+        const meta = [taskTypes[task.task_type] ?? `Type ${task.task_type}`, `#${task.task_id}`];
+        if (task.duration > 0) meta.push(`Duration: ${task.duration}s`);
+        const rewards = [task.reward, task.coin_reward > 0 ? `${task.coin_reward} copper` : '', task.xp_reward ? 'Experience' : '', task.faction_reward ? 'Faction' : '', task.points > 0 ? `Points: ${task.points}` : ''].filter(Boolean);
+        const markup = `<p class="muted task-meta">${esc(meta.join(' · '))}</p><p class="task-description">${esc(task.description || 'No description received.')}</p>${rewards.length ? `<p class="task-description"><b>Rewards:</b> ${esc(rewards.join(' · '))}</p>` : ''}<div class="task-activities">${activities.map(taskActivityMarkup).join('') || '<p class="muted">No activities observed.</p>'}</div>`;
+        // Keep each disclosure mounted and leave unchanged content alone on polls.
+        if (card.markup !== markup) { card.body.innerHTML = markup; card.markup = markup; }
+        if (list.children[index] !== card.node) list.insertBefore(card.node, list.children[index] ?? null);
+    });
+}
 function render() {
     if (!state) return;
     const s = state, c = s.character;
@@ -365,6 +410,7 @@ function render() {
     renderBots();
     renderNearby();
     if ($('inventory').open) renderInventory();
+    renderTaskBook();
     if ($('nearbypanel').open && $('zoneentities').open) renderMobs();
     text('worldzone', `${s.zone} · instance ${s.instance}`);
     renderCurrentTarget();
