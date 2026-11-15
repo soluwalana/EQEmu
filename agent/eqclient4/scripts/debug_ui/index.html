@@ -238,10 +238,18 @@
       </div>
       <div class="packet-rules">
        <label for="wireinclude">Include opcodes</label>
-       <input id="wireinclude" placeholder="OP_Damage, OP_SpecialMesg" autocomplete="off" spellcheck="false"/>
+       <div class="opcode-editor" id="wireincludeeditor">
+        <div class="opcode-chip-row" id="wireincludechips"></div>
+        <input id="wireinclude" placeholder="Type opcode…" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="wireincludesuggestions"/>
+        <div class="opcode-suggestions" id="wireincludesuggestions" role="listbox" aria-label="Include opcode suggestions" hidden></div>
+       </div>
        <label for="wireexclude">Exclude opcodes</label>
-       <input id="wireexclude" placeholder="OP_ClientUpdate, OP_MobHealth" autocomplete="off" spellcheck="false"/>
-       <div class="packet-rule-note"><small>Both logs · comma/space-separated · exclusions win · empty include = all</small><button id="clearpacketrules" type="button">Clear lists</button></div>
+       <div class="opcode-editor" id="wireexcludeeditor">
+        <div class="opcode-chip-row" id="wireexcludechips"></div>
+        <input id="wireexclude" placeholder="Type opcode…" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="wireexcludesuggestions"/>
+        <div class="opcode-suggestions" id="wireexcludesuggestions" role="listbox" aria-label="Exclude opcode suggestions" hidden></div>
+       </div>
+       <div class="packet-rule-note"><small>Both logs · Tab/Enter to add · × to remove · exclusions win · empty include = all</small><button id="clearpacketrules" type="button">Clear lists</button></div>
       </div>
       <div class="log" id="wirelog">
       </div>

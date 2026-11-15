@@ -964,13 +964,25 @@ function packetSummary(p) { const v = p.payload; if (!v)
     return `${entityName(v.entity_id)} · ${v.entries?.length ?? 0} buff icons`; if (p.opcode === 'OP_BeginCast')
     return `${entityName(v.caster_id ?? v.caster)} · casting spell #${v.spell_id}`; return v.message ?? v.text ?? JSON.stringify(v); }
 function packetLine(p) { let summary = packetSummary(p); return `<button class="packet" data-packet="${p.id}" title="${esc(summary)}"><span class="stamp">${esc(p.timestamp.slice(11, 23))}</span> <span class="${p.direction}">${p.direction === 'recv' ? '↓' : '↑'}</span> ${esc(p.opcode)} <span class="stamp">${p.size} B</span> ${esc(summary)}</button>`; }
-// Shared exact opcode rules; search text and direction still apply independently.
+// Shared exact opcode rules. Draft text is not a filter until committed.
 function opcodeTerms(value) {
     return [...new Map(value.split(/[\s,;]+/).filter(Boolean).map(s => [s.toLowerCase(), s])).values()];
 }
+const packetRuleLists = { include: new Map(), exclude: new Map() };
+const observedOpcodes = new Map();
+function rememberOpcode(opcode) {
+    if (typeof opcode === 'string' && opcode) observedOpcodes.set(opcode.toLowerCase(), opcode);
+}
+function knownPacketOpcodes() {
+    const known = new Map(observedOpcodes);
+    // The existing /schemas response populates the raw packet sender.
+    for (const option of $('opcode').options) {
+        if (option.value) known.set(option.value.toLowerCase(), option.value);
+    }
+    return known;
+}
 function packetRules() {
-    return { include: new Set(opcodeTerms($('wireinclude').value).map(s => s.toLowerCase())),
-        exclude: new Set(opcodeTerms($('wireexclude').value).map(s => s.toLowerCase())) };
+    return { include: new Set(packetRuleLists.include.keys()), exclude: new Set(packetRuleLists.exclude.keys()) };
 }
 function opcodeAllowed(opcode, rules) {
     const key = String(opcode).toLowerCase();
@@ -980,23 +992,131 @@ function refreshPacketFilters() {
     renderLog('wire');
     renderLog('combat');
 }
+const packetRuleEditors = {};
+function updatePacketRules() {
+    for (const editor of Object.values(packetRuleEditors)) editor.renderChips();
+    refreshPacketFilters();
+}
+function putPacketRule(kind, opcode, move = false) {
+    const value = opcode.trim();
+    if (!value) return;
+    const key = value.toLowerCase();
+    const known = knownPacketOpcodes();
+    packetRuleLists[kind].set(key, known.get(key) ?? value);
+    // Explicit inspector actions move the opcode rather than leaving a conflict.
+    if (move) packetRuleLists[kind === 'include' ? 'exclude' : 'include'].delete(key);
+}
+function createPacketRuleEditor(kind) {
+    const input = $('wire' + kind), chips = $('wire' + kind + 'chips');
+    const suggestions = $('wire' + kind + 'suggestions');
+    const list = packetRuleLists[kind];
+    let matches = [], active = 0;
+    function closeSuggestions() {
+        suggestions.hidden = true;
+        input.setAttribute('aria-expanded', 'false');
+        input.removeAttribute('aria-activedescendant');
+    }
+    function renderSuggestions(reset = true) {
+        const query = input.value.trim().toLowerCase();
+        if (document.activeElement !== input || !query) { matches = []; closeSuggestions(); return; }
+        const bare = query.replace(/^op_/, '');
+        matches = [...knownPacketOpcodes().values()].filter(op => {
+            const key = op.toLowerCase();
+            return !list.has(key) && (key.startsWith(query) || key.replace(/^op_/, '').startsWith(bare));
+        }).sort((a, b) => {
+            const rank = op => op.toLowerCase() === query ? 0 : op.toLowerCase().replace(/^op_/, '') === bare ? 1 : 2;
+            return rank(a) - rank(b) || a.localeCompare(b);
+        }).slice(0, 12);
+        active = reset ? 0 : Math.min(active, Math.max(0, matches.length - 1));
+        if (!matches.length) { closeSuggestions(); return; }
+        suggestions.replaceChildren(...matches.map((op, i) => {
+            const option = element('div', { className: 'opcode-suggestion', id: suggestions.id + '-' + i, textContent: op });
+            option.setAttribute('role', 'option');
+            option.setAttribute('aria-selected', String(i === active));
+            option.dataset.opcode = op;
+            return option;
+        }));
+        suggestions.hidden = false;
+        input.setAttribute('aria-expanded', 'true');
+        input.setAttribute('aria-activedescendant', suggestions.id + '-' + active);
+        suggestions.children[active]?.scrollIntoView({ block: 'nearest' });
+    }
+    function commit(value) {
+        for (const op of opcodeTerms(value)) putPacketRule(kind, op);
+        input.value = '';
+        closeSuggestions();
+        updatePacketRules();
+    }
+    function remove(key, focus = true) {
+        list.delete(key);
+        updatePacketRules();
+        if (focus) input.focus();
+        renderSuggestions();
+    }
+    function renderChips() {
+        chips.replaceChildren(...[...list].map(([key, op]) => {
+            const label = element('span', { textContent: op });
+            const dismiss = element('button', { type: 'button', className: 'opcode-chip-remove', textContent: '×', title: 'Remove ' + op });
+            dismiss.setAttribute('aria-label', 'Remove ' + op + ' from ' + kind);
+            dismiss.onclick = () => remove(key);
+            return element('span', { className: 'opcode-chip' }, [label, dismiss]);
+        }));
+    }
+    input.oninput = () => {
+        // Pasting or typing separators commits completed tokens, leaving the final draft.
+        const parts = input.value.split(/[\s,;]+/);
+        if (parts.length > 1) {
+            const draft = parts.pop();
+            for (const op of opcodeTerms(parts.join(' '))) putPacketRule(kind, op);
+            input.value = draft;
+            updatePacketRules();
+        }
+        renderSuggestions();
+    };
+    input.onfocus = () => renderSuggestions();
+    input.onblur = closeSuggestions;
+    input.onkeydown = e => {
+        if (e.isComposing) return;
+        if (e.key === 'Escape') { closeSuggestions(); return; }
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+            if (suggestions.hidden) { renderSuggestions(); if (suggestions.hidden) return; }
+            else active = (active + (e.key === 'ArrowDown' ? 1 : -1) + matches.length) % matches.length;
+            e.preventDefault(); renderSuggestions(false); return;
+        }
+        if (e.key === 'Backspace' && !input.value && list.size) {
+            e.preventDefault(); remove([...list.keys()].at(-1)); return;
+        }
+        if ((e.key === 'Tab' && !e.shiftKey) || e.key === 'Enter') {
+            const draft = input.value.trim();
+            if (!draft) return;
+            // Tab completes known names; Enter also permits an exact custom opcode.
+            const choice = !suggestions.hidden ? matches[active] : null;
+            if (e.key === 'Tab' && !choice) return;
+            e.preventDefault(); commit(choice ?? draft);
+        }
+    };
+    // Prevent the input from losing focus before a suggestion can be selected.
+    suggestions.onmousedown = e => e.preventDefault();
+    suggestions.onclick = e => {
+        const option = e.target.closest('[data-opcode]');
+        if (option) { commit(option.dataset.opcode); input.focus(); }
+    };
+    return { renderChips, clearDraft() { input.value = ''; closeSuggestions(); } };
+}
+for (const kind of ['include', 'exclude']) packetRuleEditors[kind] = createPacketRuleEditor(kind);
 let inspectedPacket = null, packetSelection = 0;
 function addPacketRule(kind) {
     if (!inspectedPacket?.opcode) return;
-    const opcode = inspectedPacket.opcode, key = opcode.toLowerCase();
-    const input = $(kind === 'include' ? 'wireinclude' : 'wireexclude');
-    const other = $(kind === 'include' ? 'wireexclude' : 'wireinclude');
-    const terms = opcodeTerms(input.value);
-    if (!terms.some(s => s.toLowerCase() === key)) terms.push(opcode);
-    input.value = terms.join(', ');
-    // An explicit inspector action moves this opcode to the chosen list.
-    other.value = opcodeTerms(other.value).filter(s => s.toLowerCase() !== key).join(', ');
-    refreshPacketFilters();
+    rememberOpcode(inspectedPacket.opcode);
+    putPacketRule(kind, inspectedPacket.opcode, true);
+    updatePacketRules();
 }
-$('wireinclude').oninput = $('wireexclude').oninput = refreshPacketFilters;
 $('clearpacketrules').onclick = () => {
-    $('wireinclude').value = $('wireexclude').value = '';
-    refreshPacketFilters();
+    for (const kind of ['include', 'exclude']) {
+        packetRuleLists[kind].clear();
+        packetRuleEditors[kind].clearDraft();
+    }
+    updatePacketRules();
 };
 $('packetinclude').onclick = () => addPacketRule('include');
 $('packetexclude').onclick = () => addPacketRule('exclude');
@@ -1008,6 +1128,7 @@ async function pollLog(kind) { const l = logs[kind]; if (l.busy || l.paused)
     l.after = r.next;
     l.more = r.has_more;
     if (r.packets.length) {
+        for (const packet of r.packets) rememberOpcode(packet.opcode);
         l.rows.push(...r.packets);
         if (l.rows.length > 1500)
             l.rows.splice(0, l.rows.length - 1500);
