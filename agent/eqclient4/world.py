@@ -125,6 +125,9 @@ class World:
 
         #   Active mesh
         self.mesh: ZoneMap | None = None
+        # Spells:WaterMatchRequiredForLoS defaults to true on the zone server.
+        # Set false when the server's ruleset disables it.
+        self.water_match_required_for_los = True
 
         #   Zone in point, considered safe normally
         self.safe: tuple[float, float, float] | None = None
@@ -204,23 +207,27 @@ class World:
         found.sort(key=lambda mob: (mob.distance, mob.id))
         return found
 
-    def line_of_sight(self, target: tuple[float, float, float]) -> bool:
-        """True when the mesh can see mob from our position.
+    def line_of_sight(self, target: Mob | Bot | tuple[float, float, float]) -> bool:
+        """Server CheckLosFN + CheckWaterLoS, using live size for entities.
 
-        world.mesh.clear(start, end) is used when a mesh is set. With no mesh,
-        nav.maps.load_map(zone) is used when that module exists. A missing mesh
-        means the shot is clear.
+        A raw point uses the server's default size (6). With no map, the
+        server's LOS_DEFAULT_CAN_SEE applies; liquid matching still applies.
+        Server-only door checks and zone-specific cheat exemptions are not
+        inferred from the client collision map.
         """
         start = self.position
-        end = target
-        mesh = self.mesh
-        if not mesh:
-            mesh = load_map(self.zone or "")
-
-        if not mesh:
-            return True
-
-        return mesh.clear(start, end)
+        if isinstance(target, (Mob, Bot)):
+            end, size = target.position, target.size
+        else:
+            end, size = target, 6.0
+        mesh = _zone_map(self)
+        if mesh is not None and not mesh.clear(start, end, self.character.size, size):
+            return False
+        if self.water_match_required_for_los:
+            water = self.get_water_map(self.zone or "")
+            if water is not None and not water.los_clear(start, end):
+                return False
+        return True
 
     def consider_mobs(self) -> list[Mob]:
         return [mob for mob in self.nearby(NEARBY_YARDS) if not mob.id != self.self_id]
@@ -498,17 +505,15 @@ class Movement:
     def visible_mobs(self, yards: float) -> list[Mob]:
         """Mobs in line of sight from the committed position. Does not send OP_Consider.
 
-        ``yards`` skips anyone farther than that before a ray is cast. The sweep
-        uses one ray. Heading peeks stay on a targeted line_of_sight call.
+        ``yards`` skips anyone farther than that before the exact server ray.
         """
-        origin = self.position
         seen = []
         for mob in self.world.mobs.values():
             if mob.id == self.world.self_id:
                 continue
             if mob.distance and float(mob.distance) > yards:
                 continue
-            if _sweep_visible(self.world, origin, mob):
+            if self.world.line_of_sight(mob):
                 seen.append(mob)
 
         return seen
@@ -664,7 +669,7 @@ class Movement:
             return
 
         origin = self.position
-        if not (is_nearby(self.world, mob, origin) or self.world.line_of_sight(mob.position)):
+        if not (is_nearby(self.world, mob, origin) or self.world.line_of_sight(mob)):
             return
 
         path.find_waypoints = False
@@ -881,7 +886,7 @@ class Movement:
             return
 
         for mob in self.world.consider_mobs():
-            if not self.world.line_of_sight(mob.position):
+            if not self.world.line_of_sight(mob):
                 continue
             if not self.world.needs_consider(mob):
                 continue
@@ -988,17 +993,6 @@ def _is_reclaim(loop: Loop, sender: Action | None) -> bool:
         if obj and type(obj).__name__ == "Reclaim":
             return True
     return False
-
-
-def _sweep_visible(world: World, origin: tuple[float, float, float], mob: Mob) -> bool:
-    """One cached ray. A miss falls back to line_of_sight, which peeks headings."""
-    mapped = _zone_map(world)
-    if not mapped:
-        return world.line_of_sight(mob.position)
-    end = mob.position
-    if end is None:
-        return False
-    return bool(mapped.clear(origin, end, headings=1))
 
 
 def _zone_map(world: World) -> ZoneMap | None:

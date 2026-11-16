@@ -148,7 +148,7 @@ class Action:
                 previous.targeted = False
             self.wait(TARGET)
 
-        if not self.world.line_of_sight(bot.position):
+        if not self.world.line_of_sight(bot):
             self.send_channel_message(f"^botsummon byname {bot.name}")
             return
 
@@ -281,7 +281,7 @@ class Action:
         return False
 
     def can_see_mob(self, mob: Mob) -> bool:
-        if self.world.line_of_sight(mob.position):
+        if self.world.line_of_sight(mob):
             return True
         self.move_closer(mob)
         return False

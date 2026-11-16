@@ -233,6 +233,7 @@ class Bot:
         self.owner: str = owner
         self.name: str = name
         self.race: int = race
+        self.size: float = 0.0
         self.class_id: int = class_id
         self.gender: int = gender
         self.level: int = 0

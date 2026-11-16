@@ -115,6 +115,13 @@ class WaterMap:
     def in_liquid(self, x: float, y: float, z: float) -> bool:
         return self.region(x, y, z) in _LIQUID
 
+    def los_clear(self, start: tuple[float, float, float], end: tuple[float, float, float]) -> bool:
+        """Mob::CheckWaterLoS: server InLiquid differs between V1 and V2 maps."""
+        kinds = (REGION_WATER, REGION_LAVA) if self.version == 1 else (
+            REGION_WATER, REGION_LAVA, REGION_VWATER
+        )
+        return (self.region(*start) in kinds) == (self.region(*end) in kinds)
+
     def can_fish_at(
         self, x: float, y: float, z: float, rod: float = 30.0, line: float = 100.0
     ) -> bool:

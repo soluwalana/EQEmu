@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any, get_type_hints
 
 from eqclient4.nav.maps import ZoneMap, _read_map
+from eqclient4.nav.water import WaterMap
 from eqclient4.structs import Door
 from eqclient4.structs.constants import _WORN, CLASS_ID_TO_NAME, RACE_ID_TO_NAME
 from eqclient4.world import Mob
@@ -74,7 +75,7 @@ def install_dashboard(
 
     install_geometry(app)
 
-    # The dashboard uses the same full heading-peek collision test as
+    # The dashboard uses the same exact size-aware collision test as
     # World.line_of_sight, but never modifies the agent's spatial/ray caches.
     # All expensive work happens after releasing DebugLoop.state_lock.
     los_lock = threading.Lock()
@@ -88,7 +89,7 @@ def install_dashboard(
     weapon_model_book = None
     weapon_models: frozenset[str] = frozenset()
 
-    def annotate_los(data: dict, source: ZoneMap | None) -> dict:
+    def annotate_los(data: dict, source: ZoneMap | None, water: WaterMap | None) -> dict:
         nonlocal los_zone, los_source, los_mesh, los_error, los_cursor
         with los_lock:
             zone = (data["zone"] or "").lower()
@@ -105,9 +106,9 @@ def install_dashboard(
                     los_mesh = None
                     los_error = True
             origin = tuple(data["position"])
+            watcher_size = data["character"]["size"]
             pending = []
-            # Bots first, then nearest mobs. Exact XYZ keys avoid the coarse
-            # single-ray cache's false positives near walls and staircases.
+            # Bots first, then nearest mobs. Cache exact XYZ and entity sizes.
             for row in (*data["bots"], *data["mobs"]):
                 row["los"] = None
                 point = row["position"]
@@ -120,11 +121,14 @@ def install_dashboard(
                     continue
                 if los_error:
                     continue
+                if water is not None and not water.los_clear(origin, tuple(point)):
+                    row["los"] = False
+                    continue
                 if los_mesh is None:
                     # Same missing-map fallback as World.line_of_sight.
                     row["los"] = True
                     continue
-                key = (origin, tuple(point))
+                key = (origin, tuple(point), watcher_size, row["size"])
                 if key in los_results:
                     row["los"] = los_results[key]
                 else:
@@ -189,6 +193,7 @@ def install_dashboard(
                     "mana": m.mana,
                     "endurance": m.endurance,
                     "position": m.position,
+                    "size": m.size,
                     "heading": m.heading,
                     "distance": distance(m.position),
                     "dead": m.dead,
@@ -207,6 +212,7 @@ def install_dashboard(
                     "mana": b.mana,
                     "endurance": b.endurance,
                     "position": b.position if b.spawned else None,
+                    "size": b.size,
                     "distance": distance(b.position) if b.spawned else None,
                     "heading": b.heading,
                     "spawned": b.spawned,
@@ -255,7 +261,8 @@ def install_dashboard(
                     for key in gear_fields:
                         gear[key] += getattr(item, key, 0)
             path = move.path
-            return w.mesh, json_value(
+            water = w.get_water_map(w.zone or "") if w.water_match_required_for_los else None
+            return w.mesh, water, json_value(
                 {
                     "ready": loop.commands.ready.is_set(),
                     "tick": loop.tick,
@@ -277,6 +284,7 @@ def install_dashboard(
                                 "name",
                                 "level",
                                 "race",
+                                "size",
                                 "class_id",
                                 "hp",
                                 "max_hp",
@@ -390,8 +398,8 @@ def install_dashboard(
                 }
             )
 
-        source, data = with_loop(collect)
-        return annotate_los(data, source)
+        source, water, data = with_loop(collect)
+        return annotate_los(data, source, water)
 
     @app.get("/dashboard/action/{module}/{class_name}")
     def describe_action(module: str, class_name: str):

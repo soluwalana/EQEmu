@@ -17,6 +17,8 @@ from eqclient4.structs.wire import (
     fixed,
     need,
     put_fixed,
+    put_cstr,
+    cstring,
 )
 
 
@@ -895,3 +897,27 @@ class OP_ItemLinkClick(EQStruct):
             v[10],
             v[11],
         )
+
+@dataclass
+class OP_InterruptCast(EQStruct):
+    spawn_id: int
+    message_id: int
+    message: str = ""
+
+    def serialize(self) -> bytes:
+        data = struct.pack("<II", self.spawn_id, self.message_id)
+        if self.message:
+            data += put_cstr(self.message)
+        return data
+
+    @classmethod
+    def deserialize(cls, data: bytes) -> OP_InterruptCast:
+        need(data, 8, "OP_InterruptCast")
+
+        spawn_id, message_id = struct.unpack_from("<II", data)
+
+        message = ""
+        if len(data) > 8:
+            message, _ = cstring(data, 8)
+
+        return cls(spawn_id, message_id, message)

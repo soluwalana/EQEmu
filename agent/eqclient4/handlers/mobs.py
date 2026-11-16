@@ -14,6 +14,7 @@ from eqclient4.structs import (
     OP_MobManaUpdate,
     OP_MobRename,
     OP_NewSpawn,
+    OP_SpawnAppearance,
     OP_ZoneEntry,
 )
 from eqclient4.utils import FactionStanding
@@ -32,6 +33,7 @@ class MobsHandler(Handler):
         "OP_ClientUpdate",
         "OP_Consider",
         "OP_MobRename",
+        "OP_SpawnAppearance",
     )
 
     def on(self, opcode: str, payload: EQStruct) -> None:
@@ -51,6 +53,7 @@ class MobsHandler(Handler):
                     bot.spawn_id = payload.spawn.spawn_id
                     bot.alive = True
                     bot.level = payload.spawn.level
+                    bot.size = payload.spawn.size
                     bot.position = (payload.spawn.x, payload.spawn.y, payload.spawn.z)
                     return
 
@@ -70,6 +73,7 @@ class MobsHandler(Handler):
                 mob.position = (spawn.x, spawn.y, spawn.z)
                 mob.class_id = spawn.class_id
                 mob.race = spawn.race
+                mob.size = spawn.size
                 mob.level = spawn.level
                 mob.last_name = spawn.last_name
                 mob.npc = spawn.npc
@@ -81,6 +85,19 @@ class MobsHandler(Handler):
 
             case OP_ZoneEntry():
                 pass
+
+            case OP_SpawnAppearance():
+                # common/eq_constants.h: AppearanceType::Size. ChangeSize
+                # broadcasts this integer even though the spawn size is float.
+                if payload.type != 29:
+                    return
+                if payload.spawn_id == self.world.self_id:
+                    self.world.character.size = float(payload.parameter)
+                elif bot := self.world.bot_roster.bot_by_spawn_id(payload.spawn_id):
+                    bot.size = float(payload.parameter)
+                elif mob := self.world.mobs.find_mob(payload.spawn_id):
+                    mob.size = float(payload.parameter)
+                return
 
             case OP_DeleteSpawn():
                 bot = self.world.bot_roster.bot_by_spawn_id(payload.spawn_id)

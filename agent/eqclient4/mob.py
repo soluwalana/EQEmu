@@ -29,6 +29,7 @@ class Mob:
         self.body = 0
         self.class_id = class_id
         self.race = race
+        self.size: float = 0.0
         self.hp: int = hp
         self.mana: int | None = None
         self.endurance: int | None = None

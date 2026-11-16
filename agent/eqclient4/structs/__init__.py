@@ -187,6 +187,7 @@ from eqclient4.structs.rof2_additional import (
     OP_TargetHoTT,
     OP_Untargetable,
     OP_WearChange,
+    OP_InterruptCast,
     OP_XTargetResponse,
 )
 from eqclient4.structs.rof_missing import (
@@ -545,6 +546,7 @@ __all__ = [
     "DoorAction",
     "DoorKind",
     "DoorOpenType",
+    "OP_InterruptCast",
 ]
 
 

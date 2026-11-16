@@ -97,6 +97,7 @@ class Character:
         self.self_id: int = 0
         self.class_id: int = 0
         self.race: int = 0
+        self.size: float = 0.0
         self.gender: int = 0
         self.deity: int = 0
         self.level: int = 0
@@ -381,6 +382,7 @@ class Character:
             case OP_NewSpawn():
                 if payload.spawn.name == char.name and payload.spawn.npc == 0:
                     char.self_id = payload.spawn.spawn_id
+                    char.size = payload.spawn.size
                     log.info(char.event("new-spawn", f"New spawn {char.self_id}", True))
                 return
             case OP_PlayerProfile():

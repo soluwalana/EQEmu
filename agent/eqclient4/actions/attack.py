@@ -180,7 +180,7 @@ class Attack(Action):
 
         self.face(self.mob.position)
 
-        if not self.world.line_of_sight(self.mob.position):
+        if not self.world.line_of_sight(self.mob):
             self.move_closer(self.mob.position)
             return
 
@@ -276,7 +276,7 @@ class Attack(Action):
             self.unwait("CAST")
             self.casting = False
 
-        sees = self.world.line_of_sight(self.mob.position)
+        sees = self.world.line_of_sight(self.mob)
         if self.closed and not sees:
             self.closed = False
 

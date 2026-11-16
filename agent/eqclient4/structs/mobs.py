@@ -46,7 +46,7 @@ def _pack_spawn(spawn: Spawn) -> bytes:
     out += struct.pack("<BI", 1, spawn.body & 0xFFFFFFFF)
     out += b"\x00" * 23
     # common/patches/rof2.cpp:4795 size, face, walkspeed, runspeed, race
-    out += struct.pack("<fBffI", 0.0, 0, 0.0, 0.0, spawn.race & 0xFFFFFFFF)
+    out += struct.pack("<fBffI", spawn.size, 0, 0.0, 0.0, spawn.race & 0xFFFFFFFF)
     # common/patches/rof2.cpp:4802
     out += struct.pack("<BI", 0, 0)
     # common/patches/rof2.cpp:4806
@@ -105,7 +105,7 @@ def _read_spawn(data: bytes, offset: int) -> tuple[Spawn, int]:
         body = read_u32(data, offset - 4)
     offset = advance(data, offset, 23, "spawn")
     offset = advance(data, offset, 17, "spawn")
-    _size, _face, _walk, _run, race = struct.unpack_from("<fBffI", data, offset - 17)
+    size, _face, _walk, _run, race = struct.unpack_from("<fBffI", data, offset - 17)
     offset = advance(data, offset, 5, "spawn")
     offset = advance(data, offset, 8, "spawn")
     class_id = data[offset]
@@ -142,6 +142,7 @@ def _read_spawn(data: bytes, offset: int) -> tuple[Spawn, int]:
             _kept_name(last_name),
             _title,
             _suffix,
+            size,
         ),
         offset,
     )
@@ -162,6 +163,7 @@ class Spawn(EQStruct):
     last_name: str = ""
     title: str = ""
     suffix: str = ""
+    size: float = 0.0
 
     def serialize(self) -> bytes:
         return _pack_spawn(self)
