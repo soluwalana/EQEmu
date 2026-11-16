@@ -289,6 +289,10 @@ class FormParty(Action):
             self.wait("init")
             return
 
+    # TODO: 
+    #   - Spawn should use commands interface instead of send channel messages
+    #   - When engaged this will always fail but will not be retried allowing the
+    #   - attack to finish killing the agent
     def spawn(self) -> None:
         """State transition: spawn -> spawn-confirm
 

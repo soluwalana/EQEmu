@@ -136,7 +136,6 @@ class Attack(Action):
         self.bots_sent = False
         self.mob_targeted = None
         self.zero_hp = 0
-        self.commands.clear()
 
     @staticmethod
     def key(action: Action) -> tuple[int, int]:
@@ -228,26 +227,22 @@ class Attack(Action):
             self.wait(SEND_COMMANDS)
             return
 
-        command_response = self.completed_command("^attack", remove=False)
-        if not command_response:
-            log.error(f"attack failure=no command send had no failure or success")
-            log.error("Critical failure")
-            self.complete = True
-            return
-
-        if command_response.failure_msg:
-            log.error(f"attack failure={command_response.failure_msg}")
-            return
+        # Bots Sent is True, clear the commands queue for resets later
+        self.commands.clear()
 
         if self.world.character.class_id in CASTER_CLASSES:
             if self.mob.distance > SPELL_RANGE:
-                self.move_closer(self.mob.position)
+                self.move_closer(self.mob)
                 return
         else:
             if self.mob.distance > MELEE_RANGE:
-                self.move_closer(self.mob.position)
+                self.move_closer(self.mob)
                 return
-        
+
+        if self.consume("OP_SimpleMessage", simple_id_matcher(124)):
+            self.move_closer(self.mob)
+            return
+
         if not self.attacking:
             log.info("attack autoattack")
             self.loop.send("OP_AutoAttack", OP_AutoAttack(1).serialize())
@@ -259,13 +254,9 @@ class Attack(Action):
             return
         
         log.error("Should not be here yet")
-        # if self._become_corpse():
-        #     return
 
         # tick_recasts(self)
-        self._bars()
         self._cure_flag()
-        # self._string_251()
         # if not self.waiting_for("CAST") and fill_bar(loop, world):
         #     return
 
@@ -277,74 +268,6 @@ class Attack(Action):
                 return
             self.unwait("CAST")
             self.casting = False
-
-        sees = self.world.line_of_sight(self.mob)
-        if self.closed and not sees:
-            self.closed = False
-
-        if not self.closed and (float(self.mob.distance) > MELEE or not sees):
-            if self._stuck():
-                if float(self.mob.distance) <= 25 and sees:
-                    self.closed = True
-                elif float(self.mob.distance) <= 25:
-                    self.attacking = False
-                    self.active_path = None
-                    self.planned = None
-                    self.move_closer(self.mob.position, "los")
-                    return
-                else:
-                    if self.target_id:
-                        log.info(
-                            "attack unstick spawn=%s d=%.0f", self.target_id, self.mob.distance
-                        )
-                        # self.world.skip_spawn(target)  # skip things that are already dead
-                    self.complete = True
-                    return
-            else:
-                self.attacking = False
-                point = self.mob.position
-                planned = self.planned
-                if not planned or _apart(planned, point) > 15:
-                    self.active_path = None
-                    self.planned = point
-
-                if sees and float(self.mob.distance) <= 35:
-                    length = STRIDE["los"][0]
-                    path = straight(
-                        self.world.position,
-                        point,
-                        length,
-                    )
-                    self.active_path = path
-                    self.active_path_dest = point
-                    self.world.movement.advance(self.loop, path)
-                    return
-
-                mode = "walk" if self.cautious else "los"
-                self.move_closer(point, mode)
-                return
-
-        self.still = 0
-        self.anchor = None
-        if self._hp_stuck(self.mob):
-            self.misses += 1
-            self.attacking = False
-            self.closed = False
-            self.active_path = None
-            self.planned = None
-            if self.misses >= 3:
-
-                if not self.target_id:
-                    log.info(
-                        f"attack no damage spawn={self.target_id} d={self.mob.distance:.0f}",
-                    )
-                    # self.world.skip_spawn(target)  # skip things that are already dead
-                # loop.append(Reconstitute(241))
-                self.complete = True
-                return
-            self.move_closer(self.mob, "los")
-            return
-
 
         # if self._combat_spell():
         #     self.attacking = False
@@ -367,13 +290,19 @@ class Attack(Action):
             "You must <target> an enemy to use this command",
             "You must have Line of Sight to use this command",
         )
-        if not any((f in cmd.failure_msg for f in positioning_failures)):
-            fp = FormParty(self.world, self.loop, self.world.party_mode ==  "raid",)
-            fp.priority = self.priority + 1
-            self.yield_to(fp)
+
+        if any((f in cmd.failure_msg for f in positioning_failures)):
+            self.mob_targeted = None
+            # clear the command queue for the next try after fixing targeting
+            self.commands.clear()
             return
-        self.complete = True
-        return
+        
+        fp = FormParty(self.world, self.loop, self.world.party_mode ==  "raid",)
+        fp.priority = self.priority + 1
+        self.yield_to(fp)
+
+        # clear the command queue for the next try after forming party
+        self.commands.clear()
 
     def attack_treasure(self, mob: Mob) -> bool:
         if self.treasure_open_attempted_at:
@@ -389,89 +318,12 @@ class Attack(Action):
         self.move_closer(mob)
         return False
 
-
-    def _hp_stuck(self, mob: Mob) -> bool:
-        """True when melee has not moved the target's health."""
-        hp = int(mob.hp or 0)
-        if hp != self.swing_hp:
-            self.swing_hp = hp
-            self.swing_still = 0
-            return False
-        self.swing_still += 1
-        if self.swing_still < 40:
-            return False
-        self.swing_still = 0
-        return True
-
-    def _stuck(self) -> bool:
-        """True after five seconds on the same spot, still out of melee."""
-        here = (round(self.world.position[0], 1), round(self.world.position[1], 1))
-        if here == self.anchor:
-            self.still += 1
-        else:
-            self.anchor = here
-            self.still = 0
-        if self.still < 50:
-            return False
-        self.active_path = None
-        self.still = 0
-        return True
-
-    def _become_corpse(self) -> bool:
-
-        def matcher(message: EQStruct) -> bool:
-            match message:
-                case OP_BecomeCorpse():
-                    return message.spawn_id in (0, self.world.self_id)
-                case _:
-                    return False
-
-        corpse = self.consume("OP_BecomeCorpse", matcher)
-        if corpse is None:
-            return False
-
-        # loop.append(Reconstitute(241))
-        self.complete = True
-        return True
-
-    def _bars(self) -> None:
-        message = self.consume("OP_HPUpdate") or self.consume("OP_MobHealth")
-        if message is None:
-            return
-        # fraction = bar_ratio(message)
-        # if fraction is not None and fraction > 0.5:
-        #     self.heal_requested = False
-
     def _cure_flag(self) -> None:
         message = self.consume("OP_Buff")
         if message is None:
             return
         # if buff_faded(message) or not afflictions(world):
         #     self.cure_requested = False
-
-    def reclaim_if_ours(self, *targets: int) -> bool:
-        """Consume string 251 for one of targets and queue Reclaim. True when a match was handled."""
-        matched = False
-        wanted = {int(target) for target in targets if target}
-        log.info(f"reclaim_if_ours wanted={wanted}")
-
-        while self.consume("OP_SimpleMessage", simple_id_matcher(251)):
-            # corpse = own_corpse(loop, world)
-            # if not corpse or int(corpse) not in wanted:
-            #     continue
-            # if not queued(loop, "Reclaim", corpse_id=corpse):
-            #     where = corpse_where(loop, world, corpse, (world.x, world.y, world.z))
-            #     from eqclient3.actions.reclaim import Reclaim
-
-            #     yield_to(parent, loop, world, Reclaim(corpse, where), f"reclaim:{corpse}")
-
-            matched = True
-        return matched
-
-    # def _string_251(self) -> None:
-    #     if self.reclaim_if_ours(int(self.cast_target or 0)):
-    #         self.heal_requested = False
-    #         self.cure_requested = False
 
     # def _request_heal(self) -> None:
     #     if self.heal_requested:
