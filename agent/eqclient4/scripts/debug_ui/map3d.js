@@ -351,18 +351,21 @@
             const sphere=(point,pixels,tint)=>instances.push(...point,pixels/scale,...tint);
             const ring=(p,r,color)=>{ctx.beginPath();ctx.arc(p[0],p[1],r,0,2*Math.PI);ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.stroke();};
             let hiddenMobs=0;
+            const corpses=[];
             for(const m of s.mobs){
-                if(m.dead||!valid(m.position))continue;
+                if(!valid(m.position))continue;
                 const p=project(m.position);if(!visible(p))continue;
                 if(!mobVisible(m)){hiddenMobs++;continue;}
-                const size=m.aggro?7:5;
-                sphere(m.position,size,entityTint(m).map(v=>v/255));
-                if(m.id===selected)ring(p,size+2,'#fff');
-                entities.push({x:p[0],y:p[1],id:m.id,name:m.name,radius:size,bot:false,los:m.los});
-                if(m.id===selected||m.aggro)label(m.name,p);
+                const corpse=isCorpse(m), size=corpse?7:m.aggro?7:5;
+                if(corpse) corpses.push({m,p,size});
+                else sphere(m.position,size,entityTint(m).map(v=>v/255));
+                if(!corpse&&m.id===selected)ring(p,size+2,'#fff');
+                entities.push({x:p[0],y:p[1],id:m.id,name:m.name,radius:size,bot:false,corpse,los:m.los});
+                if(!corpse&&(m.id===selected||m.aggro))label(m.name,p);
             }
             const bots=layout(s.bots.filter(b=>valid(b.position)),project,w,h,botRadius,player);
             drawBotMarkers(ctx,bots,selected,entities);
+            for(const {m,p,size} of corpses) drawCorpseMarker(ctx,p,size,m.id===selected);
             if(visible(player)){
                 const angle=s.heading*2*Math.PI/512, end=project([s.position[0]+Math.sin(angle)*14,s.position[1]+Math.cos(angle)*14,s.position[2]]);
                 sphere(s.position,8,[.36,.79,.84]);ring(player,9,'#d0faff');

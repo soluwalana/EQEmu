@@ -117,6 +117,7 @@ class Attack(Action):
         self.mob: Mob | None = None
         self.bots_sent = False
         self.attacking = False
+        self.zero_hp = 0
         self.treasure_open_attempted_at: float | None = None
 
     def opcodes(self) -> tuple[str, ...]:
@@ -134,6 +135,7 @@ class Attack(Action):
         self.suspended = True
         self.bots_sent = False
         self.mob_targeted = None
+        self.zero_hp = 0
         self.commands.clear()
 
     @staticmethod

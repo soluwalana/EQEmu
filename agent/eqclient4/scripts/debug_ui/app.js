@@ -4,7 +4,23 @@ const cls = ['—', 'Warrior', 'Cleric', 'Paladin', 'Ranger', 'Shadowknight', 'D
 const pretty = v => JSON.stringify(v, null, 2), num = v => Number.isFinite(Number(v)) && v !== null ? Number(v).toFixed(1) : '—';
 // Preserve entity category hues, desaturate only confirmed blocked entities.
 // Unknown is deliberately neutral, not a claim that a ray was obstructed.
+// A corpse is either a death in this session or a corpse spawn from zone-in.
+function isCorpse(entity) {
+    return !!entity && !entity.bot && (entity.dead || entity.npc === 2 || entity.npc === 3);
+}
+function drawCorpseMarker(ctx, point, size, selected) {
+    const [x, y] = point, r = size * .55;
+    ctx.save();
+    ctx.beginPath(); ctx.arc(x, y, size, 0, Math.PI * 2);
+    ctx.fillStyle = '#bea9df'; ctx.fill();
+    ctx.strokeStyle = selected ? '#fff' : '#e4d5ff'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x-r, y-r); ctx.lineTo(x+r, y+r);
+    ctx.moveTo(x+r, y-r); ctx.lineTo(x-r, y+r);
+    ctx.strokeStyle = '#261d39'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.restore();
+}
 function entityTint(entity, bot = false) {
+    if (!bot && isCorpse(entity)) return [190, 169, 223];
     const bright = bot ? [108,204,145] : entity.aggro ? [236,119,132] : [223,187,119];
     if (entity.los === true) return bright;
     if (entity.los === false) {
@@ -14,7 +30,7 @@ function entityTint(entity, bot = false) {
     return [122,130,143];
 }
 function entityColor(entity, bot = false) { return `rgb(${entityTint(entity, bot).join(',')})`; }
-function losLabel(entity) { return entity.los === true ? (state?.los_map === false ? 'LoS assumed clear (no collision map)' : 'In LoS') : entity.los === false ? 'Out of LoS' : 'LoS unknown'; }
+function losLabel(entity) { return isCorpse(entity) ? 'Corpse' : entity.los === true ? (state?.los_map === false ? 'LoS assumed clear (no collision map)' : 'In LoS') : entity.los === false ? 'Out of LoS' : 'LoS unknown'; }
 let state = null, tab = 'world', selectedMob = null, selectedGround = null, selectedSlot = null, openBag = null, actionCatalog = new Map(), activeAction = null, lastInventory = '', mapHits = new Map(), selectedItem = null, paramReaders = [], actionGeneration = 0;
 const mapPointer = new Map();
 let selectedDoor = null;
@@ -134,6 +150,11 @@ function pickMapHit(hits, point) {
         return m.kind === 'ground' ? dx + dy <= 1 : dx <= 1 && dy <= 1;
     };
     // Match paint order: ground diamonds, then door brackets, then entity markers.
+    // Corpses are drawn over bots; give a direct corpse hit precedence over
+    // bot clusters, while preserving the priority of world-object icons.
+    const corpseHit = candidates.find(m => m.corpse && m.d <= m.radius);
+    if (corpseHit) return candidates.find(m => m.kind === 'ground' && objectHit(m))
+        ?? candidates.find(m => m.kind === 'door' && objectHit(m)) ?? corpseHit;
     return candidates.find(m => m.kind === 'bot-group' && m.d <= m.radius)
         ?? candidates.find(m => m.kind === 'ground' && objectHit(m))
         ?? candidates.find(m => m.kind === 'door' && objectHit(m))
@@ -436,6 +457,8 @@ function renderCurrentTarget() {
             text('mobdetail', pretty({ kind: 'ground_spawn', ...drop }));
             renderGroundItems(drop);
             $('mobaction').disabled = true;
+            $('lootcorpse').hidden = true;
+            $('lootcorpse').disabled = true;
             $('cleartarget').disabled = false;
             return;
         }
@@ -443,18 +466,21 @@ function renderCurrentTarget() {
     renderGroundItems(null);
     const bot = s.bots.find(b => b.spawned && b.id === selectedMob);
     const m = bot || s.mobs.find(m => m.id === selectedMob);
+    const corpse = !bot && isCorpse(m);
     text('targetname', m ? m.name : selectedMob === null ? 'No target selected' : 'Entity no longer present');
-    text('targetidentity', m ? `Spawn #${m.id} · Lv ${m.level} · ${cls[m.class_id] ?? 'Unknown'}` : '');
+    text('targetidentity', m ? `Spawn #${m.id} · ${corpse ? 'Corpse' : `Lv ${m.level} · ${cls[m.class_id] ?? 'Unknown'}`}` : '');
     if (m) {
         const dz = validPosition(m.position) && Number.isFinite(m.position[2]) ? m.position[2] - s.position[2] : null;
         const location = validPosition(m.position) ? `X ${num(m.position[0])} Y ${num(m.position[1])} Z ${num(m.position[2])}` : '—';
-        const values = [ ['HP', m.dead || (bot && !bot.alive) ? 'Dead' : m.hp == null ? '—' : `${m.hp}%`], ['Distance', `${num(m.distance)} yd`], ['ΔZ', dz == null ? '—' : `${dz >= 0 ? '+' : ''}${num(dz)}`], ['Visibility', losLabel(m)], ['Position', location] ];
+        const values = [ ['HP', corpse || (bot && !bot.alive) ? 'Dead' : m.hp == null ? '—' : `${m.hp}%`], ['Distance', `${num(m.distance)} yd`], ['ΔZ', dz == null ? '—' : `${dz >= 0 ? '+' : ''}${num(dz)}`], ['Visibility', corpse ? '—' : losLabel(m)], ['Position', location] ];
         html('targetmetrics', values.map(([label, value]) => `<div class="target-metric"><span>${esc(label)}</span><b>${esc(value)}</b></div>`).join(''));
     } else {
         html('targetmetrics', '');
     }
     text('mobdetail', m ? pretty(m) : selectedMob === null ? 'Select a mob or map marker.' : 'Entity is no longer present.');
     $('mobaction').disabled = !m;
+    $('lootcorpse').hidden = !corpse;
+    $('lootcorpse').disabled = !corpse;
     $('cleartarget').disabled = selectedMob === null;
 }
 $('cleartarget').onclick = () => inspectMob(null);
@@ -475,8 +501,13 @@ function renderBots() {
         return `<tr><td>${name}<div class="dim">${esc(botSpawnLabel(b))} · Lv ${b.level}</div></td><td>${esc(cls[b.class_id])}</td><td class="${b.spawned ? (b.alive ? 'goodtext' : 'danger') : 'dim'}">${b.spawned ? (b.alive ? (b.grouped ? 'Grouped' : 'Spawned') : 'Dead') : 'Offline'}</td><td>${b.spawned ? mini(b.hp, '') : '—'}</td><td>${b.spawned ? mini(b.mana, 'mana') : '—'}</td><td>${b.spawned ? mini(b.endurance, 'endurance') : '—'}</td><td>${b.spawned ? num(b.distance) + ' yd' : '—'}</td></tr>`;
     }).join(''));
 }
-function mobButton(m) { return `<button data-mob="${m.id}"><span>${esc(m.name)} <small>${m.bot ? 'Bot · ' : ''}Lv ${m.level}</small></span><span class="${m.aggro ? 'danger' : 'dim'}">${m.dead ? 'Dead' : num(m.distance) + ' yd'} · ${esc(m.hp)}%</span></button>`; }
-function renderNearby() { const m = state.mobs.filter(x => x.distance <= 200 && !x.dead); text('mobcount', `${m.length} within 200 yd`); if (!$('nearbypanel').open) return; html('nearby', m.slice(0, 30).map(mobButton).join('') || '<p class="muted">No nearby entities.</p>'); }
+function mobButton(m) {
+    const corpse = isCorpse(m);
+    const detail = corpse ? 'Corpse' : `${m.bot ? 'Bot · ' : ''}Lv ${m.level}`;
+    const health = corpse || m.dead ? 'Dead' : `${esc(m.hp)}%`;
+    return `<button data-mob="${m.id}"><span>${esc(m.name)} <small>${detail}</small></span><span class="${!corpse && m.aggro ? 'danger' : 'dim'}">${num(m.distance)} yd · ${health}</span></button>`;
+}
+function renderNearby() { const m = state.mobs.filter(x => x.distance <= 200); text('mobcount', `${m.length} within 200 yd`); if (!$('nearbypanel').open) return; html('nearby', m.slice(0, 30).map(mobButton).join('') || '<p class="muted">No nearby entities.</p>'); }
 function renderQueue() { const a = state.actions, cur = a.queue.find(x => x.insert === a.active); html('current', cur ? `<div class="activecard"><strong>${esc(cur.class_name)}</strong><p>Priority ${cur.priority} · #${cur.insert}</p><p>Waiting: ${esc((cur.waiting ?? []).join(', ') || '—')}</p><p>${esc(cur.source || 'Manual action')} · ${esc(cur.zone)}</p></div>` : '<div class="activecard"><strong>Idle</strong><p>No active action</p></div>'); html('queue', a.queue.map(x => `<div class="row"><b>${esc(x.class_name)}</b><span class="muted">${x.priority} · ${esc((x.waiting ?? []).join(', ') || 'ready')}</span></div>`).join('') || '<p class="muted">Queue empty.</p>'); $('queue').className = 'list'; }
 function renderMobs() {
     const q = $('mobquery').value.toLowerCase(), near = $('onlynear').checked;
@@ -497,6 +528,7 @@ function inspectMob(id) {
     closeDoorPopup();
     selectedGround = null;
     selectedMob = id;
+    if (id !== null) fillSelectedSpawn();
     if (id === null) setTargetDetails(false);
     if (state) render();
 }
@@ -652,17 +684,24 @@ function draw2d(id, radius) {
         }
     }
     const hits = [];
-    function marker(m, color, size) { if (!m.position)
-        return; const [x, y] = xy(m.position); if (x < 0 || x > w || y < 0 || y > h)
-        return; ctx.beginPath(); ctx.arc(x, y, size, 0, Math.PI * 2); ctx.fillStyle = color; ctx.fill(); if (m.id === selectedMob) {
-        ctx.strokeStyle = '#fff';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-    } hits.push({ x, y, id: m.id, name: m.name, radius: size, bot: false, los: m.los }); if (id === 'worldmap' && (m.id === selectedMob || m.aggro)) {
-        ctx.fillStyle = '#e2e9f3';
-        ctx.fillText(m.name, x + 8, y - 7);
-    } }
-    s.mobs.filter(m => !m.dead).forEach(m => marker(m, entityColor(m), m.aggro ? 5 : 3));
+    function marker(m, color, size) {
+        if (!validPosition(m.position)) return;
+        const [x, y] = xy(m.position);
+        if (x < 0 || x > w || y < 0 || y > h) return;
+        const corpse = isCorpse(m), selected = m.id === selectedMob;
+        if (corpse) drawCorpseMarker(ctx, [x, y], size, selected);
+        else {
+            ctx.beginPath(); ctx.arc(x, y, size, 0, Math.PI * 2);
+            ctx.fillStyle = color; ctx.fill();
+            if (selected) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke(); }
+        }
+        hits.push({ x, y, id: m.id, name: m.name, radius: size, bot: false, corpse, los: m.los });
+        if (id === 'worldmap' && (selected || (!corpse && m.aggro))) {
+            ctx.fillStyle = '#e2e9f3';
+            ctx.fillText(m.name + (corpse ? ' · Corpse' : ''), x + 8, y - 7);
+        }
+    }
+    for (const m of s.mobs) if (!isCorpse(m)) marker(m, entityColor(m), m.aggro ? 5 : 3);
     const botRadius = Math.max(7, 5 * Math.min(2, w / Math.max(1, canvas.clientWidth)));
     const bots = layoutBotMarkers(s.bots, xy, w, h, botRadius);
     ctx.fillStyle = '#5bc9d5';
@@ -678,6 +717,7 @@ function draw2d(id, radius) {
     ctx.fill();
     ctx.restore();
     drawBotMarkers(ctx, bots, selectedMob, hits, true);
+    for (const m of s.mobs) if (isCorpse(m)) marker(m, entityColor(m), 6);
     hits.push(...drawMapObjects(ctx, id, s, xy, validPosition,
         window.EQMap3D?.doorsVisible(id) ?? true,
         window.EQMap3D?.groundSpawnsVisible(id) ?? true, selectedGround?.id ?? null, hits));
@@ -694,7 +734,7 @@ function mapHit(id, event) {
 function refreshMapHover(id) {
     const canvas = $(id), hit = mapHit(id, mapPointer.get(id));
     const cursor = hit ? 'pointer' : 'default';
-    const title = hit?.kind === 'bot-group' ? `${hit.name} · Click to select a bot` : hit ? (hit.kind ? `${hit.name} · ${hit.kind === 'ground' ? 'Drop' : hit.object.kind === 'door' ? 'Door' : 'Object'} #${hit.id} · ${hit.detail}` : `${hit.name} · Spawn #${hit.id} · ${losLabel(hit)}`) : '';
+    const title = hit?.kind === 'bot-group' ? `${hit.name} · Click to select a bot` : hit ? (hit.kind ? `${hit.name} · ${hit.kind === 'ground' ? 'Drop' : hit.object.kind === 'door' ? 'Door' : 'Object'} #${hit.id} · ${hit.detail}` : `${hit.name} · Spawn #${hit.id} · ${hit.corpse ? 'Corpse' : losLabel(hit)}`) : '';
     if (canvas.style.cursor !== cursor) canvas.style.cursor = cursor;
     if (canvas.title !== title) canvas.title = title;
     return hit;
@@ -854,6 +894,21 @@ function selectedSpawn() {
     return state.bots.find(b => b.spawned && b.id === selectedMob)
         ?? state.mobs.find(m => m.id === selectedMob) ?? null;
 }
+// Only explicit selection changes and new forms set ID fields. Polling never
+// overwrites manually edited values or unrelated action parameters.
+function fillSelectedSpawn(target = selectedSpawn()) {
+    if (!target) return;
+    const params = $('params');
+    // Optional[int] is represented by an anyOf selector. Activate its
+    // numeric variant before writing the newly created input.
+    for (const select of params.querySelectorAll('select[data-spawn-variant]')) {
+        if (select.value === select.dataset.spawnVariant) continue;
+        select.value = select.dataset.spawnVariant;
+        select.dispatchEvent(new Event('change'));
+    }
+    for (const input of params.querySelectorAll('input[data-spawn="true"]'))
+        input.value = String(target.id);
+}
 function updateTargetButton(button, target = selectedSpawn()) {
     const label = target ? `Use targeted ID (#${target.id})` : 'Use targeted ID';
     if (button.textContent !== label) button.textContent = label;
@@ -870,6 +925,10 @@ function fieldControl(schema, defs, required, label, defaultValue, spawn = false
     if (alternatives) {
         const select = element('select');
         const variants = alternatives.map(v => v.$ref ? defs[v.$ref.split('/').pop()] ?? v : v);
+        if (spawn) {
+            const numeric = variants.findIndex(v => v.type === 'integer' || v.type === 'number');
+            if (numeric >= 0) select.dataset.spawnVariant = String(numeric);
+        }
         if (!required)
             select.add(element('option', { value: '', textContent: 'Use default' }));
         variants.forEach((v, i) => select.add(element('option', { value: String(i), textContent: v.title ?? (v.type === 'null' ? 'None' : v.type ?? 'Value ' + (i + 1)) })));
@@ -958,13 +1017,14 @@ async function showAction() { const generation = ++actionGeneration; activeActio
         return;
     for (const p of d.parameters) {
         const schema = p.schema ?? {};
-        const spawn = schema['x-eq-spawn'] || /^(target_id|spawn_id|npc_id)$/.test(p.name);
+        const spawn = schema['x-eq-spawn'] || /^(target_id|spawn_id|npc_id|mob_id)$/.test(p.name);
         const control = fieldControl(schema, schema.$defs ?? {}, p.required, p.name, p.default, spawn);
         $('params').append(control.node);
         paramReaders.push([p.name, control.read]);
     }
     const datalist = element('datalist', { id: 'entityids' });
     $('params').append(datalist);
+    fillSelectedSpawn();
     refreshEntityOptions();
     $('launch').disabled = !d.compatible;
     if (!d.compatible)
@@ -987,15 +1047,19 @@ function refreshEntityOptions() {
     entities.sort((a, b) => a.id - b.id || a.name.localeCompare(b.name));
     html('entityids', entities.map(m => `<option value="${m.id}" label="${esc(m.name)}"></option>`).join(''));
 }
+$('lootcorpse').onclick = async () => {
+    const corpse = state?.mobs.find(m => m.id === selectedMob && isCorpse(m));
+    if (!corpse || selectedGround || corpse.id <= 0) return;
+    try {
+        await post('/send/OP_LootRequest', { spawn_id: corpse.id });
+        status(`Loot request queued for ${corpse.name} (#${corpse.id})`, true);
+    } catch (e) { status(e.message, false); }
+};
 $('mobaction').onclick = () => {
     $('actionpanel').open = true;
     $('actionpanel').scrollIntoView({ block: 'nearest' });
-    // Preserve other action arguments; only replace the selected spawn ID.
-    const target = selectedSpawn();
-    if (target) {
-        for (const input of $('params').querySelectorAll('[data-spawn="true"]'))
-            input.value = String(target.id);
-    }
+    // Preserve other action arguments; only replace selected spawn IDs.
+    fillSelectedSpawn();
     if (!actionCatalog.size) loadActions();
     else $('actionselect').focus({ preventScroll: true });
 };

@@ -52,6 +52,7 @@ canvas{display:block;width:100%;height:auto;background:#0a111c;border:1px solid 
 .bot{background:var(--green)}
 .npc{background:var(--gold)}
 .aggro{background:var(--red)}
+.corpse{background:#bea9df}
 .path{background:#8d8aff}
 .scroll{max-height:460px;overflow:auto}
 table{width:100%;border-collapse:collapse;font-size:12px;text-align:left}
