@@ -117,6 +117,7 @@ class Attack(Action):
         self.mob: Mob | None = None
         self.bots_sent = False
         self.attacking = False
+        self.treasure_open_attempted_at: float | None = None
 
     def opcodes(self) -> tuple[str, ...]:
         return super().opcodes() + (
@@ -127,11 +128,13 @@ class Attack(Action):
         )
 
     def suspend(self) -> None:
-        self.active_path = None
         self.loop.send("OP_AutoAttack", OP_AutoAttack(0).serialize())
+        self.active_path = None
         self.attacking = False
         self.suspended = True
         self.bots_sent = False
+        self.mob_targeted = None
+        self.commands.clear()
 
     @staticmethod
     def key(action: Action) -> tuple[int, int]:
@@ -185,11 +188,8 @@ class Attack(Action):
             return
 
         if self.mob and self.mob.is_treasure:
-            if float(self.mob.distance) <= 25:
-                self.loop.send("OP_LDoNOpen", OP_LDoNOpen().serialize())
+            if not self.attack_treasure(self.mob):
                 return
-            self.move_closer(self.mob.position)
-            return
 
         if not self.mob or self.mob.dead:
             # if mob and mob.dead:
@@ -366,10 +366,27 @@ class Attack(Action):
             "You must have Line of Sight to use this command",
         )
         if not any((f in cmd.failure_msg for f in positioning_failures)):
-            self.yield_to(FormParty(self.world, self.loop, self.world.party_mode ==  "raid",))
+            fp = FormParty(self.world, self.loop, self.world.party_mode ==  "raid",)
+            fp.priority = self.priority + 1
+            self.yield_to(fp)
             return
         self.complete = True
         return
+
+    def attack_treasure(self, mob: Mob) -> bool:
+        if self.treasure_open_attempted_at:
+            if time.monotonic() - self.treasure_open_attempted_at > 5.0:
+                return True
+            return False
+
+        if float(mob.distance) <= 20:
+            self.loop.send("OP_LDoNOpen", OP_LDoNOpen().serialize())
+            self.treasure_open_attempted_at = time.monotonic()
+            return False
+        
+        self.move_closer(mob)
+        return False
+
 
     def _hp_stuck(self, mob: Mob) -> bool:
         """True when melee has not moved the target's health."""

@@ -128,6 +128,15 @@ class Action:
             self._send_target_mouse()
             return
 
+        if mob.is_treasure:
+            mob.targeted = True
+            self.mob_targeted = self.target_id
+            self.unwait(TARGET)
+            self.target_sent = False
+            self._consider_sent = False
+            return
+
+        # Treasures don't send considers back
         if not self._consider_sent:
             self._send_consider()
             return
