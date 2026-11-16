@@ -4,6 +4,7 @@ import re
 import time
 from collections.abc import Callable, Collection
 from dataclasses import dataclass
+from enum import Enum
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -26,6 +27,10 @@ from eqclient4.structs import (
 
 REPLY_TIMEOUT = 8.0
 
+SEND_COMMANDS = "SEND_COMMANDS"
+TARGET = "TARGET"
+    
+
 
 @dataclass
 class Command:
@@ -35,10 +40,7 @@ class Command:
     response_pattern: str
     failure_patterns: list[str]
     target_id: int | None = None
-    target: bool = False
-    sent: bool = False
-    sent_at: float = 0.0
-    recv: bool = False
+    sent_at: float | None = None
     recv_response: re.Match | None = None
     failure_msg: str | None = None
     success_callback: Callable[[], None] | None = None
@@ -79,6 +81,17 @@ class Action:
 
         self.commands: list[Command] = []
 
+    def opcodes(self) -> tuple[str, ...]:
+        return ("OP_Consider", "OP_ChannelMessage", "OP_SpecialMesg")
+
+    def step(self) -> None:
+        self.suspended = False
+        self.handle_targeting()
+
+        if self.waiting_for(SEND_COMMANDS):
+            self.send_commands()
+            return
+
     def _send_target_mouse(self) -> None:
         self.loop.send(
             "OP_TargetMouse",
@@ -99,7 +112,7 @@ class Action:
 
     def handle_mob_targeting(self, mob: Mob) -> None:
         if self.mob_targeted != self.target_id:
-            self.wait("TARGET")
+            self.wait(TARGET)
 
         if not self.can_see_mob(mob):
             return
@@ -123,7 +136,7 @@ class Action:
         if message:
             mob.targeted = True
             self.mob_targeted = self.target_id
-            self.unwait("TARGET")
+            self.unwait(TARGET)
             self.target_sent = False
             self._consider_sent = False
             return
@@ -133,7 +146,7 @@ class Action:
             previous = self.world.bot_roster.bot_by_spawn_id(self.mob_targeted)
             if previous:
                 previous.targeted = False
-            self.wait("TARGET")
+            self.wait(TARGET)
 
         if not self.world.line_of_sight(bot.position):
             self.send_channel_message(f"^botsummon byname {bot.name}")
@@ -154,7 +167,7 @@ class Action:
         if message:
             bot.targeted = True
             self.mob_targeted = self.target_id
-            self.unwait("TARGET")
+            self.unwait(TARGET)
             self.target_sent = False
             self._consider_sent = False
             return
@@ -172,21 +185,21 @@ class Action:
             return
 
     def send_commands(self) -> None:
-        """Complete after all commands have been sent and response or timeout has occurred."""
+        """Complete after all commands have been sent and response or timeout has occurred.
+        
+        Trigger by waiting for "SEND_COMMANDS" and returning from step().
+        """
         for command in self.commands:
-
-            if command.recv or command.failure_msg:
+            if command.recv_response or command.failure_msg:
                 continue
 
-            if command.target and not command.sent:
-                if not self.mob_targeted == command.target_id:
-                    self.target_id = command.target_id or 0
+            if command.sent_at is None:
+                if command.target_id and self.mob_targeted != command.target_id:
+                    self.target_id = command.target_id
                     return
-
-            if not command.sent:
+                
                 self.messages.clear()  # Discard previous replies
                 command.sent_at = time.monotonic()
-                command.sent = True
                 self.send_channel_message(command.text, sleep_time=0.025)
                 return
 
@@ -219,19 +232,13 @@ class Action:
             success = self.re_has_response(success_pattern)
 
             if success:
-                command.recv = True
                 command.recv_response = success
                 if command.success_callback:
                     command.success_callback()
 
             return
 
-        self.unwait("send-commands")
-
-    def step(self) -> None:
-
-        self.handle_targeting()
-        
+        self.unwait(SEND_COMMANDS)
 
     def re_has_response(self, matcher: re.Pattern) -> re.Match | None:
         def _message_text(msg: EQStruct) -> str:
@@ -289,8 +296,8 @@ class Action:
         if kind in pending:
             pending.remove(kind)
 
-    def waiting_for(self, kind: str) -> bool:
-        return kind in self._pending()
+    def waiting_for(self, *kinds: str) -> bool:
+        return any(kind in self._pending() for kind in kinds)
 
     def wait_label(self) -> str:
         return ",".join(self._pending())
@@ -328,9 +335,6 @@ class Action:
 
     def add_message(self, payload: EQStruct) -> None:
         self.messages.append(payload)
-
-    def opcodes(self) -> tuple[str, ...]:
-        return ("OP_Consider", "OP_ChannelMessage", "OP_SpecialMesg")
 
     @staticmethod
     def key(action: Action) -> tuple[object, ...]:

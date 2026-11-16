@@ -5,13 +5,16 @@ strongest scribed spell of each build role, and a gem waits out its recast.
 """
 
 import time
+from functools import partial
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from eqclient4.loop import Loop
     from eqclient4.world import Mob, World
 
-from eqclient4.action import Action
+from eqclient4.action import Action, Command, SEND_COMMANDS, TARGET
+from eqclient4.actions.form import FormParty
+from eqclient4.actions.constants import MELEE_RANGE, SPELL_RANGE, HOSTILE_CLOSE_RANGE
 from eqclient4.log import log
 from eqclient4.nav.path import STRIDE, straight
 from eqclient4.structs import (
@@ -23,6 +26,9 @@ from eqclient4.structs import (
     OP_Taunt,
     simple_id_matcher,
 )
+from eqclient4.structs.constants import CASTER_CLASSES
+
+
 
 # from eqclient4.actions.bots.reconstitute import Reconstitute
 # from eqclient4.actions.casting import (
@@ -109,7 +115,7 @@ class Attack(Action):
         self.cautious = bool(cautious)
 
         self.mob: Mob | None = None
-        self.bot_opened = False
+        self.bots_sent = False
         self.attacking = False
 
     def opcodes(self) -> tuple[str, ...]:
@@ -125,6 +131,7 @@ class Attack(Action):
         self.loop.send("OP_AutoAttack", OP_AutoAttack(0).serialize())
         self.attacking = False
         self.suspended = True
+        self.bots_sent = False
 
     @staticmethod
     def key(action: Action) -> tuple[int, int]:
@@ -135,42 +142,53 @@ class Attack(Action):
             return ((-mob.level or 0), action.insert)
         return (0, int(action.insert))
 
+    def command_sent(self, text: str) -> bool:
+        for command in self.commands:
+            if command.text == text and command.sent_at is not None:
+                return True
+        return False
+
+    def completed_command(self, text: str, remove: bool = True) -> Command | None:
+        """Pop and return the first command that was sent and completed."""
+        pop_idx = None
+        ret_command = None
+        for idx, command in enumerate(self.commands):
+            if command.text != text:
+                continue
+            if command.sent_at and command.recv_response or command.failure_msg:
+                pop_idx = idx
+                ret_command = command
+                break
+
+        if pop_idx is not None and remove:
+            command = self.commands.pop(pop_idx)
+            return command
+
+        return ret_command
+
     def step(self) -> None:
         super().step()
-        if self.waiting_for("TARGET"):
+        if self.waiting_for(TARGET, SEND_COMMANDS):
             return
 
-        spawn = self.target_id
         if not self.mob:
-            mob = self.world.mobs.get(spawn)
-            if not mob:
-                log.error("attack target=%s missing", spawn)
+            self.mob = self.world.mobs.get(self.target_id)
+            if not self.mob:
+                log.error(f"attack target={self.target_id} missing")
                 self.complete = True
                 return
 
-            self.mob = mob
+        self.face(self.mob.position)
 
-        if self._become_corpse():
+        if not self.world.line_of_sight(self.mob.position):
+            self.move_closer(self.mob.position)
             return
 
-        # tick_recasts(self)
-        self._bars()
-        self._cure_flag()
-        # self._string_251()
-        # if not self.waiting_for("CAST") and fill_bar(loop, world):
-        #     return
-
-        self._request_heal()
-        self._request_cure()
-
-        if self.waiting_for("CAST") or self.casting:
-            if not self.messages:
+        if self.mob and self.mob.is_treasure:
+            if float(self.mob.distance) <= 25:
+                self.loop.send("OP_LDoNOpen", OP_LDoNOpen().serialize())
                 return
-            self.unwait("CAST")
-            self.casting = False
-
-        if self.mob and self.mob.is_treasure and float(self.mob.distance) <= 25:
-            self.loop.send("OP_LDoNOpen", OP_LDoNOpen().serialize())
+            self.move_closer(self.mob.position)
             return
 
         if not self.mob or self.mob.dead:
@@ -179,16 +197,85 @@ class Attack(Action):
             self.complete = True
             return
 
-        if int(self.mob.hp or 0) == 0 and not self.mob.is_treasure:
+        if self.mob.hp == 0 and not self.mob.is_treasure:
             self.zero_hp += 1
             if self.zero_hp >= 10:
-                if not self.target_id:
-                    log.info("attack dead spawn=%s", self.target_id)
-                    # self.world.skip_spawn(target)  # skip things that are already dead
+                log.info(f"attack zero hp spawn={self.target_id}")
                 self.complete = True
                 return
+
+        if self.mob.distance > HOSTILE_CLOSE_RANGE:
+            self.move_closer(self.mob.position)
+            return
+
+        if not self.bots_sent:
+            # "usage: <enemy_target> %s [actionable: byname | ownergroup | ownerraid | namesgroup | healrotation | mmr | byclass | byrace | default: spawned] ([actionable_name])"
+            cmd = Command(
+                text="^attack",
+                response_pattern=r"(?:Attacking (.*?)\.|\d+ of your bots are attacking (.*?)\.)",
+                failure_patterns=[
+                    r"You must <target> an enemy to use this command",
+                    r"You must have Line of Sight to use this command",
+                    r"None of your bots are capable of attacking",
+                    r"You have no spawned bots meeting this criteria - type: 'spawned'"
+                ],
+            )
+            cmd.success_callback=partial(self.handle_bots_attacking, cmd)
+            cmd.failure_callback=partial(self.handle_bots_failure, cmd)
+            self.commands.append(cmd)
+            self.wait(SEND_COMMANDS)
+            return
+
+        command_response = self.completed_command("^attack", remove=False)
+        if not command_response:
+            log.error(f"attack failure=no command send had no failure or success")
+            log.error("Critical failure")
+            self.complete = True
+            return
+
+        if command_response.failure_msg:
+            log.error(f"attack failure={command_response.failure_msg}")
+            return
+
+        if self.world.character.class_id in CASTER_CLASSES:
+            if self.mob.distance > SPELL_RANGE:
+                self.move_closer(self.mob.position)
+                return
         else:
-            self.zero_hp = 0
+            if self.mob.distance > MELEE_RANGE:
+                self.move_closer(self.mob.position)
+                return
+        
+        if not self.attacking:
+            log.info("attack autoattack")
+            self.loop.send("OP_AutoAttack", OP_AutoAttack(1).serialize())
+            self.attacking = True
+            return
+
+        if self.attacking:
+            log.info("in combat")
+            return
+        
+        log.error("Should not be here yet")
+        # if self._become_corpse():
+        #     return
+
+        # tick_recasts(self)
+        self._bars()
+        self._cure_flag()
+        # self._string_251()
+        # if not self.waiting_for("CAST") and fill_bar(loop, world):
+        #     return
+
+        # self._request_heal()
+        # self._request_cure()
+
+        if self.waiting_for("CAST") or self.casting:
+            if not self.messages:
+                return
+            self.unwait("CAST")
+            self.casting = False
+
         sees = self.world.line_of_sight(self.mob.position)
         if self.closed and not sees:
             self.closed = False
@@ -256,30 +343,32 @@ class Attack(Action):
             self.move_closer(self.mob, "los")
             return
 
-        self.face(self.mob.position)
 
-        # Class 62 is an LDoN object. Melee never puts the player on its hate list,
-        # so the kill does not credit a task. Opening it does.
-        if self.mob.is_treasure:
-            self.loop.send("OP_LDoNOpen", OP_LDoNOpen().serialize())
-            return
-
-        if not self.opened:
-            # send_command(loop, "^attack")
-            self.opened = True
-
-        self.suspended = False
-        if self._combat_spell():
-            self.attacking = False
-            return
-
-        # Each OP_AutoAttack(1) restarts the swing timer. Send it once per engagement.
-        if not self.attacking:
-            log.info("attack autoattack")
-            self.loop.send("OP_AutoAttack", OP_AutoAttack(1).serialize())
-            self.attacking = True
+        # if self._combat_spell():
+        #     self.attacking = False
+        #     return
 
         self._ability()
+
+    def handle_bots_attacking(self, cmd: Command) -> None:
+        self.bots_sent = True
+        assert cmd.recv_response
+        log.info(f"bots attacking {cmd.recv_response.group(1)}")
+        return
+
+    def handle_bots_failure(self, cmd: Command) -> None:
+        self.bots_sent = False
+        log.error(f"bots failure={cmd.failure_msg}")
+        # no bots are capable or timeout because there are no bots
+        positioning_failures = (
+            "You must <target> an enemy to use this command",
+            "You must have Line of Sight to use this command",
+        )
+        if cmd.failure_msg not in positioning_failures:
+            self.yield_to(FormParty(self.world, self.loop, self.world.party_mode ==  "raid",))
+            return
+        self.complete = True
+        return
 
     def _hp_stuck(self, mob: Mob) -> bool:
         """True when melee has not moved the target's health."""
@@ -359,59 +448,59 @@ class Attack(Action):
             matched = True
         return matched
 
-    def _string_251(self) -> None:
-        if self.reclaim_if_ours(int(self.cast_target or 0)):
-            self.heal_requested = False
-            self.cure_requested = False
+    # def _string_251(self) -> None:
+    #     if self.reclaim_if_ours(int(self.cast_target or 0)):
+    #         self.heal_requested = False
+    #         self.cure_requested = False
 
-    def _request_heal(self) -> None:
-        if self.heal_requested:
-            return
-        # target = lowest_hurt(world)
-        # if target is None:
-        #     return
-        # gem = next((row for row in memorized(world, self) if row.heal), None)
-        # if gem is None or not ready_gem(world, gem):
-        #     return
-        # cast_spell(loop, gem, target)
-        # self.cast_target = int(target)
-        # self.heal_requested = True
-        # arm_recast(self, gem)
+    # def _request_heal(self) -> None:
+    #     if self.heal_requested:
+    #         return
+    #     # target = lowest_hurt(world)
+    #     # if target is None:
+    #     #     return
+    #     # gem = next((row for row in memorized(world, self) if row.heal), None)
+    #     # if gem is None or not ready_gem(world, gem):
+    #     #     return
+    #     # cast_spell(loop, gem, target)
+    #     # self.cast_target = int(target)
+    #     # self.heal_requested = True
+    #     # arm_recast(self, gem)
 
-    def _request_cure(self) -> None:
-        if self.cure_requested:
-            return
-        # rows = afflictions(world)
-        # if not rows:
-        #     return
-        # effect = rows[0][1] if isinstance(rows[0], tuple) else rows[0].effect
-        # entity = rows[0][0] if isinstance(rows[0], tuple) else rows[0].entity
-        # gem = next((row for row in memorized(world, self) if cures(row, effect)), None)
-        # if gem is None or not ready_gem(world, gem):
-        #     return
-        # cast_spell(loop, gem, int(entity or 0))
-        # self.cast_target = int(entity or 0)
-        # self.cure_requested = True
-        # arm_recast(self, gem)
+    # def _request_cure(self) -> None:
+    #     if self.cure_requested:
+    #         return
+    #     # rows = afflictions(world)
+    #     # if not rows:
+    #     #     return
+    #     # effect = rows[0][1] if isinstance(rows[0], tuple) else rows[0].effect
+    #     # entity = rows[0][0] if isinstance(rows[0], tuple) else rows[0].entity
+    #     # gem = next((row for row in memorized(world, self) if cures(row, effect)), None)
+    #     # if gem is None or not ready_gem(world, gem):
+    #     #     return
+    #     # cast_spell(loop, gem, int(entity or 0))
+    #     # self.cast_target = int(entity or 0)
+    #     # self.cure_requested = True
+    #     # arm_recast(self, gem)
 
-    def _combat_spell(self) -> bool:
-        # if sit_for_mana(loop, world):
-        #     self.resting = True
-        #     return True
-        # if self.resting:
-        #     stand(loop, world)
-        #     self.resting = False
-        # choice = next_offense(world, self, self.landed)
-        # if choice is None:
-        #     return False
-        # cast_spell(loop, choice.gem, choice.target)
-        # self.cast_target = choice.target
-        # self.casting = True
-        # self.wait("CAST")
-        # arm_recast(self, choice.gem)
-        # if choice.role in ONCE:
-        #     self.landed.add(choice.role)
-        return True
+    # def _combat_spell(self) -> bool:
+    #     # if sit_for_mana(loop, world):
+    #     #     self.resting = True
+    #     #     return True
+    #     # if self.resting:
+    #     #     stand(loop, world)
+    #     #     self.resting = False
+    #     # choice = next_offense(world, self, self.landed)
+    #     # if choice is None:
+    #     #     return False
+    #     # cast_spell(loop, choice.gem, choice.target)
+    #     # self.cast_target = choice.target
+    #     # self.casting = True
+    #     # self.wait("CAST")
+    #     # arm_recast(self, choice.gem)
+    #     # if choice.role in ONCE:
+    #     #     self.landed.add(choice.role)
+    #     return True
 
     def _ability(self) -> None:
         # reclaiming = queued(loop, "Reclaim")

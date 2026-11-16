@@ -1,3 +1,5 @@
+import math
+
 from eqclient4.bots import Bot
 from eqclient4.handler import Handler
 from eqclient4.log import log
@@ -73,6 +75,7 @@ class MobsHandler(Handler):
                 mob.npc = spawn.npc
                 mob.faction_id = faction_id
                 mob.npc = spawn.npc
+                mob.distance = math.dist(mob.position, self.world.position)
                 self.world.mobs[spawn.spawn_id] = mob
                 return
 
@@ -157,6 +160,7 @@ class MobsHandler(Handler):
                     bot.position = (payload.x, payload.y, payload.z)
                     bot.heading = payload.heading
                     bot.animation = payload.animation
+                    bot.distance = math.dist(bot.position, self.world.position)
                     return
 
                 if payload.spawn_id not in self.world.mobs:
@@ -167,6 +171,7 @@ class MobsHandler(Handler):
                 mob.position = (payload.x, payload.y, payload.z)
                 mob.heading = payload.heading
                 mob.animation = payload.animation
+                mob.distance = math.dist(mob.position, self.world.position)
                 log.debug(
                     f"Client update for {mob.name} at {mob.position} heading {mob.heading} animation {mob.animation}"
                 )

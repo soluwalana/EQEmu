@@ -140,6 +140,14 @@ class Roster:
         for bot in self.raid.values():
             yield bot
 
+    def all_spawned(self) -> Iterator[Bot]:
+        for bot in self.group.values():
+            if bot.spawned:
+                yield bot
+        for bot in self.raid.values():
+            if bot.spawned:
+                yield bot
+
 
 def race_for_class(class_id: int) -> int:
     potential_races = []
@@ -176,6 +184,9 @@ def get_roster(item_book: ItemBook, character: str) -> Roster:
         if short == "ENCH":  # no duplicate vowels allowed
             short = f"x{short}"
 
+
+        # TODO: this is going to dupe if agent has same 3 letter prefix
+        # need to make a random prefix for the character name
         name = f"{character[0:3]}" + f"{short}{suffix}".lower()
 
         return Bot(
@@ -234,6 +245,7 @@ class Bot:
         self.created: bool = created
         self.spawned: bool = False
         self.position: tuple[float, float, float] = (0, 0, 0)
+        self.distance: float = 0
         self.heading: float = 0
         self.animation: int = 0
         self.settings: dict[str, str] | None = settings

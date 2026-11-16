@@ -3,7 +3,7 @@ import time
 from functools import partial
 from typing import TYPE_CHECKING, Callable
 
-from eqclient4.action import Action, Command
+from eqclient4.action import Action, Command, SEND_COMMANDS, TARGET
 from eqclient4.bots import Bot
 from eqclient4.data.bot_spells import _BOT_ROLES, _CASTERS
 from eqclient4.log import log
@@ -115,7 +115,7 @@ class FormParty(Action):
 
     def step(self) -> None:
         super().step()
-        if self.waiting_for("TARGET"):
+        if self.waiting_for(TARGET, SEND_COMMANDS):
             return
 
         if self.waiting_for("formation-check"):
@@ -144,10 +144,6 @@ class FormParty(Action):
 
         if self.waiting_for("configure"):
             self.configure()
-            return
-
-        if self.waiting_for("send-commands"):
-            self.send_commands()
             return
 
         log.info(f"Finished forming party in {time.time() - self.start_time} seconds")
@@ -498,7 +494,7 @@ class FormParty(Action):
             self.bot_commands(bot)
 
         self.unwait("configure")
-        self.wait("send-commands")
+        self.wait(SEND_COMMANDS)
 
     def settings_saver(self, bot: Bot, setting: str, value: str) -> Callable[[], None]:
         def closure() -> None:
@@ -626,7 +622,6 @@ class FormParty(Action):
                             *BOT_COMMAND_FAILURES,
                         ],
                         success_callback=self.settings_saver(bot, key, "1"),
-                        target=True,
                         target_id=bot.spawn_id,
                     )
                 )

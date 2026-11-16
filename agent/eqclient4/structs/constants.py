@@ -70,6 +70,19 @@ CLASS_NAME_TO_ID: dict[str, int] = {name: class_id for class_id, name in CLASS_I
 
 TANK_CLASSES = {CLASS_NAME_TO_ID[name] for name in ("Warrior", "Paladin", "Shadowknight")}
 HEALER_CLASSES = {CLASS_NAME_TO_ID[name] for name in ("Cleric", "Druid", "Shaman")}
+CASTER_CLASSES = {
+    CLASS_NAME_TO_ID[name]
+    for name in (
+        "Necromancer",
+        "Magician",
+        "Enchanter",
+        "Wizard",
+        "Cleric",
+        "Druid",
+        "Shaman",
+    )
+}
+
 
 DPS_CLASSES = {
     CLASS_NAME_TO_ID[name]

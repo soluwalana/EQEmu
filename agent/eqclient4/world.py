@@ -182,6 +182,8 @@ class World:
         self._x, self._y, self._z = (float(point[0]), float(point[1]), float(point[2]))
         for mob in self.mobs.values():
             self.measure(mob)
+        for bot in self.bot_roster.all_spawned():
+            bot.distance = math.dist(bot.position, point)
 
     def note_fight(self, spawn_id: int, mob: Mob) -> None:
         """This spawn attacked us, or we attacked it. Loot uses the set."""
@@ -192,10 +194,8 @@ class World:
         """Refresh distance (3D yards) and direction (0-512 heading from us to the mob)."""
         origin = self.position
         point = mob.position
-        dx = point[0] - origin[0]
-        dy = point[1] - origin[1]
-        dz = point[2] - origin[2]
-        mob.distance = math.sqrt(dx * dx + dy * dy + dz * dz)
+
+        mob.distance = math.dist(origin, point)
         mob.direction = eq_heading(origin[0], origin[1], point[0], point[1])
 
     def nearby(self, yards: float) -> list[Mob]:
@@ -358,9 +358,6 @@ class Movement:
         self.path = None
         self._routes = {}
         self.position = (float(point[0]), float(point[1]), float(point[2]))
-        self.write_world(point)
-
-    def write_world(self, point: tuple[float, float, float]) -> None:
         self.world.position = (float(point[0]), float(point[1]), float(point[2]))
 
     def handle(self, opcode: str, payload: EQStruct) -> None:
@@ -448,6 +445,9 @@ class Movement:
             return
         self.heading = want
         self._emit(loop, here, 0, "face")
+        loop._flush()
+        time.sleep(0.05)
+        loop.pump()
 
     def advance(self, loop: Loop, path: EQPath, sender: Action | None = None) -> None:
         """One stride. The only builder of OP_ClientUpdate and the only door click.
@@ -556,7 +556,7 @@ class Movement:
             return
 
         self.position = (float(asked[0]), float(asked[1]), float(asked[2]))
-        self.write_world(self.position)
+        self.world.position = (float(asked[0]), float(asked[1]), float(asked[2]))
 
     def _reused_route(
         self,
@@ -915,8 +915,8 @@ class Movement:
         self.position = point
         if heading:
             self.heading = heading
-
-        self.write_world(point)
+        
+        self.world.position = (float(point[0]), float(point[1]), float(point[2]))
 
     def _on_new_zone(self, row: OP_NewZone) -> None:
         _short = row.short_name
@@ -930,7 +930,7 @@ class Movement:
         self.path = None
         self._routes = {}
         self.find_mob = None
-        self.write_world(safe)
+        self.world.position = (float(safe[0]), float(safe[1]), float(safe[2]))
         if _short:
             self.world.zone = _short
 
