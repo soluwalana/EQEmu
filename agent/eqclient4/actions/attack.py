@@ -217,7 +217,7 @@ class Attack(Action):
                     r"You must <target> an enemy to use this command",
                     r"You must have Line of Sight to use this command",
                     r"None of your bots are capable of attacking",
-                    r"You have no spawned bots meeting this criteria - type: 'spawned'"
+                    r"You have no spawned bots meeting this criteria - type: 'spawned'",
                 ],
             )
             cmd.success_callback=partial(self.handle_bots_attacking, cmd)
@@ -358,13 +358,14 @@ class Attack(Action):
 
     def handle_bots_failure(self, cmd: Command) -> None:
         self.bots_sent = False
+        assert cmd.failure_msg
         log.error(f"bots failure={cmd.failure_msg}")
         # no bots are capable or timeout because there are no bots
         positioning_failures = (
             "You must <target> an enemy to use this command",
             "You must have Line of Sight to use this command",
         )
-        if cmd.failure_msg not in positioning_failures:
+        if not any((f in cmd.failure_msg for f in positioning_failures)):
             self.yield_to(FormParty(self.world, self.loop, self.world.party_mode ==  "raid",))
             return
         self.complete = True
