@@ -37,7 +37,7 @@ class Command:
     """A command to be processed and waited on."""
 
     text: str
-    response_pattern: str
+    response_pattern: str | list[str]
     failure_patterns: list[str]
     target_id: int | None = None
     sent_at: float | None = None
@@ -45,6 +45,10 @@ class Command:
     failure_msg: str | None = None
     success_callback: Callable[[], None] | None = None
     failure_callback: Callable[[], None] | None = None
+
+
+def list_to_re(patterns: list[str]) -> re.Pattern:
+    return re.compile(rf"(?:{'|'.join(patterns)})")
 
 
 class Action:
@@ -220,7 +224,7 @@ class Action:
 
             failure = None
             if failure_patterns:
-                failure_pattern = re.compile("(" + "|".join(failure_patterns) + ")")
+                failure_pattern = list_to_re(failure_patterns)
                 failure = self.re_has_response(failure_pattern)
 
             if failure:
@@ -237,7 +241,10 @@ class Action:
                     command.failure_callback()
                 return
 
-            success_pattern = re.compile(command.response_pattern)
+            if isinstance(command.response_pattern, list):
+                success_pattern = list_to_re(command.response_pattern)
+            else:
+                success_pattern = re.compile(command.response_pattern)
             success = self.re_has_response(success_pattern)
 
             if success:

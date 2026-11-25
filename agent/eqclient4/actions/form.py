@@ -3,7 +3,7 @@ import time
 from functools import partial
 from typing import TYPE_CHECKING, Callable
 
-from eqclient4.action import Action, Command, SEND_COMMANDS, TARGET
+from eqclient4.action import Action, Command, SEND_COMMANDS, TARGET, list_to_re
 from eqclient4.bots import Bot
 from eqclient4.data.bot_spells import _BOT_ROLES, _CASTERS
 from eqclient4.log import log
@@ -29,21 +29,6 @@ AGGRESSIVE = "5"
 BURN = "7"
 REPLY_TIMEOUT = 8.0
 
-RAID_CLEAR_RE = re.compile(
-    r"Bot raid roster will not form again until you .* The raid is unchanged\."
-)
-RAID_CLEAR_FAILURE_RE = re.compile(r"Could not update the bot raid roster\.")
-RAID_CAMP_RE = re.compile(r"Bots camped\. Their raid seats are kept\.")
-
-BOT_COUNT_RE = re.compile(r"(\d+) Of \d+ bots? shown, \d+ (?:are|is) owned by you\.")
-NO_BOTS_RE = re.compile(r"You have no bots\.")
-BOT_RESPONSE_RE = re.compile(
-    r"Bot (\d+) \| (.*) is a Level (\d+) (\w+) (\w+(?:\s+\w+)?) (\w+(?:\s+\w+)?) owned by (\w+)\."
-)
-RAID_FORMED_RE = re.compile(
-    r"Bot raid formed\. (\d+) bots spawned, (\d+) newly joined, (\d+) left out\."
-)
-
 BOT_COMMAND_FAILURES = [
     r"Bot commands not available\.",
     r"Your access level is not high enough to use this bot command\.",
@@ -52,6 +37,18 @@ BOT_COMMAND_FAILURES = [
     r"Undefined linker usage in \w+ \([^)]+\)",
     r"^[Uu]sage: ",
 ]
+RAID_CLEAR = r"Bot raid roster will not form again until you .* The raid is unchanged\."
+RAID_CLEAR_FAILURE = [
+    r"Could not update the bot raid roster\.",
+    *BOT_COMMAND_FAILURES
+]
+RAID_CAMP = r"Bots camped\. Their raid seats are kept\."
+
+BOT_COUNT = r"(\d+) Of \d+ bots? shown, \d+ (?:are|is) owned by you\."
+NO_BOTS = r"You have no bots\."
+BOT_RESPONSE = r"Bot (\d+) \| (.*) is a Level (\d+) (\w+) (\w+(?:\s+\w+)?) (\w+(?:\s+\w+)?) owned by (\w+)\."
+BOT_RESPONSE_RE = re.compile(BOT_RESPONSE)
+RAID_FORMED = r"Bot raid formed\. (\d+) bots spawned, (\d+) newly joined, (\d+) left out\."
 
 ACTIONABLE_FAILURES = [
     r"Command passed null 'ActionableBot' criteria",
@@ -64,34 +61,68 @@ HEAL_ROTATION_COMMON_FAILURES = [
     r"\w+ is not a (?:current )?member of a Heal Rotation",
     *BOT_COMMAND_FAILURES,
 ]
-BOT_LIST_FAILURE_RE = re.compile(
-    "|".join(
-        [
-            r"You have no bots meeting this criteria\.",
-            r"A numeric value or name is required to use the filter property of this command",
-            *BOT_COMMAND_FAILURES,
-        ]
-    )
-)
-RAID_FORMATION_FAILURE_RE = re.compile(
-    "|".join(
-        [
-            r"You do not own any bots\.",
-            r"Could not save the bot raid roster\.",
-            r"Bots are disabled on this server\.",
-            r"The bot raid roster table is missing\.",
-            r"You have no active bot raid roster\.",
-            r"Leave your group before forming a bot raid\.",
-            r"Could not create a raid\.",
-            r"You must be level \d+ to spawn .*bots\.",
-            r"You cannot camp or spawn bots while feigned\.",
-            r"You cannot camp or spawn bots while your raid is engaged\.",
-            r"You cannot camp or spawn bots while your group is engaged,",
-            r"You cannot camp or spawn bots while you are engaged,",
-            *BOT_COMMAND_FAILURES,
-        ]
-    )
-)
+BOT_LIST_FAILURES = [
+    r"You have no bots meeting this criteria\.",
+    r"A numeric value or name is required to use the filter property of this command",
+    *BOT_COMMAND_FAILURES,
+]
+RAID_FORMATION_FAILURE_RE = [
+    r"You do not own any bots\.",
+    r"Could not save the bot raid roster\.",
+    r"Bots are disabled on this server\.",
+    r"The bot raid roster table is missing\.",
+    r"You have no active bot raid roster\.",
+    r"Leave your group before forming a bot raid\.",
+    r"Could not create a raid\.",
+    r"You must be level \d+ to spawn .*bots\.",
+    r"You cannot camp or spawn bots while feigned\.",
+    r"You cannot camp or spawn bots while your raid is engaged\.",
+    r"You cannot camp or spawn bots while your group is engaged,",
+    r"You cannot camp or spawn bots while you are engaged,",
+    *BOT_COMMAND_FAILURES,
+]
+BOT_CAMP_SPAWN_FAILURES = [
+    r"You cannot camp or spawn bots while feigned\.",
+    r"You cannot camp or spawn bots while your raid is engaged\.",
+    r"You cannot camp or spawn bots while your group is engaged,",
+    r"You cannot camp or spawn bots while you are engaged,",
+]
+BOT_LEVEL_FAILURE = r"You must be level \d+ to spawn .*bots\."
+
+BOT_CREATE_FAILURES = [
+    r"You must name your bot!",
+    r"Invalid (?:class|race|gender)!",
+    r"'[^']+' is an invalid name",
+    r"The name '[^']+' is already being used or prohibited",
+    r"is an invalid race-class combination",
+    r"^Gender: ",
+    r"Failed to query bot count\.",
+    r"You cannot create (?:anymore than .*|any .*)bots?\.",
+    r"Failed to create '[^']+' due to unknown cause\.",
+    BOT_LEVEL_FAILURE,
+]
+BOT_SPAWN_FAILURES = [
+    r"You must specify a name to use this command\.",
+    r"Failed to load bot ID for '[^']+'\.",
+    r"You don't own a bot named '[^']+'\.",
+    r"Invalid bot '[^']+' \(ID \d+\)",
+    r"Failed to spawn '[^']+' \(ID \d+\)",
+    r"You cannot have more than \d+ spawned .*bots?\.",
+    r"You are not currently allowed to spawn any .*bots\.",
+    BOT_LEVEL_FAILURE,
+    *BOT_CAMP_SPAWN_FAILURES,
+]
+RAID_FORMATION_FAILURES = [
+    r"You do not own any bots\.",
+    r"Could not save the bot raid roster\.",
+    r"Bots are disabled on this server\.",
+    r"The bot raid roster table is missing\.",
+    r"You have no active bot raid roster\.",
+    r"Leave your group before forming a bot raid\.",
+    r"Could not create a raid\.",
+    BOT_LEVEL_FAILURE,
+    *BOT_CAMP_SPAWN_FAILURES,
+]
 
 
 class FormParty(Action):
@@ -101,8 +132,8 @@ class FormParty(Action):
         self.priority = 290
         self.raid = raid
         self.start_time = time.time()
-        self._reply_started = 0.0
-        self.wait("formation-check")
+        self._reply_started  = 0.0
+        self.wait("prepare-formation")
 
     def opcodes(self) -> tuple[str, ...]:
         return (
@@ -115,18 +146,14 @@ class FormParty(Action):
 
     def step(self) -> None:
         super().step()
-        if self.waiting_for(TARGET, SEND_COMMANDS):
+        if self.complete or self.waiting_for(TARGET, SEND_COMMANDS):
             return
 
-        if self.waiting_for("formation-check"):
+        if self.waiting_for("prepare-formation"):
             self.prepare_formation()
             return
 
-        if self.waiting_for("init"):
-            self.send_list()
-            return
-
-        if self.waiting_for("botlist"):
+        if self.waiting_for("creation"):
             self.creation()
             return
 
@@ -134,11 +161,7 @@ class FormParty(Action):
             self.spawn()
             return
 
-        if self.waiting_for("spawn-confirm"):
-            self.wait_on_spawns()
-            return
-
-        if self.waiting_for("group-formation"):
+        if self.waiting_for("formation"):
             self.group_formation()
             return
 
@@ -150,205 +173,217 @@ class FormParty(Action):
         # Reconstitute or create the party
         self.complete = True
 
+    def suspend(self) -> None:
+        self.suspended = True
+        self._reply_started = 0.0
+        self.waiting.clear()
+        self.wait("prepare-formation")
+
     def prepare_formation(self) -> None:
         """Leave an incompatible party before spawning or inviting bots."""
-        mode = self.world.party_mode
-        desired = "raid" if self.raid else "group"
+        current_mode = self.world.party_mode
 
-        if self.waiting_for("raid-clear"):
-            if not self.re_has_response(RAID_CLEAR_RE):
-                self.check_failure(RAID_CLEAR_FAILURE_RE)
-                return
-            self.unwait("raid-clear")
-            # Camp before disbanding: disband removes seats, not live bots.
-            self.messages.clear()
-            self._reply_started = time.monotonic()
-            self.wait("raid-camp")
-            self.send_channel_message("^raidform camp")
-            return
-
-        elif self.waiting_for("raid-camp"):
-            if not self.re_has_response(RAID_CAMP_RE):
-                self.check_failure(RAID_FORMATION_FAILURE_RE)
-                return
-            self.unwait("raid-camp")
-            self.wait("raid-camp-despawn")
-            self._reply_started = time.monotonic()
-            return
-
-        elif self.waiting_for("raid-camp-despawn"):
+        if self.waiting_for("raid-camp-despawn"):
             # The acknowledgement can precede OP_DeleteSpawn. Do not reuse
             # stale spawn IDs when the existing group formation runs.
-            if any(bot.spawned for bot in self.world.bot_roster.all_bots()):
-                self.check_failure(RAID_FORMATION_FAILURE_RE)
-                return
-            self.unwait("raid-camp-despawn")
+            still_spawned = []
+            for bot in self.world.bot_roster.all_bots():
+                if bot.spawned:
+                    still_spawned.append(bot)
 
-        elif self.waiting_for("party-disband"):
-            if mode is not None:
+            if len(still_spawned) == 0:
+                self.unwait("raid-camp-despawn")
+                return
+            
+            if time.monotonic() - self._reply_started >= REPLY_TIMEOUT:
+                log.error(f"Camping failed for {still_spawned}")
+                self.unwait("raid-camp-despawn")
+                return
+
+        if self.waiting_for("party-disband"):
+            if current_mode:
                 if time.monotonic() - self._reply_started >= REPLY_TIMEOUT:
-                    log.error("Timed out leaving %s", mode)
+                    log.error(f"Timed out leaving {current_mode}")
                     self.waiting.clear()
                     self.failed = True
                     self.complete = True
                 return
             self.unwait("party-disband")
 
-        elif mode == "raid" and desired == "group":
-            # Clear only the persisted auto-form flag, not the saved roster.
-            self.messages.clear()
+        def raid_camped():
+            # RaidCommandDisband (5): remove the owner and owned bots.
+            self.loop.send("OP_RaidInvite", OP_RaidInvite(5, self.world.character.name, self.world.character.name,).serialize())
             self._reply_started = time.monotonic()
-            self.wait("raid-clear")
-            self.send_channel_message("^raidform clear")
+            self.wait("raid-camp-despawn")
+
+        if current_mode == "raid":
+            self.commands.extend([
+                Command(
+                    text="^raidform clear",
+                    response_pattern=RAID_CLEAR,
+                    failure_patterns=RAID_CLEAR_FAILURE,
+                    failure_callback=self.formation_failed,
+                ),
+                Command(
+                    text="^raidform camp",
+                    response_pattern=RAID_CAMP,
+                    failure_patterns=RAID_FORMATION_FAILURES,
+                    success_callback=raid_camped,
+                    failure_callback=self.formation_failed,
+                ),
+            ])
+            self.wait(SEND_COMMANDS)
             return
 
-        if mode is not None and mode != desired:
-            name = self.world.character.name
+        if current_mode == "group":
             self._reply_started = time.monotonic()
             self.wait("party-disband")
-            if mode == "raid":
-                # RaidCommandDisband (5): remove the owner and owned bots.
-                self.loop.send("OP_RaidInvite", OP_RaidInvite(5, name, name).serialize())
-            else:
-                # The server uses the current target for group disband.
-                # Clear it so the leader disbands rather than kicking a bot.
-                self.loop.send("OP_TargetMouse", OP_TargetMouse(0).serialize())
-                self.loop.send("OP_GroupDisband", OP_GroupDisband(name, name).serialize())
+            # The server uses the current target for group disband.
+            # Clear it so the leader disbands rather than kicking a bot.
+            self.loop.send("OP_TargetMouse", OP_TargetMouse(0).serialize())
+            self.loop.send("OP_GroupDisband", OP_GroupDisband(self.world.character.name, self.world.character.name).serialize())
             return
 
-        self.unwait("formation-check")
-        self.wait("init")
+        self.unwait("prepare-formation")
+        self.wait("creation")
 
-    def send_list(self) -> None:
-        """State transition: init -> botlist | spawn
+    def formation_failed(self) -> None:
+        self.waiting.clear()
+        self.failed = True
+        self.complete = True
 
-        botlist when a bot hasn't been saved with created=True
-        spawn when all bots have been previously created
-        """
-        self.unwait("init")
+    def creation(self) -> None:
 
-        if any(not bot.created for bot in self.world.bot_roster.all_bots()):
-            log.info(f"Some bots are not created - waiting for botlist")
-            self.wait("botlist")
-            self._reply_started = time.monotonic()
-            self.send_channel_message("^botlist")
+        if self.waiting_for("bot-list"):
             return
 
-        self.wait("spawn")
+        # should only run one time 
+        log.info("Creation routine running - should run once")
+
+        command_results = []
+        missing = []
+
+        def bot_created(bot: Bot):
+            command_results.append(bot)
+            if len(command_results) == len(missing):
+                self.unwait("bot-list")
+                self.unwait("creation")
+                self.wait("spawn")
+                return
+
+        def create_missing_bots():
+            seen = self.read_existing_bots()
+
+            for bot in self.world.bot_roster.all_bots():
+                if bot.name in seen:
+                    bot.created = True
+                else:
+                    bot.created = False
+                    missing.append(bot)
+
+            self.world.bot_roster.save()
+
+            if not missing:
+                self.unwait("bot-list")
+                self.unwait("creation")
+                self.wait("spawn")
+                return
+
+            for bot in missing:
+                self.commands.append(Command(
+                    text=f"^create {bot.name} {bot.class_id} {bot.race} {bot.gender}",
+                    response_pattern=rf"Bot Created \| Name: {bot.name} ID: \d+ Race: ",
+                    failure_patterns=BOT_CREATE_FAILURES,
+                    failure_callback=self.formation_failed,
+                    success_callback=partial(bot_created, bot),
+                ))
+            self.wait(SEND_COMMANDS)
+
+        self.commands.append(Command(
+            text="^botlist",
+            response_pattern=[BOT_COUNT, NO_BOTS],
+            failure_patterns=BOT_LIST_FAILURES,
+            success_callback=create_missing_bots,
+            failure_callback=self.formation_failed,
+        ))
+        self.wait("bot-list")
+        self.wait(SEND_COMMANDS)
 
     def check_failure(self, pattern: re.Pattern) -> None:
         failure = self.re_has_response(pattern)
         if failure or time.monotonic() - self._reply_started >= REPLY_TIMEOUT:
             log.error(f"Command Failed: {failure.group(0) if failure else 'reply timeout'}")
-            self.waiting.clear()
-            self.complete = True
-            self.failed = True
+            self.formation_failed()
 
-    def creation(self) -> None:
-        """State transition: botlist -> init | spawn
-
-        init after creation has been sent in order to ensure all of the bots have been created
-           Bot creation is updated in the MobHandler after server confirmation
-
-        spawn after we have have fully read a botlist command and confirmed all bots exist
-        """
-        count = self.re_has_response(BOT_COUNT_RE)
-        log.info(f"Bot count: {count}")
-        no_bots = self.re_has_response(NO_BOTS_RE)
-        log.info(f"No bots: {no_bots}")
-
-        if not count and not no_bots:
-            log.info(f"No count or no bots - waiting")
-            self.check_failure(BOT_LIST_FAILURE_RE)
-            return
-
-        if no_bots:
-            log.info(f"No bots - creating missing bots")
-            self.create_missing_bots()
-            self.unwait("botlist")
-            self.wait("init")  # Triggers new botlist -> read_existing_bots -> creation
-            return
-
-        if count:
-            # Existing bots are sent before the count
-            self.read_existing_bots()
-
-            # Everyone exists, let's proceed
-            if all(bot.created for bot in self.world.bot_roster.all_bots()):
-                log.info(f"Bot count matches roster count: {count}")
-                self.unwait("botlist")
-                self.wait("spawn")
-                self.world.bot_roster.save()
-                return
-
-            log.info(f"Creating missing bots - some existing")
-
-            # Retrigger botlist command to ensure all bots exist
-            self.create_missing_bots()
-            self.unwait("botlist")
-            self.wait("init")
-            return
-
-    # TODO: 
-    #   - Spawn should use commands interface instead of send channel messages
-    #   - When engaged this will always fail but will not be retried allowing the
-    #   - attack to finish killing the agent
     def spawn(self) -> None:
-        """State transition: spawn -> spawn-confirm
+        
+        if self.raid:
+            self.unwait("spawn")
+            self.wait("formation")
+            return
 
-        spawn-confirm after all bots have had their spawn sent
-        """
-        log.info(f"Spawning bots")
+        log.info("Spawn routine running - should run once")
+        if self.waiting_for("spawn-confirm"):
+            return
+
+        command_results = []
+        requested = 0
+
+        def bot_spawned(bot: Bot):
+            command_results.append(bot)
+            if len(command_results) == requested:
+                self.unwait("spawn-confirm")
+                self.unwait("spawn")
+                self.wait("formation")
+                return
+        
+        self.messages.clear()
         for bot in self.action_bots():
             if bot.spawned:
                 continue
-
-            self.send_channel_message(f"^spawn {bot.name}")
-
-        self.unwait("spawn")
-        self.wait("spawn-confirm")
-
-    def wait_on_spawns(self) -> None:
-        """State transition: spawn-confirm -> configure
-
-        configure after all bots have had their spawn confirmed,
-        spawn is set in the MobHandler
-        """
-        for bot in self.action_bots():
-            if not bot.spawned:
-                return
-
-        self.unwait("spawn-confirm")
-        self.wait("group-formation")
+            
+            self.commands.append(Command(
+                text=f"^spawn {bot.name}",
+                response_pattern=rf"Bot Spawned \| Name: {bot.name} ID: \d+",
+                failure_patterns=BOT_SPAWN_FAILURES,
+                failure_callback=self.formation_failed,
+                success_callback=partial(bot_spawned, bot),
+            ))
+            requested += 1
+        
+        if requested:
+            self.wait(SEND_COMMANDS)
+        else:
+            self.unwait("spawn")
+            self.wait("formation")
 
     def group_formation(self) -> None:
         """State transition:
-            1. group-formation -> raid-formation -> configure
-            2. group-formation -> target x6 -> configure
-
+            1. formation -> raid-formation -> configure
+            2. formation -> target x6 -> configure
 
         complete after all bots have had their group formation sent
         """
 
+        def raid_formed():
+            self.unwait("raid-formation")
+            self.unwait("formation")
+            self.wait("configure")
+            return
+
         # Raid formation
         if self.raid:
             if self.waiting_for("raid-formation"):
-                reply = self.re_has_response(RAID_FORMED_RE)
-                if not reply:
-                    self.check_failure(RAID_FORMATION_FAILURE_RE)
-                    return
-
-                if int(reply.group(3)):
-                    log.warning(
-                        f"Raid formation did not seat all spawned roster bots: {reply.group(0)}"
-                    )
-                self.unwait("raid-formation")
-                self.unwait("group-formation")
-                self.wait("configure")
                 return
 
-            self._reply_started = time.monotonic()
-            self.send_channel_message("^raidform all")
+            self.commands.append(Command(
+                text="^raidform all",
+                response_pattern=RAID_FORMED,
+                failure_patterns=RAID_FORMATION_FAILURE_RE,
+                failure_callback=self.formation_failed,
+                success_callback=raid_formed,
+            ))
+            self.wait(SEND_COMMANDS)
             self.wait("raid-formation")
             return
 
@@ -367,7 +402,7 @@ class FormParty(Action):
 
         if first_bot_not_in_group is None:
             # All bots are in the group
-            self.unwait("group-formation")
+            self.unwait("formation")
             self.unwait("group-invite")
             self.wait("configure")
             return
@@ -791,34 +826,17 @@ class FormParty(Action):
                 output.append(bot)
         return output
 
-    def create_missing_bots(self) -> None:
-        for bot in self.world.bot_roster.all_bots():
-            if bot.created:
-                continue
-
-            self.send_channel_message(f"^create {bot.name} {bot.class_id} {bot.race} {bot.gender}")
-
-    def read_existing_bots(self) -> None:
-        m: re.Match | None = self.re_has_response(BOT_RESPONSE_RE)
-
-        while m:
-            log.info(f"Reading existing bot: {m.group(0)}")
-
-            bot_number = int(m.group(1))
-
+    def read_existing_bots(self) -> set[str]:
+        seen: set[str] = set()
+        while m := self.re_has_response(BOT_RESPONSE_RE):
             sl = _SAYLINK.match(m.group(2))
-            bot_name = m.group(2)
-            if sl:
-                bot_name = sl.group(2)
-
-            bot = self.world.bot_roster.bot_by_name(bot_name)
+            name = sl.group(2) if sl else m.group(2)
+            bot = self.world.bot_roster.bot_by_name(name)
             if not bot:
-                log.error(f"Bot {bot_name} not found in roster")
-                m = self.re_has_response(BOT_RESPONSE_RE)
+                log.error(f"Bot {name} not found in roster")
                 continue
-
-            log.info(f"Bot {bot_name} found in roster setting created to True")
-            bot.id = bot_number
+            bot.id = int(m.group(1))
             bot.created = True
             bot.level = int(m.group(3))
-            m = self.re_has_response(BOT_RESPONSE_RE)
+            seen.add(name)
+        return seen
