@@ -452,6 +452,7 @@ function renderCurrentTarget() {
             const distance = hasPosition ? Math.hypot(p[0] - s.position[0], p[1] - s.position[1], dz) : null;
             text('targetname', drop.name);
             text('targetidentity', `Ground spawn · Drop #${drop.drop_id}`);
+            $('targethealth').hidden = true;
             const values = [ ['Item ID', drop.items.map(i => i.item_id).join(' / ')], ['Distance', distance == null ? '—' : `${num(distance)} yd`], ['ΔZ', dz == null ? '—' : `${dz >= 0 ? '+' : ''}${num(dz)}`], ['Position', hasPosition ? `X ${num(p[0])} Y ${num(p[1])} Z ${num(p[2])}` : '—'] ];
             html('targetmetrics', values.map(([label, value]) => `<div class="target-metric"><span>${esc(label)}</span><b>${esc(value)}</b></div>`).join(''));
             text('mobdetail', pretty({ kind: 'ground_spawn', ...drop }));
@@ -469,6 +470,15 @@ function renderCurrentTarget() {
     const corpse = !bot && isCorpse(m);
     text('targetname', m ? m.name : selectedMob === null ? 'No target selected' : 'Entity no longer present');
     text('targetidentity', m ? `Spawn #${m.id} · ${corpse ? 'Corpse' : `Lv ${m.level} · ${cls[m.class_id] ?? 'Unknown'}`}` : '');
+    const hp = m && !corpse && m.hp != null ? Number(m.hp) : NaN;
+    const health = $('targethealth');
+    health.hidden = !Number.isFinite(hp);
+    if (!health.hidden) {
+        const pct = Math.max(0, Math.min(100, hp));
+        $('targethealthfill').style.width = `${pct}%`;
+        health.className = `target-health${pct <= 20 ? ' low' : pct <= 50 ? ' medium' : ''}`;
+        health.setAttribute('aria-valuenow', String(pct));
+    }
     if (m) {
         const dz = validPosition(m.position) && Number.isFinite(m.position[2]) ? m.position[2] - s.position[2] : null;
         const location = validPosition(m.position) ? `X ${num(m.position[0])} Y ${num(m.position[1])} Z ${num(m.position[2])}` : '—';
